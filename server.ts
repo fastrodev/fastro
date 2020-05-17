@@ -18,19 +18,19 @@ function getParameter(incoming: string, registered: string) {
   try {
     const incomingSplit = incoming.substr(1, incoming.length).split("/");
     const registeredSplit = registered.substr(1, registered.length).split("/");
-    const obj: any = {}
+    const obj: any = {};
     registeredSplit
-      .map((path, idx)=>{
-        return {path, idx}
+      .map((path, idx) => {
+        return { path, idx };
       })
-      .filter(value => value.path.startsWith(":"))
-      .map(value=> {
-        const name = value.path.substr(1, value.path.length)
-        obj[name] =  incomingSplit[value.idx]
-      })
-    return obj  
+      .filter((value) => value.path.startsWith(":"))
+      .map((value) => {
+        const name = value.path.substr(1, value.path.length);
+        obj[name] = incomingSplit[value.idx];
+      });
+    return obj;
   } catch (error) {
-    throw FastroError("GET_URL_PARAMETER_ERROR", error)
+    throw FastroError("GET_URL_PARAMETER_ERROR", error);
   }
 }
 
@@ -45,7 +45,7 @@ function checkUrl(incoming: string, registered: string): boolean {
       });
     return incomingSplit.length === filtered.length;
   } catch (error) {
-    throw FastroError("CHECK_URL_ERROR", error)
+    throw FastroError("CHECK_URL_ERROR", error);
   }
 }
 
@@ -57,15 +57,15 @@ export class Fastro {
   #requestHandler = async (req: ServerRequest) => {
     try {
       const filteredRoutes = this.#router
-      .filter(function (value) {
-        return checkUrl(req.url, value.url) && (req.method == value.method);
-      });
+        .filter(function (value) {
+          return checkUrl(req.url, value.url) && (req.method == value.method);
+        });
       if (filteredRoutes.length < 1) {
         return req.respond({ body: `${req.url} not found`, status: 404 });
       }
       const [route] = filteredRoutes;
       const request = req as FastroRequest;
-      request.parameter = getParameter(req.url, route.url)
+      request.parameter = getParameter(req.url, route.url);
       return route.handler(request);
     } catch (error) {
       throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);

@@ -15,14 +15,14 @@ server
     method: "GET",
     url: "/:hello",
     handler: (req) => {
-      req.respond({ body: JSON.stringify(req.parameter)});
+      req.respond({ body: JSON.stringify(req.parameter) });
     },
   })
   .route({
     method: "GET",
     url: "/hello/:user/:id",
     handler: (req) => {
-      req.respond({ body: JSON.stringify(req.parameter)});
+      req.respond({ body: JSON.stringify(req.parameter) });
     },
   })
   .route({
