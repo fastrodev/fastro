@@ -1,3 +1,6 @@
 export {
-  Fastro
+  Fastro,
+  Router,
+  FastroError,
+  ListenOptions,
 } from "./server.ts";
