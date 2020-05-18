@@ -1,6 +1,6 @@
 export {
   Fastro,
-  Router,
+  RouterInterface,
   ListenOptions,
   Parameter,
   FastroRequest,

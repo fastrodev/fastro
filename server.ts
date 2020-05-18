@@ -20,7 +20,7 @@ export class FastroRequest extends ServerRequest {
    */
   payload!: string;
 }
-export interface Router {
+export interface RouterInterface {
   method: string;
   url: string;
   handler(req: FastroRequest): void;
@@ -91,7 +91,7 @@ export class Fastro {
   };
 
   /** Add route */
-  route(options: Router) {
+  route(options: RouterInterface) {
     try {
       const filteredRoutes = this.#router.filter(function (value) {
         return checkUrl(options.url, value.url) &&
@@ -141,5 +141,5 @@ export class Fastro {
   // definite assignment assertion
   // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html
   #server!: Server;
-  #router: Router[] = [];
+  #router: RouterInterface[] = [];
 }
