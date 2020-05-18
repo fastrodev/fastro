@@ -1,8 +1,6 @@
 const { test } = Deno;
 import { assertEquals } from "./dev_deps.ts";
-import { decode, ServerRequest } from "./deps.ts";
 import { Fastro } from "./server.ts";
-const { readAll } = Deno;
 const addr = `http://localhost:8000`;
 
 test({
