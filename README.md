@@ -32,7 +32,7 @@ server
   .route({
     method: "POST",
     url: "/hello",
-    handler: async (req) => {
+    handler: (req) => {
       const payload = req.payload;
       req.respond({ body: payload });
     },

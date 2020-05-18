@@ -1,6 +1,10 @@
 export {
   Fastro,
   Router,
-  FastroError,
   ListenOptions,
+  Parameter,
+  FastroRequest,
+  getParameter,
+  checkUrl,
+  FastroError,
 } from "./server.ts";
