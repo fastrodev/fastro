@@ -95,7 +95,7 @@ export class Fastro {
   route(options: Router) {
     try {
       const filteredRoutes = this.#router.filter(function (value) {
-        return options.url === value.url && options.method === value.method;
+        return checkUrl(options.url, value.url) && options.method === value.method;
       });
       if (filteredRoutes.length > 0) {
         const [route] = filteredRoutes;
