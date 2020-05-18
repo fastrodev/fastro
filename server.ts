@@ -1,7 +1,10 @@
 import { serve, Server, ServerRequest } from "./deps.ts";
 export type ListenOptions = { port: number; hostname?: string };
+
 export class FastroRequest extends ServerRequest {
-  parameter!: any;
+  parameter!: {
+    [key: string]: string;
+  };
 }
 export interface Router {
   method: string;
@@ -18,7 +21,10 @@ function getParameter(incoming: string, registered: string) {
   try {
     const incomingSplit = incoming.substr(1, incoming.length).split("/");
     const registeredSplit = registered.substr(1, registered.length).split("/");
-    const obj: any = {};
+    const obj: {
+      [key: string]: string;
+    } = {};
+
     registeredSplit
       .map((path, idx) => {
         return { path, idx };
