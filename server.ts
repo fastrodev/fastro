@@ -35,8 +35,7 @@ export function getParameter(incoming: string, registered: string) {
   try {
     const incomingSplit = incoming.substr(1, incoming.length).split("/");
     const registeredSplit = registered.substr(1, registered.length).split("/");
-    const obj: Parameter = {};
-
+    const param: Parameter = {};
     registeredSplit
       .map((path, idx) => {
         return { path, idx };
@@ -44,9 +43,9 @@ export function getParameter(incoming: string, registered: string) {
       .filter((value) => value.path.startsWith(":"))
       .map((value) => {
         const name = value.path.substr(1, value.path.length);
-        obj[name] = incomingSplit[value.idx];
+        param[name] = incomingSplit[value.idx];
       });
-    return obj;
+    return param;
   } catch (error) {
     throw FastroError("GET_URL_PARAMETER_ERROR", error);
   }
@@ -95,7 +94,8 @@ export class Fastro {
   route(options: Router) {
     try {
       const filteredRoutes = this.#router.filter(function (value) {
-        return checkUrl(options.url, value.url) && options.method === value.method;
+        return checkUrl(options.url, value.url) &&
+          options.method === value.method;
       });
       if (filteredRoutes.length > 0) {
         const [route] = filteredRoutes;
