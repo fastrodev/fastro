@@ -19,7 +19,13 @@ server
     method: "GET",
     url: "/:hello",
     handler: (req) => {
-      req.respond({ body: JSON.stringify(req.parameter) });
+      const header = new Headers();
+      header.set('Content-Type', 'application/json')
+      req.respond({
+        status: 200,
+        headers: header,
+        body: JSON.stringify(req.parameter) 
+      });
     },
   })
   .route({
@@ -43,5 +49,6 @@ server
   };
 
 await server.listen({ port: 8000 });
+
 
 ```
