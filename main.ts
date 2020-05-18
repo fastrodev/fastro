@@ -14,11 +14,11 @@ server
     url: "/:hello",
     handler: (req) => {
       const header = new Headers();
-      header.set('Content-Type', 'application/json')
+      header.set("Content-Type", "application/json");
       req.respond({
         status: 200,
         headers: header,
-        body: JSON.stringify(req.parameter) 
+        body: JSON.stringify(req.parameter),
       });
     },
   })
