@@ -1,6 +1,4 @@
 import { Fastro, FastroError } from "./server.ts";
-import { decode } from "./deps.ts";
-const { readAll } = Deno;
 
 const server = new Fastro();
 server
@@ -29,11 +27,11 @@ server
     method: "POST",
     url: "/hello",
     handler: async (req) => {
-      const payload = decode(await readAll(req.body));
+      const payload = req.payload;
       req.respond({ body: payload });
     },
   })
-  .callback = function (err: Error | undefined, addr: Deno.Addr | undefined) {
+  .callback = (err, addr) => {
     if (err) throw FastroError("SERVER_ERROR", err);
     console.log("Listening on:", addr);
   };

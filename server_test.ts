@@ -12,7 +12,7 @@ test({
     server.route({
       method: "GET",
       url: "/",
-      handler(req: ServerRequest) {
+      handler(req) {
         req.respond({ body: "hello" });
       },
     });
@@ -31,8 +31,8 @@ test({
     server.route({
       method: "POST",
       url: "/",
-      async handler(req: ServerRequest) {
-        const payload = decode(await readAll(req.body));
+      async handler(req) {
+        const payload = req.payload;
         req.respond({ body: payload });
       },
     });
@@ -57,14 +57,14 @@ test({
     server.route({
       method: "GET",
       url: "/login/user/:name",
-      handler(req: ServerRequest) {
-        req.respond({ body: "hello" });
+      handler(req) {
+        req.respond({ body: `hello, ${req.parameter.name}` });
       },
     });
     const p = server.listen();
     const result = await fetch(addr + "/login/user/agus");
     const text = await result.text();
-    assertEquals(text, "hello");
+    assertEquals(text, "hello, agus");
     server.close();
   },
 });

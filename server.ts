@@ -1,10 +1,24 @@
 import { serve, Server, ServerRequest } from "./deps.ts";
-export type ListenOptions = { port: number; hostname?: string };
+import { decode } from "./deps.ts";
 
+export type ListenOptions = { port: number; hostname?: string };
+export type Parameter = {
+  [key: string]: string;
+};
 export class FastroRequest extends ServerRequest {
-  parameter!: {
-    [key: string]: string;
-  };
+  /** URL parameter of ServerRequest */
+  parameter!: Parameter;
+  /** 
+   * Payload of ServerRequest
+   * 
+   * 
+   *    import { decode } from "https://deno.land/std@0.51.0/encoding/utf8.ts";
+   *    
+   *    function (req: ServerRequest) {
+   *      const payload = decode(await readAll(req.body));
+   *    }
+   */
+  payload!: string;
 }
 export interface Router {
   method: string;
@@ -17,13 +31,11 @@ export function FastroError(title: string, error: Error) {
   return error;
 }
 
-function getParameter(incoming: string, registered: string) {
+export function getParameter(incoming: string, registered: string) {
   try {
     const incomingSplit = incoming.substr(1, incoming.length).split("/");
     const registeredSplit = registered.substr(1, registered.length).split("/");
-    const obj: {
-      [key: string]: string;
-    } = {};
+    const obj: Parameter = {};
 
     registeredSplit
       .map((path, idx) => {
@@ -40,7 +52,7 @@ function getParameter(incoming: string, registered: string) {
   }
 }
 
-function checkUrl(incoming: string, registered: string): boolean {
+export function checkUrl(incoming: string, registered: string): boolean {
   try {
     const incomingSplit = incoming.substr(1, incoming.length).split("/");
     const registeredSplit = registered.substr(1, registered.length).split("/");
@@ -72,18 +84,12 @@ export class Fastro {
       const [route] = filteredRoutes;
       const request = req as FastroRequest;
       request.parameter = getParameter(req.url, route.url);
+      request.payload = decode(await Deno.readAll(req.body));
       return route.handler(request);
     } catch (error) {
       throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);
     }
   };
-
-  /** close server */
-  async close(): Promise<void> {
-    if (this.#server) {
-      this.#server.close();
-    }
-  }
 
   /** Add route */
   route(options: Router) {
@@ -105,11 +111,6 @@ export class Fastro {
     }
   }
 
-  /** Callback */
-  callback!: {
-    (error: Error | undefined, address: Deno.Addr | undefined): void;
-  };
-
   /** Listen */
   listen = async (options?: ListenOptions): Promise<void> => {
     try {
@@ -125,6 +126,18 @@ export class Fastro {
       throw FastroError("SERVER_LISTEN_ERROR", error);
     }
   };
+
+  /** Callback */
+  callback!: {
+    (error: Error | undefined, address: Deno.Addr | undefined): void;
+  };
+
+  /** Close server */
+  async close(): Promise<void> {
+    if (this.#server) {
+      this.#server.close();
+    }
+  }
   // definite assignment assertion
   // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html
   #server!: Server;
