@@ -41,10 +41,6 @@ export class FastroRequest extends ServerRequest {
   send!: {
     <T>(payload: string | T, status?: number, headers?: Headers): void;
   };
-
-  getHeaders() {
-    return this.headers;
-  }
 }
 export interface RouterInterface {
   method: string;
@@ -94,7 +90,7 @@ export function checkUrl(incoming: string, registered: string): boolean {
 
 export class Fastro {
   private send<T>(
-    payload: string | number | T,
+    payload: string | number | boolean | T,
     status: number | undefined = 200,
     headers: Headers | undefined = new Headers(),
     req: ServerRequest,
@@ -104,7 +100,8 @@ export class Fastro {
       headers.set("X-Powered-By", "fastro");
       if (
         typeof payload === "string" ||
-        typeof payload === "number"
+        typeof payload === "number" ||
+        typeof payload === "boolean"
       ) {
         body = payload;
         headers.set("Content-Type", "text/html; charset=UTF-8");
