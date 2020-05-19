@@ -153,8 +153,8 @@ export class Fastro {
       }
     } catch (error) {
       const errStr = "SERVER_LISTEN_ERROR";
-      if (!callback) console.error(errStr, options);
-      else callback(FastroError(errStr, error), undefined);
+      if (callback) callback(FastroError(errStr, error), undefined);
+      else throw FastroError(errStr, error);
     }
   };
 
