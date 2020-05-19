@@ -4,6 +4,7 @@ const server = new Fastro();
 
 server.get("/", (req) => req.send("root"));
 
+// you can also add a router using `route` method
 server.route({
   url: "/hello",
   method: "GET",

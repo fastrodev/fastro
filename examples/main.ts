@@ -1,4 +1,4 @@
-import { Fastro, FastroError } from "https://deno.land/x/fastro/mod.ts";
+import { Fastro, FastroError } from "../mod.ts";
 
 const server = new Fastro();
 server
@@ -23,13 +23,11 @@ server
     method: "GET",
     url: "/:hello",
     handler: (req) => {
-      const header = new Headers();
-      header.set("Content-Type", "application/json");
-      req.respond({
-        status: 200,
-        headers: header,
-        body: JSON.stringify(req.parameter),
-      });
+      const status = 200
+      const headers = new Headers();
+      headers.set("X-Made-In", "Cirebon, ID");
+      headers.set("X-Author", "ynwd");
+      req.send(`Hello, ${req.parameter.hello}`, status, headers)
     },
   })
   // handle multiple parameter

@@ -7,22 +7,10 @@ import { Fastro } from "https://deno.land/x/fastro/mod.ts";
 
 const server = new Fastro();
 
-server.route({
-  url: "/",
-  method: "GET",
-  handler: (req) => {
-    req.send("root");
-  },
-});
+server.get("/", (req) => req.send("root"));
 
 await server.listen({ port: 8000 });
 
-```
-
-You can also add route with shorthand declaration:
-
-```ts
-server.get("/", (req) => req.send("root"));
 ```
 
 Available route shorthand declaration 
