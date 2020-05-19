@@ -3,7 +3,7 @@ import { Fastro, FastroError } from "../mod.ts";
 const server = new Fastro();
 server
   // handle simple message using route shorthand declaration
-  .get('/', (req) => req.send("hello"))
+  .get("/", (req) => req.send("hello"))
   // handle json object
   .route({
     method: "GET",
@@ -17,11 +17,11 @@ server
     method: "GET",
     url: "/:hello",
     handler: (req) => {
-      const status = 200
+      const status = 200;
       const headers = new Headers();
       headers.set("X-Made-In", "Cirebon, ID");
       headers.set("X-Author", "ynwd");
-      req.send(`Hello, ${req.parameter.hello}`, status, headers)
+      req.send(`Hello, ${req.parameter.hello}`, status, headers);
     },
   })
   // handle multiple parameter

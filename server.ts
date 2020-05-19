@@ -42,8 +42,8 @@ export class FastroRequest extends ServerRequest {
     <T>(payload: string | T, status?: number, headers?: Headers): void;
   };
 
-  getHeaders () {
-    return this.headers
+  getHeaders() {
+    return this.headers;
   }
 }
 export interface RouterInterface {
@@ -103,8 +103,8 @@ export class Fastro {
       let body: any;
       headers.set("X-Powered-By", "fastro");
       if (typeof payload === "string") {
-        body = payload
-        headers.set("Content-Type",  "text/html; charset=UTF-8");
+        body = payload;
+        headers.set("Content-Type", "text/html; charset=UTF-8");
       } else {
         body = JSON.stringify(payload);
         headers.set("Content-Type", "application/json");
@@ -128,7 +128,8 @@ export class Fastro {
       const request = req as FastroRequest;
       request.parameter = getParameter(req.url, route.url);
       request.payload = decode(await Deno.readAll(req.body));
-      request.send = (payload, status, headers) => this.send(payload, status, headers, req);
+      request.send = (payload, status, headers) =>
+        this.send(payload, status, headers, req);
       return route.handler(request);
     } catch (error) {
       throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);
