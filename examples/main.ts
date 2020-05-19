@@ -2,7 +2,7 @@ import { Fastro, FastroError } from "../mod.ts";
 
 const server = new Fastro();
 server
-  // handle simple message using shorthand route declaration
+  // handle simple message using route shorthand declaration
   .get('/', (req) => req.send("hello"))
   // handle json object
   .route({
