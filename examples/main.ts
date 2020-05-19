@@ -2,7 +2,7 @@ import { Fastro, FastroError } from "https://deno.land/x/fastro/mod.ts";
 
 const server = new Fastro();
 server
-  // handling simple message
+  // handle simple message
   .route({
     method: "GET",
     url: "/",
@@ -10,7 +10,7 @@ server
       req.send("hello");
     },
   })
-  // handling json object
+  // handle json object
   .route({
     method: "GET",
     url: "/json",
@@ -18,7 +18,7 @@ server
       req.send({ message: "hello" });
     },
   })
-  // handling basic url parameter & respon with custom status & header
+  // handle basic url parameter & respon with custom status & header
   .route({
     method: "GET",
     url: "/:hello",
@@ -32,7 +32,7 @@ server
       });
     },
   })
-  // handling multiple parameter
+  // handle multiple parameter
   .route({
     method: "GET",
     url: "/hello/:user/:id",
@@ -44,7 +44,7 @@ server
       req.send(data);
     },
   })
-  // handling post & get the payload
+  // handle post & get the payload
   .route({
     method: "POST",
     url: "/hello",

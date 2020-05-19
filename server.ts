@@ -2,6 +2,9 @@ import { serve, Server, ServerRequest } from "./deps.ts";
 import { decode } from "./deps.ts";
 
 export type ListenOptions = { port: number; hostname?: string };
+export interface Handler {
+  (req: FastroRequest): void;
+}
 export type Parameter = {
   [key: string]: string;
 };
@@ -113,6 +116,22 @@ export class Fastro {
     }
   };
 
+  /** Listen */
+  listen = async (options?: ListenOptions): Promise<void> => {
+    try {
+      if (!options) this.#server = serve({ port: 8000 });
+      else this.#server = serve(options);
+      if (this.callback) this.callback(undefined, this.#server.listener.addr);
+      // creates a loop iterating over async iterable objects
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
+      for await (const req of this.#server) {
+        await this.#requestHandler(req);
+      }
+    } catch (error) {
+      throw FastroError("SERVER_LISTEN_ERROR", error);
+    }
+  };
+
   /** Add route */
   route(options: RouterInterface) {
     try {
@@ -134,21 +153,68 @@ export class Fastro {
     }
   }
 
-  /** Listen */
-  listen = async (options?: ListenOptions): Promise<void> => {
-    try {
-      if (!options) this.#server = serve({ port: 8000 });
-      else this.#server = serve(options);
-      if (this.callback) this.callback(undefined, this.#server.listener.addr);
-      // creates a loop iterating over async iterable objects
-      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
-      for await (const req of this.#server) {
-        await this.#requestHandler(req);
-      }
-    } catch (error) {
-      throw FastroError("SERVER_LISTEN_ERROR", error);
-    }
-  };
+  /**
+   * GET route shorthand declaration
+   * @param url 
+   * @param handler 
+   */
+  get(url: string, handler: Handler) {
+    return this.route({ method: "GET", url, handler });
+  }
+
+  /**
+   * POST route shorthand declaration
+   * @param url 
+   * @param handler 
+   */
+  post(url: string, handler: Handler) {
+    return this.route({ method: "POST", url, handler });
+  }
+
+  /**
+   * HEAD route shorthand declaration
+   * @param url 
+   * @param handler 
+   */
+  head(url: string, handler: Handler) {
+    return this.route({ method: "HEAD", url, handler });
+  }
+
+  /**
+   * PATCH route shorthand declaration
+   * @param url 
+   * @param handler 
+   */
+  patch(url: string, handler: Handler) {
+    return this.route({ method: "PATCH", url, handler });
+  }
+
+  /**
+   * PUT route shorthand declaration
+   * @param url 
+   * @param handler 
+   */
+  put(url: string, handler: Handler) {
+    return this.route({ method: "PUT", url, handler });
+  }
+
+  /**
+   * OPTIONS route shorthand declaration
+   * @param url 
+   * @param handler 
+   */
+  options(url: string, handler: Handler) {
+    return this.route({ method: "OPTIONS", url, handler });
+  }
+
+  /**
+   * DELETE shorthand declaration
+   * @param url 
+   * @param handler 
+   */
+  delete(url: string, handler: Handler) {
+    return this.route({ method: "DELETE", url, handler });
+  }
 
   /** Callback */
   callback!: {

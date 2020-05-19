@@ -1,13 +1,15 @@
-import {
-  Fastro,
-} from "https://deno.land/x/fastro/mod.ts";
+import { Fastro } from "https://deno.land/x/fastro/mod.ts";
 
 const server = new Fastro();
 
+server.get("/", (req) => req.send("root"));
+
 server.route({
+  url: "/hello",
   method: "GET",
-  url: "/",
-  handler: (req) => req.send("hello"),
+  handler: (req) => {
+    req.send("hello");
+  },
 });
 
 await server.listen({ port: 8000 });
