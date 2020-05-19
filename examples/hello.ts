@@ -1,10 +1,11 @@
-import { Fastro } from "https://deno.land/x/fastro/mod.ts";
+import { Fastro } from "../mod.ts";
 
 const server = new Fastro();
 
+// add a router using route shorthand declaration
 server.get("/", (req) => req.send("root"));
 
-// you can also add a router using `route` method
+// add a router using `route` method
 server.route({
   url: "/hello",
   method: "GET",

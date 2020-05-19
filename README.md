@@ -14,18 +14,18 @@ await server.listen({ port: 8000 });
 ```
 
 Available route shorthand declaration 
-- `server.get(path, handler)`
-- `server.post(path, handler)`
-- `server.put(path, handler)`
-- `server.head(path, handler)`
-- `server.delete(path, handler)`
-- `server.options(path, handler)`
-- `server.patch(path, handler)`
+- `server.get(url, handler)`
+- `server.post(url, handler)`
+- `server.put(url, handler)`
+- `server.head(url, handler)`
+- `server.delete(url, handler)`
+- `server.options(url, handler)`
+- `server.patch(url, handler)`
 
 ## Example
 You can see above basic example code here: [hello.ts](https://github.com/fastrojs/fastro-server/blob/master/examples/hello.ts)
 
-Check the following [source code](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts) to find out how to:
+Check the following [code](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts) to find out how to:
 - [send simple text & json data](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L5)
 - [handle url parameters](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L35)
 - [set custom http headers & status](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L25)
