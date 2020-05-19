@@ -94,7 +94,7 @@ export function checkUrl(incoming: string, registered: string): boolean {
 
 export class Fastro {
   private send<T>(
-    payload: string | T,
+    payload: string | number | T,
     status: number | undefined = 200,
     headers: Headers | undefined = new Headers(),
     req: ServerRequest,
@@ -102,7 +102,10 @@ export class Fastro {
     try {
       let body: any;
       headers.set("X-Powered-By", "fastro");
-      if (typeof payload === "string") {
+      if (
+        typeof payload === "string" ||
+        typeof payload === "number"
+      ) {
         body = payload;
         headers.set("Content-Type", "text/html; charset=UTF-8");
       } else {
@@ -137,18 +140,24 @@ export class Fastro {
   };
 
   /** Listen */
-  listen = async (options?: ListenOptions): Promise<void> => {
+  listen = async (
+    options?: ListenOptions,
+    callback?: (error: Error | undefined, address: string | undefined) => void,
+  ): Promise<void> => {
     try {
-      if (!options) this.#server = serve({ port: 8000 });
-      else this.#server = serve(options);
-      if (this.callback) this.callback(undefined, this.#server.listener.addr);
+      let opt = options ? options : { port: 8000 };
+      this.#server = serve(opt);
+      if (!callback) console.info(options);
+      else callback(undefined, opt as any);
       // creates a loop iterating over async iterable objects
       // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
       for await (const req of this.#server) {
         await this.#requestHandler(req);
       }
     } catch (error) {
-      throw FastroError("SERVER_LISTEN_ERROR", error);
+      const errStr = "SERVER_LISTEN_ERROR";
+      if (!callback) console.error(errStr, options);
+      else callback(FastroError(errStr, error), undefined);
     }
   };
 
@@ -235,11 +244,6 @@ export class Fastro {
   delete(url: string, handler: Handler) {
     return this.route({ method: "DELETE", url, handler });
   }
-
-  /** Callback */
-  callback!: {
-    (error: Error | undefined, address: Deno.Addr | undefined): void;
-  };
 
   /** Close server */
   async close(): Promise<void> {
