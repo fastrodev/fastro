@@ -136,7 +136,13 @@ export class Fastro {
     }
   };
 
-  /** Listen */
+  /** 
+   * Listen 
+   * 
+   * Example:
+   *      
+   *      server.listen({ port: 8000 })
+   **/
   listen = async (
     options?: ListenOptions,
     callback?: (error: Error | undefined, address: string | undefined) => void,
@@ -158,7 +164,22 @@ export class Fastro {
     }
   };
 
-  /** Add route */
+  /**
+   * Add route
+   * @param options
+   * 
+   * 
+   * Example:
+   * 
+   *      server.route({
+   *        url: "/hello",
+   *        method: "GET",
+   *        handler: (req) => {
+   *          req.send("hello");
+   *        },
+   *       });
+   * 
+   **/
   route(options: RouterInterface) {
     try {
       const filteredRoutes = this.#router.filter(function (value) {
@@ -183,6 +204,10 @@ export class Fastro {
    * GET route shorthand declaration
    * @param url 
    * @param handler 
+   * 
+   * Example:
+   * 
+   *       server.get('/', (req) => req.send('hello'))
    */
   get(url: string, handler: Handler) {
     return this.route({ method: "GET", url, handler });
@@ -192,6 +217,13 @@ export class Fastro {
    * POST route shorthand declaration
    * @param url 
    * @param handler 
+   * 
+   * Example:
+   * 
+   *       server.post('/', (req) => {
+   *          const payload = req.payload;
+   *          req.send(payload);
+   *       })
    */
   post(url: string, handler: Handler) {
     return this.route({ method: "POST", url, handler });
