@@ -1,4 +1,4 @@
-import { Fastro, FastroError } from "./server.ts";
+import { Fastro, FastroError } from "https://deno.land/x/fastro/mod.ts";
 
 const server = new Fastro();
 server
