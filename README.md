@@ -6,7 +6,6 @@ Usage example:
 
 ```ts
 import { Fastro, FastroError } from "https://deno.land/x/fastro/mod.ts";
-import { Fastro, FastroError } from "./server.ts";
 
 const server = new Fastro();
 server
