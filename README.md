@@ -13,6 +13,9 @@ await server.listen({ port: 8000 });
 
 ```
 
+## How to use
+These modules are tagged in accordance with Fastro releases. So, for example, the v0.1.0 tag is guaranteed to work with fastro v0.1.0. You can link to v0.1.0 using the URL https://deno.land/x/fastro@v0.1.0/mod.ts. Not specifying a tag will link to the master branch.
+
 ## Available route shorthand declaration 
 - `server.get(url, handler)`
 - `server.post(url, handler)`
@@ -21,9 +24,6 @@ await server.listen({ port: 8000 });
 - `server.delete(url, handler)`
 - `server.options(url, handler)`
 - `server.patch(url, handler)`
-
-## How to use
-These modules are tagged in accordance with Fastro releases. So, for example, the v0.1.0 tag is guaranteed to work with fastro v0.1.0. You can link to v0.1.0 using the URL https://deno.land/x/fastro@v0.1.0/mod.ts. Not specifying a tag will link to the master branch.
 
 ## Example
 You can see above basic example code here: [hello.ts](https://github.com/fastrojs/fastro-server/blob/master/examples/hello.ts)
