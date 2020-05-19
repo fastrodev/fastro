@@ -6,19 +6,25 @@ export type Parameter = {
   [key: string]: string;
 };
 export class FastroRequest extends ServerRequest {
-  /** URL parameter of ServerRequest */
+  /** URL parameter */
   parameter!: Parameter;
-  /** 
-   * Payload of ServerRequest
-   * 
-   * 
-   *    import { decode } from "https://deno.land/std@0.51.0/encoding/utf8.ts";
-   *    
-   *    function (req: ServerRequest) {
-   *      const payload = decode(await readAll(req.body));
-   *    }
-   */
+  /** Payload */
   payload!: string;
+  /**
+   * Send payload
+   * 
+   * Example:
+   *      
+   *      // send basic message
+   *      send('ok')
+   *      // send message with http status
+   *      send('not found', 404)
+   *      // send json object
+   *      send({ message: 'Hello' })
+   */
+  send!: {
+    <T>(payload: string | T, status?: number): void;
+  };
 }
 export interface RouterInterface {
   method: string;
@@ -67,10 +73,26 @@ export function checkUrl(incoming: string, registered: string): boolean {
 }
 
 export class Fastro {
-  /**
-   * private field
-   * https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/#ecmascript-private-fields
-   */
+  private send<T>(
+    payload: string | T,
+    status: number | undefined = 200,
+    req: ServerRequest,
+  ) {
+    try {
+      const headers = new Headers();
+      let body: any;
+      if (typeof payload === "string") body = payload;
+      else {
+        body = JSON.stringify(payload);
+        headers.set("Content-Type", "application/json");
+      }
+      headers.set("X-Powered-By", "fastro");
+      req.respond({ status, headers, body });
+    } catch (error) {
+      throw FastroError("SERVER_SEND_ERROR", error);
+    }
+  }
+
   #requestHandler = async (req: ServerRequest) => {
     try {
       const filteredRoutes = this.#router
@@ -84,6 +106,7 @@ export class Fastro {
       const request = req as FastroRequest;
       request.parameter = getParameter(req.url, route.url);
       request.payload = decode(await Deno.readAll(req.body));
+      request.send = (payload, status) => this.send(payload, status, req);
       return route.handler(request);
     } catch (error) {
       throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);

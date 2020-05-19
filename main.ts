@@ -2,13 +2,23 @@ import { Fastro, FastroError } from "./server.ts";
 
 const server = new Fastro();
 server
+  // handling simple message
   .route({
     method: "GET",
     url: "/",
     handler: (req) => {
-      req.respond({ body: "Root" });
+      req.send("hello");
     },
   })
+  // handling json object
+  .route({
+    method: "GET",
+    url: "/json",
+    handler: (req) => {
+      req.send({ message: "hello" });
+    },
+  })
+  // handling basic url parameter & respon with custom status & header
   .route({
     method: "GET",
     url: "/:hello",
@@ -22,21 +32,28 @@ server
       });
     },
   })
+  // handling multiple parameter
   .route({
     method: "GET",
     url: "/hello/:user/:id",
     handler: (req) => {
-      req.respond({ body: JSON.stringify(req.parameter) });
+      const data = {
+        user: req.parameter.user,
+        id: req.parameter.id,
+      };
+      req.send(data);
     },
   })
+  // handling post & get the payload
   .route({
     method: "POST",
     url: "/hello",
     handler: (req) => {
       const payload = req.payload;
-      req.respond({ body: payload });
+      req.send(payload);
     },
   })
+  // optional callback
   .callback = (err, addr) => {
     if (err) throw FastroError("SERVER_ERROR", err);
     console.log("Listening on:", addr);
