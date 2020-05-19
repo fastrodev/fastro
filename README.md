@@ -35,11 +35,11 @@ Available route shorthand declaration
 - `server.patch(path, handler)`
 
 ## Example
-You can see above basic example code here: [hello.ts](examples/hello.ts)
+You can see above basic example code here: [hello.ts](https://github.com/fastrojs/fastro-server/blob/master/examples/hello.ts)
 
-Check the following source code to find out how to:
-- [send simple text & json data](examples/main.ts#L5)
-- [handle url parameters](examples/main.ts#L35)
-- [set custom http headers & status](examples/main.ts#L25)
-- [handle http posts & get the payload](examples/main.ts#L47)
-- [add optional callback](examples/main.ts#L58)
+Check the following [source code](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts) to find out how to:
+- [send simple text & json data](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L5)
+- [handle url parameters](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L35)
+- [set custom http headers & status](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L25)
+- [handle http posts & get the payload](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L47)
+- [add optional callback](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L58)
