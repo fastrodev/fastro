@@ -8,7 +8,7 @@ server
   .get("/json", (req) => req.send({ message: "hello" }))
   // handle basic url parameter & send respond with custom status & header
   .get(
-    "/hello:",
+    "/:hello",
     (req) => {
       const status = 200;
       const headers = new Headers();
