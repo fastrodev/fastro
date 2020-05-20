@@ -15,27 +15,24 @@ export class FastroRequest extends ServerRequest {
   payload!: string;
   /**
    * Send payload
-   * @param payload 
-   * @param status
-   * @param headers 
-   * 
-   * 
-   * Example:
    *      
-   *      // send basic message
-   *      // default http status 200
+   *      // send basic message, default http status 200
    *      send('ok')
    * 
    *      // send json object
    *      send({ message: 'Hello' })
    * 
-   *      // send message with http status
+   *      // send message with custom http status
    *      send('not found', 404)
    * 
    *      // send message with custom status & headers
    *      const headers = new Headers()
    *      headers.set('Authorization', `Bearer ${your_token}`)
    *      send({ login: true }, 200, headers)
+   * 
+   * @param payload 
+   * @param status
+   * @param headers 
    *     
    */
   send!: {
@@ -138,8 +135,6 @@ export class Fastro {
 
   /** 
    * Listen 
-   * 
-   * Example:
    *      
    *      server.listen({ port: 8000 })
    **/
@@ -166,10 +161,6 @@ export class Fastro {
 
   /**
    * Add route
-   * @param options
-   * 
-   * 
-   * Example:
    * 
    *      server.route({
    *        url: "/hello",
@@ -178,6 +169,8 @@ export class Fastro {
    *          req.send("hello");
    *        },
    *       });
+   * 
+   * @param options
    * 
    **/
   route(options: RouterInterface) {
@@ -202,12 +195,11 @@ export class Fastro {
 
   /**
    * GET route shorthand declaration
-   * @param url 
-   * @param handler 
-   * 
-   * Example:
    * 
    *       server.get('/', (req) => req.send('hello'))
+   * 
+   * @param url 
+   * @param handler 
    */
   get(url: string, handler: Handler) {
     return this.route({ method: "GET", url, handler });
@@ -215,15 +207,14 @@ export class Fastro {
 
   /**
    * POST route shorthand declaration
-   * @param url 
-   * @param handler 
-   * 
-   * Example:
    * 
    *       server.post('/', (req) => {
    *          const payload = req.payload;
    *          req.send(payload);
    *       })
+   * 
+   * @param url 
+   * @param handler 
    */
   post(url: string, handler: Handler) {
     return this.route({ method: "POST", url, handler });
