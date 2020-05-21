@@ -1,0 +1,21 @@
+{
+  "name": "benchmark",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "node benchmark.js start",
+    "compare": "node benchmark.js compare",
+    "kill": "node benchmark.js kill"
+  },
+  "author": "ynwd",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fastify": "^2.14.1"
+  },
+  "devDependencies": {
+    "autocannon": "^4.6.0"
+  }
+}
