@@ -5,7 +5,7 @@ export type ListenOptions = { port: number; hostname?: string };
 
 export interface Plugin {
   (req: FastroRequest, callback: Function): void;
-};
+}
 export interface Handler {
   (req: FastroRequest): void;
 }
