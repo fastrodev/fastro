@@ -1,4 +1,4 @@
-import { Fastro, FastroError, FastroRequest } from "../mod.ts";
+import { Fastro, FastroRequest } from "../mod.ts";
 
 const server = new Fastro();
 
