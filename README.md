@@ -39,7 +39,7 @@ server.use(plugin)
 ## Benchmarks
 If performance is important to you, here are the benchmark results:
 
-| Framework          | Version      | Router?      | Average Req (1) |  Average Req (2) | Average Req (3)| Average Req (3)|
+| Framework          | Version      | Router?      | Average Req (1) |  Average Req (2) | Average Req (3)| Average Req (4)|
 | :----------------- | :----------- | :----------: | --------------: | --------------:  | --------------:| ---------------:
 | Fastify            | 2.14.1       | &#10003;     | 1833.1          | 1703.3           | 2267           | 1850           |
 | `Deno_http`        | 0.52.0	      | &#10007;     | 1887.6          | 1644.8           | 2159.31        | 1751.7         |
