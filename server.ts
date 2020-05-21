@@ -121,7 +121,7 @@ export class Fastro {
       request.payload = decode(await Deno.readAll(req.body));
       request.send = (payload, status, headers) => {
         this.send(payload, status, headers, req);
-      }
+      };
       runPlugins(this.#plugins, request);
       return route.handler(request);
     } catch (error) {
