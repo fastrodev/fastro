@@ -41,12 +41,12 @@ If performance is important to you, here are the benchmark results:
 
 | Framework          | Version      | Router?      | Average Req (1) |  Average Req (2) | Average Req (3)| Average Req (4)|
 | :----------------- | :----------- | :----------: | --------------: | --------------:  | --------------:| ---------------:
-| Fastify            | 2.14.1       | &#10003;     | 1833.1          | 1703.3           | 2267           | 1850           |
-| `Deno_http`        | 0.52.0	      | &#10007;     | 1887.6          | 1644.8           | 2159.31        | 1751.7         |
-| **Fastro**         | **0.2.8**    | **&#10003;** | **1916.5**      | 1564.4           | 2132.5         | 1819.3         |
 | Abc                | 1.0.0-rc6    | &#10003;     | 1693            | 1591.4           | 2118.1         | 1593.4         |
-| Oak                | 4.0.0        | &#10007;     | 1637.4          | 1516.7           | 2037.3         | 1707.5         |
+| Deno_http          | 0.52.0	      | &#10007;     | 1887.6          | 1644.8           | 2159.31        | 1751.7         |
 | Express            | 4.17         | &#10003;     | 1642.4          | 1618             | 1771.8         | 1638.7         |
+| Fastify            | 2.14.1       | &#10003;     | 1833.1          | 1703.3           | 2267           | 1850           |
+| **Fastro**         | **0.2.8**    | **&#10003;** | **1916.5**      | **1564.4**       | **2132.5**     | **1819.3**     |
+| Oak                | 4.0.0        | &#10007;     | 1637.4          | 1516.7           | 2037.3         | 1707.5         |
 
 Check this to see [the method](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/readme.md) and [benchmark code](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/benchmark.js).
 
