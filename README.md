@@ -1,6 +1,6 @@
 ![ci](https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg)
 # Fastro
-Fast, unopinionated, minimalist web framework for [deno](https://deno.land/).
+Fast, simple, minimalist web framework for [deno](https://deno.land/).
 
 ```ts
 import { Fastro } from "https://deno.land/x/fastro/mod.ts";
