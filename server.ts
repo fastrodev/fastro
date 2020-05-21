@@ -312,5 +312,5 @@ export class Fastro {
   // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html
   #server!: Server;
   #router: RouterInterface[] = [];
-  #plugins: any[] = [];
+  #plugins: Plugin[] = [];
 }
