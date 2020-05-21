@@ -1,17 +1,24 @@
 import { serve, Server, ServerRequest } from "./deps.ts";
 import { decode } from "./deps.ts";
 
-export type ListenOptions = { port: number; hostname?: string };
-
+export interface RouterInterface {
+  method: string;
+  url: string;
+  handler(req: FastroRequest): void;
+}
+export interface ListenOptions {
+  port: number;
+  hostname?: string;
+}
 export interface Plugin {
   (req: FastroRequest, callback: Function): void;
 }
 export interface Handler {
   (req: FastroRequest): void;
 }
-export type Parameter = {
+export interface Parameter {
   [key: string]: string;
-};
+}
 export class FastroRequest extends ServerRequest {
   /** URL parameter */
   parameter!: Parameter;
@@ -44,18 +51,13 @@ export class FastroRequest extends ServerRequest {
   };
   [key: string]: any
 }
-export interface RouterInterface {
-  method: string;
-  url: string;
-  handler(req: FastroRequest): void;
-}
 
 export function FastroError(title: string, error: Error) {
   error.name = title;
   return error;
 }
 
-export function getParameter(incoming: string, registered: string) {
+function getParameter(incoming: string, registered: string) {
   try {
     const incomingSplit = incoming.substr(1, incoming.length).split("/");
     const registeredSplit = registered.substr(1, registered.length).split("/");
@@ -75,7 +77,7 @@ export function getParameter(incoming: string, registered: string) {
   }
 }
 
-export function checkUrl(incoming: string, registered: string): boolean {
+function checkUrl(incoming: string, registered: string): boolean {
   try {
     const incomingSplit = incoming.substr(1, incoming.length).split("/");
     const registeredSplit = registered.substr(1, registered.length).split("/");
@@ -117,8 +119,9 @@ export class Fastro {
       const request = req as FastroRequest;
       request.parameter = getParameter(req.url, route.url);
       request.payload = decode(await Deno.readAll(req.body));
-      request.send = (payload, status, headers) =>
+      request.send = (payload, status, headers) => {
         this.send(payload, status, headers, req);
+      }
       runPlugins(this.#plugins, request);
       return route.handler(request);
     } catch (error) {

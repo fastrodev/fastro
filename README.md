@@ -45,4 +45,6 @@ Check the following [code](https://github.com/fastrojs/fastro-server/blob/master
 - [set custom http headers & status](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L9)
 - [handle http posts & get the payload](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L28)
 - [add optional callback](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L34)
-- [create plugins](https://github.com/fastrojs/fastro-server/blob/master/examples/use_plugin.ts)
+- [plugin: compare parameter with local variable](https://github.com/fastrojs/fastro-server/blob/master/examples/use_plugin.ts#L5)
+- [plugin: add new request function & property](https://github.com/fastrojs/fastro-server/blob/master/examples/use_plugin.ts#L23)
+- [plugin: get client headers & custom send method](https://github.com/fastrojs/fastro-server/blob/master/examples/use_plugin.ts#L13)

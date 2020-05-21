@@ -2,26 +2,47 @@ import { Fastro, FastroError, FastroRequest } from "../mod.ts";
 
 const server = new Fastro();
 
-// make a plugin that contains a function that reads parameters, payload, or header.
-// you can do anything, for example comparing it with stored data.
-// or just console.log it.
+// compare parameter with local variable
 function parameterPlugin(req: FastroRequest) {
-  console.log(req.parameter);
+  const data = 'hello'
+  if (req.parameter.hello === data) {
+    console.log(req.parameter);
+  }
 }
 
+// get client headers & custom send method
+function sendOk(req: FastroRequest) {
+  console.log(req.headers.get('host'))
+  req.sendOk = (payload: string) => {
+    const headers = new Headers()
+    headers.set('X-token', 'your_token')
+    return req.send(payload, 200, headers)
+  }
+}
+
+// add new function & property
 function payloadPlugin(req: FastroRequest) {
-  console.log(req.payload);
+  req.newProp = new Date()
+  req.ok = function(param: string) {
+    console.log('param inside plugin:', param)
+  }
 }
 
-function headerPlugin(req: FastroRequest) {
-  console.log(req.headers);
-}
-
+// add plugins to server
 server
-  .use(parameterPlugin)
   .use(payloadPlugin)
-  .use(headerPlugin)
+  .use(parameterPlugin)
+  .use(sendOk)
+  
+server
   .get("/:hello", (req) => req.send("hello"))
-  .post("/:hello", (req) => req.send("hello"));
+  .post("/:hello", (req) => {
+    // access new property
+    console.log('new property:', req.newProp)
+    // access new function
+    req.ok('hello')
+    // access custom send function
+    req.sendOk('ok deh')
+  });
 
 await server.listen({ port: 8000 });
