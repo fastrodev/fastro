@@ -25,7 +25,18 @@ These modules are tagged in accordance with Fastro releases. So, for example, th
 - `server.options(url, handler)`
 - `server.patch(url, handler)`
 
-## Example
+## Create a plugin
+For example you want to get a payload of all post method or want to get the url parameters of all get method or want to get headers of all types of requests --
+instead of defining it in each handler, you can make a plugin.
+
+```ts
+function plugin(req: FastroRequest) {
+  console.log(req.parameter);
+}
+server.use(plugin)
+```
+
+## Examples
 You can see above basic example code here: [hello.ts](https://github.com/fastrojs/fastro-server/blob/master/examples/hello.ts)
 
 Check the following [code](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts) to find out how to:
@@ -34,3 +45,4 @@ Check the following [code](https://github.com/fastrojs/fastro-server/blob/master
 - [set custom http headers & status](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L9)
 - [handle http posts & get the payload](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L28)
 - [add optional callback](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L34)
+- [create plugins](https://github.com/fastrojs/fastro-server/blob/master/examples/use_plugin.ts)
