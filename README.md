@@ -39,7 +39,7 @@ server.use(plugin)
 ## Examples
 You can see above basic example code here: [hello.ts](https://github.com/fastrojs/fastro-server/blob/master/examples/hello.ts)
 
-Check the following [code](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts) to find out how to:
+Check the following codes to find out how to:
 - [send simple text & json data](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L5)
 - [handle url parameters](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L20)
 - [set custom http headers & status](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L9)
