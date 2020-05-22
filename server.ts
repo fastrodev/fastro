@@ -144,10 +144,7 @@ export class Fastro {
         typeof payload === "boolean"
       ) {
         body = payload;
-      } else {
-        body = JSON.stringify(payload);
-        headers.set("Content-Type", "application/json");
-      }
+      } else body = JSON.stringify(payload);
       req.respond({ status, headers, body });
     } catch (error) {
       throw FastroError("SERVER_SEND_ERROR", error);
