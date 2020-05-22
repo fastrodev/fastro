@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node benchmark.js start",
     "compare": "node benchmark.js compare",
-    "kill": "node benchmark.js kill"
+    "kill": "node benchmark.js kill",
+    "compile": "node benchmark.js compile"
   },
   "author": "ynwd",
   "license": "ISC",

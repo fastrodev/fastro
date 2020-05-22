@@ -6,5 +6,5 @@ app.get("/", (req, res) => res.send("Hello!"));
 
 app.listen(
   port,
-  () => console.log(`express listening on: ${port}`),
+  () => console.log("express listening on:", port),
 );

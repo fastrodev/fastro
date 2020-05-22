@@ -17,6 +17,11 @@ Compare:
 npm run compare
 ```
 
+Compile the benchmark results and write them to readme:
+```
+npm run compile
+```
+
 Shutdown server:
 ```
 npm run kill

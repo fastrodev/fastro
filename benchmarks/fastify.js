@@ -1,13 +1,12 @@
 const fastify = require("fastify")();
 
-// Declare a route
+const port = 3002;
 fastify.get("/", async (request, reply) => {
   return "Hello";
 });
 
-// Run the server!
 const start = async () => {
-  await fastify.listen(3002);
-  console.log(`fastify listening on: ${fastify.server.address().port}`);
+  await fastify.listen(port);
+  console.log("fastify listening on", port);
 };
 start();
