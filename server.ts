@@ -101,7 +101,7 @@ function checkUrl(incoming: string, registered: string): boolean {
 export class Fastro {
   private mutateRequest(req: FastroRequest) {
     this.#plugins.filter((plugin) => {
-      plugin(req, () => {})
+      plugin(req, () => {});
     });
   }
 

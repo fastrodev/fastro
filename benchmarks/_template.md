@@ -42,11 +42,11 @@ If performance is important to you, here are the benchmark results:
 | Framework | Version | Router? | Avg Req |
 | :-- | :-- | :--: | --: |
 | Abc | ${abc_version} | &#10003; | ${abc} |
-| `Deno_http` | ${deno_version} | &#10007; | ${deno_http} |
+| Deno-http | ${deno_version} | &#10007; | ${deno_http} |
 | Express | ${express_version} | &#10003; | ${express} |
 | Fastify | ${fastify_version} | &#10003; | ${fastify} |
 | **Fastro** | **${fastro_version}** | **&#10003;** | **${fastro}**  |
-| `Node_http` | ${node_version} | &#10007; | ${node} |
+| Node-http | ${node_version} | &#10007; | ${node} |
 | Oak | ${oak_version} | &#10007; | ${oak} |
 
 Check this to see the detail method & results: [benckmarks](https://github.com/fastrojs/fastro-server/tree/master/benchmarks)
