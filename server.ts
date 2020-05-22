@@ -92,10 +92,10 @@ function checkUrl(incoming: string, registered: string): boolean {
   }
 }
 
-function runPlugins(plugins: any[], req: FastroRequest) {
+function createPlugins(plugins: Plugin[], req: FastroRequest) {
   if (plugins.length < 1) return;
-  plugins.filter((value) => {
-    value(req, () => {});
+  plugins.filter((plugin) => {
+    plugin(req, () => {});
   });
 }
 
@@ -122,7 +122,7 @@ export class Fastro {
       request.send = (payload, status, headers) => {
         this.send(payload, status, headers, req);
       };
-      runPlugins(this.#plugins, request);
+      createPlugins(this.#plugins, request);
       return route.handler(request);
     } catch (error) {
       throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);
