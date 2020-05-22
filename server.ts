@@ -102,12 +102,7 @@ export class Fastro {
   private mutateRequest(req: FastroRequest) {
     if (this.#plugins.length < 1) return;
     this.#plugins.filter((plugin) => {
-      plugin(req, (param?: Error) => {
-        return new Promise((resolve, reject) => {
-          if (param) return reject(param)
-          return resolve()
-        })
-      });
+      plugin(req, () => {})
     });
   }
 
