@@ -76,13 +76,13 @@ const compile = () => {
     { encoding: "utf8", flag: "r" },
   );
 
-  const oak_version = '4.0.0'
-  const express_version = '4.17.1'
-  const fastro_version = '0.2.10'
-  const abc_version = '1.0.0-rc6'
-  const deno_version = '0.52.0'
-  const node_version = '14.3.0'
-  const fastify_version = '2.14.1'
+  const oak_version = "4.0.0";
+  const express_version = "4.17.1";
+  const fastro_version = "0.2.10";
+  const abc_version = "1.0.0-rc6";
+  const deno_version = "0.52.0";
+  const node_version = "14.3.0";
+  const fastify_version = "2.14.1";
 
   const final = data.replace("${abc}", abc)
     .replace("${deno_http}", deno)
@@ -97,7 +97,7 @@ const compile = () => {
     .replace("${abc_version}", abc_version)
     .replace("${deno_version}", deno_version)
     .replace("${node_version}", node_version)
-    .replace("${fastify_version}", fastify_version)
+    .replace("${fastify_version}", fastify_version);
 
   fs.writeFile("../readme.md", final, function (err) {
     if (err) throw err;
