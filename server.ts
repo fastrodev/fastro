@@ -100,7 +100,6 @@ function checkUrl(incoming: string, registered: string): boolean {
  */
 export class Fastro {
   private mutateRequest(req: FastroRequest) {
-    if (this.#plugins.length < 1) return;
     this.#plugins.filter((plugin) => {
       plugin(req, () => {})
     });
