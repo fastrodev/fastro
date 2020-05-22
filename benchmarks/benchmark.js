@@ -78,7 +78,7 @@ const compile = () => {
 
   const oak_version = '4.0.0'
   const express_version = '4.17.1'
-  const fastro_version = '0.2.8'
+  const fastro_version = '0.2.10'
   const abc_version = '1.0.0-rc6'
   const deno_version = '0.52.0'
   const node_version = '14.3.0'
