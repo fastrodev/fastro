@@ -144,7 +144,6 @@ export class Fastro {
         typeof payload === "boolean"
       ) {
         body = payload;
-        headers.set("Content-Type", "text/html; charset=UTF-8");
       } else {
         body = JSON.stringify(payload);
         headers.set("Content-Type", "application/json");
