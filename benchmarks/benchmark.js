@@ -72,7 +72,7 @@ const compile = () => {
   const fs = require("fs");
 
   const data = fs.readFileSync(
-    "../_template.md",
+    "./_template.md",
     { encoding: "utf8", flag: "r" },
   );
 
