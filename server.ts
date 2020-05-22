@@ -92,13 +92,6 @@ function checkUrl(incoming: string, registered: string): boolean {
   }
 }
 
-function mutateRequest(plugins: Plugin[], req: FastroRequest) {
-  if (plugins.length < 1) return;
-  plugins.filter((plugin) => {
-    plugin(req, () => {});
-  });
-}
-
 /**
  * Fastro class
  * 
@@ -106,6 +99,18 @@ function mutateRequest(plugins: Plugin[], req: FastroRequest) {
  *      const server = new Fastro()
  */
 export class Fastro {
+  private mutateRequest(req: FastroRequest) {
+    if (this.#plugins.length < 1) return;
+    this.#plugins.filter((plugin) => {
+      plugin(req, (param?: Error) => {
+        return new Promise((resolve, reject) => {
+          if (param) return reject(param)
+          return resolve()
+        })
+      });
+    });
+  }
+
   private requestHandler = async (req: ServerRequest) => {
     try {
       const filteredRoutes = this.#router
@@ -122,7 +127,7 @@ export class Fastro {
       request.send = (payload, status, headers) => {
         this.send(payload, status, headers, req);
       };
-      mutateRequest(this.#plugins, request);
+      this.mutateRequest(request);
       return route.handler(request);
     } catch (error) {
       throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);
