@@ -1,5 +1,4 @@
-import { serve, Server, ServerRequest } from "./deps.ts";
-import { decode } from "./deps.ts";
+import { serve, Server, ServerRequest, decode } from "./deps.ts";
 
 export interface RouterInterface {
   method: string;
@@ -19,6 +18,7 @@ export interface Handler {
 export interface Parameter {
   [key: string]: string;
 }
+
 export class FastroRequest extends ServerRequest {
   /** URL parameter */
   parameter!: Parameter;
@@ -57,26 +57,6 @@ export function FastroError(title: string, error: Error) {
   return error;
 }
 
-function getParameter(incoming: string, registered: string) {
-  try {
-    const incomingSplit = incoming.substr(1, incoming.length).split("/");
-    const registeredSplit = registered.substr(1, registered.length).split("/");
-    const param: Parameter = {};
-    registeredSplit
-      .map((path, idx) => {
-        return { path, idx };
-      })
-      .filter((value) => value.path.startsWith(":"))
-      .map((value) => {
-        const name = value.path.substr(1, value.path.length);
-        param[name] = incomingSplit[value.idx];
-      });
-    return param;
-  } catch (error) {
-    throw FastroError("GET_URL_PARAMETER_ERROR", error);
-  }
-}
-
 function checkUrl(incoming: string, registered: string): boolean {
   try {
     const incomingSplit = incoming.substr(1, incoming.length).split("/");
@@ -105,6 +85,26 @@ export class Fastro {
     });
   }
 
+  private getParameter(incoming: string, registered: string) {
+    try {
+      const incomingSplit = incoming.substr(1, incoming.length).split("/");
+      const registeredSplit = registered.substr(1, registered.length).split("/");
+      const param: Parameter = {};
+      registeredSplit
+        .map((path, idx) => {
+          return { path, idx };
+        })
+        .filter((value) => value.path.startsWith(":"))
+        .map((value) => {
+          const name = value.path.substr(1, value.path.length);
+          param[name] = incomingSplit[value.idx];
+        });
+      return param;
+    } catch (error) {
+      throw FastroError("GET_URL_PARAMETER_ERROR", error);
+    }
+  }
+
   private requestHandler = async (req: ServerRequest) => {
     try {
       const filteredRoutes = this.#router
@@ -116,7 +116,7 @@ export class Fastro {
       }
       const [route] = filteredRoutes;
       const request = req as FastroRequest;
-      request.parameter = getParameter(req.url, route.url);
+      request.parameter = this.getParameter(req.url, route.url);
       request.payload = decode(await Deno.readAll(req.body));
       request.send = (payload, status, headers) => {
         this.send(payload, status, headers, req);
@@ -297,6 +297,11 @@ export class Fastro {
     return this;
   }
 
+  hook(name: string, handler: Plugin) {
+    this.#hooks.push({ name, handler });
+    return this;
+  }
+
   /** Close server */
   async close(): Promise<void> {
     if (this.#server) {
@@ -308,4 +313,5 @@ export class Fastro {
   #server!: Server;
   #router: RouterInterface[] = [];
   #plugins: Plugin[] = [];
+  #hooks: any[] = [];
 }

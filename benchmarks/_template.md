@@ -1,6 +1,8 @@
 ![ci](https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg)
 # Fastro
-Fast, simple, minimalist web framework for [deno](https://deno.land/).
+Fast, simple, minimalist web framework for [Deno](https://deno.land/). 
+
+Inspired by [Fastify](https://www.fastify.io/) & [Express](https://expressjs.com/).
 
 ```ts
 import { Fastro } from "https://deno.land/x/fastro/mod.ts";
@@ -26,15 +28,31 @@ These modules are tagged in accordance with Fastro releases. So, for example, th
 - `server.patch(url, handler)`
 
 ## Create a plugin
-For example you want to get a payload of all post method or want to get the url parameters of all get method or want to get headers of all types of requests --
-instead of defining it in each handler, you can make a plugin.
+You can add new properties or functions to the default `request`. This feature is similar to the [`fastify decorator`](https://www.fastify.io/docs/latest/Decorators/). For example, you want to add a new function that changes the default status and header:
 
 ```ts
-function plugin(req: FastroRequest) {
-  console.log(req.parameter);
+// create plugin
+const plugin = (req: FastroRequest) => {
+  // add sendOk function to request
+  req.sendOk = (payload: string) => {
+    const headers = new Headers();
+    headers.set("X-token", "your_token");
+    return req.send(payload, 200, headers);
+  };
 }
-server.use(plugin)
+
+server
+  // add plugin
+  .use(plugin)
+  // access sendOk inside handler
+  .get("/:hello", (req) => req.sendOk("hello"))
+
 ```
+
+> Inside plugin, you can not send any response.
+
+## Add a hoook
+For example you want to get a payload of all post method or want to get the url parameters of all get method or want to get headers of all types of requests -- instead of defining it in each handler, you can add a hook.
 
 ## Benchmarks
 If performance is important to you, here are the benchmark results:
@@ -42,11 +60,11 @@ If performance is important to you, here are the benchmark results:
 | Framework | Version | Router? | Avg Req |
 | :-- | :-- | :--: | --: |
 | Abc | ${abc_version} | &#10003; | ${abc} |
-| Deno-http | ${deno_version} | &#10007; | ${deno_http} |
+| Deno `http` | ${deno_version} | &#10007; | ${deno_http} |
 | Express | ${express_version} | &#10003; | ${express} |
 | Fastify | ${fastify_version} | &#10003; | ${fastify} |
 | **Fastro** | **${fastro_version}** | **&#10003;** | **${fastro}**  |
-| Node-http | ${node_version} | &#10007; | ${node} |
+| Node `http` | ${node_version} | &#10007; | ${node} |
 | Oak | ${oak_version} | &#10007; | ${oak} |
 
 Check this to see the detail method & results: [benckmarks](https://github.com/fastrojs/fastro-server/tree/master/benchmarks)
