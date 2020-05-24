@@ -28,7 +28,7 @@ If performance is important to you, here are the benchmark results:
 | Fastify | ${fastify_version} | &#10003; | ${fastify} |
 | **Fastro** | **${fastro_version}** | **&#10003;** | **${fastro}**  |
 | Node `http` | ${node_version} | &#10007; | ${node} |
-| Oak | ${oak_version} | &#10007; | ${oak} |
+| Oak | ${oak_version} | &#10003; | ${oak} |
 
 Check this to see the detail method & results: [benckmarks](https://github.com/fastrojs/fastro-server/tree/master/benchmarks)
 
