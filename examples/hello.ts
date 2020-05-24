@@ -3,7 +3,7 @@ import { Fastro } from "../mod.ts";
 const server = new Fastro();
 
 // ADD a router using route shorthand declaration
-// Available route shorthand declaration 
+// Available route shorthand declaration
 // - `server.get(url, handler)`
 // - `server.post(url, handler)`
 // - `server.put(url, handler)`

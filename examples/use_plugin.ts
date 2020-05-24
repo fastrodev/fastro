@@ -22,8 +22,8 @@ function sendOk(req: Request) {
 
 // add new function & property
 function authPlugin(req: Request) {
-  const token = req.headers.get("token")
-  if (!token) return req.send("token not found")
+  const token = req.headers.get("token");
+  if (!token) return req.send("token not found");
 }
 
 // add plugins to server
