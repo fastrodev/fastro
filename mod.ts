@@ -1,5 +1,5 @@
 export {
   Fastro,
   Router,
-  Request
+  Request,
 } from "./server.ts";

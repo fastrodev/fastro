@@ -32,6 +32,6 @@ server
   });
 // add optional callback
 await server.listen({ port: 8000 }, (err, addr) => {
-  if (err) throw new Error("SERVER_ERROR")
+  if (err) throw new Error("SERVER_ERROR");
   console.log("Server running on:", addr);
 });
