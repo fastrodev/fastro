@@ -11,11 +11,12 @@ const server = new Fastro();
 
 server.get("/", (req) => req.send("root"));
 
-await server.listen({ port: 8000 });
+await server.listen();
 
 ```
 
-For other details, you can see in: [examples](https://github.com/fastrojs/fastro-server/tree/master/examples).
+## Examples
+Other ways of using it include changing the default port, modify the header, modify default `request`, or adding plugins -- you can see in: [examples](https://github.com/fastrojs/fastro-server/tree/master/examples).
 
 ## Benchmarks
 If performance is important to you, here are the benchmark results:

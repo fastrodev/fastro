@@ -2,6 +2,7 @@ const { test } = Deno;
 import { assertEquals } from "../dev_deps.ts";
 import { Fastro } from "../mod.ts";
 const addr = "http://localhost:8000";
+const port = 8000;
 
 test({
   name: "GET",
@@ -14,7 +15,7 @@ test({
         req.respond({ body: "hello" });
       },
     });
-    server.listen();
+    server.listen({ port });
     const result = await fetch(addr);
     const text = await result.text();
     assertEquals(text, "hello");
@@ -34,7 +35,7 @@ test({
         req.respond({ body: payload });
       },
     });
-    server.listen();
+    server.listen({ port });
     const result = await fetch(addr, {
       method: "POST",
       headers: {
@@ -59,7 +60,7 @@ test({
         req.respond({ body: `hello, ${req.parameter.name}` });
       },
     });
-    server.listen();
+    server.listen({ port });
     const result = await fetch(addr + "/login/user/agus");
     const text = await result.text();
     assertEquals(text, "hello, agus");
@@ -77,7 +78,7 @@ test({
       };
     });
     server.get("/", (req) => req.sendOk("plugin"));
-    server.listen();
+    server.listen({ port });
     const result = await fetch(addr);
     const text = await result.text();
     assertEquals(text, "plugin");
