@@ -43,7 +43,7 @@ server
     const jwt = createJwt();
     req.send({ token: jwt });
   })
-  .get("/", async (req) => {
+  .get("/", (req) => {
     req.send("hello");
   });
 
