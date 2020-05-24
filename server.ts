@@ -1,82 +1,5 @@
 import { serve, Server, ServerRequest, decode } from "./deps.ts";
 
-export interface Router {
-  method: string;
-  url: string;
-  handler(req: Request): void;
-}
-export interface ListenOptions {
-  port: number;
-  hostname?: string;
-}
-export interface Plugin {
-  (req: Request, callback: Function): any;
-}
-export interface Handler {
-  (req: Request): void;
-}
-export interface Parameter {
-  [key: string]: string;
-}
-
-interface Hook {
-  name: string;
-  handler: Plugin;
-}
-
-export class Request extends ServerRequest {
-  /** URL parameter */
-  parameter!: Parameter;
-  /** Payload */
-  payload!: string;
-  /**
-   * Send payload
-   *      
-   *      // send basic message, default http status 200
-   *      send('ok')
-   * 
-   *      // send json object
-   *      send({ message: 'Hello' })
-   * 
-   *      // send message with custom http status
-   *      send('not found', 404)
-   * 
-   *      // send message with custom status & headers
-   *      const headers = new Headers()
-   *      headers.set('Authorization', `Bearer ${your_token}`)
-   *      send({ login: true }, 200, headers)
-   * 
-   * @param payload 
-   * @param status
-   * @param headers 
-   *     
-   */
-  send!: {
-    <T>(payload: string | T, status?: number, headers?: Headers): boolean;
-  };
-  [key: string]: any
-}
-
-export function FastroError(title: string, error: Error) {
-  error.name = title;
-  return error;
-}
-
-function checkUrl(incoming: string, registered: string): boolean {
-  try {
-    const incomingSplit = incoming.substr(1, incoming.length).split("/");
-    const registeredSplit = registered.substr(1, registered.length).split("/");
-    const filtered = registeredSplit
-      .filter((value, idx) => {
-        if (value.startsWith(":")) return incomingSplit[idx];
-        return value === incomingSplit[idx];
-      });
-    return incomingSplit.length === filtered.length;
-  } catch (error) {
-    throw FastroError("CHECK_URL_ERROR", error);
-  }
-}
-
 /**
  * Fastro class
  * 
@@ -84,6 +7,23 @@ function checkUrl(incoming: string, registered: string): boolean {
  *      const server = new Fastro()
  */
 export class Fastro {
+  private checkUrl(incoming: string, registered: string): boolean {
+    try {
+      const incomingSplit = incoming.substr(1, incoming.length).split("/");
+      const registeredSplit = registered.substr(1, registered.length).split(
+        "/",
+      );
+      const filtered = registeredSplit
+        .filter((value, idx) => {
+          if (value.startsWith(":")) return incomingSplit[idx];
+          return value === incomingSplit[idx];
+        });
+      return incomingSplit.length === filtered.length;
+    } catch (error) {
+      throw FastroError("CHECK_URL_ERROR", error);
+    }
+  }
+
   private getParameter(incoming: string, registered: string) {
     try {
       const incomingSplit = incoming.substr(1, incoming.length).split("/");
@@ -131,8 +71,9 @@ export class Fastro {
   private requestHandler = async (req: ServerRequest) => {
     try {
       const request = req as Request;
-      const [route] = this.#router.filter(function (value) {
-        return checkUrl(req.url, value.url) && (req.method == value.method);
+      const [route] = this.#router.filter((value) => {
+        return this.checkUrl(req.url, value.url) &&
+          (req.method == value.method);
       });
 
       if (route) request.parameter = this.getParameter(req.url, route.url);
@@ -228,8 +169,8 @@ export class Fastro {
    **/
   route(options: Router) {
     try {
-      const filteredRoutes = this.#router.filter(function (value) {
-        return checkUrl(options.url, value.url) &&
+      const filteredRoutes = this.#router.filter((value) => {
+        return this.checkUrl(options.url, value.url) &&
           options.method === value.method;
       });
       if (filteredRoutes.length > 0) {
@@ -334,4 +275,61 @@ export class Fastro {
   #server!: Server;
   #router: Router[] = [];
   #plugins: Plugin[] = [];
+}
+
+export class Request extends ServerRequest {
+  /** URL parameter */
+  parameter!: Parameter;
+  /** Payload */
+  payload!: string;
+  /**
+   * Send payload
+   *      
+   *      // send basic message, default http status 200
+   *      send('ok')
+   * 
+   *      // send json object
+   *      send({ message: 'Hello' })
+   * 
+   *      // send message with custom http status
+   *      send('not found', 404)
+   * 
+   *      // send message with custom status & headers
+   *      const headers = new Headers()
+   *      headers.set('Authorization', `Bearer ${your_token}`)
+   *      send({ login: true }, 200, headers)
+   * 
+   * @param payload 
+   * @param status
+   * @param headers 
+   *     
+   */
+  send!: {
+    <T>(payload: string | T, status?: number, headers?: Headers): boolean;
+  };
+  [key: string]: any
+}
+
+interface Router {
+  method: string;
+  url: string;
+  handler(req: Request): void;
+}
+interface ListenOptions {
+  port: number;
+  hostname?: string;
+}
+interface Plugin {
+  (req: Request, callback: Function): any;
+}
+interface Handler {
+  (req: Request): void;
+}
+interface Parameter {
+  [key: string]: string;
+}
+
+function FastroError(title: string, error: Error) {
+  error.name = title;
+  return error;
 }
