@@ -66,3 +66,21 @@ test({
     server.close();
   },
 });
+
+test({
+  name: "PLUGIN",
+  async fn() {
+    const server = new Fastro();
+    server.use((req) => {
+      req.sendOk = (payload: string) => {
+        req.send(payload);
+      };
+    });
+    server.get("/", (req) => req.sendOk("plugin"));
+    server.listen();
+    const result = await fetch(addr);
+    const text = await result.text();
+    assertEquals(text, "plugin");
+    server.close();
+  },
+});
