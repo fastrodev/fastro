@@ -129,18 +129,22 @@ export class Fastro {
   }
 
   private requestHandler = async (req: ServerRequest) => {
-    const request = req as Request;
-    const [route] = this.#router.filter(function (value) {
-      return checkUrl(req.url, value.url) && (req.method == value.method);
-    });
+    try {
+      const request = req as Request;
+      const [route] = this.#router.filter(function (value) {
+        return checkUrl(req.url, value.url) && (req.method == value.method);
+      });
 
-    if (route) request.parameter = this.getParameter(req.url, route.url);
-    request.payload = decode(await Deno.readAll(req.body));
-    request.send = (payload, status, headers): boolean => {
-      return this.send(payload, status, headers, req);
-    };
-    if (this.#plugins.length > 0) this.mutateRequest(request, route);
-    else this.routeHandler(request, route);
+      if (route) request.parameter = this.getParameter(req.url, route.url);
+      request.payload = decode(await Deno.readAll(req.body));
+      request.send = (payload, status, headers): boolean => {
+        return this.send(payload, status, headers, req);
+      };
+      if (this.#plugins.length > 0) this.mutateRequest(request, route);
+      else this.routeHandler(request, route);
+    } catch (error) {
+      throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);
+    }
   };
 
   private routeHandler = async (
@@ -155,7 +159,7 @@ export class Fastro {
       }
       return route.handler(req);
     } catch (error) {
-      throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);
+      throw FastroError("SERVER_ROUTE_HANDLER_ERROR", error);
     }
   };
 
