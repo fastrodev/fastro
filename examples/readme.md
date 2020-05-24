@@ -18,7 +18,7 @@ Check the following codes to find out how to:
 - [handle url parameters](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L20)
 - [set custom http headers & status](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L9)
 - [handle http posts & get the payload](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L28)
-- [add server listen optional callback](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L34)
+- [change default port & listen optional callback](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L34)
 
 ## Create a plugin
 You can add new properties or functions to the default `request`. This feature is similar to the [`fastify decorator`](https://www.fastify.io/docs/latest/Decorators/). For example, you want to add a new function that changes the default status and header:
