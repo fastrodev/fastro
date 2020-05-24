@@ -1,7 +1,7 @@
 const path = require("path");
 const { execSync } = require("child_process");
 
-const oak_version = "latest";
+const oak_version = "4.0.0";
 const express_version = "4.17.1";
 const fastro_version = "latest";
 const abc_version = "1.0.0-rc8";
