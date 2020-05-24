@@ -1,4 +1,7 @@
-import { validateJwt } from "https://deno.land/x/djwt/validate.ts";
+import {
+  validateJwt,
+  validateJwtObject,
+} from "https://deno.land/x/djwt/validate.ts";
 import {
   makeJwt,
   setExpiration,
@@ -21,11 +24,15 @@ function createJwt() {
   return makeJwt({ header, payload, key });
 }
 
-const plugin = function validateToken(req: Request) {
-  const token = req.headers.get("token");
-  // if (!token) return req.send('token not found')
-  // const valid = validateJwt(token, key, { isThrowing: false });
-  // req.valid = valid;
+const plugin = function (req: Request) {
+  if (req.method === "GET") {
+    const token = req.headers.get("token");
+    if (!token) return req.send("token not found");
+    const valid = validateJwt(token, key, { isThrowing: false });
+    valid.then((v) => {
+      if (!v) return req.send("token invalid");
+    });
+  }
 };
 
 const server = new Fastro();
@@ -37,9 +44,7 @@ server
     req.send({ token: jwt });
   })
   .get("/", async (req) => {
-    const valid = await req.valid;
-    if (!valid) return req.send("invalid", 401);
-    return req.send(valid);
+    req.send("hello");
   });
 
 await server.listen({ port: 8000 });
