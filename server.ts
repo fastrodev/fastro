@@ -1,25 +1,30 @@
 import { serve, Server, ServerRequest, decode } from "./deps.ts";
 
-export interface RouterInterface {
+export interface Router {
   method: string;
   url: string;
-  handler(req: FastroRequest): void;
+  handler(req: Request): void;
 }
 export interface ListenOptions {
   port: number;
   hostname?: string;
 }
 export interface Plugin {
-  (req: FastroRequest, callback: Function): void;
+  (req: Request, callback: Function): any;
 }
 export interface Handler {
-  (req: FastroRequest): void;
+  (req: Request): void;
 }
 export interface Parameter {
   [key: string]: string;
 }
 
-export class FastroRequest extends ServerRequest {
+interface Hook {
+  name: string;
+  handler: Plugin;
+}
+
+export class Request extends ServerRequest {
   /** URL parameter */
   parameter!: Parameter;
   /** Payload */
@@ -47,7 +52,7 @@ export class FastroRequest extends ServerRequest {
    *     
    */
   send!: {
-    <T>(payload: string | T, status?: number, headers?: Headers): void;
+    <T>(payload: string | T, status?: number, headers?: Headers): boolean;
   };
   [key: string]: any
 }
@@ -79,16 +84,12 @@ function checkUrl(incoming: string, registered: string): boolean {
  *      const server = new Fastro()
  */
 export class Fastro {
-  private mutateRequest(req: FastroRequest) {
-    this.#plugins.filter((plugin) => {
-      plugin(req, () => {});
-    });
-  }
-
   private getParameter(incoming: string, registered: string) {
     try {
       const incomingSplit = incoming.substr(1, incoming.length).split("/");
-      const registeredSplit = registered.substr(1, registered.length).split("/");
+      const registeredSplit = registered.substr(1, registered.length).split(
+        "/",
+      );
       const param: Parameter = {};
       registeredSplit
         .map((path, idx) => {
@@ -105,24 +106,46 @@ export class Fastro {
     }
   }
 
+  use(plugin: Plugin) {
+    this.#plugins.push(plugin);
+    return this;
+  }
+
+  private mutateRequest(req: Request, route: Router) {
+    let mutate = false;
+    this.#plugins.forEach((plugin) => {
+      const pluginResult = plugin(req, () => {});
+      if (pluginResult) mutate = true;
+    });
+    this.routeHandler(req, route, mutate);
+  }
+
   private requestHandler = async (req: ServerRequest) => {
+    const request = req as Request;
+    const [route] = this.#router.filter(function (value) {
+      return checkUrl(req.url, value.url) && (req.method == value.method);
+    });
+
+    if (route) request.parameter = this.getParameter(req.url, route.url);
+    request.payload = decode(await Deno.readAll(req.body));
+    request.send = (payload, status, headers): boolean => {
+      return this.send(payload, status, headers, req);
+    };
+    if (this.#plugins.length > 0) this.mutateRequest(request, route);
+    else this.routeHandler(request, route);
+  };
+
+  private routeHandler = async (
+    req: Request,
+    route?: Router,
+    mutate?: boolean,
+  ) => {
     try {
-      const filteredRoutes = this.#router
-        .filter(function (value) {
-          return checkUrl(req.url, value.url) && (req.method == value.method);
-        });
-      if (filteredRoutes.length < 1) {
+      if (mutate) return;
+      if (!route) {
         return req.respond({ body: `${req.url} not found`, status: 404 });
       }
-      const [route] = filteredRoutes;
-      const request = req as FastroRequest;
-      request.parameter = this.getParameter(req.url, route.url);
-      request.payload = decode(await Deno.readAll(req.body));
-      request.send = (payload, status, headers) => {
-        this.send(payload, status, headers, req);
-      };
-      this.mutateRequest(request);
-      return route.handler(request);
+      return route.handler(req);
     } catch (error) {
       throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);
     }
@@ -145,6 +168,7 @@ export class Fastro {
         body = payload;
       } else body = JSON.stringify(payload);
       req.respond({ status, headers, body });
+      return true; // this is used for request mutation flag
     } catch (error) {
       throw FastroError("SERVER_SEND_ERROR", error);
     }
@@ -190,7 +214,7 @@ export class Fastro {
    * @param options
    * 
    **/
-  route(options: RouterInterface) {
+  route(options: Router) {
     try {
       const filteredRoutes = this.#router.filter(function (value) {
         return checkUrl(options.url, value.url) &&
@@ -282,25 +306,10 @@ export class Fastro {
     return this.route({ method: "DELETE", url, handler });
   }
 
-  /**
-   * Add plugin
-   * 
-   * 
-   *      function plugin(req: FastroRequest) {
-   *        console.log(req.parameter);
-   *      }
-   *      server.use(plugin)
-   * @param plugin 
-   */
-  use(plugin: Plugin) {
-    this.#plugins.push(plugin);
-    return this;
-  }
-
-  hook(name: string, handler: Plugin) {
-    this.#hooks.push({ name, handler });
-    return this;
-  }
+  // hook(name: string, handler: Plugin) {
+  //   this.#hooks.push({ name, handler });
+  //   return this;
+  // }
 
   /** Close server */
   async close(): Promise<void> {
@@ -311,7 +320,6 @@ export class Fastro {
   // definite assignment assertion
   // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html
   #server!: Server;
-  #router: RouterInterface[] = [];
+  #router: Router[] = [];
   #plugins: Plugin[] = [];
-  #hooks: any[] = [];
 }

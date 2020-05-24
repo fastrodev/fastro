@@ -31,7 +31,9 @@ These modules are tagged in accordance with Fastro releases. So, for example, th
 You can add new properties or functions to the default `request`. This feature is similar to the [`fastify decorator`](https://www.fastify.io/docs/latest/Decorators/). For example, you want to add a new function that changes the default status and header:
 
 ```ts
+// create plugin
 const plugin = (req: FastroRequest) => {
+  // add sendOk function to request
   req.sendOk = (payload: string) => {
     const headers = new Headers();
     headers.set("X-token", "your_token");
@@ -40,27 +42,30 @@ const plugin = (req: FastroRequest) => {
 }
 
 server
+  // add plugin
   .use(plugin)
+  // access sendOk inside handler
   .get("/:hello", (req) => req.sendOk("hello"))
 
 ```
 
+> Inside plugin, you can not send any response.
+
 ## Add a hoook
-For example you want to get a payload of all post method or want to get the url parameters of all get method or want to get headers of all types of requests --
-instead of defining it in each handler, you can make a plugin.
+For example you want to get a payload of all post method or want to get the url parameters of all get method or want to get headers of all types of requests -- instead of defining it in each handler, you can add a hook.
 
 ## Benchmarks
 If performance is important to you, here are the benchmark results:
 
 | Framework | Version | Router? | Avg Req |
 | :-- | :-- | :--: | --: |
-| Abc | 1.0.0-rc6 | &#10003; | 1002.5 |
-| Deno `http` | 0.52.0 | &#10007; | 2479 |
+| Abc | latest | &#10003; | 1002.5 |
+| Deno `http` | latest | &#10007; | 2479 |
 | Express | 4.17.1 | &#10003; | 519.3 |
 | Fastify | 2.14.1 | &#10003; | 1607.2 |
-| **Fastro** | **0.2.13** | **&#10003;** | **1676.3**  |
+| **Fastro** | **latest** | **&#10003;** | **1676.3**  |
 | Node `http` | 14.3.0 | &#10007; | 2140.4 |
-| Oak | 4.0.0 | &#10007; | 1086.2 |
+| Oak | latest | &#10007; | 1086.2 |
 
 Check this to see the detail method & results: [benckmarks](https://github.com/fastrojs/fastro-server/tree/master/benchmarks)
 

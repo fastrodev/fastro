@@ -1,8 +1,8 @@
 export {
   Fastro,
-  RouterInterface,
+  Router,
   ListenOptions,
   Parameter,
-  FastroRequest,
+  Request,
   FastroError,
 } from "./server.ts";

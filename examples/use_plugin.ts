@@ -1,17 +1,17 @@
-import { Fastro, FastroRequest } from "../mod.ts";
+import { Fastro, Request } from "../mod.ts";
 
 const server = new Fastro();
 
 // compare parameter with local variable
-function parameterPlugin(req: FastroRequest) {
+function parameterPlugin(req: Request) {
   const data = "hello";
-  if (req.parameter.hello === data) {
+  if (req.parameter && req.parameter.hello === data) {
     console.log(req.parameter);
   }
 }
 
 // get client headers & custom send method
-function sendOk(req: FastroRequest) {
+function sendOk(req: Request) {
   console.log(req.headers.get("host"));
   req.sendOk = (payload: string) => {
     const headers = new Headers();
@@ -21,18 +21,16 @@ function sendOk(req: FastroRequest) {
 }
 
 // add new function & property
-function payloadPlugin(req: FastroRequest) {
-  req.newProp = new Date();
-  req.ok = function (param: string) {
-    console.log("param inside plugin:", param);
-  };
+function authPlugin(req: Request) {
+  const token = req.headers.get("token")
+  if (!token) return req.send("token not found")
 }
 
 // add plugins to server
 server
-  .use(payloadPlugin)
-  .use(parameterPlugin)
-  .use(sendOk);
+  .use(authPlugin)
+  .use(sendOk)
+  .use(parameterPlugin);
 
 server
   .get("/:hello", (req) => req.send("hello"))

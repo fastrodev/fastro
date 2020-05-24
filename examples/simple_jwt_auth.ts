@@ -5,7 +5,7 @@ import {
   Jose,
   Payload,
 } from "https://deno.land/x/djwt/create.ts";
-import { Fastro, FastroRequest } from "../mod.ts";
+import { Fastro, Request } from "../mod.ts";
 
 const key = "secret";
 
@@ -21,12 +21,11 @@ function createJwt() {
   return makeJwt({ header, payload, key });
 }
 
-const plugin = function validateToken(req: FastroRequest) {
+const plugin = function validateToken(req: Request) {
   const token = req.headers.get("token");
-  if (token) {
-    const valid = validateJwt(token, key, { isThrowing: false });
-    req.valid = valid;
-  }
+  // if (!token) return req.send('token not found')
+  // const valid = validateJwt(token, key, { isThrowing: false });
+  // req.valid = valid;
 };
 
 const server = new Fastro();

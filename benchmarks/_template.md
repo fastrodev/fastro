@@ -18,22 +18,11 @@ await server.listen({ port: 8000 });
 ## How to use
 These modules are tagged in accordance with Fastro releases. So, for example, the v0.1.0 tag is guaranteed to work with fastro v0.1.0. You can link to v0.1.0 using the URL [https://deno.land/x/fastro@v0.1.0/mod.ts](https://deno.land/x/fastro@v0.1.0/mod.ts). Not specifying a tag will link to the master branch.
 
-## Available route shorthand declaration 
-- `server.get(url, handler)`
-- `server.post(url, handler)`
-- `server.put(url, handler)`
-- `server.head(url, handler)`
-- `server.delete(url, handler)`
-- `server.options(url, handler)`
-- `server.patch(url, handler)`
-
 ## Create a plugin
 You can add new properties or functions to the default `request`. This feature is similar to the [`fastify decorator`](https://www.fastify.io/docs/latest/Decorators/). For example, you want to add a new function that changes the default status and header:
 
 ```ts
-// create plugin
 const plugin = (req: FastroRequest) => {
-  // add sendOk function to request
   req.sendOk = (payload: string) => {
     const headers = new Headers();
     headers.set("X-token", "your_token");
@@ -42,9 +31,7 @@ const plugin = (req: FastroRequest) => {
 }
 
 server
-  // add plugin
   .use(plugin)
-  // access sendOk inside handler
   .get("/:hello", (req) => req.sendOk("hello"))
 
 ```
