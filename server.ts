@@ -259,11 +259,6 @@ export class Fastro {
     return this.route({ method: "DELETE", url, handler });
   }
 
-  // hook(name: string, handler: Plugin) {
-  //   this.#hooks.push({ name, handler });
-  //   return this;
-  // }
-
   /** Close server */
   async close(): Promise<void> {
     if (this.#server) {
