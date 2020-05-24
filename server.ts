@@ -198,7 +198,7 @@ export class Fastro {
     try {
       let opt = options ? options : { port: 8080 };
       this.#server = serve(opt);
-      if (!callback) console.info(options);
+      if (!callback) console.info(opt);
       else callback(undefined, opt as any);
       // creates a loop iterating over async iterable objects
       // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
