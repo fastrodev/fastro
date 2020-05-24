@@ -1,4 +1,4 @@
-import { Fastro, FastroError } from "../mod.ts";
+import { Fastro } from "../mod.ts";
 
 const server = new Fastro();
 server
@@ -32,6 +32,6 @@ server
   });
 // add optional callback
 await server.listen({ port: 8000 }, (err, addr) => {
-  if (err) throw FastroError("SERVER_ERROR", err);
+  if (err) throw new Error("SERVER_ERROR")
   console.log("Server running on:", addr);
 });

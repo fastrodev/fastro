@@ -196,7 +196,7 @@ export class Fastro {
     callback?: (error: Error | undefined, address: string | undefined) => void,
   ): Promise<void> => {
     try {
-      let opt = options ? options : { port: 8000 };
+      let opt = options ? options : { port: 8080 };
       this.#server = serve(opt);
       if (!callback) console.info(options);
       else callback(undefined, opt as any);
