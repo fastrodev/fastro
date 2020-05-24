@@ -106,6 +106,14 @@ export class Fastro {
     }
   }
 
+  /**
+   * Add plugin
+   * 
+   *      server.use((req) => {
+   *        console.log(req.headers.get("token"));
+   *      });
+   * @param plugin
+   */
   use(plugin: Plugin) {
     this.#plugins.push(plugin);
     return this;
