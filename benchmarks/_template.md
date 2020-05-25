@@ -31,5 +31,5 @@ If performance is important to you, here are the benchmark results:
 | Node `http` | ${node_version} | &#10007; | ${node} |
 | Oak | ${oak_version} | &#10003; | ${oak} |
 
-Check this to see the detail method & results: [benckmarks](https://github.com/fastrojs/fastro-server/tree/master/benchmarks)
+Check this to see the detail method & results: [benchmarks](https://github.com/fastrojs/fastro-server/tree/master/benchmarks)
 
