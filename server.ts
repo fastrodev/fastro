@@ -61,11 +61,21 @@ export class Fastro {
 
   private mutateRequest(req: Request, route: Router) {
     let mutate = false;
+    let mutates = [];
     this.#plugins.forEach((plugin) => {
       const pluginResult = plugin(req, () => {});
-      if (pluginResult) mutate = true;
+      if (mutates.length > 1) {
+        throw new Error(
+          `request.send() already called ${mutates.length} times on registered plugins. You only can call request.send() once.`,
+        );
+      }
+      if (pluginResult) {
+        mutates.push(true);
+        mutate = true;
+      }
     });
     this.routeHandler(req, route, mutate);
+    mutates.length = 0;
   }
 
   private requestHandler = async (req: ServerRequest) => {
