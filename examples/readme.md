@@ -21,22 +21,22 @@ Check the following codes to find out how to:
 - [change default port & listen optional callback](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L34)
 
 ## Create a plugin
-You can add new properties or functions to the default `request`. This feature is similar to the [`fastify decorator`](https://www.fastify.io/docs/latest/Decorators/). For example, you want to add a new function that changes the default status and header:
+You can add new properties or functions to the default `request`.
 
 ```ts
 const plugin = (req: FastroRequest) => {
-  req.sendOk = (payload: string) => {
-    const headers = new Headers();
-    headers.set("X-token", "your_token");
-    return req.send(payload, 200, headers);
+  req.hello = () => {
+    return req.send("Hello");
   };
 }
 
 server
   .use(plugin)
-  .get("/:hello", (req) => req.sendOk("hello"))
+  .get("/:hello", (req) => req.hello())
 
 ```
+
+This feature is similar to the [`fastify decorator`](https://www.fastify.io/docs/latest/Decorators/) and [`express middleware`](https://expressjs.com/en/guide/writing-middleware.html).
 
 Check the following codes to find out how to:
 - [compare parameter with local variable](https://github.com/fastrojs/fastro-server/blob/master/examples/use_plugin.ts#L5)
