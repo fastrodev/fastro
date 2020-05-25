@@ -15,8 +15,10 @@ await server.listen();
 
 ```
 
-## Examples
-Other ways of using it include changing the default port, modify the header, modify default `request`, or adding plugins -- you can see in: [examples](https://github.com/fastrojs/fastro-server/tree/master/examples).
+## How to use & examples
+
+This module uses git release. If you want to use a particular release, for example v0.0.1, then the complete url is [https://deno.land/x/fastro@v0.1.0/mod.ts](https://deno.land/x/fastro@v0.1.0/mod.ts). If you do not use the version, it will refer to latest version (master branch).
+Check the following codes to find out how to: changing the default port, modify the header, modify default `request`, or adding plugins: [examples](https://github.com/fastrojs/fastro-server/tree/master/examples).
 
 ## Benchmarks
 If performance is important to you, here are the benchmark results:
@@ -31,5 +33,5 @@ If performance is important to you, here are the benchmark results:
 | Node `http` | ${node_version} | &#10007; | ${node} |
 | Oak | ${oak_version} | &#10003; | ${oak} |
 
-Check this to see the detail method & results: [benchmarks](https://github.com/fastrojs/fastro-server/tree/master/benchmarks)
+Check this to see the detail method & results: [benchmarks](https://github.com/fastrojs/fastro-server/tree/master/benchmarks).
 
