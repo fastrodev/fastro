@@ -327,7 +327,7 @@ interface ListenOptions {
 interface Plugin {
   (req: Request, callback: Function): any;
 }
-interface Handler {
+export interface Handler {
   (req: Request): void;
 }
 interface Parameter {
