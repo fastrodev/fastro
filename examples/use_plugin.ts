@@ -20,7 +20,7 @@ function sendOk(req: Request) {
   };
 }
 
-// add new function & property
+// very simple auth
 function authPlugin(req: Request) {
   const token = req.headers.get("token");
   if (!token) return req.send("token not found");
@@ -35,10 +35,6 @@ server
 server
   .get("/:hello", (req) => req.send("hello"))
   .post("/:hello", (req) => {
-    // access new property
-    console.log("new property:", req.newProp);
-    // access new function
-    req.ok("hello");
     // access custom send function
     req.sendOk("ok deh");
   });
