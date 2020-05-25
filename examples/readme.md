@@ -19,6 +19,7 @@ Check the following codes to find out how to:
 - [set custom http headers & status](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L9)
 - [handle http posts & get the payload](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L28)
 - [change default port & listen optional callback](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L34)
+- [create simple Postgres REST API](https://github.com/fastrojs/fastro-server/blob/master/examples/crud_postgres.ts)
 
 ## Create a plugin
 You can add new properties or functions to the default `request`.
@@ -45,4 +46,3 @@ Check the following codes to find out how to:
 - [add new request function & property](https://github.com/fastrojs/fastro-server/blob/master/examples/use_plugin.ts#L23)
 - [get client headers & custom send method](https://github.com/fastrojs/fastro-server/blob/master/examples/use_plugin.ts#L13)
 - [create simple jwt auth](https://github.com/fastrojs/fastro-server/blob/master/examples/simple_jwt_auth.ts)
-- [create simple Postgres REST API](https://github.com/fastrojs/fastro-server/blob/master/examples/crud_postgres.ts)
