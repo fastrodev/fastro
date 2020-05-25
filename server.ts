@@ -115,7 +115,7 @@ export class Fastro {
   };
 
   private send<T>(
-    payload: string | number | boolean | T,
+    payload: string | T,
     status: number | undefined = 200,
     headers: Headers | undefined = new Headers(),
     req: ServerRequest,
@@ -123,13 +123,8 @@ export class Fastro {
     try {
       let body: any;
       headers.set("X-Powered-By", "fastro");
-      if (
-        typeof payload === "string" ||
-        typeof payload === "number" ||
-        typeof payload === "boolean"
-      ) {
-        body = payload;
-      } else body = JSON.stringify(payload);
+      if (typeof payload === "string") body = payload;
+      else body = JSON.stringify(payload);
       req.respond({ status, headers, body });
       return true; // this is used for request mutation flag
     } catch (error) {
@@ -327,7 +322,7 @@ interface ListenOptions {
 interface Plugin {
   (req: Request, callback: Function): any;
 }
-export interface Handler {
+interface Handler {
   (req: Request): void;
 }
 interface Parameter {

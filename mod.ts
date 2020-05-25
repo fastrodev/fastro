@@ -1,5 +1,4 @@
 export {
   Fastro,
-  Request,
-  Handler,
+  Request
 } from "./server.ts";
