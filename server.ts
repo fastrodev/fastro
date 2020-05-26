@@ -54,11 +54,8 @@ export class Fastro {
    *      });
    * @param plugin
    */
-  use(plugin: Plugin | Middleware) {
-    console.log(typeof plugin);
-    // if (typeof plugin )
-    // this.#plugins.push(plugin);
-
+  use(plugin: Plugin) {
+    this.#plugins.push(plugin);
     return this;
   }
 
