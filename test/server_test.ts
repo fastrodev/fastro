@@ -85,3 +85,14 @@ test({
     server.close();
   },
 });
+
+test({
+  name: "MIDDLEWARE",
+  async fn() {
+    const server = new Fastro();
+    server.decorate((instance) => {
+      instance.ok = "ok";
+    });
+    assertEquals(server.ok, "ok");
+  },
+});
