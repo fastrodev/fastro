@@ -54,8 +54,11 @@ export class Fastro {
    *      });
    * @param plugin
    */
-  use(plugin: Plugin) {
-    this.#plugins.push(plugin);
+  use(plugin: Plugin | Middleware) {
+    console.log(typeof plugin);
+    // if (typeof plugin )
+    // this.#plugins.push(plugin);
+
     return this;
   }
 
@@ -270,6 +273,26 @@ export class Fastro {
       this.#server.close();
     }
   }
+
+  /**
+   * Add new property or function to Fastro instance
+   * 
+   *    const middleware = function (instance: Fastro) {
+   *      instance.hello = function () {
+   *        console.log("hello");
+   *      };
+   *    };
+   *
+   *    server.decorate(middleware);
+   *    server.hello();
+   * 
+   * @param instance 
+   */
+  decorate(instance: Middleware) {
+    instance(this);
+  }
+
+  [key: string]: any
   // definite assignment assertion
   // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html
   #server!: Server;
@@ -328,7 +351,9 @@ interface Handler {
 interface Parameter {
   [key: string]: string;
 }
-
+interface Middleware {
+  (instance: Fastro): void;
+}
 function FastroError(title: string, error: Error) {
   error.name = title;
   return error;
