@@ -54,8 +54,14 @@ export class Fastro {
    *      });
    * @param plugin
    */
-  use(plugin: Plugin) {
-    this.#plugins.push(plugin);
+  use(plugin: Plugin): Fastro;
+  use(url: string, plugin: Plugin): Fastro;
+  use(pluginOrUrl: string | Plugin, plugin?: Plugin) {
+    if (typeof pluginOrUrl !== "string") this.#plugins.push(pluginOrUrl);
+    if (plugin && (typeof pluginOrUrl === "string")) {
+      plugin.url = pluginOrUrl;
+      this.#plugins.push(plugin);
+    }
     return this;
   }
 
@@ -341,6 +347,7 @@ interface ListenOptions {
 }
 interface Plugin {
   (req: Request, callback: Function): any;
+  url?: string;
 }
 interface Handler {
   (req: Request): void;
