@@ -274,14 +274,14 @@ export class Fastro {
   /**
    * Add new property or function to Fastro instance
    * 
-   *    const middleware = function (instance: Fastro) {
-   *      instance.hello = function () {
-   *        console.log("hello");
+   *      const middleware = function (instance: Fastro) {
+   *        instance.hello = function () {
+   *          console.log("hello");
+   *        };
    *      };
-   *    };
    *
-   *    server.decorate(middleware);
-   *    server.hello();
+   *      server.decorate(middleware);
+   *      server.hello();
    * 
    * @param instance 
    */
