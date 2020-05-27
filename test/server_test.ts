@@ -87,6 +87,24 @@ test({
 });
 
 test({
+  name: "PLUGIN with url",
+  async fn() {
+    const server = new Fastro();
+    server.use('/ok', (req) => {
+      req.sendOk = (payload: string) => {
+        req.send(payload);
+      };
+    });
+    server.get("/ok", (req) => req.sendOk("plugin"));
+    server.listen({ port });
+    const result = await fetch(addr);
+    const text = await result.text();
+    assertEquals(text, "plugin");
+    server.close();
+  },
+});
+
+test({
   name: "MIDDLEWARE",
   async fn() {
     const server = new Fastro();

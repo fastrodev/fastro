@@ -7,137 +7,6 @@ import { serve, Server, ServerRequest, decode } from "./deps.ts";
  *      const server = new Fastro()
  */
 export class Fastro {
-  private checkUrl(incoming: string, registered: string): boolean {
-    try {
-      const incomingSplit = incoming.substr(1, incoming.length).split("/");
-      const registeredSplit = registered.substr(1, registered.length).split(
-        "/",
-      );
-      const filtered = registeredSplit
-        .filter((value, idx) => {
-          if (value.startsWith(":")) return incomingSplit[idx];
-          return value === incomingSplit[idx];
-        });
-      return incomingSplit.length === filtered.length;
-    } catch (error) {
-      throw FastroError("CHECK_URL_ERROR", error);
-    }
-  }
-
-  private getParameter(incoming: string, registered: string) {
-    try {
-      const incomingSplit = incoming.substr(1, incoming.length).split("/");
-      const registeredSplit = registered.substr(1, registered.length).split(
-        "/",
-      );
-      const param: Parameter = {};
-      registeredSplit
-        .map((path, idx) => {
-          return { path, idx };
-        })
-        .filter((value) => value.path.startsWith(":"))
-        .map((value) => {
-          const name = value.path.substr(1, value.path.length);
-          param[name] = incomingSplit[value.idx];
-        });
-      return param;
-    } catch (error) {
-      throw FastroError("GET_URL_PARAMETER_ERROR", error);
-    }
-  }
-
-  /**
-   * Add plugin
-   * 
-   *      server.use((req) => {
-   *        console.log(req.headers.get("token"));
-   *      });
-   * @param plugin
-   */
-  use(plugin: Plugin): Fastro;
-  use(url: string, plugin: Plugin): Fastro;
-  use(pluginOrUrl: string | Plugin, plugin?: Plugin) {
-    if (typeof pluginOrUrl !== "string") this.#plugins.push(pluginOrUrl);
-    if (plugin && (typeof pluginOrUrl === "string")) {
-      plugin.url = pluginOrUrl;
-      this.#plugins.push(plugin);
-    }
-    return this;
-  }
-
-  private mutateRequest(req: Request, route: Router) {
-    let mutate = false;
-    let mutates = [];
-    this.#plugins.forEach((plugin) => {
-      const pluginResult = plugin(req, () => {});
-      if (mutates.length > 1) {
-        throw new Error(
-          `request.send() already called ${mutates.length} times on registered plugins. You only can call request.send() once.`,
-        );
-      }
-      if (pluginResult) {
-        mutates.push(true);
-        mutate = true;
-      }
-    });
-    this.routeHandler(req, route, mutate);
-    mutates.length = 0;
-  }
-
-  private requestHandler = async (req: ServerRequest) => {
-    try {
-      const request = req as Request;
-      const [route] = this.#router.filter((value) => {
-        return this.checkUrl(req.url, value.url) &&
-          (req.method == value.method);
-      });
-
-      if (route) request.parameter = this.getParameter(req.url, route.url);
-      request.payload = decode(await Deno.readAll(req.body));
-      request.send = (payload, status, headers): boolean => {
-        return this.send(payload, status, headers, req);
-      };
-      if (this.#plugins.length > 0) this.mutateRequest(request, route);
-      else this.routeHandler(request, route);
-    } catch (error) {
-      throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);
-    }
-  };
-
-  private routeHandler = async (
-    req: Request,
-    route?: Router,
-    mutate?: boolean,
-  ) => {
-    try {
-      if (mutate) return;
-      if (!route) {
-        return req.respond({ body: `${req.url} not found`, status: 404 });
-      }
-      return route.handler(req);
-    } catch (error) {
-      throw FastroError("SERVER_ROUTE_HANDLER_ERROR", error);
-    }
-  };
-
-  private send<T>(
-    payload: string | T,
-    status: number | undefined = 200,
-    headers: Headers | undefined = new Headers(),
-    req: ServerRequest,
-  ) {
-    try {
-      let body: any;
-      headers.set("X-Powered-By", "fastro");
-      if (typeof payload === "string") body = payload;
-      else body = JSON.stringify(payload);
-      req.respond({ status, headers, body });
-      return true; // this is used for request mutation flag
-    } catch (error) {
-      throw FastroError("SERVER_SEND_ERROR", error);
-    }
-  }
-
   /** 
    * Listen 
    *      
@@ -175,14 +44,14 @@ export class Fastro {
    *        },
    *       });
    * 
-   * @param options
+   * @param router Router
    * 
    **/
-  route(options: Router) {
+  route(router: Router) {
     try {
       const filteredRoutes = this.#router.filter((value) => {
-        return this.checkUrl(options.url, value.url) &&
-          options.method === value.method;
+        return this.checkUrl(router.url, value.url) &&
+          router.method === value.method;
       });
       if (filteredRoutes.length > 0) {
         const [route] = filteredRoutes;
@@ -191,11 +60,26 @@ export class Fastro {
         } already added.`;
         throw FastroError("SERVER_ROUTE_ERROR", new Error(errStr));
       }
-      this.#router.push(options);
+      this.#router.push(router);
       return this;
     } catch (error) {
       throw FastroError("SERVER_ROUTE_ERROR", error);
     }
+  }
+
+  /**
+   * 
+   * @param url 
+   * @param handler 
+   */
+  all(url: string, handler: Handler) {
+    this.route({ method: "GET", url, handler });
+    this.route({ method: "POST", url, handler });
+    this.route({ method: "HEAD", url, handler });
+    this.route({ method: "PATCH", url, handler });
+    this.route({ method: "OPTIONS", url, handler });
+    this.route({ method: "PUT", url, handler });
+    this.route({ method: "DELETE", url, handler });
   }
 
   /**
@@ -293,6 +177,144 @@ export class Fastro {
    */
   decorate(instance: Middleware) {
     instance(this);
+  }
+
+  /**
+   * Add plugin
+   * 
+   *      server.use((req) => {
+   *        console.log(req.headers.get("token"));
+   *      });
+   * @param plugin
+   */
+  use(plugin: Plugin): Fastro;
+  use(url: string, plugin: Plugin): Fastro;
+  use(pluginOrUrl: string | Plugin, plugin?: Plugin) {
+    if (typeof pluginOrUrl !== "string") this.#plugins.push(pluginOrUrl);
+    if (plugin && (typeof pluginOrUrl === "string")) {
+      plugin.url = pluginOrUrl;
+      this.#plugins.push(plugin);
+    }
+    return this;
+  }
+
+  private checkPluginUrl(incoming: string, registered: string | undefined) {
+    if (incoming === registered) {
+      return true;
+    }
+    if (!registered) return true;
+  }
+
+  private mutateRequest(req: Request, route: Router) {
+    let mutate = false;
+    let mutates = 0;
+    this.#plugins.forEach((plugin) => {
+      let pluginResult
+      if (this.checkPluginUrl(req.url, plugin.url)) pluginResult = plugin(req, () => {});
+      if (mutates > 0) {
+        throw new Error(
+          `request.send() already called on previous plugins. You can only call it once in a request`,
+        );
+      }
+      if (pluginResult) {
+        mutates++;
+        mutate = true;
+      }
+    });
+    this.routeHandler(req, route, mutate);
+  }
+
+  private requestHandler = async (req: ServerRequest) => {
+    try {
+      const request = req as Request;
+      const [route] = this.#router.filter((value) => {
+        return this.checkUrl(req.url, value.url) &&
+          (req.method == value.method);
+      });
+
+      if (route) request.parameter = this.getParameter(req.url, route.url);
+      request.payload = decode(await Deno.readAll(req.body));
+      request.send = (payload, status, headers): boolean => {
+        return this.send(payload, status, headers, req);
+      };
+      if (this.#plugins.length > 0) this.mutateRequest(request, route);
+      else this.routeHandler(request, route);
+    } catch (error) {
+      throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);
+    }
+  };
+
+  private routeHandler = async (
+    req: Request,
+    route?: Router,
+    mutate?: boolean,
+  ) => {
+    try {
+      if (mutate) return;
+      if (!route) {
+        return req.respond({ body: `${req.url} not found`, status: 404 });
+      }
+      return route.handler(req);
+    } catch (error) {
+      throw FastroError("SERVER_ROUTE_HANDLER_ERROR", error);
+    }
+  };
+
+  private send<T>(
+    payload: string | T,
+    status: number | undefined = 200,
+    headers: Headers | undefined = new Headers(),
+    req: ServerRequest,
+  ) {
+    try {
+      let body: any;
+      headers.set("X-Powered-By", "fastro");
+      if (typeof payload === "string") body = payload;
+      else body = JSON.stringify(payload);
+      req.respond({ status, headers, body });
+      return true; // this is used for request mutation flag
+    } catch (error) {
+      throw FastroError("SERVER_SEND_ERROR", error);
+    }
+  }
+
+  private checkUrl(incoming: string, registered: string): boolean {
+    try {
+      const incomingSplit = incoming.substr(1, incoming.length).split("/");
+      const registeredSplit = registered.substr(1, registered.length).split(
+        "/",
+      );
+      const filtered = registeredSplit
+        .filter((value, idx) => {
+          if (value.startsWith(":")) return incomingSplit[idx];
+          return value === incomingSplit[idx];
+        });
+      return incomingSplit.length === filtered.length;
+    } catch (error) {
+      throw FastroError("CHECK_URL_ERROR", error);
+    }
+  }
+
+  private getParameter(incoming: string, registered: string) {
+    try {
+      const incomingSplit = incoming.substr(1, incoming.length).split("/");
+      const registeredSplit = registered.substr(1, registered.length).split(
+        "/",
+      );
+      const param: Parameter = {};
+      registeredSplit
+        .map((path, idx) => {
+          return { path, idx };
+        })
+        .filter((value) => value.path.startsWith(":"))
+        .map((value) => {
+          const name = value.path.substr(1, value.path.length);
+          param[name] = incomingSplit[value.idx];
+        });
+      return param;
+    } catch (error) {
+      throw FastroError("GET_URL_PARAMETER_ERROR", error);
+    }
   }
 
   [key: string]: any
