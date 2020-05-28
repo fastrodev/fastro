@@ -1,4 +1,4 @@
-import { serve, Server, ServerRequest, decode } from "./deps.ts";
+import { serve, Server, ServerRequest, decode } from "../deps.ts";
 
 /**
  * Fastro class
