@@ -187,41 +187,19 @@ export class Fastro {
    *      });
    * @param plugin
    */
-  use(plugin: Plugin): Fastro;
-  use(url: string, plugin: Plugin): Fastro;
-  use(pluginOrUrl: string | Plugin, plugin?: Plugin) {
-    if (typeof pluginOrUrl !== "string") this.#plugins.push(pluginOrUrl);
-    if (plugin && (typeof pluginOrUrl === "string")) {
-      plugin.url = pluginOrUrl;
-      this.#plugins.push(plugin);
+  use(handler: Handler): Fastro;
+  use(url: string, handler: Handler): Fastro;
+  use(handlerOrUrl: string | Handler, handler?: Handler) {
+    if (typeof handlerOrUrl !== "string") this.#plugins.push(handlerOrUrl);
+    if (handler && (typeof handlerOrUrl === "string")) {
+      this.#plugins.push(handler);
     }
     return this;
   }
 
-  private checkPluginUrl(incoming: string, registered: string | undefined) {
-    if (incoming === registered) {
-      return true;
-    }
-    if (!registered) return true;
-  }
-
   private mutateRequest(req: Request, route: Router) {
-    let mutate = false;
-    let mutates = 0;
-    this.#plugins.forEach((plugin) => {
-      let pluginResult
-      if (this.checkPluginUrl(req.url, plugin.url)) pluginResult = plugin(req, () => {});
-      if (mutates > 0) {
-        throw new Error(
-          `request.send() already called on previous plugins. You can only call it once in a request`,
-        );
-      }
-      if (pluginResult) {
-        mutates++;
-        mutate = true;
-      }
-    });
-    this.routeHandler(req, route, mutate);
+
+    // this.routeHandler(req, route, mutate);
   }
 
   private requestHandler = async (req: ServerRequest) => {
@@ -322,7 +300,7 @@ export class Fastro {
   // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html
   #server!: Server;
   #router: Router[] = [];
-  #plugins: Plugin[] = [];
+  #plugins: Handler[] = [];
 }
 
 export class Request extends ServerRequest {
@@ -367,10 +345,10 @@ interface ListenOptions {
   port: number;
   hostname?: string;
 }
-interface Plugin {
-  (req: Request, callback: Function): any;
-  url?: string;
-}
+// interface Plugin {
+//   (req: Request, callback: Function): any;
+//   url?: string;
+// }
 interface Handler {
   (req: Request, callback: Function): any;
 }
