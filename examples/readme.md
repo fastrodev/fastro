@@ -47,7 +47,7 @@ await server.listen();
 Check the following codes to find out how to:
 - [import middleware from external file](https://github.com/fastrojs/fastro-server/blob/master/examples/use_middleware.ts)
 - [create simple jwt auth](https://github.com/fastrojs/fastro-server/blob/master/examples/simple_jwt_auth.ts)
-- [create global & url plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/middleware.ts).
+- [create global & url middleware](https://github.com/fastrojs/fastro-server/blob/master/examples/middleware.ts).
 
 ## Decorator
 You can add new properties or functions to Fastro instance. This feature is similar to the [fastify decorator](https://www.fastify.io/docs/latest/Decorators/).
