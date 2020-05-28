@@ -254,7 +254,7 @@ export class Fastro {
       if (!route) {
         return req.respond({ body: `${req.url} not found`, status: 404 });
       }
-      return route.handler(req);
+      return route.handler(req, () => {});
     } catch (error) {
       throw FastroError("SERVER_ROUTE_HANDLER_ERROR", error);
     }
@@ -350,7 +350,7 @@ export class Request extends ServerRequest {
    * @param payload 
    * @param status
    * @param headers 
-   *     
+   * 
    */
   send!: {
     <T>(payload: string | T, status?: number, headers?: Headers): boolean;
@@ -361,7 +361,7 @@ export class Request extends ServerRequest {
 interface Router {
   method: string;
   url: string;
-  handler(req: Request): void;
+  handler(req: Request, callback: Function): any;
 }
 interface ListenOptions {
   port: number;
@@ -372,7 +372,7 @@ interface Plugin {
   url?: string;
 }
 interface Handler {
-  (req: Request): void;
+  (req: Request, callback: Function): any;
 }
 interface Parameter {
   [key: string]: string;
