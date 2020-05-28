@@ -1,1 +1,1 @@
-export { sample } from './sample.ts'
+export { sample } from "./sample.ts";

@@ -33,6 +33,30 @@ export class Fastro {
     }
   };
 
+  private loadPlugin(fastro: Fastro, request: Request) {
+    this.#plugins.forEach((plugin) => {
+      plugin(fastro, request);
+    });
+  }
+
+  /**
+   * Register plugin
+   *        
+   *        const plugin = function (fastro: Fastro, request: Request) {
+   *           fastro.decorate((instance) => {
+   *              instance.hello = "hello";
+   *            });
+   *           request.ok = "ok";
+   *        };
+   * 
+   *       server.register(plugin)
+   * @param plugin
+   */
+  register(plugin: Plugin) {
+    this.#plugins.push(plugin);
+    return this;
+  }
+
   /**
    * Add route
    * 
@@ -228,6 +252,7 @@ export class Fastro {
       request.send = (payload, status, headers): boolean => {
         return this.send(payload, status, headers, req);
       };
+      this.loadPlugin(this, request);
       if (this.#middlewares.length > 0) this.mutateRequest(request);
       else this.routeHandler(request);
     } catch (error) {
@@ -318,6 +343,7 @@ export class Fastro {
   #server!: Server;
   #router: Router[] = [];
   #middlewares: Middleware[] = [];
+  #plugins: Plugin[] = [];
 }
 
 export class Request extends ServerRequest {
@@ -365,6 +391,9 @@ interface ListenOptions {
 interface Middleware {
   url?: string;
   handler(req: Request, callback: Function): any;
+}
+interface Plugin {
+  (fastro: Fastro, request: Request): any;
 }
 interface Handler {
   (req: Request, callback: Function): any;

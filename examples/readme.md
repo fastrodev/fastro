@@ -23,10 +23,10 @@ Check the following codes to find out how to:
 - [change default port & listen optional callback](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L34)
 - [create simple Postgres REST API](https://github.com/fastrojs/fastro-server/blob/master/examples/crud_postgres.ts)
 
-## Create a middleware
+## Middleware
 You can add new properties or functions to the default `request`.
 
-This feature is similar to the [fastify decorator](https://www.fastify.io/docs/latest/Decorators/) and [express middleware](https://expressjs.com/en/guide/writing-middleware.html).
+This feature is similar to the [express middleware](https://expressjs.com/en/guide/writing-middleware.html).
 
 
 ```ts
@@ -51,4 +51,10 @@ Check the following codes to find out how to:
 
 ## Decorator
 You can add new properties or functions to Fastro instance. This feature is similar to the [fastify decorator](https://www.fastify.io/docs/latest/Decorators/).
-- [create a new server property](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts).
+
+Check the following codes to find out how to: [create a new server property](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts).
+
+## Plugin
+You can add new properties or functions to fastro instance or default request. This is similar to [fastify plugin](https://www.fastify.io/docs/latest/Plugins/). 
+
+Check the following codes to find out how to: [create & register a plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/plugin.ts).
