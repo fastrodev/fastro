@@ -192,16 +192,16 @@ export class Fastro {
   use(url: string, handler: Handler): Fastro;
   use(handlerOrUrl: string | Handler, handler?: Handler) {
     if (typeof handlerOrUrl !== "string") {
-      this.#plugins.push({ url: "/", handler: handlerOrUrl });
+      this.#middlewares.push({ url: "/", handler: handlerOrUrl });
     }
     if (handler && (typeof handlerOrUrl === "string")) {
-      this.#plugins.push({ url: handlerOrUrl, handler });
+      this.#middlewares.push({ url: handlerOrUrl, handler });
     }
     return this;
   }
 
   private mutateRequest(req: Request) {
-    const plugins = this.#plugins.filter((p) => {
+    const plugins = this.#middlewares.filter((p) => {
       if (p.url === "/") return p;
       return p.url && this.checkUrl(req.url, p.url);
     });
@@ -228,7 +228,7 @@ export class Fastro {
       request.send = (payload, status, headers): boolean => {
         return this.send(payload, status, headers, req);
       };
-      if (this.#plugins.length > 0) this.mutateRequest(request);
+      if (this.#middlewares.length > 0) this.mutateRequest(request);
       else this.routeHandler(request);
     } catch (error) {
       throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);
@@ -317,7 +317,7 @@ export class Fastro {
   // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html
   #server!: Server;
   #router: Router[] = [];
-  #plugins: Plugin[] = [];
+  #middlewares: Middleware[] = [];
 }
 
 export class Request extends ServerRequest {
@@ -362,7 +362,7 @@ interface ListenOptions {
   port: number;
   hostname?: string;
 }
-interface Plugin {
+interface Middleware {
   url?: string;
   handler(req: Request, callback: Function): any;
 }

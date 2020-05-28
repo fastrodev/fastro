@@ -1,4 +1,1 @@
-export {
-  support,
-  sendOk,
-} from "./sample.ts";
+export { sample } from './sample.ts'

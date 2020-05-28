@@ -1,5 +1,5 @@
 import { Fastro, Request } from "../mod.ts";
-import { sendOk, support } from "../plugins/mod.ts";
+import { sendOk, support } from "../middleware/mod.ts";
 
 const server = new Fastro();
 
@@ -8,16 +8,16 @@ function sendHi(req: Request) {
   if (false) return req.send("Hello");
 }
 
-// add plugins to server
+// add middleware to server
 server
   .use(sendHi)
-  // add sendOk plugin from external file
+  // add sendOk middleware from external file
   .use(sendOk)
-  // add support plugin from external file
+  // add support middleware from external file
   .use(support);
 
 server
-  // use sendOk plugin
+  // use sendOk middleware
   .get("/", (req) => req.sendOk("hello"))
   .post("/:hello", (req) => {
     // access custom send function
