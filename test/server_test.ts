@@ -69,7 +69,7 @@ test({
 });
 
 test({
-  name: "PLUGIN",
+  name: "MIDDLEWARE",
   async fn() {
     const server = new Fastro();
     server.use((req) => {
@@ -87,18 +87,7 @@ test({
 });
 
 test({
-  name: "MIDDLEWARE",
-  async fn() {
-    const server = new Fastro();
-    server.decorate((instance) => {
-      instance.ok = "ok";
-    });
-    assertEquals(server.ok, "ok");
-  },
-});
-
-test({
-  name: "PLUGIN with url",
+  name: "MIDDLEWARE with url",
   async fn() {
     const server = new Fastro();
     server
@@ -108,12 +97,23 @@ test({
         };
       })
       .get("/ok", (req) => {
-        req.sendOk("plugin");
+        req.sendOk("MIDDLEWARE");
       });
     server.listen({ port });
     const result = await fetch(addr + "/ok");
     const text = await result.text();
-    assertEquals(text, "plugin");
+    assertEquals(text, "MIDDLEWARE");
     server.close();
+  },
+});
+
+test({
+  name: "DECORATE",
+  async fn() {
+    const server = new Fastro();
+    server.decorate((instance) => {
+      instance.ok = "ok";
+    });
+    assertEquals(server.ok, "ok");
   },
 });
