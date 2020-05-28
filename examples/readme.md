@@ -1,5 +1,7 @@
 ## Examples
 
+### Quick Start
+
 ```ts
 import { Fastro } from "https://deno.land/x/fastro/mod.ts";
 
@@ -21,8 +23,11 @@ Check the following codes to find out how to:
 - [change default port & listen optional callback](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L34)
 - [create simple Postgres REST API](https://github.com/fastrojs/fastro-server/blob/master/examples/crud_postgres.ts)
 
-## Create a plugin
+### Create a plugin
 You can add new properties or functions to the default `request`.
+
+This feature is similar to the [fastify decorator](https://www.fastify.io/docs/latest/Decorators/) and [express middleware](https://expressjs.com/en/guide/writing-middleware.html).
+
 
 ```ts
 import { Fastro, Request } from "https://deno.land/x/fastro/mod.ts";
@@ -39,10 +44,13 @@ await server.listen();
 
 ```
 
-This feature is similar to the [fastify decorator](https://www.fastify.io/docs/latest/Decorators/) and [express middleware](https://expressjs.com/en/guide/writing-middleware.html).
-
 Check the following codes to find out how to:
 - [compare parameter with local variable](https://github.com/fastrojs/fastro-server/blob/master/examples/use_plugin.ts#L5)
 - [add new request function & property](https://github.com/fastrojs/fastro-server/blob/master/examples/use_plugin.ts#L23)
 - [get client headers & custom send method](https://github.com/fastrojs/fastro-server/blob/master/examples/use_plugin.ts#L13)
 - [create simple jwt auth](https://github.com/fastrojs/fastro-server/blob/master/examples/simple_jwt_auth.ts)
+- [create global & url plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/plugin.ts).
+
+### Decorator
+You can add new properties or functions to Fastro instance. This feature is similar to the [fastify decorator](https://www.fastify.io/docs/latest/Decorators/).
+- [create a new server property](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts).

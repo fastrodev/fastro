@@ -175,8 +175,9 @@ export class Fastro {
    * 
    * @param instance 
    */
-  decorate(instance: Middleware) {
+  decorate(instance: { (instance: Fastro): void }) {
     instance(this);
+    return this;
   }
 
   /**
@@ -190,33 +191,45 @@ export class Fastro {
   use(handler: Handler): Fastro;
   use(url: string, handler: Handler): Fastro;
   use(handlerOrUrl: string | Handler, handler?: Handler) {
-    if (typeof handlerOrUrl !== "string") this.#plugins.push(handlerOrUrl);
+    if (typeof handlerOrUrl !== "string") {
+      this.#plugins.push({ url: "/", handler: handlerOrUrl });
+    }
     if (handler && (typeof handlerOrUrl === "string")) {
-      this.#plugins.push(handler);
+      this.#plugins.push({ url: handlerOrUrl, handler });
     }
     return this;
   }
 
-  private mutateRequest(req: Request, route: Router) {
-
-    // this.routeHandler(req, route, mutate);
+  private mutateRequest(req: Request) {
+    const plugins = this.#plugins.filter((p) => {
+      if (p.url === "/") return p;
+      return p.url && this.checkUrl(req.url, p.url);
+    });
+    let mutates = 0;
+    let mutate = false;
+    const [plugin] = plugins;
+    plugins.forEach((p) => {
+      mutate = p.handler(req, () => {});
+      if (mutates > 0) {
+        throw new Error(
+          "`req.send()` has been called. It can only be run once in a request.",
+        );
+      }
+      if (mutate) mutates++;
+    });
+    if (plugin.url) req.parameter = this.getParameter(req.url, plugin.url);
+    this.routeHandler(req, mutate);
   }
 
   private requestHandler = async (req: ServerRequest) => {
     try {
       const request = req as Request;
-      const [route] = this.#router.filter((value) => {
-        return this.checkUrl(req.url, value.url) &&
-          (req.method == value.method);
-      });
-
-      if (route) request.parameter = this.getParameter(req.url, route.url);
       request.payload = decode(await Deno.readAll(req.body));
       request.send = (payload, status, headers): boolean => {
         return this.send(payload, status, headers, req);
       };
-      if (this.#plugins.length > 0) this.mutateRequest(request, route);
-      else this.routeHandler(request, route);
+      if (this.#plugins.length > 0) this.mutateRequest(request);
+      else this.routeHandler(request);
     } catch (error) {
       throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);
     }
@@ -224,14 +237,18 @@ export class Fastro {
 
   private routeHandler = async (
     req: Request,
-    route?: Router,
     mutate?: boolean,
   ) => {
     try {
       if (mutate) return;
+      const [route] = this.#router.filter((value) => {
+        return this.checkUrl(req.url, value.url) &&
+          (req.method == value.method);
+      });
       if (!route) {
         return req.respond({ body: `${req.url} not found`, status: 404 });
       }
+      req.parameter = this.getParameter(req.url, route.url);
       return route.handler(req, () => {});
     } catch (error) {
       throw FastroError("SERVER_ROUTE_HANDLER_ERROR", error);
@@ -300,7 +317,7 @@ export class Fastro {
   // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html
   #server!: Server;
   #router: Router[] = [];
-  #plugins: Handler[] = [];
+  #plugins: Plugin[] = [];
 }
 
 export class Request extends ServerRequest {
@@ -345,18 +362,15 @@ interface ListenOptions {
   port: number;
   hostname?: string;
 }
-// interface Plugin {
-//   (req: Request, callback: Function): any;
-//   url?: string;
-// }
+interface Plugin {
+  url?: string;
+  handler(req: Request, callback: Function): any;
+}
 interface Handler {
   (req: Request, callback: Function): any;
 }
 interface Parameter {
   [key: string]: string;
-}
-interface Middleware {
-  (instance: Fastro): void;
 }
 function FastroError(title: string, error: Error) {
   error.name = title;

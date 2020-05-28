@@ -2,20 +2,21 @@ import { Fastro } from "../mod.ts";
 const server = new Fastro();
 
 server
-  // .use((req) => {
-  //   req.hello = "hello";
-  // })
-  // .use((req) => {
-  //   req.ok = "ok";
-  // })
+  // global plugin
+  // it can be accessed from any URL.
   .use((req) => {
-    req.send("root");
+    req.hello = "hello";
   })
+  // url plugin
+  // it can only be accessed from the url that has been registered.
   .use("/ok", (req) => {
-    req.send("ok");
+    req.sendOk = (payload: string) => {
+      req.send(payload);
+    };
   })
-  .get('/hi', (req) => {
-    req.send("hi");
-  })
+  .get("/ok", (req) => {
+    console.log(req.hello);
+    req.sendOk("ok");
+  });
 
 await server.listen({ port: 8000 });

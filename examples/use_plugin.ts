@@ -1,52 +1,24 @@
 import { Fastro, Request } from "../mod.ts";
+import { sendOk, support } from "../plugins/mod.ts";
 
 const server = new Fastro();
 
-// compare parameter with local variable
-function parameterPlugin(req: Request) {
-  const data = "hello";
-  if (req.parameter && req.parameter.hello === data) {
-    console.log(req.parameter);
-  }
-}
-
-// get client headers & custom send method
-function sendOk(req: Request) {
-  // console.log(req.headers.get("host"));
-  req.sendOk = (payload: string) => {
-    const headers = new Headers();
-    headers.set("X-token", "your_token");
-    return req.send(payload, 200, headers);
-  };
-}
-
-function sendHello(req: Request) {
-  if (false) return req.send('Hello')
-}
-
+// you may not send a response more than once in a request
 function sendHi(req: Request) {
-  return req.send('hi')
-}
-
-// very simple auth
-function authPlugin(req: Request) {
-  const token = req.headers.get("token");
-  if (!token) return req.send("token not found");
+  if (false) return req.send("Hello");
 }
 
 // add plugins to server
 server
-  // .use(authPlugin)
-  // .use(sendOk)
-  // .use(parameterPlugin)
-  .use(sendHello)
-  // .use('/siap', sendHello)
-  .use('/ok', sendHi)
   .use(sendHi)
-  // .get('/hello', sendHello)
+  // add sendOk plugin from external file
+  .use(sendOk)
+  // add support plugin from external file
+  .use(support);
 
 server
-  .get("/:hello", (req) => req.send("hello"))
+  // use sendOk plugin
+  .get("/", (req) => req.sendOk("hello"))
   .post("/:hello", (req) => {
     // access custom send function
     req.sendOk("ok deh");

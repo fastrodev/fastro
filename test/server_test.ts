@@ -68,49 +68,52 @@ test({
   },
 });
 
-// test({
-//   name: "PLUGIN",
-//   async fn() {
-//     const server = new Fastro();
-//     server.use((req) => {
-//       req.sendOk = (payload: string) => {
-//         req.send(payload);
-//       };
-//     });
-//     server.get("/", (req) => req.sendOk("plugin"));
-//     server.listen({ port });
-//     const result = await fetch(addr);
-//     const text = await result.text();
-//     assertEquals(text, "plugin");
-//     server.close();
-//   },
-// });
+test({
+  name: "PLUGIN",
+  async fn() {
+    const server = new Fastro();
+    server.use((req) => {
+      req.sendOk = (payload: string) => {
+        req.send(payload);
+      };
+    });
+    server.get("/", (req) => req.sendOk("plugin"));
+    server.listen({ port });
+    const result = await fetch(addr);
+    const text = await result.text();
+    assertEquals(text, "plugin");
+    server.close();
+  },
+});
 
-// test({
-//   name: "PLUGIN with url",
-//   async fn() {
-//     const server = new Fastro();
-//     server.use('/ok', (req) => {
-//       req.sendOk = (payload: string) => {
-//         req.send(payload);
-//       };
-//     });
-//     server.get("/ok", (req) => req.sendOk("plugin"));
-//     server.listen({ port });
-//     const result = await fetch(addr);
-//     const text = await result.text();
-//     assertEquals(text, "plugin");
-//     server.close();
-//   },
-// });
+test({
+  name: "MIDDLEWARE",
+  async fn() {
+    const server = new Fastro();
+    server.decorate((instance) => {
+      instance.ok = "ok";
+    });
+    assertEquals(server.ok, "ok");
+  },
+});
 
-// test({
-//   name: "MIDDLEWARE",
-//   async fn() {
-//     const server = new Fastro();
-//     server.decorate((instance) => {
-//       instance.ok = "ok";
-//     });
-//     assertEquals(server.ok, "ok");
-//   },
-// });
+test({
+  name: "PLUGIN with url",
+  async fn() {
+    const server = new Fastro();
+    server
+      .use("/ok", (req) => {
+        req.sendOk = (payload: string) => {
+          req.send(payload);
+        };
+      })
+      .get("/ok", (req) => {
+        req.sendOk("plugin");
+      });
+    server.listen({ port });
+    const result = await fetch(addr + "/ok");
+    const text = await result.text();
+    assertEquals(text, "plugin");
+    server.close();
+  },
+});
