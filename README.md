@@ -1,4 +1,3 @@
-![ci](https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg)
 # Fastro
 Fast, simple, minimalist web framework for [Deno](https://deno.land/). 
 
@@ -46,4 +45,6 @@ If performance is important to you, here are the benchmark results:
 | Oak | 4.0.0 | &#10003; | 1051.41 |
 
 Check this to see the detail method & results: [benchmarks](https://github.com/fastrojs/fastro-server/tree/master/benchmarks).
+
+![ci](https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg)
 
