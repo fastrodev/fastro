@@ -36,13 +36,13 @@ If performance is important to you, here are the benchmark results:
 
 | Framework | Version | Router? | Avg Req |
 | :-- | :-- | :--: | --: |
-| Abc | 1.0.0-rc8 | &#10003; | 1128 |
-| Deno `http` | 1.0.2 | &#10007; | 2120.7 |
-| Express | 4.17.1 | &#10003; | 494.5 |
-| Fastify | 2.14.1 | &#10003; | 1386.5 |
-| **Fastro** | **0.5.0** | **&#10003;** | **1560.1**  |
-| Node `http` | 14.3.0 | &#10007; | 2423.81 |
-| Oak | 4.0.0 | &#10003; | 1051.41 |
+| Abc | 1.0.0-rc8 | &#10003; | 1380.9 |
+| Deno `http` | 1.0.2 | &#10007; | 2281.9 |
+| Express | 4.17.1 | &#10003; | 1087.91 |
+| Fastify | 2.14.1 | &#10003; | 2169 |
+| **Fastro** | **0.5.1** | **&#10003;** | **1805**  |
+| Node `http` | 14.3.0 | &#10007; | 2476.45 |
+| Oak | 4.0.0 | &#10003; | 1255.3 |
 
 Check this to see the detail method & results: [benchmarks](https://github.com/fastrojs/fastro-server/tree/master/benchmarks).
 
