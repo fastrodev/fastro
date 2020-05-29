@@ -30,6 +30,7 @@ Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/exampl
 - [create global & url middleware](https://github.com/fastrojs/fastro-server/blob/master/examples/middleware.ts)
 - [create `decorator`](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts)
 - [create `plugin`](https://github.com/fastrojs/fastro-server/blob/master/examples/plugin.ts)
+- [create simple REST API with JWT](https://github.com/fastrojs/fastro-server/blob/master/examples/rest_api_jwt)
 
 ## Benchmarks
 If performance is important to you, here are the benchmark results:

@@ -32,6 +32,7 @@ Check the following codes to find out how to:
 - [import middleware from external file](https://github.com/fastrojs/fastro-server/blob/master/examples/use_middleware.ts#L2)
 - [create simple jwt auth](https://github.com/fastrojs/fastro-server/blob/master/examples/simple_jwt_auth.ts)
 - [create global & url middleware](https://github.com/fastrojs/fastro-server/blob/master/examples/middleware.ts)
+- [create simple REST API with JWT](https://github.com/fastrojs/fastro-server/blob/master/examples/rest_api_jwt)
 
 ## Decorator
 You can add new properties or functions to Fastro instance. This is similar to the [fastify decorator](https://www.fastify.io/docs/latest/Decorators/). Check the following codes to find out how to: [create a new server property](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts).
