@@ -1,4 +1,7 @@
 # Fastro
+
+![ci](https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg)
+
 Fast & simple web framework for [Deno](https://deno.land/). 
 
 Inspired by [Fastify](https://www.fastify.io/) & [Express](https://expressjs.com/).
@@ -13,6 +16,21 @@ server.get("/", (req) => req.send("root"));
 await server.listen();
 
 ```
+
+## Benchmarks
+If performance is important to you, here are the benchmark results:
+
+| Framework | Version | Router? | Avg Req |
+| :-- | :-- | :--: | --: |
+| Abc | 1.0.0-rc8 | &#10003; | 1083.2 |
+| Deno `http` | 1.0.2 | &#10007; | 2293 |
+| Express | 4.17.1 | &#10003; | 576.4 |
+| Fastify | 2.14.1 | &#10003; | 1359.3 |
+| **Fastro** | **0.5.1** | **&#10003;** | **1750.2**  |
+| Node `http` | 14.3.0 | &#10007; | 2838.1 |
+| Oak | 4.0.0 | &#10003; | 944.4 |
+
+Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/benchmarks) to see the detail method.
 
 ## How to use & examples
 
@@ -31,21 +49,4 @@ Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/exampl
 - [create `decorator`](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts)
 - [create `plugin`](https://github.com/fastrojs/fastro-server/blob/master/examples/plugin.ts)
 - [create simple REST API with JWT](https://github.com/fastrojs/fastro-server/blob/master/examples/rest_api_jwt)
-
-## Benchmarks
-If performance is important to you, here are the benchmark results:
-
-| Framework | Version | Router? | Avg Req |
-| :-- | :-- | :--: | --: |
-| Abc | 1.0.0-rc8 | &#10003; | 1380.9 |
-| Deno `http` | 1.0.2 | &#10007; | 2281.9 |
-| Express | 4.17.1 | &#10003; | 1087.91 |
-| Fastify | 2.14.1 | &#10003; | 2169 |
-| **Fastro** | **0.5.1** | **&#10003;** | **1805**  |
-| Node `http` | 14.3.0 | &#10007; | 2476.45 |
-| Oak | 4.0.0 | &#10003; | 1255.3 |
-
-Check this to see the detail method & results: [benchmarks](https://github.com/fastrojs/fastro-server/tree/master/benchmarks).
-
-![ci](https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg)
 
