@@ -33,12 +33,6 @@ export class Fastro {
     }
   };
 
-  private loadPlugin(fastro: Fastro, request: Request) {
-    this.#plugins.forEach((plugin) => {
-      plugin(fastro, request);
-    });
-  }
-
   /**
    * Register plugin
    *        
@@ -54,7 +48,8 @@ export class Fastro {
    */
   register(plugin: Plugin) {
     this.#plugins.push(plugin);
-    return this;
+    const req = new Request();
+    return this.loadPlugin(this, req);
   }
 
   /**
@@ -221,6 +216,13 @@ export class Fastro {
     if (handler && (typeof handlerOrUrl === "string")) {
       this.#middlewares.push({ url: handlerOrUrl, handler });
     }
+    return this;
+  }
+
+  private loadPlugin(fastro: Fastro, request: Request) {
+    this.#plugins.forEach((plugin) => {
+      plugin(fastro, request);
+    });
     return this;
   }
 
