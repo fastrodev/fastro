@@ -25,12 +25,11 @@ export function createJwt() {
 }
 
 export const jwtMiddleware = function (req: Request) {
-  if (req.method === "GET") {
-    const token = req.headers.get("token");
-    if (!token) return req.send("token not found");
-    const valid = validateJwt(token, key, { isThrowing: false });
-    valid.then((v) => {
-      if (!v) return req.send("token invalid");
-    });
-  }
+  if (req.method === "POST" && req.url === "/token") return;
+  const token = req.headers.get("token");
+  if (!token) return req.send("token not found");
+  const valid = validateJwt(token, key, { isThrowing: false });
+  valid.then((v) => {
+    if (!v) return req.send("token invalid");
+  });
 };
