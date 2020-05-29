@@ -5,7 +5,7 @@ const oak_version = "4.0.0";
 const express_version = "4.17.1";
 const fastro_version = "0.5.1";
 const abc_version = "1.0.0-rc8";
-const deno_version = "1.0.2";
+const deno_version = "1.0.3";
 const node_version = "14.3.0";
 const fastify_version = "2.14.1";
 

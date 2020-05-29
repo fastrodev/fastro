@@ -1,4 +1,4 @@
-import { Fastro, FastroError } from "../mod.ts";
+import { Fastro } from "../mod.ts";
 const server = new Fastro();
 const port = 3000;
 server.get("/", (req) => req.send("hello"));
