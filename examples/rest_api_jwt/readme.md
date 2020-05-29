@@ -12,9 +12,9 @@
 | File | Used for| 
 | :-- | :-- |
 |`main.ts`| application entry point|
-|`handlers`| controller, serve http request. call service function |
+|`handlers.ts`| controller, serve http request. call service function |
 |`services.ts`| CRUD logic, connected to database |
-|`middleware`| modify default `request` object|
+|`middleware.ts`| modify default `request` object|
 
 ## Usage
 ```
