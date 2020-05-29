@@ -24,37 +24,17 @@ Check the following codes to find out how to:
 - [create simple Postgres REST API](https://github.com/fastrojs/fastro-server/blob/master/examples/crud_postgres.ts)
 
 ## Middleware
-You can add new properties or functions to the default `request`.
-
-This feature is similar to the [express middleware](https://expressjs.com/en/guide/writing-middleware.html).
-
-
-```ts
-import { Fastro, Request } from "https://deno.land/x/fastro/mod.ts";
-const server = new Fastro();
-const middleware = (req: Request) => {
-  req.hello = () => {
-    return req.send("Hello");
-  };
-}
-server
-  .use(middleware)
-  .get("/:hello", (req) => req.hello());
-await server.listen();
-
-```
+You can add new properties or functions to the default `request`. This feature is similar to the [express middleware](https://expressjs.com/en/guide/writing-middleware.html).
 
 Check the following codes to find out how to:
-- [import middleware from external file](https://github.com/fastrojs/fastro-server/blob/master/examples/use_middleware.ts)
+- [create very simple middleware](https://github.com/fastrojs/fastro-server/blob/master/examples/use_middleware.ts#L6)
+- [create middleware in separate file](https://github.com/fastrojs/fastro-server/blob/master/middleware/sample.ts)
+- [import middleware from external file](https://github.com/fastrojs/fastro-server/blob/master/examples/use_middleware.ts#L2)
 - [create simple jwt auth](https://github.com/fastrojs/fastro-server/blob/master/examples/simple_jwt_auth.ts)
-- [create global & url middleware](https://github.com/fastrojs/fastro-server/blob/master/examples/middleware.ts).
+- [create global & url middleware](https://github.com/fastrojs/fastro-server/blob/master/examples/middleware.ts)
 
 ## Decorator
-You can add new properties or functions to Fastro instance. This feature is similar to the [fastify decorator](https://www.fastify.io/docs/latest/Decorators/).
-
-Check the following codes to find out how to: [create a new server property](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts).
+You can add new properties or functions to Fastro instance. This is similar to the [fastify decorator](https://www.fastify.io/docs/latest/Decorators/). Check the following codes to find out how to: [create a new server property](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts).
 
 ## Plugin
-You can add new properties or functions to fastro instance or default request. This is similar to [fastify plugin](https://www.fastify.io/docs/latest/Plugins/). 
-
-Check the following codes to find out how to: [create & register a plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/plugin.ts).
+You can add new properties or functions to fastro instance or default request. This is similar to the [fastify plugin](https://www.fastify.io/docs/latest/Plugins/). Check the following codes to find out how to: [create & register a plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/plugin.ts).
