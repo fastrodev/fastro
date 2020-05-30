@@ -2,7 +2,7 @@
 
 ![ci](https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg)
 
-Fast & simple web framework for [Deno](https://deno.land/). 
+Deno web framework for developers who are obsessed with performance and simplicity.
 
 Inspired by [Fastify](https://www.fastify.io/) & [Express](https://expressjs.com/).
 
@@ -34,19 +34,19 @@ Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/benchm
 
 ## How to use & examples
 
-This module uses the git release. If you want to pick a specific version, for example `v0.5.0`, then the full url is [`https://deno.land/x/fastro@v0.5.0/mod.ts`](https://deno.land/x/fastro@v0.5.0/mod.ts). If you do not use the version, it will refer to `master` branch.
+This module uses the git release. If you want to pick a specific version, for example `v0.5.4`, then the full url is [`https://deno.land/x/fastro@v0.5.4/mod.ts`](https://deno.land/x/fastro@v0.5.4/mod.ts). If you do not use the version, it will refer to `master` branch.
 
 Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/examples) to find out how to: 
 - [change default port & add optional listen callback](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L34)
 - [send simple text & json data](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L5)
 - [get url parameters](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L20)
-- [get payload](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L300)
+- [get payload from post method](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L300)
 - [set custom http headers & status](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L9)
-- [create simple REST API](https://github.com/fastrojs/fastro-server/blob/master/examples/crud_postgres.ts)
-- [create `middleware`](https://github.com/fastrojs/fastro-server/blob/master/examples/use_middleware.ts#L6)
+- [change the request object by creating a middleware](https://github.com/fastrojs/fastro-server/blob/master/examples/use_middleware.ts#L6)
 - [create simple jwt auth](https://github.com/fastrojs/fastro-server/blob/master/examples/simple_jwt_auth.ts)
 - [create global & url middleware](https://github.com/fastrojs/fastro-server/blob/master/examples/middleware.ts)
-- [create `decorator`](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts)
-- [create `plugin`](https://github.com/fastrojs/fastro-server/blob/master/examples/plugin.ts)
+- [create decorator to add new property](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts)
+- [create router with plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/plugin.ts)
+- [create simple REST API](https://github.com/fastrojs/fastro-server/blob/master/examples/crud_postgres.ts)
 - [create simple REST API with JWT](https://github.com/fastrojs/fastro-server/blob/master/examples/rest_api_jwt)
 
