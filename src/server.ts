@@ -37,11 +37,10 @@ export class Fastro {
   /**
    * Register plugin
    *        
-   *        const plugin = function (fastro: Fastro, request: Request) {
-   *           fastro.decorate((instance) => {
-   *              instance.hello = "hello";
-   *            });
-   *           request.ok = "ok";
+   *        const plugin = function (fastro: Fastro) {
+   *           fastro.get("/", (req) => {
+   *              req.send("hello");
+   *           })
    *        };
    * 
    *       server.register(plugin)
