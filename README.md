@@ -32,6 +32,36 @@ If performance is important to you, here are the benchmark results:
 
 Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/benchmarks) to see the detail method.
 
+## Middleware
+
+You can add new properties or functions to the default `request`. This feature is similar to the [express middleware](https://expressjs.com/en/guide/writing-middleware.html).
+```ts
+const middleware = (req: Request) => {
+  req.hi = (word: string) => {
+    req.send(word);
+  };
+};
+
+server.use(middleware);
+```
+
+## Plugin
+You can add new properties or functions to fastro instance. You can also bundle several routes in one plugin. This is similar to the [fastify plugin](https://www.fastify.io/docs/latest/Plugins/).
+```ts
+export const routes = function (fastro: Fastro) {
+  fastro
+    .get("/", (req) => {
+      req.send("root");
+    })
+    .post("/", (req) => {
+      req.send("post");
+    });
+};
+
+server.register(routes);
+
+```
+
 ## How to use & examples
 
 This module uses the git release. If you want to pick a specific version, for example `v0.5.4`, then the full url is [`https://deno.land/x/fastro@v0.5.4/mod.ts`](https://deno.land/x/fastro@v0.5.4/mod.ts). If you do not use the version, it will refer to `master` branch.

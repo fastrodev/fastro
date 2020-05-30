@@ -1,6 +1,5 @@
-import { Fastro, Request } from "../mod.ts";
+import { Fastro } from "../mod.ts";
 
-export const sample = function (fastro: Fastro, request: Request) {
+export const sample = function (fastro: Fastro) {
   fastro.hello = "hello plugin";
-  request.ok = "ok plugin";
 };

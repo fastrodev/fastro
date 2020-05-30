@@ -24,9 +24,7 @@ Check the following codes to find out how to:
 - [create simple Postgres REST API](https://github.com/fastrojs/fastro-server/blob/master/examples/crud_postgres.ts)
 
 ## Middleware
-You can add new properties or functions to the default `request`. This feature is similar to the [express middleware](https://expressjs.com/en/guide/writing-middleware.html).
 
-Check the following codes to find out how to:
 - [create very simple middleware](https://github.com/fastrojs/fastro-server/blob/master/examples/use_middleware.ts#L6)
 - [create middleware in separate file](https://github.com/fastrojs/fastro-server/blob/master/middleware/sample.ts)
 - [import middleware from external file](https://github.com/fastrojs/fastro-server/blob/master/examples/use_middleware.ts#L2)
@@ -35,7 +33,7 @@ Check the following codes to find out how to:
 - [create simple REST API with JWT](https://github.com/fastrojs/fastro-server/blob/master/examples/rest_api_jwt)
 
 ## Decorator
-You can add new properties or functions to Fastro instance. This is similar to the [fastify decorator](https://www.fastify.io/docs/latest/Decorators/). Check the following codes to find out how to: [create a new server property](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts).
+- [create a new server property](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts).
 
 ## Plugin
-You can add new properties or functions to fastro instance. This is similar to the [fastify plugin](https://www.fastify.io/docs/latest/Plugins/). Check the following codes to find out how to: [create & register a plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/plugin.ts).
+- [create & register a plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/plugin.ts).
