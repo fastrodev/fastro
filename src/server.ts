@@ -19,6 +19,7 @@ export class Fastro {
     try {
       let opt = options ? options : { port: 8080 };
       this.#server = serve(opt);
+      this.loadPlugin(this)
       if (!callback) console.info(opt);
       else callback(undefined, opt as any);
       // creates a loop iterating over async iterable objects
@@ -48,9 +49,7 @@ export class Fastro {
    */
   register(plugin: Plugin) {
     this.#plugins.push(plugin);
-    const req = new Request();
-    return this
-    // return this.loadPlugin(this, req);
+    return this;
   }
 
   /**
@@ -220,18 +219,11 @@ export class Fastro {
     return this;
   }
 
-  private loadPlugin(fastro: Fastro, request: Request) {
-    const [router] = this.#router
-      .map((router, idx )=> {
-        return { router, idx }
-      })
-      .filter(r=> {
-        return r.router.url === request.url
-      })
-
-    this.#router.splice(router.idx, 1);
+  private loadPlugin(fastro: Fastro) {
     this.#plugins.forEach((plugin) => {
-      plugin(fastro, request);
+      plugin(fastro, () =>{
+        console.log(this.#router)
+      })
     });
     return this;
   }
@@ -264,7 +256,6 @@ export class Fastro {
       request.send = (payload, status, headers): boolean => {
         return this.send(payload, status, headers, req);
       };
-      if (this.#plugins.length > 0) this.loadPlugin(this, request);
       if (this.#middlewares.length > 0) this.mutateRequest(request);
       else this.routeHandler(request);
     } catch (error) {
@@ -405,7 +396,7 @@ interface Middleware {
   handler(req: Request, callback: Function): any;
 }
 interface Plugin {
-  (fastro: Fastro, request: Request): any;
+  (fastro: Fastro, callback: Function): any;
 }
 interface Handler {
   (req: Request, callback: Function): any;

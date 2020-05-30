@@ -38,4 +38,4 @@ Check the following codes to find out how to:
 You can add new properties or functions to Fastro instance. This is similar to the [fastify decorator](https://www.fastify.io/docs/latest/Decorators/). Check the following codes to find out how to: [create a new server property](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts).
 
 ## Plugin
-You can add new properties or functions to fastro instance or default request. This is similar to the [fastify plugin](https://www.fastify.io/docs/latest/Plugins/). Check the following codes to find out how to: [create & register a plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/plugin.ts).
+You can add new properties or functions to fastro instance. This is similar to the [fastify plugin](https://www.fastify.io/docs/latest/Plugins/). Check the following codes to find out how to: [create & register a plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/plugin.ts).
