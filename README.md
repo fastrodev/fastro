@@ -62,9 +62,11 @@ server.register(routes);
 
 ```
 
-## How to use & examples
+## How to use
 
 This module uses the git release. If you want to pick a specific version, for example `v0.5.4`, then the full url is [`https://deno.land/x/fastro@v0.5.4/mod.ts`](https://deno.land/x/fastro@v0.5.4/mod.ts). If you do not use the version, it will refer to `master` branch.
+
+## Examples
 
 Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/examples) to find out how to: 
 - [change default port & add optional listen callback](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L34)
