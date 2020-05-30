@@ -228,14 +228,14 @@ export class Fastro {
   }
 
   private mutateRequest(req: Request) {
-    const plugins = this.#middlewares.filter((p) => {
+    const middlewares = this.#middlewares.filter((p) => {
       if (p.url === "/") return p;
       return p.url && this.checkUrl(req.url, p.url);
     });
     let mutates = 0;
     let mutate = false;
-    const [plugin] = plugins;
-    plugins.forEach((p) => {
+    const [m] = middlewares;
+    middlewares.forEach((p) => {
       mutate = p.handler(req, () => {});
       if (mutates > 0) {
         throw new Error(
@@ -244,7 +244,7 @@ export class Fastro {
       }
       if (mutate) mutates++;
     });
-    if (plugin.url) req.parameter = this.getParameter(req.url, plugin.url);
+    if (m.url) req.parameter = this.getParameter(req.url, m.url);
     this.routeHandler(req, mutate);
   }
 
