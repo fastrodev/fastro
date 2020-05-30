@@ -48,7 +48,7 @@ server.use(middleware);
 ## Plugin
 You can add new properties or functions to fastro instance. You can also bundle several routes in one plugin. This is similar to the [fastify plugin](https://www.fastify.io/docs/latest/Plugins/).
 ```ts
-export const routes = function (fastro: Fastro) {
+const routes = function (fastro: Fastro) {
   fastro
     .get("/", (req) => {
       req.send("root");
