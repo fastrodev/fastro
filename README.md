@@ -40,7 +40,7 @@ Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/exampl
 - [change default port & add optional listen callback](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L34)
 - [send simple text & json data](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L5)
 - [get url parameters](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L20)
-- [get payload from post method](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L300)
+- [get payload from post method](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L30)
 - [set custom http headers & status](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L9)
 - [change the request object by creating a middleware](https://github.com/fastrojs/fastro-server/blob/master/examples/use_middleware.ts#L6)
 - [create simple jwt auth](https://github.com/fastrojs/fastro-server/blob/master/examples/simple_jwt_auth.ts)
