@@ -49,7 +49,8 @@ export class Fastro {
   register(plugin: Plugin) {
     this.#plugins.push(plugin);
     const req = new Request();
-    return this.loadPlugin(this, req);
+    return this
+    // return this.loadPlugin(this, req);
   }
 
   /**
@@ -254,7 +255,7 @@ export class Fastro {
       request.send = (payload, status, headers): boolean => {
         return this.send(payload, status, headers, req);
       };
-      this.loadPlugin(this, request);
+      if (this.#plugins.length > 0) this.loadPlugin(this, request);
       if (this.#middlewares.length > 0) this.mutateRequest(request);
       else this.routeHandler(request);
     } catch (error) {
