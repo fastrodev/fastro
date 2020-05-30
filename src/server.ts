@@ -221,6 +221,15 @@ export class Fastro {
   }
 
   private loadPlugin(fastro: Fastro, request: Request) {
+    const [router] = this.#router
+      .map((router, idx )=> {
+        return { router, idx }
+      })
+      .filter(r=> {
+        return r.router.url === request.url
+      })
+
+    this.#router.splice(router.idx, 1);
     this.#plugins.forEach((plugin) => {
       plugin(fastro, request);
     });
