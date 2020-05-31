@@ -129,6 +129,11 @@ export class Fastro {
 
   /**
    * HEAD route shorthand declaration
+   * 
+   *       server.head('/', (req) => {
+   *          req.send('head');
+   *       })
+   * 
    * @param url 
    * @param handler 
    */
@@ -138,6 +143,11 @@ export class Fastro {
 
   /**
    * PATCH route shorthand declaration
+   * 
+   *       server.patch('/', (req) => {
+   *          req.send('patch');
+   *       })
+   * 
    * @param url 
    * @param handler 
    */
@@ -147,6 +157,11 @@ export class Fastro {
 
   /**
    * PUT route shorthand declaration
+   * 
+   *       server.put('/', (req) => {
+   *          req.send('put');
+   *       })
+   * 
    * @param url 
    * @param handler 
    */
@@ -156,6 +171,11 @@ export class Fastro {
 
   /**
    * OPTIONS route shorthand declaration
+   * 
+   *       server.options('/', (req) => {
+   *          req.send('options');
+   *       })
+   * 
    * @param url 
    * @param handler 
    */
@@ -165,6 +185,11 @@ export class Fastro {
 
   /**
    * DELETE shorthand declaration
+   * 
+   *       server.delete('/', (req) => {
+   *          req.send('delete');
+   *       })
+   * 
    * @param url 
    * @param handler 
    */
