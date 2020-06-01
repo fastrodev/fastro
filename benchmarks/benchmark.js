@@ -41,7 +41,8 @@ const compare = () => {
     `npx autocannon -c100 -j localhost:3000 > benchmark_fastro.json &`;
   const oak = `npx autocannon -c100 -j localhost:3003 > benchmark_oak.json &`;
   const node = `npx autocannon -c100 -j localhost:3006 > benchmark_node.json &`;
-  const php = `npx autocannon -c100 -j localhost:80/index.php > benchmark_php.json &`;
+  const php =
+    `npx autocannon -c100 -j localhost:80/index.php > benchmark_php.json &`;
 
   execSync(abc, { stdio: [0, 1, 2], cwd });
   execSync(deno, { stdio: [0, 1, 2], cwd });
