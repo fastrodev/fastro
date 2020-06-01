@@ -2,31 +2,38 @@ import { Fastro, Request } from "../mod.ts";
 
 const server = new Fastro();
 
-// add new property to fastro instance
-const plugin = function (fastro: Fastro) {
-  fastro.root = "root";
-};
-
-// call get function from plugin
-const get = function (fastro: Fastro) {
-  fastro.get("/hello", (req) => {
-    req.send("hello");
-  });
-};
-
-// call post function from plugin
-const post = function (fastro: Fastro) {
-  fastro.post("/hello", (req) => {
-    req.send("hello");
-  });
+// define routes inside plugin
+// you must call done callback in the end of handler
+// to make sure instance modification is saved
+const routes = function (fastro: Fastro, done: Function) {
+  fastro
+    .get("/:first/:second", (req) => {
+      // access url parameter inside handler
+      req.send(req.parameter);
+    })
+    .post("/hi", (req) => {
+      req.send("hi");
+    });
+  done();
 };
 
 server
-  .register(get)
-  .register(post)
-  .register(plugin)
+  // create in line plugin
+  // you must call done callback in the end of handler
+  // to make sure instance modification is saved
+  .register((fastro, done) => {
+    fastro.root = "root";
+    done();
+  })
+  // add plugin
+  .register(routes)
+  // add plugin with different prefix
+  // you can access url with url: http://localhost/v1/param1/param2
+  .register("v1", routes)
+  // you can access url with url: http://localhost/v2/param1/param2
+  .register("v2", routes)
   .get("/", (req) => {
-    // access 'root' property from get handler
+    // access 'root' property from handler
     req.send(server.root);
   });
 

@@ -34,6 +34,23 @@ export class Fastro {
     }
   };
 
+  private loadPlugin(fastro: Fastro) {
+    let afterLoadRouter: Router[];
+    // mutate fastro instance
+    this.#plugins.forEach((p) => {
+      afterLoadRouter = [...this.#router];
+      p.plugin(fastro, () => {
+        if (p.prefix) {
+          this.#router
+            .filter((r) => !afterLoadRouter.includes(r))
+            .forEach((x) => x.url = `/${p.prefix}${x.url}`);
+        }
+      });
+    });
+    this.#router = [...new Set(this.#router)];
+    return this;
+  }
+
   /**
    * Register plugin
    *        
@@ -46,8 +63,15 @@ export class Fastro {
    *       server.register(plugin)
    * @param plugin
    */
-  register(plugin: Plugin) {
-    this.#plugins.push(plugin);
+  register(plugin: Plugin): Fastro;
+  register(prefix: string, plugin: Plugin): Fastro;
+  register(prefixOrPlugin: string | Plugin, plugin?: Plugin) {
+    if (typeof prefixOrPlugin !== "string") {
+      this.#plugins.push({ plugin: prefixOrPlugin });
+    }
+    if (typeof prefixOrPlugin === "string" && plugin) {
+      this.#plugins.push({ prefix: prefixOrPlugin, plugin });
+    }
     return this;
   }
 
@@ -66,23 +90,8 @@ export class Fastro {
    * 
    **/
   route(router: Router) {
-    try {
-      const filteredRoutes = this.#router.filter((value) => {
-        return this.checkUrl(router.url, value.url) &&
-          router.method === value.method;
-      });
-      if (filteredRoutes.length > 0) {
-        const [route] = filteredRoutes;
-        const errStr = `Duplicate route: ${
-          JSON.stringify(route)
-        } already added.`;
-        throw FastroError("SERVER_ROUTE_ERROR", new Error(errStr));
-      }
-      this.#router.push(router);
-      return this;
-    } catch (error) {
-      throw FastroError("SERVER_ROUTE_ERROR", error);
-    }
+    this.#router.push(router);
+    return this;
   }
 
   /**
@@ -243,15 +252,6 @@ export class Fastro {
     return this;
   }
 
-  private loadPlugin(fastro: Fastro) {
-    this.#plugins.forEach((plugin) => {
-      plugin(fastro, () => {
-        console.log(this.#router);
-      });
-    });
-    return this;
-  }
-
   private mutateRequest(req: Request) {
     const middlewares = this.#middlewares.filter((p) => {
       if (p.url === "/") return p;
@@ -327,16 +327,12 @@ export class Fastro {
 
   private checkUrl(incoming: string, registered: string): boolean {
     try {
-      const incomingSplit = incoming.substr(1, incoming.length).split("/");
-      const registeredSplit = registered.substr(1, registered.length).split(
-        "/",
-      );
-      const filtered = registeredSplit
-        .filter((value, idx) => {
-          if (value.startsWith(":")) return incomingSplit[idx];
-          return value === incomingSplit[idx];
-        });
-      return incomingSplit.length === filtered.length;
+      if (registered.includes(":")) {
+        const incomingSplit = incoming.substr(1, incoming.length).split("/");
+        const regsSplit = registered.substr(1, registered.length).split("/");
+        return incomingSplit.length === regsSplit.length;
+      }
+      return incoming === registered;
     } catch (error) {
       throw FastroError("CHECK_URL_ERROR", error);
     }
@@ -370,7 +366,7 @@ export class Fastro {
   #server!: Server;
   #router: Router[] = [];
   #middlewares: Middleware[] = [];
-  #plugins: Plugin[] = [];
+  #plugins: Instance[] = [];
 }
 
 export class Request extends ServerRequest {
@@ -421,6 +417,10 @@ interface Middleware {
 }
 interface Plugin {
   (fastro: Fastro, callback: Function): any;
+}
+interface Instance {
+  plugin: Plugin;
+  prefix?: string;
 }
 interface Handler {
   (req: Request, callback: Function): any;
