@@ -1,4 +1,4 @@
-import { Request } from "../mod.ts";
+import { Request } from "../../mod.ts";
 
 export const support = (req: Request) => {
   req.somesupport = "somesupport";

@@ -1,5 +1,4 @@
-import { Fastro, Request } from "../mod.ts";
-import { sendOk, support } from "../middleware/mod.ts";
+import { Fastro, Request, sendOk, support } from "../mod.ts";
 
 const server = new Fastro();
 
