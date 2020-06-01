@@ -22,6 +22,7 @@ If performance is important to you, here are the benchmark results:
 | **Fastro** | **${fastro_version}** | **&#10003;** | **${fastro}**  |
 | Node `http` | ${node_version} | &#10007; | ${node} |
 | Oak | ${oak_version} | &#10003; | ${oak} |
+| PHP | ${php_version} | &#10007; | ${php} |
 
 Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/benchmarks) to see the detail method.
 

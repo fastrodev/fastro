@@ -8,6 +8,7 @@ const abc_version = "1.0.0-rc8";
 const deno_version = "1.0.3";
 const node_version = "14.3.0";
 const fastify_version = "2.14.1";
+const php_version = "7.3.11";
 
 const cwd = process.cwd();
 
@@ -40,6 +41,7 @@ const compare = () => {
     `npx autocannon -c100 -j localhost:3000 > benchmark_fastro.json &`;
   const oak = `npx autocannon -c100 -j localhost:3003 > benchmark_oak.json &`;
   const node = `npx autocannon -c100 -j localhost:3006 > benchmark_node.json &`;
+  const php = `npx autocannon -c100 -j localhost:80 > benchmark_php.json &`;
 
   execSync(abc, { stdio: [0, 1, 2], cwd });
   execSync(deno, { stdio: [0, 1, 2], cwd });
@@ -48,6 +50,7 @@ const compare = () => {
   execSync(fastro, { stdio: [0, 1, 2], cwd });
   execSync(oak, { stdio: [0, 1, 2], cwd });
   execSync(node, { stdio: [0, 1, 2], cwd });
+  execSync(php, { stdio: [0, 1, 2], cwd });
 };
 
 const kill = () => {
@@ -76,6 +79,7 @@ const compile = () => {
   const { requests: { average: fastro } } = require("./benchmark_fastro.json");
   const { requests: { average: oak } } = require("./benchmark_oak.json");
   const { requests: { average: node } } = require("./benchmark_node.json");
+  const { requests: { average: php } } = require("./benchmark_php.json");
 
   const fs = require("fs");
 
@@ -91,13 +95,15 @@ const compile = () => {
     .replace("${fastro}", fastro)
     .replace("${oak}", oak)
     .replace("${node}", node)
+    .replace("${php}", php)
     .replace("${oak_version}", oak_version)
     .replace("${express_version}", express_version)
     .replace("${fastro_version}", fastro_version)
     .replace("${abc_version}", abc_version)
     .replace("${deno_version}", deno_version)
     .replace("${node_version}", node_version)
-    .replace("${fastify_version}", fastify_version);
+    .replace("${fastify_version}", fastify_version)
+    .replace("${php_version}", php_version);
 
   fs.writeFile("../readme.md", final, function (err) {
     if (err) throw err;
