@@ -117,3 +117,40 @@ test({
     assertEquals(server.ok, "ok");
   },
 });
+
+test({
+  name: "PLUGIN",
+  async fn() {
+    const server = new Fastro();
+    server
+      .register((fastro) => {
+        fastro.get("/ok", (req) => {
+          req.send("PLUGIN");
+        });
+      });
+    server.listen({ port });
+    const result = await fetch(addr + "/ok");
+    const text = await result.text();
+    assertEquals(text, "PLUGIN");
+    server.close();
+  },
+});
+
+test({
+  name: "PLUGIN with prefix",
+  async fn() {
+    const server = new Fastro();
+    server
+      .register("v1", (fastro, done) => {
+        fastro.get("/ok", (req) => {
+          req.send("PLUGIN");
+        });
+        done();
+      });
+    server.listen({ port });
+    const result = await fetch(addr + "/v1/ok");
+    const text = await result.text();
+    assertEquals(text, "PLUGIN");
+    server.close();
+  },
+});
