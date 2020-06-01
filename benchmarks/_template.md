@@ -63,7 +63,7 @@ server.register(routes);
 
 ### How to use
 
-This module uses the git release. If you want to pick a specific version, for example `v0.5.4`, then the full url is [`https://deno.land/x/fastro@v0.5.4/mod.ts`](https://deno.land/x/fastro@v0.5.4/mod.ts). If you do not use the version, it will refer to `master` branch.
+This module uses the git release. If you want to pick a specific version, for example `v0.6.0`, then the full url is [`https://deno.land/x/fastro@v0.6.0/mod.ts`](https://deno.land/x/fastro@v0.6.0/mod.ts). If you do not use the version, it will refer to `master` branch.
 
 ### Examples
 

@@ -1,40 +1,33 @@
-# Fastro
-
+## Web framework for developers obsessed with performance and simplicity
 ![ci](https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg)
 
-Deno web framework for developers who are obsessed with performance and simplicity.
-
-Inspired by [Fastify](https://www.fastify.io/) & [Express](https://expressjs.com/).
+Fastro is inspired by [Fastify](https://www.fastify.io/) & [Express](https://expressjs.com/).
 
 ```ts
 import { Fastro } from "https://deno.land/x/fastro/mod.ts";
-
 const server = new Fastro();
-
 server.get("/", (req) => req.send("root"));
-
 await server.listen();
-
 ```
 
-## Benchmarks
+### Benchmarks
 If performance is important to you, here are the benchmark results:
 
 | Framework | Version | Router? | Avg Req |
 | :-- | :-- | :--: | --: |
-| Abc | 1.0.0-rc8 | &#10003; | 1144.8 |
-| Deno `http` | 1.0.3 | &#10007; | 2286.6 |
-| Express | 4.17.1 | &#10003; | 551 |
-| Fastify | 2.14.1 | &#10003; | 1462.7 |
-| **Fastro** | **0.5.4** | **&#10003;** | **1766.1**  |
-| Node `http` | 14.3.0 | &#10007; | 2011.3 |
-| Oak | 4.0.0 | &#10003; | 1052.5 |
+| Abc | 1.0.0-rc8 | &#10003; | 962.3 |
+| Deno `http` | 1.0.3 | &#10007; | 2197 |
+| Express | 4.17.1 | &#10003; | 470.4 |
+| Fastify | 2.14.1 | &#10003; | 1122.2 |
+| **Fastro** | **0.6.0** | **&#10003;** | **1432.4**  |
+| Node `http` | 14.3.0 | &#10007; | 2464.6 |
+| Oak | 4.0.0 | &#10003; | 1000.9 |
 
 Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/benchmarks) to see the detail method.
 
-## Middleware
+### Middleware
 
-You can add new properties or functions to the default `request`. This feature is similar to the [express middleware](https://expressjs.com/en/guide/writing-middleware.html).
+You can add new properties or functions to the default `request`. This is similar to the [express middleware](https://expressjs.com/en/guide/writing-middleware.html).
 ```ts
 const middleware = (req: Request) => {
   req.hi = (word: string) => {
@@ -45,8 +38,8 @@ const middleware = (req: Request) => {
 server.use(middleware);
 ```
 
-## Plugin
-You can add new properties or functions to fastro instance. You can also bundle several routes in one plugin. This is similar to the [fastify plugin](https://www.fastify.io/docs/latest/Plugins/).
+### Plugin
+You can add new properties or functions to the fastro instance. You can also use all default instance functions, include create routes & middleware. This is similar to the [fastify plugin](https://www.fastify.io/docs/latest/Plugins/).
 ```ts
 const routes = function (fastro: Fastro) {
   fastro
@@ -55,6 +48,12 @@ const routes = function (fastro: Fastro) {
     })
     .post("/", (req) => {
       req.send("post");
+    })
+    .put("/", (req) => {
+      req.send("put");
+    })
+    .delete("/", (req) => {
+      req.send("delete");
     });
 };
 
@@ -62,11 +61,11 @@ server.register(routes);
 
 ```
 
-## How to use
+### How to use
 
-This module uses the git release. If you want to pick a specific version, for example `v0.5.4`, then the full url is [`https://deno.land/x/fastro@v0.5.4/mod.ts`](https://deno.land/x/fastro@v0.5.4/mod.ts). If you do not use the version, it will refer to `master` branch.
+This module uses the git release. If you want to pick a specific version, for example `v0.6.0`, then the full url is [`https://deno.land/x/fastro@v0.6.0/mod.ts`](https://deno.land/x/fastro@v0.6.0/mod.ts). If you do not use the version, it will refer to `master` branch.
 
-## Examples
+### Examples
 
 Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/examples) to find out how to: 
 - [change default port & add optional listen callback](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L34)
