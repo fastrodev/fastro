@@ -15,14 +15,14 @@ If performance is important to you, here are the benchmark results:
 
 | Framework | Version | Router? | Avg Req |
 | :-- | :-- | :--: | --: |
-| Abc | 1.0.0-rc8 | &#10003; | 1082.91 |
-| Deno `http` | 1.0.3 | &#10007; | 1968.5 |
-| Express | 4.17.1 | &#10003; | 657.2 |
-| Fastify | 2.14.1 | &#10003; | 1652.9 |
-| **Fastro** | **0.6.0** | **&#10003;** | **1825.8**  |
-| Node `http` | 14.3.0 | &#10007; | 2502 |
-| Oak | 4.0.0 | &#10003; | 1311.9 |
-| PHP | 7.3.11 | &#10007; | 5.9 |
+| Abc | 1.0.0-rc8 | &#10003; | 923.6 |
+| Deno `http` | 1.0.3 | &#10007; | 2370.31 |
+| Express | 4.17.1 | &#10003; | 477.6 |
+| Fastify | 2.14.1 | &#10003; | 1229 |
+| **Fastro** | **0.6.0** | **&#10003;** | **1630.2**  |
+| Node `http` | 14.3.0 | &#10007; | 2294.5 |
+| Oak | 4.0.0 | &#10003; | 1008.8 |
+| PHP | 7.3.11 | &#10007; | 10.4 |
 
 Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/benchmarks) to see the detail method.
 
