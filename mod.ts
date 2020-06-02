@@ -1,7 +1,13 @@
 export {
   Fastro,
   Request,
+  createServer,
 } from "./src/server.ts";
+
+export {
+  Controller,
+  Get,
+} from "./src/decorator.ts";
 
 export {
   support,
