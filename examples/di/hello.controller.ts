@@ -1,8 +1,8 @@
-import { Controller, Get } from "../../src/decorator.ts";
+import { Controller, Get, Request } from "../../mod.ts";
 @Controller()
 class Greet {
-  @Get(true)
-  hello(name: string) {
-    // request.send("hello");
+  @Get()
+  hello(req: Request) {
+    req.send('hello')
   }
 }

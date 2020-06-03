@@ -1,3 +1,4 @@
 import { createServer } from "../../mod.ts";
 
-await createServer().listen();
+const server = await createServer()
+await server.listen()

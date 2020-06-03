@@ -1,5 +1,4 @@
 import { serve, Server, ServerRequest, decode } from "../deps.ts";
-import { loader } from "./loader.ts";
 
 /**
  * Fastro class
@@ -402,17 +401,11 @@ export class Request extends ServerRequest {
   };
   [key: string]: any
 }
-
-export function createServer() {
-  loader();
-  const server = new Fastro();
-  return server;
-}
-
 interface Router {
   method: string;
   url: string;
   handler(req: Request, callback: Function): any;
+  [key: string]: any;
 }
 interface ListenOptions {
   port: number;
