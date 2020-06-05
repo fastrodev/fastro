@@ -20,7 +20,6 @@ export class Fastro {
       let opt = options ? options : { port: 8080 };
       this.#server = serve(opt);
       this.loadPlugin(this);
-      console.log("router-->", this.#router);
       if (!callback) console.info(opt);
       else callback(undefined, opt as any);
       // creates a loop iterating over async iterable objects
