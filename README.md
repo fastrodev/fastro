@@ -1,6 +1,4 @@
-<div align="center">
-<img src="https://repository-images.githubusercontent.com/264308713/21720700-a7bd-11ea-91ee-a33528049018" width="650" height="auto"/>
-</div>
+![fastro](https://repository-images.githubusercontent.com/264308713/21720700-a7bd-11ea-91ee-a33528049018)
 
 ![ci](https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg)
 
