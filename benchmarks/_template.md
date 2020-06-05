@@ -1,4 +1,4 @@
-![fastro](https://repository-images.githubusercontent.com/264308713/21720700-a7bd-11ea-91ee-a33528049018)
+![fastro](https://repository-images.githubusercontent.com/264308713/b4fa0680-a7c2-11ea-846c-f706293db058)
 
 ![ci](https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg)
 
