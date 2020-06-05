@@ -24,7 +24,7 @@ If performance is important to you, here are the `Hello World` benchmark results
 | Deno `http` | 1.0.5 | &#10007; | 18078.8 |
 | Express | 4.17.1 | &#10003; | 7161.55 |
 | Fastify | 2.14.1 | &#10003; | 13821.8 |
-| **Fastro** | **0.6.2** | **&#10003;** | **14980.8**  |
+| **Fastro** | **0.7.0** | **&#10003;** | **14980.8**  |
 | Node `http` | 14.3.0 | &#10007; | 16491.41 |
 | Oak | 4.0.0 | &#10003; | 11246.6 |
 | PHP | 7.3.11 | &#10007; | 6211.82 |
@@ -64,7 +64,7 @@ server.register(routes);
 
 ## How to use
 
-This module uses the git release. If you want to pick a specific version, for example `0.6.2`, then the full url is [`https://deno.land/x/fastro@0.6.2/mod.ts`](https://deno.land/x/fastro@0.6.2/mod.ts). If you do not use the version, it will refer to `master` branch and breaking changes may be made without warning.
+This module uses the git release. If you want to pick a specific version, for example `0.7.0`, then the full url is [`https://deno.land/x/fastro@0.7.0/mod.ts`](https://deno.land/x/fastro@0.7.0/mod.ts). If you do not use the version, it will refer to `master` branch and breaking changes may be made without warning.
 
 ## Examples
 
