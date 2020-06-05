@@ -20,6 +20,7 @@ export class Fastro {
       let opt = options ? options : { port: 8080 };
       this.#server = serve(opt);
       this.loadPlugin(this);
+      console.log("router-->", this.#router);
       if (!callback) console.info(opt);
       else callback(undefined, opt as any);
       // creates a loop iterating over async iterable objects
@@ -36,17 +37,25 @@ export class Fastro {
 
   private loadPlugin(fastro: Fastro) {
     let afterLoadRouter: Router[];
-    // mutate fastro instance
-    this.#plugins.forEach((p) => {
-      afterLoadRouter = [...this.#router];
-      p.plugin(fastro, () => {
-        if (p.prefix) {
-          this.#router
-            .filter((r) => !afterLoadRouter.includes(r))
-            .forEach((x) => x.url = `/${p.prefix}${x.url}`);
-        }
+    let afterLoadPlugin: Instance[];
+    const loop = (plugins: Instance[]) => {
+      plugins.forEach((p) => {
+        afterLoadRouter = [...this.#router];
+        afterLoadPlugin = [...this.#plugins];
+        p.plugin(fastro, () => {
+          const list = this.#plugins.filter((plugin) =>
+            !afterLoadPlugin.includes(plugin)
+          );
+          if (list.length > 0) loop(list);
+          if (p.prefix) {
+            this.#router
+              .filter((r) => !afterLoadRouter.includes(r))
+              .forEach((x) => x.url = `/${p.prefix}${x.url}`);
+          }
+        });
       });
-    });
+    };
+    loop(this.#plugins);
     this.#router = [...new Set(this.#router)];
     return this;
   }
