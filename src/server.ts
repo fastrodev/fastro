@@ -252,25 +252,19 @@ export class Fastro {
     return this;
   }
 
-  private mutateRequest(req: Request) {
-    const middlewares = this.#middlewares.filter((p) => {
-      if (p.url === "/") return p;
-      return p.url && this.checkUrl(req.url, p.url);
-    });
-    let mutates = 0;
-    let mutate = false;
-    const [m] = middlewares;
-    middlewares.forEach((p) => {
-      mutate = p.handler(req, () => {});
-      if (mutates > 0) {
-        throw new Error(
-          "`req.send()` has been called. It can only be run once in a request.",
-        );
-      }
-      if (mutate) mutates++;
-    });
-    if (m.url) req.parameter = this.getParameter(req.url, m.url);
-    this.routeHandler(req, mutate);
+  private middlewareHandler(req: Request) {
+    try {
+      const [middleware] = this.#middlewares.filter((mid) => {
+        return (mid.url && this.checkUrl(req.url, mid.url));
+      });
+      let mutate: any;
+      if (!middleware) return this.routeHandler(req);
+      mutate = middleware.handler(req, () => {
+        this.routeHandler(req, mutate);
+      });
+    } catch (error) {
+      throw FastroError("SERVER_MIDDLEWARE_HANDLER_ERROR", error);
+    }
   }
 
   private requestHandler = async (req: ServerRequest) => {
@@ -280,7 +274,7 @@ export class Fastro {
       request.send = (payload, status, headers): boolean => {
         return this.send(payload, status, headers, req);
       };
-      if (this.#middlewares.length > 0) this.mutateRequest(request);
+      if (this.#middlewares.length > 0) this.middlewareHandler(request);
       else this.routeHandler(request);
     } catch (error) {
       throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);

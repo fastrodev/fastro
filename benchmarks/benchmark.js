@@ -3,12 +3,13 @@ const { execSync } = require("child_process");
 
 const oak_version = "4.0.0";
 const express_version = "4.17.1";
-const fastro_version = "0.6.0";
-const abc_version = "1.0.0-rc8";
-const deno_version = "1.0.3";
+const fastro_version = "0.6.2";
+const abc_version = "1.0.0-rc10";
+const deno_version = "1.0.5";
 const node_version = "14.3.0";
 const fastify_version = "2.14.1";
 const php_version = "7.3.11";
+const flask_version = "1.1.2";
 
 const cwd = process.cwd();
 
@@ -30,28 +31,31 @@ const start = () => {
   execSync(node, { stdio: [0, 1, 2], cwd });
 };
 
-const compare = () => {
-  const abc = `npx autocannon -c100 -j localhost:3004 > benchmark_abc.json &`;
-  const deno = `npx autocannon -c100 -j localhost:3005 > benchmark_deno.json &`;
+const compare = async () => {
+  const abc = `npx autocannon -c100 -j localhost:3004 > benchmark_abc.json`;
+  const deno = `npx autocannon -c100 -j localhost:3005 > benchmark_deno.json`;
   const express =
-    `npx autocannon -c100 -j localhost:3001 > benchmark_express.json &`;
+    `npx autocannon -c100 -j localhost:3001 > benchmark_express.json`;
   const fastify =
-    `npx autocannon -c100 -j localhost:3002 > benchmark_fastify.json &`;
+    `npx autocannon -c100 -j localhost:3002 > benchmark_fastify.json`;
   const fastro =
-    `npx autocannon -c100 -j localhost:3000 > benchmark_fastro.json &`;
-  const oak = `npx autocannon -c100 -j localhost:3003 > benchmark_oak.json &`;
-  const node = `npx autocannon -c100 -j localhost:3006 > benchmark_node.json &`;
+    `npx autocannon -c100 -j localhost:3000 > benchmark_fastro.json`;
+  const oak = `npx autocannon -c100 -j localhost:3003 > benchmark_oak.json`;
+  const node = `npx autocannon -c100 -j localhost:3006 > benchmark_node.json`;
   const php =
-    `npx autocannon -c100 -j localhost:80/index.php > benchmark_php.json &`;
+    `npx autocannon -c100 -j localhost:80/index.php > benchmark_php.json`;
+  const flask =
+    `npx autocannon -c100 -j localhost:5000 > benchmark_flask.json`;
 
-  execSync(abc, { stdio: [0, 1, 2], cwd });
-  execSync(deno, { stdio: [0, 1, 2], cwd });
-  execSync(express, { stdio: [0, 1, 2], cwd });
-  execSync(fastify, { stdio: [0, 1, 2], cwd });
-  execSync(fastro, { stdio: [0, 1, 2], cwd });
-  execSync(oak, { stdio: [0, 1, 2], cwd });
-  execSync(node, { stdio: [0, 1, 2], cwd });
-  execSync(php, { stdio: [0, 1, 2], cwd });
+  await execSync(php, { stdio: [0, 1, 2], cwd });
+  await execSync(flask, { stdio: [0, 1, 2], cwd });
+  await execSync(abc, { stdio: [0, 1, 2], cwd });
+  await execSync(deno, { stdio: [0, 1, 2], cwd });
+  await execSync(express, { stdio: [0, 1, 2], cwd });
+  await execSync(fastify, { stdio: [0, 1, 2], cwd });
+  await execSync(fastro, { stdio: [0, 1, 2], cwd });
+  await execSync(oak, { stdio: [0, 1, 2], cwd });
+  await execSync(node, { stdio: [0, 1, 2], cwd });
 };
 
 const kill = () => {
@@ -63,6 +67,7 @@ lsof -ti tcp:3003 | xargs kill &
 lsof -ti tcp:3004 | xargs kill &
 lsof -ti tcp:3005 | xargs kill &
 lsof -ti tcp:3006 | xargs kill &
+lsof -ti tcp:5000 | xargs kill &
 `;
   execSync(kill_server, { stdio: [0, 1, 2], cwd });
 };
@@ -81,6 +86,7 @@ const compile = () => {
   const { requests: { average: oak } } = require("./benchmark_oak.json");
   const { requests: { average: node } } = require("./benchmark_node.json");
   const { requests: { average: php } } = require("./benchmark_php.json");
+  const { requests: { average: flask } } = require("./benchmark_flask.json");
 
   const fs = require("fs");
 
@@ -97,14 +103,19 @@ const compile = () => {
     .replace("${oak}", oak)
     .replace("${node}", node)
     .replace("${php}", php)
+    .replace("${flask}", flask)
     .replace("${oak_version}", oak_version)
     .replace("${express_version}", express_version)
-    .replace("${fastro_version}", fastro_version)
     .replace("${abc_version}", abc_version)
     .replace("${deno_version}", deno_version)
     .replace("${node_version}", node_version)
     .replace("${fastify_version}", fastify_version)
-    .replace("${php_version}", php_version);
+    .replace("${php_version}", php_version)
+    .replace("${fastro_version}", fastro_version)
+    .replace("${fastro_version}", fastro_version)
+    .replace("${fastro_version}", fastro_version)
+    .replace("${fastro_version}", fastro_version)
+    .replace("${flask_version}", flask_version)
 
   fs.writeFile("../readme.md", final, function (err) {
     if (err) throw err;

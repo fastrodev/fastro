@@ -1,5 +1,5 @@
 const { test } = Deno;
-import { assertEquals } from "../dev_deps.ts";
+import { assertEquals } from "./test_deps.ts";
 import { Fastro } from "../mod.ts";
 const addr = "http://localhost:8000";
 const port = 8000;
@@ -72,10 +72,11 @@ test({
   name: "MIDDLEWARE",
   async fn() {
     const server = new Fastro();
-    server.use((req) => {
+    server.use((req, done) => {
       req.sendOk = (payload: string) => {
         req.send(payload);
       };
+      done();
     });
     server.get("/", (req) => req.sendOk("plugin"));
     server.listen({ port });
@@ -91,10 +92,11 @@ test({
   async fn() {
     const server = new Fastro();
     server
-      .use("/ok", (req) => {
+      .use("/ok", (req, done) => {
         req.sendOk = (payload: string) => {
           req.send(payload);
         };
+        done();
       })
       .get("/ok", (req) => {
         req.sendOk("MIDDLEWARE");
