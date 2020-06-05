@@ -1,4 +1,7 @@
-# Fastro
+<div align="center">
+<img src="https://repository-images.githubusercontent.com/264308713/21720700-a7bd-11ea-91ee-a33528049018" width="650" height="auto"/>
+</div>
+
 ![ci](https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg)
 
 Fastro is web framework for developers obsessed with performance and simplicity. 
@@ -61,7 +64,7 @@ server.register(routes);
 
 ## How to use
 
-This module uses the git release. If you want to pick a specific version, for example `0.6.2`, then the full url is [`https://deno.land/x/fastro@0.6.2/mod.ts`](https://deno.land/x/fastro@0.6.2/mod.ts). If you do not use the version, it will refer to `master` branch.
+This module uses the git release. If you want to pick a specific version, for example `0.6.2`, then the full url is [`https://deno.land/x/fastro@0.6.2/mod.ts`](https://deno.land/x/fastro@0.6.2/mod.ts). If you do not use the version, it will refer to `master` branch and breaking changes may be made without warning.
 
 ## Examples
 
