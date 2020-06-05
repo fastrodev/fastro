@@ -49,7 +49,10 @@ export class Fastro {
           if (p.prefix) {
             this.#router
               .filter((r) => !afterLoadRouter.includes(r))
-              .forEach((x) => x.url = `/${p.prefix}${x.url}`);
+              .forEach((x) => {
+                const url = x.url === "/" ? "" : x.url;
+                x.url = `/${p.prefix}${url}`;
+              });
           }
         });
       });

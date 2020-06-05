@@ -27,7 +27,7 @@ If performance is important to you, here are the `Hello World` benchmark results
 | PHP | ${php_version} | &#10007; | ${php} |
 | Python Flask | ${flask_version} | &#10003; | ${flask} |
 
-Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/benchmarks) to see the detail method.
+Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/benchmarks) to see the details.
 
 ## Middleware
 
@@ -76,6 +76,7 @@ Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/exampl
 - [create middleware](https://github.com/fastrojs/fastro-server/blob/master/examples/middleware.ts)
 - [create decorator to add new property](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts)
 - [create router with plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/plugin.ts)
+- [create nested plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/nested_plugin.ts)
 - [create simple REST API](https://github.com/fastrojs/fastro-server/blob/master/examples/crud_postgres.ts)
 - [create simple REST API with JWT](https://github.com/fastrojs/fastro-server/blob/master/examples/rest_api_jwt)
 

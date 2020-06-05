@@ -17,17 +17,17 @@ If performance is important to you, here are the `Hello World` benchmark results
 
 | Framework | Version | Router? | Avg Req |
 | :-- | :-- | :--: | --: |
-| Abc | 1.0.0-rc10 | &#10003; | 10646.6 |
-| Deno `http` | 1.0.5 | &#10007; | 16427.6 |
-| Express | 4.17.1 | &#10003; | 6338.5 |
-| Fastify | 2.14.1 | &#10003; | 12058 |
-| **Fastro** | **0.6.2** | **&#10003;** | **14329**  |
-| Node `http` | 14.3.0 | &#10007; | 15454.6 |
-| Oak | 4.0.0 | &#10003; | 11048.6 |
-| PHP | 7.3.11 | &#10007; | 5721.2 |
-| Python Flask | 1.1.2 | &#10003; | 547.5 |
+| Abc | 1.0.0-rc10 | &#10003; | 11548.2 |
+| Deno `http` | 1.0.5 | &#10007; | 18078.8 |
+| Express | 4.17.1 | &#10003; | 7161.55 |
+| Fastify | 2.14.1 | &#10003; | 13821.8 |
+| **Fastro** | **0.6.2** | **&#10003;** | **14980.8**  |
+| Node `http` | 14.3.0 | &#10007; | 16491.41 |
+| Oak | 4.0.0 | &#10003; | 11246.6 |
+| PHP | 7.3.11 | &#10007; | 6211.82 |
+| Python Flask | 1.1.2 | &#10003; | 568 |
 
-Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/benchmarks) to see the detail method.
+Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/benchmarks) to see the details.
 
 ## Middleware
 
@@ -76,6 +76,7 @@ Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/exampl
 - [create middleware](https://github.com/fastrojs/fastro-server/blob/master/examples/middleware.ts)
 - [create decorator to add new property](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts)
 - [create router with plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/plugin.ts)
+- [create nested plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/nested_plugin.ts)
 - [create simple REST API](https://github.com/fastrojs/fastro-server/blob/master/examples/crud_postgres.ts)
 - [create simple REST API with JWT](https://github.com/fastrojs/fastro-server/blob/master/examples/rest_api_jwt)
 
