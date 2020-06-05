@@ -44,8 +44,7 @@ const compare = async () => {
   const node = `npx autocannon -c100 -j localhost:3006 > benchmark_node.json`;
   const php =
     `npx autocannon -c100 -j localhost:80/index.php > benchmark_php.json`;
-  const flask =
-    `npx autocannon -c100 -j localhost:5000 > benchmark_flask.json`;
+  const flask = `npx autocannon -c100 -j localhost:5000 > benchmark_flask.json`;
 
   await execSync(php, { stdio: [0, 1, 2], cwd });
   await execSync(flask, { stdio: [0, 1, 2], cwd });
@@ -115,7 +114,7 @@ const compile = () => {
     .replace("${fastro_version}", fastro_version)
     .replace("${fastro_version}", fastro_version)
     .replace("${fastro_version}", fastro_version)
-    .replace("${flask_version}", flask_version)
+    .replace("${flask_version}", flask_version);
 
   fs.writeFile("../readme.md", final, function (err) {
     if (err) throw err;
