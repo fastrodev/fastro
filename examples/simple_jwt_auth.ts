@@ -24,7 +24,7 @@ function createJwt() {
   return makeJwt({ header, payload, key });
 }
 
-const plugin = function (req: Request) {
+const plugin = function (req: Request, done: Function) {
   if (req.method === "GET") {
     const token = req.headers.get("token");
     if (!token) return req.send("token not found");
@@ -33,6 +33,7 @@ const plugin = function (req: Request) {
       if (!v) return req.send("token invalid");
     });
   }
+  done();
 };
 
 const server = new Fastro();
