@@ -1,5 +1,5 @@
 const { test } = Deno;
-import { assertEquals } from "./test_deps.ts";
+import { assertEquals } from "../deps.ts";
 import { Fastro } from "../mod.ts";
 const addr = "http://localhost:8000";
 const port = 8000;
