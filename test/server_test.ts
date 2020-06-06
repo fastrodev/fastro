@@ -110,13 +110,30 @@ test({
 });
 
 test({
-  name: "DECORATE",
+  name: "DECORATE instance",
   async fn() {
     const server = new Fastro();
     server.decorate((instance) => {
       instance.ok = "ok";
     });
     assertEquals(server.ok, "ok");
+  },
+});
+
+test({
+  name: "DECORATE request",
+  async fn() {
+    const server = new Fastro();
+    server
+      .decorateRequest((req) => {
+        req.ok = "ok";
+      })
+      .get("/", (req) => req.send(req.ok));
+    server.listen({ port });
+    const result = await fetch(addr);
+    const text = await result.text();
+    assertEquals(text, "ok");
+    server.close();
   },
 });
 

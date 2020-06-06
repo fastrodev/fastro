@@ -36,8 +36,23 @@ server
   .get("/", (req) => req.oke());
 ```
 
+## Decorator
+
+Another way to add a new property or function to the fastro instance and `request` object is to use a decorator. This is similar to the [fastify decorator](https://www.fastify.io/docs/latest/Decorators/).
+```ts
+server
+  .decorate((instance) => instance.ok = "ok")
+  .decorate((instance) => instance.hello = (payload: string) => payload)
+  .decorateRequest((req) => req.oke = "oke request");
+
+server
+  .get("/", (req) => req.send(server.ok))
+  .get("/hello", (req) => req.send(server.hello("hello")))
+  .get("/oke", (req) => req.send(req.oke));
+```
+
 ## Plugin
-You can add new properties or functions to the fastro instance. You can also use all default instance functions, include create routes & middleware. This is similar to the [fastify plugin](https://www.fastify.io/docs/latest/Plugins/).
+You can add new properties or functions to the fastro instance. You can also use all default instance functions, include decorator, create routes & middleware. This is similar to the [fastify plugin](https://www.fastify.io/docs/latest/Plugins/).
 ```ts
 const routes = function (fastro: Fastro, done: Function) {
   fastro

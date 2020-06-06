@@ -243,6 +243,11 @@ export class Fastro {
     return this;
   }
 
+  decorateRequest(request: { (req: Request): void }) {
+    request(this.#request);
+    return this;
+  }
+
   /**
    * Add plugin
    * 
@@ -287,8 +292,9 @@ export class Fastro {
       request.send = (payload, status, headers): boolean => {
         return this.send(payload, status, headers, req);
       };
-      if (this.#middlewares.length > 0) this.middlewareHandler(request);
-      else this.routeHandler(request);
+      const mutated = Object.assign(this.#request, request);
+      if (this.#middlewares.length > 0) this.middlewareHandler(mutated);
+      else this.routeHandler(mutated);
     } catch (error) {
       throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);
     }
@@ -374,6 +380,7 @@ export class Fastro {
   #router: Router[] = [];
   #middlewares: Middleware[] = [];
   #plugins: Instance[] = [];
+  #request = new Request();
 }
 
 export class Request extends ServerRequest {
