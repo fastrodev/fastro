@@ -18,15 +18,7 @@ If performance is important to you, here are the `Hello World` benchmark results
 
 | Framework | Version | Router? | Avg Req |
 | :-- | :-- | :--: | --: |
-| Abc | ${abc_version} | &#10003; | ${abc} |
-| Deno `http` | ${deno_version} | &#10007; | ${deno_http} |
-| Express | ${express_version} | &#10003; | ${express} |
-| Fastify | ${fastify_version} | &#10003; | ${fastify} |
-| **Fastro** | **${fastro_version}** | **&#10003;** | **${fastro}**  |
-| Node `http` | ${node_version} | &#10007; | ${node} |
-| Oak | ${oak_version} | &#10003; | ${oak} |
-| PHP | ${php_version} | &#10007; | ${php} |
-| Python Flask | ${flask_version} | &#10003; | ${flask} |
+${text}
 
 Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/benchmarks) to see the details.
 

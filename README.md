@@ -18,15 +18,16 @@ If performance is important to you, here are the `Hello World` benchmark results
 
 | Framework | Version | Router? | Avg Req |
 | :-- | :-- | :--: | --: |
-| Abc | 1.0.0-rc10 | &#10003; | 11548.2 |
-| Deno `http` | 1.0.5 | &#10007; | 18078.8 |
-| Express | 4.17.1 | &#10003; | 7161.55 |
-| Fastify | 2.14.1 | &#10003; | 13821.8 |
-| **Fastro** | **0.7.0** | **&#10003;** | **14980.8**  |
-| Node `http` | 14.3.0 | &#10007; | 16491.41 |
-| Oak | 4.0.0 | &#10003; | 11246.6 |
-| PHP | 7.3.11 | &#10007; | 6211.82 |
-| Python Flask | 1.1.2 | &#10003; | 568 |
+| [Deno http](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/deno_http.ts) | 1.0.5 | &#10007; | 18078.8 |
+| [Node http](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/node_http.js) | 14.3.0 | &#10007; | 16491.41 |
+| [**Fastro**](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/fastro.ts) | **0.7.0** | **&#10003;** | **14980.8**  |
+| [Fastify](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/fastify.js) | 2.14.1 | &#10003; | 13821.8 |
+| [Abc](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/abc.ts) | 1.0.0-rc10 | &#10003; | 11548.2 |
+| [Oak](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/oak.ts) | 4.0.0 | &#10003; | 11246.6 |
+| [Express](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/express.js) | 4.17.1 | &#10003; | 7161.55 |
+| [PHP](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/index.php) | 7.3.11 | &#10007; | 6211.82 |
+| [Python Flask](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/flask_app.py) | 1.1.2 | &#10003; | 568 |
+
 
 Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/benchmarks) to see the details.
 
