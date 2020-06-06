@@ -88,50 +88,69 @@ const compile = () => {
   const { requests: { average: flask } } = require("./benchmark_flask.json");
 
   const abc_item = {
-    text: "| [Abc](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/abc.ts) | ${abc_version} | &#10003; | ${abc} |",
-    value: abc
-  }
+    text:
+      "| [Abc](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/abc.ts) | ${abc_version} | &#10003; | ${abc} |",
+    value: abc,
+  };
   const deno_item = {
-    text: "| [Deno http](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/deno_http.ts) | ${deno_version} | &#10007; | ${deno_http} |",
-    value: deno
-  }
+    text:
+      "| [Deno http](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/deno_http.ts) | ${deno_version} | &#10007; | ${deno_http} |",
+    value: deno,
+  };
   const express_item = {
-    text: "| [Express](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/express.js) | ${express_version} | &#10003; | ${express} |",
-    value: express
-  }
+    text:
+      "| [Express](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/express.js) | ${express_version} | &#10003; | ${express} |",
+    value: express,
+  };
   const fastify_item = {
-    text: "| [Fastify](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/fastify.js) | ${fastify_version} | &#10003; | ${fastify} |",
-    value: fastify
-  }
+    text:
+      "| [Fastify](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/fastify.js) | ${fastify_version} | &#10003; | ${fastify} |",
+    value: fastify,
+  };
   const fastro_item = {
-    text: "| [**Fastro**](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/fastro.ts) | **${fastro_version}** | **&#10003;** | **${fastro}**  |",
-    value: fastro
-  }
+    text:
+      "| [**Fastro**](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/fastro.ts) | **${fastro_version}** | **&#10003;** | **${fastro}**  |",
+    value: fastro,
+  };
   const node_item = {
-    text: "| [Node http](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/node_http.js) | ${node_version} | &#10007; | ${node} |",
-    value: node
-  }
+    text:
+      "| [Node http](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/node_http.js) | ${node_version} | &#10007; | ${node} |",
+    value: node,
+  };
   const oak_item = {
-    text: "| [Oak](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/oak.ts) | ${oak_version} | &#10003; | ${oak} |",
-    value: oak
-  }
+    text:
+      "| [Oak](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/oak.ts) | ${oak_version} | &#10003; | ${oak} |",
+    value: oak,
+  };
   const php_item = {
-    text: "| [PHP](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/index.php) | ${php_version} | &#10007; | ${php} |",
-    value: php
-  }
+    text:
+      "| [PHP](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/index.php) | ${php_version} | &#10007; | ${php} |",
+    value: php,
+  };
   const flask_item = {
-    text: "| [Python Flask](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/flask_app.py) | ${flask_version} | &#10003; | ${flask} |",
-    value: flask
-  }
-  const dataList = [express_item, abc_item, flask_item, deno_item, fastify_item, fastro_item, node_item, oak_item, php_item]
-  let text = ''
-  dataList.sort((a, b)=>{
-    return b.value - a.value
-  }).forEach(item => {
+    text:
+      "| [Python Flask](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/flask_app.py) | ${flask_version} | &#10003; | ${flask} |",
+    value: flask,
+  };
+  const dataList = [
+    express_item,
+    abc_item,
+    flask_item,
+    deno_item,
+    fastify_item,
+    fastro_item,
+    node_item,
+    oak_item,
+    php_item,
+  ];
+  let text = "";
+  dataList.sort((a, b) => {
+    return b.value - a.value;
+  }).forEach((item) => {
     text = text
       .concat(item.text)
-      .concat("\n")
-  })
+      .concat("\n");
+  });
 
   const fs = require("fs");
 
