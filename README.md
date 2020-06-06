@@ -82,6 +82,6 @@ Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/exampl
 - [create simple REST API](https://github.com/fastrojs/fastro-server/blob/master/examples/crud_postgres.ts)
 - [create simple REST API with JWT](https://github.com/fastrojs/fastro-server/blob/master/examples/rest_api_jwt)
 
-[logo]: https://repository-images.githubusercontent.com/264308713/b4fa0680-a7c2-11ea-846c-f706293db058 "Fastro"
+[logo]: https://repository-images.githubusercontent.com/264308713/84aa7a80-a84b-11ea-92f8-5dac1d93a04e "Fastro"
 [ci]: https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg "ci"
 
