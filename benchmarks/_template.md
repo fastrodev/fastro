@@ -1,8 +1,8 @@
-![fastro](https://repository-images.githubusercontent.com/264308713/b4fa0680-a7c2-11ea-846c-f706293db058)
+![fastro][logo]
 
-![ci](https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg)
+![ci][ci]
 
-Fastro is web framework for developers obsessed with performance and simplicity. 
+**Fastro** is web framework for developers obsessed with performance and simplicity. 
 
 It is inspired by [Fastify](https://www.fastify.io/) & [Express](https://expressjs.com/).
 
@@ -72,4 +72,7 @@ Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/exampl
 - [create nested plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/nested_plugin.ts)
 - [create simple REST API](https://github.com/fastrojs/fastro-server/blob/master/examples/crud_postgres.ts)
 - [create simple REST API with JWT](https://github.com/fastrojs/fastro-server/blob/master/examples/rest_api_jwt)
+
+[logo]: https://repository-images.githubusercontent.com/264308713/b4fa0680-a7c2-11ea-846c-f706293db058 "Fastro"
+[ci]: https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg "ci"
 
