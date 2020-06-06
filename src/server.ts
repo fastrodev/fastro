@@ -281,7 +281,9 @@ export class Fastro {
   private requestHandler = async (req: ServerRequest) => {
     try {
       const request = req as Request;
-      request.payload = decode(await Deno.readAll(req.body));
+      request.payload = req.body
+        ? decode(await Deno.readAll(req.body))
+        : undefined;
       request.send = (payload, status, headers): boolean => {
         return this.send(payload, status, headers, req);
       };
@@ -378,7 +380,7 @@ export class Request extends ServerRequest {
   /** URL parameter */
   parameter!: Parameter;
   /** Payload */
-  payload!: string;
+  payload!: string | undefined;
   /**
    * Send payload
    *      
