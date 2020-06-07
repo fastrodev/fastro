@@ -110,6 +110,26 @@ test({
 });
 
 test({
+  name: "MIDDLEWARE with url parameter",
+  async fn() {
+    const server = new Fastro();
+    server
+      .use("/ok/:user", (req, done) => {
+        req.ok = req.parameter.user
+        done();
+      })
+      .get("/ok/:user", (req) => {
+        req.send(req.ok)
+      });
+    server.listen({ port });
+    const result = await fetch(addr + "/ok/agus");
+    const text = await result.text();
+    assertEquals(text, "agus");
+    server.close();
+  },
+});
+
+test({
   name: "DECORATE instance",
   async fn() {
     const server = new Fastro();
