@@ -109,12 +109,12 @@ const compile = () => {
   };
   const fastro_item = {
     text:
-      "| [**Fastro**](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/fastro.ts) | **${fastro_version}** | **&#10003;** | **[${fastro}]((https://github.com/fastrojs/fastro-server/blob/master/benchmarks/benchmark_fastro.json))**  |",
+      "| [**Fastro**](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/fastro.ts) | **${fastro_version}** | **&#10003;** | **[${fastro}](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/benchmark_fastro.json)**  |",
     value: fastro,
   };
   const node_item = {
     text:
-      "| [Node http](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/node_http.js) | ${node_version} | &#10007; | [${node}]((https://github.com/fastrojs/fastro-server/blob/master/benchmarks/benchmark_node.json)) |",
+      "| [Node http](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/node_http.js) | ${node_version} | &#10007; | [${node}](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/benchmark_node.json) |",
     value: node,
   };
   const oak_item = {
