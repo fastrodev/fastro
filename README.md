@@ -7,7 +7,7 @@
 It is inspired by [Fastify](https://www.fastify.io/) & [Express](https://expressjs.com/).
 
 ```ts
-import { Fastro } from "https://deno.land/x/fastro@0.8.0/mod.ts";
+import { Fastro } from "https://deno.land/x/fastro@v0.8.0/mod.ts";
 const server = new Fastro();
 server.get("/", (req) => req.send("root"));
 await server.listen();
@@ -15,7 +15,7 @@ await server.listen();
 
 ## How to use
 
-This module uses the git release. If you want to pick a specific version, for example `0.8.0`, then the full url is [`https://deno.land/x/fastro@0.8.0/mod.ts`](https://deno.land/x/fastro@0.8.0/mod.ts). If you do not use the version, it will refer to `master` branch. Breaking changes may be made without warning.
+This module uses the git release. If you want to pick a specific version, for example `0.8.0`, then the full url is [`https://deno.land/x/fastro@v0.8.0/mod.ts`](https://deno.land/x/fastro@v0.8.0/mod.ts). If you do not use the version, it will refer to `master` branch. Breaking changes may be made without warning.
 
 ## Benchmarks
 If performance is important to you, here are the `Hello World` benchmark results:
