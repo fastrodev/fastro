@@ -22,15 +22,15 @@ If performance is important to you, here are the `Hello World` benchmark results
 
 | Framework | Version | Router? | Avg Req |
 | :-- | :-- | :--: | --: |
-| [Deno http](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/deno_http.ts) | 1.0.5 | &#10007; | 17693.2 |
-| [Node http](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/node_http.js) | 14.3.0 | &#10007; | 14938.73 |
-| [**Fastro**](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/fastro.ts) | **0.8.0** | **&#10003;** | **14383.8**  |
-| [Fastify](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/fastify.js) | 2.14.1 | &#10003; | 13903 |
-| [Oak](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/oak.ts) | 4.0.0 | &#10003; | 11421 |
-| [Abc](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/abc.ts) | 1.0.0-rc10 | &#10003; | 10696.7 |
-| [Express](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/express.js) | 4.17.1 | &#10003; | 6828.7 |
-| [PHP](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/index.php) | 7.3.11 | &#10007; | 6268.91 |
-| [Python Flask](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/flask_app.py) | 1.1.2 | &#10003; | 507.6 |
+| [Deno http](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/deno_http.ts) | 1.0.5 | &#10007; | [17693.2](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/benchmark_deno.json) |
+| [Node http](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/node_http.js) | 14.3.0 | &#10007; | [14938.73]((https://github.com/fastrojs/fastro-server/blob/master/benchmarks/benchmark_node.json)) |
+| [**Fastro**](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/fastro.ts) | **0.8.0** | **&#10003;** | **[14383.8]((https://github.com/fastrojs/fastro-server/blob/master/benchmarks/benchmark_fastro.json))**  |
+| [Fastify](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/fastify.js) | 2.14.1 | &#10003; | [13903](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/benchmark_fastify.json) |
+| [Oak](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/oak.ts) | 4.0.0 | &#10003; | [11421](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/benchmark_oak.json) |
+| [Abc](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/abc.ts) | 1.0.0-rc10 | &#10003; | [10696.7](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/benchmark_abc.json) |
+| [Express](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/express.js) | 4.17.1 | &#10003; | [6828.7](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/benchmark_express.json) |
+| [PHP](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/index.php) | 7.3.11 | &#10007; | [6268.91](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/benchmark_php.json) |
+| [Python Flask](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/flask_app.py) | 1.1.2 | &#10003; | [507.6](https://github.com/fastrojs/fastro-server/blob/master/benchmarks/benchmark_flask.json) |
 
 
 Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/benchmarks) to see the details.
