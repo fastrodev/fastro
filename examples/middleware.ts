@@ -19,7 +19,7 @@ server
   })
   // get param from middleware
   .use("/yes/:user", (req, done) => {
-    req.ok = req.parameter
+    req.ok = req.parameter;
     done();
   })
   .get("/", (req) => {
