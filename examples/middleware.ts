@@ -17,10 +17,18 @@ server
     req.ok = "ok";
     done();
   })
+  // get param from middleware
+  .use("/yes/:user", (req, done) => {
+    req.ok = req.parameter
+    done();
+  })
   .get("/", (req) => {
     console.log(req.ok); // ok
     console.log(req.yes); // undefined
     req.send("root");
+  })
+  .get("/yes/:user", (req) => {
+    req.send(req.ok);
   })
   .get("/ok", (req) => {
     console.log(req.ok); // undefined

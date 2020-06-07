@@ -275,6 +275,9 @@ export class Fastro {
       });
       let mutate: any;
       if (!middleware) return this.routeHandler(req);
+      if (middleware.url) {
+        req.parameter = this.getParameter(req.url, middleware.url);
+      }
       mutate = middleware.handler(req, () => {
         this.routeHandler(req, mutate);
       });
