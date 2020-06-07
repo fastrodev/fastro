@@ -115,11 +115,11 @@ test({
     const server = new Fastro();
     server
       .use("/ok/:user", (req, done) => {
-        req.ok = req.parameter.user
+        req.ok = req.parameter.user;
         done();
       })
       .get("/ok/:user", (req) => {
-        req.send(req.ok)
+        req.send(req.ok);
       });
     server.listen({ port });
     const result = await fetch(addr + "/ok/agus");
