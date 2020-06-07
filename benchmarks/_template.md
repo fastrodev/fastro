@@ -13,6 +13,10 @@ server.get("/", (req) => req.send("root"));
 await server.listen();
 ```
 
+## How to use
+
+This module uses the git release. If you want to pick a specific version, for example `${fastro_version}`, then the full url is [`https://deno.land/x/fastro@${fastro_version}/mod.ts`](https://deno.land/x/fastro@${fastro_version}/mod.ts). If you do not use the version, it will refer to `master` branch. Breaking changes may be made without warning.
+
 ## Benchmarks
 If performance is important to you, here are the `Hello World` benchmark results:
 
@@ -67,13 +71,10 @@ server.register(routes);
 
 ```
 
-## How to use
-
-This module uses the git release. If you want to pick a specific version, for example `${fastro_version}`, then the full url is [`https://deno.land/x/fastro@${fastro_version}/mod.ts`](https://deno.land/x/fastro@${fastro_version}/mod.ts). If you do not use the version, it will refer to `master` branch and breaking changes may be made without warning.
-
 ## Examples
 
-Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/examples) to find out how to: 
+Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/examples) to find out how to:
+- [create hello world app](https://github.com/fastrojs/fastro-server/blob/master/examples/hello.ts)
 - [change default port & add optional listen callback](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L34)
 - [send simple text & json data](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L5)
 - [get url parameters](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L20)
