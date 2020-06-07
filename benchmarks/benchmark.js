@@ -180,6 +180,7 @@ const compile = () => {
     .replace("${fastro_version}", fastro_version)
     .replace("${fastro_version}", fastro_version)
     .replace("${fastro_version}", fastro_version)
+    .replace("${fastro_version}", fastro_version)
     .replace("${flask_version}", flask_version);
 
   fs.writeFile("../readme.md", final, function (err) {

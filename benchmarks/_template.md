@@ -7,7 +7,7 @@
 It is inspired by [Fastify](https://www.fastify.io/) & [Express](https://expressjs.com/).
 
 ```ts
-import { Fastro } from "https://deno.land/x/fastro/mod.ts";
+import { Fastro } from "https://deno.land/x/fastro@${fastro_version}/mod.ts";
 const server = new Fastro();
 server.get("/", (req) => req.send("root"));
 await server.listen();
