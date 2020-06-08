@@ -1,55 +1,41 @@
 import { Fastro } from "../../mod.ts";
 import { loader } from "./loader.ts";
-import { methodContainer, controllerContainer } from "./container.ts";
+import {
+  methodContainer,
+  controllerContainer,
+  Controller,
+} from "./container.ts";
 
-interface Controller {
-  instance: any;
-  options: any;
-  methodList: any[];
-  hookList: any[];
-  hookOptions: any;
-}
-
-const createRoutes = () => {
+const createRoutes = (controller: Controller) => {
+  const { instance, methodList } = controller;
   return (fastro: Fastro, done: Function) => {
-    fastro.get('/', req => req.send('ok'))
-    done()
-  }
-  // const { instance, methodList } = controller
-  // return (fastro: Fastro, next: Function): void => {
-  //   methodList.map(controllerMethod => {
-  //     const { functionName, options } = controllerMethod
-  //     const handler: any = async (...args: any) => instance[functionName](...args)
-  //     const routeOptions = { ...options, handler }
-  //     fastro.route(routeOptions)
-  //   })
-  //   methodList.length = 0
-  //   next()
-  // }
-}
+    methodList.forEach((method) => {
+      const { functionName, options } = method;
+      const handler: any = async (...args: any) =>
+        instance[functionName](...args);
+      const routeOptions = { ...options, handler };
+      fastro.route(routeOptions);
+    });
+    done();
+  };
+};
 
 function createControllers() {
   return (fastro: Fastro, done: Function) => {
-    fastro.use((req) => {
-      return req.send('use')
-    })
-    fastro.get('/ok', req => req.send('ok'))
-    done()
-  }
+    controllerContainer.forEach((controller) => {
+      const routes = createRoutes(controller);
+      if (controller.options) {
+        fastro.register(controller.options.prefix, routes);
+      } else fastro.register(routes);
+    });
+    done();
+  };
 }
 
 export async function createServer() {
-  // await loader()
-  const server = new Fastro()
-  server.use(req => {
-    return req.send('ok')
-  })
-
-  server.get('/', req => req.send('root'))
-
-
-  
-  // const controller = createControllers()
-  // server.register(controller)
-  return server
+  await loader();
+  const server = new Fastro();
+  const controllers = createControllers();
+  server.register(controllers);
+  return server;
 }

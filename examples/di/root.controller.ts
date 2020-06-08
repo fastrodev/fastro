@@ -1,6 +1,6 @@
 import { Controller, Get, Request } from "../../mod.ts";
-@Controller({ prefix: "v1" })
-class Hello {
+@Controller()
+class Root {
   @Get()
   hello(req: Request) {
     req.send("hello");

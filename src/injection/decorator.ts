@@ -1,30 +1,35 @@
-import { methodContainer, controllerContainer } from "./container.ts";
+import {
+  methodContainer,
+  controllerContainer,
+  Controller,
+} from "./container.ts";
 
 function pushMethod(options: any): Function {
-  // console.log(methodContainer)
   return (target: any, functionName: string): any => {
     const className = target.constructor.name;
     const method = options.url
       ? { className, functionName, options }
       : { className, functionName, options: { ...options, url: "/" } };
     methodContainer.push(method);
-    // console.log(methodContainer)
   };
 }
 
-export const Get = (options?: any): Function =>
+export const Get = (options?: { url: string }): Function =>
   pushMethod({ method: "GET", ...options });
 
-export function Controller(options?: any): ClassDecorator {
+export function Controller(options?: { prefix: string }): ClassDecorator {
   return (target: any): any => {
-    const instance = new target();
+    const instance: Controller = new target();
     const controllerName = target.name;
     const methodList = methodContainer.filter((method) =>
       method.className === controllerName
     );
-    const controllerInstance = options
-      ? { instance, options, methodList, controllerName }
-      : { instance, options: { prefix: "/" }, methodList, controllerName };
+    const controllerInstance = {
+      instance,
+      options,
+      methodList,
+      controllerName,
+    };
     controllerContainer.set(controllerName, controllerInstance);
   };
 }

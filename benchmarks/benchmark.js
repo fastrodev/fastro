@@ -159,7 +159,7 @@ const compile = () => {
     { encoding: "utf8", flag: "r" },
   );
 
-  const final = data.replace("${text}", text)
+  const final = data.replace("${table}", text)
     .replace("${abc}", abc)
     .replace("${deno_http}", deno)
     .replace("${express}", express)
@@ -173,9 +173,11 @@ const compile = () => {
     .replace("${express_version}", express_version)
     .replace("${abc_version}", abc_version)
     .replace("${deno_version}", deno_version)
+    .replace("${deno_version}", deno_version)
     .replace("${node_version}", node_version)
     .replace("${fastify_version}", fastify_version)
     .replace("${php_version}", php_version)
+    .replace("${fastro_version}", fastro_version)
     .replace("${fastro_version}", fastro_version)
     .replace("${fastro_version}", fastro_version)
     .replace("${fastro_version}", fastro_version)
