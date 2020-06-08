@@ -36,17 +36,28 @@ export class Fastro {
 
   private loadPlugin(fastro: Fastro) {
     let afterLoadRouter: Router[];
-    // mutate fastro instance
-    this.#plugins.forEach((p) => {
-      afterLoadRouter = [...this.#router];
-      p.plugin(fastro, () => {
-        if (p.prefix) {
-          this.#router
-            .filter((r) => !afterLoadRouter.includes(r))
-            .forEach((x) => x.url = `/${p.prefix}${x.url}`);
-        }
+    let afterLoadPlugin: Instance[];
+    const loop = (plugins: Instance[]) => {
+      plugins.forEach((p) => {
+        afterLoadRouter = [...this.#router];
+        afterLoadPlugin = [...this.#plugins];
+        p.plugin(fastro, () => {
+          const list = this.#plugins.filter((plugin) =>
+            !afterLoadPlugin.includes(plugin)
+          );
+          if (list.length > 0) loop(list);
+          if (p.prefix) {
+            this.#router
+              .filter((r) => !afterLoadRouter.includes(r))
+              .forEach((x) => {
+                const url = x.url === "/" ? "" : x.url;
+                x.url = `/${p.prefix}${url}`;
+              });
+          }
+        });
       });
-    });
+    };
+    loop(this.#plugins);
     this.#router = [...new Set(this.#router)];
     return this;
   }
@@ -232,6 +243,11 @@ export class Fastro {
     return this;
   }
 
+  decorateRequest(request: { (req: Request): void }) {
+    request(this.#request);
+    return this;
+  }
+
   /**
    * Add plugin
    * 
@@ -252,36 +268,36 @@ export class Fastro {
     return this;
   }
 
-  private mutateRequest(req: Request) {
-    const middlewares = this.#middlewares.filter((p) => {
-      if (p.url === "/") return p;
-      return p.url && this.checkUrl(req.url, p.url);
-    });
-    let mutates = 0;
-    let mutate = false;
-    const [m] = middlewares;
-    middlewares.forEach((p) => {
-      mutate = p.handler(req, () => {});
-      if (mutates > 0) {
-        throw new Error(
-          "`req.send()` has been called. It can only be run once in a request.",
-        );
+  private middlewareHandler(req: Request) {
+    try {
+      const [middleware] = this.#middlewares.filter((mid) => {
+        return (mid.url && this.checkUrl(req.url, mid.url));
+      });
+      let mutate: any;
+      if (!middleware) return this.routeHandler(req);
+      if (middleware.url) {
+        req.parameter = this.getParameter(req.url, middleware.url);
       }
-      if (mutate) mutates++;
-    });
-    if (m.url) req.parameter = this.getParameter(req.url, m.url);
-    this.routeHandler(req, mutate);
+      mutate = middleware.handler(req, () => {
+        this.routeHandler(req, mutate);
+      });
+    } catch (error) {
+      throw FastroError("SERVER_MIDDLEWARE_HANDLER_ERROR", error);
+    }
   }
 
   private requestHandler = async (req: ServerRequest) => {
     try {
       const request = req as Request;
-      request.payload = decode(await Deno.readAll(req.body));
+      request.payload = req.body
+        ? decode(await Deno.readAll(req.body))
+        : undefined;
       request.send = (payload, status, headers): boolean => {
         return this.send(payload, status, headers, req);
       };
-      if (this.#middlewares.length > 0) this.mutateRequest(request);
-      else this.routeHandler(request);
+      const mutated = Object.assign(this.#request, request);
+      if (this.#middlewares.length > 0) this.middlewareHandler(mutated);
+      else this.routeHandler(mutated);
     } catch (error) {
       throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);
     }
@@ -367,13 +383,14 @@ export class Fastro {
   #router: Router[] = [];
   #middlewares: Middleware[] = [];
   #plugins: Instance[] = [];
+  #request = new Request();
 }
 
 export class Request extends ServerRequest {
   /** URL parameter */
   parameter!: Parameter;
   /** Payload */
-  payload!: string;
+  payload!: string | undefined;
   /**
    * Send payload
    *      

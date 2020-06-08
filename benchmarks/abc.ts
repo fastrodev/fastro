@@ -1,4 +1,4 @@
-import { Application } from "https://deno.land/x/abc@v1.0.0-rc8/mod.ts";
+import { Application } from "https://deno.land/x/abc@v1.0.0-rc10/mod.ts";
 
 const app = new Application();
 const port = 3004;

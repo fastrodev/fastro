@@ -24,7 +24,7 @@ export function createJwt() {
   return makeJwt({ header, payload, key });
 }
 
-export const jwtMiddleware = function (req: Request) {
+export const jwtMiddleware = function (req: Request, done: Function) {
   if (req.method === "POST" && req.url === "/token") return;
   const token = req.headers.get("token");
   if (!token) return req.send("token not found");
@@ -32,4 +32,5 @@ export const jwtMiddleware = function (req: Request) {
   valid.then((v) => {
     if (!v) return req.send("token invalid");
   });
+  done();
 };

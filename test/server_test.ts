@@ -1,4 +1,4 @@
-import { assertEquals } from "./deps.ts";
+import { assertEquals } from "../deps.ts";
 import { Fastro } from "../mod.ts";
 const { test } = Deno;
 const port = 8000;
@@ -72,10 +72,11 @@ test({
   name: "MIDDLEWARE",
   async fn() {
     const server = new Fastro();
-    server.use((req) => {
+    server.use((req, done) => {
       req.sendOk = (payload: string) => {
         req.send(payload);
       };
+      done();
     });
     server.get("/", (req) => req.sendOk("plugin"));
     server.listen({ port });
@@ -91,10 +92,11 @@ test({
   async fn() {
     const server = new Fastro();
     server
-      .use("/ok", (req) => {
+      .use("/ok", (req, done) => {
         req.sendOk = (payload: string) => {
           req.send(payload);
         };
+        done();
       })
       .get("/ok", (req) => {
         req.sendOk("MIDDLEWARE");
@@ -108,13 +110,50 @@ test({
 });
 
 test({
-  name: "DECORATE",
+  name: "MIDDLEWARE with url parameter",
+  async fn() {
+    const server = new Fastro();
+    server
+      .use("/ok/:user", (req, done) => {
+        req.ok = req.parameter.user;
+        done();
+      })
+      .get("/ok/:user", (req) => {
+        req.send(req.ok);
+      });
+    server.listen({ port });
+    const result = await fetch(addr + "/ok/agus");
+    const text = await result.text();
+    assertEquals(text, "agus");
+    server.close();
+  },
+});
+
+test({
+  name: "DECORATE instance",
   async fn() {
     const server = new Fastro();
     server.decorate((instance) => {
       instance.ok = "ok";
     });
     assertEquals(server.ok, "ok");
+  },
+});
+
+test({
+  name: "DECORATE request",
+  async fn() {
+    const server = new Fastro();
+    server
+      .decorateRequest((req) => {
+        req.ok = "ok";
+      })
+      .get("/", (req) => req.send(req.ok));
+    server.listen({ port });
+    const result = await fetch(addr);
+    const text = await result.text();
+    assertEquals(text, "ok");
+    server.close();
   },
 });
 
