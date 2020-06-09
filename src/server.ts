@@ -418,11 +418,11 @@ export class Request extends ServerRequest {
   };
   [key: string]: any
 }
-
 interface Router {
   method: string;
   url: string;
   handler(req: Request, callback: Function): any;
+  [key: string]: any;
 }
 interface ListenOptions {
   port: number;

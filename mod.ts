@@ -1,7 +1,5 @@
-export {
-  Fastro,
-  Request,
-} from "./src/server.ts";
+export * from "./src/server.ts";
+export * from "./src/injection/mod.ts";
 
 export {
   support,

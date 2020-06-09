@@ -2,8 +2,13 @@ import { Fastro } from "../mod.ts";
 
 const server = new Fastro();
 
-const plugin3 = function (fastro: Fastro, done: Function) {
+const plugin4 = function (fastro: Fastro, done: Function) {
   fastro.get("/", (req) => req.send("root"));
+  done();
+};
+
+const plugin3 = function (fastro: Fastro, done: Function) {
+  fastro.register("v4", plugin4);
   done();
 };
 
