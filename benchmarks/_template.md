@@ -2,7 +2,7 @@
 
 ![ci][ci] ![deno][deno]
 
-**Fastro** is web framework for developers who are obsessed with clean code, simplicity & performance.
+**Fastro** is web framework for developers who are obsessed with simplicity & performance.
 
 It is inspired by [Express](https://expressjs.com/), [Fastify](https://www.fastify.io/) & [Nest](https://nestjs.com/).
 
@@ -70,7 +70,7 @@ server.register(routes);
 ```
 
 ## Depedency Injection
-With depedency injection you can create complex applications with cleaner code. No longer need to manually import handlers and services. You only make a class and add [typescript decorator](https://www.typescriptlang.org/docs/handbook/decorators.html) to define `gateway`, `controller`, `service`  and `route`. Fastro will automatically load, register and create them for you. This is similar to [nest](https://nestjs.com/).
+With depedency injection you can create complex applications with clean code. No longer need to manually import handlers and services. You only make a class and add [typescript decorator](https://www.typescriptlang.org/docs/handbook/decorators.html) to define `gateway`, `controller`, `service`  and `route`. Fastro will automatically load, register and create them for you. This is similar to [nest](https://nestjs.com/).
 
 ```ts
 import { Controller, Get, Request } from "https://deno.land/x/fastro@v${fastro_version}/mod.ts";
@@ -104,7 +104,7 @@ Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/exampl
 - [create simple REST API with JWT](https://github.com/fastrojs/fastro-server/blob/master/examples/rest_api_jwt)
 - [create dependency injection](https://github.com/fastrojs/fastro-server/blob/master/examples/di)
 
-[logo]: https://repository-images.githubusercontent.com/264308713/3e9d0600-a974-11ea-9b0e-c4f1a85d98d9 "Fastro"
+[logo]: https://repository-images.githubusercontent.com/264308713/80eb4380-aa57-11ea-82b0-47e460921478 "Fastro"
 [ci]: https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg "ci"
 [deno]: https://img.shields.io/badge/deno-${deno_version}-blue "deno"
 
