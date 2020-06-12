@@ -268,19 +268,56 @@ export class Fastro {
     return this;
   }
 
+  private getFunctionParameter(incoming: string, registered: string) {
+    let incomingSplit = incoming.substr(1, incoming.length).split("/");
+    const params: string[] = [];
+    incomingSplit.splice(0, 2);
+    incomingSplit
+      .map((path, idx) => {
+        return { path, idx };
+      })
+      .forEach((value) => {
+        params.push(incomingSplit[value.idx]);
+      });
+
+    return params;
+  }
+
+  function(url: string, handler: Handler) {
+    this.#functions = { url, handler };
+    return this;
+  }
+
+  functionHandler(req: Request) {
+    this.routeHandler(req, true);
+    if (this.#functions.url) {
+      req.parameter = this.getParameter(req.url, this.#functions.url);
+      req.functionParameter = this.getFunctionParameter(
+        req.url,
+        this.#functions.url,
+      );
+    }
+
+    return this.#functions.handler(req, () => {
+      this.routeHandler(req, true);
+    });
+  }
+
+  forward(req: Request) {
+    if (this.#middlewares.length > 0) return this.middlewareHandler(req);
+    this.routeHandler(req);
+  }
+
   private middlewareHandler(req: Request) {
     try {
       const [middleware] = this.#middlewares.filter((mid) => {
         return (mid.url && this.checkUrl(req.url, mid.url));
       });
-      let mutate: any;
       if (!middleware) return this.routeHandler(req);
       if (middleware.url) {
         req.parameter = this.getParameter(req.url, middleware.url);
       }
-      mutate = middleware.handler(req, () => {
-        this.routeHandler(req, mutate);
-      });
+      middleware.handler(req, () => this.routeHandler(req, true));
     } catch (error) {
       throw FastroError("SERVER_MIDDLEWARE_HANDLER_ERROR", error);
     }
@@ -295,9 +332,9 @@ export class Fastro {
       request.send = (payload, status, headers): boolean => {
         return this.send(payload, status, headers, req);
       };
-      const mutated = Object.assign(this.#request, request);
-      if (this.#middlewares.length > 0) this.middlewareHandler(mutated);
-      else this.routeHandler(mutated);
+      const mutatedRequest = Object.assign(this.#request, request);
+      if (this.#functions) return this.functionHandler(mutatedRequest);
+      this.forward(mutatedRequest);
     } catch (error) {
       throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);
     }
@@ -382,6 +419,7 @@ export class Fastro {
   #server!: Server;
   #router: Router[] = [];
   #middlewares: Middleware[] = [];
+  #functions!: Middleware;
   #plugins: Instance[] = [];
   #request = new Request();
 }
@@ -389,6 +427,10 @@ export class Fastro {
 export class Request extends ServerRequest {
   /** URL parameter */
   parameter!: Parameter;
+
+  /** Function parameter */
+  functionParameter!: string[];
+
   /** Payload */
   payload!: string | undefined;
   /**

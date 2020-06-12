@@ -1,10 +1,10 @@
 ![fastro][logo]
 
-![ci][ci] ![deno][deno]
+![ci][ci]
 
 **Fastro** is web framework for developers who are obsessed with simplicity & performance.
 
-It is inspired by [Express](https://expressjs.com/), [Fastify](https://www.fastify.io/) & [Nest](https://nestjs.com/).
+It is inspired by [Express](https://expressjs.com/), [Fastify](https://www.fastify.io/), [Nest](https://nestjs.com/) & [Firebase](https://firebase.google.com/).
 
 ```ts
 import { Fastro } from "https://deno.land/x/fastro@v${fastro_version}/mod.ts";
@@ -69,6 +69,17 @@ server.register(routes);
 
 ```
 
+## Function
+With functions, you only need to define the main url and the handler. There is no need to define a method, so you can use all types of http methods. You can also get the url parameters more dynamically without defining the full url.
+```ts
+server.function("/", (req) => {
+  const parameter = req.functionParameter;
+  req.send(parameter);
+});
+
+```
+
+
 ## Depedency Injection
 With depedency injection you can create complex applications with clean code. No longer need to manually import handlers and services. You only make a class and add [typescript decorator](https://www.typescriptlang.org/docs/handbook/decorators.html) to define `gateway`, `controller`, `service`  and `route`. Fastro will automatically load, register and create them for you. This is similar to [nest](https://nestjs.com/).
 
@@ -105,6 +116,4 @@ Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/exampl
 - [create dependency injection](https://github.com/fastrojs/fastro-server/blob/master/examples/di)
 
 [logo]: https://repository-images.githubusercontent.com/264308713/80eb4380-aa57-11ea-82b0-47e460921478 "Fastro"
-[ci]: https://github.com/fastrojs/fastro-server/workflows/ci/badge.svg "ci"
-[deno]: https://img.shields.io/badge/deno-${deno_version}-blue "deno"
-
+[ci]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg "ci"
