@@ -50,7 +50,7 @@ test({
 });
 
 test({
-  name: "GET user",
+  name: "GET USER",
   async fn() {
     const server = new Fastro();
     server.route({
@@ -88,7 +88,7 @@ test({
 });
 
 test({
-  name: "MIDDLEWARE with url",
+  name: "MIDDLEWARE WITH URL",
   async fn() {
     const server = new Fastro();
     server
@@ -110,7 +110,7 @@ test({
 });
 
 test({
-  name: "MIDDLEWARE with url parameter",
+  name: "MIDDLEWARE WITH URL PARAMETER",
   async fn() {
     const server = new Fastro();
     server
@@ -130,7 +130,7 @@ test({
 });
 
 test({
-  name: "DECORATE instance",
+  name: "DECORATE INSTANCE",
   async fn() {
     const server = new Fastro();
     server.decorate((instance) => {
@@ -141,7 +141,7 @@ test({
 });
 
 test({
-  name: "DECORATE request",
+  name: "DECORATE REQUEST",
   async fn() {
     const server = new Fastro();
     server
@@ -176,7 +176,7 @@ test({
 });
 
 test({
-  name: "PLUGIN with prefix",
+  name: "PLUGIN WITH PREFIX",
   async fn() {
     const server = new Fastro();
     server
@@ -190,6 +190,22 @@ test({
     const result = await fetch(addr + "/v1/ok");
     const text = await result.text();
     assertEquals(text, "PLUGIN");
+    server.close();
+  },
+});
+
+test({
+  name: "FUNCTION",
+  async fn() {
+    const server = new Fastro();
+    server.function("/prefix/function", (req) => {
+      if (!req.url.includes("/prefix/function")) return server.forward(req);
+      req.send(req.functionParameter);
+    });
+    server.listen({ port });
+    const result = await fetch(addr + "/prefix/function/ok");
+    const text = await result.text();
+    assertEquals(text, "[\"ok\"]");
     server.close();
   },
 });

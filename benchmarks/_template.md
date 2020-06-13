@@ -14,7 +14,7 @@ await server.listen();
 ```
 
 ## Benchmarks
-If performance is **really important** to you, here are the `Hello World` benchmark results. Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/benchmarks) to see the details.
+If performance is **really important** to you, here are the `Hello World` benchmark results. Check [this folder](https://github.com/fastrodev/fastro/tree/master/benchmarks) to see the details.
 
 | Framework | Version | Router? | Avg Req |
 | :-- | :-- | :--: | --: |
@@ -72,9 +72,9 @@ server.register(routes);
 ## Function
 With functions, you only need to define the main url and the handler. There is no need to define a method, so you can use all types of http methods. You can also get the url parameters more dynamically without defining the full url.
 ```ts
-server.function("/", (req) => {
-  const parameter = req.functionParameter;
-  req.send(parameter);
+server.function("/prefix/function", (req) => {
+  if (!req.url.includes("/prefix/function")) return server.forward(req);
+  req.send(req.functionParameter);
 });
 
 ```
@@ -98,22 +98,23 @@ class Greet {
 
 ## Examples
 
-Check [this folder](https://github.com/fastrojs/fastro-server/tree/master/examples) to find out how to:
-- [create hello world app](https://github.com/fastrojs/fastro-server/blob/master/examples/hello.ts)
-- [change default port & add optional listen callback](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L34)
-- [send simple text & json data](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L5)
-- [get url parameters](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L20)
-- [get payload from post method](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L30)
-- [set custom http headers & status](https://github.com/fastrojs/fastro-server/blob/master/examples/main.ts#L9)
-- [change the request object by creating a middleware](https://github.com/fastrojs/fastro-server/blob/master/examples/use_middleware.ts#L6)
-- [create simple jwt auth](https://github.com/fastrojs/fastro-server/blob/master/examples/simple_jwt_auth.ts)
-- [create middleware](https://github.com/fastrojs/fastro-server/blob/master/examples/middleware.ts)
-- [create decorator to add new property](https://github.com/fastrojs/fastro-server/blob/master/examples/decorate.ts)
-- [create router with plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/plugin.ts)
-- [create nested plugin](https://github.com/fastrojs/fastro-server/blob/master/examples/nested_plugin.ts)
-- [create simple REST API](https://github.com/fastrojs/fastro-server/blob/master/examples/crud_postgres.ts)
-- [create simple REST API with JWT](https://github.com/fastrojs/fastro-server/blob/master/examples/rest_api_jwt)
-- [create dependency injection](https://github.com/fastrojs/fastro-server/blob/master/examples/di)
+Check [this folder](https://github.com/fastrodev/fastro/tree/master/examples) to find out how to:
+- [create hello world app](https://github.com/fastrodev/fastro/blob/master/examples/hello.ts)
+- [change default port & add optional listen callback](https://github.com/fastrodev/fastro/blob/master/examples/main.ts#L34)
+- [send simple text & json data](https://github.com/fastrodev/fastro/blob/master/examples/main.ts#L5)
+- [get url parameters](https://github.com/fastrodev/fastro/blob/master/examples/main.ts#L20)
+- [get payload from post method](https://github.com/fastrodev/fastro/blob/master/examples/main.ts#L30)
+- [set custom http headers & status](https://github.com/fastrodev/fastro/blob/master/examples/main.ts#L9)
+- [change the request object by creating a middleware](https://github.com/fastrodev/fastro/blob/master/examples/use_middleware.ts#L6)
+- [create simple jwt auth](https://github.com/fastrodev/fastro/blob/master/examples/simple_jwt_auth.ts)
+- [create middleware](https://github.com/fastrodev/fastro/blob/master/examples/middleware.ts)
+- [create decorator to add new property](https://github.com/fastrodev/fastro/blob/master/examples/decorate.ts)
+- [create router with plugin](https://github.com/fastrodev/fastro/blob/master/examples/plugin.ts)
+- [create nested plugin](https://github.com/fastrodev/fastro/blob/master/examples/nested_plugin.ts)
+- [create simple REST API](https://github.com/fastrodev/fastro/blob/master/examples/crud_postgres.ts)
+- [create simple REST API with JWT](https://github.com/fastrodev/fastro/blob/master/examples/rest_api_jwt)
+- [create dependency injection](https://github.com/fastrodev/fastro/blob/master/examples/di)
+- [create fastro function](https://github.com/fastrodev/fastro/blob/master/examples/function.ts)
 
 [logo]: https://repository-images.githubusercontent.com/264308713/80eb4380-aa57-11ea-82b0-47e460921478 "Fastro"
 [ci]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg "ci"

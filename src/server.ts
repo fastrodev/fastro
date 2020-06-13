@@ -317,7 +317,7 @@ export class Fastro {
       if (middleware.url) {
         req.parameter = this.getParameter(req.url, middleware.url);
       }
-      middleware.handler(req, () => this.routeHandler(req, true));
+      middleware.handler(req, () => this.routeHandler(req, false));
     } catch (error) {
       throw FastroError("SERVER_MIDDLEWARE_HANDLER_ERROR", error);
     }
