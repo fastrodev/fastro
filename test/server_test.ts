@@ -205,7 +205,7 @@ test({
     server.listen({ port });
     const result = await fetch(addr + "/prefix/function/ok");
     const text = await result.text();
-    assertEquals(text, "[\"ok\"]");
+    assertEquals(text, '["ok"]');
     server.close();
   },
 });
