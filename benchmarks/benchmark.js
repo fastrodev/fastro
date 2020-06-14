@@ -3,7 +3,7 @@ const { execSync } = require("child_process");
 
 const oak_version = "4.0.0";
 const express_version = "4.17.1";
-const fastro_version = "0.10.1";
+const fastro_version = "0.10.2";
 const abc_version = "1.0.0-rc10";
 const deno_version = "1.1.0";
 const node_version = "14.3.0";

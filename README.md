@@ -7,7 +7,7 @@
 It is inspired by [Express](https://expressjs.com/), [Fastify](https://www.fastify.io/), [Nest](https://nestjs.com/) & [Firebase](https://firebase.google.com/).
 
 ```ts
-import { Fastro } from "https://deno.land/x/fastro@v0.10.1/mod.ts";
+import { Fastro } from "https://github.com/fastrodev/fastro/blob/v0.10.2/mod.ts";
 const server = new Fastro();
 server.get("/", (req) => req.send("root"));
 await server.listen();
@@ -20,7 +20,7 @@ If performance is **really important** to you, here are the `Hello World` benchm
 | :-- | :-- | :--: | --: |
 | [Deno http](https://github.com/fastrodev/fastro/blob/master/benchmarks/deno_http.ts) | 1.1.0 | &#10007; | [18471.2](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_deno.json) |
 | [Node http](https://github.com/fastrodev/fastro/blob/master/benchmarks/node_http.js) | 14.3.0 | &#10007; | [16706.8](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_node.json) |
-| [**Fastro**](https://github.com/fastrodev/fastro/blob/master/benchmarks/fastro.ts) | **0.10.1** | **&#10003;** | **[14831.2](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_fastro.json)**  |
+| [**Fastro**](https://github.com/fastrodev/fastro/blob/master/benchmarks/fastro.ts) | **0.10.2** | **&#10003;** | **[14831.2](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_fastro.json)**  |
 | [Fastify](https://github.com/fastrodev/fastro/blob/master/benchmarks/fastify.js) | 2.14.1 | &#10003; | [13223.64](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_fastify.json) |
 | [Abc](https://github.com/fastrodev/fastro/blob/master/benchmarks/abc.ts) | 1.0.0-rc10 | &#10003; | [12282.4](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_abc.json) |
 | [Oak](https://github.com/fastrodev/fastro/blob/master/benchmarks/oak.ts) | 4.0.0 | &#10003; | [11689.6](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_oak.json) |
@@ -31,7 +31,7 @@ If performance is **really important** to you, here are the `Hello World` benchm
 
 ## How to use
 
-This module uses the git release. If you want to pick a specific version, for example `0.10.1`, then the full url is [`https://deno.land/x/fastro@v0.10.1/mod.ts`](https://deno.land/x/fastro@v0.10.1/mod.ts). If you do not use the version, it will refer to `master` branch. Breaking changes may be made without warning.
+This module uses the git release. If you want to pick a specific version, for example `0.10.2`, then the full url is [`https://github.com/fastrodev/fastro/blob/v0.10.2/mod.ts`](https://github.com/fastrodev/fastro/blob/v0.10.2/mod.ts). If you do not use the version, it will refer to `master` branch. Breaking changes may be made without warning.
 
 ## Middleware
 
@@ -93,7 +93,7 @@ server.function("/prefix/function", (req) => {
 With depedency injection you can create complex applications with clean code. No longer need to manually import handlers and services. You only make a class and add [typescript decorator](https://www.typescriptlang.org/docs/handbook/decorators.html) to define `gateway`, `controller`, `service`  and `route`. Fastro will automatically load, register and create them for you. This is similar to [nest](https://nestjs.com/).
 
 ```ts
-import { Controller, Get, Request } from "https://deno.land/x/fastro@v0.10.1/mod.ts";
+import { Controller, Get, Request } from "https://github.com/fastrodev/fastro/blob/v0.10.2/mod.ts";
 
 @Controller()
 class Greet {
