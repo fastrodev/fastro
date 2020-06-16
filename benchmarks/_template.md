@@ -69,17 +69,6 @@ server.register(routes);
 
 ```
 
-## Function
-With functions, you only need to define the main url and the handler. There is no need to define a method, so you can use all types of http methods. You can also get the url parameters more dynamically without defining the full url.
-```ts
-server.function("/prefix/function", (req) => {
-  if (!req.url.includes("/prefix/function")) return server.forward(req);
-  req.send(req.functionParameter);
-});
-
-```
-
-
 ## Depedency Injection
 With depedency injection you can create complex applications with clean code. No longer need to manually import handlers and services. You only make a class and add [typescript decorator](https://www.typescriptlang.org/docs/handbook/decorators.html) to define `gateway`, `controller`, `service`  and `route`. Fastro will automatically load, register and create them for you. This is similar to [nest](https://nestjs.com/).
 
@@ -95,6 +84,17 @@ class Greet {
   }
 }
 ```
+
+## Function
+With functions, you only need to define the main url and the handler. There is no need to define a method, so you can use all types of http methods. You can also get the url parameters more dynamically without defining the full url.
+```ts
+server.function("/prefix/function", (req) => {
+  if (!req.url.includes("/prefix/function")) return server.forward(req);
+  req.send(req.functionParameter);
+});
+
+```
+> Please note, in this version `dependency-injection` cannot be used in `fastro-function`.
 
 ## Examples
 
