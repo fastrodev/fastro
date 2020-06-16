@@ -268,7 +268,7 @@ export class Fastro {
     return this;
   }
 
-  private getFunctionParameter(incoming: string, registered: string) {
+  private getFunctionParameter(incoming: string) {
     let incomingSplit = incoming.substr(1, incoming.length).split("/");
     const params: string[] = [];
     incomingSplit.splice(0, 2);
@@ -284,22 +284,24 @@ export class Fastro {
   }
 
   function(url: string, handler: Handler) {
-    this.#functions = { url, handler };
+    const fn = { url, handler };
+    this.#functions.push(fn);
     return this;
   }
 
   functionHandler(req: Request) {
-    this.routeHandler(req, true);
-    if (this.#functions.url) {
-      req.parameter = this.getParameter(req.url, this.#functions.url);
+    const [func] = this.#functions.filter((fn) => {
+      return (fn.url && req.url.includes(fn.url));
+    });
+    if (!func) return this.forward(req);
+    if (func.url) {
+      req.parameter = this.getParameter(req.url, func.url);
       req.functionParameter = this.getFunctionParameter(
         req.url,
-        this.#functions.url,
       );
     }
-
-    return this.#functions.handler(req, () => {
-      this.routeHandler(req, true);
+    func.handler(req, () => {
+      this.forward(req);
     });
   }
 
@@ -333,7 +335,9 @@ export class Fastro {
         return this.send(payload, status, headers, req);
       };
       const mutatedRequest = Object.assign(this.#request, request);
-      if (this.#functions) return this.functionHandler(mutatedRequest);
+      if (this.#functions.length > 0) {
+        return this.functionHandler(mutatedRequest);
+      }
       this.forward(mutatedRequest);
     } catch (error) {
       throw FastroError("SERVER_REQUEST_HANDLER_ERROR", error);
@@ -419,7 +423,7 @@ export class Fastro {
   #server!: Server;
   #router: Router[] = [];
   #middlewares: Middleware[] = [];
-  #functions!: Middleware;
+  #functions: Middleware[] = [];
   #plugins: Instance[] = [];
   #request = new Request();
 }
