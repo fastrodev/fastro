@@ -7,7 +7,7 @@
 It is inspired by [Express](https://expressjs.com/), [Fastify](https://www.fastify.io/), [Nest](https://nestjs.com/) & [Firebase](https://firebase.google.com/).
 
 ```ts
-import { Fastro } from "https://github.com/fastrodev/fastro/blob/v${fastro_version}/mod.ts";
+import { Fastro } from "https://raw.githubusercontent.com/fastrodev/fastro/v${fastro_version}/mod.ts";
 const server = new Fastro();
 server.get("/", (req) => req.send("root"));
 await server.listen();
@@ -22,7 +22,7 @@ ${table}
 
 ## How to use
 
-This module uses the git release. If you want to pick a specific version, for example `${fastro_version}`, then the full url is [`https://github.com/fastrodev/fastro/blob/v${fastro_version}/mod.ts`](https://github.com/fastrodev/fastro/blob/v${fastro_version}/mod.ts). If you do not use the version, it will refer to `master` branch. Breaking changes may be made without warning.
+This module uses the git release. If you want to pick a specific version, for example `${fastro_version}`, then the full url is [`https://raw.githubusercontent.com/fastrodev/fastro/v${fastro_version}/mod.ts`](https://raw.githubusercontent.com/fastrodev/fastro/v${fastro_version}/mod.ts). If you do not use the version, it will refer to `master` branch. Breaking changes may be made without warning.
 
 ## Middleware
 
@@ -73,7 +73,7 @@ server.register(routes);
 With depedency injection you can create complex applications with clean code. No longer need to manually import handlers and services. You only make a class and add [typescript decorator](https://www.typescriptlang.org/docs/handbook/decorators.html) to define `gateway`, `controller`, `service`  and `route`. Fastro will automatically load, register and create them for you. This is similar to [nest](https://nestjs.com/).
 
 ```ts
-import { Controller, Get, Request } from "https://github.com/fastrodev/fastro/blob/v${fastro_version}/mod.ts";
+import { Controller, Get, Request } from "https://raw.githubusercontent.com/fastrodev/fastro/v${fastro_version}/mod.ts";
 
 @Controller()
 class Greet {
