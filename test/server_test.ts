@@ -209,3 +209,48 @@ test({
     server.close();
   },
 });
+
+test({
+  name: "FUNCTION - with url param 1 ",
+  async fn() {
+    const server = new Fastro();
+    server.function("/:prefix/function", (req) => {
+      req.send(req.functionParameter);
+    });
+    server.listen({ port });
+    const result = await fetch(addr + "/bebas/function/ok");
+    const text = await result.text();
+    assertEquals(text, '["ok"]');
+    server.close();
+  },
+});
+
+test({
+  name: "FUNCTION - with url param 2 ",
+  async fn() {
+    const server = new Fastro();
+    server.function("/prefix/:function", (req) => {
+      req.send(req.functionParameter);
+    });
+    server.listen({ port });
+    const result = await fetch(addr + "/prefix/bebas/ok");
+    const text = await result.text();
+    assertEquals(text, '["ok"]');
+    server.close();
+  },
+});
+
+test({
+  name: "FUNCTION - with url param 3 ",
+  async fn() {
+    const server = new Fastro();
+    server.function("/:prefix/:function", (req) => {
+      req.send(req.functionParameter);
+    });
+    server.listen({ port });
+    const result = await fetch(addr + "/merdeka/bebas/ok");
+    const text = await result.text();
+    assertEquals(text, '["ok"]');
+    server.close();
+  },
+});

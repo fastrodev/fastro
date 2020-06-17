@@ -4,7 +4,7 @@
 
 - __Node.js__: v14.3.0
 
-- __Deno__: v1.0.2
+- __Deno__: v1.1.0
 
 ## Method
 

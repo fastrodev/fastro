@@ -290,20 +290,22 @@ export class Fastro {
   }
 
   private checkFunctionUrl(incoming: string, registered: string) {
+    if (!registered.includes(":")) return incoming.includes(registered);
+    const incomingSplit = incoming.substr(1, incoming.length).split("/");
+    const regSplit = registered.substr(1, registered.length).split("/");
+    const [firstIncome, secondIncome] = incomingSplit;
+    const [firstReg, secondReg] = regSplit;
+    if (firstReg.includes(":") && secondReg.includes(":")) return true;
     if (registered.includes(":")) {
-      const incomingSplit = incoming.substr(1, incoming.length).split("/");
-      const regsSplit = registered.substr(1, registered.length).split("/");
-      const [firstParam, secondParam, thirdParam] = regsSplit;
-      if (firstParam.includes(":") && secondParam.includes(":")) return true;
-      return incomingSplit.length === regsSplit.length;
+      if (firstIncome.includes(firstReg)) return true;
+      if (secondIncome && secondIncome.includes(secondReg)) return true;
     }
-    return incoming.includes(registered);
   }
 
-  functionHandler(req: Request) {
-    const [func] = this.#functions.filter((fn) => {
-      return (fn.url && this.checkFunctionUrl(req.url, fn.url));
-    });
+  private functionHandler(req: Request) {
+    const [func] = this.#functions.filter((
+      fn,
+    ) => (fn.url && this.checkFunctionUrl(req.url, fn.url)));
     if (!func) return this.forward(req);
     if (func.url) {
       req.parameter = this.getParameter(req.url, func.url);
