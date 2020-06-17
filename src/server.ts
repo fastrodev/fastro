@@ -289,9 +289,20 @@ export class Fastro {
     return this;
   }
 
+  private checkFunctionUrl(incoming: string, registered: string) {
+    if (registered.includes(":")) {
+      const incomingSplit = incoming.substr(1, incoming.length).split("/");
+      const regsSplit = registered.substr(1, registered.length).split("/");
+      const [firstParam, secondParam, thirdParam] = regsSplit;
+      if (firstParam.includes(":") && secondParam.includes(":")) return true;
+      return incomingSplit.length === regsSplit.length;
+    }
+    return incoming.includes(registered);
+  }
+
   functionHandler(req: Request) {
     const [func] = this.#functions.filter((fn) => {
-      return (fn.url && req.url.includes(fn.url));
+      return (fn.url && this.checkFunctionUrl(req.url, fn.url));
     });
     if (!func) return this.forward(req);
     if (func.url) {
