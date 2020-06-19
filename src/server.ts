@@ -390,10 +390,8 @@ export class Fastro {
       const [firstIncome, secondIncome] = incomingSplit;
       const [firstReg, secondReg] = regSplit;
       if (firstReg.includes(":") && secondReg.includes(":")) return true;
-      if (registered.includes(":")) {
-        if (firstIncome.includes(firstReg)) return true;
-        if (secondIncome && secondIncome.includes(secondReg)) return true;
-      }
+      if (firstIncome.includes(firstReg)) return true;
+      if (secondIncome && secondIncome.includes(secondReg)) return true;
     } catch (error) {
       throw FastroError("CHECK_FN_URL_ERROR", error);
     }
@@ -404,13 +402,14 @@ export class Fastro {
       if (!registered.includes(":")) return incoming === registered;
       const incomingSplit = incoming.substr(1, incoming.length).split("/");
       const regsSplit = registered.substr(1, registered.length).split("/");
-      const paths = regsSplit
-        .filter((r) => !r.includes(":"))
-        .filter((p) => {
-          const str = `/${p}`;
-          return incoming.includes(str);
-        });
-      return paths.length > 0 && (incomingSplit.length === regsSplit.length);
+      const regPaths = regsSplit
+        .map((v, i) => {
+          return { v, i };
+        })
+        .filter((r) => !r.v.includes(":"))
+        .filter((r) => incomingSplit[r.i] === r.v);
+      return (regPaths.length > 0) &&
+        (incomingSplit.length === regsSplit.length);
     } catch (error) {
       throw FastroError("CHECK_URL_ERROR", error);
     }
