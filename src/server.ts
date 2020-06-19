@@ -289,19 +289,6 @@ export class Fastro {
     return this;
   }
 
-  private checkFunctionUrl(incoming: string, registered: string) {
-    if (!registered.includes(":")) return incoming.includes(registered);
-    const incomingSplit = incoming.substr(1, incoming.length).split("/");
-    const regSplit = registered.substr(1, registered.length).split("/");
-    const [firstIncome, secondIncome] = incomingSplit;
-    const [firstReg, secondReg] = regSplit;
-    if (firstReg.includes(":") && secondReg.includes(":")) return true;
-    if (registered.includes(":")) {
-      if (firstIncome.includes(firstReg)) return true;
-      if (secondIncome && secondIncome.includes(secondReg)) return true;
-    }
-  }
-
   private functionHandler(req: Request) {
     const [func] = this.#functions.filter((
       fn,
@@ -395,14 +382,35 @@ export class Fastro {
     }
   }
 
+  private checkFunctionUrl(incoming: string, registered: string) {
+    try {
+      if (!registered.includes(":")) return incoming.includes(registered);
+      const incomingSplit = incoming.substr(1, incoming.length).split("/");
+      const regSplit = registered.substr(1, registered.length).split("/");
+      const [firstIncome, secondIncome] = incomingSplit;
+      const [firstReg, secondReg] = regSplit;
+      if (firstReg.includes(":") && secondReg.includes(":")) return true;
+      if (registered.includes(":")) {
+        if (firstIncome.includes(firstReg)) return true;
+        if (secondIncome && secondIncome.includes(secondReg)) return true;
+      }
+    } catch (error) {
+      throw FastroError("CHECK_FN_URL_ERROR", error);
+    }
+  }
+
   private checkUrl(incoming: string, registered: string): boolean {
     try {
-      if (registered.includes(":")) {
-        const incomingSplit = incoming.substr(1, incoming.length).split("/");
-        const regsSplit = registered.substr(1, registered.length).split("/");
-        return incomingSplit.length === regsSplit.length;
-      }
-      return incoming === registered;
+      if (!registered.includes(":")) return incoming === registered;
+      const incomingSplit = incoming.substr(1, incoming.length).split("/");
+      const regsSplit = registered.substr(1, registered.length).split("/");
+      const paths = regsSplit
+        .filter((r) => !r.includes(":"))
+        .filter((p) => {
+          const str = `/${p}`;
+          return incoming.includes(str);
+        });
+      return paths.length > 0 && (incomingSplit.length === regsSplit.length);
     } catch (error) {
       throw FastroError("CHECK_URL_ERROR", error);
     }
