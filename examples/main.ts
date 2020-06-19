@@ -25,7 +25,7 @@ server
     };
     req.send(data);
   })
-  // handle post & get the payload
+  // handle post & get the json/text payload
   .post("/hello", (req) => {
     const payload = req.payload;
     req.send(payload);

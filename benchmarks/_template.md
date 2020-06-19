@@ -1,5 +1,4 @@
 ![fastro][logo]
-
 ![ci][ci]
 
 **Fastro** is web framework for developers who are obsessed with simplicity & performance.
@@ -69,8 +68,8 @@ server.register(routes);
 
 ```
 
-## Depedency Injection
-With depedency injection you can create complex applications with clean code. No longer need to manually import handlers and services. You only make a class and add [typescript decorator](https://www.typescriptlang.org/docs/handbook/decorators.html) to define `gateway`, `controller`, `service`  and `route`. Fastro will automatically load, register and create them for you. This is similar to [nest](https://nestjs.com/).
+## Dependency Injection
+With dependency injection you can create complex applications with clean code. No longer need to manually import handlers and services. You only make a class and add [typescript decorator](https://www.typescriptlang.org/docs/handbook/decorators.html) to define `gateway`, `controller`, `service`  and `route`. Fastro will automatically load, register and create them for you. This is similar to [nest](https://nestjs.com/).
 
 ```ts
 import { Controller, Get, Request } from "https://raw.githubusercontent.com/fastrodev/fastro/v${fastro_version}/mod.ts";
@@ -103,9 +102,8 @@ Check [this folder](https://github.com/fastrodev/fastro/tree/master/examples) to
 - [change default port & add optional listen callback](https://github.com/fastrodev/fastro/blob/master/examples/main.ts#L34)
 - [send simple text & json data](https://github.com/fastrodev/fastro/blob/master/examples/main.ts#L5)
 - [get url parameters](https://github.com/fastrodev/fastro/blob/master/examples/main.ts#L20)
-- [get payload from post method](https://github.com/fastrodev/fastro/blob/master/examples/main.ts#L30)
+- [get json/text payload from post method](https://github.com/fastrodev/fastro/blob/master/examples/main.ts#L30)
 - [set custom http headers & status](https://github.com/fastrodev/fastro/blob/master/examples/main.ts#L9)
-- [change the request object by creating a middleware](https://github.com/fastrodev/fastro/blob/master/examples/use_middleware.ts#L6)
 - [create simple jwt auth](https://github.com/fastrodev/fastro/blob/master/examples/simple_jwt_auth.ts)
 - [create middleware](https://github.com/fastrodev/fastro/blob/master/examples/middleware.ts)
 - [create decorator to add new property](https://github.com/fastrodev/fastro/blob/master/examples/decorate.ts)
