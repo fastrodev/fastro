@@ -1,4 +1,5 @@
 ![fastro][logo]
+
 ![ci][ci]
 
 **Fastro** is web framework for developers who are obsessed with simplicity & performance.
