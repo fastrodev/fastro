@@ -1,4 +1,5 @@
 ![fastro][logo]
+
 ![ci][ci]
 
 **Fastro** is web framework for developers who are obsessed with simplicity & performance.
@@ -17,15 +18,15 @@ If performance is **really important** to you, here are the `Hello World` benchm
 
 | Framework | Version | Router? | Avg Req |
 | :-- | :-- | :--: | --: |
-| [Deno http](https://github.com/fastrodev/fastro/blob/master/benchmarks/deno_http.ts) | 1.1.0 | &#10007; | [18239.6](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_deno.json) |
-| [Node http](https://github.com/fastrodev/fastro/blob/master/benchmarks/node_http.js) | 14.3.0 | &#10007; | [17722.6](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_node.json) |
-| [**Fastro**](https://github.com/fastrodev/fastro/blob/master/benchmarks/fastro.ts) | **0.11.1** | **&#10003;** | **[15302.8](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_fastro.json)**  |
-| [Fastify](https://github.com/fastrodev/fastro/blob/master/benchmarks/fastify.js) | 2.14.1 | &#10003; | [12724.6](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_fastify.json) |
-| [Oak](https://github.com/fastrodev/fastro/blob/master/benchmarks/oak.ts) | 4.0.0 | &#10003; | [11556.6](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_oak.json) |
-| [Abc](https://github.com/fastrodev/fastro/blob/master/benchmarks/abc.ts) | 1.0.0-rc10 | &#10003; | [11377.8](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_abc.json) |
-| [Express](https://github.com/fastrodev/fastro/blob/master/benchmarks/express.js) | 4.17.1 | &#10003; | [5518.5](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_express.json) |
-| [PHP](https://github.com/fastrodev/fastro/blob/master/benchmarks/index.php) | 7.3.11 | &#10007; | [5117.7](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_php.json) |
-| [Python Flask](https://github.com/fastrodev/fastro/blob/master/benchmarks/flask_app.py) | 1.1.2 | &#10003; | [566.3](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_flask.json) |
+| [Deno http](https://github.com/fastrodev/fastro/blob/master/benchmarks/deno_http.ts) | 1.1.0 | &#10007; | [17066.8](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_deno.json) |
+| [Node http](https://github.com/fastrodev/fastro/blob/master/benchmarks/node_http.js) | 14.3.0 | &#10007; | [16485.41](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_node.json) |
+| [**Fastro**](https://github.com/fastrodev/fastro/blob/master/benchmarks/fastro.ts) | **0.11.1** | **&#10003;** | **[14105.8](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_fastro.json)**  |
+| [Fastify](https://github.com/fastrodev/fastro/blob/master/benchmarks/fastify.js) | 2.14.1 | &#10003; | [12590.6](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_fastify.json) |
+| [Abc](https://github.com/fastrodev/fastro/blob/master/benchmarks/abc.ts) | 1.0.0-rc10 | &#10003; | [11110.2](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_abc.json) |
+| [Oak](https://github.com/fastrodev/fastro/blob/master/benchmarks/oak.ts) | 5.2.0 | &#10003; | [10862.2](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_oak.json) |
+| [Express](https://github.com/fastrodev/fastro/blob/master/benchmarks/express.js) | 4.17.1 | &#10003; | [6495.3](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_express.json) |
+| [PHP](https://github.com/fastrodev/fastro/blob/master/benchmarks/index.php) | 7.3.11 | &#10007; | [5807.6](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_php.json) |
+| [Python Flask](https://github.com/fastrodev/fastro/blob/master/benchmarks/flask_app.py) | 1.1.2 | &#10003; | [547.3](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_flask.json) |
 
 
 ## How to use
