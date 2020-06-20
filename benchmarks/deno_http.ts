@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/std/http/server.ts";
+import { serve } from "../deps.ts";
 const port = 3005;
 const s = serve({ port });
 console.log("deno_http listen on", port);
