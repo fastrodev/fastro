@@ -1,11 +1,15 @@
-export * from "./src/server.ts";
-export * from "./src/injection/mod.ts";
+export const version = {
+  fastro: "0.12.0",
+  deno: "1.1.1",
+};
+export * from "./core/server.ts";
+export * from "./core/injection/mod.ts";
 
 export {
   support,
   sendOk,
-} from "./src/middlewares/sample.ts";
+} from "./middlewares/sample.ts";
 
 export {
   sample,
-} from "./src/plugins/sample.ts";
+} from "./plugins/sample.ts";

@@ -1,4 +1,5 @@
 import { serve, Server, ServerRequest, decode } from "../deps.ts";
+import { version } from "../mod.ts";
 
 /**
  * Fastro class
@@ -372,7 +373,7 @@ export class Fastro {
   ) {
     try {
       let body: any;
-      headers.set("X-Powered-By", "fastro");
+      headers.set("X-Powered-By", `fastro@v${version.fastro}`);
       if (typeof payload === "string") body = payload;
       else body = JSON.stringify(payload);
       req.respond({ status, headers, body });
@@ -511,7 +512,7 @@ interface Handler {
 interface Parameter {
   [key: string]: string;
 }
-function FastroError(title: string, error: Error) {
+export function FastroError(title: string, error: Error) {
   error.name = title;
   return error;
 }

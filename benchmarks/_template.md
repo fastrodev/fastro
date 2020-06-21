@@ -22,7 +22,13 @@ ${table}
 
 ## How to use
 
-This module uses the git release. If you want to pick a specific version, for example `${fastro_version}`, then the full url is [`https://raw.githubusercontent.com/fastrodev/fastro/v${fastro_version}/mod.ts`](https://raw.githubusercontent.com/fastrodev/fastro/v${fastro_version}/mod.ts). If you do not use the version, it will refer to `master` branch. Breaking changes may be made without warning.
+This module uses the git release. If you want to pick a specific version, for example `${fastro_version}`, then the full url is:
+
+```
+https://raw.githubusercontent.com/fastrodev/fastro/v${fastro_version}/mod.ts
+```
+
+If you do not use the version, it will refer to `master` branch. Breaking changes may be made without warning.
 
 ## Middleware
 
@@ -94,7 +100,26 @@ server.function("/prefix/function", (req) => {
 });
 
 ```
-> Please note, in this version `dependency-injection` cannot be used in `fastro-function`.
+
+## Command line interface
+fastro-cli is only used for `fastro-function`.
+
+Install fastro-cli:
+```
+deno install -f --allow-net --allow-write --allow-read https://raw.githubusercontent.com/fastrodev/fastro/v0.12.0/cli/fastro.ts
+```
+Create config file and initial handler:
+```
+mkdir app && cd app && fastro init
+```
+Run server:
+```
+fastro serve
+```
+You can access the handler via url:
+```
+http://localhost:3000/app/hello
+```
 
 ## Examples
 
@@ -114,6 +139,7 @@ Check [this folder](https://github.com/fastrodev/fastro/tree/master/examples) to
 - [create simple REST API with JWT](https://github.com/fastrodev/fastro/blob/master/examples/rest_api_jwt)
 - [create dependency injection](https://github.com/fastrodev/fastro/blob/master/examples/di)
 - [create fastro function](https://github.com/fastrodev/fastro/blob/master/examples/function.ts)
+- [use command line interface](https://github.com/fastrodev/fastro/blob/master/examples/app)
 
-[logo]: https://repository-images.githubusercontent.com/264308713/80eb4380-aa57-11ea-82b0-47e460921478 "Fastro"
+[logo]: https://repository-images.githubusercontent.com/264308713/62a90180-b2fb-11ea-9299-9a5bc12daca2 "Fastro"
 [ci]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg "ci"
