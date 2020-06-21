@@ -28,9 +28,8 @@ async function createServer() {
     server
       .function("/:prefix/:handler", async (req) => {
         try {
-          console.log('v222')
           const { prefix, handler } = req.parameter;
-          const fileImport = 'file://' + cwd + `/${folder}/${handler}.ts`;
+          const fileImport = "file://" + cwd + `/${folder}/${handler}.ts`;
           if (prefix !== app) return req.send("not found");
           if (
             prefix && handler && req.functionParameter.length < 1 &&
@@ -44,7 +43,6 @@ async function createServer() {
           if (!h) return server.forward(req);
           h.file.handler(req);
         } catch (error) {
-          console.log(error)
           server.forward(req);
         }
       });
