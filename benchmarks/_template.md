@@ -116,10 +116,16 @@ Run server:
 ```
 fastro serve
 ```
+You can access app root via url:
+```
+http://localhost:3000/app
+```
+
 You can access the handler via url:
 ```
 http://localhost:3000/app/hello
 ```
+You can change the default app and handler by updating the file generated from `fastro init`.
 
 ## Examples
 

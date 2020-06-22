@@ -7,7 +7,7 @@
 It is inspired by [Express](https://expressjs.com/), [Fastify](https://www.fastify.io/), [Nest](https://nestjs.com/) & [Firebase](https://firebase.google.com/).
 
 ```ts
-import { Fastro } from "https://raw.githubusercontent.com/fastrodev/fastro/v0.12.0/mod.ts";
+import { Fastro } from "https://raw.githubusercontent.com/fastrodev/fastro/v0.12.1/mod.ts";
 const server = new Fastro();
 server.get("/", (req) => req.send("root"));
 await server.listen();
@@ -18,23 +18,23 @@ If performance is **really important** to you, here are the `Hello World` benchm
 
 | Framework | Version | Router? | Avg Req |
 | :-- | :-- | :--: | --: |
-| [Deno http](https://github.com/fastrodev/fastro/blob/master/benchmarks/deno_http.ts) | 1.1.1 | &#10007; | [18021.2](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_deno.json) |
-| [Node http](https://github.com/fastrodev/fastro/blob/master/benchmarks/node_http.js) | 14.3.0 | &#10007; | [17229.46](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_node.json) |
-| [**Fastro**](https://github.com/fastrodev/fastro/blob/master/benchmarks/fastro.ts) | **0.12.0** | **&#10003;** | **[14892.8](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_fastro.json)**  |
-| [Fastify](https://github.com/fastrodev/fastro/blob/master/benchmarks/fastify.js) | 2.15.0 | &#10003; | [14573.2](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_fastify.json) |
-| [Abc](https://github.com/fastrodev/fastro/blob/master/benchmarks/abc.ts) | 1.0.0-rc10 | &#10003; | [12353.6](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_abc.json) |
-| [Oak](https://github.com/fastrodev/fastro/blob/master/benchmarks/oak.ts) | 5.2.0 | &#10003; | [11590.4](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_oak.json) |
-| [Express](https://github.com/fastrodev/fastro/blob/master/benchmarks/express.js) | 4.17.1 | &#10003; | [7703.82](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_express.json) |
-| [PHP](https://github.com/fastrodev/fastro/blob/master/benchmarks/index.php) | 7.3.11 | &#10007; | [6095.2](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_php.json) |
-| [Python Flask](https://github.com/fastrodev/fastro/blob/master/benchmarks/flask_app.py) | 1.1.2 | &#10003; | [577.21](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_flask.json) |
+| [Deno http](https://github.com/fastrodev/fastro/blob/master/benchmarks/deno_http.ts) | 1.1.1 | &#10007; | [14888.8](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_deno.json) |
+| [Node http](https://github.com/fastrodev/fastro/blob/master/benchmarks/node_http.js) | 14.3.0 | &#10007; | [14800.6](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_node.json) |
+| [**Fastro**](https://github.com/fastrodev/fastro/blob/master/benchmarks/fastro.ts) | **0.12.1** | **&#10003;** | **[13830.4](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_fastro.json)**  |
+| [Fastify](https://github.com/fastrodev/fastro/blob/master/benchmarks/fastify.js) | 2.15.0 | &#10003; | [12568.6](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_fastify.json) |
+| [Abc](https://github.com/fastrodev/fastro/blob/master/benchmarks/abc.ts) | 1.0.0-rc10 | &#10003; | [10989.8](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_abc.json) |
+| [Oak](https://github.com/fastrodev/fastro/blob/master/benchmarks/oak.ts) | 5.2.0 | &#10003; | [10071.4](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_oak.json) |
+| [Express](https://github.com/fastrodev/fastro/blob/master/benchmarks/express.js) | 4.17.1 | &#10003; | [6793.73](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_express.json) |
+| [PHP](https://github.com/fastrodev/fastro/blob/master/benchmarks/index.php) | 7.3.11 | &#10007; | [5758](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_php.json) |
+| [Python Flask](https://github.com/fastrodev/fastro/blob/master/benchmarks/flask_app.py) | 1.1.2 | &#10003; | [553.4](https://github.com/fastrodev/fastro/blob/master/benchmarks/benchmark_flask.json) |
 
 
 ## How to use
 
-This module uses the git release. If you want to pick a specific version, for example `0.12.0`, then the full url is:
+This module uses the git release. If you want to pick a specific version, for example `0.12.1`, then the full url is:
 
 ```
-https://raw.githubusercontent.com/fastrodev/fastro/v0.12.0/mod.ts
+https://raw.githubusercontent.com/fastrodev/fastro/v0.12.1/mod.ts
 ```
 
 If you do not use the version, it will refer to `master` branch. Breaking changes may be made without warning.
@@ -88,7 +88,7 @@ server.register(routes);
 With dependency injection you can create complex applications with clean code. No longer need to manually import handlers and services. You only make a class and add [typescript decorator](https://www.typescriptlang.org/docs/handbook/decorators.html) to define `gateway`, `controller`, `service`  and `route`. Fastro will automatically load, register and create them for you. This is similar to [nest](https://nestjs.com/).
 
 ```ts
-import { Controller, Get, Request } from "https://raw.githubusercontent.com/fastrodev/fastro/v0.12.0/mod.ts";
+import { Controller, Get, Request } from "https://raw.githubusercontent.com/fastrodev/fastro/v0.12.1/mod.ts";
 
 @Controller()
 class Greet {
@@ -125,10 +125,16 @@ Run server:
 ```
 fastro serve
 ```
+You can access app root via url:
+```
+http://localhost:3000/app
+```
+
 You can access the handler via url:
 ```
 http://localhost:3000/app/hello
 ```
+You can change the default app and handler by updating the file generated from `fastro init`.
 
 ## Examples
 
