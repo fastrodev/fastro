@@ -31,6 +31,7 @@ async function createServer() {
           const { prefix, handler } = req.parameter;
           const fileImport = "file://" + cwd + `/${folder}/${handler}.ts`;
           if (prefix !== app) return req.send("not found");
+          if (prefix && !handler) return req.send(`${prefix} root`);
           if (
             prefix && handler && req.functionParameter.length < 1 &&
             !function_list.includes(fileImport)
