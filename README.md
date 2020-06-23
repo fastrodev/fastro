@@ -9,7 +9,7 @@ It is inspired by [Express](https://expressjs.com/), [Fastify](https://www.fasti
 ```ts
 import { Fastro } from "https://raw.githubusercontent.com/fastrodev/fastro/v0.12.1/mod.ts";
 const server = new Fastro();
-server.get("/", (req) => req.send("root"));
+server.get("/", req => req.send("root"));
 await server.listen();
 ```
 
@@ -50,7 +50,7 @@ const middleware = (req: Request, done: Function) => {
 
 server
   .use(middleware)
-  .get("/", (req) => req.oke());
+  .get("/", req => req.oke());
 ```
 
 ## Decorator
@@ -58,14 +58,14 @@ server
 Another way to add a new property or function globally to the fastro instance and `request` object is to use a decorator. This is similar to the [fastify decorator](https://www.fastify.io/docs/latest/Decorators/).
 ```ts
 server
-  .decorate((instance) => instance.ok = "ok")
-  .decorate((instance) => instance.hello = (payload: string) => payload)
-  .decorateRequest((req) => req.oke = "oke request");
+  .decorate(instance => instance.ok = "ok")
+  .decorate(instance => instance.hello = (payload: string) => payload)
+  .decorateRequest(req => req.oke = "oke request");
 
 server
-  .get("/", (req) => req.send(server.ok))
-  .get("/hello", (req) => req.send(server.hello("hello")))
-  .get("/oke", (req) => req.send(req.oke));
+  .get("/", req => req.send(server.ok))
+  .get("/hello", req => req.send(server.hello("hello")))
+  .get("/oke", req => req.send(req.oke));
 ```
 
 ## Plugin
@@ -73,10 +73,10 @@ You can add new properties or functions to the fastro instance. You can also use
 ```ts
 const routes = function (fastro: Fastro, done: Function) {
   fastro
-    .get("/", (req) => req.send("root"))
-    .post("/", (req) => req.send("post"))
-    .put("/", (req) => req.send("put"))
-    .delete("/", (req) => req.send("delete"));
+    .get("/", req => req.send("root"))
+    .post("/", req => req.send("post"))
+    .put("/", req => req.send("put"))
+    .delete("/", req => req.send("delete"));
   done();
 };
 
@@ -103,7 +103,7 @@ class Greet {
 ## Function
 With functions, you only need to define the main url and the handler. There is no need to define a method, so you can use all types of http methods. You can also get the url parameters more dynamically without defining the full url.
 ```ts
-server.function("/prefix/function", (req) => {
+server.function("/prefix/function", req => {
   if (!req.url.includes("/prefix/function")) return server.forward(req);
   req.send(req.functionParameter);
 });
