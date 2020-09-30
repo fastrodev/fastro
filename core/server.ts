@@ -293,7 +293,7 @@ export class Fastro {
     try {
       const servicesFolder = `${this.cwd}/${target}`;
       for await (const dirEntry of Deno.readDir(servicesFolder)) {
-        if (dirEntry.isFile) {
+        if (dirEntry.isFile && dirEntry.name.includes(".ts")) {
           const filePath = servicesFolder + "/" + dirEntry.name;
           const [, splittedFilePath] = filePath.split(this.serviceDir);
           const [splittedWithDot] = splittedFilePath.split(".");
