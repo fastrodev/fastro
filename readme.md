@@ -96,7 +96,7 @@ With this, you don't need an entrypoint file (`main.ts`) anymore.
 
 ## Examples
 
-You can find other examples [here](services).
+You can find other examples [here](services/readme.md).
 
 ## Perfomance
 
