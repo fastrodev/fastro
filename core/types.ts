@@ -2,6 +2,9 @@
 
 import type { FormFile } from "../deps.ts";
 
+export const FASTRO_VERSION = "0.30.1";
+export const SERVICE_DIR = "services";
+
 export type ServerOptions = {
   prefix?: string;
   serviceDir?: string;

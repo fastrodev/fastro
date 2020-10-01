@@ -1,9 +1,17 @@
-# Table of Contents
-- [Getting started](#getting-started)
-- [How to add a handler](#how-to-add-a-handler)
+# Fast and simple web framework
+
+[High performance](#perfomance) backend module. Built on top of [Deno standard library](https://deno.land/std). No external dependencies. Written in TypeScript.
+
+## Features
 - [Command line interface](#command-line-interface)
-- [Examples](#examples)
-- [Perfomance](#perfomance)
+- URL routing by file name
+- Supports cookie
+- Supports `multipart/form-data`
+- Supports `application/json`
+- Supports `application/x-www-form-urlencoded`
+
+
+You can see the detail of implementation in [the examples.](https://github.com/fastrodev/fastro/blob/master/services)
 
 ## Getting started
 - Create `main.ts`
@@ -22,20 +30,20 @@
 
 
 ## How to add a handler
-- Create a new folder with command `mkdir webapp`
+- Create a new folder with command: `mkdir webapp`
 
     The structure will be like this:
     ```
     webapp
     ├── main.ts
     └── services
-        └── hello.ts
+        └── hello.controller.ts
     ```
     
     File and folder description:
     - `main.ts`: Webapp entrypoint.
     - `services`: Default folder for all handler files. You can change it via [ServerOptions](core/types.ts).
-    - `services/hello.ts`: Endpoint handler. You can access it via URL: [http://localhost:3000/hello](http://localhost:3000/hello).
+    - `services/hello.controller.ts`: Endpoint handler. You can access it via URL: [http://localhost:3000/hello](http://localhost:3000/hello).
 
 - Create entrypoint `main.ts`
     ```ts
@@ -44,9 +52,9 @@
     server.listen();
     ```
     - You can add [ServerOptions](core/types.ts) on Fastro construtor to change default service folder, add url prefix, or enable cors.
-    - You can pass [ListenOptions](core/types.ts) on listen function to change default port.
+    - You can pass [ListenOptions](core/types.ts) on listen function to change default port and address.
 
-- Create handler `services/hello.ts`
+- Create handler `services/hello.controller.ts`
     ```ts
     import type { Request } from "https://raw.githubusercontent.com/fastrodev/fastro/master/mod.ts";
 
@@ -68,7 +76,7 @@
     ```
 
 
-## Command Line Interface
+## Command line interface
 
 You can also run your project using fastro command line interface (fastro-cli). 
 
@@ -79,7 +87,7 @@ With this, you don't need an entrypoint file (`main.ts`) anymore.
     deno install -A https://raw.githubusercontent.com/fastrodev/fastro/master/cli/fastro.ts
     ```
 
-- Run in development
+- Run in development (HMR)
 
     All modules will be reloaded again if there are changes.
 
@@ -94,15 +102,11 @@ With this, you don't need an entrypoint file (`main.ts`) anymore.
     fastro serve --port 8080 --production
     ```
 
-## Examples
-
-You can find other examples [here](services/readme.md).
-
 ## Perfomance
 
 |Module|Version|Req/s|Percentage|
 |--|--:|--:|--:|
 |[Deno](benchmarks/deno_app.ts)|0.71.0|16962.8|100.00%|
-|[Fastro](benchmarks/fastro_app.ts)|0.30.0|16027.2|94.48%|
+|[Fastro](benchmarks/fastro_app.ts)|0.30.1|16027.2|94.48%|
 
-You can see the details [here](benchmarks/readme.md).
+You can see the details [here](https://github.com/fastrodev/fastro/blob/master/benchmarks).

@@ -46,3 +46,17 @@ test({
   sanitizeResources: false,
   sanitizeOps: false,
 });
+
+test({
+  name: "SERVICE DIRECTORY 2",
+  async fn() {
+    const server = new Fastro({ serviceDir: "services/hello/v2" });
+    server.listen({ port });
+    const result = await fetch(`${base}/hello`);
+    const text = await result.text();
+    assertEquals(text, "hello v2");
+    server.close();
+  },
+  sanitizeResources: false,
+  sanitizeOps: false,
+});

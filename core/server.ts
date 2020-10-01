@@ -1,9 +1,10 @@
 // Copyright 2020 the Fastro author. All rights reserved. MIT license.
 
 import { createError, getErrorTime } from "./utils.ts";
-import type { ServerOptions, ListenOptions, MultiPartData } from "./types.ts";
 import type { Request } from "./request.ts";
 import type { Cookie } from "./cookie.ts";
+import { SERVICE_DIR, FASTRO_VERSION } from "./types.ts";
+import type { ServerOptions, ListenOptions, MultiPartData } from "./types.ts";
 import {
   serve,
   Server,
@@ -13,8 +14,18 @@ import {
   isFormFile,
 } from "../deps.ts";
 
-export const FASTRO_VERSION = "0.30.0";
-
+/**
+ * You have to create a `Fastro` class instance.
+ * This will load all of your controller file  automatically.
+ * 
+ *    // example
+ *    const server = new Fastro();
+ *    server.listen();
+ *    
+ *    // or with options
+ *    const server = new Fastro({ prefix: "api", serviceDir: "controller", cors: true });
+ *    server.listen({ port: 8080, hostname: "0.0.0.0" });
+ */
 export class Fastro {
   // deno-lint-ignore no-explicit-any
   private services = new Map<string, any>();
@@ -23,7 +34,7 @@ export class Fastro {
   private server!: Server;
   private serviceDir!: string;
   private corsEnabled!: boolean;
-  private cookieList: Cookie[] = [];
+  private cookieList = new Map<string, Cookie>();
 
   constructor(options?: ServerOptions) {
     if (options && options.prefix) this.prefix = options.prefix;
@@ -32,10 +43,10 @@ export class Fastro {
     this.initService();
   }
 
-  async initService() {
+  private async initService() {
     this.cwd = Deno.cwd();
-    this.serviceDir = this.serviceDir ? this.serviceDir : "services";
-    this.importServiceFile(this.serviceDir);
+    this.serviceDir = this.serviceDir ? this.serviceDir : SERVICE_DIR;
+    this.importServices(this.serviceDir);
   }
 
   private handleRoot(request: ServerRequest) {
@@ -75,12 +86,13 @@ export class Fastro {
       } else body = JSON.stringify(payload);
       headers.set("Connection", "keep-alive");
       headers.set("Date", new Date().toUTCString());
+      headers.set("x-powered-by", "Fastro/" + FASTRO_VERSION);
       if (this.corsEnabled) {
         headers.set("Access-Control-Allow-Origin", "*");
         headers.set("Access-Control-Allow-Headers", "*");
         headers.set("Access-Control-Allow-Methods", "*");
       }
-      if (this.cookieList.length > 0) {
+      if (this.cookieList.size > 0) {
         this.cookieList.forEach((c) => {
           let str = `${c.name}=${c.value}`;
           const expire = c.expires ? `;expires=${c.expires}` : undefined;
@@ -107,7 +119,7 @@ export class Fastro {
     }
   }
 
-  private getCookies(request: Request) {
+  private getCookies(request: ServerRequest) {
     const cookies = request.headers.get("cookie")?.split(";");
     const results = cookies?.map((v) => {
       const [n, value] = v.split("=");
@@ -117,7 +129,7 @@ export class Fastro {
     return results;
   }
 
-  private getCookiesByName(name: string, request: Request) {
+  private getCookiesByName(name: string, request: ServerRequest) {
     const cookies = request.headers.get("cookie")?.split(";");
     const results = cookies?.map((v) => {
       const [n, value] = v.split("=");
@@ -130,12 +142,16 @@ export class Fastro {
     return c.value;
   }
 
-  private clearCookie(name: string, request: Request) {
-    let str = `${name}="";expires=Thu, 01 Jan 1970 00:00:00 GMT;`;
-    request.headers.set("Set-Cookie", str);
+  private clearCookie(name: string, request: ServerRequest) {
+    let cookie = this.cookieList.get(name);
+    if (cookie) {
+      cookie.expires = new Date("1970-01-01").toUTCString();
+      cookie.value = "";
+      this.cookieList.set(name, cookie);
+    }
   }
 
-  private handleRedirect(url: string, status: number, request: Request) {
+  private handleRedirect(url: string, status: number, request: ServerRequest) {
     const headers = new Headers();
     headers.set("Location", url);
     request.respond({ status, headers });
@@ -243,19 +259,22 @@ export class Fastro {
       request.getPayload = () => {
         return this.getPayload(request);
       };
-      request.send = (payload, status, headers) => {
-        this.send(payload, status, headers, serverRequest);
-      };
+
       request.getCookies = () => this.getCookies(request);
       request.getCookie = (name) => this.getCookiesByName(name, request);
-      request.clearCookie = (name) => this.clearCookie(name, request);
+      request.clearCookie = (name) => {
+        this.clearCookie(name, request);
+      };
       request.setCookie = (cookie) => {
-        this.cookieList.push(cookie);
+        this.cookieList.set(cookie.name, cookie);
         return request;
       };
       request.redirect = (url, status = 302) =>
         this.handleRedirect(url, status, request);
       request.getParams = () => this.getParams(serverRequest.url);
+      request.send = (payload, status, headers) => {
+        this.send(payload, status, headers, serverRequest);
+      };
       return request;
     } catch (error) {
       const err = createError("TRANSFORM_REQUEST_ERROR", error);
@@ -289,11 +308,11 @@ export class Fastro {
     }
   }
 
-  private async importServiceFile(target: string) {
+  private async importServices(target: string) {
     try {
       const servicesFolder = `${this.cwd}/${target}`;
       for await (const dirEntry of Deno.readDir(servicesFolder)) {
-        if (dirEntry.isFile && dirEntry.name.includes(".ts")) {
+        if (dirEntry.isFile && dirEntry.name.includes("controller.ts")) {
           const filePath = servicesFolder + "/" + dirEntry.name;
           const [, splittedFilePath] = filePath.split(this.serviceDir);
           const [splittedWithDot] = splittedFilePath.split(".");
@@ -307,11 +326,11 @@ export class Fastro {
           const service = await import(fileImport);
           this.services.set(fileKey, service);
         } else if (dirEntry.isDirectory) {
-          this.importServiceFile(target + "/" + dirEntry.name);
+          this.importServices(target + "/" + dirEntry.name);
         }
       }
     } catch (error) {
-      throw createError("IMPORT_SERVICE_FILE_ERROR", error);
+      throw createError("IMPORT_SERVICE_ERROR", error);
     }
   }
 
@@ -321,6 +340,15 @@ export class Fastro {
     }
   }
 
+  /**
+   * Server listen
+   *      
+   *      const server = new Fastro();
+   *      server.listen({ port: 8080, hostname: "0.0.0.0" });
+   * 
+   * @param options ListenOptions
+   * 
+   */
   async listen(options?: ListenOptions) {
     try {
       const port = options && options.port ? options.port : 3000;
