@@ -18,13 +18,8 @@ import {
  * You have to create a `Fastro` class instance.
  * This will load all of your controller file  automatically.
  * 
- *    // example
  *    const server = new Fastro();
  *    server.listen();
- *    
- *    // or with options
- *    const server = new Fastro({ prefix: "api", serviceDir: "controller", cors: true });
- *    server.listen({ port: 8080, hostname: "0.0.0.0" });
  */
 export class Fastro {
   // deno-lint-ignore no-explicit-any
@@ -334,6 +329,9 @@ export class Fastro {
     }
   }
 
+  /**
+   * Close server
+   */
   public close() {
     if (this.server) {
       this.server.close();
@@ -349,7 +347,7 @@ export class Fastro {
    * @param options ListenOptions
    * 
    */
-  async listen(options?: ListenOptions) {
+  public async listen(options?: ListenOptions) {
     try {
       const port = options && options.port ? options.port : 3000;
       const hostname = options && options.hostname
