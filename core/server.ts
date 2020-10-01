@@ -3,7 +3,7 @@
 import { createError, getErrorTime } from "./utils.ts";
 import type { Request } from "./request.ts";
 import type { Cookie } from "./cookie.ts";
-import { SERVICE_DIR, FASTRO_VERSION } from "./types.ts";
+import { SERVICE_DIR, SERVICE_FILE, FASTRO_VERSION } from "./types.ts";
 import type { ServerOptions, ListenOptions, MultiPartData } from "./types.ts";
 import {
   serve,
@@ -312,7 +312,7 @@ export class Fastro {
     try {
       const servicesFolder = `${this.cwd}/${target}`;
       for await (const dirEntry of Deno.readDir(servicesFolder)) {
-        if (dirEntry.isFile && dirEntry.name.includes("controller.ts")) {
+        if (dirEntry.isFile && dirEntry.name.includes(SERVICE_FILE)) {
           const filePath = servicesFolder + "/" + dirEntry.name;
           const [, splittedFilePath] = filePath.split(this.serviceDir);
           const [splittedWithDot] = splittedFilePath.split(".");
