@@ -11,10 +11,13 @@
 - Supports `application/json`
 - Supports `application/x-www-form-urlencoded`
 
-
-You can see the detail of implementation in [the examples.](https://github.com/fastrodev/fastro/blob/master/services)
+You can see the detail of implementation in [**the examples.**](#examples)
 
 ## Getting started
+- Create `webapp` folder with command
+    ```
+    mkdir webapp && cd webapp
+    ```
 - Create `main.ts`
     ```ts
     import { Fastro } from "https://raw.githubusercontent.com/fastrodev/fastro/master/mod.ts";
@@ -31,9 +34,7 @@ You can see the detail of implementation in [the examples.](https://github.com/f
 
 
 ## How to add a handler
-- Create a new folder with command: `mkdir webapp`
-
-    The structure will be like this:
+- The structure will be like this:
     ```
     webapp
     ├── main.ts
@@ -102,6 +103,10 @@ With this, you don't need an entrypoint file (`main.ts`) anymore.
     ```
     fastro serve --port 8080 --production
     ```
+
+## Examples
+
+You can see the detail of implementation in [the examples.](https://github.com/fastrodev/fastro/blob/master/services)
 
 ## Perfomance
 
