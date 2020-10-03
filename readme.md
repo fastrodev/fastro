@@ -5,6 +5,7 @@
 ## Features
 - [Command line interface](#command-line-interface)
 - URL routing by file name
+- Dynamic URL parameters
 - Supports cookie
 - Supports `multipart/form-data`
 - Supports `application/json`
@@ -106,7 +107,7 @@ With this, you don't need an entrypoint file (`main.ts`) anymore.
 
 |Module|Version|Req/s|Percentage|
 |--|--:|--:|--:|
-|[Deno](benchmarks/deno_app.ts)|0.71.0|16962.8|100.00%|
-|[Fastro](benchmarks/fastro_app.ts)|0.30.1|16027.2|94.48%|
+|[Deno](benchmarks/deno_app.ts)|0.71.0|15868.80|100.00%|
+|[Fastro](benchmarks/fastro_app.ts)|0.30.2|15323.64|96.56%|
 
 You can see the details [here](https://github.com/fastrodev/fastro/blob/master/benchmarks).

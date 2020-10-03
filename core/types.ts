@@ -2,9 +2,10 @@
 
 import type { FormFile } from "../deps.ts";
 
-export const FASTRO_VERSION = "0.30.1";
+export const FASTRO_VERSION = "0.30.2";
 export const SERVICE_DIR = "services";
 export const SERVICE_FILE = "controller.ts";
+export const MAX_MEMORY = 1024 * 1024;
 
 export type ServerOptions = {
   prefix?: string;
@@ -21,4 +22,10 @@ export type MultiPartData = {
   key: string;
   value: string | FormFile | FormFile[] | undefined;
   filename?: string;
+};
+
+export type DynamicService = {
+  url: string;
+  // deno-lint-ignore no-explicit-any
+  service: any;
 };
