@@ -30,7 +30,6 @@ import {
  * This will load all of your controller file  automatically.
  * 
  *      const server = new Fastro();
- *      server.listen();
  */
 export class Fastro {
   // deno-lint-ignore no-explicit-any
@@ -380,6 +379,8 @@ export class Fastro {
 
   /**
    * Close server
+   * 
+   *      server.close()
    */
   public close() {
     if (this.server) {
@@ -390,7 +391,6 @@ export class Fastro {
   /**
    * Server listen
    *      
-   *      const server = new Fastro();
    *      server.listen({ port: 8080, hostname: "0.0.0.0" });
    * 
    * @param options ListenOptions
