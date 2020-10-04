@@ -4,25 +4,25 @@ import { createError, getErrorTime } from "./utils.ts";
 import type { Request } from "./request.ts";
 import type { Cookie } from "./cookie.ts";
 import {
-  SERVICE_DIR,
-  SERVICE_FILE,
   FASTRO_VERSION,
   MAX_MEMORY,
+  SERVICE_DIR,
+  SERVICE_FILE,
 } from "./types.ts";
 import type {
-  ServerOptions,
+  DynamicService,
   ListenOptions,
   MultiPartData,
-  DynamicService,
   Query,
+  ServerOptions,
 } from "./types.ts";
 import {
+  decode,
+  isFormFile,
+  MultipartReader,
   serve,
   Server,
   ServerRequest,
-  MultipartReader,
-  decode,
-  isFormFile,
 } from "../deps.ts";
 
 /**
@@ -364,7 +364,6 @@ export class Fastro {
           const fileImport = Deno.env.get("DENO_ENV") === "development"
             ? `file:${filePath}#${new Date().getTime()}`
             : `file:${filePath}`;
-          // deno-lint-ignore no-undef
           import(fileImport).then((service) => {
             if (service.params) {
               this.dynamicService.push({ url: fileKey, service });
