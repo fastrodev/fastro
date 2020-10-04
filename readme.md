@@ -3,13 +3,13 @@
 [High performance](#perfomance) backend module. Built on top of [Deno standard library](https://deno.land/std). No external dependencies. Written in TypeScript.
 
 ## Features
-- [Command line interface](#command-line-interface)
 - URL routing by file name
 - Dynamic URL parameters
 - Supports cookie
 - Supports `multipart/form-data`
 - Supports `application/json`
 - Supports `application/x-www-form-urlencoded`
+- [Command line interface](#command-line-interface)
 
 You can see the detail of implementation in [**the examples.**](#examples)
 
@@ -91,7 +91,7 @@ With this, you don't need an entrypoint file (`main.ts`) anymore.
 
 - Run in development (HMR)
 
-    All modules will be reloaded again if there are changes.
+    Modules will be reloaded when changes are made.
 
     ```
     fastro serve
