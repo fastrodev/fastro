@@ -16,7 +16,7 @@
 You can see the details in [the examples.](https://github.com/fastrodev/fastro/blob/master/services)
 
 ## Getting started
-- Create `webapp` folder with command
+- Create `webapp` folder
     ```
     mkdir webapp && cd webapp
     ```
@@ -25,13 +25,14 @@ You can see the details in [the examples.](https://github.com/fastrodev/fastro/b
     import { Fastro } from "https://raw.githubusercontent.com/fastrodev/fastro/master/mod.ts";
     new Fastro().listen();
     ```
-- Run with command
+- Run server
     ```
     deno run -A main.ts
     ```
-- Output
+
+- Open url
     ```
-    HTTP webserver running.  Access it at:  http://localhost:3000
+    http://localhost:3000
     ```
 
 
@@ -58,7 +59,7 @@ You can see the details in [the examples.](https://github.com/fastrodev/fastro/b
     - You can add [ServerOptions](core/types.ts) on Fastro construtor to change default service folder, add url prefix, or enable cors.
     - You can pass [ListenOptions](core/types.ts) on listen function to change default port and address.
 
-- Create handler `services/hello.controller.ts`
+- Create handler `hello.controller.ts`
     ```ts
     import type { Request } from "https://raw.githubusercontent.com/fastrodev/fastro/master/mod.ts";
 
@@ -110,9 +111,11 @@ With this, you don't need an entrypoint file (`main.ts`) anymore.
 
 ## Perfomance
 
+Performance test with hello world keep-alive connection.
+
 |Module|Version|Req/s|Percentage|
 |--|--:|--:|--:|
-|[Deno](https://github.com/fastrodev/fastro/blob/v0.30.3/benchmarks/deno_app.ts)|0.71.0|16977.2|100.00%|
-|[Fastro](https://github.com/fastrodev/fastro/blob/v0.30.3/benchmarks/fastro_app.ts)|0.30.3|15945.2|93.92%|
+|[Deno](https://github.com/fastrodev/fastro/blob/v0.30.5/benchmarks/deno_app.ts)|0.73.0|16384.0|100.00%|
+|[Fastro](https://github.com/fastrodev/fastro/blob/v0.30.5/benchmarks/fastro_app.ts)|0.30.5|15291.2|93.33%|
 
-You can see the details [here.](https://github.com/fastrodev/fastro/blob/master/benchmarks)
+You can see the details in [the benchmarks.](https://github.com/fastrodev/fastro/blob/master/benchmarks)
