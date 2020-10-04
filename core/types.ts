@@ -29,3 +29,8 @@ export type DynamicService = {
   // deno-lint-ignore no-explicit-any
   service: any;
 };
+
+export type Query = {
+  key: string;
+  value: string;
+};

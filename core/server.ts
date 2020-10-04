@@ -14,6 +14,7 @@ import type {
   ListenOptions,
   MultiPartData,
   DynamicService,
+  Query,
 } from "./types.ts";
 import {
   serve,
@@ -28,8 +29,8 @@ import {
  * You have to create a `Fastro` class instance.
  * This will load all of your controller file  automatically.
  * 
- *    const server = new Fastro();
- *    server.listen();
+ *      const server = new Fastro();
+ *      server.listen();
  */
 export class Fastro {
   // deno-lint-ignore no-explicit-any
@@ -253,11 +254,43 @@ export class Fastro {
     return params;
   }
 
+  // deno-lint-ignore no-explicit-any
+  private queryByName(key: string, queryList: any[]) {
+    try {
+      const [query] = queryList.filter((i) => i[key] !== undefined);
+      return Promise.resolve(query as Query);
+    } catch (error) {
+      throw createError("QUERY_BY_NAME", error);
+    }
+  }
+
+  private getQuery(key?: string, url?: string) {
+    try {
+      if (!url) throw createError("GET_QUERY_ERROR", new Error("Url empty"));
+      const [, query] = url.split("?");
+      if (!query) throw new Error("Query not found");
+      const queryPair = query.split("&");
+      const queryList: Query[] = [];
+      queryPair.forEach((q) => {
+        // deno-lint-ignore no-explicit-any
+        const obj: any = {};
+        const [key, value] = q.split("=");
+        obj[key] = value;
+        queryList.push(obj);
+      });
+      if (key) return this.queryByName(key, queryList);
+      return Promise.resolve(queryList);
+    } catch (error) {
+      return Promise.resolve([]);
+    }
+  }
+
   private async transformRequest(serverRequest: ServerRequest) {
     try {
       const request = <Request> serverRequest;
       request.redirect = (url, status = 302) =>
         this.handleRedirect(url, status, serverRequest);
+      request.getQuery = (key) => this.getQuery(key, serverRequest.url);
       request.getParams = () => this.getParams(serverRequest.url);
       request.getPayload = () => this.getPayload(serverRequest);
       request.getCookies = () => this.getCookies(serverRequest);
@@ -281,19 +314,17 @@ export class Fastro {
   }
 
   private handleDynamicParams(request: Request) {
-    const [d] = this.dynamicService.filter((service) => {
+    const [serviceFile] = this.dynamicService.filter((service) => {
       return request.url.includes(service.url);
     });
-    if (!d) {
-      throw createError(
-        "HANDLE_DYNAMIC_PARAMS_ERROR",
-        new Error("Not found"),
-      );
-    }
-    if (d.service.methods && !d.service.methods.includes(request.method)) {
+    if (!serviceFile) throw new Error("Not found");
+    if (
+      serviceFile.service.methods &&
+      !serviceFile.service.methods.includes(request.method)
+    ) {
       throw new Error("Not Found");
     }
-    d.service.handler(request);
+    serviceFile.service.handler(request);
   }
 
   private async handleRequest(serverRequest: ServerRequest) {
@@ -334,10 +365,11 @@ export class Fastro {
             ? `file:${filePath}#${new Date().getTime()}`
             : `file:${filePath}`;
           // deno-lint-ignore no-undef
-          const service = await import(fileImport);
-          if (service.params) {
-            this.dynamicService.push({ url: fileKey, service });
-          } else this.services.set(fileKey, service);
+          import(fileImport).then((service) => {
+            if (service.params) {
+              this.dynamicService.push({ url: fileKey, service });
+            } else this.services.set(fileKey, service);
+          });
         } else if (dirEntry.isDirectory) {
           this.importServices(target + "/" + dirEntry.name);
         }

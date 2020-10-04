@@ -2,6 +2,7 @@
 
 import { ServerRequest } from "../deps.ts";
 import type { Cookie } from "./cookie.ts";
+import type { Query } from "./types.ts";
 
 /**
  * Request Class. It is extended from ServerRequest. One of Deno standart module.
@@ -75,6 +76,15 @@ export class Request extends ServerRequest {
   getPayload!: {
     // deno-lint-ignore no-explicit-any
     (): Promise<any>;
+  };
+
+  /**
+   * Get query
+   * 
+   *    const query = await request.getQuery()
+   */
+  getQuery!: {
+    (name?: string): Promise<Query> | Promise<Query[]>;
   };
   // deno-lint-ignore no-explicit-any
   [key: string]: any

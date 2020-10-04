@@ -5,13 +5,14 @@
 ## Features
 - URL routing by file name
 - Dynamic URL parameters
+- URL Query Parameters 
 - Supports cookie
 - Supports `multipart/form-data`
 - Supports `application/json`
 - Supports `application/x-www-form-urlencoded`
 - [Command line interface](#command-line-interface)
 
-You can see the detail of implementation in [**the examples.**](#examples)
+You can see the details in [the examples.](https://github.com/fastrodev/fastro/blob/master/services)
 
 ## Getting started
 - Create `webapp` folder with command
@@ -66,7 +67,9 @@ You can see the detail of implementation in [**the examples.**](#examples)
 
     ```
 
-    **Please note that the handler file name will be used as URL endpoint.**
+    Please note that the handler file name will be used as URL endpoint:
+
+    - **hello** . *controller.ts*
 
 - Run server
     ```
@@ -104,15 +107,11 @@ With this, you don't need an entrypoint file (`main.ts`) anymore.
     fastro serve --port 8080 --production
     ```
 
-## Examples
-
-You can see the detail of implementation in [the examples.](https://github.com/fastrodev/fastro/blob/master/services)
-
 ## Perfomance
 
 |Module|Version|Req/s|Percentage|
 |--|--:|--:|--:|
-|[Deno](benchmarks/deno_app.ts)|0.71.0|15868.80|100.00%|
-|[Fastro](benchmarks/fastro_app.ts)|0.30.2|15323.64|96.56%|
+|[Deno](benchmarks/deno_app.ts)|0.71.0|16977.2|100.00%|
+|[Fastro](benchmarks/fastro_app.ts)|0.30.3|15945.2|93.92%|
 
-You can see the details [here](https://github.com/fastrodev/fastro/blob/master/benchmarks).
+You can see the details [here.](https://github.com/fastrodev/fastro/blob/master/benchmarks)
