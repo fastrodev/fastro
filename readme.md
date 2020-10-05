@@ -4,6 +4,7 @@
 
 ## Features
 - URL routing by file name
+- URL prefix
 - Dynamic URL parameters
 - Query Parameters 
 - URL redirection 

@@ -6,7 +6,7 @@ const port = 3000;
 const base = `http://localhost:${port}`;
 
 test({
-  name: "GET",
+  name: "BASIC GET",
   async fn() {
     const server = new Fastro();
     server.listen();

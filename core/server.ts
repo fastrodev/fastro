@@ -30,6 +30,10 @@ import {
  * This will load all of your controller file  automatically.
  * 
  *      const server = new Fastro();
+ * 
+ * With server options, you can change default service folder, add prefix, or enable cors.
+ * 
+ *      const server = new Fastro({ prefix: "api", serviceDir: "api", cors: true });
  */
 export class Fastro {
   // deno-lint-ignore no-explicit-any
@@ -357,13 +361,14 @@ export class Fastro {
           const filePath = servicesFolder + "/" + dirEntry.name;
           const [, splittedFilePath] = filePath.split(this.serviceDir);
           const [splittedWithDot] = splittedFilePath.split(".");
-          const fileKey = this.prefix
+          let fileKey = this.prefix
             ? `/${this.prefix}${splittedWithDot}`
             : `${splittedWithDot}`;
           const fileImport = Deno.env.get("DENO_ENV") === "development"
             ? `file:${filePath}#${new Date().getTime()}`
             : `file:${filePath}`;
           import(fileImport).then((service) => {
+            fileKey = service.prefix ? `/${service.prefix}${fileKey}` : fileKey;
             if (service.params) {
               this.dynamicService.push({ url: fileKey, service });
             } else this.services.set(fileKey, service);
@@ -390,6 +395,10 @@ export class Fastro {
 
   /**
    * Server listen
+   * 
+   *      server.listen();
+   * 
+   * with listen options you can change default port and hostname
    *      
    *      server.listen({ port: 8080, hostname: "0.0.0.0" });
    * 

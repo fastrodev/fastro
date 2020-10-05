@@ -4,6 +4,7 @@
 |Basic|[`hello.controller.ts`](hello.controller.ts)|hello world|
 |Basic|[`hello/v1/hello.controller.ts`](hello/v1/hello.controller.ts)|hello world v1|
 |Basic|[`hello/v2/hello.controller.ts`](hello/v2/hello.controller.ts)|hello world v2|
+|URL Prefix|[`hello/v1/prefix.controller.ts`](hello/v1/prefix.controller.ts)|add prefix declaration on controller|
 |URL Params|[`hello/v1/params.controller.ts`](hello/v1/params.controller.ts)|Add dynamic url parameter|
 |Query Params|[`hello/v1/queryall.controller.ts`](hello/v1/queryall.controller.ts)|get all query params|
 |Query Params|[`hello/v1/querybyname.controller.ts`](hello/v1/querybyname.controller.ts)|get query params by name|
