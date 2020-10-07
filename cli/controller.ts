@@ -1,13 +1,13 @@
 // Copyright 2020 the Fastro author. All rights reserved. MIT license.
 
-import { getArguments, serve } from "./handler.ts";
+import { getArguments, init, serve } from "./handler.ts";
 
 const args = getArguments(Deno.args);
 const { command: [cmd], port, production } = args;
 
-if (!production) await init();
+if (!production && cmd === "serve") await watch();
 
-async function init() {
+async function watch() {
   Deno.env.set("DENO_ENV", "development");
   start();
   const watcher = Deno.watchFs(Deno.cwd());
@@ -20,4 +20,5 @@ async function init() {
 
 export function start() {
   if (cmd === "serve") serve(port, args);
+  if (cmd === "init") init(args);
 }

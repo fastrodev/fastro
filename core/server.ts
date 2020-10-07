@@ -515,7 +515,7 @@ export class Fastro {
         }
       }
     } catch (error) {
-      console.error("IMPORT_MIDDLEWARE_ERROR", error);
+      console.error("MIDDLEWARE_NOT_FOUND", error);
     }
   }
 

@@ -12,3 +12,4 @@ export function getArguments(cmdArgs: string[]) {
 }
 
 export { serve } from "./entrypoint.ts";
+export { init } from "./init.ts";
