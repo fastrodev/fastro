@@ -6,6 +6,8 @@ const port = 3004;
 const base = `http://localhost:${port}`;
 const server = new Fastro();
 
+Deno.env.set("DENO_ENV", "test");
+
 test({
   name: "URL QUERY",
   async fn() {

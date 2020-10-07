@@ -37,7 +37,7 @@ export class Request extends ServerRequest {
   /**
    * Clear cookie by name
    * 
-   *    request.clearCookie("hello")
+   *      request.clearCookie("hello")
    */
   clearCookie!: {
     (name: string): void;
@@ -45,7 +45,7 @@ export class Request extends ServerRequest {
   /**
    * Redirect to the specified url, the status code is optional (default to 302)
    * 
-   *    request.redirect("/", 302)
+   *      request.redirect("/", 302)
    */
   redirect!: {
     (url: string, status?: number): void;
@@ -53,7 +53,7 @@ export class Request extends ServerRequest {
   /**
    *  Sends the payload to the user, could be a plain text, a buffer, JSON, stream, or an Error object.
    * 
-   *      request.send("hello");
+   *        request.send("hello");
    */
   send!: {
     <T>(payload: string | T, status?: number, headers?: Headers): void;
@@ -62,7 +62,7 @@ export class Request extends ServerRequest {
    * Get url parameters
    * 
    * 
-   *    const params = request.getParams();
+   *      const params = request.getParams();
    */
   getParams!: {
     (): string[];
@@ -71,7 +71,7 @@ export class Request extends ServerRequest {
    * Get payload. Could be plain text, json, multipart, or url-encoded
    * 
    * 
-   *    const payload = await request.getPayload();
+   *      const payload = await request.getPayload();
    */
   getPayload!: {
     // deno-lint-ignore no-explicit-any
@@ -81,10 +81,29 @@ export class Request extends ServerRequest {
   /**
    * Get query
    * 
-   *    const query = await request.getQuery()
+   *      const query = await request.getQuery()
    */
   getQuery!: {
     (name?: string): Promise<Query> | Promise<Query[]>;
+  };
+
+  /**
+   * URL proxy
+   * 
+   *      request.proxy("https://github.com/fastrodev/fastro");
+   */
+  proxy!: {
+    (url: string): void;
+  };
+
+  /**
+   * Render html template
+   * 
+   *      request.view("index.template.html", { title: "Hello" });
+   */
+  view!: {
+    // deno-lint-ignore no-explicit-any
+    (template: string, options?: any): void;
   };
   // deno-lint-ignore no-explicit-any
   [key: string]: any

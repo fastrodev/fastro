@@ -1,20 +1,25 @@
+![][build] ![][stats]
+
 # Fast and simple web framework
 
-[High performance](#perfomance) backend module. Built on top of [Deno standard library](https://deno.land/std). No external dependencies. Written in TypeScript.
+[High performance](#perfomance) backend module. Built on top of [Deno standard library](https://deno.land/std). Written in TypeScript.
 
 ## Features
-- URL routing by file name
-- URL prefix
-- Dynamic URL parameters
-- Query Parameters 
-- URL redirection 
-- Supports cookie
-- Supports `multipart/form-data`
-- Supports `application/json`
-- Supports `application/x-www-form-urlencoded`
 - [Command line interface](#command-line-interface)
+- Dynamic URL parameters
+- Supports `application/json`, 
+- Supports `application/x-www-form-urlencoded`
+- Supports `multipart/form-data`
+- Supports cookie
+- [Supports middleware](#middleware)
+- Supports proxy
+- Support query parameters
+- Support static files
+- URL prefix
+- URL redirection
+- URL routing by file name
 
-You can see the details in [the examples.](https://github.com/fastrodev/fastro/blob/master/services)
+You can see the details in [the examples](https://github.com/fastrodev/fastro/blob/master/services) and [test folder](test).
 
 ## Getting started
 - Create `webapp` folder
@@ -23,7 +28,7 @@ You can see the details in [the examples.](https://github.com/fastrodev/fastro/b
     ```
 - Create `main.ts`
     ```ts
-    import { Fastro } from "https://raw.githubusercontent.com/fastrodev/fastro/master/mod.ts";
+    import { Fastro } from "https://raw.fastro.dev/master/mod.ts";
     new Fastro().listen();
     ```
 - Run server
@@ -51,18 +56,10 @@ You can see the details in [the examples.](https://github.com/fastrodev/fastro/b
     - `services`: Default folder for all handler files. You can change it via [ServerOptions](core/types.ts).
     - `services/hello.controller.ts`: Endpoint handler. You can access it via URL: [http://localhost:3000/hello](http://localhost:3000/hello).
 
-- Create entrypoint `main.ts`
-    ```ts
-    import { Fastro } from "https://raw.githubusercontent.com/fastrodev/fastro/master/mod.ts";
-    const server = new Fastro();
-    server.listen();
-    ```
-    - You can add [ServerOptions](core/types.ts) on Fastro construtor to change default service folder, add url prefix, or enable cors.
-    - You can pass [ListenOptions](core/types.ts) on listen function to change default port and address.
 
 - Create handler `hello.controller.ts`
     ```ts
-    import type { Request } from "https://raw.githubusercontent.com/fastrodev/fastro/master/mod.ts";
+    import type { Request } from "https://raw.fastro.dev/master/mod.ts";
 
     export const handler = (request: Request) => {
       request.send("hello");
@@ -82,7 +79,32 @@ You can see the details in [the examples.](https://github.com/fastrodev/fastro/b
     ```
     http://localhost:3000/hello
     ```
+## Middleware
+- The structure will be like this
+    ```
+    webapp
+    ├── main.ts
+    ├── middleware
+    │   └── support.ts
+    └── services
+        └── hello.controller.ts
+    ```
+    - `middleware`: default middleware folder.
+    - `middleware/support.ts`: middleware handler.
 
+- Create `middleware` folder:
+    ```
+    mkdir middleware
+    ```
+- Create handler `middleware/support.ts`:
+    ```ts
+    import type { Callback, Request } from "../mod.ts";
+    export const methods = ["GET"];
+    export const handler = (request: Request, next: Callback) => {
+      console.log(request.url);
+      next();
+    };
+    ```
 
 ## Command line interface
 
@@ -92,7 +114,7 @@ With this, you don't need an entrypoint file (`main.ts`) anymore.
 
 - Install fastro-cli
     ```
-    deno install -A https://raw.githubusercontent.com/fastrodev/fastro/master/cli/fastro.ts
+    deno install -A https://raw.fastro.dev/master/cli/fastro.ts
     ```
 
 - Run in development (HMR)
@@ -120,3 +142,6 @@ Performance test with hello world keep-alive connection.
 |[Fastro](https://github.com/fastrodev/fastro/blob/v0.30.5/benchmarks/fastro_app.ts)|0.30.5|15291.2|93.33%|
 
 You can see the details in [the benchmarks.](https://github.com/fastrodev/fastro/blob/master/benchmarks)
+
+[build]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg?branch=master "fastro build"
+[stats]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.fastro.dev%2Fstats "fastro stats"

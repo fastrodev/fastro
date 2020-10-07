@@ -5,6 +5,8 @@ const { test } = Deno;
 const port = 3000;
 const base = `http://localhost:${port}`;
 
+Deno.env.set("DENO_ENV", "test");
+
 test({
   name: "BASIC GET",
   async fn() {
@@ -12,7 +14,7 @@ test({
     server.listen();
     const result = await fetch(`${base}/hello`);
     const text = await result.text();
-    assertEquals(text, "hello");
+    assertEquals(text, "setup complete");
     server.close();
   },
   sanitizeResources: false,
@@ -26,7 +28,7 @@ test({
     server.listen();
     const result = await fetch(`${base}/api/hello`);
     const text = await result.text();
-    assertEquals(text, "hello");
+    assertEquals(text, "setup complete");
     server.close();
   },
   sanitizeResources: false,

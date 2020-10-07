@@ -1,4 +1,4 @@
 import type { Request } from "../mod.ts";
 export const handler = (request: Request) => {
-  request.send("setup complete");
+  request.send(request.hello);
 };

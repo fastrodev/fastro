@@ -6,6 +6,8 @@ const port = 3007;
 const base = `http://localhost:${port}`;
 const server = new Fastro();
 
+Deno.env.set("DENO_ENV", "test");
+
 test({
   name: "PREFIX ON FILE",
   async fn() {

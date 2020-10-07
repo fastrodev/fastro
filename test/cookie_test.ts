@@ -6,6 +6,8 @@ const port = 3001;
 const base = `http://localhost:${port}`;
 const server = new Fastro();
 
+Deno.env.set("DENO_ENV", "test");
+
 test({
   name: "SET COOKIE",
   async fn() {

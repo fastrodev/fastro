@@ -11,3 +11,11 @@ export function getErrorTime() {
     `${date.getFullYear()}/${date.getMonth()}/${date.getDate()} ${date.toLocaleTimeString()}`;
   return time;
 }
+
+function escapeRegExp(str: string) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+export function replaceAll(target: string, term: string, replacement: string) {
+  return target.replace(new RegExp(escapeRegExp(term), "g"), replacement);
+}
