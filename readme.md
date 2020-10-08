@@ -181,7 +181,7 @@ You can also run your project using fastro command line interface (fastro-cli). 
 
 ## Perfomance
 
-Starting from v0.30.0, `fastro` has been rewritten to improve performance. Here are the hello-world `keep-alive` connection test result.
+Starting from v0.30.0, `fastro` has been rewritten to improve performance. Here are the test results for the hello-world keep-alive connection.
 
 |Module|Req/s|Percentage|
 |--|--:|--:|
