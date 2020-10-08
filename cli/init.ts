@@ -13,7 +13,7 @@ export async function init(args?: any) {
 
   await Deno.mkdir(SERVICE_DIR, { recursive: true });
   const ctrl = encoder.encode(controller);
-  const ctrlPath = `${SERVICE_DIR}/hello.ts`;
+  const ctrlPath = `${SERVICE_DIR}/hello.controller.ts`;
   await Deno.writeFile(ctrlPath, ctrl);
 
   await Deno.mkdir(STATIC_DIR, { recursive: true });
@@ -21,9 +21,23 @@ export async function init(args?: any) {
   const logoPath = `${STATIC_DIR}/logo.svg`;
   await Deno.writeFile(logoPath, logo);
 
+  const icon = await getFavicon();
+  const iconPath = `${STATIC_DIR}/favicon.ico`;
+  await Deno.writeFile(iconPath, icon);
+
   const idx = encoder.encode(html);
   const idxPath = `${STATIC_DIR}/index.html`;
   await Deno.writeFile(idxPath, idx);
+}
+
+async function getFavicon() {
+  const url =
+    `https://github.com/fastrodev/fastro/blob/master/public/favicon.ico`;
+  const res = await fetch(url);
+  const blob = await res.blob();
+  const buffer = await blob.arrayBuffer();
+  const unit8arr = new Deno.Buffer(buffer).bytes();
+  return unit8arr;
 }
 
 const controller =
@@ -43,7 +57,7 @@ export const handler = (request: Request, next: Callback) => {
 `;
 
 const svg =
-  `<svg version="1.1" viewBox="0.0 0.0 320.0 160.0" fill="none" stroke="none" stroke-linecap="square" stroke-miterlimit="10" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><clipPath id="p.0"><path d="m0 0l320.0 0l0 160.0l-320.0 0l0 -160.0z" clip-rule="nonzero"/></clipPath><g clip-path="url(#p.0)"><path fill="#000000" fill-opacity="0.0" d="m0 0l320.0 0l0 160.0l-320.0 0z" fill-rule="evenodd"/><g filter="url(#shadowFilter-p.1)"><use xlink:href="#p.1" transform="matrix(1.0 0.0 0.0 1.0 0.7071068631069554 0.7071068631069554)"/></g><defs><filter id="shadowFilter-p.1" filterUnits="userSpaceOnUse"><feGaussianBlur in="SourceAlpha" stdDeviation="1.0" result="blur"/><feComponentTransfer in="blur" color-interpolation-filters="sRGB"><feFuncR type="linear" slope="0" intercept="0.0"/><feFuncG type="linear" slope="0" intercept="0.0"/><feFuncB type="linear" slope="0" intercept="0.0"/><feFuncA type="linear" slope="0.92" intercept="0"/></feComponentTransfer></filter></defs><g id="p.1"><path fill="#000000" fill-opacity="0.0" d="m0 6.0l320.0 0l0 124.97638l-320.0 0z" fill-rule="evenodd"/><path fill="#000000" d="m232.44708 98.380066l-37.578125 0l-20.71875 53.828125l-44.078125 0l56.34375 -145.0l90.484375 0l-20.203125 37.125l-40.828125 0l-7.390625 19.484375l37.578125 0l-13.609375 34.5625zm-109.17187 53.125l-96.15625 -10.4375l100.21875 0l-4.0625 10.4375zm17.390617 -44.765625l-96.14062 -10.4375l100.21874 0l-4.078125 10.4375zm8.6875 -22.28125l-96.15624 -10.4375l100.23437 0l-4.078125 10.4375zm8.671875 -22.265625l-96.14062 -10.4375l100.21874 0l-4.078125 10.4375zm8.671875 -22.265625l-96.14062 -10.453125l99.99999 0l-3.859375 10.453125zm-34.703125 89.078125l-96.15624 -10.4375l100.23437 0l-4.078125 10.4375zm43.15625 -111.359375l-95.92187 -10.4375l99.99999 0l-4.078125 10.4375z" fill-rule="nonzero"/></g></g></svg>`;
+  `<svg version="1.1" viewBox="0.0 0.0 80.0 50.0" fill="none" stroke="none" stroke-linecap="square" stroke-miterlimit="10" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><clipPath id="p.0"><path d="m0 0l80.0 0l0 50.0l-80.0 0l0 -50.0z" clip-rule="nonzero"/></clipPath><g clip-path="url(#p.0)"><path fill="#000000" fill-opacity="0.0" d="m0 0l80.0 0l0 50.0l-80.0 0z" fill-rule="evenodd"/><path fill="#000000" fill-opacity="0.0" d="m-1.8740157 0l83.74803 0l0 44.188976l-83.74803 0z" fill-rule="evenodd"/><path fill="#000000" d="m62.89427 31.478867l-11.875 0l-6.546875 17.015625l-13.9375 0l17.8125 -45.828125l28.59375 0l-6.375 11.734375l-12.90625 0l-2.34375 6.15625l11.890625 0l-4.3125 10.921875zm-34.5 16.796875l-30.390625 -3.296875l31.671875 0l-1.28125 3.296875zm5.5 -14.15625l-30.40625 -3.296875l31.6875 0l-1.28125 3.296875zm2.734375 -7.03125l-30.390625 -3.3125l31.671875 0l-1.28125 3.3125zm2.75 -7.046875l-30.390625 -3.296875l31.671875 0l-1.28125 3.296875zm2.734375 -7.03125l-30.375 -3.3125l31.59375 0l-1.21875 3.3125zm-10.96875 28.15625l-30.375 -3.296875l31.671875 0l-1.296875 3.296875zm13.65625 -35.203125l-30.34375 -3.296875l31.609375 0l-1.265625 3.296875z" fill-rule="nonzero"/></g></svg>`;
 
 const html = `<html>
 

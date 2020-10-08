@@ -4,22 +4,25 @@
 
 [High performance](#perfomance) backend module. Built on top of [Deno standard library](https://deno.land/std). Written in TypeScript.
 
+Go to [getting started](#getting-started) to try.
+
 ## Features
 - [Command line interface](#command-line-interface)
 - Dynamic URL parameters
 - Supports `application/json`, 
 - Supports `application/x-www-form-urlencoded`
-- Supports `multipart/form-data`
 - Supports cookie
+- Supports `multipart/form-data`
 - [Supports middleware](#middleware)
 - Supports proxy
 - Support query parameters
-- Support static files
+- [Support static files](#static-files)
 - URL prefix
 - URL redirection
 - URL routing by file name
+- [Template rendering](#template-rendering)
 
-You can see the details in [the examples](https://github.com/fastrodev/fastro/blob/master/services) and [test folder](test).
+You can see the details in [the examples](https://github.com/fastrodev/fastro/blob/master/services) and [test folder](https://github.com/fastrodev/fastro/blob/master/test).
 
 ## Getting started
 - Create `webapp` folder
@@ -57,7 +60,7 @@ You can see the details in [the examples](https://github.com/fastrodev/fastro/bl
     - `services/hello.controller.ts`: Endpoint handler. You can access it via URL: [http://localhost:3000/hello](http://localhost:3000/hello).
 
 
-- Create handler `hello.controller.ts`
+- Create handler `services/hello.controller.ts`
     ```ts
     import type { Request } from "https://raw.fastro.dev/master/mod.ts";
 
@@ -80,30 +83,69 @@ You can see the details in [the examples](https://github.com/fastrodev/fastro/bl
     http://localhost:3000/hello
     ```
 ## Middleware
+
+You can access and add additional property to the request object before the controllers process it.
+
 - The structure will be like this
     ```
     webapp
     ├── main.ts
-    ├── middleware
-    │   └── support.ts
-    └── services
-        └── hello.controller.ts
+    ├── services
+    │   └── hello.controller.ts
+    └── middleware
+        └── support.ts 
     ```
     - `middleware`: default middleware folder.
     - `middleware/support.ts`: middleware handler.
 
-- Create `middleware` folder:
-    ```
-    mkdir middleware
-    ```
 - Create handler `middleware/support.ts`:
     ```ts
     import type { Callback, Request } from "../mod.ts";
     export const methods = ["GET"];
     export const handler = (request: Request, next: Callback) => {
       console.log(request.url);
+      request.hello = "hello"
       next();
     };
+    ```
+## Static Files
+You can add static files by create `public` folder. Just put your files in it. 
+
+Fastro will load and save it when the server starts up. 
+
+You can access directly by filename via URL.
+
+Example: 
+```
+http://localhost:3000/index.html
+```
+```
+http://localhost:3000/logo.svg
+```
+```
+http://localhost:3000/favicon.ico
+```
+
+## Template Rendering
+
+- Create `hello.template.html` in services folder. You can change `hello` name with other.
+    ```html
+    <html>
+        <head>
+            <title>{{title}} {{name}}</title>
+        </head>
+        <body>
+            {{title}} {{name}}
+        </body>
+    </html>
+    ```
+
+- Render with `request.view(file, options)`
+    ```ts
+    export const handler = (request: Request) => {
+      request.view("hello.template.html", { title: "Hello", name: "World" });
+    };
+
     ```
 
 ## Command line interface
@@ -117,7 +159,14 @@ With this, you don't need an entrypoint file (`main.ts`) anymore.
     deno install -A https://raw.fastro.dev/master/cli/fastro.ts
     ```
 
-- Run in development (HMR)
+- Create a project
+
+    You can create a new project with command. Skip if you've already made.
+    ```
+    fastro init
+    ```
+
+- Run in development
 
     Modules will be reloaded when changes are made.
 
@@ -134,12 +183,14 @@ With this, you don't need an entrypoint file (`main.ts`) anymore.
 
 ## Perfomance
 
-Performance test with hello world keep-alive connection.
+Starting from v0.30.0, `fastro` has been rewritten to improve performance. 
 
-|Module|Version|Req/s|Percentage|
+Here are the hello-world `keep-alive` connection test result.
+
+|Module|Req/s|Percentage|
 |--|--:|--:|--:|
-|[Deno](https://github.com/fastrodev/fastro/blob/v0.30.5/benchmarks/deno_app.ts)|0.73.0|16384.0|100.00%|
-|[Fastro](https://github.com/fastrodev/fastro/blob/v0.30.5/benchmarks/fastro_app.ts)|0.30.5|15291.2|93.33%|
+|[Deno](https://github.com/fastrodev/fastro/blob/v0.30.5/benchmarks/deno_app.ts)|16384.0|100.00%|
+|[Fastro](https://github.com/fastrodev/fastro/blob/v0.30.5/benchmarks/fastro_app.ts)|15291.2|93.33%|
 
 You can see the details in [the benchmarks.](https://github.com/fastrodev/fastro/blob/master/benchmarks)
 

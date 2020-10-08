@@ -455,7 +455,7 @@ export class Fastro {
         }
       }
     } catch (error) {
-      console.error("HTML_TEMPLATE_NOT_FOUND", error);
+      console.info("Start with no html template");
     }
   }
 
@@ -494,7 +494,7 @@ export class Fastro {
         }
       }
     } catch (error) {
-      console.error("STATIC_FILE_NOT_FOUND", error);
+      console.info("Start with no static file");
     }
   }
 
@@ -515,7 +515,7 @@ export class Fastro {
         }
       }
     } catch (error) {
-      console.error("MIDDLEWARE_NOT_FOUND", error);
+      console.info("Start with no middleware");
     }
   }
 
@@ -544,7 +544,7 @@ export class Fastro {
         }
       }
     } catch (error) {
-      throw createError("IMPORT_SERVICES_ERROR", error);
+      console.info("Start with no service");
     }
   }
 
