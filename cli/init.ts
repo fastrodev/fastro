@@ -1,6 +1,7 @@
 // Copyright 2020 the Fastro author. All rights reserved. MIT license.
 
 import { MIDDLEWARE_DIR, SERVICE_DIR, STATIC_DIR } from "../core/types.ts";
+import { favicon } from "./favicon.ts";
 
 // deno-lint-ignore no-explicit-any
 export async function init(args?: any) {
@@ -21,7 +22,7 @@ export async function init(args?: any) {
   const logoPath = `${STATIC_DIR}/logo.svg`;
   await Deno.writeFile(logoPath, logo);
 
-  const icon = await getFavicon();
+  const icon = getFavicon();
   const iconPath = `${STATIC_DIR}/favicon.ico`;
   await Deno.writeFile(iconPath, icon);
 
@@ -30,14 +31,8 @@ export async function init(args?: any) {
   await Deno.writeFile(idxPath, idx);
 }
 
-async function getFavicon() {
-  const url =
-    `https://raw.githubusercontent.com/fastrodev/fastro/master/public/favicon.ico`;
-  const res = await fetch(url);
-  const blob = await res.blob();
-  const buffer = await blob.arrayBuffer();
-  const unit8arr = new Deno.Buffer(buffer).bytes();
-  return unit8arr;
+function getFavicon() {
+  return new Uint8Array(favicon);
 }
 
 const controller =

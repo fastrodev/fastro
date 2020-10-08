@@ -63,7 +63,6 @@ You can see the details in [the examples](https://github.com/fastrodev/fastro/bl
 - Create handler `services/hello.controller.ts`
     ```ts
     import type { Request } from "https://raw.fastro.dev/master/mod.ts";
-
     export const handler = (request: Request) => {
       request.send("hello");
     };
@@ -82,6 +81,8 @@ You can see the details in [the examples](https://github.com/fastrodev/fastro/bl
     ```
     http://localhost:3000/hello
     ```
+    
+
 ## Middleware
 
 You can access and add additional property to the request object before the controllers process it.
@@ -100,7 +101,7 @@ You can access and add additional property to the request object before the cont
 
 - Create handler `middleware/support.ts`:
     ```ts
-    import type { Callback, Request } from "../mod.ts";
+    import type { Callback, Request } from "https://raw.fastro.dev/master/mod.ts";
     export const methods = ["GET"];
     export const handler = (request: Request, next: Callback) => {
       console.log(request.url);
@@ -108,12 +109,10 @@ You can access and add additional property to the request object before the cont
       next();
     };
     ```
+
+
 ## Static Files
-You can add static files by create `public` folder. Just put your files in it. 
-
-Fastro will load and save it when the server starts up. 
-
-You can access directly by filename via URL.
+You can add static files by create `public` folder. Just put your files in it. Fastro will load and save it when the server starts up. You can access directly by filename via URL.
 
 Example: 
 ```
@@ -148,11 +147,10 @@ http://localhost:3000/favicon.ico
 
     ```
 
+
 ## Command line interface
 
-You can also run your project using fastro command line interface (fastro-cli). 
-
-With this, you don't need an entrypoint file (`main.ts`) anymore.
+You can also run your project using fastro command line interface (fastro-cli). With this, you don't need an entrypoint file (`main.ts`) anymore.
 
 - Install fastro-cli
     ```
@@ -183,14 +181,12 @@ With this, you don't need an entrypoint file (`main.ts`) anymore.
 
 ## Perfomance
 
-Starting from v0.30.0, `fastro` has been rewritten to improve performance. 
-
-Here are the hello-world `keep-alive` connection test result.
+Starting from v0.30.0, `fastro` has been rewritten to improve performance. Here are the hello-world `keep-alive` connection test result.
 
 |Module|Req/s|Percentage|
 |--|--:|--:|
-|[Deno](https://github.com/fastrodev/fastro/blob/v0.30.5/benchmarks/deno_app.ts)|16384.0|100.00%|
-|[Fastro](https://github.com/fastrodev/fastro/blob/v0.30.5/benchmarks/fastro_app.ts)|15291.2|93.33%|
+|[Deno](https://github.com/fastrodev/fastro/blob/v0.30.5/benchmarks/deno_app.ts)|16384.0|100.0%|
+|[Fastro](https://github.com/fastrodev/fastro/blob/v0.30.5/benchmarks/fastro_app.ts)|15291.2|93.3%|
 
 You can see the details in [the benchmarks.](https://github.com/fastrodev/fastro/blob/master/benchmarks)
 
