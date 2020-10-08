@@ -188,7 +188,7 @@ Starting from v0.30.0, `fastro` has been rewritten to improve performance.
 Here are the hello-world `keep-alive` connection test result.
 
 |Module|Req/s|Percentage|
-|--|--:|--:|--:|
+|--|--:|--:|
 |[Deno](https://github.com/fastrodev/fastro/blob/v0.30.5/benchmarks/deno_app.ts)|16384.0|100.00%|
 |[Fastro](https://github.com/fastrodev/fastro/blob/v0.30.5/benchmarks/fastro_app.ts)|15291.2|93.33%|
 
