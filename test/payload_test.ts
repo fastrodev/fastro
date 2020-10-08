@@ -11,7 +11,7 @@ Deno.env.set("DENO_ENV", "test");
 test({
   name: "MULTIPART FORM",
   async fn() {
-    let data = new FormData();
+    const data = new FormData();
     const file = await Deno.readFile("readme.md");
     const blob = new Blob([file.buffer]);
     data.append("file", blob, "file_name.txt");

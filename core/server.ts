@@ -170,7 +170,7 @@ export class Fastro {
   }
 
   private clearCookie(name: string) {
-    let cookie = this.cookieList.get(name);
+    const cookie = this.cookieList.get(name);
     if (cookie) {
       cookie.expires = new Date("1970-01-01").toUTCString();
       cookie.value = "";
@@ -269,7 +269,7 @@ export class Fastro {
   }
 
   private getParams(incoming: string) {
-    let incomingSplit = incoming.substr(1, incoming.length).split("/");
+    const incomingSplit = incoming.substr(1, incoming.length).split("/");
     const params: string[] = [];
     incomingSplit
       .map((path, idx) => {
