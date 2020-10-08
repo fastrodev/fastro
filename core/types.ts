@@ -2,7 +2,7 @@
 
 import type { FormFile } from "../deps.ts";
 
-export const FASTRO_VERSION = "0.30.6";
+export const FASTRO_VERSION = "0.30.7";
 export const SERVICE_DIR = "services";
 export const SERVICE_FILE = ".controller.ts";
 export const STATIC_DIR = "public";
