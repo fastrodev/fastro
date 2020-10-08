@@ -182,7 +182,7 @@ const html = `<html>
   <script>
     document.getElementById("logo").style.display = "none";
     async function get() {
-      const data = await fetch("/controller");
+      const data = await fetch("/hello");
       const d = await data.text()
       if (d) {
         document.getElementById("ldr").remove()
