@@ -32,7 +32,7 @@ export async function init(args?: any) {
 
 async function getFavicon() {
   const url =
-    `https://github.com/fastrodev/fastro/blob/master/public/favicon.ico`;
+    `https://raw.githubusercontent.com/fastrodev/fastro/master/public/favicon.ico`;
   const res = await fetch(url);
   const blob = await res.blob();
   const buffer = await blob.arrayBuffer();
