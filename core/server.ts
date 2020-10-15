@@ -1,10 +1,17 @@
 // Copyright 2020 the Fastro author. All rights reserved. MIT license.
 
-import { createError, getErrorTime, replaceAll } from "./utils.ts";
+import {
+  createError,
+  getErrorTime,
+  replaceAll,
+  validateObject,
+} from "./utils.ts";
 import type { Request } from "./request.ts";
 import type { Cookie } from "./cookie.ts";
 import {
   FASTRO_VERSION,
+  HandlerOptions,
+  HttpMethod,
   MAX_MEMORY,
   MIDDLEWARE_DIR,
   SERVICE_DIR,
@@ -18,6 +25,7 @@ import type {
   ListenOptions,
   MultiPartData,
   Query,
+  Schema,
   ServerOptions,
 } from "./types.ts";
 import {
@@ -245,6 +253,16 @@ export class Fastro {
     }
   }
 
+  // deno-lint-ignore no-explicit-any
+  private validateJsonPayload(payload: any, url: string) {
+    const service = this.services.get(url);
+    if (service && service.validationSchema && service.validationSchema.body) {
+      const schema = service.validationSchema.body as Schema;
+      if (schema.type === "object") return validateObject(payload, schema);
+    }
+    return payload;
+  }
+
   private async getPayload(requestServer: ServerRequest) {
     try {
       const contentType = requestServer.headers.get("content-type");
@@ -257,8 +275,9 @@ export class Fastro {
       } else if (
         contentType?.includes("application/json")
       ) {
-        const payload = decode(await Deno.readAll(requestServer.body));
-        return JSON.parse(payload);
+        const payloadString = decode(await Deno.readAll(requestServer.body));
+        const payload = JSON.parse(payloadString);
+        return this.validateJsonPayload(payload, requestServer.url);
       } else {
         const payload = decode(await Deno.readAll(requestServer.body));
         return payload;
@@ -327,7 +346,7 @@ export class Fastro {
     let html = this.templateFiles.get(template);
     for (const key in options) {
       const value = options[key];
-      html = replaceAll(html, `{{${key}}}`, value);
+      html = replaceAll(html, `\${${key}}`, value);
     }
     if (request) request.send(html);
   }
@@ -364,64 +383,88 @@ export class Fastro {
   }
 
   private handleStaticFile(request: Request) {
-    const url = request.url;
-    const staticFile = this.staticFiles.get(url);
-    const header = new Headers();
-    if (url.includes(".svg")) header.set("content-type", "image/svg+xml");
-    else if (url.includes(".png")) header.set("content-type", "image/png");
-    else if (url.includes(".jpeg")) header.set("content-type", "image/jpeg");
-    else if (url.includes(".css")) header.set("content-type", "text/css");
-    else if (url.includes(".html")) header.set("content-type", "text/html");
-    else if (url.includes(".json")) {
-      header.set("content-type", "application/json ");
-    } else if (url.includes("favicon.ico")) {
-      header.set("content-type", "image/ico");
+    try {
+      const url = request.url;
+      const staticFile = this.staticFiles.get(url);
+      if (!staticFile) throw new Error("Not found");
+      const header = new Headers();
+      if (url.includes(".svg")) header.set("content-type", "image/svg+xml");
+      else if (url.includes(".png")) header.set("content-type", "image/png");
+      else if (url.includes(".jpeg")) header.set("content-type", "image/jpeg");
+      else if (url.includes(".css")) header.set("content-type", "text/css");
+      else if (url.includes(".html")) header.set("content-type", "text/html");
+      else if (url.includes(".json")) {
+        header.set("content-type", "application/json ");
+      } else if (url.includes("favicon.ico")) {
+        header.set("content-type", "image/ico");
+      }
+      request.send(staticFile, 200, header);
+    } catch (error) {
+      throw createError("HANDLE_STATIC_FILE_ERROR", error);
     }
-    request.send(staticFile, 200, header);
   }
 
   private handleDynamicParams(request: Request) {
-    const [serviceFile] = this.dynamicService.filter((service) => {
-      return request.url.includes(service.url);
-    });
-    if (!serviceFile) return this.handleStaticFile(request);
-    if (
-      serviceFile.service.methods &&
-      !serviceFile.service.methods.includes(request.method)
-    ) {
-      throw new Error("Not Found");
+    try {
+      const [handlerFile] = this.dynamicService.filter((service) => {
+        return request.url.includes(service.url);
+      });
+      if (!handlerFile) return this.handleStaticFile(request);
+      const options: HandlerOptions = handlerFile.service.options
+        ? handlerFile.service.options
+        : undefined;
+      if (
+        options &&
+        options.methods &&
+        !options.methods.includes(request.method as HttpMethod)
+      ) {
+        throw new Error("Not Found");
+      }
+      handlerFile.service.handler(request);
+    } catch (error) {
+      throw createError("HANDLE_DYNAMIC_PARAMS_ERROR", error);
     }
-    serviceFile.service.handler(request);
   }
 
   private handleMiddleware(request: Request) {
-    this.middlewares.forEach((middleware, key) => {
-      if (middleware.methods && !middleware.methods.includes(request.method)) {
-        throw createError(
-          "HANDLE_MIDDLEWARE_ERROR",
-          new Error("Middleware HTTP method not found"),
-        );
-      }
-
-      middleware.handler(request, (err: Error) => {
-        if (err) {
-          if (!err.message) err.message = `Middleware error: ${key}`;
-          throw createError("HANDLE_MIDDLEWARE_ERROR", err);
+    try {
+      this.middlewares.forEach((middleware, key) => {
+        if (
+          middleware.options &&
+          middleware.options.methods &&
+          !middleware.options.methods.includes(request.method)
+        ) {
+          throw new Error("Middleware HTTP method not found");
         }
-        this.handleRoute(request);
+        middleware.handler(request, (err: Error) => {
+          if (err) {
+            if (!err.message) err.message = `Middleware error: ${key}`;
+            throw err;
+          }
+          this.handleRoute(request);
+        });
       });
-    });
+    } catch (error) {
+      throw createError("HANDLE_MIDDLEWARE_ERROR", error);
+    }
   }
 
   private handleRoute(request: Request) {
-    const handlerFile = this.services.get(request.url);
-    if (!handlerFile) return this.handleDynamicParams(request);
-    if (
-      handlerFile.methods && !handlerFile.methods.includes(request.method)
-    ) {
-      throw new Error("Not Found");
+    try {
+      const service = this.services.get(request.url);
+      const options = service && service.options ? service.options : undefined;
+      if (!service) return this.handleDynamicParams(request);
+      if (
+        options &&
+        options.methods &&
+        !options.methods.includes(request.method as HttpMethod)
+      ) {
+        throw new Error("Not Found");
+      }
+      service.handler(request);
+    } catch (error) {
+      throw createError("HANDLE_ROUTE_ERROR", error);
     }
-    handlerFile.handler(request);
   }
 
   private async handleRequest(serverRequest: ServerRequest) {
@@ -470,10 +513,7 @@ export class Fastro {
       ".js",
       ".md",
     ];
-    const result = extension.filter((ext) => {
-      return file.includes(ext);
-    });
-
+    const result = extension.filter((ext) => file.includes(ext));
     return result.length > 0;
   }
 
@@ -527,18 +567,27 @@ export class Fastro {
           const filePath = servicesFolder + "/" + dirEntry.name;
           const [, splittedFilePath] = filePath.split(this.serviceDir);
           const [splittedWithDot] = splittedFilePath.split(".");
-          let fileKey = this.prefix
-            ? `/${this.prefix}${splittedWithDot}`
-            : `${splittedWithDot}`;
+
           const fileImport = Deno.env.get("DENO_ENV") === "development"
             ? `file:${filePath}#${new Date().getTime()}`
             : `file:${filePath}`;
-          import(fileImport).then((service) => {
-            fileKey = service.prefix ? `/${service.prefix}${fileKey}` : fileKey;
-            if (service.params) {
-              this.dynamicService.push({ url: fileKey, service });
-            } else this.services.set(fileKey, service);
-          });
+
+          let fileKey = this.prefix
+            ? `/${this.prefix}${splittedWithDot}`
+            : `${splittedWithDot}`;
+
+          import(fileImport)
+            .then((service) => {
+              const options = service.options as HandlerOptions;
+
+              fileKey = options && options.prefix
+                ? `/${options.prefix}${fileKey}`
+                : fileKey;
+
+              if (options && options.params) {
+                this.dynamicService.push({ url: fileKey, service });
+              } else this.services.set(fileKey, service);
+            });
         } else if (dirEntry.isDirectory) {
           this.importServices(target + "/" + dirEntry.name);
         }
@@ -554,9 +603,7 @@ export class Fastro {
    *      server.close()
    */
   public close() {
-    if (this.server) {
-      this.server.close();
-    }
+    if (this.server) this.server.close();
   }
 
   /**

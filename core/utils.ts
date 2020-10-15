@@ -1,5 +1,7 @@
 // Copyright 2020 the Fastro author. All rights reserved. MIT license.
 
+export * from "./validator.ts";
+
 export function createError(name: string, error: Error) {
   error.name = name;
   return error;

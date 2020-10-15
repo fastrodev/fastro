@@ -1,7 +1,9 @@
+// deno-lint-ignore-file
 // Copyright 2020 the Fastro author. All rights reserved. MIT license.
 
 import type { FormFile } from "../deps.ts";
 
+export const DOCKER_VERSION = "1.4.5";
 export const FASTRO_VERSION = "0.30.7";
 export const SERVICE_DIR = "services";
 export const SERVICE_FILE = ".controller.ts";
@@ -31,7 +33,6 @@ export type MultiPartData = {
 
 export type DynamicService = {
   url: string;
-  // deno-lint-ignore no-explicit-any
   service: any;
 };
 
@@ -41,3 +42,53 @@ export type Query = {
 };
 
 export type Callback = (error?: Error) => void;
+
+export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
+
+export type HandlerOptions = {
+  params?: boolean;
+  methods?: HttpMethod[];
+  validationSchema?: ValidationSchema;
+  prefix?: string;
+};
+
+type SchemaType =
+  | "string"
+  | "number"
+  | "integer"
+  | "boolean"
+  | "object"
+  | "array"
+  | "null";
+
+export type Schema = {
+  type: SchemaType;
+  properties?: {
+    [key: string]: Schema;
+  };
+  required?: string[];
+  // default?: any;
+  // pattern?: string;
+  // maxLength?: number;
+  // minLength?: number;
+  // minimum?: number;
+  // maximum?: number;
+  // multipleOf?: number;
+  // maxItems?: number;
+  // minItems?: number;
+  // uniqueItems?: boolean;
+  // contains?: { type: SchemaType };
+  items?: Schema[];
+  // not?: Schema[];
+  // anyOf?: Schema[];
+  // oneOf?: Schema[];
+  // allOf?: Schema[];
+  // enum?: any;
+};
+
+export type ValidationSchema = {
+  body?: Schema;
+  params?: Schema;
+  headers?: Schema;
+  querystring?: Schema;
+};

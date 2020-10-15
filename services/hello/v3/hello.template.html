@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>{{title}} {{name}}</title>
+  <title>${title} ${name}</title>
   <style>
     html,
     body {
@@ -28,7 +28,7 @@
       bottom: 0;
       margin: auto;
       width: 200;
-      height: 90;
+      height: 35;
       border-radius: 3px;
       background-color: white;
       padding: 20;
@@ -113,24 +113,9 @@
 <body>
   <div>
     <div id="ctnr">
-      <div id="ldr" class="loader">Loading...</div>
-      <img id="logo" src="/logo.svg" width="100" style="margin: auto;">
-      <div id="msg" style="margin-top:10">Loading ... </div>
+      <div id="msg" style="margin-top:10">${title} ${name}</div>
     </div>
   </div>
 </body>
-<script>
-  document.getElementById("logo").style.display = "none";
-  async function get() {
-    const data = await fetch("/hello");
-    const d = await data.text()
-    if (d) {
-      document.getElementById("ldr").remove()
-      document.getElementById("logo").style.display = "block";
-      document.getElementById("msg").innerHTML = d
-    }
-  }
-  get();
-</script>
 
 </html>

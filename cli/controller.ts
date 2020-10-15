@@ -13,6 +13,7 @@ async function watch() {
   const watcher = Deno.watchFs(Deno.cwd());
   for await (const event of watcher) {
     if (event.kind === "access") {
+      console.log("File change detected! Restarting!");
       serve(port, args);
     }
   }

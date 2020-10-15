@@ -1,11 +1,20 @@
 // Copyright 2020 the Fastro author. All rights reserved. MIT license.
 
-import { MIDDLEWARE_DIR, SERVICE_DIR, STATIC_DIR } from "../core/types.ts";
+import {
+  DOCKER_VERSION,
+  FASTRO_VERSION,
+  MIDDLEWARE_DIR,
+  SERVICE_DIR,
+  STATIC_DIR,
+} from "../core/types.ts";
 import { favicon } from "./favicon.ts";
 
 // deno-lint-ignore no-explicit-any
 export async function init(args?: any) {
   const encoder = new TextEncoder();
+
+  const dockerFile = encoder.encode(docker);
+  await Deno.writeFile("Dockerfile", dockerFile);
 
   await Deno.mkdir(MIDDLEWARE_DIR, { recursive: true });
   const mid = encoder.encode(middleware);
@@ -17,12 +26,16 @@ export async function init(args?: any) {
   const ctrlPath = `${SERVICE_DIR}/hello.controller.ts`;
   await Deno.writeFile(ctrlPath, ctrl);
 
+  const htmlTemplate = encoder.encode(template);
+  const templatePath = `${SERVICE_DIR}/hello.template.html`;
+  await Deno.writeFile(templatePath, htmlTemplate);
+
   await Deno.mkdir(STATIC_DIR, { recursive: true });
   const logo = encoder.encode(svg);
   const logoPath = `${STATIC_DIR}/logo.svg`;
   await Deno.writeFile(logoPath, logo);
 
-  const icon = getFavicon();
+  const icon = new Uint8Array(favicon);
   const iconPath = `${STATIC_DIR}/favicon.ico`;
   await Deno.writeFile(iconPath, icon);
 
@@ -31,22 +44,19 @@ export async function init(args?: any) {
   await Deno.writeFile(idxPath, idx);
 }
 
-function getFavicon() {
-  return new Uint8Array(favicon);
-}
-
 const controller =
-  `import type { Request } from "https://raw.fastro.dev/master/mod.ts";
+  `import type { Request } from "https://raw.fastro.dev/v${FASTRO_VERSION}/mod.ts";
 export const handler = (request: Request) => {
-  request.send("setup complete");
+  // request.view("hello.template.html", { greeting: "Hello", name: "World" });
+  request.send(\`setup \${request.hello}\`);
 };
 `;
 
 const middleware =
-  `import type { Callback, Request } from "https://raw.fastro.dev/master/mod.ts";
+  `import type { Callback, Request } from "https://raw.fastro.dev/v${FASTRO_VERSION}/mod.ts";
 export const methods = ["GET", "POST"];
 export const handler = (request: Request, next: Callback) => {
-  if (request.url === "/middleware") request.hello = "middleware";
+  request.hello = "with middleware";
   next();
 };
 `;
@@ -190,3 +200,32 @@ const html = `<html>
   
   </html>
   `;
+
+const docker = `FROM hayd/alpine-deno:${DOCKER_VERSION}
+
+# This command will download all the necessary files and cache them 
+# so they are not downloaded again when the application is restarted.
+RUN deno cache https://raw.fastro.dev/v${FASTRO_VERSION}/deps.ts
+RUN deno cache https://raw.fastro.dev/v${FASTRO_VERSION}/mod.ts
+RUN deno cache https://raw.fastro.dev/v${FASTRO_VERSION}/core/server.ts
+RUN deno cache https://raw.fastro.dev/v${FASTRO_VERSION}/core/request.ts
+RUN deno cache https://raw.fastro.dev/v${FASTRO_VERSION}/core/cookie.ts
+RUN deno cache https://raw.fastro.dev/v${FASTRO_VERSION}/core/types.ts
+RUN deno cache https://raw.fastro.dev/v${FASTRO_VERSION}/core/utils.ts
+RUN deno cache https://raw.fastro.dev/v${FASTRO_VERSION}/cli/fastro.ts
+
+WORKDIR /app
+
+COPY . ./
+
+CMD ["run", "-A", "https://raw.fastro.dev/v${FASTRO_VERSION}/cli/fastro.ts", "serve", "--port", "8080"]
+`;
+
+const template = `<html>
+<head>
+    <title>\${greeting} \${name}</title>
+</head>
+<body>
+    \${greeting} \${name}
+</body>
+</html>`;
