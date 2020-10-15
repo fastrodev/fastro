@@ -5,7 +5,7 @@ Built on top of [Deno standard library](https://deno.land/std@0.74.0). Written i
 
 ## High performance
 
-With all [the ready to use features](#features), the speed is still around 93% of the raw Deno HTTP library. Check [this](docs/perfomance.md).
+With all [the ready to use features](#features), the speed is still [around 93% of the raw Deno HTTP library](docs/perfomance.md).
 
 ## Getting started
 No need to add or register route declarations, controllers, middlewares, templates, or static files manually. 

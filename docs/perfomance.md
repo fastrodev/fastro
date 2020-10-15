@@ -1,13 +1,15 @@
 # Perfomance
 
-Starting from v0.30.x, `fastro` has been rewritten to improve performance. Here are the test results for the hello-world keep-alive connection.
+Starting from v0.30.0, `fastro` has been rewritten to improve performance. 
+
+Here are the test results for the hello-world keep-alive connection.
 
 |Module|Req/s|Percentage|
 |--|--:|--:|
-|[Deno](https://github.com/fastrodev/fastro/blob/v0.30.5/benchmarks/deno_app.ts)|16384.0|100.0%|
-|[Fastro](https://github.com/fastrodev/fastro/blob/v0.30.5/benchmarks/fastro_app.ts)|15291.2|93.3%|
+|Deno|17238.8|100%|
+|Fastro|16006.4|92.85%|
 
-You can see the details in [the benchmarks.](https://github.com/fastrodev/fastro/blob/master/benchmarks)
+You can see the details in [the benchmarks.](../benchmarks/readme.md)
 
 
 ## What's next:

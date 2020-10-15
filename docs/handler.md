@@ -28,14 +28,17 @@
     import type { Request } from "https://raw.fastro.dev/master/mod.ts";
     export const handler = (request: Request) => {
       // request.view("hello.template.html", { greeting: "Hello", name: "World" });
-      request.send("hello");
+      request.send(`setup ${request.hello}`);
     };
 
     ```
 
-    Please note that the handler file name will be used as URL endpoint:
+    Please note that: 
+    - the handler file name will be used as URL endpoint:
 
-    - **hello** . *controller.ts*
+        - **hello** . *controller.ts*
+
+    - `request.hello` variable is come from [middleware](middleware.md).
 
 - Run server
 

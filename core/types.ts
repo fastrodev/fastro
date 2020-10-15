@@ -52,7 +52,7 @@ export type HandlerOptions = {
   prefix?: string;
 };
 
-type SchemaType =
+export type SchemaType =
   | "string"
   | "number"
   | "integer"

@@ -1,8 +1,8 @@
+// deno-lint-ignore-file
 import type { Schema } from "./types.ts";
 
-// deno-lint-ignore no-explicit-any
 export function validateObject(target: any, schema: Schema) {
-  const { required, properties } = schema;
+  const { required, properties, type, items } = schema;
   let message = "";
   if (required && required.length > 0) {
     const empty = required.filter((field) => !target[field]);
@@ -14,7 +14,47 @@ export function validateObject(target: any, schema: Schema) {
     }
   }
 
-  if (!properties) {
+  const single = ["boolean", "string", "number", "null"];
+
+  if (type === "integer" && !Number.isInteger(target)) {
+    return { message: `${target} type is not ${type}`, error: true };
+  }
+
+  if (single.includes(type) && (typeof target !== type)) {
+    return { message: `${target} type is not ${type}.`, error: true };
+  }
+
+  if (type === "array" && !items) {
+    return { message: "array items property is missing.", error: true };
+  }
+
+  if (type === "array" && Array.isArray(items)) {
+    const [result] = items
+      .map((item, index) => {
+        return { item, index };
+      })
+      .filter((val, index) => {
+        let arrayItemSchema: Schema = {
+          type: val.item.type,
+        };
+
+        if (val.item.properties) {
+          arrayItemSchema = {
+            type: val.item.type,
+            properties: val.item.properties,
+          };
+        }
+        const result = validateObject(target[index], arrayItemSchema);
+        return result.error === true;
+      });
+    if (result) {
+      const resType: any = result.item.type;
+      const idx: number = result.index;
+      return { message: `${target[idx]} is not ${resType}`, error: true };
+    }
+  }
+
+  if (type === "object" && !properties) {
     return { message: "schema property is missing.", error: true };
   }
 
@@ -25,7 +65,6 @@ export function validateObject(target: any, schema: Schema) {
       properties[key].type === "object" && (typeof target[key] === "object")
     ) {
       const objProperty = properties[key].properties;
-      // deno-lint-ignore no-explicit-any
       const schemaProperties: any = {};
       for (const objKey in objProperty) {
         schemaProperties[objKey] = objProperty[objKey];
@@ -33,7 +72,6 @@ export function validateObject(target: any, schema: Schema) {
       const schema: Schema = { type: "object", properties: schemaProperties };
       const result = validateObject(target[key], schema);
       if (result.error) {
-        // deno-lint-ignore no-explicit-any
         const message: any = result.message;
         return { message, error: true };
       }

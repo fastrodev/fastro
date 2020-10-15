@@ -287,6 +287,18 @@ export class Fastro {
     }
   }
 
+  // deno-lint-ignore no-explicit-any
+  private validateParams(params: any, url: string) {
+    const service = this.services.get(url);
+    if (
+      service && service.validationSchema && service.validationSchema.params
+    ) {
+      const schema = service.validationSchema.body as Schema;
+      if (schema.type === "object") return validateObject(params, schema);
+    }
+    return params;
+  }
+
   private getParams(incoming: string) {
     const incomingSplit = incoming.substr(1, incoming.length).split("/");
     const params: string[] = [];
@@ -295,8 +307,7 @@ export class Fastro {
         return { path, idx };
       })
       .forEach((value) => params.push(incomingSplit[value.idx]));
-
-    return params;
+    return this.validateParams(params, incoming);
   }
 
   // deno-lint-ignore no-explicit-any
