@@ -21,34 +21,32 @@
     Change `master` with the latest version to prevent breaking changes.
 
 
-3. Make a new directory and initiate a project
+3. Make a new directory
     ```
-    mkdir webapp
+    mkdir webapp && cd webapp
     ```
 
-    ```
-    cd webapp
-    ```
+4. Initiate a project
 
     ```
     fastro init
     ```
 
-4. Run server
+5. Run server
 
     ```
     fastro serve
     ```
     By default, it will be reloaded when changes are made
 
-5. Open url
+6. Open url
     ```
     http://localhost:3000
     ```
 
 ## What's next:
-- [Create handler](handler.md)
-- [Create middleware](middleware.md)
+- [Create a handler](handler.md)
+- [Create a middleware](middleware.md)
 - [Create static files](static.md)
 - [Template rendering](rendering.md)
 - [Data validation](validation.md)

@@ -84,7 +84,7 @@ export class Request extends ServerRequest {
    *      const query = await request.getQuery()
    */
   getQuery!: {
-    (name?: string): Promise<Query> | Promise<Query[]>;
+    (name?: string): Query;
   };
 
   /**

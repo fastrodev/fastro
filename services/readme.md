@@ -17,3 +17,4 @@
 |Proxy|[`proxy.controller.ts`](proxy.controller.ts)|Get the content of another URL and send it as a response|
 |Middleware|[`middleware.controller.ts`](middleware.controller.ts)|Access the request object before the controllers process it|
 |Template Rendering|[`hello/v3/hello.controller.ts`](hello/v3/hello.controller.ts)|Render html content|
+|Data validation|[`options.controller.ts`](options.controller.ts)|Validate data|

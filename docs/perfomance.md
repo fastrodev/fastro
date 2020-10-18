@@ -14,8 +14,8 @@ You can see the details in [the benchmarks.](../benchmarks/readme.md)
 
 ## What's next:
 - [Quickstart](quickstart.md)
-- [Create handler](handler.md)
-- [Create middleware](middleware.md)
+- [Create a handler](handler.md)
+- [Create a middleware](middleware.md)
 - [Create static files](static.md)
 - [Template rendering](rendering.md)
 - [Data validation](validation.md)

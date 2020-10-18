@@ -3,7 +3,7 @@ export const options = {
   params: true,
   methods: ["GET"],
 };
-export const handler = async (request: Request) => {
-  const query = await request.getQuery("name");
+export const handler = (request: Request) => {
+  const query = request.getQuery("name");
   request.send(query);
 };

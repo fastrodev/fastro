@@ -30,8 +30,8 @@
     
 
 ## What's next:
-- [Create handler](handler.md)
-- [Create middleware](middleware.md)
+- [Create a handler](handler.md)
+- [Create a middleware](middleware.md)
 - [Create static files](static.md)
 - [Template rendering](rendering.md)
 - [Data validation](validation.md)

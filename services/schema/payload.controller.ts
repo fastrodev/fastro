@@ -1,5 +1,4 @@
 import type { Request } from "../../mod.ts";
-
 const validationSchema = {
   body: {
     type: "object",
@@ -10,11 +9,9 @@ const validationSchema = {
     },
   },
 };
-
 export const options = {
   validationSchema,
 };
-
 export const handler = async (request: Request) => {
   const payload = await request.getPayload();
   request.send(payload);

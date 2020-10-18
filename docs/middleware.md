@@ -1,4 +1,4 @@
-# Create middleware
+# Create a middleware
 
 - `fastro init` command will generate folders and files like this.
     ```

@@ -6,6 +6,7 @@ import {
   MIDDLEWARE_DIR,
   SERVICE_DIR,
   STATIC_DIR,
+  VSCODE_DIR,
 } from "../core/types.ts";
 import { favicon } from "./favicon.ts";
 
@@ -42,7 +43,19 @@ export async function init(args?: any) {
   const idx = encoder.encode(html);
   const idxPath = `${STATIC_DIR}/index.html`;
   await Deno.writeFile(idxPath, idx);
+
+  await Deno.mkdir(`${VSCODE_DIR}`, { recursive: true });
+  const settingJson = encoder.encode(setting);
+  const settingPath = `${VSCODE_DIR}/settings.json`;
+  await Deno.writeFile(settingPath, settingJson);
 }
+
+const setting = `{
+  "deno.enable": true,
+  "deno.lint": true,
+  "deno.unstable": true
+}
+`;
 
 const controller =
   `import type { Request } from "https://raw.fastro.dev/v${FASTRO_VERSION}/mod.ts";

@@ -1,4 +1,4 @@
-# Create handler
+# Create a handler
 - `fastro init` command will generate folders and files like this.
     ```
     webapp
@@ -14,7 +14,6 @@
         └── hello.template.html
 
     3 directories, 7 files
-
     ```
     
     File and folder description:
@@ -23,6 +22,8 @@
     - `public`: Place for all static files.
     - `services`: Place for all controller and html-template files.
 
+
+
 - Open handler file, `services/hello.controller.ts`:
     ```ts
     import type { Request } from "https://raw.fastro.dev/master/mod.ts";
@@ -30,7 +31,6 @@
       // request.view("hello.template.html", { greeting: "Hello", name: "World" });
       request.send(`setup ${request.hello}`);
     };
-
     ```
 
     Please note that: 
@@ -39,6 +39,8 @@
         - **hello** . *controller.ts*
 
     - `request.hello` variable is come from [middleware](middleware.md).
+    - You can find another handler examples on [services folder](../services/readme.md).
+
 
 - Run server
 
@@ -50,13 +52,14 @@
     ```
     deno run -A main.ts
     ```
+
 - Open url to access the handler
     ```
     http://localhost:3000/hello
     ```
 
 ## What's next:
-- [Create middleware](middleware.md)
+- [Create a middleware](middleware.md)
 - [Create static files](static.md)
 - [Template rendering](rendering.md)
 - [Data validation](validation.md)

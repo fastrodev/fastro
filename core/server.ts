@@ -9,6 +9,7 @@ import {
 import type { Request } from "./request.ts";
 import type { Cookie } from "./cookie.ts";
 import {
+  Data,
   FASTRO_VERSION,
   HandlerOptions,
   HttpMethod,
@@ -89,7 +90,6 @@ export class Fastro {
     else {
       const index = this.staticFiles.get("/index.html");
       if (!index) return request.send("root");
-      TEMPLATE_DIR;
       request.send(index);
     }
   }
@@ -101,8 +101,7 @@ export class Fastro {
     req: ServerRequest,
   ) {
     try {
-      // deno-lint-ignore no-explicit-any
-      let body: any;
+      let body: string | Uint8Array | Deno.Reader | undefined;
       if (
         typeof payload === "string" ||
         payload instanceof Uint8Array
@@ -150,7 +149,8 @@ export class Fastro {
       }
       req.respond({ body, status, headers });
     } catch (error) {
-      throw createError("SEND_ERROR", error);
+      error.message = "SEND_ERROR: " + error.message;
+      throw error;
     }
   }
 
@@ -199,15 +199,13 @@ export class Fastro {
         .replace(contentType, "")
         .split("&");
 
-      // deno-lint-ignore no-explicit-any
-      const data: any[] = [];
+      const data: Data[] = [];
       body.forEach((i: string) => {
         if (i.includes("=")) {
           const [key, value] = i.split("=");
           const decodedV = decodeURIComponent(value);
           const decodedK = decodeURIComponent(key);
-          // deno-lint-ignore no-explicit-any
-          const obj: any = {};
+          const obj: Data = {};
           obj[decodedK] = decodedV;
           data.push(obj);
         } else {
@@ -221,7 +219,8 @@ export class Fastro {
         return d;
       }
     } catch (error) {
-      throw createError("HANDLE_FORM_URL_ENCODED_ERROR", error);
+      error.message = "HANDLE_FORM_URL_ENCODED_ERROR: " + error.message;
+      throw error;
     }
   }
 
@@ -249,18 +248,24 @@ export class Fastro {
 
       return multiPartArray;
     } catch (error) {
-      throw createError("HANDLE_MULTIPART_ERROR", error);
+      error.message = "HANDLE_MULTIPART_ERROR: " + error.message;
+      throw error;
     }
   }
 
-  // deno-lint-ignore no-explicit-any
-  private validateJsonPayload(payload: any, url: string) {
-    const service = this.services.get(url);
-    if (service && service.validationSchema && service.validationSchema.body) {
-      const schema = service.validationSchema.body as Schema;
-      if (schema.type === "object") return validateObject(payload, schema);
+  private validateJsonPayload(payload: Data, url: string) {
+    try {
+      const service = this.services.get(url);
+      if (
+        service && service.validationSchema && service.validationSchema.body
+      ) {
+        const schema = service.validationSchema.body as Schema;
+        validateObject(payload, schema);
+      }
+    } catch (error) {
+      error.message = "VALIDATE_JSON_PAYLOAD_ERROR: " + error.message;
+      throw error;
     }
-    return payload;
   }
 
   private async getPayload(requestServer: ServerRequest) {
@@ -277,67 +282,92 @@ export class Fastro {
       ) {
         const payloadString = decode(await Deno.readAll(requestServer.body));
         const payload = JSON.parse(payloadString);
-        return this.validateJsonPayload(payload, requestServer.url);
+        this.validateJsonPayload(payload, requestServer.url);
+        return payload;
       } else {
         const payload = decode(await Deno.readAll(requestServer.body));
         return payload;
       }
     } catch (error) {
-      throw createError("GET_PAYLOAD_ERROR", error);
+      error.message = "GET_PAYLOAD_ERROR: " + error.message;
+      throw error;
     }
   }
 
-  // deno-lint-ignore no-explicit-any
-  private validateParams(params: any, url: string) {
-    const service = this.services.get(url);
-    if (
-      service && service.validationSchema && service.validationSchema.params
-    ) {
-      const schema = service.validationSchema.body as Schema;
-      if (schema.type === "object") return validateObject(params, schema);
+  private validateParams(params: Data, url: string) {
+    try {
+      const [handler] = this.dynamicService.filter((val) => val.url === url);
+      if (
+        handler && handler.service.options.validationSchema &&
+        handler.service.options.validationSchema.params
+      ) {
+        const schema = handler.service.options.validationSchema
+          .params as Schema;
+        validateObject(params, schema);
+      }
+    } catch (error) {
+      error.message = "VALIDATE_PARAMS_ERROR: " + error.message;
+      throw error;
     }
-    return params;
   }
 
   private getParams(incoming: string) {
-    const incomingSplit = incoming.substr(1, incoming.length).split("/");
-    const params: string[] = [];
-    incomingSplit
-      .map((path, idx) => {
-        return { path, idx };
-      })
-      .forEach((value) => params.push(incomingSplit[value.idx]));
-    return this.validateParams(params, incoming);
+    try {
+      const incomingSplit = incoming.substr(1, incoming.length).split("/");
+      const params: string[] = [];
+      incomingSplit
+        .map((path, idx) => {
+          return { path, idx };
+        })
+        .forEach((value) => params.push(incomingSplit[value.idx]));
+      this.validateParams(params, incoming);
+      return params;
+    } catch (error) {
+      error.message = "GET_PARAMS_ERROR: " + error.message;
+      throw error;
+    }
   }
 
-  // deno-lint-ignore no-explicit-any
-  private queryByName(key: string, queryList: any[]) {
+  private validateQuery(query: Data, url: string) {
     try {
-      const [query] = queryList.filter((i) => i[key] !== undefined);
-      return Promise.resolve(query as Query);
+      const [handler] = this.dynamicService.filter((val) =>
+        url.includes(val.url)
+      );
+      if (
+        handler && handler.service.options.validationSchema &&
+        handler.service.options.validationSchema.params
+      ) {
+        const schema = handler.service.options.validationSchema
+          .querystring as Schema;
+        validateObject(query, schema);
+      }
     } catch (error) {
-      throw createError("QUERY_BY_NAME", error);
+      error.message = "VALIDATE_QUERY_ERROR: " + error.message;
+      throw error;
     }
   }
 
   private getQuery(key?: string, url?: string) {
     try {
-      if (!url) throw createError("GET_QUERY_ERROR", new Error("Url empty"));
+      if (!url) throw new Error("Url empty");
       const [, query] = url.split("?");
       if (!query) throw new Error("Query not found");
       const queryPair = query.split("&");
-      const queryList: Query[] = [];
+      const obj: Query = {};
       queryPair.forEach((q) => {
-        // deno-lint-ignore no-explicit-any
-        const obj: any = {};
         const [key, value] = q.split("=");
         obj[key] = value;
-        queryList.push(obj);
       });
-      if (key) return this.queryByName(key, queryList);
-      return Promise.resolve(queryList);
+      this.validateQuery(obj, url);
+      if (key) {
+        const singleQuery: Query = {};
+        singleQuery[key] = obj[key];
+        return singleQuery;
+      }
+      return obj;
     } catch (error) {
-      return Promise.resolve([]);
+      error.message = "GET_QUERY_ERROR: " + error.message;
+      throw error;
     }
   }
 
@@ -348,18 +378,23 @@ export class Fastro {
       });
       request.send(new Uint8Array(await resp.arrayBuffer()));
     } catch (error) {
-      throw createError("PROXY_ERROR", error);
+      error.message = "PROXY_ERROR: " + error.message;
+      throw error;
     }
   }
 
-  // deno-lint-ignore no-explicit-any
-  private async view(template: string, options?: any, request?: Request) {
-    let html = this.templateFiles.get(template);
-    for (const key in options) {
-      const value = options[key];
-      html = replaceAll(html, `\${${key}}`, value);
+  private async view(template: string, options?: Data, request?: Request) {
+    try {
+      let html = this.templateFiles.get(template);
+      for (const key in options) {
+        const value = options[key];
+        html = replaceAll(html, `\${${key}}`, value);
+      }
+      if (request) request.send(html);
+    } catch (error) {
+      error.message = "VIEW_ERROR" + error.message;
+      throw error;
     }
-    if (request) request.send(html);
   }
 
   private async transformRequest(serverRequest: ServerRequest) {
@@ -385,10 +420,10 @@ export class Fastro {
       };
       return request;
     } catch (error) {
-      const err = createError("TRANSFORM_REQUEST_ERROR", error);
+      error.message = "TRANSFORM_REQUEST_ERROR: " + error.message;
       console.error(
         `ERROR: ${getErrorTime()}, url: ${serverRequest.url},`,
-        err,
+        error,
       );
     }
   }
@@ -431,6 +466,12 @@ export class Fastro {
       ) {
         throw new Error("Not Found");
       }
+      if (
+        options && options.validationSchema && options.validationSchema.headers
+      ) {
+        const schema = options.validationSchema.headers as Schema;
+        this.validateHeaders(request.headers, schema);
+      }
       handlerFile.service.handler(request);
     } catch (error) {
       throw createError("HANDLE_DYNAMIC_PARAMS_ERROR", error);
@@ -447,6 +488,15 @@ export class Fastro {
         ) {
           throw new Error("Middleware HTTP method not found");
         }
+
+        if (
+          middleware.options &&
+          middleware.options.validationSchema
+        ) {
+          const schema = middleware.options.validationSchema.headers as Schema;
+          this.validateHeaders(request.headers, schema);
+        }
+
         middleware.handler(request, (err: Error) => {
           if (err) {
             if (!err.message) err.message = `Middleware error: ${key}`;
@@ -457,6 +507,18 @@ export class Fastro {
       });
     } catch (error) {
       throw createError("HANDLE_MIDDLEWARE_ERROR", error);
+    }
+  }
+
+  private validateHeaders(headers: Headers, schema: Schema) {
+    try {
+      const target: Data = {};
+      const { properties } = schema;
+      for (const key in properties) target[key] = headers.get(key);
+      validateObject(target, schema);
+    } catch (error) {
+      error.message = "VALIDATE_HEADERS_ERROR: " + error.message;
+      throw error;
     }
   }
 
@@ -472,10 +534,28 @@ export class Fastro {
       ) {
         throw new Error("Not Found");
       }
+      if (
+        options && options.validationSchema && options.validationSchema.headers
+      ) {
+        const schema = options.validationSchema.headers as Schema;
+        this.validateHeaders(request.headers, schema);
+      }
       service.handler(request);
     } catch (error) {
       throw createError("HANDLE_ROUTE_ERROR", error);
     }
+  }
+
+  private handleRequestError(error: Error, serverRequest: ServerRequest) {
+    const err = createError("HANDLE_REQUEST_ERROR", error);
+    const status = error.message && error.message.includes("VALIDATE")
+      ? 500
+      : 400;
+    serverRequest.respond({ status, body: error.message });
+    console.error(
+      `ERROR: ${getErrorTime()}, url: ${serverRequest.url},`,
+      err,
+    );
   }
 
   private async handleRequest(serverRequest: ServerRequest) {
@@ -486,12 +566,7 @@ export class Fastro {
       if (this.middlewares.size > 0) return this.handleMiddleware(request);
       this.handleRoute(request);
     } catch (error) {
-      const err = createError("HANDLE_REQUEST_ERROR", error);
-      serverRequest.respond({ status: 404, body: error.message });
-      console.error(
-        `ERROR: ${getErrorTime()}, url: ${serverRequest.url},`,
-        err,
-      );
+      this.handleRequestError(error, serverRequest);
     }
   }
 
@@ -638,7 +713,7 @@ export class Fastro {
    */
   public async listen(
     options?: ListenOptions,
-    callback?: (error: Error | undefined, address: string | undefined) => void,
+    callback?: (error?: Error, address?: ListenOptions) => void,
   ) {
     try {
       const port = options && options.port ? options.port : 3000;
@@ -651,14 +726,14 @@ export class Fastro {
           const addr = `http://${hostname}:${port}`;
           console.log(`HTTP webserver running. Access it at: ${addr}`);
         }
-      } // deno-lint-ignore no-explicit-any
-      else callback(undefined, options as any);
+      } else callback(undefined, options);
       for await (const request of this.server) {
         await this.handleRequest(request);
       }
     } catch (error) {
-      const err = createError("LISTEN_ERROR", error);
-      console.error(`ERROR: ${getErrorTime()}`, err);
+      error.message = "LISTEN_ERROR: " + error.message;
+      console.error(`ERROR: ${getErrorTime()}`, error);
+      if (callback) callback(error, undefined);
     }
   }
 }

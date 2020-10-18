@@ -17,7 +17,7 @@ test({
     );
     const txt = await result.text();
     const query = JSON.parse(txt);
-    assertEquals(query, [{ "name": "pram" }, { "address": "cirebon" }]);
+    assertEquals(query, { "name": "pram", "address": "cirebon" });
     server.close();
   },
   sanitizeResources: false,

@@ -1,11 +1,14 @@
 ![][build] ![][stats]
 
 # Fast and simple web framework
+
+![](https://avatars0.githubusercontent.com/u/72688404?s=400&amp;v=4)
+
 Built on top of [Deno standard library](https://deno.land/std@0.74.0). Written in [TypeScript](https://www.typescriptlang.org/). 
 
 ## High performance
 
-With all [the ready to use features](#features), the speed is still [around 93% of the raw Deno HTTP library](docs/perfomance.md).
+With all [the ready to use features](#features), the speed is still close to the raw Deno HTTP library. [Check this perfomance test](docs/perfomance.md).
 
 ## Getting started
 No need to add or register route declarations, controllers, middlewares, templates, or static files manually. 
@@ -23,7 +26,7 @@ You can modify existing files or add new ones if needed.
 Go to [quickstart](docs/quickstart.md) for details.
 
 ## Features
-- Body handling `application/json`, 
+- Body handling `application/json`
 - Body handling `application/x-www-form-urlencoded`
 - Body handling `multipart/form-data`
 - Command line interface
@@ -43,8 +46,8 @@ You can see the details in [the examples](https://github.com/fastrodev/fastro/bl
 
 ## What's next:
 - [Quickstart](docs/quickstart.md)
-- [Create handler](docs/handler.md)
-- [Create middleware](docs/middleware.md)
+- [Create a handler](docs/handler.md)
+- [Create a middleware](docs/middleware.md)
 - [Create static files](docs/static.md)
 - [Template rendering](docs/rendering.md)
 - [Data validation](docs/validation.md)
