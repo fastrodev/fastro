@@ -12,6 +12,13 @@ import { favicon } from "./favicon.ts";
 
 // deno-lint-ignore no-explicit-any
 export async function init(args?: any) {
+  if (args.help) return console.log("init help");
+  if (args.email) {
+    const appId = new Date().getTime().toString();
+    const email = args.email;
+    const [config, content] = generateYaml(appId, "single_page", email);
+  }
+
   const encoder = new TextEncoder();
 
   const dockerFile = encoder.encode(docker);
@@ -67,7 +74,9 @@ export const handler = (request: Request) => {
 
 const middleware =
   `import type { Callback, Request } from "https://raw.fastro.dev/v${FASTRO_VERSION}/mod.ts";
-export const methods = ["GET", "POST"];
+export const options = {
+  methods: ["GET", "POST"],
+}
 export const handler = (request: Request, next: Callback) => {
   request.hello = "with middleware";
   next();
@@ -242,3 +251,59 @@ const template = `<html>
     \${greeting} \${name}
 </body>
 </html>`;
+
+function generateYaml(appId: string, appType: string, userEmail: string) {
+  const yaml_config = `app_id: ${appId}
+app_type: ${appType}
+user_email: ${userEmail}`;
+
+  const yaml_content = `title: Hello world
+description: This is your awesome landing page
+tagline: Your friendly page
+header: 
+  description: There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain...
+  image: header.png
+  background: background.png
+services:
+  description: service descriptions
+  image: services.png
+  items:
+    - title: Your first service
+      description: Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+      image: image.png
+    - title: Your second service
+      description: Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+      image: image.png
+    - title: Your third service
+      description: It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
+      image: image.png
+    - title: Your fourth service
+      description: It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+      image: image.png
+products:
+  description: product description
+  image: service.png
+  items:
+    - title: first image
+      src: image1.png
+    - title: second image
+      src: image2.png
+    - title: third image
+      src: image3.png
+    - title: fourth image
+      src: image4.png
+contact:
+  description: contact description
+  image: contact.png
+  email: youremail@gmail.com
+  mobile: 081519411881
+  address: Jakarta, Indonesia
+social_media:
+  instagram: myinstagram
+  twitter: mytwitter
+  facebook: myfacebook
+google_analytics: UA-165990288-X
+`;
+
+  return [yaml_config, yaml_content];
+}

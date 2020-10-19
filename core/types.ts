@@ -3,7 +3,7 @@
 import type { FormFile } from "../deps.ts";
 
 export const DOCKER_VERSION = "1.4.4";
-export const FASTRO_VERSION = "0.30.10";
+export const FASTRO_VERSION = "0.30.11";
 export const SERVICE_DIR = "services";
 export const SERVICE_FILE = ".controller.ts";
 export const STATIC_DIR = "public";
@@ -38,6 +38,11 @@ export type DynamicService = {
 };
 
 export type Data = {
+  // deno-lint-ignore no-explicit-any
+  [key: string]: any;
+};
+
+export type Args = {
   // deno-lint-ignore no-explicit-any
   [key: string]: any;
 };

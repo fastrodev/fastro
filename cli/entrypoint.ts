@@ -2,10 +2,22 @@
 
 import { Fastro } from "../mod.ts";
 
+const message = `USAGE:
+  fastro serve [OPTIONS]
+
+OPTIONS:
+  --production        Disable file watching
+  --port [PORT]       Set port of webapp
+                      Example: 
+                        \`fastro serve --port 8080\`
+
+`;
+
 let server: Fastro | undefined;
 
 // deno-lint-ignore no-explicit-any
 export async function serve(port?: number, args?: any) {
+  if (args.help) return console.log(message);
   if (Deno.env.get("DENO_ENV") !== "development") {
     Deno.env.set("DENO_ENV", "production");
   }
