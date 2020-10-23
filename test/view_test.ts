@@ -12,12 +12,12 @@ test({
   name: "VIEW",
   fn() {
     server.listen({ port });
-    setTimeout(async ()=>{
+    setTimeout(async () => {
       const result = await fetch(`${base}/hello/v3/hello`);
       const text = await result.text();
       assertStringContains(text, "<html>");
       server.close();
-    }, 1000)
+    }, 1000);
   },
   sanitizeResources: false,
   sanitizeOps: false,
