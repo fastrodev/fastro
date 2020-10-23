@@ -386,7 +386,7 @@ export class Fastro {
   private async view(template: string, options?: Data, request?: Request) {
     try {
       let html = this.templateFiles.get(template);
-      console.log('html', html)
+      console.log("html", html);
       if (html) {
         for (const key in options) {
           const value = options[key];
