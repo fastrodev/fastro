@@ -15,13 +15,20 @@ Just init the project:
 ```
 fastro init
 ```
-And `fastro` will automatically load and save the generated files when the server starts:
+Fastro will automatically load and save the generated files when the server starts
 ```
 fastro serve
 ```
-You can modify existing files or add new ones if needed.
 
-Go to [quickstart](docs/quickstart.md) for details.
+Finally, after your app ready to use, you can deploy to serverless environment easily
+```
+fastro deploy --name hello
+```
+
+You can check initial demo here: https://hello-6bxxicr2uq-uc.a.run.app
+
+
+Go to [quickstart](docs/quickstart.md) for detail installation.
 
 ## Features
 - Body handling `application/json`
