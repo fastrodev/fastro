@@ -10,12 +10,14 @@ Deno.env.set("DENO_ENV", "test");
 
 test({
   name: "VIEW",
-  async fn() {
+  fn() {
     server.listen({ port });
-    const result = await fetch(`${base}/hello/v3/hello`);
-    const text = await result.text();
-    assertStringContains(text, "<html>");
-    server.close();
+    setTimeout(async ()=>{
+      const result = await fetch(`${base}/hello/v3/hello`);
+      const text = await result.text();
+      assertStringContains(text, "<html>");
+      server.close();
+    }, 1000)
   },
   sanitizeResources: false,
   sanitizeOps: false,
