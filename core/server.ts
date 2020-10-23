@@ -388,9 +388,11 @@ export class Fastro {
       console.log("template", template);
       console.log("this.templateFiles", this.templateFiles);
       let html = this.templateFiles.get(template);
-      for (const key in options) {
-        const value = options[key];
-        html = replaceAll(html, `\${${key}}`, value);
+      if (html) {
+        for (const key in options) {
+          const value = options[key];
+          html = replaceAll(html, `\${${key}}`, value);
+        }
       }
       if (request) request.send(html);
     } catch (error) {
@@ -573,6 +575,7 @@ export class Fastro {
   }
 
   private async readHtmlTemplate(target: string) {
+    console.log("target--->", target);
     try {
       const templateFolder = `${this.cwd}/${target}`;
       const decoder = new TextDecoder("utf-8");
@@ -585,6 +588,7 @@ export class Fastro {
           this.readHtmlTemplate(target + "/" + dirEntry.name);
         }
       }
+      console.log("this.templateFiles", this.templateFiles);
     } catch (error) {
       console.info("Start with no html template");
     }
