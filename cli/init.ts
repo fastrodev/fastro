@@ -19,9 +19,15 @@ function initHelp() {
   console.log("init help");
 }
 
+function initApp(app: string) {
+  console.log("app", app);
+}
+
 // deno-lint-ignore no-explicit-any
 export async function init(args?: any) {
   if (args.help) return initHelp();
+  if (args.app) return initApp(args.app);
+
   const encoder = new TextEncoder();
 
   const dockerFile = encoder.encode(docker);

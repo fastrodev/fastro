@@ -11,6 +11,8 @@ export function getArguments(cmdArgs: string[]) {
     email: args.email,
     help: args.help,
     version: args.version,
+    app: args.app,
+    name: args.name,
   };
 }
 

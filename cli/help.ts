@@ -8,7 +8,6 @@ USAGE
 COMMANDS:
     init            Generate default controller, middleware, static, and template files
     serve           Run server
-    register        Register an account
     deploy          Deploy webapp to google cloud run
     
 OPTIONS:
