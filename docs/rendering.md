@@ -55,5 +55,5 @@
 
 ## What's next:
 - [Data validation](validation.md)
-- [Deployment](deployment.md)
+- [Publishing and Deployment](deployment.md)
 - [Fastro API](api.md)

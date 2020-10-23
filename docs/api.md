@@ -40,5 +40,5 @@ export const handler = (request: Request) => {
 - [Create static files](static.md)
 - [Template rendering](rendering.md)
 - [Data validation](validation.md)
-- [Deployment](deployment.md)
+- [Publishing and Deployment](deployment.md)
 - [Fastro API](api.md)
