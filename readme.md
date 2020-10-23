@@ -25,7 +25,7 @@ Finally, after your app ready to use, you can deploy to serverless environment e
 fastro deploy --name hello
 ```
 
-You can check initial demo here: https://hello-6bxxicr2uq-uc.a.run.app
+You can check initial demo here: [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app)
 
 
 Go to [quickstart](docs/quickstart.md) for detail installation.
