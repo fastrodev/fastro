@@ -17,5 +17,6 @@ export function getArguments(cmdArgs: string[]) {
 export { handleHelp } from "./help.ts";
 export { serve } from "./entrypoint.ts";
 export { init } from "./init.ts";
+export { create } from "./create.ts";
 export { handleDeploy } from "./deploy.ts";
 export { handleRegister } from "./register.ts";

@@ -10,14 +10,17 @@ OPTIONS:
   --port [PORT]       Set port of webapp
                       Example: 
                         \`fastro serve --port 8080\`
-
 `;
+
+function serveHelp() {
+  return console.log(message);
+}
 
 let server: Fastro | undefined;
 
 // deno-lint-ignore no-explicit-any
 export async function serve(port?: number, args?: any) {
-  if (args.help) return console.log(message);
+  if (args.help) return serveHelp();
   if (Deno.env.get("DENO_ENV") !== "development") {
     Deno.env.set("DENO_ENV", "production");
   }

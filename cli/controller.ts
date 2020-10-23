@@ -3,6 +3,7 @@
 import { FASTRO_VERSION } from "../core/types.ts";
 import { watch } from "./watch.ts";
 import {
+  create,
   getArguments,
   handleDeploy,
   handleHelp,
@@ -19,6 +20,7 @@ if (!production && cmd === "serve" && !args.help) await watch();
 export function start() {
   try {
     if (cmd === "init") return init(args);
+    if (cmd === "create") return create(args);
     if (cmd === "serve") return serve(port, args);
     if (cmd === "deploy") return handleDeploy(args);
     if (cmd === "register") return handleRegister(email, args);
