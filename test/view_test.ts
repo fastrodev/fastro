@@ -2,7 +2,7 @@ import { Fastro } from "../mod.ts";
 import { assertStringContains } from "../deps.ts";
 
 const { test } = Deno;
-const port = 3011;
+const port = 3000;
 const base = `http://localhost:${port}`;
 const server = new Fastro();
 
