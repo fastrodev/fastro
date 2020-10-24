@@ -4,7 +4,7 @@ By default, you can deploy fastro web apps on [Cloud Run](https://cloud.google.c
 
 Cloud run abstracts all infrastructure management by automatically scaling up and down from zero almost instantaneously - depending on traffic. It also only charges you for the exact resources you use.
 
-## Install gcloud sdk
+## Install gcloud sdk (linux)
 - Download [gcloud sdk](https://cloud.google.com/sdk)
 
     ```
@@ -29,7 +29,7 @@ Cloud run abstracts all infrastructure management by automatically scaling up an
     See [the cloud run quickstart](https://cloud.google.com/sdk/docs/quickstart) for detail instruction.
 
 ## Deploy webapp to cloud run
-- After your webapp is ready to use, you can deploy and publish it with this command
+- Once your application is ready to use, you can easily deploy it with this command
     ```
     fastro deploy --name hello
     ``` 

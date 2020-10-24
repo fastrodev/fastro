@@ -20,7 +20,7 @@ Fastro will automatically load and save the generated files when the server star
 fastro serve
 ```
 
-Finally, after your app ready to use, you can deploy to serverless environment easily
+Once your application is ready to use, you can easily deploy it to a serverless environment
 ```
 fastro deploy
 ```
