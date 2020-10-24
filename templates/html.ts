@@ -1,4 +1,4 @@
-export const html = `<!DOCTYPE html>
+export const html = `<html>
 
 <head>
   <style>
