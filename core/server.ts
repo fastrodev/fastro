@@ -86,12 +86,14 @@ export class Fastro {
   }
 
   private handleRoot(request: Request) {
-    if (this.staticFiles.size === 0) request.send("root");
-    else {
-      const index = this.staticFiles.get("/index.html");
-      if (!index) setTimeout(() => request.send(index), 500);
-      request.send(index);
-    }
+    let index = this.staticFiles.get("/index.html");
+    if (!index) {
+      setTimeout(() => {
+        const html = this.staticFiles.get("/index.html");
+        index = html ? html : `Fastro v${FASTRO_VERSION}`;
+        request.send(index);
+      }, 500);
+    } else request.send(index);
   }
 
   private send<T>(
