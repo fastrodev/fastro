@@ -1,6 +1,6 @@
 ![][build] ![][stats]
 
-# High perfomance deno web framework 
+# High performance deno web framework 
 
 ![](https://avatars0.githubusercontent.com/u/72688404?s=400&amp;v=4)
 
