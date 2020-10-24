@@ -1,4 +1,4 @@
-export const html = `<html>
+export const html = `<!DOCTYPE html>
 
 <head>
   <style>
@@ -122,11 +122,11 @@ export const html = `<html>
   document.getElementById("logo").style.display = "none";
   async function get() {
     const data = await fetch("/hello");
-    const d = await data.text()
+    const d = await data.text();
     if (d) {
-      document.getElementById("ldr").remove()
+      document.getElementById("ldr").remove();
       document.getElementById("logo").style.display = "block";
-      document.getElementById("msg").innerHTML = d
+      document.getElementById("msg").innerHTML = d;
     }
   }
   get();

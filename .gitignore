@@ -1,0 +1,9 @@
+_site
+.sass-cache
+.jekyll-cache
+.jekyll-metadata
+vendor
+_posts/
+404.html
+Gemfile.lock
+index.markdown
