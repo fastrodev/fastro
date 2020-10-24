@@ -89,7 +89,7 @@ export class Fastro {
     if (this.staticFiles.size === 0) request.send("root");
     else {
       const index = this.staticFiles.get("/index.html");
-      if (!index) return request.send("root");
+      if (!index) setTimeout(() => request.send(index), 500);
       request.send(index);
     }
   }
