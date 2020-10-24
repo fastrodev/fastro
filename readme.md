@@ -22,10 +22,10 @@ fastro serve
 
 Finally, after your app ready to use, you can deploy to serverless environment easily
 ```
-fastro deploy --name hello
+fastro deploy
 ```
 
-You can check initial demo here: [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app)
+You can see an example of a deployed web application at this link [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app)
 
 
 Go to [quickstart](docs/quickstart.md) for detail installation.
