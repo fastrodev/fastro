@@ -3,12 +3,9 @@
 
 ![](https://avatars0.githubusercontent.com/u/72688404?s=400&amp;v=4)
 
-Built on top of [Deno standard library](https://deno.land/std@0.74.0). Written in [TypeScript](https://www.typescriptlang.org/). 
-
-The speed is already close to the raw Deno HTTP library. [Check this perfomance test](https://fastro.dev/docs/perfomance).
-
-No need to add or register route declarations, controllers, middlewares, templates, or static files manually. 
-
+Built on top of [Deno standard library](https://deno.land/std@0.74.0). Written in [TypeScript](https://www.typescriptlang.org/).  
+The speed is already close to the raw Deno HTTP library. [Check this perfomance test](https://fastro.dev/docs/perfomance).  
+No need to add or register route declarations, controllers, middlewares, templates, or static files manually.  
 Fastro will automatically load and save them when the server starts.
 
 ## Getting started
@@ -38,11 +35,11 @@ Go to [quickstart](https://fastro.dev/docs/quickstart) for detail installation.
 - Command line interface
 - Data validation
 - Dynamic URL parameters
-- Serverless Deployment
+- Serverless deployment
 - Supports `cookie`
 - Supports middleware
 - Supports proxy
-- Support query parameters
+- Support querystring
 - Support static files
 - URL prefix
 - URL redirection
