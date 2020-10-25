@@ -6,21 +6,23 @@
 
 Built on top of [Deno standard library](https://deno.land/std@0.74.0). Written in [TypeScript](https://www.typescriptlang.org/). 
 
-With all [the ready to use features](#features), the speed is still close to the raw Deno HTTP library. [Check this perfomance test](docs/perfomance.md).
+The speed is still close to the raw Deno HTTP library. [Check this perfomance test](docs/perfomance.md).
 
-## Getting started
 No need to add or register route declarations, controllers, middlewares, templates, or static files manually. 
 
-Just init the project:
+Fastro will automatically load and save them when the server starts.
+
+## Getting started
+
+Launch a terminal. Make a folder and create a project
 ```
-fastro init
+mkdir webapp && cd webapp && fastro init
 ```
-Fastro will automatically load and save the generated files when the server starts
+Run the server on localhost
 ```
 fastro serve
 ```
-
-Once your application is ready to use, you can easily deploy it to a serverless environment
+Deploy to google cloud run
 ```
 fastro deploy
 ```
@@ -37,6 +39,7 @@ Go to [quickstart](docs/quickstart.md) for detail installation.
 - Command line interface
 - Data validation
 - Dynamic URL parameters
+- Serverless Deployment
 - Supports `cookie`
 - Supports middleware
 - Supports proxy

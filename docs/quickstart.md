@@ -11,7 +11,6 @@
     For other OS, go to [deno installation.](https://deno.land/manual/getting_started/installation)
 
 2. Install fastro-cli
-
     ```
     deno install -A https://raw.fastro.dev/master/cli/fastro.ts
     ```
@@ -27,13 +26,11 @@
     ```
 
 4. Initiate a project
-
     ```
     fastro init
     ```
 
 5. Run server
-
     ```
     fastro serve
     ```
@@ -43,6 +40,7 @@
     ```
     http://localhost:3000
     ```
+7. Go to [deployment](deployment.md) if you want to publish your webapp.
 
 ## What's next:
 - [Create a handler](handler.md)
