@@ -1,8 +1,5 @@
 # Quickstart
 
-*If you prefer to use `deno` only and just want to implement your entrypoint, skip these steps below. Go to [create entrypoint.](entrypoint.md)*
-
-
 1. Install deno (linux/mac)
     ```
     curl -fsSL https://deno.land/x/install/install.sh | sh
@@ -34,7 +31,11 @@
     ```
     fastro serve
     ```
-    By default, it will be reloaded when changes are made
+    
+    Or if you want with `deno`:
+    ```
+    deno run -A main.ts
+    ```
 
 6. Open url
     ```

@@ -4,6 +4,7 @@
     ```
     webapp
     ├── Dockerfile
+    ├── main.ts
     ├── middleware
     │   └── support.ts
     ├── public
@@ -14,8 +15,7 @@
         ├── hello.controller.ts
         └── hello.template.html
 
-    3 directories, 7 files
-
+    3 directories, 8 files
     ```
     
 - You can access and add additional property to the request object before the controllers process it.

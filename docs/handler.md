@@ -3,6 +3,7 @@
     ```
     webapp
     ├── Dockerfile
+    ├── main.ts
     ├── middleware
     │   └── support.ts
     ├── public
@@ -13,11 +14,12 @@
         ├── hello.controller.ts
         └── hello.template.html
 
-    3 directories, 7 files
+    3 directories, 8 files
     ```
     
     File and folder description:
     - `Dockerfile`: docker file.
+    - `main.ts`: Webapp entrypoint.
     - `middleware`: Place for all middleware files.
     - `public`: Place for all static files.
     - `services`: Place for all controller and html-template files.
