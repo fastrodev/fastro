@@ -5,7 +5,7 @@
 
 Built on top of [Deno standard library](https://deno.land/std@0.74.0). Written in [TypeScript](https://www.typescriptlang.org/). 
 
-The speed is still close to the raw Deno HTTP library. [Check this perfomance test](docs/perfomance.md).
+The speed is already close to the raw Deno HTTP library. [Check this perfomance test](docs/perfomance.md).
 
 No need to add or register route declarations, controllers, middlewares, templates, or static files manually. 
 
