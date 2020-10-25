@@ -92,7 +92,7 @@ export class Fastro {
         const html = this.staticFiles.get("/index.html");
         index = html ? html : `Fastro v${FASTRO_VERSION}`;
         request.send(index);
-      }, 500);
+      }, 1000);
     } else request.send(index);
   }
 
