@@ -6,6 +6,7 @@ import {
   STATIC_DIR,
   VSCODE_DIR,
 } from "../core/types.ts";
+import { main } from "../templates/main.ts";
 import { favicon } from "../templates/favicon.ts";
 import { render } from "../templates/render.ts";
 import { docker } from "../templates/docker.ts";
@@ -29,6 +30,9 @@ export async function init(args?: any) {
   if (args.app) return initApp(args.app);
 
   const encoder = new TextEncoder();
+
+  const mainFile = encoder.encode(main);
+  await Deno.writeFile("main.ts", mainFile);
 
   const dockerFile = encoder.encode(docker);
   await Deno.writeFile("Dockerfile", dockerFile);
