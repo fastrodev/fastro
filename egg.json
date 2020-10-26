@@ -1,0 +1,10 @@
+{
+                                "name": "fastro",
+                                "description": "High performance deno web framework. Written in Typescript",
+                                "homepage": "https://github.com/fastrojs/fastro",
+                                "files": [
+                                  "./**/*.ts",
+                                  "README.md"
+                                ],
+                                "entry": "./mod.ts"
+                              }
