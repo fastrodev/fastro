@@ -11,7 +11,6 @@ import { favicon } from "../templates/favicon.ts";
 import { render } from "../templates/render.ts";
 import { docker } from "../templates/docker.ts";
 import { html } from "../templates/html.ts";
-import { svg } from "../templates/svg.ts";
 import { middleware } from "../templates/middleware.ts";
 import { controller } from "../templates/controller.ts";
 import { setting } from "../templates/settings.ts";
@@ -52,10 +51,6 @@ export async function init(args?: any) {
   await Deno.writeFile(templatePath, htmlTemplate);
 
   await Deno.mkdir(STATIC_DIR, { recursive: true });
-  const logo = encoder.encode(svg);
-  const logoPath = `${STATIC_DIR}/logo.svg`;
-  await Deno.writeFile(logoPath, logo);
-
   const icon = new Uint8Array(favicon);
   const iconPath = `${STATIC_DIR}/favicon.ico`;
   await Deno.writeFile(iconPath, icon);

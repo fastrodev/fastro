@@ -436,7 +436,7 @@ export class Fastro {
     try {
       const url = request.url;
       const staticFile = this.staticFiles.get(url);
-      if (!staticFile) throw new Error("Not found");
+      if (!staticFile) throw new Error("Not Found");
       const header = new Headers();
       if (url.includes(".svg")) header.set("content-type", "image/svg+xml");
       else if (url.includes(".png")) header.set("content-type", "image/png");
@@ -552,10 +552,11 @@ export class Fastro {
 
   private handleRequestError(error: Error, serverRequest: ServerRequest) {
     const err = createError("HANDLE_REQUEST_ERROR", error);
-    const status = error.message && error.message.includes("VALIDATE")
-      ? 500
-      : 400;
-    serverRequest.respond({ status, body: error.message });
+    let status = 500;
+    if (error.message.includes("Not Found")) status = 400;
+    if (error.message.includes("VALIDATE")) status = 401;
+    const message = JSON.stringify({ error: true, message: error.message });
+    serverRequest.respond({ status, body: message });
     console.error(
       `ERROR: ${getErrorTime()}, url: ${serverRequest.url},`,
       err,

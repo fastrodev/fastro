@@ -1,136 +1,95 @@
-export const html = `<html>
+export const html = `<!DOCTYPE html>
+<html>
 
 <head>
-  <style>
-    html,
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Congratulation</title>
+
+  <style media="screen">
     body {
-      height: 100%;
+      background: #efffea;
+      color: rgba(0, 0, 0, 0.87);
+      font-family: Roboto, Helvetica, Arial, sans-serif;
       margin: 0;
       padding: 0;
-      font-family: Roboto, Helvetica, Arial, sans-serif;
-      background: #ECEFF1;
-      color: rgba(0, 0, 0, 0.87);
     }
 
-    div {
-      position: relative;
-      height: 100%;
-      width: 100%;
-    }
-
-    div #ctnr {
-      text-align: center;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      margin: auto;
-      width: 200;
-      height: 90;
+    #message {
+      background: white;
+      max-width: 360px;
+      margin: 100px auto 16px;
+      padding: 32px 24px;
       border-radius: 3px;
-      background-color: white;
-      padding: 20;
     }
 
-    #ctnr {
+    #message h2 {
+      color: #1e7304;
+      font-weight: bold;
+      font-size: 16px;
+      margin: 0 0 8px;
+    }
+
+    #message h1 {
+      font-size: 22px;
+      font-weight: 300;
+      color: rgba(0, 0, 0, 0.6);
+      margin: 0 0 16px;
+    }
+
+    #message p {
+      line-height: 140%;
+      margin: 16px 0 24px;
+      font-size: 15px;
+    }
+
+    #message a {
+      display: block;
+      text-align: center;
+      background: #1e7304;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: white;
+      padding: 16px;
+      border-radius: 4px;
+    }
+
+    #message,
+    #message a {
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     }
 
-    .loader {
-      font-size: 10px;
-      margin: auto auto;
-      text-indent: -9999em;
-      width: 5em;
-      height: 5em;
-      border-radius: 50%;
-      background: #ffffff;
-      background: -moz-linear-gradient(left, #000000 10%, rgba(255, 255, 255, 0) 42%);
-      background: -webkit-linear-gradient(left, #000000 10%, rgba(255, 255, 255, 0) 42%);
-      background: -o-linear-gradient(left, #000000 10%, rgba(255, 255, 255, 0) 42%);
-      background: -ms-linear-gradient(left, #000000 10%, rgba(255, 255, 255, 0) 42%);
-      background: linear-gradient(to right, #000000 10%, rgba(255, 255, 255, 0) 42%);
-      position: relative;
-      -webkit-animation: load3 1.4s infinite linear;
-      animation: load3 1.4s infinite linear;
-      -webkit-transform: translateZ(0);
-      -ms-transform: translateZ(0);
-      transform: translateZ(0);
+    #load {
+      color: rgba(0, 0, 0, 0.4);
+      text-align: center;
+      font-size: 13px;
     }
 
-    .loader:before {
-      width: 50%;
-      height: 50%;
-      background: #000000;
-      border-radius: 100% 0 0 0;
-      position: absolute;
-      top: 0;
-      left: 0;
-      content: '';
-    }
+    @media (max-width: 600px) {
 
-    .loader:after {
-      background: #ffffff;
-      width: 75%;
-      height: 75%;
-      border-radius: 50%;
-      content: '';
-      margin: auto;
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-    }
-
-    @-webkit-keyframes load3 {
-      0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
+      body,
+      #message {
+        margin-top: 0;
+        background: white;
+        box-shadow: none;
       }
 
-      100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-      }
-    }
-
-    @keyframes load3 {
-      0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-      }
-
-      100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
+      body {
+        border-top: 16px solid #1e7304;
       }
     }
   </style>
 </head>
 
 <body>
-  <div>
-    <div id="ctnr">
-      <div id="ldr" class="loader">Loading...</div>
-      <img id="logo" src="logo.svg" width="100" style="margin: auto;">
-      <div id="msg" style="margin-top:10">Loading ... </div>
-    </div>
+  <div id="message">
+    <h2>Congratulation</h2>
+    <h1><b>Your webapp setup complete</b></h1>
+    <p>You're seeing this because you've successfully setup fastro webapp. Now it's time to go build something awesome!
+    </p>
+    <a target="_blank" href="https://fastro.dev/docs/quickstart.html">Open documentation</a>
   </div>
 </body>
-<script>
-  document.getElementById("logo").style.display = "none";
-  async function get() {
-    const data = await fetch("/hello");
-    const d = await data.text();
-    if (d) {
-      document.getElementById("ldr").remove();
-      document.getElementById("logo").style.display = "block";
-      document.getElementById("msg").innerHTML = d;
-    }
-  }
-  get();
-</script>
 
 </html>
 `;

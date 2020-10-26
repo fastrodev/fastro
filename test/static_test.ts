@@ -12,9 +12,9 @@ test({
   name: "STATIC FILE",
   async fn() {
     server.listen({ port });
-    const result = await fetch(`${base}/index.html`);
+    const result = await fetch(`${base}/readme.md`);
     const text = await result.text();
-    assertStringContains(text, "<html>");
+    assertStringContains(text, "# Static File");
     server.close();
   },
   sanitizeResources: false,
