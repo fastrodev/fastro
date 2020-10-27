@@ -3,14 +3,14 @@
 // deno-lint-ignore no-explicit-any
 function createConfig(data: any) {
   const { appId, userEmail } = data;
-  const yaml_config = !userEmail ? `app_id: ${appId}` : `app_id: ${appId}
+  const yamlConfig = !userEmail ? `app_id: ${appId}` : `app_id: ${appId}
   user_email: ${userEmail}`;
-  return yaml_config;
+  return yamlConfig;
 }
 
 // deno-lint-ignore no-explicit-any
 function createPage(data: any) {
-  const yaml_content = `type: page
+  const yamlContent = `type: page
   title: Hello world
   description: This is my awesome landing page
   
@@ -19,7 +19,7 @@ function createPage(data: any) {
       description: My headline description
       image: headline.png
   `;
-  return yaml_content;
+  return yamlContent;
 }
 
 function createService() {}
