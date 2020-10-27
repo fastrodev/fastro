@@ -436,7 +436,7 @@ export class Fastro {
     try {
       const url = request.url;
       const staticFile = this.staticFiles.get(url);
-      if (!staticFile) throw new Error("Not Found");
+      if (!staticFile) throw new Error("not found");
       const header = new Headers();
       if (url.includes(".svg")) header.set("content-type", "image/svg+xml");
       else if (url.includes(".png")) header.set("content-type", "image/png");
@@ -468,7 +468,7 @@ export class Fastro {
         options.methods &&
         !options.methods.includes(request.method as HttpMethod)
       ) {
-        throw new Error("Not Found");
+        throw new Error("not found");
       }
       if (
         options && options.validationSchema && options.validationSchema.headers
@@ -536,7 +536,7 @@ export class Fastro {
         options.methods &&
         !options.methods.includes(request.method as HttpMethod)
       ) {
-        throw new Error("Not Found");
+        throw new Error("not found");
       }
       if (
         options && options.validationSchema && options.validationSchema.headers
@@ -553,10 +553,12 @@ export class Fastro {
   private handleRequestError(error: Error, serverRequest: ServerRequest) {
     const err = createError("HANDLE_REQUEST_ERROR", error);
     let status = 500;
-    if (error.message.includes("Not Found")) status = 400;
-    if (error.message.includes("VALIDATE")) status = 401;
+    if (error.message.includes("not found")) status = 404;
+    if (error.message.includes("VALIDATE")) status = 400;
     const message = JSON.stringify({ error: true, message: error.message });
-    serverRequest.respond({ status, body: message });
+    const headers = new Headers();
+    headers.set("content-type", "application/json");
+    serverRequest.respond({ status, body: message, headers });
     console.error(
       `ERROR: ${getErrorTime()}, url: ${serverRequest.url},`,
       err,
@@ -566,7 +568,7 @@ export class Fastro {
   private async handleRequest(serverRequest: ServerRequest) {
     try {
       const request = await this.transformRequest(serverRequest);
-      if (!request) throw new Error("Request Error");
+      if (!request) throw new Error("request rrror");
       if (serverRequest.url === "/") return this.handleRoot(request);
       if (this.middlewares.size > 0) return this.handleMiddleware(request);
       this.handleRoute(request);
