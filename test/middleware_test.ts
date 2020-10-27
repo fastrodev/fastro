@@ -1,5 +1,5 @@
 import { Fastro } from "../mod.ts";
-import { assertStringContains } from "../deps.ts";
+import { assertStringIncludes } from "../deps.ts";
 
 const { test } = Deno;
 const port = 3012;
@@ -14,7 +14,7 @@ test({
     server.listen({ port });
     const result = await fetch(`${base}/middleware`);
     const text = await result.text();
-    assertStringContains(text, "middleware");
+    assertStringIncludes(text, "middleware");
     server.close();
   },
   sanitizeResources: false,

@@ -1,5 +1,5 @@
 import { Fastro } from "../mod.ts";
-import { assertStringContains } from "../deps.ts";
+import { assertStringIncludes } from "../deps.ts";
 
 const { test } = Deno;
 const port = 3010;
@@ -14,7 +14,7 @@ test({
     server.listen({ port });
     const result = await fetch(`${base}/readme.md`);
     const text = await result.text();
-    assertStringContains(text, "# Static File");
+    assertStringIncludes(text, "# Static File");
     server.close();
   },
   sanitizeResources: false,

@@ -1,5 +1,5 @@
 import { Fastro } from "../mod.ts";
-import { assertEquals, assertStringContains } from "../deps.ts";
+import { assertEquals, assertStringIncludes } from "../deps.ts";
 
 const { test } = Deno;
 const port = 3002;
@@ -23,8 +23,8 @@ test({
     });
     const text = await result.text();
     const [v1, v2] = JSON.parse(text);
-    assertStringContains(v1.value, "# High performance deno web framework");
-    assertStringContains(v2.value, "agus");
+    assertStringIncludes(v1.value, "# High performance deno web framework");
+    assertStringIncludes(v2.value, "agus");
     server.close();
   },
   sanitizeResources: false,

@@ -1,5 +1,5 @@
 import { Fastro } from "../mod.ts";
-import { assertStringContains } from "../deps.ts";
+import { assertStringIncludes } from "../deps.ts";
 
 const { test } = Deno;
 const port = 3011;
@@ -15,7 +15,7 @@ test({
     setTimeout(async () => {
       const result = await fetch(`${base}/hello/v3/hello`);
       const text = await result.text();
-      assertStringContains(text, "<html>");
+      assertStringIncludes(text, "<html>");
       server.close();
     }, 1000);
   },
