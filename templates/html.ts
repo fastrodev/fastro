@@ -1,3 +1,5 @@
+import { FASTRO_VERSION } from "../core/types.ts";
+
 export const html = `<!DOCTYPE html>
 <html>
 
@@ -85,7 +87,7 @@ export const html = `<!DOCTYPE html>
   <div id="message">
     <h2>Congratulation</h2>
     <h1><b>Your webapp setup complete</b></h1>
-    <p>You're seeing this because you've successfully setup fastro webapp. Now it's time to go build something awesome!
+    <p>You're seeing this because you've successfully setup fastro webapp v${FASTRO_VERSION}. Now it's time to go build something awesome!
     </p>
     <a target="_blank" href="https://fastro.dev/docs/quickstart.html">Open documentation</a>
   </div>
