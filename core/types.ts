@@ -2,7 +2,6 @@
 
 import type { FormFile } from "../deps.ts";
 
-export const DOCKER_VERSION = "1.4.6";
 export const FASTRO_VERSION = "0.30.22";
 export const SERVICE_DIR = "services";
 export const SERVICE_FILE = ".controller.ts";

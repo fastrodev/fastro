@@ -1,6 +1,6 @@
-import { DOCKER_VERSION, FASTRO_VERSION } from "../core/types.ts";
+import { FASTRO_VERSION } from "../core/types.ts";
 
-export const docker = `FROM hayd/alpine-deno:${DOCKER_VERSION}
+export const docker = `FROM fastro/docker:latest
 WORKDIR /app
 USER deno
 COPY . ./
