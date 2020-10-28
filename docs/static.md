@@ -24,9 +24,6 @@
     http://localhost:3000/index.html
     ```
     ```
-    http://localhost:3000/logo.svg
-    ```
-    ```
     http://localhost:3000/favicon.ico
     ```
 
