@@ -1,6 +1,6 @@
-import { FASTRO_VERSION } from "../core/types.ts";
+import { DOCKER_VERSION, FASTRO_VERSION } from "../core/types.ts";
 
-export const docker = `FROM fastro/docker:latest
+export const docker = `FROM fastro/docker:${DOCKER_VERSION}
 WORKDIR /app
 USER deno
 COPY . ./
