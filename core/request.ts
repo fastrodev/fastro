@@ -5,9 +5,29 @@ import type { Cookie } from "./cookie.ts";
 import type { Query } from "./types.ts";
 
 /**
- * Request Class. It is extended from ServerRequest. One of Deno standart module.
+ * Request Class. It is extended from [Deno ServerRequest](https://doc.deno.land/https/deno.land/std@0.75.0/http/server.ts#ServerRequest).
+ * 
  */
 export class Request extends ServerRequest {
+  contentType!: string;
+  httpStatus!: number;
+  /**
+   * Set content type before send
+   * 
+   *      request.type("text/html").send("hello");
+   */
+  type!: {
+    (contentType: string): Request;
+  };
+
+  /**
+   * Set HTTP Status 
+   * 
+   *      request.status(404).send("not found");
+   */
+  status!: {
+    (httpStatus: number): Request;
+  };
   /**
    * Get all cookies
    * 

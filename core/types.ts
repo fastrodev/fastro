@@ -12,8 +12,12 @@ export const TEMPLATE_DIR = "services";
 export const MIDDLEWARE_DIR = "middleware";
 export const MAX_MEMORY = 1024 * 1024;
 export const VSCODE_DIR = ".vscode";
+export const TIMEOUT = 1000;
+export const RUNNING_TEXT = `HTTP webserver running. Access it at`;
 
 export type ServerOptions = {
+  port?: number;
+  hostname?: string;
   cors?: boolean;
   prefix?: string;
   serviceDir?: string;

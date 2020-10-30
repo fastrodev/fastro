@@ -1,11 +1,12 @@
 import { Args } from "../core/types.ts";
 import { createError } from "../core/utils.ts";
+import { config } from "../templates/config.ts";
 
 const message = `
 USAGE:
   fastro register --email your@mail.com`;
 
-export function handleRegister(email: string, args: Args) {
+export async function handleRegister(email: string, args: Args) {
   if (args.help) return console.log(message);
   if (!email) {
     throw createError(
@@ -13,5 +14,8 @@ export function handleRegister(email: string, args: Args) {
       new Error("email required" + message),
     );
   }
-  console.log("register", email);
+
+  const encoder = new TextEncoder();
+  const configFile = encoder.encode(config(email));
+  await Deno.writeFile("config.yml", configFile);
 }

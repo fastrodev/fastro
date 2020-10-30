@@ -10,8 +10,7 @@ Deno.env.set("DENO_ENV", "test");
 test({
   name: "BASIC GET",
   async fn() {
-    const server = new Fastro();
-    server.listen();
+    const server = new Fastro({ port });
     const result = await fetch(`${base}/hello`);
     const text = await result.text();
     assertEquals(text, "setup complete");
@@ -25,7 +24,6 @@ test({
   name: "PREFIX",
   async fn() {
     const server = new Fastro({ prefix: "api" });
-    server.listen();
     const result = await fetch(`${base}/api/hello`);
     const text = await result.text();
     assertEquals(text, "setup complete");
@@ -39,7 +37,6 @@ test({
   name: "SERVICE DIRECTORY",
   async fn() {
     const server = new Fastro({ serviceDir: "services/hello/v1" });
-    server.listen({ port });
     const result = await fetch(`${base}/hello`);
     const text = await result.text();
     assertEquals(text, "hello v1");
@@ -53,7 +50,6 @@ test({
   name: "SERVICE DIRECTORY 2",
   async fn() {
     const server = new Fastro({ serviceDir: "services/hello/v2" });
-    server.listen({ port });
     const result = await fetch(`${base}/hello`);
     const text = await result.text();
     assertEquals(text, "hello v2");

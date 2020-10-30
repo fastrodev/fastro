@@ -1,5 +1,6 @@
 // Copyright 2020 the Fastro author. All rights reserved. MIT license.
 
+import { ServerOptions } from "../core/types.ts";
 import { Fastro } from "../mod.ts";
 
 const message = `USAGE:
@@ -27,8 +28,7 @@ export async function serve(port?: number, args?: any) {
   try {
     console.log(`DENO_ENV=${Deno.env.get("DENO_ENV")}`);
     if (server) server.close();
-    server = new Fastro();
-    server.listen({ port });
+    server = new Fastro({ port });
   } catch (error) {
     console.error(error);
   }

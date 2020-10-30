@@ -14,6 +14,7 @@ import { html } from "../templates/html.ts";
 import { middleware } from "../templates/middleware.ts";
 import { controller } from "../templates/controller.ts";
 import { setting } from "../templates/settings.ts";
+import { gitignore } from "../templates/gitignore.ts";
 
 function initHelp() {
   console.log("init help");
@@ -32,6 +33,9 @@ export async function init(args?: any) {
 
   const mainFile = encoder.encode(main);
   await Deno.writeFile("main.ts", mainFile);
+
+  const gitFile = encoder.encode(gitignore);
+  await Deno.writeFile(".gitignore", gitFile);
 
   const dockerFile = encoder.encode(docker);
   await Deno.writeFile("Dockerfile", dockerFile);

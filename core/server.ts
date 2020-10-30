@@ -1,5 +1,5 @@
 // Copyright 2020 the Fastro author. All rights reserved. MIT license.
-
+// deno-lint-ignore-file no-explicit-any
 import {
   createError,
   getErrorTime,
@@ -15,11 +15,13 @@ import {
   HttpMethod,
   MAX_MEMORY,
   MIDDLEWARE_DIR,
+  RUNNING_TEXT,
   SERVICE_DIR,
   SERVICE_FILE,
   STATIC_DIR,
   TEMPLATE_DIR,
   TEMPLATE_FILE,
+  TIMEOUT,
 } from "./types.ts";
 import type {
   DynamicService,
@@ -31,8 +33,10 @@ import type {
 } from "./types.ts";
 import {
   decode,
+  decodeBase64,
   isFormFile,
   MultipartReader,
+  parseYml,
   serve,
   Server,
   ServerRequest,
@@ -63,37 +67,30 @@ export class Fastro {
   private corsEnabled!: boolean;
   private staticDir!: string;
   private cookieList = new Map<string, Cookie>();
-  // deno-lint-ignore no-explicit-any
   private middlewares = new Map<string, any>();
-  // deno-lint-ignore no-explicit-any
   private services = new Map<string, any>();
-  // deno-lint-ignore no-explicit-any
   private staticFiles = new Map<string, any>();
-  // deno-lint-ignore no-explicit-any
   private templateFiles = new Map<string, any>();
+  private hostname = "0.0.0.0";
+  private port = 3000;
+  private appStatus!: string;
 
   constructor(options?: ServerOptions) {
     if (options && options.prefix) this.prefix = options.prefix;
     if (options && options.serviceDir) this.serviceDir = options.serviceDir;
     if (options && options.cors) this.corsEnabled = options.cors;
     if (options && options.staticDir) this.staticDir = options.staticDir;
+    if (options && options.port) this.port = options.port;
+    if (options && options.hostname) this.hostname = options.hostname;
     this.staticDir = this.staticDir ? this.staticDir : STATIC_DIR;
     this.serviceDir = this.serviceDir ? this.serviceDir : SERVICE_DIR;
-    this.importMiddleware(MIDDLEWARE_DIR)
-      .then(() => this.importServices(this.serviceDir))
-      .then(() => this.readStaticFiles(this.staticDir))
-      .then(() => this.readHtmlTemplate(TEMPLATE_DIR));
+    this.initApp();
   }
 
   private handleRoot(request: Request) {
-    let index = this.staticFiles.get("/index.html");
-    if (!index) {
-      setTimeout(() => {
-        const html = this.staticFiles.get("/index.html");
-        index = html ? html : `Fastro v${FASTRO_VERSION}`;
-        request.send(index);
-      }, 1000);
-    } else request.send(index);
+    const index = this.staticFiles.get("/index.html");
+    if (!index) return request.send(`Fastro v${FASTRO_VERSION}`);
+    request.send(index);
   }
 
   private send<T>(
@@ -123,6 +120,7 @@ export class Fastro {
       headers.set("Connection", "keep-alive");
       headers.set("Date", new Date().toUTCString());
       headers.set("x-powered-by", "Fastro/" + FASTRO_VERSION);
+      if (!this.appid) headers.set("x-app-status", this.appStatus);
       if (this.corsEnabled) {
         headers.set("Access-Control-Allow-Origin", "*");
         headers.set("Access-Control-Allow-Headers", "*");
@@ -152,7 +150,7 @@ export class Fastro {
       req.respond({ body, status, headers });
     } catch (error) {
       error.message = "SEND_ERROR: " + error.message;
-      throw error;
+      console.error(error);
     }
   }
 
@@ -419,7 +417,20 @@ export class Fastro {
         this.cookieList.set(cookie.name, cookie);
         return request;
       };
+      request.type = (contentType: string) => {
+        request.contentType = contentType;
+        return request;
+      };
+      request.status = (status: number) => {
+        request.httpStatus = status;
+        return request;
+      };
       request.send = (payload, status, headers) => {
+        status = request.httpStatus ? request.httpStatus : 200;
+        if (request.contentType) {
+          headers = new Headers();
+          headers.set("content-type", request.contentType);
+        }
         this.send(payload, status, headers, serverRequest);
       };
       return request;
@@ -444,7 +455,7 @@ export class Fastro {
       else if (url.includes(".css")) header.set("content-type", "text/css");
       else if (url.includes(".html")) header.set("content-type", "text/html");
       else if (url.includes(".json")) {
-        header.set("content-type", "application/json ");
+        header.set("content-type", "application/json");
       } else if (url.includes("favicon.ico")) {
         header.set("content-type", "image/ico");
       }
@@ -690,57 +701,75 @@ export class Fastro {
     }
   }
 
+  private getAppStatus() {
+    const decoded = this.appid
+      ? decodeBase64("cmVnaXN0ZXJlZA==")
+      : decodeBase64("VU5SRUdJU1RFUkVE");
+    return new TextDecoder().decode(decoded);
+  }
+
+  private async readConfig() {
+    const configFile = Deno.readTextFileSync("config.yml");
+    const parsedConfig = parseYml(configFile);
+    if (configFile && parsedConfig) {
+      const { email, appid } = <{
+        email: string;
+        appid: string;
+      }> parsedConfig;
+      this.appid = appid;
+      this.email = email;
+    }
+  }
+
+  private appid!: string;
+  private email!: string;
+  private initApp() {
+    this.server = serve({ hostname: this.hostname, port: this.port });
+    this.readConfig()
+      .then(() => this.importMiddleware(MIDDLEWARE_DIR))
+      .then(() => this.importServices(this.serviceDir))
+      .then(() => this.readStaticFiles(this.staticDir))
+      .then(() => this.readHtmlTemplate(TEMPLATE_DIR))
+      .then(() => {
+        this.appStatus = this.getAppStatus();
+        setTimeout(() => this.listen(), TIMEOUT);
+      });
+  }
+
   /**
    * Close server
    * 
    *      server.close()
    */
   public close() {
-    if (this.server) this.server.close();
+    this.server.close();
   }
 
-  /**
-   * Server listen
-   * 
-   *      server.listen();
-   * 
-   * With listen options:
-   *      
-   *      server.listen({ port: 8080, hostname: "0.0.0.0" });
-   * 
-   * With callback:
-   * 
-   *      new Fastro().listen({ port: 8080, hostname: "0.0.0.0" }, (err, addr) => {
-   *        if (err) console.error(err);
-   *        console.log("HTTP webserver running. Access it at:", addr);
-   *      });
-   * 
-   * @param options ListenOptions
-   * 
-   */
-  public async listen(
-    options?: ListenOptions,
-    callback?: (error?: Error, address?: ListenOptions) => void,
-  ) {
+  private async listen() {
     try {
-      const port = options && options.port ? options.port : 3000;
-      const hostname = options && options.hostname
-        ? options.hostname
-        : "0.0.0.0";
-      this.server = serve({ hostname, port });
-      if (!callback) {
-        if (Deno.env.get("DENO_ENV") !== "test") {
-          const addr = `http://${hostname}:${port}`;
-          console.log(`HTTP webserver running. Access it at: ${addr}`);
+      if (Deno.env.get("DENO_ENV") !== "test") {
+        const addr = `http://${this.hostname}:${this.port}`;
+        const runningText = `${RUNNING_TEXT}: ${addr}`;
+        let status = {};
+        if (this.appid) {
+          status = {
+            status: this.getAppStatus(),
+            email: this.email,
+            appid: this.appid,
+            message: runningText,
+          };
+        } else {
+          status = { status: this.getAppStatus(), message: runningText };
         }
-      } else callback(undefined, options);
+
+        console.info(status);
+      }
       for await (const request of this.server) {
         await this.handleRequest(request);
       }
     } catch (error) {
       error.message = "LISTEN_ERROR: " + error.message;
       console.error(`ERROR: ${getErrorTime()}`, error);
-      if (callback) callback(error, undefined);
     }
   }
 }

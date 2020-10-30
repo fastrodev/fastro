@@ -4,7 +4,7 @@ import { assertEquals, assertStringIncludes } from "../deps.ts";
 const { test } = Deno;
 const port = 3002;
 const base = `http://localhost:${port}`;
-const server = new Fastro();
+const server = new Fastro({ port });
 
 Deno.env.set("DENO_ENV", "test");
 
@@ -16,7 +16,6 @@ test({
     const blob = new Blob([file.buffer]);
     data.append("file", blob, "file_name.txt");
     data.append("name", "agus");
-    server.listen({ port });
     const result = await fetch(`${base}/form/post`, {
       body: data,
       method: "POST",
@@ -25,7 +24,6 @@ test({
     const [v1, v2] = JSON.parse(text);
     assertStringIncludes(v1.value, "# High performance deno web framework");
     assertStringIncludes(v2.value, "agus");
-    server.close();
   },
   sanitizeResources: false,
   sanitizeOps: false,
@@ -34,7 +32,6 @@ test({
 test({
   name: "URL ENCODED FORM",
   async fn() {
-    server.listen({ port });
     var data = new URLSearchParams();
     data.append("userName", "test@gmail.com");
     data.append("password", "Password");
@@ -50,7 +47,6 @@ test({
     const text = await result.text();
     const [c] = JSON.parse(text);
     assertEquals(c, { userName: "test@gmail.com" });
-    server.close();
   },
   sanitizeResources: false,
   sanitizeOps: false,
@@ -59,7 +55,6 @@ test({
 test({
   name: "JSON FORM",
   async fn() {
-    server.listen({ port });
     const result = await fetch(`${base}/form/post`, {
       method: "POST",
       headers: {
