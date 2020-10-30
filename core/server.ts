@@ -757,13 +757,18 @@ export class Fastro {
         let status = {};
         if (this.appid) {
           status = {
+            version: FASTRO_VERSION,
             status: this.getAppStatus(),
             email: this.email,
             appid: this.appid,
             message: runningText,
           };
         } else {
-          status = { status: this.getAppStatus(), message: runningText };
+          status = {
+            version: FASTRO_VERSION,
+            status: this.getAppStatus(),
+            message: runningText,
+          };
         }
 
         console.info(status);
