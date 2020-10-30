@@ -709,15 +709,19 @@ export class Fastro {
   }
 
   private async readConfig() {
-    const configFile = Deno.readTextFileSync("config.yml");
-    const parsedConfig = parseYml(configFile);
-    if (configFile && parsedConfig) {
-      const { email, appid } = <{
-        email: string;
-        appid: string;
-      }> parsedConfig;
-      this.appid = appid;
-      this.email = email;
+    try {
+      const configFile = Deno.readTextFileSync("config.yml");
+      const parsedConfig = parseYml(configFile);
+      if (configFile && parsedConfig) {
+        const { email, appid } = <{
+          email: string;
+          appid: string;
+        }> parsedConfig;
+        this.appid = appid;
+        this.email = email;
+      }
+    } catch (error) {
+      console.log("Start with no config");
     }
   }
 
