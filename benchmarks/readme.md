@@ -13,7 +13,7 @@
 - Run server: `deno run -A deno_app.ts`
 - Benchmark command: `autocannon -c 100 http://localhost:8080`
 - Result:
-  
+
   ![](deno_app.svg)
 
 ## Fastro
@@ -21,5 +21,5 @@
 - Run server: `deno run -A fastro_app.ts`
 - Benchmark command: `autocannon -c 100 http://localhost:3000/hello`
 - Result:
-  
+
   ![](fastro_app.svg)
