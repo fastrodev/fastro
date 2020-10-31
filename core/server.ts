@@ -120,7 +120,7 @@ export class Fastro {
       headers.set("Connection", "keep-alive");
       headers.set("Date", new Date().toUTCString());
       headers.set("x-powered-by", "Fastro/" + FASTRO_VERSION);
-      if (!this.appid) headers.set("x-app-status", this.appStatus);
+      if (!this.regid) headers.set("x-app-status", this.appStatus);
       if (this.corsEnabled) {
         headers.set("Access-Control-Allow-Origin", "*");
         headers.set("Access-Control-Allow-Headers", "*");
@@ -702,7 +702,7 @@ export class Fastro {
   }
 
   private getAppStatus() {
-    const decoded = this.appid
+    const decoded = this.regid
       ? decodeBase64("cmVnaXN0ZXJlZA==")
       : decodeBase64("VU5SRUdJU1RFUkVE");
     return new TextDecoder().decode(decoded);
@@ -713,11 +713,11 @@ export class Fastro {
       const configFile = Deno.readTextFileSync("config.yml");
       const parsedConfig = parseYml(configFile);
       if (configFile && parsedConfig) {
-        const { email, appid } = <{
+        const { email, regid } = <{
           email: string;
-          appid: string;
+          regid: string;
         }> parsedConfig;
-        this.appid = appid;
+        this.regid = regid;
         this.email = email;
       }
     } catch (error) {
@@ -725,7 +725,7 @@ export class Fastro {
     }
   }
 
-  private appid!: string;
+  private regid!: string;
   private email!: string;
   private initApp() {
     this.server = serve({ hostname: this.hostname, port: this.port });
@@ -755,12 +755,12 @@ export class Fastro {
         const addr = `http://${this.hostname}:${this.port}`;
         const runningText = `${RUNNING_TEXT}: ${addr}`;
         let status = {};
-        if (this.appid) {
+        if (this.regid) {
           status = {
             version: FASTRO_VERSION,
             status: this.getAppStatus(),
             email: this.email,
-            appid: this.appid,
+            regid: this.regid,
             message: runningText,
           };
         } else {

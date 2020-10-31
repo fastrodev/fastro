@@ -1,11 +1,11 @@
 import { v4 } from "../deps.ts";
 
 const uuid = v4.generate();
-const appid = `${uuid}`;
+const regid = `${uuid}`;
 
 export function config(email: string) {
   const yaml = `email: ${email}
-appid: ${appid}
+regid: ${regid}
 `;
   return yaml;
 }
