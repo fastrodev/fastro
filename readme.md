@@ -26,7 +26,7 @@ Deploy to google cloud run
 fastro deploy
 ```
 
-You can see an example of a deployed web application at this link [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app)
+You can see an example of a deployed web application at this link: [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app)
 
 
 Go to [quickstart](docs/quickstart.md) for detail installation.
