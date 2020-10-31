@@ -7,7 +7,6 @@ const server = new Fastro(serverOptions?: ServerOptions);
 ```
 
 ## Fastro Methods
-- `server.listen(listenOptions?: ListenOptions)`
 - `server.close()`
 
 ## Request
@@ -28,6 +27,8 @@ export const handler = (request: Request) => {
 - `request.getQuery()`
 - `request.proxy(url: string)`
 - `request.redirect(url: string)`
+- `request.type(contentType: string)`
+- `request.status(httpStatus: number)`
 - `request.send<T>(payload: string | T, status?: number, header?: Headers)`
 - `request.view(template: string)`
 
