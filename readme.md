@@ -1,7 +1,7 @@
 # High performance deno web framework 
 ![][build] ![][stats]
 
-![](https://avatars0.githubusercontent.com/u/72688404?s=400&amp;v=4)
+<img src=https://raw.githubusercontent.com/fastrojs/fastro/gh-pages/public/logo.svg height="200px">
 
 Built on top of [Deno standard library](https://deno.land/std@0.74.0). Written in [TypeScript](https://www.typescriptlang.org/).
 
