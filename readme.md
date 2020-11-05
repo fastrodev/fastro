@@ -9,6 +9,8 @@ No need to add or register route declarations, controllers, middlewares, templat
 
 ## Getting started
 
+Go to [quickstart](docs/quickstart.md) for detail installation.
+
 Launch a terminal. Make a folder and create a project
 ```
 mkdir webapp && cd webapp && fastro init
@@ -21,11 +23,7 @@ Deploy to google cloud run
 ```
 fastro deploy
 ```
-
 You can see an example of a deployed web application at this link: [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app)
-
-
-Go to [quickstart](docs/quickstart.md) for detail installation.
 
 ## Features
 - Body handling `application/json`
