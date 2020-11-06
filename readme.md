@@ -9,7 +9,7 @@ No need to add or register route declarations, controllers, middlewares, templat
 
 ## Getting started
 
-Go to [installation](docs/install.md) for detail.
+Go to [quickstart](docs/quickstart.md) for detail.
 
 Launch a terminal. Make a folder and create a project
 ```
