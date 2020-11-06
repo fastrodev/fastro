@@ -1,6 +1,4 @@
-# Quickstart
-
-## Installation
+# Installation
 
 1. Install deno (linux/mac)
     ```
