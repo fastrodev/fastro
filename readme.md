@@ -9,7 +9,7 @@ The speed is already close to the raw Deno HTTP library. [Check this perfomance 
 
 No need to register route declarations, controllers, middlewares, templates, or static files manually. 
 
-They will be loaded and saved when the server starts.
+It will be loaded and saved when the server starts.
 
 ## Getting started
 
