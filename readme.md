@@ -9,7 +9,7 @@ No need to add or register route declarations, controllers, middlewares, templat
 
 ## Getting started
 
-Go to [quickstart](docs/quickstart.md) for detail.
+Go to [quickstart](https://fastro.dev/docs/quickstart) for detail installation.
 
 Launch a terminal. Make a folder and create a project
 ```
