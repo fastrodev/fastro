@@ -13,11 +13,9 @@ Fastro will automatically load and save them when the server starts.
 
 ## Getting started
 
-Go to [quickstart](https://fastro.dev/docs/quickstart) for detail installation.
-
 Launch a terminal. Make a folder and create a project
 ```
-mkdir webapp && cd webapp && fastro init
+fastro init
 ```
 Run the server on localhost
 ```
@@ -28,7 +26,10 @@ Deploy to google cloud run
 fastro deploy
 ```
 
-You can see an example of a deployed web application at this link [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app)
+You can see an example of a deployed web application at this link:  
+[https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app)
+
+Go to [quickstart](docs/quickstart) for detail information.
 
 ## Features
 - Body handling `application/json`
