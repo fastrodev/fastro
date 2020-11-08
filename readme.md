@@ -24,7 +24,7 @@ Deploy to google cloud run
 fastro deploy
 ```
 
-You can see an example of a deployed web application at this link:  
+The app that has been deployed can be seen here:  
 [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app)
 
 Go to [quickstart](https://fastro.dev/docs/quickstart) for detail information.
