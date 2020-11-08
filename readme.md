@@ -29,7 +29,7 @@ fastro deploy
 You can see an example of a deployed web application at this link:  
 [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app)
 
-Go to [quickstart](docs/quickstart) for detail information.
+Go to [quickstart](https://fastro.dev/docs/quickstart) for detail information.
 
 ## Features
 - Body handling `application/json`
