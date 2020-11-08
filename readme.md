@@ -1,4 +1,4 @@
-# High performance deno web framework 
+# Fastro
 ![][build] ![][stats]
 
 <img src=https://raw.githubusercontent.com/fastrojs/fastro/gh-pages/public/logo.svg height="200px">
