@@ -8,8 +8,14 @@
     ```
 
     For other OS, go to [deno installation.](https://deno.land/manual/getting_started/installation)
+    
+2. Install git (debian/ubuntu)
+   ```
+   sudo apt-get install git-all
+   ```
+   For other OS, go to [install-git](https://github.com/git-guides/install-git)
 
-2. Install fastro-cli
+3. Install fastro-cli
     ```
     deno install -A https://raw.fastro.dev/master/cli/fastro.ts
     ```
