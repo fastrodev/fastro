@@ -5,8 +5,7 @@
 ![](https://raw.githubusercontent.com/fastrojs/fastro/gh-pages/public/logo.svg){: width="50%" #fastro-logo}
 {: refdef}
 
-Built on top of [Deno standard library](https://deno.land/std@0.74.0).  
-The speed is [close to the raw Deno HTTP library](docs/perfomance.md).  
+Built on top of [Deno standard library](https://deno.land/std@0.74.0). The speed is [close to the raw Deno HTTP library](docs/perfomance.md).  
 
 No need to register routes, controllers, middlewares, templates, or static files manually. They will be loaded and saved when the server starts.  
 
