@@ -1,4 +1,4 @@
-import { DENO_VERSION, FASTRO_VERSION } from "../core/types.ts";
+import { DENO_VERSION, FASTRO_VERSION } from "../core/constant.ts";
 
 export const docker = `FROM fastro/deno:${DENO_VERSION}
 WORKDIR /app

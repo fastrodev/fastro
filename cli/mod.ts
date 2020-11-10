@@ -15,4 +15,3 @@ export * from "../templates/html.ts";
 export * from "../templates/middleware.ts";
 export * from "../templates/render.ts";
 export * from "../templates/settings.ts";
-export * from "../templates/svg.ts";

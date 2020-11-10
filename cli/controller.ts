@@ -1,6 +1,6 @@
 // Copyright 2020 the Fastro author. All rights reserved. MIT license.
 
-import { FASTRO_VERSION } from "../core/types.ts";
+import { FASTRO_VERSION } from "../core/constant.ts";
 import { watch } from "./watch.ts";
 import {
   create,

@@ -1,5 +1,6 @@
 // Copyright 2020 the Fastro author. All rights reserved. MIT license.
 // deno-lint-ignore-file no-explicit-any
+
 import {
   createError,
   getErrorTime,
@@ -8,13 +9,13 @@ import {
 } from "./utils.ts";
 import type { Request } from "./request.ts";
 import type { Cookie } from "./cookie.ts";
+import { Data, HandlerOptions, HttpMethod } from "./types.ts";
 import {
-  Data,
   FASTRO_VERSION,
-  HandlerOptions,
-  HttpMethod,
+  HOSTNAME,
   MAX_MEMORY,
   MIDDLEWARE_DIR,
+  PORT,
   RUNNING_TEXT,
   SERVICE_DIR,
   SERVICE_FILE,
@@ -22,10 +23,9 @@ import {
   TEMPLATE_DIR,
   TEMPLATE_FILE,
   TIMEOUT,
-} from "./types.ts";
+} from "./constant.ts";
 import type {
   DynamicService,
-  ListenOptions,
   MultiPartData,
   Query,
   Schema,
@@ -59,31 +59,29 @@ import {
  *      const server = new Fastro(serverOptions);
  */
 export class Fastro {
-  private dynamicService: DynamicService[] = [];
+  private appStatus!: string;
+  private cookieList = new Map<string, Cookie>();
+  private corsEnabled!: boolean;
   private cwd = Deno.cwd();
+  private dynamicService: DynamicService[] = [];
+  private hostname = HOSTNAME;
+  private middlewares = new Map<string, any>();
+  private port = PORT;
   private prefix!: string;
   private server!: Server;
-  private serviceDir!: string;
-  private corsEnabled!: boolean;
-  private staticDir!: string;
-  private cookieList = new Map<string, Cookie>();
-  private middlewares = new Map<string, any>();
+  private serviceDir = SERVICE_DIR;
+  private staticDir = STATIC_DIR;
   private services = new Map<string, any>();
   private staticFiles = new Map<string, any>();
   private templateFiles = new Map<string, any>();
-  private hostname = "0.0.0.0";
-  private port = 3000;
-  private appStatus!: string;
 
   constructor(options?: ServerOptions) {
-    if (options && options.prefix) this.prefix = options.prefix;
-    if (options && options.serviceDir) this.serviceDir = options.serviceDir;
     if (options && options.cors) this.corsEnabled = options.cors;
-    if (options && options.staticDir) this.staticDir = options.staticDir;
-    if (options && options.port) this.port = options.port;
     if (options && options.hostname) this.hostname = options.hostname;
-    this.staticDir = this.staticDir ? this.staticDir : STATIC_DIR;
-    this.serviceDir = this.serviceDir ? this.serviceDir : SERVICE_DIR;
+    if (options && options.prefix) this.prefix = options.prefix;
+    if (options && options.port) this.port = options.port;
+    if (options && options.serviceDir) this.serviceDir = options.serviceDir;
+    if (options && options.staticDir) this.staticDir = options.staticDir;
     this.initApp();
   }
 

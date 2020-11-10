@@ -1,4 +1,4 @@
-import { FASTRO_VERSION } from "../core/types.ts";
+import { FASTRO_VERSION } from "../core/constant.ts";
 
 export const html = `<!DOCTYPE html>
 <html>

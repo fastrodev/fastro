@@ -1,11 +1,12 @@
 // Copyright 2020 the Fastro author. All rights reserved. MIT license.
+// deno-lint-ignore-file no-explicit-any
 
 import {
   MIDDLEWARE_DIR,
   SERVICE_DIR,
   STATIC_DIR,
   VSCODE_DIR,
-} from "../core/types.ts";
+} from "../core/constant.ts";
 import { main } from "../templates/main.ts";
 import { favicon } from "../templates/favicon.ts";
 import { render } from "../templates/render.ts";
@@ -20,11 +21,47 @@ function initHelp() {
   console.log("init help");
 }
 
-function initApp(app: string) {
-  console.log("app", app);
+async function getApp(app: string) {
+  const result = await fetch(
+    "https://raw.githubusercontent.com/fastrojs/app/main/app.yml",
+  );
+  const text = await result.text();
 }
 
-// deno-lint-ignore no-explicit-any
+async function cloneRepo(app: string) {
+  const p = Deno.run({
+    cmd: [
+      "git",
+      "clone",
+      `https://github.com/fastroapp/${app}.git`,
+      ".",
+    ],
+  });
+
+  const { code } = await p.status();
+  if (code !== 0) console.error({ message: "Clone app error" });
+}
+
+async function removeGit() {
+  const p = Deno.run({
+    cmd: [
+      "rm",
+      "-rf",
+      ".git",
+    ],
+  });
+
+  const { code } = await p.status();
+  if (code !== 0) console.error({ message: "Init app error" });
+}
+
+function initApp(app: string) {
+  getApp(app)
+    .then(() => cloneRepo(app))
+    .then(() => removeGit())
+    .then(() => console.log("Init app done"));
+}
+
 export async function init(args?: any) {
   if (args.help) return initHelp();
   if (args.app) return initApp(args.app);

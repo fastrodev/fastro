@@ -1,19 +1,7 @@
 // Copyright 2020 the Fastro author. All rights reserved. MIT license.
+// deno-lint-ignore-file no-explicit-any
 
 import type { FormFile } from "../deps.ts";
-
-export const DENO_VERSION = "1.5.1";
-export const FASTRO_VERSION = "0.30.24";
-export const SERVICE_DIR = "services";
-export const SERVICE_FILE = ".controller.ts";
-export const STATIC_DIR = "public";
-export const TEMPLATE_FILE = ".template.html";
-export const TEMPLATE_DIR = "services";
-export const MIDDLEWARE_DIR = "middleware";
-export const MAX_MEMORY = 1024 * 1024;
-export const VSCODE_DIR = ".vscode";
-export const TIMEOUT = 1000;
-export const RUNNING_TEXT = `HTTP webserver running. Access it at`;
 
 export type ServerOptions = {
   port?: number;
@@ -37,17 +25,14 @@ export type MultiPartData = {
 
 export type DynamicService = {
   url: string;
-  // deno-lint-ignore no-explicit-any
   service: any;
 };
 
 export type Data = {
-  // deno-lint-ignore no-explicit-any
   [key: string]: any;
 };
 
 export type Args = {
-  // deno-lint-ignore no-explicit-any
   [key: string]: any;
 };
 

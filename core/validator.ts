@@ -1,3 +1,5 @@
+// Copyright 2020 the Fastro author. All rights reserved. MIT license.
+
 import type { Data, Schema } from "./types.ts";
 import { createError } from "./utils.ts";
 

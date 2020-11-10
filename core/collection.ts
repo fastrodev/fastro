@@ -1,4 +1,5 @@
 // Copyright 2020 the Fastro author. All rights reserved. MIT license.
+// deno-lint-ignore-file no-explicit-any
 
 export abstract class Collection<T> {
   constructor(name: string) {
@@ -19,7 +20,6 @@ export abstract class Collection<T> {
     return Promise.resolve(before < after);
   }
 
-  // deno-lint-ignore no-explicit-any
   update(condition: any, item: T): Promise<T> {
     const [data] = this.collection
       .map((v, i) => {
@@ -30,7 +30,6 @@ export abstract class Collection<T> {
     return Promise.resolve(this.collection[data.i]);
   }
 
-  // deno-lint-ignore no-explicit-any
   delete(condition: any): Promise<T[]> {
     const data = this.collection
       .map((v, i) => {
@@ -45,7 +44,6 @@ export abstract class Collection<T> {
     return Promise.resolve(this.collection);
   }
 
-  // deno-lint-ignore no-explicit-any
   findOne(condition: any): Promise<T> {
     const item = this.collection.filter((v) => {
       return this.compare(condition, v);
@@ -54,7 +52,6 @@ export abstract class Collection<T> {
     return Promise.resolve(r);
   }
 
-  // deno-lint-ignore no-explicit-any
   find(condition?: any): Promise<T[]> {
     const item = this.collection.filter((v) => {
       return this.compare(condition, v);
@@ -62,7 +59,6 @@ export abstract class Collection<T> {
     return Promise.resolve(item);
   }
 
-  // deno-lint-ignore no-explicit-any
   private comparable(value: any) {
     const compare = [
       "$lt",
@@ -84,7 +80,6 @@ export abstract class Collection<T> {
     return result;
   }
 
-  // deno-lint-ignore no-explicit-any
   private nextCompare(comparator: any, target: any) {
     const [operator, regex] = Object.keys(comparator);
     const value = comparator[operator];
@@ -108,13 +103,11 @@ export abstract class Collection<T> {
       return this.queryHandler(target && value, target, regexValue);
     }
     if (operator === "$in") {
-      // deno-lint-ignore no-explicit-any
       const valueArray = value as any[];
       const result = valueArray.includes(target);
       return this.queryHandler(result, target, regexValue);
     }
     if (operator === "$nin") {
-      // deno-lint-ignore no-explicit-any
       const valueArray = value as any[];
       const result = !valueArray.includes(target);
       return this.queryHandler(result, target, regexValue);
@@ -128,7 +121,6 @@ export abstract class Collection<T> {
     return false;
   }
 
-  // deno-lint-ignore no-explicit-any
   private contain(target: any, condition: any) {
     const keys = Object.keys(condition);
     for (const key of keys) {
@@ -146,7 +138,6 @@ export abstract class Collection<T> {
     return true;
   }
 
-  // deno-lint-ignore no-explicit-any
   private compare(condition: any, target: any) {
     return this.contain(target, condition);
   }
