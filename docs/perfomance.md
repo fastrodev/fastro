@@ -2,7 +2,7 @@
 
 Starting from v0.30.0, `fastro` has been rewritten to improve performance. 
 
-Here are the test results for the hello-world keep-alive connection.
+Here are the test results for the [keep-alive connections](https://www.google.com/search?q=keep+alive+connection).
 
 |Module|Req/s|Percentage|
 |--|--:|--:|
