@@ -14,7 +14,7 @@
 - Benchmark command: `autocannon -c 100 http://localhost:8080`
 - Result:
 
-  ![](deno_app.svg)
+![](deno_app.svg)
 
 ## Fastro
 - Source code: [fastro_app.ts](https://github.com/fastrojs/fastro/blob/master/benchmarks/fastro_app.ts)
@@ -22,4 +22,4 @@
 - Benchmark command: `autocannon -c 100 http://localhost:3000/hello`
 - Result:
 
-  ![](fastro_app.svg)
+![](fastro_app.svg)
