@@ -26,9 +26,6 @@ Deploy to google cloud run
 fastro deploy
 ```
 
-You can view the deployed web application at this link:  
-[https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app)
-
 Go to [quickstart](docs/quickstart) for installation details.
 
 ## Features
