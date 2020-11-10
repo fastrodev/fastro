@@ -22,7 +22,7 @@ test({
     });
     const text = await result.text();
     const [v1, v2] = JSON.parse(text);
-    assertStringIncludes(v1.value, "# High performance deno web framework");
+    assertStringIncludes(v1.value, "# Fastro");
     assertStringIncludes(v2.value, "agus");
   },
   sanitizeResources: false,

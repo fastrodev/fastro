@@ -1,7 +1,5 @@
-# High performance deno web framework 
+# Fastro
 ![][build] ![][stats]
-
-<img src=https://raw.githubusercontent.com/fastrojs/fastro/gh-pages/public/logo.svg height="200px">
 
 Built on top of [Deno standard library](https://deno.land/std@0.74.0). Written in [TypeScript](https://www.typescriptlang.org/).
 
@@ -9,15 +7,13 @@ The speed is already close to the raw Deno HTTP library. [Check this perfomance 
 
 No need to add or register route declarations, controllers, middlewares, templates, or static files manually.
 
-Fastro will automatically load and save them when the server starts.
+It will be loaded and saved when the server starts.
 
 ## Getting started
 
-Go to [quickstart](https://fastro.dev/docs/quickstart) for detail installation.
-
 Launch a terminal. Make a folder and create a project
 ```
-mkdir webapp && cd webapp && fastro init
+fastro init
 ```
 Run the server on localhost
 ```
@@ -28,7 +24,7 @@ Deploy to google cloud run
 fastro deploy
 ```
 
-You can see an example of a deployed web application at this link [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app)
+The app that has been deployed can be seen [here](https://hello-6bxxicr2uq-uc.a.run.app). Go to [**quickstart**](https://fastro.dev/docs/quickstart) for detail information.
 
 ## Features
 - Body handling `application/json`
