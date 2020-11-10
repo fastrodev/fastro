@@ -1,7 +1,9 @@
 # High performance deno web framework 
 ![][build] ![][stats]
 
+{:refdef: style="text-align: center; background-color: #e50000;"}
 ![](https://raw.githubusercontent.com/fastrojs/fastro/gh-pages/public/logo.svg){: width="50%" #fastro-logo}
+{: refdef}
 
 Built on top of [Deno standard library](https://deno.land/std@0.74.0).  
 
