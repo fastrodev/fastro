@@ -3,13 +3,11 @@
 
 Fastro is a simple and fast web framework built on top of deno. The speed is close to the raw deno http library. Written in typescript. 
 
-> *Check [the perfomance test](docs/perfomance.md).*
-
 No need to register routes, controllers, middlewares, templates, or static files. They will be loaded and saved when the server starts.
 
-You can see the example of deployed webapp at this link: [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app).
-
-Go to [the quickstart](docs/quickstart.md) to create your own.
+> *Check [the perfomance test](docs/perfomance.md).*
+> *You can see the example of deployed webapp at this link: [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app)*.
+> *Go to [the quickstart](docs/quickstart.md) to create your own*.
 
 ## Features
 - Body handling `application/json`
