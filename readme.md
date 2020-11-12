@@ -1,12 +1,9 @@
 # High performance deno web framework 
 ![][build] ![][stats]
 
-Built on top of [Deno standard library](https://deno.land/std@0.74.0).
-
-The speed is [close to the raw Deno HTTP library](docs/perfomance.md).
-
-No need to register routes, controllers, middlewares, templates, or static files manually.
-
+Built on top of [Deno standard library](https://deno.land/std@0.74.0).  
+The speed is [close to the raw Deno HTTP library](docs/perfomance.md).  
+No need to register routes, controllers, middlewares, templates, or static files manually.  
 They will be loaded and saved when the server starts.
 
 ## Features
