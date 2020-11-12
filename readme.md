@@ -1,7 +1,7 @@
 # High performance deno web framework 
 ![][build] ![][stats]
 
-Fastro is a simple and fast web framework built on top of deno. The speed is close to the raw deno HTTP library. *Check [the perfomance test](docs/perfomance.md).*
+Fastro is a simple and fast web framework built on top of deno. The speed is close to the raw deno http library. Written in typescript. *Check [the perfomance test](docs/perfomance.md).*
 
 No need to register routes, controllers, middlewares, templates, or static files. They will be loaded and saved when the server starts.
 
