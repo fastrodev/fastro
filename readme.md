@@ -7,24 +7,7 @@ The speed is [close to the raw Deno HTTP library](docs/perfomance.md).
 
 No need to register routes, controllers, middlewares, templates, or static files manually. 
 
-They will be loaded and saved when the server starts.  
-
-## Getting started
-
-Launch a terminal. Make a folder and create a project
-```
-fastro init
-```
-Run the server on localhost
-```
-fastro serve
-```
-Deploy to google cloud run
-```
-fastro deploy
-```
-
-Go to [quickstart](docs/quickstart) for installation details.
+They will be loaded and saved when the server starts.
 
 ## Features
 - Body handling `application/json`
