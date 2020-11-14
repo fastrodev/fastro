@@ -5,6 +5,7 @@ import { watch } from "./watch.ts";
 import {
   create,
   getArguments,
+  handleAddApp,
   handleDeploy,
   handleHelp,
   handleRegister,
@@ -24,6 +25,7 @@ export function start() {
     if (cmd === "serve") return serve(port, args);
     if (cmd === "deploy") return handleDeploy(args);
     if (cmd === "register") return handleRegister(email, args);
+    if (cmd === "add") return handleAddApp();
     if (version) return console.info(`fastro ${FASTRO_VERSION}`);
     handleHelp();
   } catch (error) {

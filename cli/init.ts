@@ -2,6 +2,7 @@
 // deno-lint-ignore-file no-explicit-any
 
 import {
+  APPS,
   MIDDLEWARE_DIR,
   SERVICE_DIR,
   STATIC_DIR,
@@ -16,16 +17,20 @@ import { middleware } from "../templates/middleware.ts";
 import { controller } from "../templates/controller.ts";
 import { setting } from "../templates/settings.ts";
 import { gitignore } from "../templates/gitignore.ts";
+import { parseYml } from "../deps.ts";
+import { App } from "../core/types.ts";
 
 function initHelp() {
-  console.log("init help");
-}
+  const message = `USAGE
+  fastro init [OPTIONS]
 
-async function getApp(app: string) {
-  const result = await fetch(
-    "https://raw.githubusercontent.com/fastrojs/app/main/app.yml",
-  );
-  const text = await result.text();
+OPTIONS:
+  --app Application repository
+
+EXAMPLE:
+  fastro init --app fastrojs/admin
+`;
+  console.log(message);
 }
 
 async function cloneRepo(app: string) {
@@ -33,13 +38,13 @@ async function cloneRepo(app: string) {
     cmd: [
       "git",
       "clone",
-      `https://github.com/fastroapp/${app}.git`,
+      `https://github.com/${app}.git`,
       ".",
     ],
   });
 
   const { code } = await p.status();
-  if (code !== 0) console.error({ message: "Clone app error" });
+  if (code !== 0) throw new Error("Clone app error");
 }
 
 async function removeGit() {
@@ -52,14 +57,28 @@ async function removeGit() {
   });
 
   const { code } = await p.status();
-  if (code !== 0) console.error({ message: "Init app error" });
+  if (code !== 0) throw new Error("Init app error");
+}
+
+function filterAppList(appList: App[], app: string) {
+  const exist = appList.filter((val) => val.repository === app);
+  if (exist.length < 1) throw new Error("App not found");
+}
+
+async function getApp() {
+  const result = await fetch(APPS);
+  const apps = await result.text();
+  const appList = parseYml(apps) as App[];
+  return appList;
 }
 
 function initApp(app: string) {
-  getApp(app)
+  getApp()
+    .then((appList) => filterAppList(appList, app))
     .then(() => cloneRepo(app))
     .then(() => removeGit())
-    .then(() => console.log("Init app done"));
+    .then(() => console.log("Init app done"))
+    .catch((error) => console.error(error.message));
 }
 
 export async function init(args?: any) {

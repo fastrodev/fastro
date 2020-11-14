@@ -15,6 +15,7 @@ import {
   HOSTNAME,
   MAX_MEMORY,
   MIDDLEWARE_DIR,
+  NO_CONFIG,
   PORT,
   RUNNING_TEXT,
   SERVICE_DIR,
@@ -34,12 +35,15 @@ import type {
 import {
   decode,
   decodeBase64,
+  green,
   isFormFile,
   MultipartReader,
   parseYml,
+  red,
   serve,
   Server,
   ServerRequest,
+  yellow,
 } from "../deps.ts";
 
 /**
@@ -115,10 +119,10 @@ export class Fastro {
       ) {
         body = payload.toString();
       } else body = JSON.stringify(payload);
+      const date = new Date().toUTCString();
       headers.set("Connection", "keep-alive");
-      headers.set("Date", new Date().toUTCString());
-      headers.set("x-powered-by", "Fastro/" + FASTRO_VERSION);
-      if (!this.regid) headers.set("x-app-status", this.appStatus);
+      headers.set("Date", date);
+      headers.set("x-powered-by", this.appStatus);
       if (this.corsEnabled) {
         headers.set("Access-Control-Allow-Origin", "*");
         headers.set("Access-Control-Allow-Headers", "*");
@@ -703,7 +707,9 @@ export class Fastro {
     const decoded = this.regid
       ? decodeBase64("cmVnaXN0ZXJlZA==")
       : decodeBase64("VU5SRUdJU1RFUkVE");
-    return new TextDecoder().decode(decoded);
+    const text = new TextDecoder().decode(decoded);
+    const version = `Fastro/${FASTRO_VERSION} (${text})`;
+    return version;
   }
 
   private async readConfig() {
@@ -719,7 +725,7 @@ export class Fastro {
         this.email = email;
       }
     } catch (error) {
-      console.log("Start with no config");
+      console.info(yellow(NO_CONFIG));
     }
   }
 
@@ -752,24 +758,13 @@ export class Fastro {
       if (Deno.env.get("DENO_ENV") !== "test") {
         const addr = `http://${this.hostname}:${this.port}`;
         const runningText = `${RUNNING_TEXT}: ${addr}`;
-        let status = {};
-        if (this.regid) {
-          status = {
-            version: FASTRO_VERSION,
-            status: this.getAppStatus(),
-            email: this.email,
-            regid: this.regid,
-            message: runningText,
-          };
+        if (!this.regid) {
+          console.info(red(this.getAppStatus()));
+          console.info(green(runningText));
         } else {
-          status = {
-            version: FASTRO_VERSION,
-            status: this.getAppStatus(),
-            message: runningText,
-          };
+          console.info(green(this.getAppStatus()));
+          console.info(green(runningText));
         }
-
-        console.info(status);
       }
       for await (const request of this.server) {
         await this.handleRequest(request);

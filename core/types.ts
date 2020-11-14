@@ -91,3 +91,21 @@ export type ValidationSchema = {
   headers?: Schema;
   querystring?: Schema;
 };
+
+export type App = {
+  name: string;
+  description: string;
+  repository: string;
+  screenshot: string;
+  email: string;
+  id: string;
+};
+
+export type Appdb = {
+  n: string;
+  d: string;
+  r: string;
+  s: string;
+  e: string;
+  i: string;
+};

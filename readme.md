@@ -1,13 +1,9 @@
 # Fastro
 ![][build] ![][stats]
 
-Built on top of [Deno standard library](https://deno.land/std@0.74.0). Written in [TypeScript](https://www.typescriptlang.org/).
+Built on top of [Deno standard library](https://deno.land/std@0.74.0). The speed is [close to the raw Deno HTTP library](https://fastro.dev/docs/perfomance).
 
-The speed is already close to the raw Deno HTTP library. [Check this perfomance test](https://fastro.dev/docs/perfomance).
-
-No need to add or register route declarations, controllers, middlewares, templates, or static files manually.
-
-It will be loaded and saved when the server starts.
+No need to register routes, controllers, middlewares, templates, or static files manually. They will be loaded and saved when the server starts.
 
 ## Getting started
 
@@ -24,7 +20,7 @@ Deploy to google cloud run
 fastro deploy
 ```
 
-The app that has been deployed can be seen [here](https://hello-6bxxicr2uq-uc.a.run.app). Go to [**quickstart**](https://fastro.dev/docs/quickstart) for detail information.
+Go to [quickstart](https://fastro.dev/docs/quickstart) for installation details.
 
 ## Features
 - Body handling `application/json`

@@ -12,7 +12,6 @@ export function getArguments(cmdArgs: string[]) {
     help: args.help,
     version: args.version,
     app: args.app,
-    name: args.name,
   };
 }
 
@@ -22,3 +21,4 @@ export { init } from "./init.ts";
 export { create } from "./create.ts";
 export { handleDeploy } from "./deploy.ts";
 export { handleRegister } from "./register.ts";
+export { handleAddApp } from "./git.ts";
