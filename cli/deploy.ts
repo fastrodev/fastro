@@ -79,7 +79,7 @@ export async function handleDeploy(args: Args) {
   if (projectId) {
     const appName = args.name ? args.name : "webapp";
     console.log("appName", appName);
-    // await buildHandler(projectId, appName);
-    // await cloudRunDeployHandler(projectId, appName);
+    await buildHandler(projectId, appName);
+    await cloudRunDeployHandler(projectId, appName);
   }
 }
