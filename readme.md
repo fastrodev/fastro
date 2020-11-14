@@ -1,26 +1,11 @@
 # Fastro
 ![][build] ![][stats]
 
-Built on top of [Deno standard library](https://deno.land/std@0.74.0). The speed is [close to the raw Deno HTTP library](https://fastro.dev/docs/perfomance).
+Fastro is a simple and fast web framework built on top of [deno](https://deno.land). Its speed is [close to the raw deno http library](docs/perfomance.md). Written in typescript. 
 
-No need to register routes, controllers, middlewares, templates, or static files manually. They will be loaded and saved when the server starts.
+> *No need to register routes, controllers, middlewares, templates, or static files. They will be loaded and saved when the server starts. You can see the example of deployed webapp at this link: [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app).*    
 
-## Getting started
-
-Launch a terminal. Make a folder and create a project
-```
-fastro init
-```
-Run the server on localhost
-```
-fastro serve
-```
-Deploy to google cloud run
-```
-fastro deploy
-```
-
-Go to [quickstart](https://fastro.dev/docs/quickstart) for installation details.
+Go to [the quickstart](https://fastro.dev/docs/quickstart) to create your own.
 
 ## Features
 - Body handling `application/json`
