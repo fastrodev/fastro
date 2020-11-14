@@ -33,7 +33,9 @@ async function getProjectId() {
     str = str.trim();
     return str;
   } catch (error) {
-    console.log("err", error);
+    console.error(
+      "Gcloud not found. Go to https://fastro.dev/docs/deployment.html for installation.",
+    );
   }
 }
 
@@ -76,7 +78,8 @@ export async function handleDeploy(args: Args) {
   const projectId = await getProjectId();
   if (projectId) {
     const appName = args.name ? args.name : "webapp";
-    await buildHandler(projectId, appName);
-    await cloudRunDeployHandler(projectId, appName);
+    console.log("appName", appName);
+    // await buildHandler(projectId, appName);
+    // await cloudRunDeployHandler(projectId, appName);
   }
 }

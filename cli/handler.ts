@@ -12,6 +12,7 @@ export function getArguments(cmdArgs: string[]) {
     help: args.help,
     version: args.version,
     app: args.app,
+    name: args.name,
   };
 }
 
