@@ -1,8 +1,8 @@
 # Benchmarks
 
 ## Machine
-- Prosesor: Intel® Core™ i5-3320M CPU @ 2.60GHz × 4
-- Memory: 15,3 GiB 
+- Prosesor: Intel® Core™ i7-6500U CPU @ 2.50GHz × 4
+- Memory: 15,1 GiB 
 - OS Name: Ubuntu 20.04.1 LTS
 
 ## Benchmarking tool
