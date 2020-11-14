@@ -1,13 +1,13 @@
 # Perfomance
 
-Starting from v0.30.0, `fastro` has been rewritten to improve performance. 
+Starting from v0.30.25, `fastro` has been rewritten to improve performance. 
 
 Here are the test results for the [keep-alive connections](https://www.google.com/search?q=keep+alive+connection).
 
 |Module|Req/s|Percentage|
 |--|--:|--:|
-|Deno|17238.8|100%|
-|Fastro|16006.4|92.85%|
+|Deno|23513.5|100.0%|
+|Fastro|23025.6|97.9%|
 
 You can see the details in [the benchmarks.](../benchmarks/readme.md)
 
