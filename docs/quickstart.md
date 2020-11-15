@@ -27,7 +27,7 @@
     
     Or change `master` with the latest version to prevent breaking changes.
     ```
-    deno install -A https://raw.fastro.dev/v0.30.20/cli/fastro.ts
+    deno install -A https://raw.fastro.dev/v0.30.25/cli/fastro.ts
     ```
 
 ## Create a project
