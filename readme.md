@@ -39,4 +39,4 @@ You can see the details in [the examples](https://github.com/fastrodev/fastro/bl
 
 [build]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg?branch=master "fastro build"
 [stats]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.fastro.dev%2Fstats "fastro stats"
-[version]: https://img.shields.io/github/v/release/fastrojs/fastro "fastro version"
+[version]: https://img.shields.io/github/v/release/fastrojs/fastro?label=version "fastro version"
