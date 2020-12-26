@@ -8,12 +8,12 @@ const base = `http://localhost:${port}`;
 Deno.env.set("DENO_ENV", "test");
 
 test({
-  name: "BASIC GET",
+  name: "SERVICE DIRECTORY",
   async fn() {
-    const server = new Fastro({ port });
+    const server = new Fastro({ serviceDir: "services/hello/v1" });
     const result = await fetch(`${base}/hello`);
     const text = await result.text();
-    assertEquals(text, "setup complete");
+    assertEquals(text, "hello v1");
     server.close();
   },
   sanitizeResources: false,

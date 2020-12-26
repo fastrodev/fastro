@@ -385,7 +385,7 @@ export class Fastro {
     }
   }
 
-  private async view(template: string, options?: Data, request?: Request) {
+  private view(template: string, options?: Data, request?: Request) {
     try {
       let html = this.templateFiles.get(template);
       if (html) {
@@ -401,7 +401,7 @@ export class Fastro {
     }
   }
 
-  private async transformRequest(serverRequest: ServerRequest) {
+  private transformRequest(serverRequest: ServerRequest) {
     try {
       const request = serverRequest as Request;
       request.proxy = (url) => this.proxy(url, request);
@@ -578,9 +578,9 @@ export class Fastro {
     );
   }
 
-  private async handleRequest(serverRequest: ServerRequest) {
+  private handleRequest(serverRequest: ServerRequest) {
     try {
-      const request = await this.transformRequest(serverRequest);
+      const request = this.transformRequest(serverRequest);
       if (!request) throw new Error("request rrror");
       if (serverRequest.url === "/") return this.handleRoot(request);
       if (this.middlewares.size > 0) return this.handleMiddleware(request);
@@ -714,7 +714,7 @@ export class Fastro {
 
   private async readConfig() {
     try {
-      const configFile = Deno.readTextFileSync("config.yml");
+      const configFile = await Deno.readTextFile("config.yml");
       const parsedConfig = parseYml(configFile);
       if (configFile && parsedConfig) {
         const { email, regid } = <{
