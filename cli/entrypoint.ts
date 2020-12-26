@@ -20,7 +20,7 @@ function serveHelp() {
 let server: Fastro | undefined;
 
 // deno-lint-ignore no-explicit-any
-export async function serve(port?: number, args?: any) {
+export function serve(port?: number, args?: any) {
   if (args.help) return serveHelp();
   if (Deno.env.get("DENO_ENV") !== "development") {
     Deno.env.set("DENO_ENV", "production");

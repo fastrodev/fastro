@@ -31,7 +31,7 @@ function createHelp() {
 }
 
 // deno-lint-ignore no-explicit-any
-export async function create(args?: any) {
+export function create(args?: any) {
   if (args.help) return createHelp();
   if (args.config) return createConfig(args);
   if (args.page) return createPage(args);
