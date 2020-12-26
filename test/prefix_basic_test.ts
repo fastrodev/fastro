@@ -7,7 +7,6 @@ const base = `http://localhost:${port}`;
 
 Deno.env.set("DENO_ENV", "test");
 
-
 test({
   name: "PREFIX",
   async fn() {
