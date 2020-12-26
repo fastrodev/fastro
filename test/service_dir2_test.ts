@@ -2,7 +2,7 @@ import { Fastro } from "../mod.ts";
 import { assertEquals } from "../deps.ts";
 
 const { test } = Deno;
-const port = 3001;
+const port = 3013;
 const base = `http://localhost:${port}`;
 
 Deno.env.set("DENO_ENV", "test");
