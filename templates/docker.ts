@@ -9,5 +9,5 @@ RUN deno cache https://raw.fastro.dev/v${FASTRO_VERSION}/mod.ts \\
     && deno cache main.ts \\
     && deno cache services/hello.controller.ts \\
     && deno cache middleware/support.ts
-CMD ["run", "-A", "main.ts"]
+CMD ["run", "-A", "--no-check", "main.ts"]
 `;
