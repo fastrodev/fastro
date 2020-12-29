@@ -30,6 +30,7 @@ You can see the details in [the examples](https://github.com/fastrodev/fastro/bl
 
 ## What's next:
 - [Quickstart](docs/quickstart.md)
+- [Create a project](docs/project.md)
 - [Create a handler](docs/handler.md)
 - [Create a middleware](docs/middleware.md)
 - [Create static files](docs/static.md)
