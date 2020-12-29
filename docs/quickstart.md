@@ -15,17 +15,7 @@
 
 3. Install fastro-cli
     ```
-    deno install -A https://raw.fastro.dev/master/cli/fastro.ts
-    ```
-
-    Add `-f --reload` if you want to get the latest update. 
-    ```
     deno install -f --reload -A https://raw.fastro.dev/master/cli/fastro.ts
-    ```
-    
-    Or change `master` with the latest version to prevent breaking changes.
-    ```
-    deno install -A https://raw.fastro.dev/v0.30.25/cli/fastro.ts
     ```
 
 ## What's next:
