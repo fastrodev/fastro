@@ -1,7 +1,7 @@
 // Copyright 2020 the Fastro author. All rights reserved. MIT license.
 
-export const DENO_VERSION = "1.6.2";
-export const FASTRO_VERSION = "0.30.28";
+export const DENO_VERSION = "1.6.3";
+export const FASTRO_VERSION = "0.30.29";
 export const SERVICE_DIR = "services";
 export const SERVICE_FILE = ".controller.ts";
 export const STATIC_DIR = "public";
