@@ -1,4 +1,4 @@
-// Copyright 2020 the Fastro author. All rights reserved. MIT license.
+// Copyright 2021 the Fastro author. All rights reserved. MIT license.
 
 import { assertEquals, assertThrows } from "../deps.ts";
 import type { Schema } from "../mod.ts";

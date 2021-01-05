@@ -1,7 +1,7 @@
 import { FASTRO_VERSION } from "../core/constant.ts";
 
 export const middleware =
-  `import type { Callback, Request } from "https://raw.fastro.dev/v${FASTRO_VERSION}/mod.ts";
+  `import type { Callback, Request } from "https://deno.land/x/fastro@v${FASTRO_VERSION}/mod.ts";
 export const options = {
   methods: ["GET", "POST"],
 };

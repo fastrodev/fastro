@@ -1,4 +1,4 @@
-// Copyright 2020 the Fastro author. All rights reserved. MIT license.
+// Copyright 2021 the Fastro author. All rights reserved. MIT license.
 
 import { ServerOptions } from "../core/types.ts";
 import { Fastro } from "../mod.ts";
@@ -26,7 +26,6 @@ export function serve(port?: number, args?: any) {
     Deno.env.set("DENO_ENV", "production");
   }
   try {
-    console.log(`DENO_ENV=${Deno.env.get("DENO_ENV")}`);
     if (server) server.close();
     server = new Fastro({ port });
   } catch (error) {

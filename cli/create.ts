@@ -1,4 +1,4 @@
-// Copyright 2020 the Fastro author. All rights reserved. MIT license.
+// Copyright 2021 the Fastro author. All rights reserved. MIT license.
 
 // deno-lint-ignore no-explicit-any
 function createConfig(data: any) {
