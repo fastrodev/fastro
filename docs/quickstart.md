@@ -17,9 +17,9 @@
     ```
     deno install -f --reload -A https://raw.fastro.dev/master/cli/fastro.ts
     ```
+4. [Create a project](project.md)
 
 ## What's next:
-- [Create a project](project.md)
 - [Create a handler](handler.md)
 - [Create a middleware](middleware.md)
 - [Create static files](static.md)
