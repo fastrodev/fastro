@@ -725,7 +725,9 @@ export class Fastro {
         this.email = email;
       }
     } catch (error) {
-      console.info(yellow(NO_CONFIG));
+      if (Deno.env.get("DENO_ENV") !== "test") {
+        console.info(yellow(NO_CONFIG));
+      }
     }
   }
 
@@ -733,14 +735,12 @@ export class Fastro {
   private email!: string;
   initApp() {
     this.readConfig()
+      .then(() => this.appStatus = this.getAppStatus())
       .then(() => this.importMiddleware(MIDDLEWARE_DIR))
       .then(() => this.importServices(this.serviceDir))
       .then(() => this.readStaticFiles(this.staticDir))
       .then(() => this.readHtmlTemplate(TEMPLATE_DIR))
-      .then(() => {
-        this.appStatus = this.getAppStatus();
-        setTimeout(() => this.listen(), TIMEOUT);
-      });
+      .then(() => this.listen());
   }
 
   /**
