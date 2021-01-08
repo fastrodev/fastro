@@ -1,7 +1,6 @@
 import { Fastro } from "../mod.ts";
 import { assertStringIncludes } from "../deps.ts";
-import { TIMEOUT } from "../core/constant.ts"
-
+import { TIMEOUT } from "../core/constant.ts";
 
 Deno.env.set("DENO_ENV", "test");
 
