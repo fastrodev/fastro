@@ -25,10 +25,10 @@ export function serve(port?: number, args?: any) {
   if (Deno.env.get("DENO_ENV") !== "development") {
     Deno.env.set("DENO_ENV", "production");
   }
-  try {
-    if (server) server.close();
-    server = new Fastro({ port });
-  } catch (error) {
-    console.error(error);
+  if (server) {
+    server.close();
+    server.initApp();
+    return;
   }
+  server = new Fastro({ port });
 }

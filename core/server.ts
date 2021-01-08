@@ -731,8 +731,7 @@ export class Fastro {
 
   private regid!: string;
   private email!: string;
-  private initApp() {
-    this.server = serve({ hostname: this.hostname, port: this.port });
+  initApp() {
     this.readConfig()
       .then(() => this.importMiddleware(MIDDLEWARE_DIR))
       .then(() => this.importServices(this.serviceDir))
@@ -766,8 +765,9 @@ export class Fastro {
           console.info(green(runningText));
         }
       }
+      this.server = serve({ hostname: this.hostname, port: this.port });
       for await (const request of this.server) {
-        await this.handleRequest(request);
+        this.handleRequest(request);
       }
     } catch (error) {
       error.message = "LISTEN_ERROR: " + error.message;
