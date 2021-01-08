@@ -1,5 +1,6 @@
 import { Fastro } from "../mod.ts";
 import { assertEquals } from "../deps.ts";
+import { TIMEOUT } from "../core/constant.ts"
 
 Deno.env.set("DENO_ENV", "test");
 
@@ -23,7 +24,7 @@ Deno.test({
         `{"x":{"name":"agus","address":"cirebon"},"y":["api","options?name=agus&address=cirebon"],"z":"post body"}`,
       );
       f.close();
-    }, 4000);
+    }, TIMEOUT);
   },
   sanitizeResources: false,
   sanitizeOps: false,

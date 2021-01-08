@@ -1,5 +1,6 @@
 import { Fastro } from "../mod.ts";
 import { assertEquals } from "../deps.ts";
+import { TIMEOUT } from "../core/constant.ts"
 
 Deno.env.set("DENO_ENV", "test");
 
@@ -14,7 +15,7 @@ Deno.test({
       const t = await h.text();
       assertEquals(t, "setup complete");
       s.close();
-    }, 4000);
+    }, TIMEOUT);
   },
   sanitizeResources: false,
   sanitizeOps: false,
