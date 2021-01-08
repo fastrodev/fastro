@@ -27,7 +27,7 @@ Go to [the quickstart](https://fastro.dev/docs/quickstart) to create your own.
 - URL routing by file name
 - Template rendering
 
-You can see the details in [the examples](https://github.com/fastrodev/fastro/blob/master/services) and [test folder](https://github.com/fastrodev/fastro/blob/master/test).
+You can see the details in [the examples](https://github.com/fastrodev/fastro/blob/master/services).
 
 ## What's next:
 - [Quickstart](https://fastro.dev/docs/quickstart)
