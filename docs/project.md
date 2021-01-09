@@ -13,17 +13,17 @@
 
 3. Run server locally
     ```
-    fastro serve
+    deno run -A main.ts
     ```
     
-    Or if you want to run server with `deno`:
+    Or if you want to monitor any changes and automatically restart.:
     ```
-    deno run -A main.ts
+    fastro serve
     ```
 
 4. Open url
     ```
-    http://localhost:3000
+    http://localhost:8080
     ```
 
 5. Go to [publishing and deployment](deployment.md) if you want to publish your webapp.
