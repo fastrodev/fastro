@@ -10,13 +10,29 @@
     ```
     fastro init
     ```
+    This command will generate folders and files like this:
+    ```
+    .
+    ├── Dockerfile
+    ├── main.ts
+    ├── middleware
+    │   └── support.ts
+    ├── public
+    │   ├── favicon.ico
+    │   └── index.html
+    └── services
+        ├── hello.controller.ts
+        └── hello.template.html
+
+    3 directories, 7 files
+    ```
 
 3. Run server locally
     ```
     deno run -A main.ts
     ```
     
-    Or if you want to monitor any changes and automatically restart.:
+    Or if you want to monitor any changes and automatically restart:
     ```
     fastro serve
     ```
