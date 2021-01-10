@@ -1,4 +1,4 @@
-posts# Fastro
+# Fastro
 ![][build] ![][version]
 
 Fastro is a simple and fast web framework built on top of [deno](https://deno.land). Its speed is [close to the raw deno http library](https://fastro.dev/docs/perfomance.html). Written in typescript. 
