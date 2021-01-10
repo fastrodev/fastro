@@ -27,7 +27,7 @@ You can see the example of deployed webapp at this link: [https://hello-6bxxicr2
 
 You can see the details in [the examples](https://github.com/fastrodev/fastro/blob/master/services).
 
-## What's next:
+## What's next
 Go to [the quickstart](https://fastro.dev/docs/quickstart) to create your own.
 
 [build]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg?branch=master "fastro build"
