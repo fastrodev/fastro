@@ -7,8 +7,6 @@ No need to register routes, controllers, middlewares, templates, or static files
 
 You can see the example of deployed webapp at this link: [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app).
 
-Go to [the quickstart](docs/quickstart.md) to create your own.
-
 ## Features
 - Body handling `application/json`
 - Body handling `application/x-www-form-urlencoded`
@@ -30,15 +28,7 @@ Go to [the quickstart](docs/quickstart.md) to create your own.
 You can see the details in [the examples](https://github.com/fastrodev/fastro/blob/master/services).
 
 ## What's next:
-- [Quickstart](docs/quickstart.md)
-- [Create a project](docs/project.md)
-- [Create a handler](docs/handler.md)
-- [Create a middleware](docs/middleware.md)
-- [Create static files](docs/static.md)
-- [Template rendering](docs/rendering.md)
-- [Data validation](docs/validation.md)
-- [Publishing and deployment](docs/deployment.md)
-- [Fastro API](docs/api.md)
+Go to [the quickstart](docs/quickstart.md) to create your own.
 
 [build]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg?branch=master "fastro build"
 [version]: https://img.shields.io/github/v/release/fastrojs/fastro?label=version "fastro version"
