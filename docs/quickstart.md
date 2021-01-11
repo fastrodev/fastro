@@ -15,7 +15,7 @@
 
 3. Install fastro-cli
     ```
-    deno install -A https://deno.land/x/fastro@v0.30.31
+    deno install -A https://deno.land/x/fastro@v0.30.31/cli/fastro.ts
     ```
 4. [Create a project](project.md)
 
