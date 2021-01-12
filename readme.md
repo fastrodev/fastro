@@ -12,6 +12,9 @@ Written in typescript. No need to register routes, controllers, middlewares, tem
 
 You can see the example of deployed webapp at this link: [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app).
 
+## What's next:
+Go to [the quickstart](docs/quickstart.md) to create your own.
+
 ## Features
 - Body handling `application/json`
 - Body handling `application/x-www-form-urlencoded`
@@ -31,9 +34,6 @@ You can see the example of deployed webapp at this link: [https://hello-6bxxicr2
 - Template rendering
 
 You can see the details in [the examples](https://github.com/fastrodev/fastro/blob/master/services).
-
-## What's next:
-Go to [the quickstart](docs/quickstart.md) to create your own.
 
 [build]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg?branch=master "fastro build"
 [version]: https://img.shields.io/github/v/release/fastrojs/fastro?label=version "fastro version"
