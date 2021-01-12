@@ -539,9 +539,14 @@ export class Fastro {
     }
   }
 
+  private handleJSX(service: any): string {
+    return service.default();
+  }
+
   private handleRoute(request: Request) {
+    let service;
     try {
-      const service = this.services.get(request.url);
+      service = this.services.get(request.url);
       const options = service && service.options ? service.options : undefined;
       if (!service) return this.handleDynamicParams(request);
       if (
@@ -558,8 +563,10 @@ export class Fastro {
         this.validateHeaders(request.headers, schema);
       }
       service.handler(request);
-    } catch (error) {
-      throw createError("HANDLE_ROUTE_ERROR", error);
+    } catch (other) {
+      if (!service.default) throw createError("HANDLE_ROUTE_ERROR", other);
+      const jsxElement = this.handleJSX(service);
+      request.send(jsxElement);
     }
   }
 
