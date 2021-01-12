@@ -14,7 +14,7 @@ You can see the example of deployed webapp at this link: [https://hello-6bxxicr2
 
 ## Features
 |Application/json|Application/json|Multipart/form-data|
-|--|--|--|
+|:--|:--|:--|
 |**Command line interface**|**Data validation**|**Dynamic URL parameters**|
 |**Serverless deployment**|**Supports proxy**|**Supports cookie**|**Support querystring**|
 |**Supports middleware**|**Support static files**|**Serverless middleware**|**URL prefix**|
