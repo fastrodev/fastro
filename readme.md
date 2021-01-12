@@ -13,13 +13,12 @@ Written in typescript. No need to register routes, controllers, middlewares, tem
 You can see the example of deployed webapp at this link: [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app). 
 
 ## Features
-||||
+|Application/json|Application/json|Multipart/form-data|
 |--|--|--|
-|`application/json`|`application/json`|`multipart/form-data`|
-|Command line interface|Data validation|Dynamic URL parameters|
-|Serverless deployment|Supports proxy|Supports `cookie`|Support querystring|
-|Supports middleware|Support static files|Serverless middleware|URL prefix|
-|URL redirection|URL routing by file name|Template rendering|
+|**Command line interface**|**Data validation**|**Dynamic URL parameters**|
+|**Serverless deployment**|**Supports proxy**|**Supports cookie**|**Support querystring**|
+|**Supports middleware**|**Support static files**|**Serverless middleware**|**URL prefix**|
+|**URL redirection**|**URL routing by file name**|**Template rendering**|
 
 You can see the details in [the examples](https://github.com/fastrodev/fastro/blob/master/services).
 
