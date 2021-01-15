@@ -5,8 +5,6 @@ Fastro is a simple and fast web framework built on top of [deno](https://deno.la
 
 No need to register routes, controllers, middlewares, templates, or static files. They will be loaded and saved when the server starts. 
 
-You can see the example of deployed webapp at this link: [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app). 
-
 ## Features
 - Body handling `application/json`
 - Body handling `application/x-www-form-urlencoded`
@@ -25,10 +23,11 @@ You can see the example of deployed webapp at this link: [https://hello-6bxxicr2
 - URL routing by file name
 - Template rendering
 
-You can see the details in [the examples](https://github.com/fastrodev/fastro/blob/master/services).
+## Getting Started
+Go to [the quickstart](https://fastro.dev/docs/quickstart) to create a project.
 
-## What's next
-Go to [the quickstart](https://fastro.dev/docs/quickstart) to create your own.
+## Examples
+You can see the example of deployed webapp at [this link](https://hello-6bxxicr2uq-uc.a.run.app) and see the example of a feature implementation [here](https://github.com/fastrodev/fastro/blob/master/services).
 
 [build]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg?branch=master "fastro build"
 [version]: https://img.shields.io/github/v/release/fastrojs/fastro?label=version "fastro version"
