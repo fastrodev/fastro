@@ -29,10 +29,11 @@ Written in typescript. No need to register routes, controllers, middlewares, tem
 - Template rendering
 
 ## Getting Started
-- Go to [the quickstart](https://fastro.dev/docs/quickstart) to create a project.
+- Go to [the quickstart](https://fastro.dev/docs/quickstart) to install and create a project.
 
 ## Examples
-- You can see the example of deployed webapp at [this link](https://phonic-altar-274306.ue.r.appspot.com) and see the example of a feature implementation [here](https://github.com/fastrodev/fastro/blob/master/services).
+- Feature implementation: [https://github.com/fastrodev/fastro/blob/master/services](https://github.com/fastrodev/fastro/blob/master/services)
+- Webapp deployed on flexible google app engine: [https://phonic-altar-274306.ue.r.appspot.com](https://phonic-altar-274306.ue.r.appspot.com)
 
 [build]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg?branch=master "fastro build"
 [version]: https://img.shields.io/github/v/release/fastrojs/fastro?label=version "fastro version"
