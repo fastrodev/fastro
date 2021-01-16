@@ -15,11 +15,11 @@ Written in typescript. No need to register routes, controllers, middlewares, tem
 <table>
 <tbody>
 <tr>
-<td>Body handling application/json</td>
-<td>Body handling application/x-www-form-urlencoded</td>
+<td>application/json</td>
+<td>x-www-form-urlencoded</td>
 </tr>
 <tr>
-<td>Body handling multipart/form-data</td>
+<td>multipart/form-data</td>
 <td>Command line interface</td>
 </tr>
 <tr>
