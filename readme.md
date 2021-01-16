@@ -12,7 +12,7 @@ Written in typescript. No need to register routes, controllers, middlewares, tem
 
 ## Features
 
-Fastro support provides easy-to-use features for web development.
+Fastro provides easy-to-use features for web development.
 
 <table>
 <tbody>
