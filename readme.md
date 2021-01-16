@@ -17,32 +17,34 @@ Written in typescript. No need to register routes, controllers, middlewares, tem
 <tr>
 <td>Body handling application/json</td>
 <td>Body handling application/x-www-form-urlencoded</td>
-<td>Body handling multipart/form-data</td>
 </tr>
 <tr>
+<td>Body handling multipart/form-data</td>
 <td>Command line interface</td>
+</tr>
+<tr>
 <td>Data validation</td>
 <td>Dynamic URL parameters</td>
 </tr>
 <tr>
 <td>Serverless deployment</td>
 <td>Supports cookie</td>
-<td>Supports middleware</td>
 </tr>
 <tr>
+<td>Supports middleware</td>
 <td>Supports proxy</td>
+</tr>
+<tr>
 <td>Support querystring</td>
 <td>Support static files</td>
 </tr>
 <tr>
 <td>URL prefix</td>
 <td>URL redirection</td>
-<td>URL routing by file name</td>
 </tr>
 <tr>
+<td>URL routing by file name</td>
 <td>Template rendering</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
 </tr>
 </tbody>
 </table>
