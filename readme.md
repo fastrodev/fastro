@@ -15,11 +15,11 @@ Written in typescript. No need to register routes, controllers, middlewares, tem
 <table>
 <tbody>
 <tr>
-<td>application/json</td>
-<td>x-www-form-urlencoded</td>
+<td>Application/json</td>
+<td>X-www-form-urlencoded</td>
 </tr>
 <tr>
-<td>multipart/form-data</td>
+<td>Multipart/form-data</td>
 <td>Command line interface</td>
 </tr>
 <tr>
@@ -28,15 +28,15 @@ Written in typescript. No need to register routes, controllers, middlewares, tem
 </tr>
 <tr>
 <td>Serverless deployment</td>
-<td>Supports cookie</td>
+<td>Cookie</td>
 </tr>
 <tr>
-<td>Supports middleware</td>
-<td>Supports proxy</td>
+<td>Middleware</td>
+<td>Proxy</td>
 </tr>
 <tr>
-<td>Support querystring</td>
-<td>Support static files</td>
+<td>Query param</td>
+<td>Static files</td>
 </tr>
 <tr>
 <td>URL prefix</td>
