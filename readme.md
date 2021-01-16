@@ -12,14 +12,16 @@ Written in typescript. No need to register routes, controllers, middlewares, tem
 
 ## Features
 
+Fastro support provides easy-to-use features for web development.
+
 <table>
 <tbody>
 <tr>
-<td>Application/json</td>
-<td>X-www-form-urlencoded</td>
+<td>application/json</td>
+<td>x-www-form-urlencoded</td>
 </tr>
 <tr>
-<td>Multipart/form-data</td>
+<td>multipart/form-data</td>
 <td>Command line interface</td>
 </tr>
 <tr>
