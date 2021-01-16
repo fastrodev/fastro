@@ -21,7 +21,7 @@ Written in typescript. No need to register routes, controllers, middlewares, tem
 - Supports `cookie`
 - Supports middleware
 - Supports proxy
-- Support querystring
+- Support query param
 - Support static files
 - URL prefix
 - URL redirection
