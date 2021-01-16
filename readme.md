@@ -11,22 +11,41 @@ Fastro is a simple and fast web framework built on top of [deno](https://deno.la
 Written in typescript. No need to register routes, controllers, middlewares, templates, or static files. They will be loaded and saved when the server starts. 
 
 ## Features
-- Body handling `application/json`
-- Body handling `application/x-www-form-urlencoded`
-- Body handling `multipart/form-data`
-- Command line interface
-- Data validation
-- Dynamic URL parameters
-- Serverless deployment
-- Supports `cookie`
-- Supports middleware
-- Supports proxy
-- Support querystring
-- Support static files
-- URL prefix
-- URL redirection
-- URL routing by file name
-- Template rendering
+
+<table>
+<tbody>
+<tr>
+<td>Body handling application/json</td>
+<td>Body handling application/x-www-form-urlencoded</td>
+<td>Body handling multipart/form-data</td>
+</tr>
+<tr>
+<td>Command line interface</td>
+<td>Data validation</td>
+<td>Dynamic URL parameters</td>
+</tr>
+<tr>
+<td>Serverless deployment</td>
+<td>Supports cookie</td>
+<td>Supports middleware</td>
+</tr>
+<tr>
+<td>Supports proxy</td>
+<td>Support querystring</td>
+<td>Support static files</td>
+</tr>
+<tr>
+<td>URL prefix</td>
+<td>URL redirection</td>
+<td>URL routing by file name</td>
+</tr>
+<tr>
+<td>Template rendering</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
 
 ## Getting Started
 - Go to [the quickstart](https://fastro.dev/docs/quickstart) to install and create a project.
