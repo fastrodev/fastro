@@ -22,31 +22,31 @@ Fastro provides easy-to-use features for web development.
 </tr>
 <tr>
 <td>multipart/form-data</td>
-<td>Command line interface</td>
+<td>command line interface</td>
 </tr>
 <tr>
-<td>Data validation</td>
-<td>Dynamic URL parameters</td>
+<td>data validation</td>
+<td>dynamic URL parameters</td>
 </tr>
 <tr>
-<td>Serverless deployment</td>
-<td>Cookie</td>
+<td>serverless deployment</td>
+<td>cookie</td>
 </tr>
 <tr>
-<td>Middleware</td>
-<td>Proxy</td>
+<td>middleware</td>
+<td>proxy</td>
 </tr>
 <tr>
-<td>Query param</td>
-<td>Static files</td>
+<td>query param</td>
+<td>static files</td>
 </tr>
 <tr>
-<td>URL prefix</td>
-<td>URL redirection</td>
+<td>url prefix</td>
+<td>url redirection</td>
 </tr>
 <tr>
-<td>URL routing by file name</td>
-<td>Template rendering</td>
+<td>url routing by file name</td>
+<td>template rendering</td>
 </tr>
 </tbody>
 </table>
