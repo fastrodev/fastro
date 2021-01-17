@@ -26,7 +26,7 @@ Fastro provides easy-to-use features for web development.
 </tr>
 <tr>
 <td>data validation</td>
-<td>dynamic URL parameters</td>
+<td>dynamic url param</td>
 </tr>
 <tr>
 <td>serverless deployment</td>
