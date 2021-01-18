@@ -17,7 +17,7 @@
     ```
     deno install -A https://deno.land/x/fastro@v0.30.31/cli/fastro.ts
     ```
-4. [Create a project](project.md)
+4. Go to [create a project page](project.md) to init folders and files
 
 ## What's next:
 - [Create a handler](handler.md)
