@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 export * from "https://deno.land/std@0.83.0/mime/mod.ts";
 export * from "https://deno.land/std@0.83.0/http/server.ts";
 export { green, red, yellow } from "https://deno.land/std@0.83.0/fmt/colors.ts";
@@ -17,3 +18,12 @@ export {
   decode as decodeBase64,
   encode as encodeBase64,
 } from "https://deno.land/std@0.83.0/encoding/base64.ts";
+
+import * as React from "https://esm.sh/react@17.0.1";
+import * as ReactDOM from "https://esm.sh/react-dom@17.0.1";
+import * as ReactDOMServer from "https://esm.sh/react-dom@17.0.1/server";
+
+(window as any).React = React;
+(window as any).ReactDOM = ReactDOM;
+
+export { React, ReactDOM, ReactDOMServer };

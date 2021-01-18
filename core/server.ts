@@ -16,10 +16,13 @@ import {
   MAX_MEMORY,
   MIDDLEWARE_DIR,
   NO_CONFIG,
+  PAGE_DIR,
   PORT,
   RUNNING_TEXT,
   SERVICE_DIR,
   SERVICE_FILE,
+  SRVC_TYPE_PAGE,
+  SRVC_TYPE_SERVICE,
   STATIC_DIR,
   TEMPLATE_DIR,
   TEMPLATE_FILE,
@@ -70,6 +73,7 @@ export class Fastro {
   private dynamicService: DynamicService[] = [];
   private hostname = HOSTNAME;
   private middlewares = new Map<string, any>();
+  private pages = new Map<string, any>();
   private port = PORT;
   private prefix!: string;
   private server!: Server;
@@ -564,7 +568,7 @@ export class Fastro {
       }
       service.handler(request);
     } catch (other) {
-      if (!service.default) throw createError("HANDLE_ROUTE_ERROR", other);
+      if (!service) throw createError("HANDLE_ROUTE_ERROR", other);
       const jsxElement = this.handleJSX(service);
       request.send(jsxElement);
     }
@@ -672,42 +676,63 @@ export class Fastro {
     }
   }
 
+  private async importPages(target: string) {
+    await this.importFile(target, SRVC_TYPE_PAGE);
+  }
+
   private async importServices(target: string) {
+    await this.importFile(target, SRVC_TYPE_SERVICE);
+  }
+
+  private async importFile(target: string, importType: string) {
     try {
       const servicesFolder = `${this.cwd}/${target}`;
       for await (const dirEntry of Deno.readDir(servicesFolder)) {
-        if (dirEntry.isFile && dirEntry.name.includes(SERVICE_FILE)) {
+        if (dirEntry.isDirectory) {
+          this.importFile(target + "/" + dirEntry.name, importType);
+        } else if (dirEntry.isFile && dirEntry.name.includes(SERVICE_FILE)) {
           const filePath = servicesFolder + "/" + dirEntry.name;
           const [, splittedFilePath] = filePath.split(this.serviceDir);
           const [splittedWithDot] = splittedFilePath.split(".");
 
-          const fileImport = Deno.env.get("DENO_ENV") === "development"
+          const finalPath = Deno.env.get("DENO_ENV") === "development"
             ? `file:${filePath}#${new Date().getTime()}`
             : `file:${filePath}`;
 
-          let fileKey = this.prefix
+          const fileKey = this.prefix
             ? `/${this.prefix}${splittedWithDot}`
             : `${splittedWithDot}`;
 
-          import(fileImport)
-            .then((service) => {
-              const options = service.options as HandlerOptions;
-
-              fileKey = options && options.prefix
-                ? `/${options.prefix}${fileKey}`
-                : fileKey;
-
-              if (options && options.params) {
-                this.dynamicService.push({ url: fileKey, service });
-              } else this.services.set(fileKey, service);
-            });
-        } else if (dirEntry.isDirectory) {
-          this.importServices(target + "/" + dirEntry.name);
+          this.nativeImport(finalPath, fileKey, importType);
         }
       }
     } catch (error) {
       console.info("Start with no service");
     }
+  }
+
+  private nativeImport(filePath: string, fileKey: string, importType: string) {
+    import(filePath)
+      .then((importedFile) => {
+        const options = importedFile.options as HandlerOptions;
+
+        fileKey = options && options.prefix
+          ? `/${options.prefix}${fileKey}`
+          : fileKey;
+
+        if (options && options.params) {
+          this.dynamicService.push(
+            { url: fileKey, service: importedFile },
+          );
+        } else {
+          if (importType === SRVC_TYPE_SERVICE) {
+            this.services.set(fileKey, importedFile);
+          }
+          if (importType === SRVC_TYPE_PAGE) {
+            this.pages.set(fileKey, importedFile);
+          }
+        }
+      });
   }
 
   private getAppStatus() {
@@ -745,6 +770,7 @@ export class Fastro {
       .then(() => this.appStatus = this.getAppStatus())
       .then(() => this.importMiddleware(MIDDLEWARE_DIR))
       .then(() => this.importServices(this.serviceDir))
+      .then(() => this.importPages(PAGE_DIR))
       .then(() => this.readStaticFiles(this.staticDir))
       .then(() => this.readHtmlTemplate(TEMPLATE_DIR))
       .then(() => this.listen());
