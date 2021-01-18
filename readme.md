@@ -52,7 +52,7 @@ Fastro provides easy-to-use features for web development.
 </table>
 
 ## Getting Started
-- Go to [the quickstart](https://fastro.dev/docs/quickstart) to install and create a project.
+- Go to [the quickstart](https://fastro.dev/docs/quickstart) to install command line interface and create a project.
 
 ## Examples
 - [Feature implementation folder](https://github.com/fastrodev/fastro/blob/master/services).
