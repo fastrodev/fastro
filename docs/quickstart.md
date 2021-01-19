@@ -1,3 +1,7 @@
+---
+description: Fastro command line interface (cli) installation
+---
+
 # Installation
 
 1. Install deno (linux/mac)
