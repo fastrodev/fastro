@@ -1,7 +1,3 @@
----
-description: Starting from v0.30.25, `fastro` has been rewritten to improve performance. 
----
-
 # Benchmarks
 
 Starting from v0.30.25, `fastro` has been rewritten to improve performance. 
