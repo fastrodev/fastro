@@ -1,3 +1,7 @@
+---
+description: You can render html template and pass dynamic value on it.
+---
+
 # Template Rendering
 
 - `fastro init` command will generate folders and files like this.

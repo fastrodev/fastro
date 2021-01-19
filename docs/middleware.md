@@ -1,3 +1,7 @@
+---
+description: You can access and add additional property to the request object before the controllers process it.
+---
+
 # Create a middleware
 
 - `fastro init` command will generate folders and files like this.

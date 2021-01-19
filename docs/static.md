@@ -1,3 +1,7 @@
+---
+description: You can add static files by put your files in public folder. Fastro will load and save it when the server starts up. You can access directly by filename via URL.
+---
+
 # Static Files
 
 - `fastro init` command will generate folders and files like this.

@@ -1,3 +1,7 @@
+---
+description: By default, you can deploy fastro web apps on Cloud Run, a fully managed serverless platform built by Google.
+---
+
 # Publishing and Deployment
 
 By default, you can deploy fastro web apps on [Cloud Run](https://cloud.google.com/run), a fully managed serverless platform built by Google.

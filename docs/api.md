@@ -1,3 +1,7 @@
+---
+description: Fastro application programming interface (API)
+---
+
 # Fastro API
 
 ## Fastro Instance

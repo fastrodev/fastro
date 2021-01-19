@@ -1,4 +1,6 @@
-
+---
+description: Init folders and files for your project
+---
 # Create a project
 
 1. Make a new directory
