@@ -1,5 +1,9 @@
 # Benchmarks
 
+Starting from v0.30.25, `fastro` has been rewritten to improve performance. 
+
+Here are the test results for the [keep-alive connections](https://www.google.com/search?q=keep+alive+connection).
+
 ## Machine
 - Prosesor: Intel® Core™ i7-6500U CPU @ 2.50GHz × 4
 - Memory: 15,1 GiB 
