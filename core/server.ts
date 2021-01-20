@@ -651,7 +651,9 @@ export class Fastro {
         }
       }
     } catch (error) {
-      console.info("Start with no static file");
+      if (Deno.env.get("DENO_ENV") !== "test") {
+        console.info("Start with no static file");
+      }
     }
   }
 
@@ -672,7 +674,9 @@ export class Fastro {
         }
       }
     } catch (error) {
-      console.info("Start with no middleware");
+      if (Deno.env.get("DENO_ENV") !== "test") {
+        console.info("Start with no middleware");
+      }
     }
   }
 
@@ -707,7 +711,9 @@ export class Fastro {
         }
       }
     } catch (error) {
-      console.info("Start with no service");
+      if (Deno.env.get("DENO_ENV") !== "test") {
+        console.info("Start with no service");
+      }
     }
   }
 

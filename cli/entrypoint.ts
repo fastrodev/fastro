@@ -1,6 +1,5 @@
 // Copyright 2021 the Fastro author. All rights reserved. MIT license.
 
-import { ServerOptions } from "../core/types.ts";
 import { Fastro } from "../mod.ts";
 
 const message = `USAGE:
@@ -17,7 +16,7 @@ function serveHelp() {
   return console.log(message);
 }
 
-let server: Fastro | undefined;
+let server: Fastro;
 
 // deno-lint-ignore no-explicit-any
 export function serve(port?: number, args?: any) {
