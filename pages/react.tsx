@@ -1,4 +1,4 @@
-// @deno-types="https://denopkg.com/soremwar/deno_types/react/v16.13.1/react.d.ts"
+// @deno-types="https://raw.githubusercontent.com/fastrojs/fastro/react/types/react/index.d.ts"
 import React from "https://dev.jspm.io/react/index.js";
 
 export default function About() {
