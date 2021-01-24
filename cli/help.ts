@@ -3,14 +3,17 @@ import { FASTRO_VERSION } from "../core/constant.ts";
 const message = `fastro-cli ${FASTRO_VERSION}
 
 USAGE
+
     fastro [COMMANDS] [OPTIONS]
 
 COMMANDS:
+
     init            Generate default controller, middleware, static, and template files
     serve           Run server
     deploy          Deploy webapp to google cloud run
     
 OPTIONS:
+
     --help          Prints help information
     --version       Prints version information
 `;

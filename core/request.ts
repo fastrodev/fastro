@@ -1,7 +1,7 @@
 // Copyright 2021 the Fastro author. All rights reserved. MIT license.
 
-import { ServerRequest } from "../deps.ts";
-import type { Cookie } from "./cookie.ts";
+import { Cookie, Cookies, Response, ServerRequest } from "../deps.ts";
+// import type { Cookie } from "./cookie.ts";
 import type { Query } from "./types.ts";
 
 /**
@@ -9,6 +9,7 @@ import type { Query } from "./types.ts";
  * 
  */
 export class Request extends ServerRequest {
+  response!: Response;
   contentType!: string;
   httpStatus!: number;
   /**
@@ -34,7 +35,7 @@ export class Request extends ServerRequest {
    *    const cookies = request.getCookies();
    */
   getCookies!: {
-    (): string[] | undefined;
+    (): Cookies;
   };
   /**
    * Get cookie by name

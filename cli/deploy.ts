@@ -53,7 +53,7 @@ async function cloudRunDeployHandler(projectId: string, appName: string) {
       "managed",
       "--allow-unauthenticated",
       "--region",
-      "us-central1",
+      "us-east1",
     ],
   });
 

@@ -8,7 +8,7 @@ import {
   validateObject,
 } from "./utils.ts";
 import type { Request } from "./request.ts";
-import type { Cookie } from "./cookie.ts";
+// import type { Cookie } from "./cookie.ts";
 import { Data, HandlerOptions, HttpMethod } from "./types.ts";
 import {
   FASTRO_VERSION,
@@ -16,10 +16,13 @@ import {
   MAX_MEMORY,
   MIDDLEWARE_DIR,
   NO_CONFIG,
+  PAGE_DIR,
   PORT,
   RUNNING_TEXT,
   SERVICE_DIR,
   SERVICE_FILE,
+  SRVC_TYPE_PAGE,
+  SRVC_TYPE_SERVICE,
   STATIC_DIR,
   TEMPLATE_DIR,
   TEMPLATE_FILE,
@@ -33,8 +36,11 @@ import type {
   ServerOptions,
 } from "./types.ts";
 import {
+  Cookie,
   decode,
   decodeBase64,
+  deleteCookie,
+  getCookies,
   green,
   isFormFile,
   MultipartReader,
@@ -43,6 +49,7 @@ import {
   serve,
   Server,
   ServerRequest,
+  setCookie,
   yellow,
 } from "../deps.ts";
 
@@ -64,12 +71,12 @@ import {
  */
 export class Fastro {
   private appStatus!: string;
-  private cookieList = new Map<string, Cookie>();
   private corsEnabled!: boolean;
   private cwd = Deno.cwd();
   private dynamicService: DynamicService[] = [];
   private hostname = HOSTNAME;
   private middlewares = new Map<string, any>();
+  private pages = new Map<string, any>();
   private port = PORT;
   private prefix!: string;
   private server!: Server;
@@ -99,7 +106,7 @@ export class Fastro {
     payload: string | T,
     status: number | undefined = 200,
     headers: Headers | undefined = new Headers(),
-    req: ServerRequest,
+    req: Request,
   ) {
     try {
       let body: string | Uint8Array | Deno.Reader | undefined;
@@ -120,6 +127,8 @@ export class Fastro {
         body = payload.toString();
       } else body = JSON.stringify(payload);
       const date = new Date().toUTCString();
+      const cookie = req.response.headers?.get("set-cookie");
+      if (cookie) headers.set("Set-Cookie", cookie);
       headers.set("Connection", "keep-alive");
       headers.set("Date", date);
       headers.set("x-powered-by", this.appStatus);
@@ -128,45 +137,14 @@ export class Fastro {
         headers.set("Access-Control-Allow-Headers", "*");
         headers.set("Access-Control-Allow-Methods", "*");
       }
-      if (this.cookieList.size > 0) {
-        this.cookieList.forEach((c) => {
-          let str = `${c.name}=${c.value}`;
-          const expire = c.expires ? `;expires=${c.expires}` : undefined;
-          const domain = c.domain ? `;domain=${c.domain}` : undefined;
-          const path = c.path ? `;path=${c.path}` : undefined;
-          const secure = c.secure ? `;secure` : undefined;
-          const httpOnly = c.HttpOnly ? `;HttpOnly=${c.HttpOnly}` : undefined;
-          const sameSite = c.SameSite ? `;SameSite=${c.SameSite}` : undefined;
-
-          if (expire) str = str.concat(expire);
-          if (domain) str = str.concat(domain);
-          if (path) str = str.concat(path);
-          if (secure) str = str.concat(secure);
-          if (httpOnly) str = str.concat(httpOnly);
-          if (sameSite) str = str.concat(sameSite);
-
-          str = str.concat(";");
-          headers.set("Set-Cookie", str);
-        });
-      }
-      req.respond({ body, status, headers });
+      req.respond({ headers, status, body });
     } catch (error) {
       error.message = "SEND_ERROR: " + error.message;
       console.error(error);
     }
   }
 
-  private getCookies(request: ServerRequest) {
-    const cookies = request.headers.get("cookie")?.split(";");
-    const results = cookies?.map((v) => {
-      const [n, value] = v.split("=");
-      const name = n.trim();
-      return `${name}=${value}`;
-    });
-    return results;
-  }
-
-  private getCookiesByName(name: string, request: ServerRequest) {
+  private getCookiesByName(name: string, request: Request) {
     const cookies = request.headers.get("cookie")?.split(";");
     const results = cookies?.map((v) => {
       const [n, value] = v.split("=");
@@ -177,15 +155,6 @@ export class Fastro {
     if (!results || results.length < 1) return "";
     const [c] = results;
     return c.value;
-  }
-
-  private clearCookie(name: string) {
-    const cookie = this.cookieList.get(name);
-    if (cookie) {
-      cookie.expires = new Date("1970-01-01").toUTCString();
-      cookie.value = "";
-      this.cookieList.set(name, cookie);
-    }
   }
 
   private handleRedirect(url: string, status: number, request: ServerRequest) {
@@ -404,6 +373,8 @@ export class Fastro {
   private transformRequest(serverRequest: ServerRequest) {
     try {
       const request = serverRequest as Request;
+      request.response = {};
+      request.response.headers = new Headers();
       request.proxy = (url) => this.proxy(url, request);
       request.view = (template, options) =>
         this.view(template, options, request);
@@ -412,13 +383,13 @@ export class Fastro {
       request.getQuery = (key) => this.getQuery(key, serverRequest.url);
       request.getParams = () => this.getParams(serverRequest.url);
       request.getPayload = () => this.getPayload(serverRequest);
-      request.getCookies = () => this.getCookies(serverRequest);
-      request.getCookie = (name) => this.getCookiesByName(name, serverRequest);
-      request.clearCookie = (name) => this.clearCookie(name);
-      request.setCookie = (cookie) => {
-        this.cookieList.set(cookie.name, cookie);
+      request.setCookie = (cookie: Cookie) => {
+        setCookie(request.response, cookie);
         return request;
       };
+      request.clearCookie = (name) => deleteCookie(request.response, name);
+      request.getCookies = () => getCookies(request);
+      request.getCookie = (name) => this.getCookiesByName(name, request);
       request.type = (contentType: string) => {
         request.contentType = contentType;
         return request;
@@ -433,7 +404,7 @@ export class Fastro {
           headers = new Headers();
           headers.set("content-type", request.contentType);
         }
-        this.send(payload, status, headers, serverRequest);
+        this.send(payload, status, headers, request);
       };
       return request;
     } catch (error) {
@@ -539,9 +510,14 @@ export class Fastro {
     }
   }
 
+  private handleTSX(service: any): string {
+    return service.default();
+  }
+
   private handleRoute(request: Request) {
+    let service;
     try {
-      const service = this.services.get(request.url);
+      service = this.services.get(request.url);
       const options = service && service.options ? service.options : undefined;
       if (!service) return this.handleDynamicParams(request);
       if (
@@ -558,8 +534,10 @@ export class Fastro {
         this.validateHeaders(request.headers, schema);
       }
       service.handler(request);
-    } catch (error) {
-      throw createError("HANDLE_ROUTE_ERROR", error);
+    } catch (other) {
+      if (!service) throw createError("HANDLE_ROUTE_ERROR", other);
+      const tsxElement = this.handleTSX(service);
+      request.send(tsxElement);
     }
   }
 
@@ -640,7 +618,9 @@ export class Fastro {
         }
       }
     } catch (error) {
-      console.info("Start with no static file");
+      if (Deno.env.get("DENO_ENV") !== "test") {
+        console.info("Start with no static file");
+      }
     }
   }
 
@@ -661,46 +641,71 @@ export class Fastro {
         }
       }
     } catch (error) {
-      console.info("Start with no middleware");
+      if (Deno.env.get("DENO_ENV") !== "test") {
+        console.info("Start with no middleware");
+      }
     }
   }
 
+  private async importPages(target: string) {
+    await this.importFile(target, SRVC_TYPE_PAGE);
+  }
+
   private async importServices(target: string) {
+    await this.importFile(target, SRVC_TYPE_SERVICE);
+  }
+
+  private async importFile(target: string, importType: string) {
     try {
       const servicesFolder = `${this.cwd}/${target}`;
       for await (const dirEntry of Deno.readDir(servicesFolder)) {
-        if (dirEntry.isFile && dirEntry.name.includes(SERVICE_FILE)) {
+        if (dirEntry.isDirectory) {
+          this.importFile(target + "/" + dirEntry.name, importType);
+        } else if (dirEntry.isFile && dirEntry.name.includes(SERVICE_FILE)) {
           const filePath = servicesFolder + "/" + dirEntry.name;
           const [, splittedFilePath] = filePath.split(this.serviceDir);
           const [splittedWithDot] = splittedFilePath.split(".");
 
-          const fileImport = Deno.env.get("DENO_ENV") === "development"
+          const finalPath = Deno.env.get("DENO_ENV") === "development"
             ? `file:${filePath}#${new Date().getTime()}`
             : `file:${filePath}`;
 
-          let fileKey = this.prefix
+          const fileKey = this.prefix
             ? `/${this.prefix}${splittedWithDot}`
             : `${splittedWithDot}`;
 
-          import(fileImport)
-            .then((service) => {
-              const options = service.options as HandlerOptions;
-
-              fileKey = options && options.prefix
-                ? `/${options.prefix}${fileKey}`
-                : fileKey;
-
-              if (options && options.params) {
-                this.dynamicService.push({ url: fileKey, service });
-              } else this.services.set(fileKey, service);
-            });
-        } else if (dirEntry.isDirectory) {
-          this.importServices(target + "/" + dirEntry.name);
+          this.nativeImport(finalPath, fileKey, importType);
         }
       }
     } catch (error) {
-      console.info("Start with no service");
+      if (Deno.env.get("DENO_ENV") !== "test") {
+        console.info("Start with no service");
+      }
     }
+  }
+
+  private nativeImport(filePath: string, fileKey: string, importType: string) {
+    import(filePath)
+      .then((importedFile) => {
+        const options = importedFile.options as HandlerOptions;
+
+        fileKey = options && options.prefix
+          ? `/${options.prefix}${fileKey}`
+          : fileKey;
+
+        if (options && options.params) {
+          this.dynamicService.push(
+            { url: fileKey, service: importedFile },
+          );
+        } else {
+          if (importType === SRVC_TYPE_SERVICE) {
+            this.services.set(fileKey, importedFile);
+          }
+          if (importType === SRVC_TYPE_PAGE) {
+            this.pages.set(fileKey, importedFile);
+          }
+        }
+      });
   }
 
   private getAppStatus() {
@@ -738,6 +743,7 @@ export class Fastro {
       .then(() => this.appStatus = this.getAppStatus())
       .then(() => this.importMiddleware(MIDDLEWARE_DIR))
       .then(() => this.importServices(this.serviceDir))
+      .then(() => this.importPages(PAGE_DIR))
       .then(() => this.readStaticFiles(this.staticDir))
       .then(() => this.readHtmlTemplate(TEMPLATE_DIR))
       .then(() => this.listen());
