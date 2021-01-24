@@ -1,5 +1,6 @@
 export * from "https://deno.land/std@0.84.0/mime/mod.ts";
 export * from "https://deno.land/std@0.84.0/http/server.ts";
+export * from "https://deno.land/std@0.84.0/http/cookie.ts";
 export { green, red, yellow } from "https://deno.land/std@0.84.0/fmt/colors.ts";
 export { decode } from "https://deno.land/std@0.84.0/encoding/utf8.ts";
 export { v4 } from "https://deno.land/std@0.84.0/uuid/mod.ts";

@@ -8,7 +8,7 @@ import {
   validateObject,
 } from "./utils.ts";
 import type { Request } from "./request.ts";
-import type { Cookie } from "./cookie.ts";
+// import type { Cookie } from "./cookie.ts";
 import { Data, HandlerOptions, HttpMethod } from "./types.ts";
 import {
   FASTRO_VERSION,
@@ -36,8 +36,11 @@ import type {
   ServerOptions,
 } from "./types.ts";
 import {
+  Cookie,
   decode,
   decodeBase64,
+  deleteCookie,
+  getCookies,
   green,
   isFormFile,
   MultipartReader,
@@ -46,6 +49,7 @@ import {
   serve,
   Server,
   ServerRequest,
+  setCookie,
   yellow,
 } from "../deps.ts";
 
@@ -67,7 +71,6 @@ import {
  */
 export class Fastro {
   private appStatus!: string;
-  private cookieList = new Map<string, Cookie>();
   private corsEnabled!: boolean;
   private cwd = Deno.cwd();
   private dynamicService: DynamicService[] = [];
@@ -103,7 +106,7 @@ export class Fastro {
     payload: string | T,
     status: number | undefined = 200,
     headers: Headers | undefined = new Headers(),
-    req: ServerRequest,
+    req: Request,
   ) {
     try {
       let body: string | Uint8Array | Deno.Reader | undefined;
@@ -124,6 +127,8 @@ export class Fastro {
         body = payload.toString();
       } else body = JSON.stringify(payload);
       const date = new Date().toUTCString();
+      const cookie = req.response.headers?.get("set-cookie");
+      if (cookie) headers.set("Set-Cookie", cookie);
       headers.set("Connection", "keep-alive");
       headers.set("Date", date);
       headers.set("x-powered-by", this.appStatus);
@@ -132,45 +137,14 @@ export class Fastro {
         headers.set("Access-Control-Allow-Headers", "*");
         headers.set("Access-Control-Allow-Methods", "*");
       }
-      if (this.cookieList.size > 0) {
-        this.cookieList.forEach((c) => {
-          let str = `${c.name}=${c.value}`;
-          const expire = c.expires ? `;expires=${c.expires}` : undefined;
-          const domain = c.domain ? `;domain=${c.domain}` : undefined;
-          const path = c.path ? `;path=${c.path}` : undefined;
-          const secure = c.secure ? `;secure` : undefined;
-          const httpOnly = c.HttpOnly ? `;HttpOnly=${c.HttpOnly}` : undefined;
-          const sameSite = c.SameSite ? `;SameSite=${c.SameSite}` : undefined;
-
-          if (expire) str = str.concat(expire);
-          if (domain) str = str.concat(domain);
-          if (path) str = str.concat(path);
-          if (secure) str = str.concat(secure);
-          if (httpOnly) str = str.concat(httpOnly);
-          if (sameSite) str = str.concat(sameSite);
-
-          str = str.concat(";");
-          headers.set("Set-Cookie", str);
-        });
-      }
-      req.respond({ body, status, headers });
+      req.respond({ headers, status, body });
     } catch (error) {
       error.message = "SEND_ERROR: " + error.message;
       console.error(error);
     }
   }
 
-  private getCookies(request: ServerRequest) {
-    const cookies = request.headers.get("cookie")?.split(";");
-    const results = cookies?.map((v) => {
-      const [n, value] = v.split("=");
-      const name = n.trim();
-      return `${name}=${value}`;
-    });
-    return results;
-  }
-
-  private getCookiesByName(name: string, request: ServerRequest) {
+  private getCookiesByName(name: string, request: Request) {
     const cookies = request.headers.get("cookie")?.split(";");
     const results = cookies?.map((v) => {
       const [n, value] = v.split("=");
@@ -181,15 +155,6 @@ export class Fastro {
     if (!results || results.length < 1) return "";
     const [c] = results;
     return c.value;
-  }
-
-  private clearCookie(name: string) {
-    const cookie = this.cookieList.get(name);
-    if (cookie) {
-      cookie.expires = new Date("1970-01-01").toUTCString();
-      cookie.value = "";
-      this.cookieList.set(name, cookie);
-    }
   }
 
   private handleRedirect(url: string, status: number, request: ServerRequest) {
@@ -408,6 +373,8 @@ export class Fastro {
   private transformRequest(serverRequest: ServerRequest) {
     try {
       const request = serverRequest as Request;
+      request.response = {};
+      request.response.headers = new Headers();
       request.proxy = (url) => this.proxy(url, request);
       request.view = (template, options) =>
         this.view(template, options, request);
@@ -416,13 +383,13 @@ export class Fastro {
       request.getQuery = (key) => this.getQuery(key, serverRequest.url);
       request.getParams = () => this.getParams(serverRequest.url);
       request.getPayload = () => this.getPayload(serverRequest);
-      request.getCookies = () => this.getCookies(serverRequest);
-      request.getCookie = (name) => this.getCookiesByName(name, serverRequest);
-      request.clearCookie = (name) => this.clearCookie(name);
-      request.setCookie = (cookie) => {
-        this.cookieList.set(cookie.name, cookie);
+      request.setCookie = (cookie: Cookie) => {
+        setCookie(request.response, cookie);
         return request;
       };
+      request.clearCookie = (name) => deleteCookie(request.response, name);
+      request.getCookies = () => getCookies(request);
+      request.getCookie = (name) => this.getCookiesByName(name, request);
       request.type = (contentType: string) => {
         request.contentType = contentType;
         return request;
@@ -437,7 +404,7 @@ export class Fastro {
           headers = new Headers();
           headers.set("content-type", request.contentType);
         }
-        this.send(payload, status, headers, serverRequest);
+        this.send(payload, status, headers, request);
       };
       return request;
     } catch (error) {
@@ -543,7 +510,7 @@ export class Fastro {
     }
   }
 
-  private handleJSX(service: any): string {
+  private handleTSX(service: any): string {
     return service.default();
   }
 
@@ -569,8 +536,8 @@ export class Fastro {
       service.handler(request);
     } catch (other) {
       if (!service) throw createError("HANDLE_ROUTE_ERROR", other);
-      const jsxElement = this.handleJSX(service);
-      request.send(jsxElement);
+      const tsxElement = this.handleTSX(service);
+      request.send(tsxElement);
     }
   }
 
