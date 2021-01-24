@@ -10,5 +10,4 @@ jobs:
           deno-version: 1.7.0
       - run: deno --version
       - run: deno lint --unstable
-      - run: deno fmt --check
       - run: deno test -A --no-check
