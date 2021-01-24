@@ -1,3 +1,7 @@
+---
+image: public/fastro.png
+---
+
 # High performance deno web framework
 ![][build] ![][version]
 
