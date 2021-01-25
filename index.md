@@ -21,42 +21,15 @@ Written in typescript. No need to register routes, controllers, middlewares, tem
 
 Fastro provides easy-to-use features for web development.
 
-<table>
-<tbody>
-<tr>
-<td>application/json</td>
-<td>x-www-form-urlencoded</td>
-</tr>
-<tr>
-<td>multipart/form-data</td>
-<td>command line interface</td>
-</tr>
-<tr>
-<td>data validation</td>
-<td>dynamic url param</td>
-</tr>
-<tr>
-<td>serverless deployment</td>
-<td>cookie</td>
-</tr>
-<tr>
-<td>middleware</td>
-<td>proxy</td>
-</tr>
-<tr>
-<td>query param</td>
-<td>static files</td>
-</tr>
-<tr>
-<td>url prefix</td>
-<td>url redirection</td>
-</tr>
-<tr>
-<td>url routing by file name</td>
-<td>template rendering</td>
-</tr>
-</tbody>
-</table>
+
+|application/json|x-www-form-urlencoded|
+|multipart/form-data|command line interface|
+|data validation|dynamic url param|
+|serverless deployment|cookie|
+|middleware|proxy|
+|query param|static files|
+|url prefix|url redirection|
+|url routing by file name|template rendering|
 
 You can see detailed examples [here](https://github.com/fastrodev/fastro/blob/master/services).
 
