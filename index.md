@@ -18,10 +18,9 @@ Fastro is a simple and fast web framework built on top of [deno](https://deno.la
 Written in typescript. No need to register routes, controllers, middlewares, templates, or static files. They will be loaded and saved when the server starts. 
 
 ## Getting Started
-- Go to [the quickstart](https://fastro.dev/docs/quickstart) to install command line interface and create a project.
+Go to [the quickstart](https://fastro.dev/docs/quickstart) to install command line interface and create a project.
 
 ## Features
-
 Fastro provides easy-to-use features for web development.
 
 |[application/json](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)|[x-www-form-urlencoded](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)|
