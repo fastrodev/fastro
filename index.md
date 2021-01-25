@@ -17,24 +17,23 @@ Fastro is a simple and fast web framework built on top of [deno](https://deno.la
 
 Written in typescript. No need to register routes, controllers, middlewares, templates, or static files. They will be loaded and saved when the server starts. 
 
+## Getting Started
+- Go to [the quickstart](https://fastro.dev/docs/quickstart) to install command line interface and create a project.
+
 ## Features
 
 Fastro provides easy-to-use features for web development.
 
-
 |[application/json](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)|[x-www-form-urlencoded](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)|
-|[multipart/form-data](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)|command line interface|
+|[multipart/form-data](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)|[command line interface](https://fastro.dev/docs/project.html)|
 |[data validation](https://github.com/fastrojs/fastro/blob/master/services/options.controller.ts)|[dynamic url param](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/params.controller.ts)|
-|serverless deployment|cookie|
-|middleware|proxy|
-|query param|static files|
-|url prefix|url redirection|
-|url routing by file name|template rendering|
+|serverless deployment|[cookie](https://github.com/fastrojs/fastro/blob/master/services/cookie/set.controller.ts)|
+|[middleware](https://github.com/fastrojs/fastro/blob/master/services/middleware.controller.ts)|[proxy](https://github.com/fastrojs/fastro/blob/master/services/proxy.controller.ts)|
+|[query param](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/querybyname.controller.ts)|[static files](https://fastro.dev/docs/static.html)|
+|[url prefix](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/prefix.controller.ts)|[url redirection](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/redirect.controller.ts)|
+|[url routing by file name](https://fastro.dev/docs/handler.html)|[template rendering](https://github.com/fastrojs/fastro/blob/master/services/hello/v3/hello.controller.ts)|
 
 You can see detailed examples [here](https://github.com/fastrodev/fastro/blob/master/services).
-
-## Getting Started
-- Go to [the quickstart](https://fastro.dev/docs/quickstart) to install command line interface and create a project.
 
 ## Serverless Demo
 - [Webapp deployed on flexible google app engine](https://phonic-altar-274306.ue.r.appspot.com).
