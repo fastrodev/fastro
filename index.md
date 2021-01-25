@@ -22,9 +22,9 @@ Written in typescript. No need to register routes, controllers, middlewares, tem
 Fastro provides easy-to-use features for web development.
 
 
-|application/json|x-www-form-urlencoded|
-|multipart/form-data|command line interface|
-|data validation|dynamic url param|
+|[application/json](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)|[x-www-form-urlencoded](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)|
+|[multipart/form-data](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)|command line interface|
+|[data validation](https://github.com/fastrojs/fastro/blob/master/services/options.controller.ts)|[dynamic url param](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/params.controller.ts)|
 |serverless deployment|cookie|
 |middleware|proxy|
 |query param|static files|
