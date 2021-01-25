@@ -58,12 +58,14 @@ Fastro provides easy-to-use features for web development.
 </tbody>
 </table>
 
+You can see detail examples [here](https://github.com/fastrodev/fastro/blob/master/services).
+
 ## Getting Started
 - Go to [the quickstart](https://fastro.dev/docs/quickstart) to install command line interface and create a project.
 
-## Examples
-- [Feature implementation folder](https://github.com/fastrodev/fastro/blob/master/services).
+## Demo
 - [Webapp deployed on flexible google app engine](https://phonic-altar-274306.ue.r.appspot.com).
+- [Webapp deployed on google cloud run](https://hello-6bxxicr2uq-uc.a.run.app/).
 
 [build]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg?branch=master "fastro build"
 [version]: https://img.shields.io/github/v/release/fastrojs/fastro?label=version "fastro version"
