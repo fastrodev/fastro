@@ -58,7 +58,7 @@ Fastro provides easy-to-use features for web development.
 </tbody>
 </table>
 
-You can see detail examples [here](https://github.com/fastrodev/fastro/blob/master/services).
+You can see detailed examples [here](https://github.com/fastrodev/fastro/blob/master/services).
 
 ## Getting Started
 - Go to [the quickstart](https://fastro.dev/docs/quickstart) to install command line interface and create a project.
