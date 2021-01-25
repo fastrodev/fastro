@@ -39,7 +39,7 @@ By default, you can deploy fastro web apps on [Cloud Run](https://cloud.google.c
     ``` 
 - You can change webapp `name` with your own. 
     
-- See an example of a deployed web application at this link [https://hello-6bxxicr2uq-uc.a.run.app](https://hello-6bxxicr2uq-uc.a.run.app)
+- See an example of a deployed web application at this link [https://hello-6bxxicr2uq-ue.a.run.app/](https://hello-6bxxicr2uq-ue.a.run.app/)
 
 - You can also change domain name with [google cloud run console](https://console.cloud.google.com/run).
 
