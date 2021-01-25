@@ -32,8 +32,8 @@ By default, you can deploy fastro web apps on [Cloud Run](https://cloud.google.c
     
     See [the cloud run quickstart](https://cloud.google.com/sdk/docs/quickstart) for detail instruction.
 
-- [Deploy webapp to cloud run](run.md)
-- [Deploy webbapp to app engine](gae.md)
+- Go to [cloud run](run.md) to deploy your webapp on google cloud run.
+- Go to [app engine](gae.md) to deploy your webapp on google app engine.
 
 ## What's next:
 - [Fastro API](api.md)
