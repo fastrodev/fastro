@@ -27,7 +27,7 @@ Fastro provides easy-to-use features for web development.
 |[application/json](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)|[x-www-form-urlencoded](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)|
 |[multipart/form-data](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)|[command line interface](https://fastro.dev/docs/project.html)|
 |[data validation](https://github.com/fastrojs/fastro/blob/master/services/options.controller.ts)|[dynamic url param](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/params.controller.ts)|
-|serverless deployment|[cookie](https://github.com/fastrojs/fastro/blob/master/services/cookie/set.controller.ts)|
+|[serverless deployment](https://fastro.dev/docs/deployment.html)|[cookie](https://github.com/fastrojs/fastro/blob/master/services/cookie/set.controller.ts)|
 |[middleware](https://github.com/fastrojs/fastro/blob/master/services/middleware.controller.ts)|[proxy](https://github.com/fastrojs/fastro/blob/master/services/proxy.controller.ts)|
 |[query param](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/querybyname.controller.ts)|[static files](https://fastro.dev/docs/static.html)|
 |[url prefix](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/prefix.controller.ts)|[url redirection](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/redirect.controller.ts)|
