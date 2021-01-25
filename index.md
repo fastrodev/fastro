@@ -63,7 +63,7 @@ You can see detailed examples [here](https://github.com/fastrodev/fastro/blob/ma
 ## Getting Started
 - Go to [the quickstart](https://fastro.dev/docs/quickstart) to install command line interface and create a project.
 
-## Demo
+## Serverless Demo
 - [Webapp deployed on flexible google app engine](https://phonic-altar-274306.ue.r.appspot.com).
 - [Webapp deployed on google cloud run](https://hello-6bxxicr2uq-uc.a.run.app/).
 
