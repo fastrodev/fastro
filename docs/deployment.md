@@ -32,39 +32,8 @@ By default, you can deploy fastro web apps on [Cloud Run](https://cloud.google.c
     
     See [the cloud run quickstart](https://cloud.google.com/sdk/docs/quickstart) for detail instruction.
 
-## Deploy webapp to cloud run
-- Once your application is ready to use, you can easily deploy it with this command
-    ```
-    fastro deploy --name hello
-    ``` 
-- You can change webapp `name` with your own. 
-    
-- See an example of a deployed web application at this link [https://hello-6bxxicr2uq-ue.a.run.app/](https://hello-6bxxicr2uq-ue.a.run.app/)
-
-- You can also change domain name with [google cloud run console](https://console.cloud.google.com/run).
-
-## Deploy webbapp to app engine
- - Setup app engine sdk  
-   Follow this guide: [Quickstart for Custom Runtimes in the App Engine Flexible Environment](https://cloud.google.com/appengine/docs/flexible/custom-runtimes/quickstart#before_you_begin)
-   
- - Create `app.yaml` file in root project directory
-   ```
-   runtime: custom
-   env: flex
-   automatic_scaling:
-     min_num_instances: 1
-     max_num_instances: 8
-     cool_down_period_sec: 180
-     cpu_utilization:
-       target_utilization: 0.5
-    target_concurrent_requests: 100
-   ```
- - Deploy to app engine:
-   ```
-   gcloud app deploy
-   ```
-   
- - You can see the deployed webapp at this link: [https://phonic-altar-274306.ue.r.appspot.com/](https://phonic-altar-274306.ue.r.appspot.com/)
+- [Deploy webapp to cloud run](run.md)
+- [Deploy webbapp to app engine](gae.md)
 
 ## What's next:
 - [Fastro API](api.md)
