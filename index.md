@@ -5,7 +5,7 @@ image: public/fastro.png
 layout: default
 ---
 
-# Fastro
+# High performance deno web framework
 ![][build] ![][version]
 
 Fastro is a simple and fast web framework built on top of [deno](https://deno.land). Its speed is [close to the raw deno http library](https://fastro.dev/benchmarks). 
