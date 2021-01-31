@@ -1,5 +1,5 @@
 import type { Request } from "../mod.ts";
-export const handler = (request: Request) => {
+export default (request: Request) => {
   request.proxy(
     "https://raw.githubusercontent.com/fastrodev/fastro/master/readme.md",
   );

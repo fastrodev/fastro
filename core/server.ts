@@ -458,7 +458,7 @@ export class Fastro {
         const schema = options.validationSchema.headers as Schema;
         this.validateHeaders(request.headers, schema);
       }
-      handlerFile.service.handler(request);
+      handlerFile.service.default(request);
     } catch (error) {
       throw createError("HANDLE_DYNAMIC_PARAMS_ERROR", error);
     }
@@ -483,7 +483,7 @@ export class Fastro {
           this.validateHeaders(request.headers, schema);
         }
 
-        middleware.handler(request, (err: Error) => {
+        middleware.default(request, (err: Error) => {
           if (err) {
             if (!err.message) err.message = `Middleware error: ${key}`;
             throw err;
@@ -508,14 +508,13 @@ export class Fastro {
     }
   }
 
-  private handleTSX(service: any): string {
-    return service.default();
+  private handleTSX(page: any): string {
+    return page.default();
   }
 
   private handleRoute(request: Request) {
-    let service;
     try {
-      service = this.services.get(request.url);
+      const service = this.services.get(request.url);
       const options = service && service.options ? service.options : undefined;
       if (!service) return this.handleDynamicParams(request);
       if (
@@ -531,10 +530,10 @@ export class Fastro {
         const schema = options.validationSchema.headers as Schema;
         this.validateHeaders(request.headers, schema);
       }
-      service.handler(request);
+      service.default(request);
     } catch (other) {
-      if (!service) throw createError("HANDLE_ROUTE_ERROR", other);
-      const tsxElement = this.handleTSX(service);
+      const page = this.pages.get(request.url);
+      const tsxElement = this.handleTSX(page);
       request.send(tsxElement);
     }
   }
@@ -645,21 +644,17 @@ export class Fastro {
     }
   }
 
-  private async importPages(target: string) {
-    await this.importFile(target, SRVC_TYPE_PAGE);
-  }
-
   private async importServices(target: string) {
-    await this.importFile(target, SRVC_TYPE_SERVICE);
-  }
-
-  private async importFile(target: string, importType: string) {
     try {
       const servicesFolder = `${this.cwd}/${target}`;
       for await (const dirEntry of Deno.readDir(servicesFolder)) {
         if (dirEntry.isDirectory) {
-          this.importFile(target + "/" + dirEntry.name, importType);
-        } else if (dirEntry.isFile && dirEntry.name.includes(SERVICE_FILE)) {
+          this.importServices(target + "/" + dirEntry.name);
+        } else if (
+          dirEntry.isFile &&
+          (dirEntry.name.includes(".controller.ts") ||
+            dirEntry.name.includes(".page.tsx"))
+        ) {
           const filePath = servicesFolder + "/" + dirEntry.name;
           const [, splittedFilePath] = filePath.split(this.serviceDir);
           const [splittedWithDot] = splittedFilePath.split(".");
@@ -672,7 +667,9 @@ export class Fastro {
             ? `/${this.prefix}${splittedWithDot}`
             : `${splittedWithDot}`;
 
-          this.nativeImport(finalPath, fileKey, importType);
+          const isPage = dirEntry.name.includes(".page.tsx");
+
+          this.nativeImport(finalPath, fileKey, isPage);
         }
       }
     } catch (error) {
@@ -682,7 +679,7 @@ export class Fastro {
     }
   }
 
-  private nativeImport(filePath: string, fileKey: string, importType: string) {
+  private nativeImport(filePath: string, fileKey: string, isPage: boolean) {
     import(filePath)
       .then((importedFile) => {
         const options = importedFile.options as HandlerOptions;
@@ -695,14 +692,11 @@ export class Fastro {
           this.dynamicService.push(
             { url: fileKey, service: importedFile },
           );
-        } else {
-          if (importType === SRVC_TYPE_SERVICE) {
-            this.services.set(fileKey, importedFile);
-          }
-          if (importType === SRVC_TYPE_PAGE) {
-            this.pages.set(fileKey, importedFile);
-          }
+          return;
         }
+
+        if (isPage) this.pages.set(fileKey, importedFile);
+        else this.services.set(fileKey, importedFile);
       });
   }
 
@@ -741,7 +735,6 @@ export class Fastro {
       .then(() => this.appStatus = this.getAppStatus())
       .then(() => this.importMiddleware(MIDDLEWARE_DIR))
       .then(() => this.importServices(this.serviceDir))
-      .then(() => this.importPages(PAGE_DIR))
       .then(() => this.readStaticFiles(this.staticDir))
       .then(() => this.readHtmlTemplate(TEMPLATE_DIR))
       .then(() => this.listen());

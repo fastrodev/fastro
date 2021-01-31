@@ -3,7 +3,7 @@ export const options = {
   params: true,
   methods: ["GET"],
 };
-export const handler = (request: Request) => {
+export default (request: Request) => {
   const query = request.getQuery();
   request.send(query);
 };

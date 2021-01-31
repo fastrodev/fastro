@@ -28,7 +28,7 @@ export const options: HandlerOptions = {
   validationSchema,
 };
 
-export const handler = async (request: Request) => {
+export default async (request: Request) => {
   const x = request.getQuery();
   const y = request.getParams();
   const z = await request.getPayload();

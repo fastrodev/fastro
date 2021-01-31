@@ -5,7 +5,7 @@ export const middleware =
 export const options = {
   methods: ["GET", "POST"],
 };
-export const handler = (request: Request, next: Callback) => {
+export default (request: Request, next: Callback) => {
   request.hello = "with middleware";
   next();
 };
