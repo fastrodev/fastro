@@ -8,7 +8,6 @@ import {
   validateObject,
 } from "./utils.ts";
 import type { Request } from "./request.ts";
-// import type { Cookie } from "./cookie.ts";
 import { Data, HandlerOptions, HttpMethod } from "./types.ts";
 import {
   FASTRO_VERSION,
@@ -26,7 +25,6 @@ import {
   STATIC_DIR,
   TEMPLATE_DIR,
   TEMPLATE_FILE,
-  TIMEOUT,
 } from "./constant.ts";
 import type {
   DynamicService,
