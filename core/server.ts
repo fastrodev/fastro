@@ -438,7 +438,7 @@ export class Fastro {
       const [handlerFile] = this.dynamicService.filter((service) => {
         return request.url.includes(service.url);
       });
-      if (!handlerFile) return this.handleStaticFile(request);
+      if (!handlerFile) return this.handleTSX(request);
       const options: HandlerOptions = handlerFile.service.options
         ? handlerFile.service.options
         : undefined;
@@ -505,9 +505,13 @@ export class Fastro {
     }
   }
 
-  private handleTSX(page: any): string {
+  private handleTSX(request: Request) {
+    const page = this.pages.get(request.url);
+    if (!page) return this.handleStaticFile(request);
     const html = `<html><head><style>* { font-family: Helvetica; }</style></head><body><div id="root">${renderToString(page.default())}</div><script type="module">import React from "https://dev.jspm.io/react";import ReactDOM from "https://dev.jspm.io/react-dom";ReactDOM.hydrate(React.createElement(${page.default}), document.getElementById('root'))</script></body></html>`;
-    return html;
+    request
+      .type("text/html")
+      .send(html);
   }
 
   private handleRoute(request: Request) {
@@ -529,13 +533,8 @@ export class Fastro {
         this.validateHeaders(request.headers, schema);
       }
       service.default(request);
-    } catch (other) {
-      const page = this.pages.get(request.url);
-      if (!page) throw new Error("not found");
-      const react = this.handleTSX(page);
-      request
-        .type("text/html")
-        .send(react);
+    } catch (error) {
+      throw createError("HANDLE_ROUTE_ERROR", error);
     }
   }
 
