@@ -1,7 +1,5 @@
 // Copyright 2021 the Fastro author. All rights reserved. MIT license.
 // deno-lint-ignore-file no-explicit-any
-
-import ReactDOMServer from "https://dev.jspm.io/react-dom/server";
 import {
   Cookie,
   decode,
@@ -12,7 +10,7 @@ import {
   isFormFile,
   MultipartReader,
   parseYml,
-  red,
+  red, renderToString,
   serve,
   Server,
   ServerRequest,
@@ -47,6 +45,8 @@ import {
   replaceAll,
   validateObject
 } from "./utils.ts";
+
+
 
 /**
  * You have to create a `Fastro` class instance.
@@ -506,7 +506,7 @@ export class Fastro {
   }
 
   private handleTSX(page: any): string {
-    const html = `<html><head><style>* { font-family: Helvetica; }</style></head><body><div id="root">${(ReactDOMServer as any).renderToString(page.default())}</div><script type="module">import React from "https://dev.jspm.io/react";import ReactDOM from "https://dev.jspm.io/react-dom";ReactDOM.hydrate(React.createElement(${page.default}), document.getElementById('root'))</script></body></html>`;
+    const html = `<html><head><style>* { font-family: Helvetica; }</style></head><body><div id="root">${renderToString(page.default())}</div><script type="module">import React from "https://dev.jspm.io/react";import ReactDOM from "https://dev.jspm.io/react-dom";ReactDOM.hydrate(React.createElement(${page.default}), document.getElementById('root'))</script></body></html>`;
     return html;
   }
 
