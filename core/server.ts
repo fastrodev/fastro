@@ -1,38 +1,7 @@
 // Copyright 2021 the Fastro author. All rights reserved. MIT license.
 // deno-lint-ignore-file no-explicit-any
 
-import {
-  createError,
-  getErrorTime,
-  replaceAll,
-  validateObject,
-} from "./utils.ts";
-import type { Request } from "./request.ts";
-import { Data, HandlerOptions, HttpMethod } from "./types.ts";
-import {
-  FASTRO_VERSION,
-  HOSTNAME,
-  MAX_MEMORY,
-  MIDDLEWARE_DIR,
-  NO_CONFIG,
-  PAGE_DIR,
-  PORT,
-  RUNNING_TEXT,
-  SERVICE_DIR,
-  SERVICE_FILE,
-  SRVC_TYPE_PAGE,
-  SRVC_TYPE_SERVICE,
-  STATIC_DIR,
-  TEMPLATE_DIR,
-  TEMPLATE_FILE,
-} from "./constant.ts";
-import type {
-  DynamicService,
-  MultiPartData,
-  Query,
-  Schema,
-  ServerOptions,
-} from "./types.ts";
+import ReactDOMServer from "https://dev.jspm.io/react-dom/server";
 import {
   Cookie,
   decode,
@@ -48,20 +17,48 @@ import {
   Server,
   ServerRequest,
   setCookie,
-  yellow,
+  yellow
 } from "../deps.ts";
+import {
+  FASTRO_VERSION,
+  HOSTNAME,
+  MAX_MEMORY,
+  MIDDLEWARE_DIR,
+  NO_CONFIG,
+  PORT,
+  RUNNING_TEXT,
+  SERVICE_DIR,
+  STATIC_DIR,
+  TEMPLATE_DIR,
+  TEMPLATE_FILE
+} from "./constant.ts";
+import type { Request } from "./request.ts";
+import type {
+  DynamicService,
+  MultiPartData,
+  Query,
+  Schema,
+  ServerOptions
+} from "./types.ts";
+import { Data, HandlerOptions, HttpMethod } from "./types.ts";
+import {
+  createError,
+  getErrorTime,
+  replaceAll,
+  validateObject
+} from "./utils.ts";
 
 /**
  * You have to create a `Fastro` class instance.
  * This will load all of your controller file  automatically.
- * 
+ *
  *      const server = new Fastro();
- * 
+ *
  * With server options, you can change default service folder, add prefix, or enable cors.
- *      
+ *
  *      const serverOptions = {
  *        cors: true,
- *        prefix: "api", 
+ *        prefix: "api",
  *        serviceDir: "api",
  *        staticFile: true,
  *      };
@@ -509,7 +506,8 @@ export class Fastro {
   }
 
   private handleTSX(page: any): string {
-    return page.default();
+    const html = `<html><head><style>* { font-family: Helvetica; }</style></head><body><div id="root">${(ReactDOMServer as any).renderToString(page.default())}</div><script type="module">import React from "https://dev.jspm.io/react";import ReactDOM from "https://dev.jspm.io/react-dom";ReactDOM.hydrate(React.createElement(${page.default}), document.getElementById('root'))</script></body></html>`;
+    return html;
   }
 
   private handleRoute(request: Request) {
@@ -533,8 +531,11 @@ export class Fastro {
       service.default(request);
     } catch (other) {
       const page = this.pages.get(request.url);
-      const tsxElement = this.handleTSX(page);
-      request.send(tsxElement);
+      if (!page) throw new Error("not found");
+      const react = this.handleTSX(page);
+      request
+        .type("text/html")
+        .send(react);
     }
   }
 
@@ -717,7 +718,7 @@ export class Fastro {
         const { email, regid } = <{
           email: string;
           regid: string;
-        }> parsedConfig;
+        }>parsedConfig;
         this.regid = regid;
         this.email = email;
       }
@@ -742,7 +743,7 @@ export class Fastro {
 
   /**
    * Close server
-   * 
+   *
    *      server.close()
    */
   public close() {
