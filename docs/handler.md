@@ -31,8 +31,8 @@ description: Handle all http request
 
 - Open handler file, `services/hello.controller.ts`:
     ```ts
-    import type { Request } from "https://deno.land/x/fastro@v0.30.31/mod.ts";
-    export const handler = (request: Request) => {
+    import type { Request } from "https://deno.land/x/fastro@v0.30.33/mod.ts";
+    export default (request: Request) => {
       // request.view("hello.template.html", { greeting: "Hello", name: "World" });
       request.send(`setup ${request.hello}`);
     };
