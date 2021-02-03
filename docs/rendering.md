@@ -43,7 +43,7 @@ description: You can render html template and pass dynamic value on it.
 
     ```ts
     import type { Request } from "https://deno.land/x/fastro@v0.30.31/mod.ts";
-    export const handler = (request: Request) => {
+    export default (request: Request) => {
       request.view("hello.template.html", { greeting: "Hello", name: "World" });
       // request.send("hello");
     };
