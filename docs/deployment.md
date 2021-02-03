@@ -30,7 +30,7 @@ By default, you can deploy fastro web apps on [Cloud Run](https://cloud.google.c
     ./google-cloud-sdk/bin/gcloud init
     ```
     
-    See [the cloud run quickstart](https://cloud.google.com/sdk/docs/quickstart) for detail instruction.
+    See [the sdk quickstart](https://cloud.google.com/sdk/docs/quickstart) for detail instruction.
     
 ## Google Cloud Run
 - Go to [cloud run](run.md) to deploy your webapp on google cloud run.
