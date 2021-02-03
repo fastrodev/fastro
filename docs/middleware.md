@@ -25,11 +25,11 @@ description: You can access and add additional property to the request object be
 
 - Open middleware file, `middleware/support.ts`:
     ```ts
-    import type { Callback, Request } from "https://deno.land/x/fastro@v0.30.31/mod.ts";
+    import type { Callback, Request } from "https://deno.land/x/fastro@v0.30.33/mod.ts";
     export const options = {
       methods: ["GET, POST"],
     }
-    export const handler = (request: Request, next: Callback) => {
+    export default (request: Request, next: Callback) => {
       request.hello = "with middleware";
       next();
     };
