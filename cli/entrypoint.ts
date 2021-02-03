@@ -8,7 +8,7 @@ const message = `USAGE:
 OPTIONS:
   --production        Disable file watching
   --port [PORT]       Set port of webapp
-                      Example: 
+                      Example:
                         \`fastro serve --port 8080\`
 `;
 
