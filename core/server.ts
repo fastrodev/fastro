@@ -10,12 +10,13 @@ import {
   isFormFile,
   MultipartReader,
   parseYml,
-  red, renderToString,
+  red,
+  renderToString,
   serve,
   Server,
   ServerRequest,
   setCookie,
-  yellow
+  yellow,
 } from "../deps.ts";
 import {
   FASTRO_VERSION,
@@ -28,7 +29,7 @@ import {
   SERVICE_DIR,
   STATIC_DIR,
   TEMPLATE_DIR,
-  TEMPLATE_FILE
+  TEMPLATE_FILE,
 } from "./constant.ts";
 import type { Request } from "./request.ts";
 import type {
@@ -36,17 +37,15 @@ import type {
   MultiPartData,
   Query,
   Schema,
-  ServerOptions
+  ServerOptions,
 } from "./types.ts";
 import { Data, HandlerOptions, HttpMethod } from "./types.ts";
 import {
   createError,
   getErrorTime,
   replaceAll,
-  validateObject
+  validateObject,
 } from "./utils.ts";
-
-
 
 /**
  * You have to create a `Fastro` class instance.
@@ -385,6 +384,11 @@ export class Fastro {
       request.clearCookie = (name) => deleteCookie(request.response, name);
       request.getCookies = () => getCookies(request);
       request.getCookie = (name) => this.getCookiesByName(name, request);
+      request.json = (payload) => {
+        const headers = new Headers();
+        headers.set("content-type", "application/json");
+        this.send(payload, request.httpStatus, headers, request);
+      };
       request.type = (contentType: string) => {
         request.contentType = contentType;
         return request;
@@ -508,7 +512,10 @@ export class Fastro {
   private handleTSX(request: Request) {
     const page = this.pages.get(request.url);
     if (!page) return this.handleStaticFile(request);
-    const html = `<html><head><style>* { font-family: Helvetica; }</style></head><body><div id="root">${renderToString(page.default())}</div><script type="module">import React from "https://dev.jspm.io/react";import ReactDOM from "https://dev.jspm.io/react-dom";ReactDOM.hydrate(React.createElement(${page.default}), document.getElementById('root'))</script></body></html>`;
+    const html =
+      `<html><head><style>* { font-family: Helvetica; }</style></head><body><div id="root">${
+        renderToString(page.default())
+      }</div><script type="module">import React from "https://dev.jspm.io/react";import ReactDOM from "https://dev.jspm.io/react-dom";ReactDOM.hydrate(React.createElement(${page.default}), document.getElementById('root'))</script></body></html>`;
     request
       .type("text/html")
       .send(html);
@@ -717,7 +724,7 @@ export class Fastro {
         const { email, regid } = <{
           email: string;
           regid: string;
-        }>parsedConfig;
+        }> parsedConfig;
         this.regid = regid;
         this.email = email;
       }

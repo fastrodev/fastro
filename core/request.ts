@@ -6,7 +6,7 @@ import type { Query } from "./types.ts";
 
 /**
  * Request Class. It is extended from [Deno ServerRequest](https://doc.deno.land/https/deno.land/std@0.75.0/http/server.ts#ServerRequest).
- * 
+ *
  */
 export class Request extends ServerRequest {
   response!: Response;
@@ -14,7 +14,7 @@ export class Request extends ServerRequest {
   httpStatus!: number;
   /**
    * Set content type before send
-   * 
+   *
    *      request.type("text/html").send("hello");
    */
   type!: {
@@ -22,8 +22,8 @@ export class Request extends ServerRequest {
   };
 
   /**
-   * Set HTTP Status 
-   * 
+   * Set HTTP Status
+   *
    *      request.status(404).send("not found");
    */
   status!: {
@@ -31,7 +31,7 @@ export class Request extends ServerRequest {
   };
   /**
    * Get all cookies
-   * 
+   *
    *    const cookies = request.getCookies();
    */
   getCookies!: {
@@ -47,7 +47,7 @@ export class Request extends ServerRequest {
   };
   /**
    * Set cookie
-   *    
+   *
    *    import { Cookie } from "../mod.ts";
    *    const cookie: Cookie = { name: "hello", value: "pram" };
    *    request.setCookie(cookie);
@@ -57,7 +57,7 @@ export class Request extends ServerRequest {
   };
   /**
    * Clear cookie by name
-   * 
+   *
    *      request.clearCookie("hello")
    */
   clearCookie!: {
@@ -65,7 +65,7 @@ export class Request extends ServerRequest {
   };
   /**
    * Redirect to the specified url, the status code is optional (default to 302)
-   * 
+   *
    *      request.redirect("/", 302)
    */
   redirect!: {
@@ -73,16 +73,25 @@ export class Request extends ServerRequest {
   };
   /**
    *  Sends the payload to the user, could be a plain text, a buffer, JSON, stream, or an Error object.
-   * 
+   *
    *        request.send("hello");
    */
   send!: {
     <T>(payload: string | T, status?: number, headers?: Headers): void;
   };
   /**
+   *  Sends json object.
+   *
+   *        request.send({ message: "hello" });
+   */
+  json!: {
+    // deno-lint-ignore no-explicit-any
+    (payload: any): void;
+  };
+  /**
    * Get url parameters
-   * 
-   * 
+   *
+   *
    *      const params = request.getParams();
    */
   getParams!: {
@@ -90,8 +99,8 @@ export class Request extends ServerRequest {
   };
   /**
    * Get payload. Could be plain text, json, multipart, or url-encoded
-   * 
-   * 
+   *
+   *
    *      const payload = await request.getPayload();
    */
   getPayload!: {
@@ -101,7 +110,7 @@ export class Request extends ServerRequest {
 
   /**
    * Get query
-   * 
+   *
    *      const query = await request.getQuery()
    */
   getQuery!: {
@@ -110,7 +119,7 @@ export class Request extends ServerRequest {
 
   /**
    * URL proxy
-   * 
+   *
    *      request.proxy("https://github.com/fastrodev/fastro");
    */
   proxy!: {
@@ -119,7 +128,7 @@ export class Request extends ServerRequest {
 
   /**
    * Render html template
-   * 
+   *
    *      request.view("index.template.html", { title: "Hello" });
    */
   view!: {
