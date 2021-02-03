@@ -11,17 +11,17 @@ export async function watch() {
   const promises = []
   for await (const event of watcher) {
     if (event.kind === "modify") {
-      const promise = new Promise((resolve, reject) => {
+      const promise = new Promise((resolve) => {
         serve(port, args);
         resolve("File change detected! Restarting!")
       });
       promises.push(promise)
-      Promise.race(promises)
-        .then(function (value) {
-          console.log(value)
-        }, function (error) {
-          console.log(error.message);
-        });
     }
+    Promise.race(promises)
+      .then(function (value) {
+        console.log(value)
+      }, function (error) {
+        console.log(error.message);
+      });
   }
 }
