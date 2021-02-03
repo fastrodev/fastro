@@ -38,7 +38,6 @@ export const handler = (request: Request) => {
 
 
 ## What's next:
-- [Readme](../readme.md)
 - [Quickstart](quickstart.md)
 - [Create a project](project.md)
 - [Create a handler](handler.md)
