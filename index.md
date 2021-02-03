@@ -10,10 +10,8 @@ layout: default
 
 Fastro is a simple and fast web framework built on top of [deno](https://deno.land). Its speed is [close to the raw deno http library](https://fastro.dev/benchmarks). 
 
-|Module|Req/s avg|Percentage|
-|--|--:|--:|
-|Deno|23078.19|100.00%|
-|Fastro|21344.37|92.48%|
+|Deno Req/s avg|23078.19|100.00%|
+|Fastro Req/s avg|21344.37|92.48%|
 
 Written in typescript. No need to register routes, controllers, middlewares, templates, or static files. They will be loaded and saved when the server starts. 
 
