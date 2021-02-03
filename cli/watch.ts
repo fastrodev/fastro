@@ -8,7 +8,7 @@ export async function watch() {
   Deno.env.set("DENO_ENV", "development");
   start();
   const watcher = Deno.watchFs(Deno.cwd());
-  let promises = []
+  const promises = []
   for await (const event of watcher) {
     if (event.kind === "modify") {
       const promise = new Promise((resolve, reject) => {
