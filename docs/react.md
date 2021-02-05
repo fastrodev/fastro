@@ -38,9 +38,9 @@ image: https://reactjs.org/logo-og.png
     export const props = { msg: "Hello Deno Land!" };
 
     const App = (props: { msg: string }) => {
-    const [count, setCount] = React.useState(0);
+        const [count, setCount] = React.useState(0);
         return (
-            <div>
+          <div>
             <h2>{props.msg}</h2>
             <p>
                 This page was created using Deno, Fastro and React's server-side
@@ -48,7 +48,7 @@ image: https://reactjs.org/logo-og.png
             </p>
             <button onClick={() => setCount(count + 1)}>Click me</button>
             <p>You clicked me {count} times </p>
-            </div>
+          </div>
         );
     };
 
