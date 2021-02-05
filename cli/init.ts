@@ -8,17 +8,21 @@ import {
   STATIC_DIR,
   VSCODE_DIR,
 } from "../core/constant.ts";
-import { main } from "../templates/main.ts";
-import { favicon } from "../templates/favicon.ts";
-import { render } from "../templates/render.ts";
-import { docker } from "../templates/docker.ts";
-import { html } from "../templates/html.ts";
-import { middleware } from "../templates/middleware.ts";
-import { controller } from "../templates/controller.ts";
-import { setting } from "../templates/settings.ts";
-import { gitignore } from "../templates/gitignore.ts";
-import { parseYml } from "../deps.ts";
 import { App } from "../core/types.ts";
+import { parseYml } from "../deps.ts";
+import { controller } from "../templates/controller.ts";
+import { docker } from "../templates/docker.ts";
+import { favicon } from "../templates/favicon.ts";
+import { gitignore } from "../templates/gitignore.ts";
+import { html } from "../templates/html.ts";
+import { main } from "../templates/main.ts";
+import { middleware } from "../templates/middleware.ts";
+import {
+  component as comp,
+  react as reactTemplate,
+} from "../templates/react.ts";
+import { render } from "../templates/render.ts";
+import { setting } from "../templates/settings.ts";
 
 function initHelp() {
   const message = `USAGE
@@ -109,6 +113,14 @@ export async function init(args?: any) {
   const htmlTemplate = encoder.encode(render);
   const templatePath = `${SERVICE_DIR}/hello.template.html`;
   await Deno.writeFile(templatePath, htmlTemplate);
+
+  const component = encoder.encode(comp);
+  const componentPath = `${SERVICE_DIR}/react.page.tsx`;
+  await Deno.writeFile(componentPath, component);
+
+  const react = encoder.encode(reactTemplate);
+  const reactPath = `${SERVICE_DIR}/react.template.html`;
+  await Deno.writeFile(reactPath, react);
 
   await Deno.mkdir(STATIC_DIR, { recursive: true });
   const icon = new Uint8Array(favicon);

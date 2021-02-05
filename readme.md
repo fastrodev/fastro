@@ -58,6 +58,10 @@ Fastro provides easy-to-use features for web development.
       <td><a href="https://fastro.dev/docs/handler.html">url routing by file name</a></td>
       <td><a href="https://github.com/fastrojs/fastro/blob/master/services/hello/v3/hello.controller.ts">template rendering</a></td>
     </tr>
+    <tr>
+      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/react.page.tsx">react server side rendering (ssr)</a></td>
+      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/react.template.html">seo ready react html template</a></td>
+    </tr>
   </tbody>
 </table>
 

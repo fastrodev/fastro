@@ -2,6 +2,7 @@
 // deno-lint-ignore-file no-explicit-any
 import {
   Cookie,
+  createElement,
   decode,
   decodeBase64,
   deleteCookie,
@@ -18,6 +19,7 @@ import {
   setCookie,
   yellow,
 } from "../deps.ts";
+import { react, root } from "../templates/react.ts";
 import {
   FASTRO_VERSION,
   HOSTNAME,
@@ -25,6 +27,7 @@ import {
   MIDDLEWARE_DIR,
   NO_CONFIG,
   PORT,
+  REACT_ROOT,
   RUNNING_TEXT,
   SERVICE_DIR,
   STATIC_DIR,
@@ -354,7 +357,7 @@ export class Fastro {
       if (html) {
         for (const key in options) {
           const value = options[key];
-          html = replaceAll(html, `\${${key}}`, value);
+          html = replaceAll(html, `{{${key}}}`, value);
         }
       }
       if (request) request.send(html);
@@ -509,13 +512,39 @@ export class Fastro {
     }
   }
 
+  private loadReactTemplate(page: any, props: any, template?: string) {
+    const reactRendered = renderToString(
+      createElement(page.default, props),
+    );
+    let reactRoot = root.replace("{{root}}", `${reactRendered}`);
+    reactRoot = reactRoot.replace("{{element}}", `${page.default}`);
+    reactRoot = reactRoot.replace("{{props}}", JSON.stringify(props));
+    let html = template
+      ? template.replace(REACT_ROOT, reactRoot)
+      : react.replace(REACT_ROOT, reactRoot);
+
+    if (page.config && page.config.title) {
+      html = html.replace("{{title}}", page.config.title);
+    } else {
+      html = html.replace("{{title}}", "Hello");
+    }
+    return html;
+  }
+
   private handleTSX(request: Request) {
     const page = this.pages.get(request.url);
     if (!page) return this.handleStaticFile(request);
-    const html =
-      `<html><head><style>* { font-family: Helvetica; }</style></head><body><div id="root">${
-        renderToString(page.default())
-      }</div><script type="module">import React from "https://dev.jspm.io/react";import ReactDOM from "https://dev.jspm.io/react-dom";ReactDOM.hydrate(React.createElement(${page.default}), document.getElementById('root'))</script></body></html>`;
+
+    let html;
+    let props = {};
+    if (page.props) props = page.props;
+    if (page.config && page.config.template) {
+      const template = this.templateFiles.get(page.config.template);
+      html = this.loadReactTemplate(page, props, template);
+    } else {
+      html = this.loadReactTemplate(page, props);
+    }
+
     request
       .type("text/html")
       .send(html);

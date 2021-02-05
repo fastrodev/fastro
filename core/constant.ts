@@ -1,7 +1,7 @@
 // Copyright 2021 the Fastro author. All rights reserved. MIT license.
 
 export const DENO_VERSION = "1.7.1";
-export const FASTRO_VERSION = "0.30.33";
+export const FASTRO_VERSION = "0.30.34";
 export const SERVICE_DIR = "services";
 export const SERVICE_FILE = ".controller.ts";
 export const STATIC_DIR = "public";
@@ -20,3 +20,4 @@ export const SRVC_TYPE_PAGE = "page";
 export const SRVC_TYPE_SERVICE = "service";
 export const APPS =
   "https://raw.githubusercontent.com/fastrojs/app/main/app.yml";
+export const REACT_ROOT = `<div id="root"></div>`;

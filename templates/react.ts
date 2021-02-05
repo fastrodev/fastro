@@ -1,4 +1,27 @@
-import React from "https://esm.sh/react";
+export const root = `
+<div id="root">{{root}}</div>
+<script type="module">
+  import React from "https://esm.sh/react";
+  import ReactDOM from "https://esm.sh/react-dom";
+  ReactDOM.hydrate(React.createElement({{element}}, {{props}}), document.getElementById('root'))
+</script>
+`;
+export const react = `<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{title}}</title>
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+
+</html>
+`;
+export const component = `import React from "https://esm.sh/react";
 
 export const config = {
   // Define custom html template
@@ -20,9 +43,11 @@ const App = (props: { msg: string }) => {
         rendering (SSR). Click to try the react hook.
       </p>
       <button onClick={() => setCount(count + 1)}>Click me</button>
-      <p>You clicked me {count} times</p>
+      <p>You clicked me {count} times </p>
     </div>
   );
 };
 
 export default App;
+
+`;

@@ -19,3 +19,4 @@
 | Middleware         | [`middleware.controller.ts`](middleware.controller.ts)                     | Access the request object before the controllers process it |
 | Template Rendering | [`hello/v3/hello.controller.ts`](hello/v3/hello.controller.ts)             | Render html content                                         |
 | Data validation    | [`options.controller.ts`](options.controller.ts)                           | Validate data                                               |
+| React SSR          | [`react.page.tsx`](react.page.tsx)                                         | React Server Side Rendering                                 |

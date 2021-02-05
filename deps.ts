@@ -18,4 +18,5 @@ export {
   assertThrows,
 } from "https://deno.land/std@0.84.0/testing/asserts.ts";
 export { v4 } from "https://deno.land/std@0.84.0/uuid/mod.ts";
+export { createElement } from "https://esm.sh/react";
 export { renderToString } from "https://esm.sh/react-dom/server";

@@ -1,8 +1,8 @@
 export const render = `<html>
 <head>
-    <title>\${greeting} \${name}</title>
+    <title>{{greeting}} {{name}}</title>
 </head>
 <body>
-    \${greeting} \${name}
+    {{greeting}} {{name}}
 </body>
 </html>`;
