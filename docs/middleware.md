@@ -16,16 +16,18 @@ description: You can access and add additional property to the request object be
     │   └── index.html
     └── services
         ├── hello.controller.ts
-        └── hello.template.html
+        ├── hello.template.html
+        ├── react.page.tsx
+        └── react.template.html
 
-    3 directories, 7 files
+    3 directories, 9 files
     ```
     
 - You can access and add additional property to the request object before the controllers process it.
 
 - Open middleware file, `middleware/support.ts`:
     ```ts
-    import type { Callback, Request } from "https://deno.land/x/fastro@v0.30.33/mod.ts";
+    import type { Callback, Request } from "https://deno.land/x/fastro@v0.30.34/mod.ts";
     export const options = {
       methods: ["GET, POST"],
     }
@@ -40,6 +42,7 @@ description: You can access and add additional property to the request object be
 ## What's next:
 - [Create static files](static.md)
 - [Template rendering](rendering.md)
+- [React SSR](react.md)
 - [Data validation](validation.md)
 - [Publishing and deployment](deployment.md)
 - [Fastro API](api.md)

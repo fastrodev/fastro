@@ -19,7 +19,7 @@ description: Fastro command line interface (cli) installation
 
 3. Install fastro-cli
     ```
-    deno install -A https://deno.land/x/fastro@v0.30.31/cli/fastro.ts
+    deno install -A https://deno.land/x/fastro@v0.30.34/cli/fastro.ts
     ```
 4. Go to [create a project page](project.md) to init folders and files
 
@@ -28,6 +28,7 @@ description: Fastro command line interface (cli) installation
 - [Create a middleware](middleware.md)
 - [Create static files](static.md)
 - [Template rendering](rendering.md)
+- [React SSR](react.md)
 - [Data validation](validation.md)
 - [Publishing and deployment](deployment.md)
 - [Fastro API](api.md)

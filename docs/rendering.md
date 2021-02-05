@@ -16,7 +16,9 @@ description: You can render html template and pass dynamic value on it.
     │   └── index.html
     └── services
         ├── hello.controller.ts
-        └── hello.template.html
+        ├── hello.template.html
+        ├── react.page.tsx
+        └── react.template.html
 
     3 directories, 7 files
     ```
@@ -27,10 +29,10 @@ description: You can render html template and pass dynamic value on it.
     ```html
     <html>
         <head>
-            <title>${greeting} ${name}</title>
+            <title>{{greeting}} {{name}}</title>
         </head>
         <body>
-            ${greeting} ${name}
+            {{greeting}} {{name}}
         </body>
     </html>
     ```
@@ -42,7 +44,7 @@ description: You can render html template and pass dynamic value on it.
     Uncomment `request.view` and comment `request.send`.
 
     ```ts
-    import type { Request } from "https://deno.land/x/fastro@v0.30.31/mod.ts";
+    import type { Request } from "https://deno.land/x/fastro@v0.30.34/mod.ts";
     export default (request: Request) => {
       request.view("hello.template.html", { greeting: "Hello", name: "World" });
       // request.send("hello");
@@ -58,6 +60,7 @@ description: You can render html template and pass dynamic value on it.
 
 
 ## What's next:
+- [React SSR](react.md)
 - [Data validation](validation.md)
 - [Publishing and deployment](deployment.md)
 - [Fastro API](api.md)

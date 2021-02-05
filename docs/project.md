@@ -24,9 +24,11 @@ description: Init folders and files for your project
     │   └── index.html
     └── services
         ├── hello.controller.ts
-        └── hello.template.html
+        ├── hello.template.html
+        ├── react.page.tsx
+        └── react.template.html
 
-    3 directories, 7 files
+    3 directories, 9 files
     ```
 
 3. Run server locally
@@ -51,6 +53,7 @@ description: Init folders and files for your project
 - [Create a middleware](middleware.md)
 - [Create static files](static.md)
 - [Template rendering](rendering.md)
+- [React SSR](react.md)
 - [Data validation](validation.md)
 - [Publishing and deployment](deployment.md)
 - [Fastro API](api.md)

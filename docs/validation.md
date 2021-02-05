@@ -11,7 +11,7 @@ description: You can validate headers, payload, URL params, or URL query by add 
 
 
 ```ts
-import type { HandlerOptions, Request, ValidationSchema } from "https://deno.land/x/fastro@v0.30.31/mod.ts";
+import type { HandlerOptions, Request, ValidationSchema } from "https://deno.land/x/fastro@v0.30.34/mod.ts";
 
 const validationSchema: ValidationSchema = {
   body: { type: "object", properties: { addres: { type: "string" } } },
