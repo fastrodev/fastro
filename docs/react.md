@@ -22,7 +22,7 @@ description: React Server Side Rendering
     3 directories, 9 files
     ```
 
-- Open handler file, `services/react.page.ts`:
+- Open handler file, `services/react.page.tsx`:
     ```tsx
     import React from "https://esm.sh/react";
 
