@@ -29,7 +29,7 @@ Fastro provides easy-to-use features for web development.
 |[query param](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/querybyname.controller.ts)|[static files](https://fastro.dev/docs/static.html)|
 |[url prefix](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/prefix.controller.ts)|[url redirection](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/redirect.controller.ts)|
 |[url routing by file system](https://fastro.dev/docs/handler.html)|[template rendering](https://github.com/fastrojs/fastro/blob/master/services/hello/v3/hello.controller.ts)|
-|[react ssr](https://github.com/fastrojs/fastro/blob/master/services/react.page.tsx")|[react seo ready](https://github.com/fastrojs/fastro/blob/master/services/react.template.html)|
+|[react ssr](https://github.com/fastrojs/fastro/blob/master/services/react.page.tsx)|[react seo ready](https://github.com/fastrojs/fastro/blob/master/services/react.template.html)|
 
 You can see detailed examples [here](https://github.com/fastrodev/fastro/blob/master/services).
 
