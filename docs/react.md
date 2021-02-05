@@ -1,5 +1,6 @@
 ---
 description: React Server Side Rendering
+image: https://reactjs.org/logo-og.png
 ---
 
 # Create a react page
