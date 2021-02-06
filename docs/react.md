@@ -3,7 +3,7 @@ description: Deno React Server Side Rendering (SSR)
 image: https://reactjs.org/logo-og.png
 ---
 
-# Deno React Server Side Rendering
+# Deno React Server Side Rendering (SSR)
 - `fastro init` command will generate folders and files like this.
     ```
     webapp
