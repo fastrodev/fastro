@@ -1,9 +1,9 @@
 ---
-description: React Server Side Rendering
+description: Deno React Server Side Rendering
 image: https://reactjs.org/logo-og.png
 ---
 
-# Create a react page
+# Deno React Server Side Rendering
 - `fastro init` command will generate folders and files like this.
     ```
     webapp
