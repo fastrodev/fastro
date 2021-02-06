@@ -13,6 +13,7 @@ import { parseYml } from "../deps.ts";
 import { controller } from "../templates/controller.ts";
 import { docker } from "../templates/docker.ts";
 import { favicon } from "../templates/favicon.ts";
+import { gae } from "../templates/gae.ts";
 import { gitignore } from "../templates/gitignore.ts";
 import { html } from "../templates/html.ts";
 import { main } from "../templates/main.ts";
@@ -99,6 +100,9 @@ export async function init(args?: any) {
 
   const dockerFile = encoder.encode(docker);
   await Deno.writeFile("Dockerfile", dockerFile);
+
+  const appyaml = encoder.encode(gae);
+  await Deno.writeFile("app.yaml", appyaml);
 
   await Deno.mkdir(MIDDLEWARE_DIR, { recursive: true });
   const mid = encoder.encode(middleware);
