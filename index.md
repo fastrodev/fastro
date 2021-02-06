@@ -19,8 +19,7 @@ Written in typescript. No need to register routes, controllers, middlewares, tem
 
 ## [Getting Started](https://fastro.dev/docs/quickstart)
 
-## Features
-Fastro provides easy-to-use features for web development.
+## [Features](https://github.com/fastrodev/fastro/blob/master/services)
 
 |[application/json](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)|[x-www-form-urlencoded](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)|
 |[multipart/form-data](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)|[command line interface](https://fastro.dev/docs/project.html)|
@@ -31,8 +30,6 @@ Fastro provides easy-to-use features for web development.
 |[url prefix](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/prefix.controller.ts)|[url redirection](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/redirect.controller.ts)|
 |[url routing by file system](https://fastro.dev/docs/handler.html)|[template rendering](https://github.com/fastrojs/fastro/blob/master/services/hello/v3/hello.controller.ts)|
 |[react ssr](https://github.com/fastrojs/fastro/blob/master/services/react.page.tsx)|[react seo ready](https://github.com/fastrojs/fastro/blob/master/services/react.template.html)|
-
-You can see detailed examples [here](https://github.com/fastrodev/fastro/blob/master/services).
 
 ## Serverless Demo
 - [Webapp deployed on flexible google app engine](https://phonic-altar-274306.ue.r.appspot.com).
