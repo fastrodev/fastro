@@ -1,5 +1,5 @@
 ---
-description: Deno React Server Side Rendering
+description: Deno React Server Side Rendering (SSR)
 image: https://reactjs.org/logo-og.png
 ---
 
