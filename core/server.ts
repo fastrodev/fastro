@@ -17,7 +17,7 @@ import {
   Server,
   ServerRequest,
   setCookie,
-  yellow,
+  yellow
 } from "../deps.ts";
 import { react, root } from "../templates/react.ts";
 import {
@@ -26,13 +26,18 @@ import {
   MAX_MEMORY,
   MIDDLEWARE_DIR,
   NO_CONFIG,
-  PORT,
+  NO_MIDDLEWARE,
+  NO_SERVICE,
+  NO_STATIC_FILE,
+  NO_TEMPLATE,
+  PAGE_FILE, PORT,
   REACT_ROOT,
   RUNNING_TEXT,
   SERVICE_DIR,
+  SERVICE_FILE,
   STATIC_DIR,
   TEMPLATE_DIR,
-  TEMPLATE_FILE,
+  TEMPLATE_FILE
 } from "./constant.ts";
 import type { Request } from "./request.ts";
 import type {
@@ -40,14 +45,14 @@ import type {
   MultiPartData,
   Query,
   Schema,
-  ServerOptions,
+  ServerOptions
 } from "./types.ts";
 import { Data, HandlerOptions, HttpMethod } from "./types.ts";
 import {
   createError,
   getErrorTime,
   replaceAll,
-  validateObject,
+  validateObject
 } from "./utils.ts";
 
 /**
@@ -615,7 +620,7 @@ export class Fastro {
         }
       }
     } catch (error) {
-      console.info("Start with no html template");
+      console.info(yellow(NO_TEMPLATE));
     }
   }
 
@@ -652,7 +657,7 @@ export class Fastro {
       }
     } catch (error) {
       if (Deno.env.get("DENO_ENV") !== "test") {
-        console.info("Start with no static file");
+        console.info(yellow(NO_STATIC_FILE));
       }
     }
   }
@@ -675,7 +680,7 @@ export class Fastro {
       }
     } catch (error) {
       if (Deno.env.get("DENO_ENV") !== "test") {
-        console.info("Start with no middleware");
+        console.info(yellow(NO_MIDDLEWARE));
       }
     }
   }
@@ -688,8 +693,8 @@ export class Fastro {
           this.importServices(target + "/" + dirEntry.name);
         } else if (
           dirEntry.isFile &&
-          (dirEntry.name.includes(".controller.ts") ||
-            dirEntry.name.includes(".page.tsx"))
+          (dirEntry.name.includes(SERVICE_FILE) ||
+            dirEntry.name.includes(PAGE_FILE))
         ) {
           const filePath = servicesFolder + "/" + dirEntry.name;
           const [, splittedFilePath] = filePath.split(this.serviceDir);
@@ -703,14 +708,14 @@ export class Fastro {
             ? `/${this.prefix}${splittedWithDot}`
             : `${splittedWithDot}`;
 
-          const isPage = dirEntry.name.includes(".page.tsx");
+          const isPage = dirEntry.name.includes(PAGE_FILE);
 
           this.nativeImport(finalPath, fileKey, isPage);
         }
       }
     } catch (error) {
       if (Deno.env.get("DENO_ENV") !== "test") {
-        console.info("Start with no service");
+        console.info(yellow(NO_SERVICE));
       }
     }
   }
@@ -753,7 +758,7 @@ export class Fastro {
         const { email, regid } = <{
           email: string;
           regid: string;
-        }> parsedConfig;
+        }>parsedConfig;
         this.regid = regid;
         this.email = email;
       }
@@ -782,7 +787,7 @@ export class Fastro {
    *      server.close()
    */
   public close() {
-    this.server.close();
+    if (this.server) this.server.close();
   }
 
   private async listen() {
