@@ -1,5 +1,5 @@
 ---
-description: Deno React Server Side Rendering (SSR)
+description: Render a React element to its initial HTML. React will return an HTML string. You can use this method to generate HTML on the server and send the markup down on the initial request for faster page loads and to allow search engines to crawl your pages for SEO purposes.
 image: https://reactjs.org/logo-og.png
 ---
 
