@@ -106,6 +106,7 @@ image: https://reactjs.org/logo-og.png
 
 
 ## What's next:
+- [Installation](quickstart.md)
 - [Create a handler](handler.md)
 - [Create a middleware](middleware.md)
 - [Create static files](static.md)
