@@ -26,11 +26,17 @@ import {
   HOSTNAME,
   MAX_MEMORY,
   MIDDLEWARE_DIR,
+
+
+
+
+
   NOT_FOUND, NO_CONFIG,
   NO_MIDDLEWARE,
   NO_SERVICE,
   NO_STATIC_FILE,
   NO_TEMPLATE,
+
   PAGE_FILE,
   PORT,
   REACT_ROOT,
@@ -45,6 +51,7 @@ import type { Request } from "./request.ts";
 import type {
   DynamicService,
   MultiPartData,
+  Page,
   Query,
   Schema,
   ServerOptions
@@ -523,7 +530,11 @@ export class Fastro {
     }
   }
 
-  private loadReactTemplate(page: any, props: any, template?: string) {
+  private loadReactTemplate(
+    page: Page,
+    props: any,
+    template?: string,
+  ) {
     const reactRendered = renderToString(createElement(page.default, props));
     let reactRoot = root.replace("{{root}}", `${reactRendered}`);
     reactRoot = reactRoot.replace("{{element}}", `${page.default}`);
@@ -532,8 +543,8 @@ export class Fastro {
       ? template.replace(REACT_ROOT, reactRoot)
       : react.replace(REACT_ROOT, reactRoot);
 
-    if (page.config && page.config.title) {
-      html = html.replace("{{title}}", page.config.title);
+    if (page.options && page.options.title) {
+      html = html.replace("{{title}}", page.options.title);
     } else {
       html = html.replace("{{title}}", "Hello");
     }
@@ -541,14 +552,16 @@ export class Fastro {
   }
 
   private handleTSX(request: Request) {
-    const page = this.pages.get(request.url);
+    const page: Page = this.pages.get(
+      request.url,
+    );
     if (!page) return this.handleStaticFile(request);
 
     let html;
     let props = {};
     if (page.props) props = page.props;
-    if (page.config && page.config.template) {
-      const template = this.templateFiles.get(page.config.template);
+    if (page.options && page.options.template) {
+      const template = this.templateFiles.get(page.options.template);
       html = this.loadReactTemplate(page, props, template);
     } else {
       html = this.loadReactTemplate(page, props);

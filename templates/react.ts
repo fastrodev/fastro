@@ -23,7 +23,7 @@ export const react = `<!DOCTYPE html>
 `;
 export const component = `import React from "https://esm.sh/react";
 
-export const config = {
+export const options = {
   // Define custom html template
   template: "react.template.html",
   // Define html title

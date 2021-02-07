@@ -110,3 +110,5 @@ export type Appdb = {
   e: string;
   i: string;
 };
+
+export type Page = { default: any; props: any; options: any };
