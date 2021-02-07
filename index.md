@@ -21,7 +21,7 @@ Written in typescript. No need to register routes, controllers, middlewares, tem
 Go to [the quickstart](https://fastro.dev/docs/quickstart) to install command line interface and create a project.
 
 ## React Server Side Rendering
-Go to [react ssr] to create react server side component and template.
+Go to [react ssr](https://fastro.dev/docs/react.html) to create react server side component and template.
 
 ## Features
 Fastro provides easy-to-use features for web development. You can see detailed examples [here](https://github.com/fastrodev/fastro/blob/master/services).
