@@ -105,9 +105,6 @@ image: https://reactjs.org/logo-og.png
     You can see the live demo at this link: https://phonic-altar-274306.ue.r.appspot.com/react
 
 
-7. If you want to add API end point, go to: [https://fastro.dev/docs/handler.html](https://fastro.dev/docs/handler.html)
-
-
 ## What's next:
 - [Data validation](validation.md)
 - [Publishing and deployment](deployment.md)
