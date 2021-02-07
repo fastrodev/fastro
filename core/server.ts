@@ -18,7 +18,7 @@ import {
   Server,
   ServerRequest,
   setCookie,
-  yellow,
+  yellow
 } from "../deps.ts";
 import { react, root } from "../templates/react.ts";
 import {
@@ -26,12 +26,11 @@ import {
   HOSTNAME,
   MAX_MEMORY,
   MIDDLEWARE_DIR,
-  NO_CONFIG,
+  NOT_FOUND, NO_CONFIG,
   NO_MIDDLEWARE,
   NO_SERVICE,
   NO_STATIC_FILE,
   NO_TEMPLATE,
-  NOT_FOUND,
   PAGE_FILE,
   PORT,
   REACT_ROOT,
@@ -40,7 +39,7 @@ import {
   SERVICE_FILE,
   STATIC_DIR,
   TEMPLATE_DIR,
-  TEMPLATE_FILE,
+  TEMPLATE_FILE
 } from "./constant.ts";
 import type { Request } from "./request.ts";
 import type {
@@ -52,14 +51,14 @@ import type {
   Query,
   Schema,
   ServerOptions,
-  Service,
+  Service
 } from "./types.ts";
 import { Data, HandlerOptions, HttpMethod } from "./types.ts";
 import {
   createError,
   getErrorTime,
   replaceAll,
-  validateObject,
+  validateObject
 } from "./utils.ts";
 
 /**
@@ -535,8 +534,8 @@ export class Fastro {
     props: any,
     template?: string,
   ) {
-    const reactRendered = renderToString(createElement(page.default, props));
-    let reactRoot = root.replace("{{root}}", `${reactRendered}`);
+    const rendered = renderToString(createElement(page.default, props));
+    let reactRoot = root.replace("{{root}}", `${rendered}`);
     reactRoot = reactRoot.replace("{{element}}", `${page.default}`);
     reactRoot = reactRoot.replace("{{props}}", JSON.stringify(props));
     let html = template
@@ -551,7 +550,7 @@ export class Fastro {
     return html;
   }
 
-  private handleDynamicTSX(request: Request): void {
+  private handleDynamicTSX(request: Request) {
     try {
       const [tsx] = this.dynamicPage.filter((page) => {
         return request.url.includes(page.url);
@@ -805,7 +804,7 @@ export class Fastro {
         const { email, regid } = <{
           email: string;
           regid: string;
-        }> parsedConfig;
+        }>parsedConfig;
         this.regid = regid;
         this.email = email;
       }
