@@ -1,4 +1,5 @@
 // Copyright 2021 the Fastro author. All rights reserved. MIT license.
+
 // deno-lint-ignore-file no-explicit-any
 import {
   Cookie,
@@ -25,12 +26,13 @@ import {
   HOSTNAME,
   MAX_MEMORY,
   MIDDLEWARE_DIR,
-  NO_CONFIG,
+  NOT_FOUND, NO_CONFIG,
   NO_MIDDLEWARE,
   NO_SERVICE,
   NO_STATIC_FILE,
   NO_TEMPLATE,
-  PAGE_FILE, PORT,
+  PAGE_FILE,
+  PORT,
   REACT_ROOT,
   RUNNING_TEXT,
   SERVICE_DIR,
@@ -68,6 +70,7 @@ import {
  *        prefix: "api",
  *        serviceDir: "api",
  *        staticFile: true,
+ *        container: { message: "hello" },
  *      };
  *      const server = new Fastro(serverOptions);
  */
@@ -87,6 +90,7 @@ export class Fastro {
   private services = new Map<string, any>();
   private staticFiles = new Map<string, any>();
   private templateFiles = new Map<string, any>();
+  private container: any = undefined;
 
   constructor(options?: ServerOptions) {
     if (options && options.cors) this.corsEnabled = options.cors;
@@ -95,6 +99,7 @@ export class Fastro {
     if (options && options.port) this.port = options.port;
     if (options && options.serviceDir) this.serviceDir = options.serviceDir;
     if (options && options.staticDir) this.staticDir = options.staticDir;
+    if (options && options.container) this.container = options.container;
     this.initApp();
   }
 
@@ -372,9 +377,10 @@ export class Fastro {
     }
   }
 
-  private transformRequest(serverRequest: ServerRequest) {
+  private transformRequest(serverRequest: ServerRequest, container: any) {
     try {
       const request = serverRequest as Request;
+      request.container = container;
       request.response = {};
       request.response.headers = new Headers();
       request.proxy = (url) => this.proxy(url, request);
@@ -427,7 +433,7 @@ export class Fastro {
     try {
       const url = request.url;
       const staticFile = this.staticFiles.get(url);
-      if (!staticFile) throw new Error("not found");
+      if (!staticFile) throw new Error(NOT_FOUND);
       const header = new Headers();
       if (url.includes(".svg")) header.set("content-type", "image/svg+xml");
       else if (url.includes(".png")) header.set("content-type", "image/png");
@@ -459,7 +465,7 @@ export class Fastro {
         options.methods &&
         !options.methods.includes(request.method as HttpMethod)
       ) {
-        throw new Error("not found");
+        throw new Error(NOT_FOUND);
       }
       if (
         options && options.validationSchema && options.validationSchema.headers
@@ -481,7 +487,7 @@ export class Fastro {
           middleware.options.methods &&
           !middleware.options.methods.includes(request.method)
         ) {
-          throw new Error("Middleware HTTP method not found");
+          throw new Error(NOT_FOUND);
         }
 
         if (
@@ -518,9 +524,7 @@ export class Fastro {
   }
 
   private loadReactTemplate(page: any, props: any, template?: string) {
-    const reactRendered = renderToString(
-      createElement(page.default, props),
-    );
+    const reactRendered = renderToString(createElement(page.default, props));
     let reactRoot = root.replace("{{root}}", `${reactRendered}`);
     reactRoot = reactRoot.replace("{{element}}", `${page.default}`);
     reactRoot = reactRoot.replace("{{props}}", JSON.stringify(props));
@@ -565,7 +569,7 @@ export class Fastro {
         options.methods &&
         !options.methods.includes(request.method as HttpMethod)
       ) {
-        throw new Error("not found");
+        throw new Error(NOT_FOUND);
       }
       if (
         options && options.validationSchema && options.validationSchema.headers
@@ -582,7 +586,7 @@ export class Fastro {
   private handleRequestError(error: Error, serverRequest: ServerRequest) {
     const err = createError("HANDLE_REQUEST_ERROR", error);
     let status = 500;
-    if (error.message.includes("not found")) status = 404;
+    if (error.message.includes(NOT_FOUND)) status = 404;
     if (error.message.includes("VALIDATE")) status = 400;
     const message = JSON.stringify({ error: true, message: error.message });
     const headers = new Headers();
@@ -594,10 +598,10 @@ export class Fastro {
     );
   }
 
-  private handleRequest(serverRequest: ServerRequest) {
+  private handleRequest(serverRequest: ServerRequest, container: any) {
     try {
-      const request = this.transformRequest(serverRequest);
-      if (!request) throw new Error("request rrror");
+      const request = this.transformRequest(serverRequest, container);
+      if (!request) throw new Error("request error");
       if (serverRequest.url === "/") return this.handleRoot(request);
       if (this.middlewares.size > 0) return this.handleMiddleware(request);
       this.handleRoute(request);
@@ -805,7 +809,7 @@ export class Fastro {
       }
       this.server = serve({ hostname: this.hostname, port: this.port });
       for await (const request of this.server) {
-        this.handleRequest(request);
+        this.handleRequest(request, this.container);
       }
     } catch (error) {
       error.message = "LISTEN_ERROR: " + error.message;

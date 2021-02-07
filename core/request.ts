@@ -135,6 +135,12 @@ export class Request extends ServerRequest {
     // deno-lint-ignore no-explicit-any
     (template: string, options?: any): void;
   };
+  /**
+   * You can access container that defined on server creation
+   *
+   *        request.container;
+   */
+  container!: any;
   // deno-lint-ignore no-explicit-any
   [key: string]: any
 }

@@ -10,6 +10,7 @@ export type ServerOptions = {
   prefix?: string;
   serviceDir?: string;
   staticDir?: string;
+  container?: any;
 };
 
 export type ListenOptions = {
