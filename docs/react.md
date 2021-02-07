@@ -7,7 +7,7 @@ image: https://reactjs.org/logo-og.png
 
 1. Install fastro command line interface (cli):
     ```
-    deno install -A https://deno.land/x/fastro@v0.30.35/cli/fastro.ts
+    deno install -A https://deno.land/x/fastro@v0.30.36/cli/fastro.ts
     ```
 
 2. Create webapp folder, generate initial folders and files:
@@ -36,13 +36,13 @@ image: https://reactjs.org/logo-og.png
 
 3. Open `services/react.page.tsx`:
 
-   - You can change the react template and the html title with your own via `config`
+   - You can change the react template and the html title with your own via `options`
    - You can define react props via `props`  
 
    ```tsx
    import React from "https://esm.sh/react";
 
-    export const config = {
+    export const options = {
         template: "react.template.html",
         title: "Hello Deno Land!",
     };
