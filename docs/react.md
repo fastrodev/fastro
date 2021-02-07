@@ -37,7 +37,7 @@ image: https://reactjs.org/logo-og.png
 3. Open `services/react.page.tsx`:
 
    - You can change the react template and the html title with your own via `config`
-   - You can define react props via `props`
+   - You can define react props via `props`  
 
    ```tsx
    import React from "https://esm.sh/react";
@@ -102,7 +102,7 @@ image: https://reactjs.org/logo-og.png
     ```
     http://localhost:3000/react
     ```
-    You can see the live demo at this link: https://phonic-altar-274306.ue.r.appspot.com/react
+    You can see the live demo at this link: [https://phonic-altar-274306.ue.r.appspot.com/react](https://phonic-altar-274306.ue.r.appspot.com/react)
 
 
 ## What's next:
