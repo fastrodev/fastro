@@ -106,6 +106,9 @@ image: https://reactjs.org/logo-og.png
 
 
 ## What's next:
+- [Create a handler](handler.md)
+- [Create a middleware](middleware.md)
+- [Create static files](static.md)
 - [Data validation](validation.md)
 - [Publishing and deployment](deployment.md)
 - [Fastro API](api.md)
