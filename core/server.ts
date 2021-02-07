@@ -18,7 +18,7 @@ import {
   Server,
   ServerRequest,
   setCookie,
-  yellow
+  yellow,
 } from "../deps.ts";
 import { react, root } from "../templates/react.ts";
 import {
@@ -26,17 +26,12 @@ import {
   HOSTNAME,
   MAX_MEMORY,
   MIDDLEWARE_DIR,
-
-
-
-
-
-  NOT_FOUND, NO_CONFIG,
+  NO_CONFIG,
   NO_MIDDLEWARE,
   NO_SERVICE,
   NO_STATIC_FILE,
   NO_TEMPLATE,
-
+  NOT_FOUND,
   PAGE_FILE,
   PORT,
   REACT_ROOT,
@@ -45,23 +40,26 @@ import {
   SERVICE_FILE,
   STATIC_DIR,
   TEMPLATE_DIR,
-  TEMPLATE_FILE
+  TEMPLATE_FILE,
 } from "./constant.ts";
 import type { Request } from "./request.ts";
 import type {
+  DynamicPage,
   DynamicService,
+  Middleware,
   MultiPartData,
   Page,
   Query,
   Schema,
-  ServerOptions
+  ServerOptions,
+  Service,
 } from "./types.ts";
 import { Data, HandlerOptions, HttpMethod } from "./types.ts";
 import {
   createError,
   getErrorTime,
   replaceAll,
-  validateObject
+  validateObject,
 } from "./utils.ts";
 
 /**
@@ -86,15 +84,16 @@ export class Fastro {
   private corsEnabled!: boolean;
   private cwd = Deno.cwd();
   private dynamicService: DynamicService[] = [];
+  private dynamicPage: DynamicPage[] = [];
   private hostname = HOSTNAME;
-  private middlewares = new Map<string, any>();
-  private pages = new Map<string, any>();
+  private middlewares = new Map<string, Middleware>();
+  private pages = new Map<string, Page>();
   private port = PORT;
   private prefix!: string;
   private server!: Server;
   private serviceDir = SERVICE_DIR;
   private staticDir = STATIC_DIR;
-  private services = new Map<string, any>();
+  private services = new Map<string, Service>();
   private staticFiles = new Map<string, any>();
   private templateFiles = new Map<string, any>();
   private container: any = undefined;
@@ -242,9 +241,10 @@ export class Fastro {
     try {
       const service = this.services.get(url);
       if (
-        service && service.validationSchema && service.validationSchema.body
+        service && service.options.validationSchema &&
+        service.options.validationSchema.body
       ) {
-        const schema = service.validationSchema.body as Schema;
+        const schema = service.options.validationSchema.body as Schema;
         validateObject(payload, schema);
       }
     } catch (error) {
@@ -551,25 +551,53 @@ export class Fastro {
     return html;
   }
 
-  private handleTSX(request: Request) {
-    const page: Page = this.pages.get(
-      request.url,
-    );
-    if (!page) return this.handleStaticFile(request);
+  private handleDynamicTSX(request: Request): void {
+    try {
+      const [tsx] = this.dynamicPage.filter((page) => {
+        return request.url.includes(page.url);
+      });
 
-    let html;
-    let props = {};
-    if (page.props) props = page.props;
-    if (page.options && page.options.template) {
-      const template = this.templateFiles.get(page.options.template);
-      html = this.loadReactTemplate(page, props, template);
-    } else {
-      html = this.loadReactTemplate(page, props);
+      if (!tsx) return this.handleStaticFile(request);
+
+      let html;
+      let props = {};
+      if (tsx.page.props) props = tsx.page.props;
+      if (tsx.page.options && tsx.page.options.template) {
+        const template = this.templateFiles.get(tsx.page.options.template);
+        html = this.loadReactTemplate(tsx.page, props, template);
+      } else {
+        html = this.loadReactTemplate(tsx.page, props);
+      }
+
+      request
+        .type("text/html")
+        .send(html);
+    } catch (error) {
+      throw createError("HANDLE_DYNAMIC_TSX_ERROR", error);
     }
+  }
 
-    request
-      .type("text/html")
-      .send(html);
+  private handleTSX(request: Request) {
+    try {
+      const tsx = this.pages.get(request.url);
+      if (!tsx) return this.handleDynamicTSX(request);
+
+      let html;
+      let props = {};
+      if (tsx.props) props = tsx.props;
+      if (tsx.options && tsx.options.template) {
+        const template = this.templateFiles.get(tsx.options.template);
+        html = this.loadReactTemplate(tsx, props, template);
+      } else {
+        html = this.loadReactTemplate(tsx, props);
+      }
+
+      request
+        .type("text/html")
+        .send(html);
+    } catch (error) {
+      throw createError("HANDLE_TSX_ERROR", error);
+    }
   }
 
   private handleRoute(request: Request) {
@@ -747,9 +775,11 @@ export class Fastro {
           : fileKey;
 
         if (options && options.params) {
-          this.dynamicService.push(
-            { url: fileKey, service: importedFile },
-          );
+          if (isPage) {
+            this.dynamicPage.push({ url: fileKey, page: importedFile });
+          } else {
+            this.dynamicService.push({ url: fileKey, service: importedFile });
+          }
           return;
         }
 
@@ -775,7 +805,7 @@ export class Fastro {
         const { email, regid } = <{
           email: string;
           regid: string;
-        }>parsedConfig;
+        }> parsedConfig;
         this.regid = regid;
         this.email = email;
       }
@@ -826,7 +856,8 @@ export class Fastro {
       }
     } catch (error) {
       error.message = "LISTEN_ERROR: " + error.message;
-      console.error(`ERROR: ${getErrorTime()}`, error);
+      console.error(red(`ERROR: ${getErrorTime()}`), error);
+      Deno.exit(1);
     }
   }
 }

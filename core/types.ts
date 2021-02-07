@@ -29,6 +29,15 @@ export type DynamicService = {
   service: any;
 };
 
+export type DynamicPage = {
+  url: string;
+  page: {
+    props: any;
+    options: any;
+    default: any;
+  };
+};
+
 export type Data = {
   [key: string]: any;
 };
@@ -112,3 +121,7 @@ export type Appdb = {
 };
 
 export type Page = { default: any; props: any; options: any };
+
+export type Service = { default: any; options: any };
+
+export type Middleware = { default: any; options: any };
