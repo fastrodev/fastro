@@ -140,6 +140,7 @@ export class Request extends ServerRequest {
    *
    *        request.container;
    */
+  // deno-lint-ignore no-explicit-any
   container!: any;
   // deno-lint-ignore no-explicit-any
   [key: string]: any
