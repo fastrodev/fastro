@@ -12,7 +12,7 @@ image: https://reactjs.org/logo-og.png
 
 2. Create webapp folder, generate initial folders and files:
     ```
-    mkdir webapp && fastro init
+    mkdir webapp && cd webapp && fastro init
     ```
     It will create folders and files like this:
     ```
