@@ -4,9 +4,20 @@ image: https://reactjs.org/logo-og.png
 ---
 
 # Deno React Server Side Rendering (SSR)
-- `fastro init` command will generate folders and files like this.
+
+1. Install fastro command line interface (cli):
     ```
-    webapp
+    deno install -A https://deno.land/x/fastro@v0.30.35/cli/fastro.ts
+    ```
+
+2. Create webapp folder, generate initial folders and files:
+    ```
+    mkdir webapp && fastro init
+    ```
+    It will create folders and files like this:
+    ```
+    .
+    ├── app.yaml
     ├── Dockerfile
     ├── main.ts
     ├── middleware
@@ -20,52 +31,81 @@ image: https://reactjs.org/logo-og.png
         ├── react.page.tsx
         └── react.template.html
 
-    3 directories, 9 files
+    3 directories, 10 files
     ```
 
-- Open handler file, `services/react.page.tsx`:
-    ```tsx
-    import React from "https://esm.sh/react";
+3. Open `services/react.page.tsx`:
+
+   - You can change the react template and the html title with your own via `config`
+   - You can define react props via `props`
+
+   ```tsx
+   import React from "https://esm.sh/react";
 
     export const config = {
-        // Define custom html template
         template: "react.template.html",
-        // Define html title
         title: "Hello Deno Land!",
     };
 
-    // Define react props: https://reactjs.org/docs/components-and-props.html
     export const props = { msg: "Hello Deno Land!" };
 
     const App = (props: { msg: string }) => {
         const [count, setCount] = React.useState(0);
         return (
-          <div>
-            <h2>{props.msg}</h2>
-            <p>
-                This page was created using Deno, Fastro and React's server-side
-                rendering (SSR). Click to try the react hook.
-            </p>
-            <button onClick={() => setCount(count + 1)}>Click me</button>
-            <p>You clicked me {count} times </p>
-          </div>
+            <div>
+                <h2>{props.msg}</h2>
+                <p>
+                    This page was created using Deno, Fastro and React's server-side
+                    rendering (SSR). Click to try the react hook.
+                </p>
+                <button onClick={() => setCount(count + 1)}>Click me</button>
+                <p>You clicked me {count} times</p>
+            </div>
         );
     };
 
     export default App;
 
-    ```
-- Run server
+   ```
 
+4. Open `react.template.html`:
+   - This is the usual react template.
+   - You can change it as needed.
+
+   ```html
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{title}}</title>
+    </head>
+
+    <body>
+        <div id="root"></div>
+    </body>
+
+    </html>
+   ```
+
+5. Run your webapp:
+    ```
+    deno run -A main.ts
+    ```
+    Or if you want to monitor any changes and automatically restart:
     ```
     fastro serve
     ```
 
-- Open url to access the react page
+6. Open the react page
     ```
     http://localhost:3000/react
     ```
-- Check this url to see the live demo: [https://phonic-altar-274306.ue.r.appspot.com/react](https://phonic-altar-274306.ue.r.appspot.com/react)
+    You can see the live demo at this link: https://phonic-altar-274306.ue.r.appspot.com/react
+
+
+7. If you want to add API end point, go to: [https://fastro.dev/docs/handler.html](https://fastro.dev/docs/handler.html)
 
 
 ## What's next:
