@@ -72,14 +72,14 @@ image: https://reactjs.org/logo-og.png
    - This is the usual react template.
    - You can change it as needed.
 
-   ```html
+    {% raw %}
     <!DOCTYPE html>
     <html>
 
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{ {title} }</title>
+        <title>{{title}}</title>
     </head>
 
     <body>
@@ -87,7 +87,7 @@ image: https://reactjs.org/logo-og.png
     </body>
 
     </html>
-   ```
+   {% endraw %}
 
 5. Run your webapp:
     ```
