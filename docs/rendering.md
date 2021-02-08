@@ -29,10 +29,10 @@ description: You can render html template and pass dynamic value on it.
     ```html
     <html>
         <head>
-            <title>{{greeting}} {{name}}</title>
+            <title>{% raw %}{{greeting}} {{name}}{% endraw %}</title>
         </head>
         <body>
-            {{greeting}} {{name}}
+            {% raw %}{{greeting}} {{name}}{% endraw %}
         </body>
     </html>
     ```
