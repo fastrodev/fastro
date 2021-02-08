@@ -72,7 +72,7 @@ image: https://reactjs.org/logo-og.png
    - This is the usual react template.
    - You can change it as needed.
 
-    ```
+    ```html
     <!DOCTYPE html>
     <html>
 
