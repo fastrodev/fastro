@@ -1,4 +1,4 @@
-# Fastro
+# FASTRO
 
 ![][build] ![][version]
 
@@ -21,7 +21,9 @@ Go to [the quickstart](https://fastro.dev/docs/quickstart) to install command
 line interface and create a project.
 
 ## React Server Side Rendering
-Go to [react ssr](https://fastro.dev/docs/react.html) to create react server side rendering and template.
+
+Go to [react server side rendering (ssr)](https://fastro.dev/docs/react.html) to
+create the react component and the html template in a very simple way.
 
 ## Features
 
@@ -68,7 +70,8 @@ Fastro provides easy-to-use features for web development.
   </tbody>
 </table>
 
-You can see detailed examples [here](https://github.com/fastrodev/fastro/blob/master/services).
+You can see more detailed examples
+[here](https://github.com/fastrodev/fastro/blob/master/services).
 
 ## Serverless Demo
 

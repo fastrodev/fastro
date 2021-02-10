@@ -26,11 +26,17 @@ import {
   HOSTNAME,
   MAX_MEMORY,
   MIDDLEWARE_DIR,
+
+
+
+
+
   NOT_FOUND, NO_CONFIG,
   NO_MIDDLEWARE,
   NO_SERVICE,
   NO_STATIC_FILE,
   NO_TEMPLATE,
+
   PAGE_FILE,
   PORT,
   REACT_ROOT,
@@ -462,7 +468,7 @@ export class Fastro {
       const [handlerFile] = this.dynamicService.filter((service) => {
         return request.url.includes(service.url);
       });
-      if (!handlerFile) return this.handleTSX(request);
+      if (!handlerFile) return this.handlePage(request);
       const options: HandlerOptions = handlerFile.service.options
         ? handlerFile.service.options
         : undefined;
@@ -529,7 +535,7 @@ export class Fastro {
     }
   }
 
-  private loadReactTemplate(
+  private renderComponent(
     page: Page,
     props: any,
     template?: string,
@@ -550,53 +556,41 @@ export class Fastro {
     return html;
   }
 
-  private handleDynamicTSX(request: Request) {
+  private sendHTML(page: Page, request: Request) {
     try {
-      const [tsx] = this.dynamicPage.filter((page) => {
-        return request.url.includes(page.url);
-      });
-
-      if (!tsx) return this.handleStaticFile(request);
-
       let html;
-      let props = {};
-      if (tsx.page.props) props = tsx.page.props;
-      if (tsx.page.options && tsx.page.options.template) {
-        const template = this.templateFiles.get(tsx.page.options.template);
-        html = this.loadReactTemplate(tsx.page, props, template);
-      } else {
-        html = this.loadReactTemplate(tsx.page, props);
+      let props;
+
+      if (page.props) {
+        props = page.props;
+        props.url = request.url;
+        props.params = request.getParams();
+        props.cookie = request.getCookies();
       }
 
-      request
-        .type("text/html")
-        .send(html);
+      if (page.options && page.options.template) {
+        const template = this.templateFiles.get(page.options.template);
+        html = this.renderComponent(page, props, template);
+      } else html = this.renderComponent(page, props);
+
+      request.type("text/html").send(html);
     } catch (error) {
-      throw createError("HANDLE_DYNAMIC_TSX_ERROR", error);
+      throw createError("SEND_HTML_ERROR", error);
     }
   }
 
-  private handleTSX(request: Request) {
-    try {
-      const tsx = this.pages.get(request.url);
-      if (!tsx) return this.handleDynamicTSX(request);
+  private handlePage(request: Request) {
+    const page = this.pages.get(request.url);
+    if (!page) return this.handleDynamicPage(request);
+    this.sendHTML(page, request);
+  }
 
-      let html;
-      let props = {};
-      if (tsx.props) props = tsx.props;
-      if (tsx.options && tsx.options.template) {
-        const template = this.templateFiles.get(tsx.options.template);
-        html = this.loadReactTemplate(tsx, props, template);
-      } else {
-        html = this.loadReactTemplate(tsx, props);
-      }
-
-      request
-        .type("text/html")
-        .send(html);
-    } catch (error) {
-      throw createError("HANDLE_TSX_ERROR", error);
-    }
+  private handleDynamicPage(request: Request) {
+    const [page] = this.dynamicPage.filter((page) =>
+      request.url.includes(page.url)
+    );
+    if (!page) return this.handleStaticFile(request);
+    this.sendHTML(page.page, request);
   }
 
   private handleRoute(request: Request) {

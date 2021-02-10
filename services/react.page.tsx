@@ -10,7 +10,8 @@ export const options = {
 // Define react props: https://reactjs.org/docs/components-and-props.html
 export const props = { msg: "Hello Deno Land!" };
 
-const App = (props: { msg: string }) => {
+const App = (props: any) => {
+  console.log(props)
   const [count, setCount] = React.useState(0);
   return (
     <div>
