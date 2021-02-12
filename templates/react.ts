@@ -24,7 +24,7 @@ export const react = `<!DOCTYPE html>
 </html>
 `;
 export const component = `import React from "https://esm.sh/react";
-import type { Request } from "https://deno.land/x/fastro@v${FASTRO_VERSION}/mod.ts;
+import type { Request } from "https://deno.land/x/fastro@v${FASTRO_VERSION}/mod.ts";
 
 export const options = {
   // Define custom html template
