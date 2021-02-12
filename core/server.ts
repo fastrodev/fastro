@@ -2,6 +2,7 @@
 
 // deno-lint-ignore-file no-explicit-any
 import {
+  container,
   Cookie,
   createElement,
   decode,
@@ -18,25 +19,23 @@ import {
   Server,
   ServerRequest,
   setCookie,
-  yellow
+  yellow,
 } from "../deps.ts";
 import { react, root } from "../templates/react.ts";
 import {
+  CONTENT_TYPE,
+  DENO_ENV,
+  DEV_ENV,
   FASTRO_VERSION,
   HOSTNAME,
   MAX_MEMORY,
   MIDDLEWARE_DIR,
-
-
-
-
-
-  NOT_FOUND, NO_CONFIG,
+  NO_CONFIG,
   NO_MIDDLEWARE,
   NO_SERVICE,
   NO_STATIC_FILE,
   NO_TEMPLATE,
-
+  NOT_FOUND,
   PAGE_FILE,
   PORT,
   REACT_ROOT,
@@ -45,7 +44,8 @@ import {
   SERVICE_FILE,
   STATIC_DIR,
   TEMPLATE_DIR,
-  TEMPLATE_FILE
+  TEMPLATE_FILE,
+  TEST_ENV,
 } from "./constant.ts";
 import type { Request } from "./request.ts";
 import type {
@@ -57,14 +57,14 @@ import type {
   Query,
   Schema,
   ServerOptions,
-  Service
+  Service,
 } from "./types.ts";
 import { Data, HandlerOptions, HttpMethod } from "./types.ts";
 import {
   createError,
   getErrorTime,
   replaceAll,
-  validateObject
+  validateObject,
 } from "./utils.ts";
 
 /**
@@ -110,7 +110,6 @@ export class Fastro {
     if (options && options.port) this.port = options.port;
     if (options && options.serviceDir) this.serviceDir = options.serviceDir;
     if (options && options.staticDir) this.staticDir = options.staticDir;
-    if (options && options.container) this.container = options.container;
     this.initApp();
   }
 
@@ -260,7 +259,7 @@ export class Fastro {
 
   private async getPayload(requestServer: ServerRequest) {
     try {
-      const contentType = requestServer.headers.get("content-type");
+      const contentType = requestServer.headers.get(CONTENT_TYPE);
       if (contentType?.includes("multipart/form-data")) {
         return this.handleMultipart(requestServer, contentType);
       } else if (
@@ -412,7 +411,7 @@ export class Fastro {
       request.getCookie = (name) => this.getCookiesByName(name, request);
       request.json = (payload) => {
         const headers = new Headers();
-        headers.set("content-type", "application/json");
+        headers.set(CONTENT_TYPE, "application/json");
         this.send(payload, request.httpStatus, headers, request);
       };
       request.type = (contentType: string) => {
@@ -427,7 +426,7 @@ export class Fastro {
         status = request.httpStatus ? request.httpStatus : 200;
         if (request.contentType) {
           headers = new Headers();
-          headers.set("content-type", request.contentType);
+          headers.set(CONTENT_TYPE, request.contentType);
         }
         this.send(payload, status, headers, request);
       };
@@ -447,15 +446,15 @@ export class Fastro {
       const staticFile = this.staticFiles.get(url);
       if (!staticFile) throw new Error(NOT_FOUND);
       const header = new Headers();
-      if (url.includes(".svg")) header.set("content-type", "image/svg+xml");
-      else if (url.includes(".png")) header.set("content-type", "image/png");
-      else if (url.includes(".jpeg")) header.set("content-type", "image/jpeg");
-      else if (url.includes(".css")) header.set("content-type", "text/css");
-      else if (url.includes(".html")) header.set("content-type", "text/html");
+      if (url.includes(".svg")) header.set(CONTENT_TYPE, "image/svg+xml");
+      else if (url.includes(".png")) header.set(CONTENT_TYPE, "image/png");
+      else if (url.includes(".jpeg")) header.set(CONTENT_TYPE, "image/jpeg");
+      else if (url.includes(".css")) header.set(CONTENT_TYPE, "text/css");
+      else if (url.includes(".html")) header.set(CONTENT_TYPE, "text/html");
       else if (url.includes(".json")) {
-        header.set("content-type", "application/json");
+        header.set(CONTENT_TYPE, "application/json");
       } else if (url.includes("favicon.ico")) {
-        header.set("content-type", "image/ico");
+        header.set(CONTENT_TYPE, "image/ico");
       }
       request.send(staticFile, 200, header);
     } catch (error) {
@@ -561,7 +560,9 @@ export class Fastro {
       let html;
       let props;
 
-      if (page.props) {
+      if (page.props && typeof page.props === "function") {
+        props = page.props(request);
+      } else if (page.props) {
         props = page.props;
         props.url = request.url;
         props.params = request.getParams();
@@ -624,7 +625,7 @@ export class Fastro {
     if (error.message.includes("VALIDATE")) status = 400;
     const message = JSON.stringify({ error: true, message: error.message });
     const headers = new Headers();
-    headers.set("content-type", "application/json");
+    headers.set(CONTENT_TYPE, "application/json");
     serverRequest.respond({ status, body: message, headers });
     console.error(
       `ERROR: ${getErrorTime()}, url: ${serverRequest.url},`,
@@ -635,7 +636,7 @@ export class Fastro {
   private handleRequest(serverRequest: ServerRequest, container: any) {
     try {
       const request = this.transformRequest(serverRequest, container);
-      if (!request) throw new Error("request error");
+      if (!request) throw new Error("handle request error");
       if (serverRequest.url === "/") return this.handleRoot(request);
       if (this.middlewares.size > 0) return this.handleMiddleware(request);
       this.handleRoute(request);
@@ -694,7 +695,7 @@ export class Fastro {
         }
       }
     } catch (error) {
-      if (Deno.env.get("DENO_ENV") !== "test") {
+      if (Deno.env.get(DENO_ENV) !== TEST_ENV) {
         console.info(yellow(NO_STATIC_FILE));
       }
     }
@@ -706,7 +707,7 @@ export class Fastro {
       for await (const dirEntry of Deno.readDir(middlewareFolder)) {
         if (dirEntry.isFile) {
           const filePath = middlewareFolder + "/" + dirEntry.name;
-          const fileImport = Deno.env.get("DENO_ENV") === "development"
+          const fileImport = Deno.env.get(DENO_ENV) === DEV_ENV
             ? `file:${filePath}#${new Date().getTime()}`
             : `file:${filePath}`;
           import(fileImport).then((middleware) => {
@@ -717,7 +718,7 @@ export class Fastro {
         }
       }
     } catch (error) {
-      if (Deno.env.get("DENO_ENV") !== "test") {
+      if (Deno.env.get(DENO_ENV) !== TEST_ENV) {
         console.info(yellow(NO_MIDDLEWARE));
       }
     }
@@ -738,7 +739,7 @@ export class Fastro {
           const [, splittedFilePath] = filePath.split(this.serviceDir);
           const [splittedWithDot] = splittedFilePath.split(".");
 
-          const finalPath = Deno.env.get("DENO_ENV") === "development"
+          const finalPath = Deno.env.get(DENO_ENV) === DEV_ENV
             ? `file:${filePath}#${new Date().getTime()}`
             : `file:${filePath}`;
 
@@ -752,7 +753,7 @@ export class Fastro {
         }
       }
     } catch (error) {
-      if (Deno.env.get("DENO_ENV") !== "test") {
+      if (Deno.env.get(DENO_ENV) !== TEST_ENV) {
         console.info(yellow(NO_SERVICE));
       }
     }
@@ -798,12 +799,12 @@ export class Fastro {
         const { email, regid } = <{
           email: string;
           regid: string;
-        }>parsedConfig;
+        }> parsedConfig;
         this.regid = regid;
         this.email = email;
       }
     } catch (error) {
-      if (Deno.env.get("DENO_ENV") !== "test") {
+      if (Deno.env.get(DENO_ENV) !== TEST_ENV) {
         console.info(yellow(NO_CONFIG));
       }
     }
@@ -815,9 +816,10 @@ export class Fastro {
     this.readConfig()
       .then(() => this.appStatus = this.getAppStatus())
       .then(() => this.importMiddleware(MIDDLEWARE_DIR))
+      .then(() => this.readHtmlTemplate(TEMPLATE_DIR))
       .then(() => this.importServices(this.serviceDir))
       .then(() => this.readStaticFiles(this.staticDir))
-      .then(() => this.readHtmlTemplate(TEMPLATE_DIR))
+      .then(() => this.container = container())
       .then(() => this.listen());
   }
 
@@ -832,7 +834,7 @@ export class Fastro {
 
   private async listen() {
     try {
-      if (Deno.env.get("DENO_ENV") !== "test") {
+      if (Deno.env.get(DENO_ENV) !== TEST_ENV) {
         const addr = `http://${this.hostname}:${this.port}`;
         const runningText = `${RUNNING_TEXT}: ${addr}`;
         if (!this.regid) {

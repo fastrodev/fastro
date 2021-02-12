@@ -11,7 +11,7 @@ export async function watch() {
   const watcher = Deno.watchFs(Deno.cwd());
   const promises: any[] = [];
   for await (const event of watcher) {
-    if (event.kind === "modify") {
+    if (event.kind === "access") {
       const promise = new Promise((resolve) => {
         serve(port, args);
         resolve("File changes detected!");

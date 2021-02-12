@@ -18,6 +18,7 @@ import { gitignore } from "../templates/gitignore.ts";
 import { html } from "../templates/html.ts";
 import { main } from "../templates/main.ts";
 import { middleware } from "../templates/middleware.ts";
+import { depsTemplate } from "../templates/deps.ts";
 import {
   component as comp,
   react as reactTemplate,
@@ -94,6 +95,9 @@ export async function init(args?: any) {
 
   const mainFile = encoder.encode(main);
   await Deno.writeFile("main.ts", mainFile);
+
+  const depsFile = encoder.encode(depsTemplate);
+  await Deno.writeFile("deps.ts", depsFile);
 
   const gitFile = encoder.encode(gitignore);
   await Deno.writeFile(".gitignore", gitFile);

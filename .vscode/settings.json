@@ -8,14 +8,14 @@
       "editor.defaultFormatter": "vscode.typescript-language-features",
       "editor.formatOnSave": true,
       "editor.codeActionsOnSave": {
-          "source.organizeImports": true,
+          "source.organizeImports": false,
       }
   },
   "[typescriptreact]": {
       "editor.defaultFormatter": "vscode.typescript-language-features",
       "editor.formatOnSave": true,
       "editor.codeActionsOnSave": {
-          "source.organizeImports": true,
+          "source.organizeImports": false,
       }
   },
   "deno.enable": true,
