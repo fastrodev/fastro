@@ -2,7 +2,6 @@
 
 // deno-lint-ignore-file no-explicit-any
 import {
-  container,
   Cookie,
   createElement,
   decode,
@@ -817,7 +816,7 @@ export class Fastro {
         const { email, regid } = <{
           email: string;
           regid: string;
-        }>parsedConfig;
+        }> parsedConfig;
         this.regid = regid;
         this.email = email;
       }

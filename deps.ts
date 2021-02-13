@@ -20,6 +20,7 @@ export {
 export { v4 } from "https://deno.land/std@0.86.0/uuid/mod.ts";
 export { createElement } from "https://esm.sh/react";
 export { renderToString } from "https://esm.sh/react-dom/server";
-export const container = () => {
-  return { container: true };
+const container: { db: any } = {
+  db: new Promise((resolve) => resolve("connected!")),
 };
+export default () => container;

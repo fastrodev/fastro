@@ -21,7 +21,8 @@ export const react = `<!DOCTYPE html>
 
 </html>
 `;
-export const component = `import { Container, React, Request } from "../deps.ts";
+export const component =
+  `import { Container, React, Request } from "../deps.ts";
 
 export const options = {
   // Define custom html template
