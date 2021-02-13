@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 export {
   decode as decodeBase64,
   encode as encodeBase64,
