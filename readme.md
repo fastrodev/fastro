@@ -23,7 +23,8 @@ line interface and create a project.
 ## React Server Side Rendering
 
 Go to [react server side rendering](https://fastro.dev/docs/react.html) to
-create the react component, define props, and setup the html template in a very simple way.
+create the react component, define props, and setup the html template in a very
+simple way.
 
 ## Features
 
@@ -39,7 +40,8 @@ Fastro provides easy-to-use features for web development.
 - [Query params](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/querybyname.controller.ts)
 - [Static files](https://fastro.dev/docs/static.html)
 - [Serverless deployment](https://fastro.dev/docs/deployment.html)
-- [Support body handling](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts): `application/json`, `x-www-form-urlencoded`, `multipart/form-data`
+- [Support body handling](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts):
+  `application/json`, `x-www-form-urlencoded`, `multipart/form-data`
 - [Support cookie](https://github.com/fastrojs/fastro/blob/master/services/cookie/set.controller.ts)
 - [URL prefix](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/prefix.controller.ts)
 - [URL redicetion](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/redirect.controller.ts)

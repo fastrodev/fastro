@@ -19,6 +19,7 @@ import { html } from "../templates/html.ts";
 import { main } from "../templates/main.ts";
 import { middleware } from "../templates/middleware.ts";
 import { depsTemplate } from "../templates/deps.ts";
+import { readme } from "../templates/readme.ts";
 import {
   component as comp,
   react as reactTemplate,
@@ -98,6 +99,9 @@ export async function init(args?: any) {
 
   const depsFile = encoder.encode(depsTemplate);
   await Deno.writeFile("deps.ts", depsFile);
+
+  const readmeFile = encoder.encode(readme);
+  await Deno.writeFile("readme.md", readmeFile);
 
   const gitFile = encoder.encode(gitignore);
   await Deno.writeFile(".gitignore", gitFile);
