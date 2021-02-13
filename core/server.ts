@@ -81,7 +81,6 @@ import {
  *        prefix: "api",
  *        serviceDir: "api",
  *        staticFile: true,
- *        container: { message: "hello" },
  *      };
  *      const server = new Fastro(serverOptions);
  */
@@ -817,7 +816,7 @@ export class Fastro {
         const { email, regid } = <{
           email: string;
           regid: string;
-        }> parsedConfig;
+        }>parsedConfig;
         this.regid = regid;
         this.email = email;
       }
