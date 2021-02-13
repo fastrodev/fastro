@@ -1,4 +1,5 @@
 import React from "https://esm.sh/react";
+import { Container } from "../container.ts";
 import type { Request } from "../mod.ts";
 
 export const options = {
@@ -9,10 +10,12 @@ export const options = {
 };
 
 // Define react props: https://reactjs.org/docs/components-and-props.html
-export const props = (request: Request) => {
+export const props = async (request: Request) => {
+  const container: Container = request.container;
   return {
     params: request.getParams(),
     header: "Click me!",
+    repository: await container.repository,
   };
 };
 

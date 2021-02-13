@@ -31,7 +31,7 @@ simple way.
 Fastro provides easy-to-use features for web development.
 
 - [Command line interface](https://fastro.dev/docs/project.html)
-- [Container based dependency injection](https://github.com/fastrojs/fastro/blob/0ddb3381a0613075e3e2559c7412bf6f13e01464/deps.ts#L24)
+- [Container based dependency injection](https://github.com/fastrojs/fastro/blob/master/container.ts)
 - [Data validation](https://github.com/fastrojs/fastro/blob/master/services/options.controller.ts)
 - [Dynamic url param](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/params.controller.ts)
 - [HTML template rendering](https://github.com/fastrojs/fastro/blob/master/services/hello/v3/hello.controller.ts)

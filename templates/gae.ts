@@ -1,4 +1,6 @@
-export const gae = `runtime: custom
+export const gae =
+  `# Google App Engine Config: https://cloud.google.com/appengine/docs/flexible/custom-runtimes/configuring-your-app-with-app-yaml
+runtime: custom
 env: flex
 manual_scaling:
   instances: 1

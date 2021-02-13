@@ -22,6 +22,7 @@ import {
 } from "../deps.ts";
 import { react, root } from "../templates/react.ts";
 import {
+  CONTAINER,
   CONTENT_TYPE,
   DENO_ENV,
   DEV_ENV,
@@ -724,15 +725,15 @@ export class Fastro {
     }
   }
 
-  private importDeps() {
+  private importContainer() {
     try {
-      const deps = `${this.cwd}/deps.ts`;
+      const container = `${this.cwd}/${CONTAINER}`;
       const fileImport = Deno.env.get(DENO_ENV) === DEV_ENV
-        ? `file:${deps}#${new Date().getTime()}`
-        : `file:${deps}`;
+        ? `file:${container}#${new Date().getTime()}`
+        : `file:${container}`;
 
-      import(fileImport).then((deps) => {
-        this.container = deps.default();
+      import(fileImport).then((c) => {
+        this.container = c.default();
       });
     } catch (error) {
       if (Deno.env.get(DENO_ENV) !== TEST_ENV) {
@@ -836,7 +837,7 @@ export class Fastro {
       .then(() => this.readHtmlTemplate(TEMPLATE_DIR))
       .then(() => this.importServices(this.serviceDir))
       .then(() => this.readStaticFiles(this.staticDir))
-      .then(() => this.importDeps())
+      .then(() => this.importContainer())
       .then(() => this.listen());
   }
 

@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 export {
   decode as decodeBase64,
   encode as encodeBase64,
@@ -19,9 +18,5 @@ export {
   assertThrows,
 } from "https://deno.land/std@0.86.0/testing/asserts.ts";
 export { v4 } from "https://deno.land/std@0.86.0/uuid/mod.ts";
-export { createElement } from "https://esm.sh/react";
-export { renderToString } from "https://esm.sh/react-dom/server";
-const container: { db: any } = {
-  db: new Promise((resolve) => resolve("connected!")),
-};
-export default () => container;
+export { createElement } from "https://esm.sh/react@17.0.1";
+export { renderToString } from "https://esm.sh/react-dom@17.0.1/server";

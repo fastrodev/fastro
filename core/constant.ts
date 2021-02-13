@@ -1,7 +1,7 @@
 // Copyright 2021 the Fastro author. All rights reserved. MIT license.
 
 export const DENO_VERSION = "1.7.2";
-export const FASTRO_VERSION = "0.30.40";
+export const FASTRO_VERSION = "0.30.41";
 export const SERVICE_DIR = "services";
 export const SERVICE_FILE = ".controller.ts";
 export const PAGE_FILE = ".page.tsx";
@@ -29,6 +29,7 @@ export const TEST_ENV = "test";
 export const DENO_ENV = "DENO_ENV";
 export const DEV_ENV = "development";
 export const CONTENT_TYPE = "content-type";
+export const CONTAINER = "container.ts";
 export const APPS =
   "https://raw.githubusercontent.com/fastrojs/app/main/app.yml";
 export const REACT_ROOT = `<div id="root"></div>`;

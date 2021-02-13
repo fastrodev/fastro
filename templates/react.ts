@@ -21,8 +21,8 @@ export const react = `<!DOCTYPE html>
 
 </html>
 `;
-export const component =
-  `import { Container, React, Request } from "../deps.ts";
+export const component = `import { Container } from "../container.ts";
+import { React, Request } from "../deps.ts";
 
 export const options = {
   // Define custom html template
@@ -38,7 +38,7 @@ export const props = async (request: Request) => {
   return {
     params: request.getParams(),
     header: "Hello, Deno land!",
-    db: await c.db,
+    repository: await c.repository,
   };
 };
 

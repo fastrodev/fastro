@@ -19,6 +19,7 @@ import { html } from "../templates/html.ts";
 import { main } from "../templates/main.ts";
 import { middleware } from "../templates/middleware.ts";
 import { depsTemplate } from "../templates/deps.ts";
+import { container } from "../templates/container.ts";
 import { readme } from "../templates/readme.ts";
 import {
   component as comp,
@@ -99,6 +100,9 @@ export async function init(args?: any) {
 
   const depsFile = encoder.encode(depsTemplate);
   await Deno.writeFile("deps.ts", depsFile);
+
+  const containerFile = encoder.encode(container);
+  await Deno.writeFile("container.ts", containerFile);
 
   const readmeFile = encoder.encode(readme);
   await Deno.writeFile("readme.md", readmeFile);
