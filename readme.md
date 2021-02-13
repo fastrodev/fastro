@@ -22,53 +22,30 @@ line interface and create a project.
 
 ## React Server Side Rendering
 
-Go to [react server side rendering (ssr)](https://fastro.dev/docs/react.html) to
-create the react component and the html template in a very simple way.
+Go to [react server side rendering](https://fastro.dev/docs/react.html) to
+create the react component, define props, and setup the html template in a very simple way.
 
 ## Features
 
 Fastro provides easy-to-use features for web development.
 
-<table>
-  <tbody>
-    <tr>
-      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts">application/json</a></td>
-      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts">x-www-form-urlencoded</a></td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts">multipart/form-data</a></td>
-      <td><a href="https://fastro.dev/docs/project.html">command line interface</a></td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/options.controller.ts">data validation</a></td>
-      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/hello/v1/params.controller.ts">dynamic url param</a></td>
-    </tr>
-    <tr>
-      <td><a href="https://fastro.dev/docs/deployment.html">serverless deployment</a></td>
-      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/cookie/set.controller.ts">cookie</a></td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/middleware.controller.ts">middleware</a></td>
-      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/proxy.controller.ts">proxy</a></td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/hello/v1/querybyname.controller.ts">query param</a></td>
-      <td><a href="https://fastro.dev/docs/static.html">static files</a></td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/hello/v1/prefix.controller.ts">url prefix</a></td>
-      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/hello/v1/redirect.controller.ts">url redirection</a></td>
-    </tr>
-    <tr>
-      <td><a href="https://fastro.dev/docs/handler.html">url routing by file name</a></td>
-      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/hello/v3/hello.controller.ts">template rendering</a></td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/react.page.tsx">react server side rendering (ssr)</a></td>
-      <td><a href="https://github.com/fastrojs/fastro/blob/master/services/react.template.html">seo ready react html template</a></td>
-    </tr>
-  </tbody>
-</table>
+- [Command line interface](https://fastro.dev/docs/project.html)
+- [Container based dependency injection](https://github.com/fastrojs/fastro/blob/0ddb3381a0613075e3e2559c7412bf6f13e01464/deps.ts#L24)
+- [Data validation](https://github.com/fastrojs/fastro/blob/master/services/options.controller.ts)
+- [Dynamic url param](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/params.controller.ts)
+- [HTML template rendering](https://github.com/fastrojs/fastro/blob/master/services/hello/v3/hello.controller.ts)
+- [Middleware](https://github.com/fastrojs/fastro/blob/master/services/middleware.controller.ts)
+- [Proxy](https://github.com/fastrojs/fastro/blob/master/services/proxy.controller.ts)
+- [Query params](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/querybyname.controller.ts)
+- [Static files](https://fastro.dev/docs/static.html)
+- [Serverless deployment](https://fastro.dev/docs/deployment.html)
+- [Support body handling](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts): `application/json`, `x-www-form-urlencoded`, `multipart/form-data`
+- [Support cookie](https://github.com/fastrojs/fastro/blob/master/services/cookie/set.controller.ts)
+- [URL prefix](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/prefix.controller.ts)
+- [URL redicetion](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/redirect.controller.ts)
+- [React remplate rendering](https://github.com/fastrojs/fastro/blob/master/services/react.template.html)
+- [Routing by file system](https://fastro.dev/docs/handler.html)
+- [React server side rendering](https://github.com/fastrojs/fastro/blob/master/services/react.page.tsx)
 
 You can see more detailed examples
 [here](https://github.com/fastrodev/fastro/blob/master/services).
