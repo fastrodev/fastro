@@ -11,7 +11,7 @@ export const readme = `## Prerequisites
 
 - Monitor any changes and automatically restart:
   \`\`\`
-   fastro serve
+  fastro serve
   \`\`\`
 
 `;
