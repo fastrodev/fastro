@@ -1,4 +1,4 @@
-# FASTRO
+# Fastro
 
 ![][build] ![][version]
 
