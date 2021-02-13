@@ -725,7 +725,7 @@ export class Fastro {
     }
   }
 
-  private async importDeps() {
+  private importDeps() {
     try {
       const deps = `${this.cwd}/deps.ts`;
       const fileImport = Deno.env.get(DENO_ENV) === DEV_ENV
@@ -817,7 +817,7 @@ export class Fastro {
         const { email, regid } = <{
           email: string;
           regid: string;
-        }> parsedConfig;
+        }>parsedConfig;
         this.regid = regid;
         this.email = email;
       }
