@@ -31,6 +31,7 @@ import {
   MAX_MEMORY,
   MIDDLEWARE_DIR,
   NO_CONFIG,
+  NO_DEPS,
   NO_MIDDLEWARE,
   NO_SERVICE,
   NO_STATIC_FILE,
@@ -555,13 +556,13 @@ export class Fastro {
     return html;
   }
 
-  private sendHTML(page: Page, request: Request) {
+  private async sendHTML(page: Page, request: Request) {
     try {
       let html;
       let props;
 
       if (page.props && typeof page.props === "function") {
-        props = page.props(request);
+        props = await page.props(request);
       } else if (page.props) {
         props = page.props;
         props.url = request.url;
@@ -724,6 +725,23 @@ export class Fastro {
     }
   }
 
+  private async importDeps() {
+    try {
+      const deps = `${this.cwd}/deps.ts`;
+      const fileImport = Deno.env.get(DENO_ENV) === DEV_ENV
+        ? `file:${deps}#${new Date().getTime()}`
+        : `file:${deps}`;
+
+      import(fileImport).then((deps) => {
+        this.container = deps.default();
+      });
+    } catch (error) {
+      if (Deno.env.get(DENO_ENV) !== TEST_ENV) {
+        console.info(yellow(NO_DEPS));
+      }
+    }
+  }
+
   private async importServices(target: string) {
     try {
       const servicesFolder = `${this.cwd}/${target}`;
@@ -819,7 +837,7 @@ export class Fastro {
       .then(() => this.readHtmlTemplate(TEMPLATE_DIR))
       .then(() => this.importServices(this.serviceDir))
       .then(() => this.readStaticFiles(this.staticDir))
-      .then(() => this.container = container())
+      .then(() => this.importDeps())
       .then(() => this.listen());
   }
 

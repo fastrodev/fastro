@@ -1,5 +1,3 @@
-import { FASTRO_VERSION } from "../core/constant.ts";
-
 export const root = `
 <div id="root">{{root}}</div>
 <script type="module">
@@ -23,8 +21,7 @@ export const react = `<!DOCTYPE html>
 
 </html>
 `;
-export const component = `import React from "https://esm.sh/react";
-import type { Request } from "https://deno.land/x/fastro@v${FASTRO_VERSION}/mod.ts";
+export const component = `import { Container, React, Request } from "../deps.ts";
 
 export const options = {
   // Define custom html template
@@ -34,10 +31,13 @@ export const options = {
 };
 
 // Define react props: https://reactjs.org/docs/components-and-props.html
-export const props = (request: Request) => {
+export const props = async (request: Request) => {
+  // You can access container and its type defined in deps.ts with this way
+  const c: Container = request.container;
   return {
     params: request.getParams(),
     header: "Hello, Deno land!",
+    db: await c.db,
   };
 };
 
