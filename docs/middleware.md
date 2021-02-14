@@ -6,35 +6,40 @@ description: You can access and add additional property to the request object be
 
 - `fastro init` command will generate folders and files like this.
     ```
-    webapp
+    .
+    ├── app.yaml
+    ├── container.ts
+    ├── deps.ts
     ├── Dockerfile
     ├── main.ts
     ├── middleware
     │   └── support.ts
+    ├── module
+    │   ├── hello.controller.ts
+    │   ├── hello.template.html
+    │   ├── react.page.tsx
+    │   └── react.template.html
     ├── public
     │   ├── favicon.ico
     │   └── index.html
-    └── module
-        ├── hello.controller.ts
-        ├── hello.template.html
-        ├── react.page.tsx
-        └── react.template.html
+    └── readme.md
 
-    3 directories, 9 files
+    3 directories, 13 files
     ```
     
 - You can access and add additional property to the request object before the controllers process it.
 
 - Open middleware file, `middleware/support.ts`:
     ```ts
-    import type { Callback, Request } from "https://deno.land/x/fastro@v0.30.34/mod.ts";
+    import type { Callback, Request } from "../deps.ts";
     export const options = {
-      methods: ["GET, POST"],
-    }
+      methods: ["GET", "POST"],
+    };
     export default (request: Request, next: Callback) => {
       request.hello = "with middleware";
       next();
     };
+
     ```
 
 

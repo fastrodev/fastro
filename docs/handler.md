@@ -5,21 +5,25 @@ description: Handle all http request
 # Create a handler
 - `fastro init` command will generate folders and files like this.
     ```
-    webapp
+    .
+    ├── app.yaml
+    ├── container.ts
+    ├── deps.ts
     ├── Dockerfile
     ├── main.ts
     ├── middleware
     │   └── support.ts
+    ├── module
+    │   ├── hello.controller.ts
+    │   ├── hello.template.html
+    │   ├── react.page.tsx
+    │   └── react.template.html
     ├── public
     │   ├── favicon.ico
     │   └── index.html
-    └── module
-        ├── hello.controller.ts
-        ├── hello.template.html
-        ├── react.page.tsx
-        └── react.template.html
+    └── readme.md
 
-    3 directories, 9 files
+    3 directories, 13 files
     ```
     
     File and folder description:
@@ -33,11 +37,12 @@ description: Handle all http request
 
 - Open handler file, `services/hello.controller.ts`:
     ```ts
-    import type { Request } from "https://deno.land/x/fastro@v0.30.34/mod.ts";
+    import type { Request } from "../deps.ts";
     export default (request: Request) => {
       // request.view("hello.template.html", { greeting: "Hello", name: "World" });
       request.send(`setup ${request.hello}`);
     };
+
     ```
 
     Please note that: 
