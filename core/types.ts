@@ -1,4 +1,4 @@
-// Copyright 2021 the Fastro author. All rights reserved. MIT license.
+// Copyright 2020 - 2021 the Fastro author. All rights reserved. MIT license.
 // deno-lint-ignore-file no-explicit-any
 
 import type { FormFile } from "../deps.ts";
@@ -23,9 +23,9 @@ export type MultiPartData = {
   filename?: string;
 };
 
-export type DynamicService = {
+export type DynamicController = {
   url: string;
-  service: any;
+  controller: any;
 };
 
 export type DynamicPage = {
@@ -121,6 +121,6 @@ export type Appdb = {
 
 export type Page = { default: any; props: any; options: any };
 
-export type Service = { default: any; options: any };
+export type Controller = { default: any; options: any };
 
 export type Middleware = { default: any; options: any };

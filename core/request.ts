@@ -1,4 +1,4 @@
-// Copyright 2021 the Fastro author. All rights reserved. MIT license.
+// Copyright 2020 - 2021 the Fastro author. All rights reserved. MIT license.
 
 import { Cookie, Cookies, Response, ServerRequest } from "../deps.ts";
 // import type { Cookie } from "./cookie.ts";

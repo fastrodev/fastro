@@ -1,4 +1,4 @@
-// Copyright 2021 the Fastro author. All rights reserved. MIT license.
+// Copyright 2020 - 2021 the Fastro author. All rights reserved. MIT license.
 
 // deno-lint-ignore-file no-explicit-any
 import {
@@ -24,12 +24,14 @@ import { react, root } from "../templates/react.ts";
 import {
   CONTAINER,
   CONTENT_TYPE,
+  CONTROLLER_FILE,
   DENO_ENV,
   DEV_ENV,
   FASTRO_VERSION,
   HOSTNAME,
   MAX_MEMORY,
   MIDDLEWARE_DIR,
+  MODULE_DIR,
   NO_CONFIG,
   NO_DEPS,
   NO_MIDDLEWARE,
@@ -41,8 +43,6 @@ import {
   PORT,
   REACT_ROOT,
   RUNNING_TEXT,
-  SERVICE_DIR,
-  SERVICE_FILE,
   STATIC_DIR,
   TEMPLATE_DIR,
   TEMPLATE_FILE,
@@ -50,15 +50,15 @@ import {
 } from "./constant.ts";
 import type { Request } from "./request.ts";
 import type {
+  Controller,
+  DynamicController,
   DynamicPage,
-  DynamicService,
   Middleware,
   MultiPartData,
   Page,
   Query,
   Schema,
   ServerOptions,
-  Service,
 } from "./types.ts";
 import { Data, HandlerOptions, HttpMethod } from "./types.ts";
 import {
@@ -79,7 +79,7 @@ import {
  *      const serverOptions = {
  *        cors: true,
  *        prefix: "api",
- *        serviceDir: "api",
+ *        moduleDir: "api",
  *        staticFile: true,
  *      };
  *      const server = new Fastro(serverOptions);
@@ -88,7 +88,7 @@ export class Fastro {
   private appStatus!: string;
   private corsEnabled!: boolean;
   private cwd = Deno.cwd();
-  private dynamicService: DynamicService[] = [];
+  private dynamicController: DynamicController[] = [];
   private dynamicPage: DynamicPage[] = [];
   private hostname = HOSTNAME;
   private middlewares = new Map<string, Middleware>();
@@ -96,9 +96,9 @@ export class Fastro {
   private port = PORT;
   private prefix!: string;
   private server!: Server;
-  private serviceDir = SERVICE_DIR;
+  private moduleDir = MODULE_DIR;
   private staticDir = STATIC_DIR;
-  private services = new Map<string, Service>();
+  private controller = new Map<string, Controller>();
   private staticFiles = new Map<string, any>();
   private templateFiles = new Map<string, any>();
   private container: any = undefined;
@@ -108,7 +108,7 @@ export class Fastro {
     if (options && options.hostname) this.hostname = options.hostname;
     if (options && options.prefix) this.prefix = options.prefix;
     if (options && options.port) this.port = options.port;
-    if (options && options.serviceDir) this.serviceDir = options.serviceDir;
+    if (options && options.serviceDir) this.moduleDir = options.serviceDir;
     if (options && options.staticDir) this.staticDir = options.staticDir;
     this.initApp();
   }
@@ -243,12 +243,12 @@ export class Fastro {
 
   private validateJsonPayload(payload: Data, url: string) {
     try {
-      const service = this.services.get(url);
+      const controller = this.controller.get(url);
       if (
-        service && service.options.validationSchema &&
-        service.options.validationSchema.body
+        controller && controller.options.validationSchema &&
+        controller.options.validationSchema.body
       ) {
-        const schema = service.options.validationSchema.body as Schema;
+        const schema = controller.options.validationSchema.body as Schema;
         validateObject(payload, schema);
       }
     } catch (error) {
@@ -285,12 +285,12 @@ export class Fastro {
 
   private validateParams(params: Data, url: string) {
     try {
-      const [handler] = this.dynamicService.filter((val) => val.url === url);
+      const [handler] = this.dynamicController.filter((val) => val.url === url);
       if (
-        handler && handler.service.options.validationSchema &&
-        handler.service.options.validationSchema.params
+        handler && handler.controller.options.validationSchema &&
+        handler.controller.options.validationSchema.params
       ) {
-        const schema = handler.service.options.validationSchema
+        const schema = handler.controller.options.validationSchema
           .params as Schema;
         validateObject(params, schema);
       }
@@ -319,14 +319,14 @@ export class Fastro {
 
   private validateQuery(query: Data, url: string) {
     try {
-      const [handler] = this.dynamicService.filter((val) =>
+      const [handler] = this.dynamicController.filter((val) =>
         url.includes(val.url)
       );
       if (
-        handler && handler.service.options.validationSchema &&
-        handler.service.options.validationSchema.params
+        handler && handler.controller.options.validationSchema &&
+        handler.controller.options.validationSchema.params
       ) {
-        const schema = handler.service.options.validationSchema
+        const schema = handler.controller.options.validationSchema
           .querystring as Schema;
         validateObject(query, schema);
       }
@@ -464,12 +464,12 @@ export class Fastro {
 
   private handleDynamicParams(request: Request) {
     try {
-      const [handlerFile] = this.dynamicService.filter((service) => {
-        return request.url.includes(service.url);
+      const [handlerFile] = this.dynamicController.filter((controller) => {
+        return request.url.includes(controller.url);
       });
       if (!handlerFile) return this.handlePage(request);
-      const options: HandlerOptions = handlerFile.service.options
-        ? handlerFile.service.options
+      const options: HandlerOptions = handlerFile.controller.options
+        ? handlerFile.controller.options
         : undefined;
       if (
         options &&
@@ -484,7 +484,7 @@ export class Fastro {
         const schema = options.validationSchema.headers as Schema;
         this.validateHeaders(request.headers, schema);
       }
-      handlerFile.service.default(request);
+      handlerFile.controller.default(request);
     } catch (error) {
       throw createError("HANDLE_DYNAMIC_PARAMS_ERROR", error);
     }
@@ -596,9 +596,11 @@ export class Fastro {
 
   private handleRoute(request: Request) {
     try {
-      const service = this.services.get(request.url);
-      const options = service && service.options ? service.options : undefined;
-      if (!service) return this.handleDynamicParams(request);
+      const controller = this.controller.get(request.url);
+      const options = controller && controller.options
+        ? controller.options
+        : undefined;
+      if (!controller) return this.handleDynamicParams(request);
       if (
         options &&
         options.methods &&
@@ -612,7 +614,7 @@ export class Fastro {
         const schema = options.validationSchema.headers as Schema;
         this.validateHeaders(request.headers, schema);
       }
-      service.default(request);
+      controller.default(request);
     } catch (error) {
       throw createError("HANDLE_ROUTE_ERROR", error);
     }
@@ -741,19 +743,19 @@ export class Fastro {
     }
   }
 
-  private async importServices(target: string) {
+  private async importController(target: string) {
     try {
       const servicesFolder = `${this.cwd}/${target}`;
       for await (const dirEntry of Deno.readDir(servicesFolder)) {
         if (dirEntry.isDirectory) {
-          this.importServices(target + "/" + dirEntry.name);
+          this.importController(target + "/" + dirEntry.name);
         } else if (
           dirEntry.isFile &&
-          (dirEntry.name.includes(SERVICE_FILE) ||
+          (dirEntry.name.includes(CONTROLLER_FILE) ||
             dirEntry.name.includes(PAGE_FILE))
         ) {
           const filePath = servicesFolder + "/" + dirEntry.name;
-          const [, splittedFilePath] = filePath.split(this.serviceDir);
+          const [, splittedFilePath] = filePath.split(this.moduleDir);
           const [splittedWithDot] = splittedFilePath.split(".");
 
           const finalPath = Deno.env.get(DENO_ENV) === DEV_ENV
@@ -789,13 +791,16 @@ export class Fastro {
           if (isPage) {
             this.dynamicPage.push({ url: fileKey, page: importedFile });
           } else {
-            this.dynamicService.push({ url: fileKey, service: importedFile });
+            this.dynamicController.push({
+              url: fileKey,
+              controller: importedFile,
+            });
           }
           return;
         }
 
         if (isPage) this.pages.set(fileKey, importedFile);
-        else this.services.set(fileKey, importedFile);
+        else this.controller.set(fileKey, importedFile);
       });
   }
 
@@ -816,7 +821,7 @@ export class Fastro {
         const { email, regid } = <{
           email: string;
           regid: string;
-        }>parsedConfig;
+        }> parsedConfig;
         this.regid = regid;
         this.email = email;
       }
@@ -834,7 +839,7 @@ export class Fastro {
       .then(() => this.appStatus = this.getAppStatus())
       .then(() => this.importMiddleware(MIDDLEWARE_DIR))
       .then(() => this.readHtmlTemplate(TEMPLATE_DIR))
-      .then(() => this.importServices(this.serviceDir))
+      .then(() => this.importController(this.moduleDir))
       .then(() => this.readStaticFiles(this.staticDir))
       .then(() => this.importContainer())
       .then(() => this.listen());

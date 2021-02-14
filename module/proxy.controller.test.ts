@@ -15,7 +15,7 @@ Deno.test({
       const t = await h.text();
       assertStringIncludes(
         t,
-        `# FASTRO\n`,
+        `# Fastro\n`,
       );
       f.close();
     }, TIMEOUT);

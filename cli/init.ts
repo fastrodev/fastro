@@ -1,10 +1,10 @@
-// Copyright 2021 the Fastro author. All rights reserved. MIT license.
+// Copyright 2020 - 2021 the Fastro author. All rights reserved. MIT license.
 // deno-lint-ignore-file no-explicit-any
 
 import {
   APPS,
   MIDDLEWARE_DIR,
-  SERVICE_DIR,
+  MODULE_DIR,
   STATIC_DIR,
   VSCODE_DIR,
 } from "../core/constant.ts";
@@ -121,21 +121,21 @@ export async function init(args?: any) {
   const midPath = `${MIDDLEWARE_DIR}/support.ts`;
   await Deno.writeFile(midPath, mid);
 
-  await Deno.mkdir(SERVICE_DIR, { recursive: true });
+  await Deno.mkdir(MODULE_DIR, { recursive: true });
   const ctrl = encoder.encode(controller);
-  const ctrlPath = `${SERVICE_DIR}/hello.controller.ts`;
+  const ctrlPath = `${MODULE_DIR}/hello.controller.ts`;
   await Deno.writeFile(ctrlPath, ctrl);
 
   const htmlTemplate = encoder.encode(render);
-  const templatePath = `${SERVICE_DIR}/hello.template.html`;
+  const templatePath = `${MODULE_DIR}/hello.template.html`;
   await Deno.writeFile(templatePath, htmlTemplate);
 
   const component = encoder.encode(comp);
-  const componentPath = `${SERVICE_DIR}/react.page.tsx`;
+  const componentPath = `${MODULE_DIR}/react.page.tsx`;
   await Deno.writeFile(componentPath, component);
 
   const react = encoder.encode(reactTemplate);
-  const reactPath = `${SERVICE_DIR}/react.template.html`;
+  const reactPath = `${MODULE_DIR}/react.template.html`;
   await Deno.writeFile(reactPath, react);
 
   await Deno.mkdir(STATIC_DIR, { recursive: true });

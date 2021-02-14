@@ -1,15 +1,14 @@
-// Copyright 2021 the Fastro author. All rights reserved. MIT license.
+// Copyright 2020 - 2021 the Fastro author. All rights reserved. MIT license.
 
 export const DENO_VERSION = "1.7.4";
-export const FASTRO_VERSION = "0.30.42";
-export const SERVICE_DIR = "services";
-export const SERVICE_FILE = ".controller.ts";
+export const FASTRO_VERSION = "0.30.43";
+export const MODULE_DIR = "module";
+export const CONTROLLER_FILE = ".controller.ts";
 export const PAGE_FILE = ".page.tsx";
 export const STATIC_DIR = "public";
 export const TEMPLATE_FILE = ".template.html";
-export const TEMPLATE_DIR = "services";
+export const TEMPLATE_DIR = "module";
 export const MIDDLEWARE_DIR = "middleware";
-export const PAGE_DIR = "pages";
 export const MAX_MEMORY = 1024 * 1024;
 export const VSCODE_DIR = ".vscode";
 export const TIMEOUT = 12 * 1000;

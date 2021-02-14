@@ -1,4 +1,5 @@
-export const container = `// Define dependency injection: https://en.wikipedia.org/wiki/Dependency_injection
+export const container =
+  `// Define dependency injection: https://en.wikipedia.org/wiki/Dependency_injection
 // You can customize this type according to your needs
 export type Container = {
   repository: any;

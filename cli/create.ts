@@ -1,4 +1,4 @@
-// Copyright 2021 the Fastro author. All rights reserved. MIT license.
+// Copyright 2020 - 2021 the Fastro author. All rights reserved. MIT license.
 
 // deno-lint-ignore no-explicit-any
 function createConfig(data: any) {
@@ -13,7 +13,7 @@ function createPage(data: any) {
   const yamlContent = `type: page
   title: Hello world
   description: This is my awesome landing page
-  
+
   headline:
       title: Headline
       description: My headline description
