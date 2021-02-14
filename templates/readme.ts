@@ -1,6 +1,6 @@
 export const readme = `## Prerequisites
 - Install [deno](https://deno.land/#installation)
-- Install [vscode extension for deno](https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno)
+- Install [vscode extension for deno](https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno-canary)
 - Install [google cloud sdk](https://cloud.google.com/sdk)
 
 ## How to run
@@ -13,5 +13,4 @@ export const readme = `## Prerequisites
   \`\`\`
   fastro serve
   \`\`\`
-
 `;
