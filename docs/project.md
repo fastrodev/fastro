@@ -15,20 +15,24 @@ description: Init folders and files for your project
     This command will generate folders and files like this:
     ```
     .
+    ├── app.yaml
+    ├── container.ts
+    ├── deps.ts
     ├── Dockerfile
     ├── main.ts
     ├── middleware
-    │   └── support.ts
+    │   └── support.ts
+    ├── module
+    │   ├── hello.controller.ts
+    │   ├── hello.template.html
+    │   ├── react.page.tsx
+    │   └── react.template.html
     ├── public
-    │   ├── favicon.ico
-    │   └── index.html
-    └── module
-        ├── hello.controller.ts
-        ├── hello.template.html
-        ├── react.page.tsx
-        └── react.template.html
+    │   ├── favicon.ico
+    │   └── index.html
+    └── readme.md
 
-    3 directories, 9 files
+    3 directories, 13 files
     ```
 
 3. Run server locally
