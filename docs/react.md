@@ -18,20 +18,23 @@ image: https://reactjs.org/logo-og.png
     ```
     .
     ├── app.yaml
+    ├── container.ts
+    ├── deps.ts
     ├── Dockerfile
     ├── main.ts
     ├── middleware
     │   └── support.ts
+    ├── module
+    │   ├── hello.controller.ts
+    │   ├── hello.template.html
+    │   ├── react.page.tsx
+    │   └── react.template.html
     ├── public
     │   ├── favicon.ico
     │   └── index.html
-    └── module
-        ├── hello.controller.ts
-        ├── hello.template.html
-        ├── react.page.tsx
-        └── react.template.html
+    └── readme.md
 
-    3 directories, 10 files
+    3 directories, 13 files
     ```
 
 3. Open `services/react.page.tsx`:
