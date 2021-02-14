@@ -1,18 +1,18 @@
 export const setting = `{
-  "files.eol": "\\n",
+  "files.eol": "\n",
   "files.trimTrailingWhitespace": true,
   "[javascript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno-canary"
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno-canary",
+    "editor.defaultFormatter": "vscode.typescript-language-features",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.organizeImports": true,
     }
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "denoland.vscode-deno-canary",
+    "editor.defaultFormatter": "vscode.typescript-language-features",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.organizeImports": true,
@@ -20,7 +20,6 @@ export const setting = `{
   },
   "deno.enable": true,
   "deno.unstable": true,
-  "deno.lint": true,
   "editor.tabSize": 2
 }
 `;
