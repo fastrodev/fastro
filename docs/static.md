@@ -14,7 +14,7 @@ description: You can add static files by put your files in public folder. Fastro
     ├── public
     │   ├── favicon.ico
     │   └── index.html
-    └── services
+    └── module
         ├── hello.controller.ts
         ├── hello.template.html
         ├── react.page.tsx

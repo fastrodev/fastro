@@ -14,7 +14,7 @@ description: You can access and add additional property to the request object be
     ├── public
     │   ├── favicon.ico
     │   └── index.html
-    └── services
+    └── module
         ├── hello.controller.ts
         ├── hello.template.html
         ├── react.page.tsx

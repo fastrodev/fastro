@@ -14,7 +14,7 @@ description: You can render html template and pass dynamic value on it.
     ├── public
     │   ├── favicon.ico
     │   └── index.html
-    └── services
+    └── module
         ├── hello.controller.ts
         ├── hello.template.html
         ├── react.page.tsx

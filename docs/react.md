@@ -25,7 +25,7 @@ image: https://reactjs.org/logo-og.png
     ├── public
     │   ├── favicon.ico
     │   └── index.html
-    └── services
+    └── module
         ├── hello.controller.ts
         ├── hello.template.html
         ├── react.page.tsx

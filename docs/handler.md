@@ -13,7 +13,7 @@ description: Handle all http request
     ├── public
     │   ├── favicon.ico
     │   └── index.html
-    └── services
+    └── module
         ├── hello.controller.ts
         ├── hello.template.html
         ├── react.page.tsx
