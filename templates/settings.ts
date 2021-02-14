@@ -1,5 +1,5 @@
 export const setting = `{
-  "files.eol": "\n",
+  "files.eol": "\\n",
   "files.trimTrailingWhitespace": true,
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
