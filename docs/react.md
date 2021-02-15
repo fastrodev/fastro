@@ -3,7 +3,7 @@ description: Render a React element to its initial HTML. React will return an HT
 image: https://reactjs.org/logo-og.png
 ---
 
-# Deno React Server Side Rendering (SSR)
+# React SSR
 
 1. Install fastro command line interface (cli):
     ```
