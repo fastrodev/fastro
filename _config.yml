@@ -1,8 +1,6 @@
-title: Fastro.dev
+title: Fastro
 google_analytics: UA-165990288-1
 theme: jekyll-theme-primer
 markdown: kramdown
-include:
-  - readme.md
 plugins:
     - jekyll-sitemap
