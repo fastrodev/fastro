@@ -32,24 +32,24 @@ Fastro provides easy-to-use features for web development.
 
 - [Command line interface](https://fastro.dev/docs/project.html)
 - [Container based dependency injection](https://github.com/fastrojs/fastro/blob/master/container.ts)
-- [Data validation](https://github.com/fastrojs/fastro/blob/master/services/options.controller.ts)
-- [Dynamic url param](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/params.controller.ts)
-- [HTML template rendering](https://github.com/fastrojs/fastro/blob/master/services/hello/v3/hello.controller.ts)
-- [Middleware](https://github.com/fastrojs/fastro/blob/master/services/middleware.controller.ts)
-- [Proxy](https://github.com/fastrojs/fastro/blob/master/services/proxy.controller.ts)
-- [Query params](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/querybyname.controller.ts)
+- [Data validation](https://github.com/fastrojs/fastro/blob/master/module/options.controller.ts)
+- [Dynamic url param](https://github.com/fastrojs/fastro/blob/master/module/hello/v1/params.controller.ts)
+- [HTML template rendering](https://github.com/fastrojs/fastro/blob/master/module/hello/v3/hello.controller.ts)
+- [Middleware](https://github.com/fastrojs/fastro/blob/master/module/middleware.controller.ts)
+- [Proxy](https://github.com/fastrojs/fastro/blob/master/module/proxy.controller.ts)
+- [Query params](https://github.com/fastrojs/fastro/blob/master/module/hello/v1/querybyname.controller.ts)
 - [Static files](https://fastro.dev/docs/static.html)
 - [Serverless deployment](https://fastro.dev/docs/deployment.html)
-- [Support body handling](https://github.com/fastrojs/fastro/blob/master/services/form/post.controller.ts)
-- [Support cookie](https://github.com/fastrojs/fastro/blob/master/services/cookie/set.controller.ts)
-- [URL prefix](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/prefix.controller.ts)
-- [URL redicetion](https://github.com/fastrojs/fastro/blob/master/services/hello/v1/redirect.controller.ts)
-- [React remplate rendering](https://github.com/fastrojs/fastro/blob/master/services/react.template.html)
+- [Support body handling](https://github.com/fastrojs/fastro/blob/master/module/form/post.controller.ts)
+- [Support cookie](https://github.com/fastrojs/fastro/blob/master/module/cookie/set.controller.ts)
+- [URL prefix](https://github.com/fastrojs/fastro/blob/master/module/hello/v1/prefix.controller.ts)
+- [URL redicetion](https://github.com/fastrojs/fastro/blob/master/module/hello/v1/redirect.controller.ts)
+- [React remplate rendering](https://github.com/fastrojs/fastro/blob/master/module/react.template.html)
 - [Routing by file system](https://fastro.dev/docs/handler.html)
-- [React server side rendering](https://github.com/fastrojs/fastro/blob/master/services/react.page.tsx)
+- [React server side rendering](https://github.com/fastrojs/fastro/blob/master/module/react.page.tsx)
 
 You can see more detailed examples
-[here](https://github.com/fastrodev/fastro/blob/master/services).
+[here](https://github.com/fastrodev/fastro/blob/master/module).
 
 ## Serverless Demo
 
