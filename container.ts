@@ -11,4 +11,4 @@ const container: Container = {
   repository: new Promise((resolve) => resolve("connected!")),
 };
 
-export default () => container;
+export default container;

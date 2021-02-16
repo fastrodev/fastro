@@ -734,7 +734,7 @@ export class Fastro {
         : `file:${container}`;
 
       import(fileImport).then((c) => {
-        this.container = c.default();
+        this.container = c.default;
       });
     } catch (error) {
       if (Deno.env.get(DENO_ENV) !== TEST_ENV) {
