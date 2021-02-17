@@ -7,7 +7,7 @@ image: https://reactjs.org/logo-og.png
 
 1. Install fastro command line interface (cli):
     ```
-    deno install -A https://deno.land/x/fastro@v0.30.36/cli/fastro.ts
+    deno install -A https://deno.land/x/fastro@v0.30.45/cli/fastro.ts
     ```
 
 2. Create webapp folder, generate initial folders and files:
@@ -55,7 +55,7 @@ image: https://reactjs.org/logo-og.png
 
     // Define react props: https://reactjs.org/docs/components-and-props.html
     export const props = async (request: Request) => {
-      // You can access container and its type defined in deps.ts with this way
+      // You can access container and its type defined in container.ts with this way
       const c: Container = request.container;
       return {
         params: request.getParams(),
