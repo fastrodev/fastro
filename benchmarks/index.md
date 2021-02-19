@@ -14,14 +14,14 @@ layout: default
 - [autocannon](https://www.npmjs.com/package/autocannon)
 
 ## Deno
-- Source code: [deno_app.ts](https://github.com/fastrojs/fastro/blob/gh-pages/benchmarks/deno_app.ts)
+- Source code: [deno_app.ts](https://github.com/fastrojs/fastro/blob/master/benchmarks/deno_app.ts)
 - Run server: `deno run -A deno_app.ts`
 - Benchmark command: `autocannon -c 100 http://localhost:8080`
 - Result:
   ![](deno_app.svg)
 
 ## Fastro
-- Source code: [fastro_app.ts](https://github.com/fastrojs/fastro/blob/gh-pages/benchmarks/fastro_app.ts)
+- Source code: [fastro_app.ts](https://github.com/fastrojs/fastro/blob/master/benchmarks/fastro_app.ts)
 - Run server: `deno run -A fastro_app.ts`
 - Benchmark command: `autocannon -c 100 http://localhost:3000/hello`
 - Result:
