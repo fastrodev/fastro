@@ -4,7 +4,6 @@
 import {
   Cookie,
   createElement,
-  decode,
   decodeBase64,
   deleteCookie,
   getCookies,
@@ -182,6 +181,7 @@ export class Fastro {
 
   private async handleFormUrlEncoded(req: ServerRequest, contentType: string) {
     try {
+      const decode = new TextDecoder().decode;
       const bodyString = decode(await Deno.readAll(req.body));
       const body = bodyString
         .replace(contentType, "")
@@ -214,6 +214,7 @@ export class Fastro {
 
   private async handleMultipart(req: ServerRequest, contentType: string) {
     try {
+      const decode = new TextDecoder().decode;
       const boundaries = contentType?.match(/boundary=([^\s]+)/);
       let boundary;
       const multiPartArray: MultiPartData[] = [];
@@ -259,6 +260,7 @@ export class Fastro {
 
   private async getPayload(requestServer: ServerRequest) {
     try {
+      const decode = new TextDecoder().decode;
       const contentType = requestServer.headers.get(CONTENT_TYPE);
       if (contentType?.includes("multipart/form-data")) {
         return this.handleMultipart(requestServer, contentType);
@@ -821,7 +823,7 @@ export class Fastro {
         const { email, regid } = <{
           email: string;
           regid: string;
-        }> parsedConfig;
+        }>parsedConfig;
         this.regid = regid;
         this.email = email;
       }

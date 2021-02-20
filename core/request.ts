@@ -1,8 +1,8 @@
 // Copyright 2020 - 2021 the Fastro author. All rights reserved. MIT license.
 
-import { Cookie, Cookies, Response, ServerRequest } from "../deps.ts";
+import { Cookie, Response, ServerRequest } from "../deps.ts";
 // import type { Cookie } from "./cookie.ts";
-import type { Query } from "./types.ts";
+import type { Cookies, Query } from "./types.ts";
 
 /**
  * Request Class. It is extended from [Deno ServerRequest](https://doc.deno.land/https/deno.land/std@0.75.0/http/server.ts#ServerRequest).

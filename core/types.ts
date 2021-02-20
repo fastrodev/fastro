@@ -124,3 +124,5 @@ export type Page = { default: any; props: any; options: any };
 export type Controller = { default: any; options: any };
 
 export type Middleware = { default: any; options: any };
+
+export type Cookies = Record<string, string>;
