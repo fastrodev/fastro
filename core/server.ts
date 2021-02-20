@@ -162,12 +162,12 @@ export class Fastro {
 
   private getCookiesByName(name: string, request: Request) {
     const cookies = request.headers.get("cookie")?.split(";");
-    const results = cookies?.map((v) => {
+    const results = cookies?.map((v: any) => {
       const [n, value] = v.split("=");
       const name = n.trim();
       return { name, value };
     })
-      .filter((c) => c.name === name);
+      .filter((c: any) => c.name === name);
     if (!results || results.length < 1) return "";
     const [c] = results;
     return c.value;
@@ -181,8 +181,8 @@ export class Fastro {
 
   private async handleFormUrlEncoded(req: ServerRequest, contentType: string) {
     try {
-      const decode = new TextDecoder().decode;
-      const bodyString = decode(await Deno.readAll(req.body));
+      const d = new TextDecoder();
+      const bodyString = d.decode(await Deno.readAll(req.body));
       const body = bodyString
         .replace(contentType, "")
         .split("&");
@@ -260,7 +260,7 @@ export class Fastro {
 
   private async getPayload(requestServer: ServerRequest) {
     try {
-      const decode = new TextDecoder().decode;
+      const d = new TextDecoder();
       const contentType = requestServer.headers.get(CONTENT_TYPE);
       if (contentType?.includes("multipart/form-data")) {
         return this.handleMultipart(requestServer, contentType);
@@ -271,12 +271,12 @@ export class Fastro {
       } else if (
         contentType?.includes("application/json")
       ) {
-        const payloadString = decode(await Deno.readAll(requestServer.body));
+        const payloadString = d.decode(await Deno.readAll(requestServer.body));
         const payload = JSON.parse(payloadString);
         this.validateJsonPayload(payload, requestServer.url);
         return payload;
       } else {
-        const payload = decode(await Deno.readAll(requestServer.body));
+        const payload = d.decode(await Deno.readAll(requestServer.body));
         return payload;
       }
     } catch (error) {
@@ -392,7 +392,7 @@ export class Fastro {
 
   private transformRequest(serverRequest: ServerRequest, container: any) {
     try {
-      const request = serverRequest as Request;
+      const request = serverRequest as unknown as Request;
       request.container = container;
       request.response = {};
       request.response.headers = new Headers();
@@ -409,7 +409,9 @@ export class Fastro {
         return request;
       };
       request.clearCookie = (name) => deleteCookie(request.response, name);
-      request.getCookies = () => getCookies(request);
+      request.getCookies = () => {
+        return getCookies(request);
+      };
       request.getCookie = (name) => this.getCookiesByName(name, request);
       request.json = (payload) => {
         const headers = new Headers();
@@ -823,7 +825,7 @@ export class Fastro {
         const { email, regid } = <{
           email: string;
           regid: string;
-        }>parsedConfig;
+        }> parsedConfig;
         this.regid = regid;
         this.email = email;
       }
