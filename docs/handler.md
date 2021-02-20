@@ -35,7 +35,7 @@ description: Handle all http request
 
 
 
-- Open handler file, `services/hello.controller.ts`:
+- Open handler file, `module/hello.controller.ts`:
     ```ts
     import type { Request } from "../deps.ts";
     export default (request: Request) => {
