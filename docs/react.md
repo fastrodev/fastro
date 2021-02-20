@@ -37,7 +37,7 @@ image: https://reactjs.org/logo-og.png
     3 directories, 13 files
     ```
 
-3. Open `services/react.page.tsx`:
+3. Open `module/react.page.tsx`:
 
    - You can change the react template and the html title with your own via `options`
    - You can define react props via `props`  
