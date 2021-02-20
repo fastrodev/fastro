@@ -8,7 +8,7 @@ RUN deno cache https://deno.land/x/fastro@v${FASTRO_VERSION}/mod.ts \\
     && deno cache https://deno.land/x/fastro@v${FASTRO_VERSION}/deps.ts \\
     && deno cache main.ts \\
     && deno cache module/hello.controller.ts \\
-    && deno cache module/react.page.ts \\
+    && deno cache module/react.page.tsx \\
     && deno cache middleware/support.ts
 CMD ["run", "-A", "--no-check", "main.ts"]
 `;
