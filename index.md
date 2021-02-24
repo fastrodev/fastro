@@ -1,5 +1,5 @@
 ---
-title: Fastro
+title: Fastro Framework
 description: High performance deno web framework
 image: public/fastro.png
 layout: default
