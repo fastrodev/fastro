@@ -1,5 +1,5 @@
 ---
-description: Fastro is a simple and fast web framework built on top of deno. Its speed is close to the raw deno http library. Written in typescript
+description: High performance deno web framework
 image: public/fastro.png
 layout: default
 ---
