@@ -48,10 +48,10 @@ Fastro provides easy-to-use features for web development.
 - [Support body handling](https://github.com/fastrojs/fastro/blob/master/module/form/post.controller.ts)
 - [Support cookie](https://github.com/fastrojs/fastro/blob/master/module/cookie/set.controller.ts)
 - [URL prefix](https://github.com/fastrojs/fastro/blob/master/module/hello/v1/prefix.controller.ts)
-- [URL redicetion](https://github.com/fastrojs/fastro/blob/master/module/hello/v1/redirect.controller.ts)
+- [URL rediretion](https://github.com/fastrojs/fastro/blob/master/module/hello/v1/redirect.controller.ts)
+- [URL routing by file system](https://fastro.dev/docs/handler.html)
 - [React remplate rendering](https://github.com/fastrojs/fastro/blob/master/module/react.template.html)
-- [Routing by file system](https://fastro.dev/docs/handler.html)
-- [React server side rendering](https://github.com/fastrojs/fastro/blob/master/module/react.page.tsx)
+- [React SSR](https://github.com/fastrojs/fastro/blob/master/module/react.page.tsx)
 
 You can see more detailed examples
 [here](https://github.com/fastrodev/fastro/blob/master/services).
