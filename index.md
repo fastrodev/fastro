@@ -1,11 +1,10 @@
 ---
-title: Fastro Framework
 description: High performance deno web framework
 image: public/fastro.png
 layout: default
 ---
 
-# Fastro
+# Fastro Framework
 ![][build] ![][version]
 
 Fastro is a simple and fast web framework built on top of
