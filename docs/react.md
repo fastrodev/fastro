@@ -7,7 +7,7 @@ image: https://reactjs.org/logo-og.png
 
 1. Install fastro command line interface (cli):
     ```
-    deno install -A https://deno.land/x/fastro@v0.30.45/cli/fastro.ts
+    deno install -A https://deno.land/x/fastro@v0.30.49/cli/fastro.ts
     ```
 
 2. Create webapp folder, generate initial folders and files:
@@ -123,7 +123,6 @@ image: https://reactjs.org/logo-og.png
 
 
 ## What's next:
-- [Installation](quickstart.md)
 - [Create a handler](handler.md)
 - [Create a middleware](middleware.md)
 - [Create static files](static.md)
