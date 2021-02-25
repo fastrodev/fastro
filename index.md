@@ -4,7 +4,7 @@ image: public/fastro.png
 layout: default
 ---
 
-# Fastro Framework
+# Fastro
 ![][build] ![][version]
 
 Fastro is a simple and fast web application framework built on top of
