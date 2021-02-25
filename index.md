@@ -25,7 +25,7 @@ starts.
 Go to [the quickstart](https://fastro.dev/docs/quickstart) to install command
 line interface and create a project.
 
-## React Server Side Rendering
+## React SSR
 
 Go to [react server side rendering](https://fastro.dev/docs/react.html) to
 create the react component, define props, and setup the html template in a very
