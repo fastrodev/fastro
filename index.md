@@ -8,7 +8,7 @@ layout: default
 ![][build] ![][version]
 
 Fastro is a simple and fast web application framework built on top of
-[deno](https://deno.land). Its speed is
+[deno](https://deno.land). The speed is
 [close to the raw deno http library](https://fastro.dev/benchmarks).
 
 | Module | Req/s avg | Percentage |
