@@ -25,21 +25,21 @@ line interface and create a project.
 
 Fastro provides easy-to-use features for web development.
 
-### Container based dependency injection
+#### Container based dependency injection
 
 Put all dependencies in a container and access them via function parameters.
 
-### File system routing
+#### File system routing
 
 No need to register routes, controllers, middlewares, templates, or static
 files. They will be loaded and saved when the server starts.
 
-### React SSR
+#### React SSR
 
 Go to [react ssr](https://fastro.dev/docs/react.html) to create react
 components, define props, and setup the html template in a very simple way.
 
-### More features
+#### More features
 
 You can see all features and examples
 [here](https://github.com/fastrodev/fastro/blob/master/module).
