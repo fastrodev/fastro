@@ -1,4 +1,4 @@
-import type { Callback, Request } from "../mod.ts";
+import { Callback, Request } from "../mod.ts";
 // You can add middleware options
 // export const options = {
 //   methods: ["GET", "POST"],

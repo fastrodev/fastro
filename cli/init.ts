@@ -10,23 +10,23 @@ import {
 } from "../core/constant.ts";
 import { App } from "../core/types.ts";
 import { parseYml } from "../deps.ts";
-import { controller } from "../templates/controller.ts";
-import { docker } from "../templates/docker.ts";
-import { favicon } from "../templates/favicon.ts";
-import { gae } from "../templates/gae.ts";
-import { gitignore } from "../templates/gitignore.ts";
-import { html } from "../templates/html.ts";
-import { main } from "../templates/main.ts";
-import { middleware } from "../templates/middleware.ts";
-import { depsTemplate } from "../templates/deps.ts";
-import { container } from "../templates/container.ts";
-import { readme } from "../templates/readme.ts";
+import { controller } from "../template/controller.ts";
+import { docker } from "../template/docker.ts";
+import { favicon } from "../template/favicon.ts";
+import { gae } from "../template/gae.ts";
+import { gitignore } from "../template/gitignore.ts";
+import { html } from "../template/html.ts";
+import { main } from "../template/main.ts";
+import { middleware } from "../template/middleware.ts";
+import { depsTemplate } from "../template/deps.ts";
+import { container } from "../template/container.ts";
+import { readme } from "../template/readme.ts";
 import {
   component as comp,
   react as reactTemplate,
-} from "../templates/react.ts";
-import { render } from "../templates/render.ts";
-import { setting } from "../templates/settings.ts";
+} from "../template/react.ts";
+import { render } from "../template/render.ts";
+import { setting } from "../template/settings.ts";
 
 function initHelp() {
   const message = `USAGE

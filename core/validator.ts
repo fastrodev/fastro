@@ -1,6 +1,6 @@
 // Copyright 2020 - 2021 the Fastro author. All rights reserved. MIT license.
 
-import type { Data, Schema } from "./types.ts";
+import { Data, Schema } from "./types.ts";
 import { createError } from "./utils.ts";
 
 export function validateObject(target: Data | number, schema: Schema) {

@@ -1,7 +1,7 @@
-import type { Request } from "../../../mod.ts";
+import { Request } from "../../../mod.ts";
 export const options = {
   methods: ["GET", "POST", "PUT", "DELETE"],
 };
-export default (request: Request) => {
+export default function (request: Request) {
   request.send("hello v2");
-};
+}

@@ -1,6 +1,6 @@
 import { Args } from "../core/types.ts";
 import { createError } from "../core/utils.ts";
-import { config } from "../templates/config.ts";
+import { config } from "../template/config.ts";
 
 const message = `
 USAGE:

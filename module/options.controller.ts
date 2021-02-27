@@ -1,4 +1,4 @@
-import type { HandlerOptions, Request, ValidationSchema } from "../mod.ts";
+import { HandlerOptions, Request, ValidationSchema } from "../mod.ts";
 const validationSchema: ValidationSchema = {
   body: { type: "object", properties: { addres: { type: "string" } } },
   headers: {
@@ -28,10 +28,10 @@ export const options: HandlerOptions = {
   validationSchema,
 };
 
-export default async (request: Request) => {
+export default async function (request: Request) {
   const x = request.getQuery();
   const y = request.getParams();
   const z = await request.getPayload();
   const data = { x, y, z };
   request.send(data);
-};
+}

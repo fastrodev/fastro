@@ -1,8 +1,8 @@
 {
   "deno.enable": true,
   "deno.codeLens.implementations":true,
-  "deno.codeLens.references":true,
-  "deno.codeLens.referencesAllFunctions":true,
+  "deno.codeLens.references":false,
+  "deno.codeLens.referencesAllFunctions":false,
   "deno.config": null,
   "deno.importMap": null,
   "deno.lint": true,

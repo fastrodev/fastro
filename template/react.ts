@@ -32,7 +32,7 @@ export const options = {
 };
 
 // Define react props: https://reactjs.org/docs/components-and-props.html
-export const props = async (request: Request) => {
+export const props = async function(request: Request) {
   // You can access container and its type defined in deps.ts with this way
   const c: Container = request.container;
   return {

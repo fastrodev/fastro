@@ -1,7 +1,7 @@
 // Copyright 2020 - 2021 the Fastro author. All rights reserved. MIT license.
 // deno-lint-ignore-file no-explicit-any
 
-import type { FormFile } from "../deps.ts";
+import { FormFile } from "../deps.ts";
 
 export type ServerOptions = {
   port?: number;

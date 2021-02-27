@@ -19,7 +19,7 @@ import {
   setCookie,
   yellow,
 } from "../deps.ts";
-import { react, root } from "../templates/react.ts";
+import { react, root } from "../template/react.ts";
 import {
   CONTAINER,
   CONTENT_TYPE,
@@ -47,8 +47,8 @@ import {
   TEMPLATE_FILE,
   TEST_ENV,
 } from "./constant.ts";
-import type { Request } from "./request.ts";
-import type {
+import { Request } from "./request.ts";
+import {
   Controller,
   DynamicController,
   DynamicPage,

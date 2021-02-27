@@ -1,6 +1,6 @@
 import React from "https://esm.sh/react";
 import { Container } from "../container.ts";
-import type { Request } from "../mod.ts";
+import { Request } from "../mod.ts";
 
 export const options = {
   // Define custom html template
@@ -10,7 +10,7 @@ export const options = {
 };
 
 // Define react props: https://reactjs.org/docs/components-and-props.html
-export const props = async (request: Request) => {
+export const props = async function (request: Request) {
   const container: Container = request.container;
   return {
     params: request.getParams(),

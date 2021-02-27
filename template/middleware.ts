@@ -1,4 +1,4 @@
-export const middleware = `import type { Callback, Request } from "../deps.ts";
+export const middleware = `import  { Callback, Request } from "../deps.ts";
 export const options = {
   methods: ["GET", "POST"],
 };
