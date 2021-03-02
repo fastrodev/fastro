@@ -17,7 +17,7 @@ line interface and create a project.
 ![](public/tree.svg)
 
 ## Benchmarks
-The speed is up to 92% deno http raw library. Go to
+The speed is up to 92% of deno http raw library. Go to
 [benchmarks](https://fastro.dev/benchmarks) to see the measurement and detailed
 results.
 
