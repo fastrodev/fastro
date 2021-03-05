@@ -13,4 +13,28 @@ export const readme = `## Prerequisites
   \`\`\`
   fastro serve
   \`\`\`
+
+## Directory Stucture
+
+\`\`\`
+.
+├── app.yaml                    // configuration file for flexible google app engine
+├── container.ts                // contains injection of other service dependencies
+├── deps.ts                     // definition of all external module urls
+├── Dockerfile                  // dockerfile
+├── main.ts                     // app entry point
+├── middleware                  // middleware folder
+│   └── support.ts              // simple sample of middleware
+├── module                      // module folder. save all your modules here
+│   ├── hello.controller.ts     // simple sample of controller
+│   ├── hello.template.html     // html template
+│   ├── react.page.tsx          // simple react component
+│   └── react.template.html     // react html template
+├── public                      // public folder. folder for all your static files.
+│   ├── favicon.ico             // webapp icon
+│   └── index.html              // default page
+└── readme.md                   // simple webapp manual
+
+3 directories, 13 files
+\`\`\`
 `;
