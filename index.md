@@ -1,6 +1,6 @@
 ---
 description: High performance deno web application framework
-image: public/fastro.png
+image: https://raw.githubusercontent.com/fastrojs/fastro/gh-pages/public/tree.png
 layout: default
 ---
 # Fastro
