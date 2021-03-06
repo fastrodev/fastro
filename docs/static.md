@@ -20,7 +20,3 @@ description: You can add static files by put your files in public folder. Fastro
 
 ## What's next:
 - [React SSR](react.md)
-- [Template rendering](rendering.md)
-- [Data validation](validation.md)
-- [Publishing and deployment](deployment.md)
-- [Fastro API](api.md)

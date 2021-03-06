@@ -24,8 +24,3 @@ description: You can access and add additional property to the request object be
 
 ## What's next:
 - [Create static files](static.md)
-- [Template rendering](rendering.md)
-- [React SSR](react.md)
-- [Data validation](validation.md)
-- [Publishing and deployment](deployment.md)
-- [Fastro API](api.md)

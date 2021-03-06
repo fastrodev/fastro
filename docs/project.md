@@ -34,10 +34,3 @@ description: Init folders and files for your project
 
 ## What's next:
 - [Create a handler](handler.md)
-- [Create a middleware](middleware.md)
-- [Create static files](static.md)
-- [Template rendering](rendering.md)
-- [React SSR](react.md)
-- [Data validation](validation.md)
-- [Publishing and deployment](deployment.md)
-- [Fastro API](api.md)

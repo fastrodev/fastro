@@ -65,6 +65,3 @@ description: You can render html template and pass dynamic value on it.
 
 ## What's next:
 - [React SSR](react.md)
-- [Data validation](validation.md)
-- [Publishing and deployment](deployment.md)
-- [Fastro API](api.md)

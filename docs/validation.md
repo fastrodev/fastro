@@ -54,4 +54,3 @@ export const handler = async (request: Request) => {
 
 ## What's next:
 - [Publishing and deployment](deployment.md)
-- [Fastro API](api.md)
