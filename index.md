@@ -12,7 +12,7 @@ Fastro is a simple and fast web application framework built on top of
 
 ## Getting Started
 
-Go to [the quickstart](https://fastro.dev/docs/quickstart) to install command
+Go to [the documentation](https://fastro.dev/docs/) to install command
 line interface and create a project.
 
 ![][tree]
