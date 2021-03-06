@@ -123,4 +123,4 @@ image: https://reactjs.org/logo-og.png
 
 
 ## What's next:
-- [Create a handler](handler.md)
+- [Data validation](validation.md)
