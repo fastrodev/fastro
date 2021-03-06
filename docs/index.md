@@ -1,4 +1,4 @@
-## Table of contents
+# Table of contents
 - [Installation](quickstart.md)
 - [Create a project](project.md)
 - [Create a handler](handler.md)
