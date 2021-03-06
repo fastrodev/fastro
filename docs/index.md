@@ -1,5 +1,5 @@
 ## Table of contents
-- [Quickstart](quickstart.md)
+- [Installation](quickstart.md)
 - [Create a project](project.md)
 - [Create a handler](handler.md)
 - [Create a middleware](middleware.md)
