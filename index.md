@@ -3,7 +3,7 @@ description: High performance deno web application framework
 image: https://raw.githubusercontent.com/fastrojs/fastro/gh-pages/public/tree.png
 layout: default
 ---
-# Fastro
+# FASTRO
 ![][build] ![][version]
 
 Fastro is a simple and fast web application framework built on top of
