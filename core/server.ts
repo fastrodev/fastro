@@ -410,7 +410,7 @@ export class Fastro {
       };
       request.clearCookie = (name) => deleteCookie(request.response, name);
       request.getCookies = () => {
-        return getCookies(request);
+        return getCookies({ headers: serverRequest.headers });
       };
       request.getCookie = (name) => this.getCookiesByName(name, request);
       request.json = (payload) => {
