@@ -4,37 +4,8 @@ description: Handle all http request
 
 # Create a handler
 - `fastro init` command will generate folders and files like this.
-    ```
-    .
-    ├── app.yaml
-    ├── container.ts
-    ├── deps.ts
-    ├── Dockerfile
-    ├── main.ts
-    ├── middleware
-    │   └── support.ts
-    ├── module
-    │   ├── hello.controller.ts
-    │   ├── hello.template.html
-    │   ├── react.page.tsx
-    │   └── react.template.html
-    ├── public
-    │   ├── favicon.ico
-    │   └── index.html
-    └── readme.md
-
-    3 directories, 13 files
-    ```
+   ![](https://raw.githubusercontent.com/fastrojs/fastro/gh-pages/public/tree.svg)
     
-    File and folder description:
-    - `Dockerfile`: docker file.
-    - `main.ts`: Webapp entrypoint.
-    - `middleware`: Place for all middleware files.
-    - `public`: Place for all static files.
-    - `services`: Place for all controller and html-template files.
-
-
-
 - Open handler file, `module/hello.controller.ts`:
     ```ts
     import type { Request } from "../deps.ts";
