@@ -17,5 +17,3 @@
    ```
    gcloud app deploy
    ```
-   
- - You can see the deployed webapp at this link: [https://phonic-altar-274306.ue.r.appspot.com/](https://phonic-altar-274306.ue.r.appspot.com/)
