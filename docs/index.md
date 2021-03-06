@@ -8,4 +8,5 @@
 - [React SSR](react.md)
 - [Data validation](validation.md)
 - [Publishing and deployment](deployment.md)
+- [Features and examples](features.md)
 - [Fastro API](api.md)
