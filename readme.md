@@ -28,7 +28,6 @@ Fastro provides easy-to-use features for web development.
 
 ## Serverless Demo
 
-- [Webb app deployed on app engine.](https://phonic-altar-274306.ue.r.appspot.com)
 - [Webb app deployed on cloud run.](https://hello-6bxxicr2uq-ue.a.run.app/)
 
 ## Benchmarks
