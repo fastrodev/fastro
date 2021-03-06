@@ -13,27 +13,7 @@ description: Init folders and files for your project
     fastro init
     ```
     This command will generate folders and files like this:
-    ```
-    .
-    ├── app.yaml
-    ├── container.ts
-    ├── deps.ts
-    ├── Dockerfile
-    ├── main.ts
-    ├── middleware
-    │   └── support.ts
-    ├── module
-    │   ├── hello.controller.ts
-    │   ├── hello.template.html
-    │   ├── react.page.tsx
-    │   └── react.template.html
-    ├── public
-    │   ├── favicon.ico
-    │   └── index.html
-    └── readme.md
-
-    3 directories, 13 files
-    ```
+    ![](https://raw.githubusercontent.com/fastrojs/fastro/gh-pages/public/tree.svg)
 
 3. Run server locally
     ```
