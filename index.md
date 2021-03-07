@@ -11,9 +11,8 @@ Fastro is a simple and fast web application framework built on top of
 [deno](https://deno.land).
 
 ## Getting Started
-
-View [deployed applications on google cloud run](https://hello-6bxxicr2uq-ue.a.run.app/). Go to [the documentation](https://fastro.dev/docs/) to install command
-line interface and create a project.
+Go to [the documentation](https://fastro.dev/docs/) to install command
+line interface, create a project, and see the demo.
 
 ![][tree]
 
