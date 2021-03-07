@@ -12,7 +12,7 @@ Fastro is a simple and fast web application framework built on top of
 
 ## Getting Started
 
-Go to [the documentation](https://fastro.dev/docs/) to install command
+View [deployed applications on google cloud run](https://hello-6bxxicr2uq-ue.a.run.app/). Go to [the documentation](https://fastro.dev/docs/) to install command
 line interface and create a project.
 
 ![][tree]
@@ -30,10 +30,6 @@ Fastro provides easy-to-use features for web development.
   in a very simple way.*
 - More features:
   [*see all features and examples.*](https://github.com/fastrodev/fastro/blob/master/module)
-  
-## Serverless Demo
-
-[Webb app deployed on cloud run.](https://hello-6bxxicr2uq-ue.a.run.app/)
 
 ## Benchmarks
 
