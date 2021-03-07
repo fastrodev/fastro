@@ -29,7 +29,7 @@ Fastro provides easy-to-use features for web development.
 - React SSR. *Create react components, define props, and setup the html template
   in a very simple way.*
 - More features:
-  [*see all features and examples.*](https://github.com/fastrodev/fastro/blob/master/module)
+  [*see all features and examples.*](https://fastro.dev/docs/features.html)
 
 ## Benchmarks
 
