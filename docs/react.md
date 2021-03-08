@@ -99,7 +99,7 @@ image: https://reactjs.org/logo-og.png
     ```
     http://localhost:3000/react
     ```
-    You can see the live demo at this link: [https://phonic-altar-274306.ue.r.appspot.com/react](https://phonic-altar-274306.ue.r.appspot.com/react)
+    You can see the live demo at this link: [https://hello-6bxxicr2uq-ue.a.run.app/react](https://hello-6bxxicr2uq-ue.a.run.app/react)
 
 
 ## What's next:
