@@ -20,17 +20,7 @@ line interface, create a project, and see the demo.
 
 ## Features
 
-Fastro provides easy-to-use features for web development.
-
-- File system routing. *No need to register routes, controllers, middlewares,
-  templates, or static files. They will be loaded and saved when the server
-  starts.*
-- Container based dependency injection. *Put all dependencies in a container and
-  access them via function parameters.*
-- React SSR. *Create react components, define props, and setup the html template
-  in a very simple way.*
-- More features:
-  [*see all features and examples.*](https://fastro.dev/docs/features.html)
+Fastro provides easy-to-use features for web development. [*see all features and examples.*](https://fastro.dev/docs/features.html)
 
 ## Contributing
 
