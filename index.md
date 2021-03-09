@@ -22,9 +22,9 @@ line interface, create a project, and see the demo.
 
 ## Features
 
-Fastro provides easy-to-use features for web development. Managing files and folders of a monolithic application made easy.
+Fastro provides easy-to-use features for web development.
 
-- File system routing. *No need to register routes, controllers, middlewares,
+- File system routing. *Managing files and folders of a monolithic application made easy. No need to register routes, controllers, middlewares,
   templates, or static files. They will be loaded and saved when the server
   starts.*
 - Container based dependency injection. *Put all dependencies in a container and
