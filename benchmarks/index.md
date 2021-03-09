@@ -15,14 +15,14 @@ layout: default
 
 ## Deno
 - Source code: [deno_app.ts](https://github.com/fastrojs/fastro/blob/master/benchmark/deno_app.ts)
-- Run server: `deno run -A deno_app.ts`
+- Run server: `deno run -A benchmarks/deno_app.ts`
 - Benchmark command: `autocannon -c 100 http://localhost:8080`
 - Result:
   ![](deno_app.svg)
 
 ## Fastro
 - Source code: [fastro_app.ts](https://github.com/fastrojs/fastro/blob/master/benchmark/fastro_app.ts)
-- Run server: `deno run -A fastro_app.ts`
+- Run server: `deno run -A benchmarks/fastro_app.ts`
 - Benchmark command: `autocannon -c 100 http://localhost:3000/hello`
 - Result:
   ![](fastro_app.svg)
