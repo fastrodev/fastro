@@ -10,4 +10,4 @@
 - [Publishing and deployment](deployment.md)
 - [Features and examples](features.md)
 - [Fastro API](api.md)
-- [Demo](https://hello-6bxxicr2uq-ue.a.run.app/)
+- [Google cloud run demo](https://hello-6bxxicr2uq-ue.a.run.app/)
