@@ -7,12 +7,12 @@ layout: default
 # Fastro
 ![][build] ![][version]
 
-Fastro is a simple and fast web application framework built on top of
+Fastro is a web application framework built on top of
 [deno](https://deno.land).
 
-The speed is up to 92% of deno http raw library. Go to
-[benchmarks](https://fastro.dev/benchmarks) to see the measurement and detailed
-results.
+It is fast. The speed is [up to 92% of deno http raw library](https://fastro.dev/benchmarks).
+
+It is simple. Managing routers and controllers made easy. 
 
 ## Getting Started
 Go to [the documentation](https://fastro.dev/docs/) to install command
@@ -24,7 +24,7 @@ line interface, create a project, and see the demo.
 
 Fastro provides easy-to-use features for web development.
 
-- File system routing. *Managing files and folders of a monolithic application made easy. No need to register routes, controllers, middlewares,
+- File system routing. *No need to register routes, controllers, middlewares,
   templates, or static files. They will be loaded and saved when the server
   starts.*
 - Container based dependency injection. *Put all dependencies in a container and
