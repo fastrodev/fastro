@@ -1,6 +1,9 @@
 # Features and examples
 
 - [Command line interface](https://fastro.dev/docs/project.html). *Generate a project, auto restart if any changes detected.*
+- File system routing. *No need to register routes, controllers, middlewares,
+  templates, or static files. They will be loaded and saved when the server
+  starts.*
 - [Container based dependency injection](https://github.com/fastrojs/fastro/blob/master/container.ts). *Put all dependencies in a container and access them via function parameters.*
 - [Dynamic url param](https://github.com/fastrojs/fastro/blob/master/module/hello/v1/params.controller.ts)
 - [HTML template rendering](https://github.com/fastrojs/fastro/blob/master/module/hello/v3/hello.controller.ts)
