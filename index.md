@@ -20,7 +20,7 @@ line interface, create a project, and see the demo.
 
 ## Features
 
-Fastro provides easy-to-use features for web development. [*see all features and examples.*](https://fastro.dev/docs/features.html)
+Fastro provides easy-to-use features for web development. [*See all features and examples.*](https://fastro.dev/docs/features.html)
 
 ## Contributing
 
