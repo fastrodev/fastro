@@ -10,7 +10,7 @@ layout: default
 Fastro is a fast and simple web application framework built on top of
 [deno](https://deno.land).
 
-*The speed is [up to 92% of deno http raw library](https://fastro.dev/benchmarks). Managing routers and controllers made easy.* 
+*The speed is [up to 92% of deno http raw library](https://fastro.dev/benchmarks).* 
 
 ## Getting Started
 Go to [the documentation](https://fastro.dev/docs/) to install command
@@ -20,7 +20,7 @@ line interface, create a project, and see the demo.
 
 ## Features
 
-Fastro provides easy-to-use features for web development. [*See all features and examples.*](https://fastro.dev/docs/features.html)
+Fastro provides easy-to-use features for web development. Managing routers and controllers made easy. [*See all features and examples.*](https://fastro.dev/docs/features.html)
 
 ## Contributing
 
