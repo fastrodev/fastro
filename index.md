@@ -20,7 +20,7 @@ To see detailed methods and results, please refer to [benchmarks pages](https://
 
 ## Simple
 
-Managing routers and controllers made easy. 
+Managing routers, controllers, middleware, react ssr, and static files made easy. 
 
 To see all features and examples, please check out [features and examples](https://fastro.dev/docs/features.html).
 
@@ -32,7 +32,7 @@ To install command line interface and create a initial project, please go to [th
 
 ## Serverless Demo
 
-By default, you can deploy fastro web apps on Google Cloud Run. 
+By default, you can deploy fastro web apps on [Google Cloud Run](https://cloud.google.com/run). 
 
 To see a demo, please check out [the deployed web app](https://hello-6bxxicr2uq-ue.a.run.app/).
 
