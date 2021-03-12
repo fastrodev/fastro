@@ -4,19 +4,31 @@
 Fastro is a fast and simple web application framework built on top of
 [deno](https://deno.land).
 
-*The speed is [up to 92% of deno http raw library](https://fastro.dev/benchmarks).*
-
-## Getting Started
-Go to [the documentation](https://fastro.dev/docs/) to install command
-line interface, create a project, and see the demo.
-
 ![][tree]
 
-## Features
+## Fast
 
-Fastro provides easy-to-use features for web development.
+The speed is up to 92% of deno http raw library. 
 
-Managing routers and controllers made easy. [*See all features and examples.*](https://fastro.dev/docs/features.html)
+To see detailed methods and results, please refer to [benchmarks pages](https://fastro.dev/benchmarks).
+
+## Simple
+
+Managing routers, controllers, middleware, react ssr, and static files made easy. 
+
+To see all features and examples, please check out [features and examples](https://fastro.dev/docs/features.html).
+
+## Getting Started
+
+There is a very simple template that you can change according to your needs.
+
+To install command line interface and create a initial project, please go to [the manual](https://fastro.dev/docs/).
+
+## Serverless Demo
+
+By default, you can deploy fastro web apps on [Google Cloud Run](https://cloud.google.com/run). 
+
+To see a demo, please check out [the deployed web app](https://hello-6bxxicr2uq-ue.a.run.app/).
 
 ## Contributing
 
@@ -27,4 +39,4 @@ To contribute, please read
 
 [build]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg?branch=master "build"
 [version]: https://img.shields.io/github/v/release/fastrojs/fastro?label=version "version"
-[tree]: https://raw.githubusercontent.com/fastrojs/fastro/gh-pages/public/tree.svg "tree"
+[tree]: https://raw.githubusercontent.com/fastrojs/fastro/gh-pages/public/tree.svg "web app tree"
