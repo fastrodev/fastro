@@ -37,6 +37,6 @@ We appreciate your help!
 To contribute, please read
 [deno guidelines.](https://github.com/denoland/deno/blob/main/docs/contributing/style_guide.md)
 
-[build]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg?branch=master "build"
-[version]: https://img.shields.io/github/v/release/fastrojs/fastro?label=version "version"
-[tree]: https://raw.githubusercontent.com/fastrojs/fastro/gh-pages/public/tree.svg "web app tree"
+[build]: https://github.com/fastroapp/fastro/workflows/ci/badge.svg?branch=master "build"
+[version]: https://img.shields.io/github/v/release/fastroapp/fastro?label=version "version"
+[tree]: https://raw.githubusercontent.com/fastroapp/fastro/gh-pages/public/tree.svg "web app tree"
