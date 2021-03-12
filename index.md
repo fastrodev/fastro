@@ -25,7 +25,7 @@ Managing routers and controllers made easy.
 To see all features and examples, please check out [features and examples](https://fastro.dev/docs/features.html).
 
 ## Getting Started
-Go to [the documentation](https://fastro.dev/docs/) to install command
+Go to [the manual](https://fastro.dev/docs/) to install command
 line interface and create a project.
 
 ## Serverless Demo
