@@ -16,13 +16,13 @@ To see detailed methods and results, please refer to [benchmarks pages](https://
 
 Managing routers, controllers, middleware, react ssr, and static files made easy.
 
-To see all features and examples, please check out [features and examples](https://fastro.app/docs/features.html).
+To see all features and examples, please check out [features and examples](https://fastro.app/manual/features.html).
 
 ## Getting Started
 
 There is a very simple template that you can change according to your needs.
 
-To install command line interface and create a initial project, please go to [the manual](https://fastro.app/docs/).
+To install command line interface and create a initial project, please go to [the manual](https://fastro.app/manual/).
 
 ## Serverless Demo
 
