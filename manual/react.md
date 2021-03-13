@@ -5,19 +5,11 @@ image: https://reactjs.org/logo-og.png
 
 # React SSR
 
-1. Install fastro command line interface (cli):
-    ```
-    deno install -A https://deno.land/x/fastro@v0.30.53/cli/fastro.ts
-    ```
+1. `fastro init` command will generate folders and files like this:
 
-2. Create webapp folder, generate initial folders and files:
-    ```
-    mkdir webapp && cd webapp && fastro init
-    ```
-    It will create folders and files like this:
     ![](https://raw.githubusercontent.com/fastrojs/fastro/gh-pages/public/tree.svg)
 
-3. Open `module/react.page.tsx`:
+2. Open `module/react.page.tsx`:
 
    - You can change the react template and the html title with your own via `options`
    - You can define react props via `props`  
@@ -64,7 +56,7 @@ image: https://reactjs.org/logo-og.png
 
    ```
 
-4. Open `react.template.html`:
+3. Open `react.template.html`:
    - This is the usual react template.
    - You can change it as needed.
 
@@ -86,7 +78,7 @@ image: https://reactjs.org/logo-og.png
     ```
    
 
-5. Run your webapp:
+4. Run your webapp:
     ```
     deno run -A main.ts
     ```
@@ -95,7 +87,7 @@ image: https://reactjs.org/logo-og.png
     fastro serve
     ```
 
-6. Open the react page
+5. Open the react page
     ```
     http://localhost:3000/react
     ```
