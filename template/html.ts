@@ -89,7 +89,7 @@ export const html = `<!DOCTYPE html>
     <h1><b>Your webapp setup complete</b></h1>
     <p>You're seeing this because you've successfully setup fastro webapp v${FASTRO_VERSION}. Now it's time to go build something awesome!
     </p>
-    <a target="_blank" href="https://fastro.app/docs/quickstart.html">Open documentation</a>
+    <a target="_blank" href="https://fastro.app/manual">Open documentation</a>
   </div>
 </body>
 
