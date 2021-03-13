@@ -1,5 +1,5 @@
 # Fastro Manual
-- [Installation](quickstart.md)
+- [Installation](install.md)
 - [Create a project](project.md)
 - [Create a handler](handler.md)
 - [Create a middleware](middleware.md)
@@ -9,4 +9,3 @@
 - [Data validation](validation.md)
 - [Publishing and deployment](deployment.md)
 - [Fastro API](api.md)
-- [Features and examples](features.md)
