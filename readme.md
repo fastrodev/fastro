@@ -1,34 +1,36 @@
 # Fastro
 ![][build] ![][version]
 
-Fastro is a fast and simple web application framework built on top of
+Fastro is a [fast](#benchmarks) and [simple](#features) web application framework built on top of
 [deno](https://deno.land).
 
-![][tree]
+Accelerate development of [monolithic](https://www.google.com/search?q=monolithic+vs+microservice) web applications written in Typescript.
 
-## Fast
+Choose a customized template according to your needs.
+
+## Getting Started
+
+To install command line interface and create a initial project, please go to [the manual](https://fastro.app/manual/).
+
+[![][tree]](https://fastro.app/manual)
+
+## Benchmarks
 
 The speed is up to 92% of deno http raw library.
 
 To see detailed methods and results, please refer to [benchmarks pages](https://fastro.app/benchmarks).
 
-## Simple
+## Features
 
 Managing routers, controllers, middleware, react ssr, and static files made easy.
 
 To see all features and examples, please check out [features and examples](https://fastro.app/features).
 
-## Getting Started
-
-There is a very simple template that you can change according to your needs.
-
-To install command line interface and create a initial project, please go to [the manual](https://fastro.app/manual/).
-
-## Serverless Demo
+## Demo
 
 By default, you can deploy fastro web apps on [Google Cloud Run](https://cloud.google.com/run).
 
-To see a demo, please check out [the deployed web app](https://hello-6bxxicr2uq-ue.a.run.app/).
+To see a demo, please check out [the deployed web app](https://demo.fastro.app).
 
 ## Contributing
 
