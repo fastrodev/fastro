@@ -5,5 +5,5 @@ export const options = {
 export default function(request: Request, next: Callback) {
   request.hello = "with middleware";
   next();
-};
+}
 `;
