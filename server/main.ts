@@ -1,36 +1,38 @@
-import { Fastro, FastroOptions, HandlerOptions } from "./types.ts";
-import { Handler, serve } from "./deps.ts";
-import { router } from "./router.ts";
-import { createHandler } from "./handler.ts";
+import { Fastro, HandlerOptions } from "./types.ts"
+import { Handler, serve, ServeInit } from "./deps.ts"
+import { Router } from "./router.ts"
+import { createHandler } from "./handler.ts"
 
-export default function (opt?: FastroOptions): Fastro {
-  console.log(opt);
-  const r = router();
+export function fastro(): Fastro {
+  const router = Router()
 
   return {
-    serve: async function (port?: number): Promise<void> {
-      await serve(createHandler(r.router), { port });
+    serve: (options: ServeInit = {}) => {
+      const port = options.port ?? 8000
+      const hostname = options.hostname ?? "localhost"
+      console.log(`Listening on http://${hostname}:${port}`)
+      serve(createHandler(router.router), options)
     },
     get: (url: string, opts: HandlerOptions, handler: Handler) => {
-      r.get(url, opts, handler);
+      router.get(url, opts, handler)
     },
     post: (url: string, opts: HandlerOptions, handler: Handler) => {
-      r.post(url, opts, handler);
+      router.post(url, opts, handler)
     },
     put: (url: string, opts: HandlerOptions, handler: Handler) => {
-      r.put(url, opts, handler);
+      router.put(url, opts, handler)
     },
     patch: (url: string, opts: HandlerOptions, handler: Handler) => {
-      r.patch(url, opts, handler);
+      router.patch(url, opts, handler)
     },
     delete: (url: string, opts: HandlerOptions, handler: Handler) => {
-      r.delete(url, opts, handler);
+      router.delete(url, opts, handler)
     },
     head: (url: string, opts: HandlerOptions, handler: Handler) => {
-      r.head(url, opts, handler);
+      router.head(url, opts, handler)
     },
     options: (url: string, opts: HandlerOptions, handler: Handler) => {
-      r.options(url, opts, handler);
+      router.options(url, opts, handler)
     },
-  };
+  }
 }

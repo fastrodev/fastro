@@ -1,7 +1,7 @@
-import { Route } from "./types.ts";
+import { Route } from "./types.ts"
 
-export function createHandler(map: Map<string, Route>) {
-  return function (request: Request): Response {
-    return new Response("Hello World\n");
-  };
+export function createHandler(_map: Map<string, Route>) {
+  return function (_request: Request): Response {
+    return new Response("Hello World!\n")
+  }
 }
