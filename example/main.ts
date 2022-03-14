@@ -1,4 +1,4 @@
-import { fastro } from "../server/mod.ts"
+import { fastro } from 'https://deno.land/x/fastro@v0.31.0/server/mod.ts'
 
 const app = fastro()
 
