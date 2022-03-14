@@ -1,38 +1,52 @@
-import { Fastro, HandlerOptions } from "./types.ts"
-import { Handler, serve, ServeInit } from "./deps.ts"
-import { Router } from "./router.ts"
-import { createHandler } from "./handler.ts"
+import { Fastro, Middleware } from './types.ts'
+import { Handler, serve, ServeInit } from './deps.ts'
+import { Route } from './router.ts'
+import { createHandler } from './handler.ts'
 
-export function fastro(): Fastro {
-  const router = Router()
+interface Options {
+  hostname?: string
+  port?: number
+}
 
-  return {
+export function fastro(options: Options = {}): Fastro {
+  const hostname = options.hostname ?? 'localhost'
+  const port = options.port ?? 8000
+  const rtr = Route(hostname, port)
+  const fstr = {
     serve: (options: ServeInit = {}) => {
-      const port = options.port ?? 8000
-      const hostname = options.hostname ?? "localhost"
       console.log(`Listening on http://${hostname}:${port}`)
-      serve(createHandler(router.router), options)
+      options.port = port
+      options.hostname = hostname
+      return serve(createHandler(rtr.router), options)
     },
-    get: (url: string, opts: HandlerOptions, handler: Handler) => {
-      router.get(url, opts, handler)
+    get: (url: string, opts: Handler | Middleware, handler: Handler) => {
+      rtr.get(url, opts, handler)
+      return fstr
     },
-    post: (url: string, opts: HandlerOptions, handler: Handler) => {
-      router.post(url, opts, handler)
+    post: (url: string, opts: Handler | Middleware, handler: Handler) => {
+      rtr.post(url, opts, handler)
+      return fstr
     },
-    put: (url: string, opts: HandlerOptions, handler: Handler) => {
-      router.put(url, opts, handler)
+    put: (url: string, opts: Handler | Middleware, handler: Handler) => {
+      rtr.put(url, opts, handler)
+      return fstr
     },
-    patch: (url: string, opts: HandlerOptions, handler: Handler) => {
-      router.patch(url, opts, handler)
+    patch: (url: string, opts: Handler | Middleware, handler: Handler) => {
+      rtr.patch(url, opts, handler)
+      return fstr
     },
-    delete: (url: string, opts: HandlerOptions, handler: Handler) => {
-      router.delete(url, opts, handler)
+    delete: (url: string, opts: Handler | Middleware, handler: Handler) => {
+      rtr.delete(url, opts, handler)
+      return fstr
     },
-    head: (url: string, opts: HandlerOptions, handler: Handler) => {
-      router.head(url, opts, handler)
+    head: (url: string, opts: Handler | Middleware, handler: Handler) => {
+      rtr.head(url, opts, handler)
+      return fstr
     },
-    options: (url: string, opts: HandlerOptions, handler: Handler) => {
-      router.options(url, opts, handler)
+    options: (url: string, opts: Handler | Middleware, handler: Handler) => {
+      rtr.options(url, opts, handler)
+      return fstr
     },
   }
+  return fstr
 }
