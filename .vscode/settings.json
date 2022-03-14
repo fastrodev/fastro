@@ -1,30 +1,27 @@
 {
-  "deno.enable": true,
-  "deno.codeLens.implementations": true,
-  "deno.codeLens.references": false,
-  "deno.codeLens.referencesAllFunctions": false,
-  "deno.config": null,
-  "deno.importMap": null,
-  "deno.lint": true,
-  "deno.unstable": true,
   "files.eol": "\n",
   "files.trimTrailingWhitespace": true,
-  "[javascript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
-  },
+  "typescript.format.semicolons": "remove",
+  "typescript.preferences.quoteStyle": "single",
   "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno",
+    "editor.defaultFormatter": "vscode.typescript-language-features",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.organizeImports": true
     }
   },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "denoland.vscode-deno",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-    }
+  "deno.enable": true,
+  "deno.unstable": true,
+  "deno.lint": true,
+  "deno.codeLens.testArgs": [
+    "--allow-net",
+    "--allow-read",
+    "--allow-write"
+  ],
+  "editor.defaultFormatter": "denoland.vscode-deno",
+  "deno.suggest.imports.hosts": {
+    "https://deno.land": true,
+    "https://esm.sh": false
   },
-  "editor.tabSize": 2
+  "deno.config": "./deno.json"
 }
