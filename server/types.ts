@@ -25,12 +25,12 @@ export interface Route {
 }
 
 export interface Router {
-  get(url: string, opts: Handler | Middleware, handler: Handler): Router
-  post(url: string, opts: Handler | Middleware, handler: Handler): Router
-  put(url: string, opts: Handler | Middleware, handler: Handler): Router
-  patch(url: string, opts: Handler | Middleware, handler: Handler): Router
-  delete(url: string, opts: Handler | Middleware, handler: Handler): Router
-  head(url: string, opts: Handler | Middleware, handler: Handler): Router
-  options(url: string, opts: Handler | Middleware, handler: Handler): Router
+  get(url: string, opts: Handler | Middleware, handler?: Handler): Router
+  post(url: string, opts: Handler | Middleware, handler?: Handler): Router
+  put(url: string, opts: Handler | Middleware, handler?: Handler): Router
+  patch(url: string, opts: Handler | Middleware, handler?: Handler): Router
+  delete(url: string, opts: Handler | Middleware, handler?: Handler): Router
+  head(url: string, opts: Handler | Middleware, handler?: Handler): Router
+  options(url: string, opts: Handler | Middleware, handler?: Handler): Router
   router: Map<string, Route>
 }
