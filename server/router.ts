@@ -1,7 +1,7 @@
 import { Handler } from "./deps.ts"
 import { Middleware, Route, Router } from "./types.ts"
 
-export function Route(hostname: string, port: number): Router {
+export function Route(): Router {
   const routerMap: Map<string, Route> = new Map()
   const instance: Router = {
     get,
@@ -21,8 +21,7 @@ export function Route(hostname: string, port: number): Router {
     handler: Handler,
   ) {
     const route = { method, url, middleware, handler }
-    const key = method + ':' + 'http://' + hostname + ':' + port + url
-    routerMap.set(key, route)
+    routerMap.set(`${method}#localhost#${url}`, route)
     return instance
   }
 

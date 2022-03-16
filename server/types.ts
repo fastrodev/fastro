@@ -1,7 +1,7 @@
 import { ConnInfo, Handler, ServeInit } from "./deps.ts"
 
 export interface Next {
-  (err?: Error): void
+  (error?: unknown): void
 }
 
 export type Middleware = (request: Request, connInfo: ConnInfo, next: Next) => void

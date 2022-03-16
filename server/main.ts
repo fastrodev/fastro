@@ -8,15 +8,13 @@ interface Options {
   port?: number
 }
 
-export function fastro(options: Options = {}): Fastro {
-  const hostname = options.hostname ?? 'localhost'
-  const port = options.port ?? 8000
-  const rtr = Route(hostname, port)
+export function fastro(): Fastro {
+  const rtr = Route()
   const fstr = {
     serve: (options: ServeInit = {}) => {
+      const port = options.port ?? 8000
+      const hostname = options.hostname ?? '0.0.0.0'
       console.log(`Listening on http://${hostname}:${port}`)
-      options.port = port
-      options.hostname = hostname
       return serve(createHandler(rtr.router), options)
     },
     get: (url: string, opts: Handler | Middleware, handler: Handler) => {

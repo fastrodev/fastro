@@ -5,6 +5,22 @@ const NOT_FOUND_STRING = 'URL not found'
 const NOT_FOUND_CODE = 404
 const UNDEFINED_MIDDLEWARE = 'Undefined middleware'
 
+const routerMap: Map<string, Route> = new Map()
+
+function initReouterMap(
+  map: Map<string, Route>,
+  url: string) {
+  const [http, path] = url.split('//')
+  const [host] = path.split('/')
+  const hostname = `${http}//${host}`
+  map.forEach((v, k) => {
+    const [method, , kpath] = k.split('#')
+    const key = `${method}:${hostname}${kpath}`
+    routerMap.set(key, v)
+  })
+  map.clear()
+}
+
 export function createHandler(map: Map<string, Route>) {
   return function (
     req: Request, connInfo: ConnInfo
@@ -14,11 +30,17 @@ export function createHandler(map: Map<string, Route>) {
 }
 
 function handleRequest(
-  req: Request, connInfo: ConnInfo, map: Map<string, Route>
+  req: Request,
+  connInfo: ConnInfo,
+  map: Map<string, Route>,
 ): Response | Promise<Response> {
-  const route = map.get(createMapKey(req))
-  if (!route) return new Response(NOT_FOUND_STRING, { status: NOT_FOUND_CODE })
 
+  if (routerMap.size < 1) {
+    initReouterMap(map, req.url)
+  }
+
+  const route = routerMap.get(createMapKey(req))
+  if (!route) return new Response(NOT_FOUND_STRING, { status: NOT_FOUND_CODE })
   if (!route?.handler) {
     const handler: Handler = <Handler>route?.middleware
     return handler(req, connInfo)
