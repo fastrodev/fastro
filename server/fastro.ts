@@ -3,48 +3,40 @@ import { Handler, serve, ServeInit } from './deps.ts'
 import { Route } from './router.ts'
 import { createHandler } from './handler.ts'
 
-interface Options {
-  hostname?: string
-  port?: number
-}
-
 export function fastro(): Fastro {
-  const rtr = Route()
-  const fstr = {
+  const r = Route()
+  const f = {
     serve: (options: ServeInit = {}) => {
-      const port = options.port ?? 8000
-      const hostname = options.hostname ?? 'localhost'
-      console.log(`Listening on http://${hostname}:${port}`)
-      return serve(createHandler(rtr.router), options)
+      return serve(createHandler(r.router), options)
     },
     get: (url: string, opts: Handler | Middleware, handler: Handler) => {
-      rtr.get(url, opts, handler)
-      return fstr
+      r.get(url, opts, handler)
+      return f
     },
     post: (url: string, opts: Handler | Middleware, handler: Handler) => {
-      rtr.post(url, opts, handler)
-      return fstr
+      r.post(url, opts, handler)
+      return f
     },
     put: (url: string, opts: Handler | Middleware, handler: Handler) => {
-      rtr.put(url, opts, handler)
-      return fstr
+      r.put(url, opts, handler)
+      return f
     },
     patch: (url: string, opts: Handler | Middleware, handler: Handler) => {
-      rtr.patch(url, opts, handler)
-      return fstr
+      r.patch(url, opts, handler)
+      return f
     },
     delete: (url: string, opts: Handler | Middleware, handler: Handler) => {
-      rtr.delete(url, opts, handler)
-      return fstr
+      r.delete(url, opts, handler)
+      return f
     },
     head: (url: string, opts: Handler | Middleware, handler: Handler) => {
-      rtr.head(url, opts, handler)
-      return fstr
+      r.head(url, opts, handler)
+      return f
     },
     options: (url: string, opts: Handler | Middleware, handler: Handler) => {
-      rtr.options(url, opts, handler)
-      return fstr
+      r.options(url, opts, handler)
+      return f
     },
   }
-  return fstr
+  return f
 }
