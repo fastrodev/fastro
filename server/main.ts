@@ -13,7 +13,7 @@ export function fastro(): Fastro {
   const fstr = {
     serve: (options: ServeInit = {}) => {
       const port = options.port ?? 8000
-      const hostname = options.hostname ?? '0.0.0.0'
+      const hostname = options.hostname ?? 'localhost'
       console.log(`Listening on http://${hostname}:${port}`)
       return serve(createHandler(rtr.router), options)
     },
