@@ -9,31 +9,31 @@ export function fastro(): Fastro {
     serve: (options: ServeInit = {}) => {
       return serve(createHandler(r.router), options)
     },
-    get: (url: string, opts: Handler | Middleware, handler: Handler) => {
+    get: (url: string | RegExp, opts: Handler | Middleware, handler: Handler) => {
       r.get(url, opts, handler)
       return f
     },
-    post: (url: string, opts: Handler | Middleware, handler: Handler) => {
+    post: (url: string | RegExp, opts: Handler | Middleware, handler: Handler) => {
       r.post(url, opts, handler)
       return f
     },
-    put: (url: string, opts: Handler | Middleware, handler: Handler) => {
+    put: (url: string | RegExp, opts: Handler | Middleware, handler: Handler) => {
       r.put(url, opts, handler)
       return f
     },
-    patch: (url: string, opts: Handler | Middleware, handler: Handler) => {
+    patch: (url: string | RegExp, opts: Handler | Middleware, handler: Handler) => {
       r.patch(url, opts, handler)
       return f
     },
-    delete: (url: string, opts: Handler | Middleware, handler: Handler) => {
+    delete: (url: string | RegExp, opts: Handler | Middleware, handler: Handler) => {
       r.delete(url, opts, handler)
       return f
     },
-    head: (url: string, opts: Handler | Middleware, handler: Handler) => {
+    head: (url: string | RegExp, opts: Handler | Middleware, handler: Handler) => {
       r.head(url, opts, handler)
       return f
     },
-    options: (url: string, opts: Handler | Middleware, handler: Handler) => {
+    options: (url: string | RegExp, opts: Handler | Middleware, handler: Handler) => {
       r.options(url, opts, handler)
       return f
     },

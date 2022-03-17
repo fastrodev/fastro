@@ -7,7 +7,7 @@ const UNDEFINED_MIDDLEWARE = 'Undefined middleware'
 
 export interface FinalRoute {
   method: string
-  path: string
+  path: string | RegExp
   url: string
   host: string
   middleware: Handler | Middleware
@@ -90,67 +90,38 @@ const handleMiddleware = (req: Request, connInfo: ConnInfo, middleware?: Middlew
 function createMapKey(req: Request): string {
   let result = ''
   routerMap.forEach((v) => {
-    if (v.method === req.method && validate(v.url, req.url, v.host)) {
+    if (v.method === req.method && validateURL(v.url, req.url, v.host)) {
       result = `${req.method}:${v.url}`
     }
   })
   return result
 }
 
-function validate(routeURL: string, incomingURL: string, host: string) {
+function validateURL(routeURL: string, incomingURL: string, host: string) {
   const routePath = routeURL.replace(host, '')
   const incomingPath = incomingURL.replace(host, '')
   const r = routePath.split('/')
   const i = incomingPath.split('/')
   if (r.length != i.length) return false
-  return parsePath(r, i)
-}
-
-function isAllTrue(v: boolean[]) {
-  v.forEach((v) => {
-
-  })
+  const res = parsePath(r, i)
+  console.log
+  return res
 }
 
 function parsePath(route: string[], incoming: string[]) {
-  let result = false
-  route.shift()
-  incoming.shift()
-  const res = []
-  route.forEach((path, idx) => {
-    if (path === incoming[idx]
-      || regex(incoming[idx], path)
-    ) {
-      console.log('regex')
-      result = false
-    }
-  })
-
-  // console.log(result)
-  return result
-}
-
-function regex(incoming: string, path: string) {
-  // console.log('incoming', incoming)
-  // console.log('path', path)
-  // console.log('path.charAt(0)', path.charAt(0))
-  // console.log('===')
-  // if (path.charAt(0) === ':') {
-  //   return true
-  // }
-
-  // const c = path.charAt(0) !== ':'
+  route.shift(); incoming.shift()
+  for (let idx = 0; idx < route.length; idx++) {
+    const path = route[idx]
+    if (checkPath(path, incoming, idx)) return false
+  }
   return true
 }
 
-// function getPattern(txt: string) {
-//   let str = ''
-//   const i = txt.indexOf('(')
-//   if (i >= 0) {
-//     const j = txt.indexOf(')')
-//     if (j >= 0) {
-//       str = txt.substring(i, j)
-//     }
-//   }
-//   return str
-// }
+function checkPath(path: string, incoming: string[], idx: number) {
+  return !(path === incoming[idx] || regex(incoming[idx], path))
+}
+
+function regex(_incoming: string, path: string) {
+  if (path.charAt(0) === ':') return true
+  return false
+}
