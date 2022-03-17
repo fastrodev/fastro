@@ -1,20 +1,22 @@
 # Benchmarks
 
-## Perfomance
+## perfomance
 - 92,89% from deno
 
-## Machine
+## machine
 - MacBook Pro (13-inch, 2020)
 - 2 GHz Quad-Core Intel Core i5
 - 16 GB 3733 MHz LPDDR4X
+
+## deno version
+- 1.193.3
 
 ## wrk
 ```
 wrk -t12 -c400 -d30s http://127.0.0.1:8000
 ```
 
-
-## fastro
+## fastro (v0.33.1)
 ```
 deno run -A benchmarks/fastro.ts
 ```
@@ -32,7 +34,7 @@ Requests/sec:  32098.61
 Transfer/sec:      3.92MB
 ```
 
-## deno
+## deno (std@0.129.0)
 ```
 deno run -A benchmarks/deno.ts
 ```
