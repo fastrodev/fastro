@@ -16,45 +16,45 @@ export function Route(): Router {
 
   function createRoute(
     method: string,
-    url: string,
+    path: string | RegExp,
     middleware: Handler | Middleware,
     handler: Handler,
   ) {
-    const route = { method, url, middleware, handler }
-    routerMap.set(`${method}#localhost#${url}`, route)
+    const route = { method, path, middleware, handler }
+    routerMap.set(`${method}#localhost#${path}`, route)
     return instance
   }
 
-  function get(url: string, middleware: Middleware, handler: Handler): Router {
-    return createRoute("GET", url, middleware, handler)
+  function get(path: string | RegExp, middleware: Middleware, handler: Handler): Router {
+    return createRoute("GET", path, middleware, handler)
   }
 
-  function post(url: string, middleware: Middleware, handler: Handler): Router {
-    return createRoute("POST", url, middleware, handler)
+  function post(path: string | RegExp, middleware: Middleware, handler: Handler): Router {
+    return createRoute("POST", path, middleware, handler)
   }
 
-  function put(url: string, middleware: Middleware, handler: Handler): Router {
-    return createRoute("PUT", url, middleware, handler)
+  function put(path: string | RegExp, middleware: Middleware, handler: Handler): Router {
+    return createRoute("PUT", path, middleware, handler)
   }
 
-  function patch(url: string, middleware: Middleware, handler: Handler): Router {
-    return createRoute("PATCH", url, middleware, handler)
+  function patch(path: string | RegExp, middleware: Middleware, handler: Handler): Router {
+    return createRoute("PATCH", path, middleware, handler)
   }
 
-  function remove(url: string, middleware: Middleware, handler: Handler): Router {
-    return createRoute("DELETE", url, middleware, handler)
+  function remove(path: string | RegExp, middleware: Middleware, handler: Handler): Router {
+    return createRoute("DELETE", path, middleware, handler)
   }
 
-  function head(url: string, middleware: Middleware, handler: Handler): Router {
-    return createRoute("HEAD", url, middleware, handler)
+  function head(path: string | RegExp, middleware: Middleware, handler: Handler): Router {
+    return createRoute("HEAD", path, middleware, handler)
   }
 
   function options(
-    url: string,
+    path: string | RegExp,
     middleware: Middleware,
     handler: Handler,
   ): Router {
-    return createRoute(url, "OPTIONS", middleware, handler)
+    return createRoute("OPTIONS", path, middleware, handler)
   }
 
   return instance

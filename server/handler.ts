@@ -5,7 +5,16 @@ const NOT_FOUND_STRING = 'URL not found'
 const NOT_FOUND_CODE = 404
 const UNDEFINED_MIDDLEWARE = 'Undefined middleware'
 
-const routerMap: Map<string, Route> = new Map()
+export interface FinalRoute {
+  method: string
+  path: string | RegExp
+  url: string
+  host: string
+  middleware: Handler | Middleware
+  handler: Handler
+}
+
+const routerMap: Map<string, FinalRoute> = new Map()
 
 function initReouterMap(
   map: Map<string, Route>,
@@ -16,7 +25,15 @@ function initReouterMap(
   map.forEach((v, k) => {
     const [method, , kpath] = k.split('#')
     const key = `${method}:${hostname}${kpath}`
-    routerMap.set(key, v)
+    const route = {
+      path: v.path,
+      method: v.method,
+      handler: v.handler,
+      middleware: v.middleware,
+      url: `${hostname}${kpath}`,
+      host: hostname
+    }
+    routerMap.set(key, route)
   })
   map.clear()
 }
@@ -39,7 +56,9 @@ function handleRequest(
     initReouterMap(map, req.url)
   }
 
-  const route = routerMap.get(createMapKey(req))
+  const k = createMapKey(req)
+  console.log('key', k)
+  const route = routerMap.get(k)
   if (!route) return new Response(NOT_FOUND_STRING, { status: NOT_FOUND_CODE })
   if (!route?.handler) {
     const handler: Handler = <Handler>route?.middleware
@@ -69,5 +88,40 @@ const handleMiddleware = (req: Request, connInfo: ConnInfo, middleware?: Middlew
 }
 
 function createMapKey(req: Request): string {
-  return `${req.method}:${req.url}`
+  let result = ''
+  routerMap.forEach((v) => {
+    if (v.method === req.method && validateURL(v.url, req.url, v.host)) {
+      result = `${req.method}:${v.url}`
+    }
+  })
+  return result
+}
+
+function validateURL(routeURL: string, incomingURL: string, host: string) {
+  const routePath = routeURL.replace(host, '')
+  const incomingPath = incomingURL.replace(host, '')
+  const r = routePath.split('/')
+  const i = incomingPath.split('/')
+  if (r.length != i.length) return false
+  const res = parsePath(r, i)
+  console.log
+  return res
+}
+
+function parsePath(route: string[], incoming: string[]) {
+  route.shift(); incoming.shift()
+  for (let idx = 0; idx < route.length; idx++) {
+    const path = route[idx]
+    if (checkPath(path, incoming, idx)) return false
+  }
+  return true
+}
+
+function checkPath(path: string, incoming: string[], idx: number) {
+  return !(path === incoming[idx] || regex(incoming[idx], path))
+}
+
+function regex(_incoming: string, path: string) {
+  if (path.charAt(0) === ':') return true
+  return false
 }
