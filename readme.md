@@ -5,7 +5,7 @@ Fast and simple web application framework for deno
 ## Basic usage
 
 ```ts
-import { fastro } from "https://deno.land/x/fastro@v0.33.0/server/mod.ts";
+import { fastro } from "https://deno.land/x/fastro@v0.33.1/server/mod.ts";
 
 const app = fastro();
 
@@ -19,7 +19,7 @@ await app.serve();
 ## Custom port
 
 ```ts
-import { fastro } from "https://deno.land/x/fastro@v0.33.0/server/mod.ts";
+import { fastro } from "https://deno.land/x/fastro@v0.33.1/server/mod.ts";
 
 const app = fastro();
 
@@ -37,7 +37,7 @@ import {
   fastro,
   getParam,
   getParams,
-} from "https://deno.land/x/fastro@v0.33.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v0.33.1/server/mod.ts";
 
 const app = fastro();
 
@@ -60,7 +60,7 @@ import {
   ConnInfo,
   fastro,
   Next,
-} from "https://deno.land/x/fastro@v0.33.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v0.33.1/server/mod.ts";
 
 const app = fastro();
 
