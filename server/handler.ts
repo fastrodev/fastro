@@ -4,7 +4,9 @@ import { Handler, ConnInfo } from "./deps.ts"
 const NOT_FOUND_STRING = 'URL not found'
 const NOT_FOUND_CODE = 404
 const UNDEFINED_MIDDLEWARE = 'Undefined middleware'
+const routerMap: Map<string, FinalRoute> = new Map()
 
+let hostname = ''
 export interface FinalRoute {
   method: string
   path: string | RegExp
@@ -14,14 +16,12 @@ export interface FinalRoute {
   handler: Handler
 }
 
-const routerMap: Map<string, FinalRoute> = new Map()
-
 function initReouterMap(
   map: Map<string, Route>,
   url: string) {
   const [http, path] = url.split('//')
   const [host] = path.split('/')
-  const hostname = `${http}//${host}`
+  hostname = `${http}//${host}`
   map.forEach((v, k) => {
     const [method, , kpath] = k.split('#')
     const key = `${method}:${hostname}${kpath}`
@@ -57,7 +57,6 @@ function handleRequest(
   }
 
   const k = createMapKey(req)
-  console.log('key', k)
   const route = routerMap.get(k)
   if (!route) return new Response(NOT_FOUND_STRING, { status: NOT_FOUND_CODE })
   if (!route?.handler) {
@@ -124,4 +123,38 @@ function checkPath(path: string, incoming: string[], idx: number) {
 function regex(_incoming: string, path: string) {
   if (path.charAt(0) === ':') return true
   return false
+}
+
+function getRoute(req: Request): string {
+  let result = ''
+  routerMap.forEach((v) => {
+    if (v.method === req.method && validateURL(v.url, req.url, v.host)) {
+      result = `${v.url}`
+    }
+  })
+  return result
+}
+
+function extractParams(req: Request) {
+  const routeParams = getRoute(req).replace(hostname, '').split('/')
+  const params = req.url.replace(hostname, '').split('/')
+  routeParams.shift(); params.shift()
+  return routeParams
+    .map((param, index) => { return { param, index } })
+    .filter((val) => val.param.charAt(0) === ':')
+    .map((val) => {
+      return {
+        name: val.param.replace(':', ''),
+        value: params[val.index]
+      }
+    })
+}
+
+export function getParams(req: Request) {
+  return extractParams(req)
+}
+
+export function getParam(name: string, req: Request) {
+  const [res] = extractParams(req).filter((val) => val.value === name)
+  return res
 }
