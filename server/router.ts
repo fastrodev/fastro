@@ -16,12 +16,12 @@ export function Route(): Router {
 
   function createRoute(
     method: string,
-    url: string,
+    path: string,
     middleware: Handler | Middleware,
     handler: Handler,
   ) {
-    const route = { method, url, middleware, handler }
-    routerMap.set(`${method}#localhost#${url}`, route)
+    const route = { method, path, middleware, handler }
+    routerMap.set(`${method}#localhost#${path}`, route)
     return instance
   }
 

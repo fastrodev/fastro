@@ -8,29 +8,29 @@ export type Middleware = (request: Request, connInfo: ConnInfo, next: Next) => v
 
 export interface Fastro {
   serve(options?: ServeInit): Promise<void>
-  get(url: string, opts: Handler | Middleware, handler?: Handler): Fastro
-  post(url: string, opts: Handler | Middleware, handler?: Handler): Fastro
-  put(url: string, opts: Handler | Middleware, handler?: Handler): Fastro
-  patch(url: string, opts: Handler | Middleware, handler?: Handler): Fastro
-  delete(url: string, opts: Handler | Middleware, handler?: Handler): Fastro
-  head(url: string, opts: Handler | Middleware, handler?: Handler): Fastro
-  options(url: string, opts: Handler | Middleware, handler?: Handler): Fastro
+  get(path: string, opts: Handler | Middleware, handler?: Handler): Fastro
+  post(path: string, opts: Handler | Middleware, handler?: Handler): Fastro
+  put(path: string, opts: Handler | Middleware, handler?: Handler): Fastro
+  patch(path: string, opts: Handler | Middleware, handler?: Handler): Fastro
+  delete(path: string, opts: Handler | Middleware, handler?: Handler): Fastro
+  head(path: string, opts: Handler | Middleware, handler?: Handler): Fastro
+  options(path: string, opts: Handler | Middleware, handler?: Handler): Fastro
 }
 
 export interface Route {
   method: string
-  url: string
+  path: string
   middleware: Handler | Middleware
   handler: Handler
 }
 
 export interface Router {
-  get(url: string, opts: Handler | Middleware, handler?: Handler): Router
-  post(url: string, opts: Handler | Middleware, handler?: Handler): Router
-  put(url: string, opts: Handler | Middleware, handler?: Handler): Router
-  patch(url: string, opts: Handler | Middleware, handler?: Handler): Router
-  delete(url: string, opts: Handler | Middleware, handler?: Handler): Router
-  head(url: string, opts: Handler | Middleware, handler?: Handler): Router
-  options(url: string, opts: Handler | Middleware, handler?: Handler): Router
+  get(path: string, opts: Handler | Middleware, handler?: Handler): Router
+  post(path: string, opts: Handler | Middleware, handler?: Handler): Router
+  put(path: string, opts: Handler | Middleware, handler?: Handler): Router
+  patch(path: string, opts: Handler | Middleware, handler?: Handler): Router
+  delete(path: string, opts: Handler | Middleware, handler?: Handler): Router
+  head(path: string, opts: Handler | Middleware, handler?: Handler): Router
+  options(path: string, opts: Handler | Middleware, handler?: Handler): Router
   router: Map<string, Route>
 }
