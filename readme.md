@@ -7,13 +7,11 @@ Fast and simple web application framework for deno
 ```ts
 import { fastro } from "https://deno.land/x/fastro@v0.33.1/server/mod.ts";
 
-const app = fastro();
+const app = fastro()
 
-app.get("/", () => {
-  return new Response("Hello world!");
-});
+app.get('/', () => new Response("Hello world!"))
 
-await app.serve();
+await app.serve()
 ```
 
 ## Custom port
@@ -23,9 +21,7 @@ import { fastro } from "https://deno.land/x/fastro@v0.33.1/server/mod.ts";
 
 const app = fastro();
 
-app.get("/", () => {
-  return new Response("Hello world!");
-});
+app.get('/', () => new Response("Hello world!"))
 
 await app.serve({ port: 3000 });
 ```
@@ -62,19 +58,15 @@ import {
   Next,
 } from "https://deno.land/x/fastro@v0.33.1/server/mod.ts";
 
-const app = fastro();
+const app = fastro()
 
 function middleware(req: Request, connInfo: ConnInfo, next: Next) {
-  console.log("url=", req.url);
-  console.log("remoteAddr=", connInfo.remoteAddr);
-  next();
+    console.log('url=', req.url)
+    console.log('remoteAddr=', connInfo.remoteAddr)
+    next()
 }
 
-function handler(_req: Request, _connInfo: ConnInfo) {
-  return new Response("Hello world!");
-}
+app.get('/', middleware, () => new Response('Hello world!'))
 
-app.get("/", middleware, handler);
-
-await app.serve();
+await app.serve()
 ```

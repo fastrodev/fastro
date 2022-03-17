@@ -8,10 +8,6 @@ function middleware(req: Request, connInfo: ConnInfo, next: Next) {
     next()
 }
 
-function handler(_req: Request, _connInfo: ConnInfo) {
-    return new Response("Hello world!")
-}
-
-app.get('/', middleware, handler)
+app.get('/', middleware, () => new Response('Hello world!'))
 
 await app.serve()
