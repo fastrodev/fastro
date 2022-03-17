@@ -151,10 +151,13 @@ function extractParams(req: Request) {
 }
 
 export function getParams(req: Request) {
-  return extractParams(req)
+  // deno-lint-ignore no-explicit-any
+  const obj: any = {}
+  extractParams(req).forEach((val) => obj[val.name] = val.value)
+  return obj
 }
 
 export function getParam(name: string, req: Request) {
-  const [res] = extractParams(req).filter((val) => val.value === name)
-  return res
+  const [res] = extractParams(req).filter((val) => val.name === name)
+  return res.value
 }
