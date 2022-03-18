@@ -131,7 +131,7 @@ function getRoute(req: Request): string {
   let result = EMPTY
   routerMap.forEach((v) => {
     if (v.method === req.method && validateURL(v.url, req.url, v.host)) {
-      result = `${v.url}`
+      result = v.url
     }
   })
   return result
