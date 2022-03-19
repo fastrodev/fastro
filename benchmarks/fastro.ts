@@ -1,3 +1,3 @@
-import { fastro } from '../server/mod.ts'
+import { fastro } from "../server/mod.ts";
 
-await fastro().get('/', () => new Response("Hello world!")).serve()
+await fastro().get("/", () => new Response("Hello world!")).serve();

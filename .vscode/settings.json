@@ -4,7 +4,6 @@
   "typescript.format.semicolons": "remove",
   "typescript.preferences.quoteStyle": "single",
   "[typescript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.organizeImports": true
@@ -20,8 +19,7 @@
   ],
   "editor.defaultFormatter": "denoland.vscode-deno",
   "deno.suggest.imports.hosts": {
-    "https://deno.land": true,
-    "https://esm.sh": false
+    "https://deno.land": true
   },
   "deno.config": "./deno.json"
 }
