@@ -1,14 +1,15 @@
-import { fastro, getParams, getParam } from '../server/mod.ts'
+import { fastro, getParam, getParams } from "../server/mod.ts";
 
-const app = fastro()
+const app = fastro();
 
-app.get('/:id/user/:name', (req: Request) => {
-    const params = getParams(req)
-    const param = getParam('id', req)
-    return new Response(JSON.stringify({
-        params,
-        param
-    }))
-})
+app.get("/:id/user/:name", (req: Request) => {
+  const params = getParams(req);
+  return new Response(JSON.stringify({ params }));
+});
 
-await app.serve()
+app.get("/post/:id", (req: Request) => {
+  const param = getParam("id", req);
+  return new Response(JSON.stringify({ param }));
+});
+
+await app.serve();

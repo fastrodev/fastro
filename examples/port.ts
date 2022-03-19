@@ -1,7 +1,7 @@
-import { fastro } from '../server/mod.ts'
+import { fastro } from "../server/mod.ts";
 
-const app = fastro()
+const app = fastro();
 
-app.get('/', () => new Response("Hello world!"))
+app.get("/", () => new Response("Hello world!"));
 
-await app.serve({ port: 3000 })
+await app.serve({ port: 3000 });
