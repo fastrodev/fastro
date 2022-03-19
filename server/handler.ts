@@ -142,9 +142,12 @@ function isValidPath(path: string, incoming: string[], idx: number) {
 }
 
 function regex(incoming: string, path: string) {
-  if (path.charAt(0) === COLON) return true;
-  const regex = new RegExp(path);
-  return regex.test(incoming);
+  if (path) {
+    if (path.charAt(0) === COLON) return true;
+    const regex = new RegExp(path);
+    return regex.test(incoming);
+  }
+  return false;
 }
 
 function getRoute(req: Request): string {
