@@ -1,11 +1,11 @@
 # Benchmarks
 
-| module  | version | requests/sec | percentage |
-| ------- | ------: | -----------: | ---------: |
-| deno    | 0.130.0 |     32520.95 |    100.00% |
-| node    |  17.7.2 |     31903.86 |     98.10% |
-| fastro  |  0.35.0 |     30616.32 |     94.14% |
-| express |  4.17.3 |      7896.85 |     24.28% |
+| module  | version | requests/sec |
+| ------- | ------: | -----------: |
+| node    |  17.7.2 |     38939.08 |
+| deno    |  1.20.1 |     32394.14 |
+| fastro  |  0.35.0 |     30051.03 |
+| express |  4.17.3 |      7948.40 |
 
 ## machine
 
@@ -25,12 +25,12 @@ wrk -t12 -c400 -d30s http://127.0.0.1:8000
 Running 30s test @ http://127.0.0.1:8000
   12 threads and 400 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    12.24ms    3.34ms 151.36ms   98.34%
-    Req/Sec     2.72k   187.58     3.58k    95.08%
-  976263 requests in 30.02s, 140.59MB read
-  Socket errors: connect 0, read 1253, write 0, timeout 0
-Requests/sec:  32520.95
-Transfer/sec:      4.68MB
+    Latency    12.24ms    3.15ms 154.45ms   99.01%
+    Req/Sec     2.72k   340.41    15.94k    98.86%
+  975192 requests in 30.10s, 140.43MB read
+  Socket errors: connect 0, read 1107, write 0, timeout 0
+Requests/sec:  32394.14
+Transfer/sec:      4.66MB
 ```
 
 ## node
@@ -39,12 +39,12 @@ Transfer/sec:      4.68MB
 Running 30s test @ http://127.0.0.1:8000
   12 threads and 400 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    12.44ms    3.22ms 109.63ms   90.88%
-    Req/Sec     2.68k   420.07     3.27k    73.82%
-  957808 requests in 30.02s, 122.40MB read
-  Socket errors: connect 0, read 1409, write 0, timeout 0
-Requests/sec:  31903.86
-Transfer/sec:      4.08MB
+    Latency    10.14ms    1.97ms  95.62ms   98.00%
+    Req/Sec     3.26k   275.03     3.97k    96.03%
+  1168629 requests in 30.01s, 149.34MB read
+  Socket errors: connect 0, read 1118, write 0, timeout 0
+Requests/sec:  38939.08
+Transfer/sec:      4.98MB
 ```
 
 ## fastro
@@ -53,12 +53,12 @@ Transfer/sec:      4.08MB
 Running 30s test @ http://127.0.0.1:8000
   12 threads and 400 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    13.00ms    3.90ms 174.77ms   99.20%
-    Req/Sec     2.56k   153.64     3.29k    97.33%
-  918993 requests in 30.02s, 132.34MB read
-  Socket errors: connect 0, read 1274, write 3, timeout 0
-Requests/sec:  30616.32
-Transfer/sec:      4.41MB
+    Latency    13.23ms    3.63ms 169.76ms   99.19%
+    Req/Sec     2.52k   135.33     3.34k    97.53%
+  902550 requests in 30.03s, 129.97MB read
+  Socket errors: connect 0, read 1204, write 4, timeout 0
+Requests/sec:  30051.03
+Transfer/sec:      4.33MB
 ```
 
 ## express
@@ -67,10 +67,10 @@ Transfer/sec:      4.41MB
 Running 30s test @ http://127.0.0.1:8000
   12 threads and 400 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    50.09ms    6.98ms 257.07ms   94.99%
-    Req/Sec   661.59     66.97   808.00     89.05%
-  237188 requests in 30.04s, 54.06MB read
-  Socket errors: connect 0, read 1215, write 0, timeout 0
-Requests/sec:   7896.85
-Transfer/sec:      1.80MB
+    Latency    49.71ms    6.45ms 231.12ms   94.81%
+    Req/Sec   666.74     64.53   838.00     89.37%
+  238764 requests in 30.04s, 54.42MB read
+  Socket errors: connect 0, read 1281, write 0, timeout 0
+Requests/sec:   7948.40
+Transfer/sec:      1.81MB
 ```
