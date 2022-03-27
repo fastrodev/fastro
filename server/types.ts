@@ -1,96 +1,20 @@
-import { ConnInfo, Handler, ServeInit } from "./deps.ts";
+import { ConnInfo, Handler } from "./deps.ts";
+
+export type PathArgument = string | RegExp;
 
 export interface Next {
   (error?: unknown): void;
 }
-
-export type Middleware = (
+export type RequestHandler = (
   request: Request,
   connInfo: ConnInfo,
   next: Next,
-) => void;
+) => void | Promise<void> | Response | Promise<Response>;
 
-export interface Fastro {
-  serve(options?: ServeInit): Promise<void>;
-  get(
-    path: string | RegExp,
-    opts: Handler | Middleware,
-    handler?: Handler,
-  ): Fastro;
-  post(
-    path: string | RegExp,
-    opts: Handler | Middleware,
-    handler?: Handler,
-  ): Fastro;
-  put(
-    path: string | RegExp,
-    opts: Handler | Middleware,
-    handler?: Handler,
-  ): Fastro;
-  patch(
-    path: string | RegExp,
-    opts: Handler | Middleware,
-    handler?: Handler,
-  ): Fastro;
-  delete(
-    path: string | RegExp,
-    opts: Handler | Middleware,
-    handler?: Handler,
-  ): Fastro;
-  head(
-    path: string | RegExp,
-    opts: Handler | Middleware,
-    handler?: Handler,
-  ): Fastro;
-  options(
-    path: string | RegExp,
-    opts: Handler | Middleware,
-    handler?: Handler,
-  ): Fastro;
-}
+export type HandlerArgument = Handler | RequestHandler | RequestHandler[];
 
-export interface Route {
+export type Route = {
   method: string;
-  path: string | RegExp;
-  middleware: Handler | Middleware;
-  handler: Handler;
-}
-
-export interface Router {
-  get(
-    path: string | RegExp,
-    opts: Handler | Middleware,
-    handler?: Handler,
-  ): Router;
-  post(
-    path: string | RegExp,
-    opts: Handler | Middleware,
-    handler?: Handler,
-  ): Router;
-  put(
-    path: string | RegExp,
-    opts: Handler | Middleware,
-    handler?: Handler,
-  ): Router;
-  patch(
-    path: string | RegExp,
-    opts: Handler | Middleware,
-    handler?: Handler,
-  ): Router;
-  delete(
-    path: string | RegExp,
-    opts: Handler | Middleware,
-    handler?: Handler,
-  ): Router;
-  head(
-    path: string | RegExp,
-    opts: Handler | Middleware,
-    handler?: Handler,
-  ): Router;
-  options(
-    path: string | RegExp,
-    opts: Handler | Middleware,
-    handler?: Handler,
-  ): Router;
-  router: Map<string, Route>;
-}
+  path: PathArgument;
+  handlers: HandlerArgument[];
+};

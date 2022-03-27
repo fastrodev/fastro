@@ -1,13 +1,15 @@
-import { ConnInfo, fastro, Next } from "../server/mod.ts";
+import { application, ConnInfo, Next } from "../server/mod.ts";
 
-const app = fastro();
-
-function middleware(req: Request, connInfo: ConnInfo, next: Next) {
-  console.log("url=", req.url);
-  console.log("remoteAddr=", connInfo.remoteAddr);
+const app = application();
+app.get("/", (_req: Request, _conn: ConnInfo, next: Next) => {
   next();
-}
+}, (_req: Request, _conn: ConnInfo, next: Next) => {
+  next();
+}, (_req: Request, _conn: ConnInfo, next: Next) => {
+  next();
+}, (_req: Request, _conn: ConnInfo) => {
+  return new Response("Middleware");
+});
 
-app.get("/", middleware, () => new Response("Hello world!"));
-
+console.log("listening on: http://localhost:8000");
 await app.serve();

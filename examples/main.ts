@@ -1,7 +1,7 @@
-import { fastro } from "../server/mod.ts";
+import { application } from "../server/mod.ts";
 
-const app = fastro();
+await application()
+  .get("/", () => new Response("Hello world"))
+  .serve();
 
-app.get("/", () => new Response("Hello world!"));
-
-await app.serve();
+console.log("listening on: http://localhost:8000");
