@@ -19,37 +19,37 @@ const appHandler = handler();
 export const { getParams, getParam } = appHandler;
 
 export function application(): Application {
-  const rtr = router();
+  const appRouter = router();
   const app = {
     serve: (options: ServeInit = {}) => {
-      return serve(appHandler.createHandler(rtr.routes), options);
+      return serve(appHandler.createHandler(appRouter.routes), options);
     },
     get: (path: PathArgument, ...handlers: HandlerArgument[]) => {
-      rtr.get(path, ...handlers);
+      appRouter.get(path, ...handlers);
       return app;
     },
     post: (path: PathArgument, ...handlers: HandlerArgument[]) => {
-      rtr.post(path, ...handlers);
+      appRouter.post(path, ...handlers);
       return app;
     },
     put: (path: PathArgument, ...handlers: HandlerArgument[]) => {
-      rtr.put(path, ...handlers);
+      appRouter.put(path, ...handlers);
       return app;
     },
     delete: (path: PathArgument, ...handlers: HandlerArgument[]) => {
-      rtr.delete(path, ...handlers);
+      appRouter.delete(path, ...handlers);
       return app;
     },
     head: (path: PathArgument, ...handlers: HandlerArgument[]) => {
-      rtr.head(path, ...handlers);
+      appRouter.head(path, ...handlers);
       return app;
     },
     patch: (path: PathArgument, ...handlers: HandlerArgument[]) => {
-      rtr.patch(path, ...handlers);
+      appRouter.patch(path, ...handlers);
       return app;
     },
     options: (path: PathArgument, ...handlers: HandlerArgument[]) => {
-      rtr.options(path, ...handlers);
+      appRouter.options(path, ...handlers);
       return app;
     },
   };
