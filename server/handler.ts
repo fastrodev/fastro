@@ -208,6 +208,20 @@ export function handler() {
     return res.value;
   }
 
+  function isRequestHandler(
+    handler: HandlerArgument,
+  ): handler is RequestHandler {
+    const req = <RequestHandler> handler;
+    return req.length === 3;
+  }
+
+  function isHandler(
+    handler: HandlerArgument,
+  ): handler is Handler {
+    const req = <Handler> handler;
+    return req.length <= 2;
+  }
+
   function createHandler(appRoutes: Map<string, Route>) {
     return function (
       req: Request,
@@ -222,18 +236,4 @@ export function handler() {
     getParams,
     getParam,
   };
-}
-
-export function isRequestHandler(
-  handler: HandlerArgument,
-): handler is RequestHandler {
-  const req = <RequestHandler> handler;
-  return req.length === 3;
-}
-
-export function isHandler(
-  handler: HandlerArgument,
-): handler is Handler {
-  const req = <Handler> handler;
-  return req.length <= 2;
 }
