@@ -1,6 +1,6 @@
-import { fastro, getParam, getParams } from "../server/mod.ts";
+import { application, getParam, getParams } from "../server/mod.ts";
 
-const app = fastro();
+const app = application();
 
 app.get("/:id/user/:name", (req: Request) => {
   const params = getParams(req);
@@ -9,7 +9,7 @@ app.get("/:id/user/:name", (req: Request) => {
 
 app.get("/post/:id", (req: Request) => {
   const param = getParam("id", req);
-  return new Response(JSON.stringify({ param }));
+  return new Response(param);
 });
 
 await app.serve();

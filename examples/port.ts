@@ -1,6 +1,6 @@
-import { fastro } from "../server/mod.ts";
+import { application } from "../server/mod.ts";
 
-const app = fastro();
+const app = application();
 
 app.get("/", () => new Response("Hello world!"));
 

@@ -5,55 +5,33 @@ Fast and simple web application framework for deno
 ## Basic usage
 
 ```ts
-import { fastro } from "https://deno.land/x/fastro@v0.36.0/server/mod.ts";
+import { application } from "https://deno.land/x/application@v0.37.0/server/mod.ts";
 
-const app = fastro();
+await application()
+  .get("/", () => new Response("Hello world"))
+  .serve();
 
-app.get("/", () => new Response("Hello world!"));
-
-await app.serve();
+console.log("listening on: http://localhost:8000");
 ```
 
 ## Custom port
 
 ```ts
-import { fastro } from "https://deno.land/x/fastro@v0.36.0/server/mod.ts";
+import { application } from "https://deno.land/x/application@v0.37.0/server/mod.ts";
 
-const app = fastro();
+const app = application();
 
 app.get("/", () => new Response("Hello world!"));
 
 await app.serve({ port: 3000 });
 ```
 
-## Middleware
-
-```ts
-import {
-  ConnInfo,
-  fastro,
-  Next,
-} from "https://deno.land/x/fastro@v0.36.0/server/mod.ts";
-
-const app = fastro();
-
-function middleware(req: Request, connInfo: ConnInfo, next: Next) {
-  console.log("url=", req.url);
-  console.log("remoteAddr=", connInfo.remoteAddr);
-  next();
-}
-
-app.get("/", middleware, () => new Response("Hello world!"));
-
-await app.serve();
-```
-
 ## Routing
 
 ```ts
-import { fastro } from "https://deno.land/x/fastro@v0.36.0/server/mod.ts";
+import { application } from "https://deno.land/x/application@v0.37.0/server/mod.ts";
 
-const app = fastro();
+const app = application();
 
 app.get("/abcd", () => new Response("/abcd"));
 
@@ -76,12 +54,12 @@ await app.serve();
 
 ```ts
 import {
-  fastro,
+  application,
   getParam,
   getParams,
-} from "https://deno.land/x/fastro@v0.36.0/server/mod.ts";
+} from "https://deno.land/x/application@v0.37.0/server/mod.ts";
 
-const app = fastro();
+const app = application();
 
 app.get("/:id/user/:name", (req: Request) => {
   const params = getParams(req);
@@ -90,8 +68,33 @@ app.get("/:id/user/:name", (req: Request) => {
 
 app.get("/post/:id", (req: Request) => {
   const param = getParam("id", req);
-  return new Response(JSON.stringify({ param }));
+  return new Response(param);
 });
 
+await app.serve();
+```
+
+## Route Level Middleware
+
+```ts
+import {
+  application,
+  ConnInfo,
+  Next,
+} from "https://deno.land/x/application@v0.37.0/server/mod.ts";
+
+const app = application();
+
+app.get("/", (_req: Request, _conn: ConnInfo, next: Next) => {
+  next();
+}, (_req: Request, _conn: ConnInfo, next: Next) => {
+  next();
+}, (_req: Request, _conn: ConnInfo, next: Next) => {
+  next();
+}, (_req: Request, _conn: ConnInfo) => {
+  return new Response("Middleware");
+});
+
+console.log("listening on: http://localhost:8000");
 await app.serve();
 ```
