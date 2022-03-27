@@ -5,7 +5,7 @@ Fast and simple web application framework for deno
 ## Basic usage
 
 ```ts
-import { application } from "https://deno.land/x/application@v0.37.0/server/mod.ts";
+import { application } from "https://deno.land/x/fastro@v0.37.0/server/mod.ts";
 
 await application()
   .get("/", () => new Response("Hello world"))
@@ -17,7 +17,7 @@ console.log("listening on: http://localhost:8000");
 ## Custom port
 
 ```ts
-import { application } from "https://deno.land/x/application@v0.37.0/server/mod.ts";
+import { application } from "https://deno.land/x/fastro@v0.37.0/server/mod.ts";
 
 const app = application();
 
@@ -29,7 +29,7 @@ await app.serve({ port: 3000 });
 ## Routing
 
 ```ts
-import { application } from "https://deno.land/x/application@v0.37.0/server/mod.ts";
+import { application } from "https://deno.land/x/fastro@v0.37.0/server/mod.ts";
 
 const app = application();
 
@@ -57,7 +57,7 @@ import {
   application,
   getParam,
   getParams,
-} from "https://deno.land/x/application@v0.37.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v0.37.0/server/mod.ts";
 
 const app = application();
 
@@ -81,7 +81,7 @@ import {
   application,
   ConnInfo,
   Next,
-} from "https://deno.land/x/application@v0.37.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v0.37.0/server/mod.ts";
 
 const app = application();
 
