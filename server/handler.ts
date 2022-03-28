@@ -1,5 +1,6 @@
 import { ConnInfo, Handler } from "./deps.ts";
 import {
+  AppMiddleware,
   HandlerArgument,
   PathArgument,
   RequestHandler,
@@ -66,16 +67,19 @@ export function handler() {
     }
 
     const { length, [length - 1]: handler } = res.handlers;
-    if (length === 1) {
-      if (!isHandler(handler)) {
-        throw new Error("The argument must be a handler");
-      }
-      const appHandler = <Handler> handler;
-      return appHandler(req, connInfo);
-    }
+    if (length > 1) return loopHandlers(res, req, connInfo);
 
+    if (!isHandler(handler)) {
+      throw new Error("The argument must be a handler");
+    }
+    const appHandler = <Handler> handler;
+    return appHandler(req, connInfo);
+  }
+
+  function loopHandlers(res: HandlerRoute, req: Request, connInfo: ConnInfo) {
     for (let index = 0; index < res.handlers.length; index++) {
       const handler = res.handlers[index];
+      let done = false;
       if (index === res.handlers.length - 1) {
         if (!isHandler(handler)) {
           throw new Error("The last argument must be a handler");
@@ -84,18 +88,34 @@ export function handler() {
         return appHandler(req, connInfo);
       }
 
-      if (!isRequestHandler(handler)) {
-        throw new Error("Invalid middleware");
-      }
-      const done = handleMiddleware(req, connInfo, <RequestHandler> handler);
-      if (!done) {
-        throw new Error("Middleware execution not finished");
-      }
+      if (Array.isArray(handler)) done = loopExecute(handler, req, connInfo);
+      else done = execute(handler, req, connInfo);
+
+      if (!done) throw new Error("Middleware execution not finished");
     }
 
     return new Response(INTERNAL_SERVER_ERROR_MESSAGE, {
       status: INTERNAL_SERVER_ERROR_CODE,
     });
+  }
+
+  function loopExecute(
+    handlers: RequestHandler[],
+    req: Request,
+    connInfo: ConnInfo,
+  ) {
+    for (let index = 0; index < handlers.length; index++) {
+      const handler = handlers[index];
+      const done = execute(handler, req, connInfo);
+      if (!done) return false;
+    }
+
+    return true;
+  }
+
+  function execute(handler: RequestHandler, req: Request, connInfo: ConnInfo) {
+    if (!isRequestHandler(handler)) throw new Error("Invalid middleware");
+    return handleMiddleware(req, connInfo, <RequestHandler> handler);
   }
 
   function handleMiddleware(
@@ -222,7 +242,11 @@ export function handler() {
     return req.length <= 2;
   }
 
-  function createHandler(appRoutes: Map<string, Route>) {
+  function createHandler(
+    appRoutes: Map<string, Route>,
+    middlewares: AppMiddleware[],
+  ) {
+    // console.log("middlewares", middlewares);
     return function (
       req: Request,
       connInfo: ConnInfo,

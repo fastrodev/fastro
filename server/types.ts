@@ -18,3 +18,13 @@ export type Route = {
   path: PathArgument;
   handlers: HandlerArgument[];
 };
+
+export type MiddlewareArgument =
+  | PathArgument
+  | RequestHandler
+  | RequestHandler[];
+
+export interface AppMiddleware {
+  path: PathArgument;
+  middlewares: MiddlewareArgument[];
+}
