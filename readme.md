@@ -6,7 +6,7 @@ Fast and simple web application framework for deno
 - [Custom port](#custom-port)
 - [Routing](#routing)
 - [Route parameters](#route-parameters)
-- [Application Level Middleware](#application-level-array-middleware)
+- [Application Level Middleware](#application-level-middleware)
 - [Application Level with Array of Middleware](#application-level-with-array-of-middleware)
 - [Route Level Middleware](#route-level-middleware)
 - [Route Level with Array of Middleware](#route-level-with-array-of-middleware)
