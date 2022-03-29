@@ -2,6 +2,16 @@
 
 Fast and simple web application framework for deno
 
+- [Basic usage](#basic-usage)
+- [Custom port](#custom-port)
+- [Routing](#routing)
+- [Route parameters](#route-parameters)
+- [Application Level Middleware](#application-level-array-middleware)
+- [Application Level with Array of Middleware](#application-level-with-array-of-middleware)
+- [Route Level Middleware](#route-level-middleware)
+- [Route Level with Array of Middleware](#route-level-with-array-of-middleware)
+- [Benchmarks](/benchmarks/readme.md)
+
 ## Basic usage
 
 ```ts
@@ -106,7 +116,7 @@ app.get("/", () => new Response("App level #1"));
 await app.serve();
 ```
 
-## Application Level Array Middleware
+## Application Level with Array of Middleware
 
 ```ts
 import { application, ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
@@ -163,7 +173,7 @@ app.get("/ijkl", (_req: Request, _conn: ConnInfo, next: Next) => {
 await app.serve();
 ```
 
-## Route Level Array Middleware
+## Route Level with Array of Middleware
 
 ```ts
 import { application, ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
