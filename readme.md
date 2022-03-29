@@ -5,19 +5,21 @@ Fast and simple web application framework for deno
 ## Basic usage
 
 ```ts
-import { application } from "https://deno.land/x/fastro@v0.37.0/server/mod.ts";
+import { application } from "https://deno.land/x/fastro@v0.39.0/server/mod.ts";
 
-await application()
-  .get("/", () => new Response("Hello world"))
-  .serve();
+const app = application();
 
-console.log("listening on: http://localhost:8000");
+app.get("/", () => new Response("Hello world"));
+
+console.log("Listening on: http://localhost:8000");
+
+await app.serve();
 ```
 
 ## Custom port
 
 ```ts
-import { application } from "https://deno.land/x/fastro@v0.37.0/server/mod.ts";
+import { application } from "https://deno.land/x/fastro@v0.39.0/server/mod.ts";
 
 const app = application();
 
@@ -29,7 +31,7 @@ await app.serve({ port: 3000 });
 ## Routing
 
 ```ts
-import { application } from "https://deno.land/x/fastro@v0.37.0/server/mod.ts";
+import { application } from "https://deno.land/x/fastro@v0.39.0/server/mod.ts";
 
 const app = application();
 
@@ -57,7 +59,7 @@ import {
   application,
   getParam,
   getParams,
-} from "https://deno.land/x/fastro@v0.37.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v0.39.0/server/mod.ts";
 
 const app = application();
 
@@ -74,6 +76,72 @@ app.get("/post/:id", (req: Request) => {
 await app.serve();
 ```
 
+## Application Level Middleware
+
+```ts
+import {
+  application,
+  ConnInfo,
+  Next,
+} from "https://deno.land/x/fastro@v0.39.0/server/mod.ts";
+
+const app = application();
+
+app.use((_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("app middleware #1");
+  next();
+});
+
+app.use((_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("app middleware #2");
+  next();
+});
+
+app.use((_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("app middleware #3");
+  next();
+}, (_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("app middleware #4");
+  next();
+});
+
+app.get("/", () => new Response("App level #1"));
+
+await app.serve();
+```
+
+## Application Level Array Middleware
+
+```ts
+import {
+  application,
+  ConnInfo,
+  Next,
+} from "https://deno.land/x/fastro@v0.39.0/server/mod.ts";
+
+const app = application();
+
+const middlewares = [(_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("middleware #1");
+  next();
+}, (_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("middleware #2");
+  next();
+}, (_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("middleware #3");
+  next();
+}, (_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("middleware #4");
+  next();
+}];
+
+app.use(middlewares);
+
+app.get("/", () => new Response("App level #1"));
+
+await app.serve();
+```
+
 ## Route Level Middleware
 
 ```ts
@@ -81,20 +149,58 @@ import {
   application,
   ConnInfo,
   Next,
-} from "https://deno.land/x/fastro@v0.37.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v0.39.0/server/mod.ts";
 
 const app = application();
 
-app.get("/", (_req: Request, _conn: ConnInfo, next: Next) => {
+app.get("/efgh", (_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("middleware #1");
   next();
-}, (_req: Request, _conn: ConnInfo, next: Next) => {
-  next();
-}, (_req: Request, _conn: ConnInfo, next: Next) => {
-  next();
-}, (_req: Request, _conn: ConnInfo) => {
-  return new Response("Middleware");
-});
+}, () => new Response("Route level middleware #1"));
 
-console.log("listening on: http://localhost:8000");
+app.get("/ijkl", (_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("middleware #1");
+  next();
+}, (_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("middleware #2");
+  next();
+}, (_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("middleware #3");
+  next();
+}, (_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("middleware #4");
+  next();
+}, () => new Response("Route level middleware #2"));
+
+await app.serve();
+```
+
+## Route Level Array Middleware
+
+```ts
+import {
+  application,
+  ConnInfo,
+  Next,
+} from "https://deno.land/x/fastro@v0.39.0/server/mod.ts";
+
+const app = application();
+
+const middlewares = [(_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("middleware #1");
+  next();
+}, (_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("middleware #2");
+  next();
+}, (_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("middleware #3");
+  next();
+}, (_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("middleware #4");
+  next();
+}];
+
+app.get("/mnop", middlewares, () => new Response("Route level middleware #3"));
+
 await app.serve();
 ```

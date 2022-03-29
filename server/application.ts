@@ -1,7 +1,8 @@
 import { serve, ServeInit } from "./deps.ts";
 import { handler } from "./handler.ts";
+import { middleware } from "./middleware.ts";
 import { router } from "./router.ts";
-import { HandlerArgument, PathArgument } from "./types.ts";
+import { HandlerArgument, MiddlewareArgument, PathArgument } from "./types.ts";
 
 interface Application {
   serve(options?: ServeInit): Promise<void>;
@@ -12,17 +13,21 @@ interface Application {
   head(path: PathArgument, ...handlers: HandlerArgument[]): Application;
   options(path: PathArgument, ...handlers: HandlerArgument[]): Application;
   patch(path: PathArgument, ...handlers: HandlerArgument[]): Application;
+  use(...middlewares: MiddlewareArgument[]): Application;
 }
 
 const appHandler = handler();
-
 export const { getParams, getParam } = appHandler;
 
 export function application(): Application {
   const appRouter = router();
+  const appMiddleware = middleware();
   const app = {
     serve: (options: ServeInit = {}) => {
-      return serve(appHandler.createHandler(appRouter.routes), options);
+      return serve(
+        appHandler.createHandler(appRouter.routes, appMiddleware.middlewares),
+        options,
+      );
     },
     get: (path: PathArgument, ...handlers: HandlerArgument[]) => {
       appRouter.get(path, ...handlers);
@@ -50,6 +55,10 @@ export function application(): Application {
     },
     options: (path: PathArgument, ...handlers: HandlerArgument[]) => {
       appRouter.options(path, ...handlers);
+      return app;
+    },
+    use: (...middlewares: MiddlewareArgument[]) => {
+      appMiddleware.useMiddleware(...middlewares);
       return app;
     },
   };

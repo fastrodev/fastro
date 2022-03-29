@@ -1,7 +1,9 @@
 import { application } from "../server/mod.ts";
 
-await application()
-  .get("/", () => new Response("Hello world"))
-  .serve();
+const app = application();
 
-console.log("listening on: http://localhost:8000");
+app.get("/", () => new Response("Hello world"));
+
+console.log("Listening on: http://localhost:8000");
+
+await app.serve();
