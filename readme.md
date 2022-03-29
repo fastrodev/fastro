@@ -5,7 +5,7 @@ Fast and simple web application framework for deno
 ## Basic usage
 
 ```ts
-import { application } from "https://deno.land/x/fastro@v0.38.0/server/mod.ts";
+import { application } from "https://fastro.dev/server/mod.ts";
 
 const app = application();
 
@@ -19,7 +19,7 @@ await app.serve();
 ## Custom port
 
 ```ts
-import { application } from "https://deno.land/x/fastro@v0.38.0/server/mod.ts";
+import { application } from "https://fastro.dev/server/mod.ts";
 
 const app = application();
 
@@ -31,7 +31,7 @@ await app.serve({ port: 3000 });
 ## Routing
 
 ```ts
-import { application } from "https://deno.land/x/fastro@v0.38.0/server/mod.ts";
+import { application } from "https://fastro.dev/server/mod.ts";
 
 const app = application();
 
@@ -59,7 +59,7 @@ import {
   application,
   getParam,
   getParams,
-} from "https://deno.land/x/fastro@v0.38.0/server/mod.ts";
+} from "https://fastro.dev/server/mod.ts";
 
 const app = application();
 
@@ -79,11 +79,7 @@ await app.serve();
 ## Application Level Middleware
 
 ```ts
-import {
-  application,
-  ConnInfo,
-  Next,
-} from "https://deno.land/x/fastro@v0.38.0/server/mod.ts";
+import { application, ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
 
 const app = application();
 
@@ -113,11 +109,7 @@ await app.serve();
 ## Application Level Array Middleware
 
 ```ts
-import {
-  application,
-  ConnInfo,
-  Next,
-} from "https://deno.land/x/fastro@v0.38.0/server/mod.ts";
+import { application, ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
 
 const app = application();
 
@@ -145,11 +137,7 @@ await app.serve();
 ## Route Level Middleware
 
 ```ts
-import {
-  application,
-  ConnInfo,
-  Next,
-} from "https://deno.land/x/fastro@v0.38.0/server/mod.ts";
+import { application, ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
 
 const app = application();
 
@@ -178,11 +166,7 @@ await app.serve();
 ## Route Level Array Middleware
 
 ```ts
-import {
-  application,
-  ConnInfo,
-  Next,
-} from "https://deno.land/x/fastro@v0.38.0/server/mod.ts";
+import { application, ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
 
 const app = application();
 
