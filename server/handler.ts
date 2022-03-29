@@ -14,7 +14,7 @@ import {
   NOT_FOUND_MESSAGE,
 } from "./errors.ts";
 
-export interface HandlerRoute {
+interface HandlerRoute {
   method: string;
   path: PathArgument;
   url: string;
@@ -22,7 +22,7 @@ export interface HandlerRoute {
   handlers: HandlerArgument[];
 }
 
-export interface HandlerMiddleware {
+interface HandlerMiddleware {
   path: PathArgument;
   url: string;
   host: string;
@@ -40,53 +40,14 @@ export function handler() {
 
   let hostname = EMPTY;
 
-  function initHandlerMiddlewares(middlewares: AppMiddleware[], url: string) {
-    const [http, path] = url.split(DOUBLE_SLASH);
-    const [host] = path.split(SLASH);
-    hostname = `${http}${DOUBLE_SLASH}${host}`;
-
-    middlewares.forEach((m) => {
-      const mdl: HandlerMiddleware = {
-        path: m.path,
-        middlewares: m.middlewares,
-        url: `${hostname}${m.path}`,
-        host: hostname,
-      };
-      handlerMiddlewares.push(mdl);
-    });
-
-    middlewares = [];
-  }
-
-  function initHandlerRoutes(
-    map: Map<string, Route>,
-    url: string,
-  ) {
-    const [http, path] = url.split(DOUBLE_SLASH);
-    const [host] = path.split(SLASH);
-    hostname = `${http}${DOUBLE_SLASH}${host}`;
-    map.forEach((v, k) => {
-      const [method, , kpath] = k.split(HASHTAG);
-      const key = `${method}:${hostname}${kpath}`;
-      handlerRoutes.set(key, {
-        method: v.method,
-        path: v.path,
-        url: `${hostname}${kpath}`,
-        host: hostname,
-        handlers: v.handlers,
-      });
-    });
-    map.clear();
-  }
-
   function handleRequest(
     req: Request,
     connInfo: ConnInfo,
-    appRoutes: Map<string, Route>,
+    routes: Map<string, Route>,
     middlewares: AppMiddleware[],
   ): Response | Promise<Response> {
     if (handlerRoutes.size < 1) {
-      initHandlerRoutes(appRoutes, req.url);
+      initHandlerRoutes(routes, req.url);
     }
 
     if (handlerMiddlewares.length < 1) {
@@ -321,15 +282,54 @@ export function handler() {
     return req.length <= 2;
   }
 
+  function initHandlerMiddlewares(middlewares: AppMiddleware[], url: string) {
+    const [http, path] = url.split(DOUBLE_SLASH);
+    const [host] = path.split(SLASH);
+    hostname = `${http}${DOUBLE_SLASH}${host}`;
+
+    middlewares.forEach((m) => {
+      const mdl: HandlerMiddleware = {
+        path: m.path,
+        middlewares: m.middlewares,
+        url: `${hostname}${m.path}`,
+        host: hostname,
+      };
+      handlerMiddlewares.push(mdl);
+    });
+
+    middlewares = [];
+  }
+
+  function initHandlerRoutes(
+    map: Map<string, Route>,
+    url: string,
+  ) {
+    const [http, path] = url.split(DOUBLE_SLASH);
+    const [host] = path.split(SLASH);
+    hostname = `${http}${DOUBLE_SLASH}${host}`;
+    map.forEach((v, k) => {
+      const [method, , kpath] = k.split(HASHTAG);
+      const key = `${method}:${hostname}${kpath}`;
+      handlerRoutes.set(key, {
+        method: v.method,
+        path: v.path,
+        url: `${hostname}${kpath}`,
+        host: hostname,
+        handlers: v.handlers,
+      });
+    });
+    map.clear();
+  }
+
   function createHandler(
-    appRoutes: Map<string, Route>,
+    routes: Map<string, Route>,
     middlewares: AppMiddleware[],
   ) {
     return function (
       req: Request,
       connInfo: ConnInfo,
     ): Response | Promise<Response> {
-      return handleRequest(req, connInfo, appRoutes, middlewares);
+      return handleRequest(req, connInfo, routes, middlewares);
     };
   }
 
