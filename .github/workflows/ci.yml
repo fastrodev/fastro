@@ -10,4 +10,3 @@ jobs:
           deno-version: 1.20.3
       - run: deno --version
       - run: deno lint --unstable
-      - run: deno test -A --no-check
