@@ -13,7 +13,7 @@ export function middleware() {
 
   function useMiddleware(...array: MiddlewareArgument[]) {
     const [first, ...rest] = array;
-    let path: RegExp | string = "*";
+    let path: RegExp | string = "/.*";
     let appMiddlewares = rest;
 
     if (isRegex(first)) {

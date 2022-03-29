@@ -2,6 +2,7 @@ import { ConnInfo, Handler } from "./deps.ts";
 import {
   AppMiddleware,
   HandlerArgument,
+  MiddlewareArgument,
   PathArgument,
   RequestHandler,
   Route,
@@ -21,6 +22,13 @@ export interface HandlerRoute {
   handlers: HandlerArgument[];
 }
 
+export interface HandlerMiddleware {
+  path: PathArgument;
+  url: string;
+  host: string;
+  middlewares: MiddlewareArgument[];
+}
+
 export function handler() {
   const EMPTY = "";
   const SLASH = "/";
@@ -28,8 +36,27 @@ export function handler() {
   const HASHTAG = "#";
   const COLON = ":";
   const handlerRoutes: Map<string, HandlerRoute> = new Map();
+  const handlerMiddlewares: HandlerMiddleware[] = [];
 
   let hostname = EMPTY;
+
+  function initHandlerMiddlewares(middlewares: AppMiddleware[], url: string) {
+    const [http, path] = url.split(DOUBLE_SLASH);
+    const [host] = path.split(SLASH);
+    hostname = `${http}${DOUBLE_SLASH}${host}`;
+
+    middlewares.forEach((m) => {
+      const mdl: HandlerMiddleware = {
+        path: m.path,
+        middlewares: m.middlewares,
+        url: `${hostname}${m.path}`,
+        host: hostname,
+      };
+      handlerMiddlewares.push(mdl);
+    });
+
+    middlewares = [];
+  }
 
   function initHandlerRoutes(
     map: Map<string, Route>,
@@ -56,9 +83,19 @@ export function handler() {
     req: Request,
     connInfo: ConnInfo,
     appRoutes: Map<string, Route>,
+    middlewares: AppMiddleware[],
   ): Response | Promise<Response> {
     if (handlerRoutes.size < 1) {
       initHandlerRoutes(appRoutes, req.url);
+    }
+
+    if (handlerMiddlewares.length < 1) {
+      initHandlerMiddlewares(middlewares, req.url);
+    }
+
+    if (handlerMiddlewares.length > 0) {
+      const done = processHandlerMiddleware(handlerMiddlewares, req, connInfo);
+      if (!done) throw Error("Middleware execution not finished");
     }
 
     const res = handlerRoutes.get(createMapKey(req));
@@ -74,6 +111,36 @@ export function handler() {
     }
     const appHandler = <Handler> handler;
     return appHandler(req, connInfo);
+  }
+
+  function processHandlerMiddleware(
+    handlerMiddlewares: HandlerMiddleware[],
+    req: Request,
+    connInfo: ConnInfo,
+  ) {
+    const m = handlerMiddlewares.filter((v) => v.url === createArrayKey(req));
+    for (let index = 0; index < m.length; index++) {
+      const done = loopHandlerMiddleware(m[index].middlewares, req, connInfo);
+      if (!done) return false;
+    }
+    return true;
+  }
+
+  function loopHandlerMiddleware(
+    m: MiddlewareArgument[],
+    req: Request,
+    connInfo: ConnInfo,
+  ) {
+    for (let index = 0; index < m.length; index++) {
+      const handler = m[index];
+      let done = false;
+
+      if (Array.isArray(handler)) done = loopExecute(handler, req, connInfo);
+      else done = execute(<RequestHandler> handler, req, connInfo);
+
+      if (!done) return false;
+    }
+    return true;
   }
 
   function loopHandlers(res: HandlerRoute, req: Request, connInfo: ConnInfo) {
@@ -140,6 +207,18 @@ export function handler() {
         v.method === req.method && validateURL(v.url, req.url, v.host, v.path)
       ) {
         result = `${req.method}${COLON}${v.url}`;
+      }
+    });
+    return result;
+  }
+
+  function createArrayKey(req: Request): string {
+    let result = EMPTY;
+    handlerMiddlewares.forEach((v) => {
+      if (
+        validateURL(v.url, req.url, v.host, v.path)
+      ) {
+        result = `${v.url}`;
       }
     });
     return result;
@@ -246,12 +325,11 @@ export function handler() {
     appRoutes: Map<string, Route>,
     middlewares: AppMiddleware[],
   ) {
-    // console.log("middlewares", middlewares);
     return function (
       req: Request,
       connInfo: ConnInfo,
     ): Response | Promise<Response> {
-      return handleRequest(req, connInfo, appRoutes);
+      return handleRequest(req, connInfo, appRoutes, middlewares);
     };
   }
 
