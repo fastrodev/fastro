@@ -109,7 +109,7 @@ export function handler() {
     routes: Map<string, Route>,
     middlewares: AppMiddleware[],
   ): Response | Promise<Response> {
-    if (handlerMiddlewares.length < 1) {
+    if (handlerMiddlewares.length < 1 && handlerRoutes.size < 1) {
       routerList = initHandlerMiddlewares(middlewares, req.url);
       if (routerList.length > 0) {
         handleRouterMiddleware(routerList, req.url);
