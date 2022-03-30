@@ -58,7 +58,7 @@ export function handler() {
       args.push(<RequestHandler> element);
     }
 
-    middlewares.push({ path: prefix, middlewares: args, type: "" });
+    middlewares.push({ path: `${prefix}/.*`, middlewares: args, type: "" });
     initHandlerMiddlewares(middlewares, url);
   }
 

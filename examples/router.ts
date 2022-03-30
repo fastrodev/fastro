@@ -12,10 +12,10 @@ const middlewares = [(_req: Request, _connInfo: ConnInfo, next: Next) => {
   next();
 }];
 
-r.get("/", () => new Response("Get"))
-  .post("/", () => new Response("Post"))
-  .put("/", () => new Response("Put"))
-  .delete("/", () => new Response("Delete"));
+r.get("/user", () => new Response("Get user"))
+  .post("/user", () => new Response("Post user"))
+  .put("/user", () => new Response("Put user"))
+  .delete("/user", () => new Response("Delete user"));
 
 app.use("/v1", r);
 app.use("/v2", middleware, r);
