@@ -18,7 +18,7 @@ Fast and simple web application framework for deno
 ## Getting started
 
 ```
-deno run -A https://raw.githubusercontent.com/fastrodev/fastro/main/examples/main.ts
+deno run -A https://fastro.dev/examples/main.ts
 ```
 
 ## Basic usage
