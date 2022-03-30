@@ -6,6 +6,7 @@ import {
   PathArgument,
   RequestHandler,
   Route,
+  Router,
 } from "./types.ts";
 import {
   INTERNAL_SERVER_ERROR_CODE,
@@ -13,6 +14,7 @@ import {
   NOT_FOUND_CODE,
   NOT_FOUND_MESSAGE,
 } from "./errors.ts";
+import { router as appRouter } from "./router.ts";
 
 interface HandlerRoute {
   method: string;
@@ -23,6 +25,7 @@ interface HandlerRoute {
 }
 
 interface HandlerMiddleware {
+  type: string;
   path: PathArgument;
   url: string;
   host: string;
@@ -38,7 +41,67 @@ export function handler() {
   const handlerRoutes: Map<string, HandlerRoute> = new Map();
   const handlerMiddlewares: HandlerMiddleware[] = [];
 
+  let routerList: AppMiddleware[] = [];
   let hostname = EMPTY;
+
+  function buildMiddleware(
+    element: MiddlewareArgument,
+    prefix: PathArgument,
+    url: string,
+  ) {
+    const middlewares: AppMiddleware[] = [];
+    let args: MiddlewareArgument[] = [];
+
+    if (Array.isArray(element)) {
+      args = <RequestHandler[]> element;
+    } else {
+      args.push(<RequestHandler> element);
+    }
+
+    middlewares.push({ path: prefix, middlewares: args, type: "" });
+    initHandlerMiddlewares(middlewares, url);
+  }
+
+  function buildRoutes(router: Router, prefix: PathArgument, url: string) {
+    const r = appRouter();
+    router.routes.forEach((element) => {
+      const path = element.path !== "/" ? element.path : "";
+      const newPath = `${prefix}${path}`;
+      if (element.method === "GET") r.get(newPath, ...element.handlers);
+      if (element.method === "POST") r.post(newPath, ...element.handlers);
+      if (element.method === "PUT") r.put(newPath, ...element.handlers);
+      if (element.method === "DELETE") r.delete(newPath, ...element.handlers);
+      if (element.method === "OPTIONS") r.options(newPath, ...element.handlers);
+      if (element.method === "HEAD") r.head(newPath, ...element.handlers);
+      if (element.method === "PATCH") r.patch(newPath, ...element.handlers);
+    });
+    initHandlerRoutes(r.routes, url);
+  }
+
+  function isRouter(element: Router) {
+    return element.routes !== undefined;
+  }
+
+  function loopRouterMiddleware(
+    object: MiddlewareArgument[],
+    prefix: PathArgument,
+    url: string,
+  ) {
+    object.forEach((element) => {
+      if (isRouter(<Router> element)) {
+        buildRoutes(<Router> element, prefix, url);
+      } else {
+        buildMiddleware(element, prefix, url);
+      }
+    });
+  }
+
+  function handleRouterMiddleware(array: AppMiddleware[], url: string) {
+    for (let index = 0; index < array.length; index++) {
+      const element = array[index];
+      loopRouterMiddleware(element.middlewares, element.path, url);
+    }
+  }
 
   function handleRequest(
     req: Request,
@@ -46,12 +109,15 @@ export function handler() {
     routes: Map<string, Route>,
     middlewares: AppMiddleware[],
   ): Response | Promise<Response> {
-    if (handlerRoutes.size < 1) {
-      initHandlerRoutes(routes, req.url);
+    if (handlerMiddlewares.length < 1) {
+      routerList = initHandlerMiddlewares(middlewares, req.url);
+      if (routerList.length > 0) {
+        handleRouterMiddleware(routerList, req.url);
+      }
     }
 
-    if (handlerMiddlewares.length < 1) {
-      initHandlerMiddlewares(middlewares, req.url);
+    if (handlerRoutes.size < 1) {
+      initHandlerRoutes(routes, req.url);
     }
 
     if (handlerMiddlewares.length > 0) {
@@ -66,10 +132,7 @@ export function handler() {
 
     const { length, [length - 1]: handler } = res.handlers;
     if (length > 1) return loopHandlers(res, req, connInfo);
-
-    if (!isHandler(handler)) {
-      throw new Error("The argument must be a handler");
-    }
+    if (!isHandler(handler)) throw new Error("The argument must be a handler");
     const appHandler = <Handler> handler;
     return appHandler(req, connInfo);
   }
@@ -79,7 +142,10 @@ export function handler() {
     req: Request,
     connInfo: ConnInfo,
   ) {
-    const m = handlerMiddlewares.filter((v) => v.url === createArrayKey(req));
+    const m = handlerMiddlewares.filter((v) => {
+      return (v.url === createArrayKey(req));
+    });
+
     for (let index = 0; index < m.length; index++) {
       const done = loopHandlerMiddleware(m[index].middlewares, req, connInfo);
       if (!done) return false;
@@ -96,8 +162,9 @@ export function handler() {
       const handler = m[index];
       let done = false;
 
-      if (Array.isArray(handler)) done = loopExecute(handler, req, connInfo);
-      else done = execute(<RequestHandler> handler, req, connInfo);
+      if (Array.isArray(handler)) {
+        done = loopExecute(handler, req, connInfo);
+      } else done = execute(<RequestHandler> handler, req, connInfo);
 
       if (!done) return false;
     }
@@ -287,8 +354,17 @@ export function handler() {
     const [host] = path.split(SLASH);
     hostname = `${http}${DOUBLE_SLASH}${host}`;
 
-    middlewares.forEach((m) => {
+    const middlewareList = middlewares.filter((v) => {
+      return v.type !== "router";
+    });
+
+    const routerList = middlewares.filter((v) => {
+      return v.type === "router";
+    });
+
+    middlewareList.forEach((m) => {
       const mdl: HandlerMiddleware = {
+        type: m.type,
         path: m.path,
         middlewares: m.middlewares,
         url: `${hostname}${m.path}`,
@@ -298,6 +374,7 @@ export function handler() {
     });
 
     middlewares = [];
+    return routerList;
   }
 
   function initHandlerRoutes(
