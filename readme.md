@@ -24,7 +24,7 @@ deno run -A https://fastro.dev/examples/main.ts
 ## Basic usage
 
 ```ts
-import { application } from "https://fastro.dev/server/mod.ts";
+import application from "https://fastro.dev/server/mod.ts";
 
 const app = application();
 
@@ -38,7 +38,7 @@ await app.serve();
 ## Custom port
 
 ```ts
-import { application } from "https://fastro.dev/server/mod.ts";
+import application from "https://fastro.dev/server/mod.ts";
 
 const app = application();
 
@@ -50,7 +50,7 @@ await app.serve({ port: 3000 });
 ## Routing
 
 ```ts
-import { application } from "https://fastro.dev/server/mod.ts";
+import application from "https://fastro.dev/server/mod.ts";
 
 const app = application();
 
@@ -74,8 +74,7 @@ await app.serve();
 ## Route parameters
 
 ```ts
-import {
-  application,
+import application, {
   getParam,
   getParams,
 } from "https://fastro.dev/server/mod.ts";
@@ -98,8 +97,7 @@ await app.serve();
 ## Router Middleware
 
 ```ts
-import {
-  application,
+import application, {
   ConnInfo,
   Next,
   router,
@@ -126,8 +124,7 @@ await app.serve();
 ## Router Middleware with Array
 
 ```ts
-import {
-  application,
+import application, {
   ConnInfo,
   Next,
   router,
@@ -157,7 +154,7 @@ await app.serve();
 ## Application Level Middleware
 
 ```ts
-import { application, ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
+import application, { ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
 
 const app = application();
 
@@ -187,7 +184,7 @@ await app.serve();
 ## Application Level Middleware with Array
 
 ```ts
-import { application, ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
+import application, { ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
 
 const app = application();
 
@@ -215,7 +212,7 @@ await app.serve();
 ## Route Level Middleware
 
 ```ts
-import { application, ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
+import application, { ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
 
 const app = application();
 
@@ -244,7 +241,7 @@ await app.serve();
 ## Route Level Middleware with Array
 
 ```ts
-import { application, ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
+import application, { ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
 
 const app = application();
 

@@ -1,4 +1,4 @@
-import { application, ConnInfo, Next } from "../server/mod.ts";
+import application, { ConnInfo, Next } from "../server/mod.ts";
 
 const app = application();
 

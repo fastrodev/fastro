@@ -1,4 +1,4 @@
-import { application, getParam, getParams } from "../server/mod.ts";
+import application, { getParam, getParams } from "../server/mod.ts";
 
 const app = application();
 
