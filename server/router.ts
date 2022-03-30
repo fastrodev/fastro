@@ -1,15 +1,4 @@
-import { HandlerArgument, PathArgument, Route } from "./types.ts";
-
-interface Router {
-  routes: Map<string, Route>;
-  get(path: PathArgument, ...handlers: HandlerArgument[]): Router;
-  post(path: PathArgument, ...handlers: HandlerArgument[]): Router;
-  put(path: PathArgument, ...handlers: HandlerArgument[]): Router;
-  delete(path: PathArgument, ...handlers: HandlerArgument[]): Router;
-  patch(path: PathArgument, ...handlers: HandlerArgument[]): Router;
-  head(path: PathArgument, ...handlers: HandlerArgument[]): Router;
-  options(path: PathArgument, ...handlers: HandlerArgument[]): Router;
-}
+import { HandlerArgument, PathArgument, Route, Router } from "./types.ts";
 
 export function router(): Router {
   const routes: Map<string, Route> = new Map();

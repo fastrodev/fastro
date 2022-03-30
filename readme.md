@@ -2,15 +2,24 @@
 
 Fast and simple web application framework for deno
 
+- [Getting started](#getting-started)
 - [Basic usage](#basic-usage)
 - [Custom port](#custom-port)
 - [Routing](#routing)
-- [Route parameters](#route-parameters)
+- [Route Parameters](#route-parameters)
+- [Router Middleware](#router-middleware)
+- [Router Middleware with Array](#route-level-middleware-with-array)
 - [Application Level Middleware](#application-level-middleware)
-- [Application Level with Array of Middleware](#application-level-with-array-of-middleware)
+- [Application Level Middleware with Array](#application-level-middleware-with-array)
 - [Route Level Middleware](#route-level-middleware)
-- [Route Level with Array of Middleware](#route-level-with-array-of-middleware)
+- [Route Level Middleware with Array](#route-level-middleware-with-array)
 - [Benchmarks](/benchmarks/readme.md)
+
+## Getting started
+
+```
+deno run -A https://raw.githubusercontent.com/fastrodev/fastro/main/examples/main.ts
+```
 
 ## Basic usage
 
@@ -86,6 +95,65 @@ app.get("/post/:id", (req: Request) => {
 await app.serve();
 ```
 
+## Router Middleware
+
+```ts
+import {
+  application,
+  ConnInfo,
+  Next,
+  router,
+} from "https://fastro.dev/server/mod.ts";
+
+const app = application();
+const r = router();
+const middleware = (_req: Request, _connInfo: ConnInfo, next: Next) => {
+  console.log("v2");
+  next();
+};
+
+r.get("/", () => new Response("Get"))
+  .post("/", () => new Response("Post"))
+  .put("/", () => new Response("Put"))
+  .delete("/", () => new Response("Delete"));
+
+app.use("/v1", r);
+app.use("/v2", middleware, r);
+
+await app.serve();
+```
+
+## Router Middleware with Array
+
+```ts
+import {
+  application,
+  ConnInfo,
+  Next,
+  router,
+} from "https://fastro.dev/server/mod.ts";
+
+const app = application();
+const r = router();
+const middlewares = [(_req: Request, _connInfo: ConnInfo, next: Next) => {
+  console.log("v2 - 1");
+  next();
+}, (_req: Request, _connInfo: ConnInfo, next: Next) => {
+  console.log("v2 - 2");
+  next();
+}];
+
+r.get("/", () => new Response("Get"))
+  .post("/", () => new Response("Post"))
+  .put("/", () => new Response("Put"))
+  .delete("/", () => new Response("Delete"));
+
+app.use("/v1", r);
+app.use("/v2", middlewares, r);
+
+await app.serve();
+```
+
 ## Application Level Middleware
 
 ```ts
@@ -116,7 +184,7 @@ app.get("/", () => new Response("App level #1"));
 await app.serve();
 ```
 
-## Application Level with Array of Middleware
+## Application Level Middleware with Array
 
 ```ts
 import { application, ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
@@ -173,7 +241,7 @@ app.get("/ijkl", (_req: Request, _conn: ConnInfo, next: Next) => {
 await app.serve();
 ```
 
-## Route Level with Array of Middleware
+## Route Level Middleware with Array
 
 ```ts
 import { application, ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
