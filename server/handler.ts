@@ -43,6 +43,7 @@ export function handler() {
 
   let routerList: AppMiddleware[] = [];
   let hostname = EMPTY;
+  let isMiddlewareInit = false;
 
   function buildMiddleware(
     element: MiddlewareArgument,
@@ -109,11 +110,12 @@ export function handler() {
     routes: Map<string, Route>,
     middlewares: AppMiddleware[],
   ): Response | Promise<Response> {
-    if (handlerMiddlewares.length < 1 && handlerRoutes.size < 1) {
+    if (!isMiddlewareInit) {
       routerList = initHandlerMiddlewares(middlewares, req.url);
       if (routerList.length > 0) {
         handleRouterMiddleware(routerList, req.url);
       }
+      isMiddlewareInit = true;
     }
 
     if (handlerRoutes.size < 1) {
