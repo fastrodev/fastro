@@ -13,7 +13,7 @@ Fast and simple web application framework for deno
 - [Application Level Middleware with Array](#application-level-middleware-with-array)
 - [Route Level Middleware](#route-level-middleware)
 - [Route Level Middleware with Array](#route-level-middleware-with-array)
-- [Benchmarks](/benchmarks/readme.md)
+- [Benchmarks](benchmarks/readme.md)
 
 ## Getting started
 
