@@ -1,6 +1,6 @@
 # Fastro
 
-Fast and simple web application framework for deno
+Fast and simple web application framework with native Deno Request and Response.
 
 - [Getting started](#getting-started)
 - [Custom port](#custom-port)
@@ -12,7 +12,8 @@ Fast and simple web application framework for deno
 - [Application Level Middleware with Array](#application-level-middleware-with-array)
 - [Route Level Middleware](#route-level-middleware)
 - [Route Level Middleware with Array](#route-level-middleware-with-array)
-- [Benchmarks](benchmarks/readme.md)
+- [Render with Eta template engine](#render-with-eta-template-engine)
+- [Benchmarks](https://fastro.dev/benchmarks)
 
 ## Getting started
 
@@ -298,4 +299,31 @@ await app.serve();
 
 ```
 deno run -A https://fastro.dev/examples/route_level_middleware_with_array.ts
+```
+
+## Render with ETA template engine
+
+```ts
+import application from "https://fastro.dev/server/mod.ts";
+import { render } from "https://deno.land/x/eta@v1.12.3/mod.ts";
+
+const app = application();
+
+const headers = new Headers();
+headers.set("Content-Type", "text/html; charset=UTF-8");
+
+app.get("/", () => {
+  const html = <string> render(
+    "<h4>The answer to everything is <%= it.answer %></h4>",
+    {
+      answer: 42,
+    },
+  );
+
+  return new Response(html, { headers });
+});
+
+console.log("Listening on: http://localhost:8000");
+
+app.serve();
 ```

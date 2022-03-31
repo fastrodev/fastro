@@ -1,4 +1,4 @@
-import { ConnInfo, Handler } from "./deps.ts";
+import { ConnInfo, Handler, Status, STATUS_TEXT } from "./deps.ts";
 import {
   AppMiddleware,
   HandlerArgument,
@@ -8,12 +8,6 @@ import {
   Route,
   Router,
 } from "./types.ts";
-import {
-  INTERNAL_SERVER_ERROR_CODE,
-  INTERNAL_SERVER_ERROR_MESSAGE,
-  NOT_FOUND_CODE,
-  NOT_FOUND_MESSAGE,
-} from "./errors.ts";
 import { router as appRouter } from "./router.ts";
 
 interface HandlerRoute {
@@ -129,7 +123,9 @@ export function handler() {
 
     const res = handlerRoutes.get(createMapKey(req));
     if (!res) {
-      return new Response(NOT_FOUND_MESSAGE, { status: NOT_FOUND_CODE });
+      return new Response(STATUS_TEXT.get(Status.NotFound), {
+        status: Status.NotFound,
+      });
     }
 
     const { length, [length - 1]: handler } = res.handlers;
@@ -191,8 +187,8 @@ export function handler() {
       if (!done) throw new Error("Middleware execution not finished");
     }
 
-    return new Response(INTERNAL_SERVER_ERROR_MESSAGE, {
-      status: INTERNAL_SERVER_ERROR_CODE,
+    return new Response(STATUS_TEXT.get(Status.InternalServerError), {
+      status: Status.InternalServerError,
     });
   }
 
