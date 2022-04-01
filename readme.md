@@ -2,8 +2,14 @@
 
 Fast and simple web application framework with native Deno Request and Response.
 
-- [Getting started](#getting-started)
-- [Custom port](#custom-port)
+You can use the built-in functions and objects that are already available
+according to your needs -- such as all the `Request` properties, headers,
+cookies, and more.
+
+- [Getting Started](#getting-started)
+- [Custom Port](#custom-port)
+- [Set, Get, and Delete a Cookie](#set-get-and-delete-a-cookie)
+- [Render with Eta template engine](#render-with-eta-template-engine)
 - [Routing](#routing)
 - [Route Parameters](#route-parameters)
 - [Router Middleware](#router-middleware)
@@ -12,7 +18,6 @@ Fast and simple web application framework with native Deno Request and Response.
 - [Application Level Middleware with Array](#application-level-middleware-with-array)
 - [Route Level Middleware](#route-level-middleware)
 - [Route Level Middleware with Array](#route-level-middleware-with-array)
-- [Render with Eta template engine](#render-with-eta-template-engine)
 - [Benchmarks](https://fastro.dev/benchmarks)
 
 ## Getting started
@@ -47,6 +52,83 @@ await app.serve({ port: 3000 });
 
 ```
 deno run -A https://fastro.dev/examples/custom_port.ts
+```
+
+## Render with ETA template engine
+
+```ts
+import application from "https://fastro.dev/server/mod.ts";
+import { render } from "https://deno.land/x/eta@v1.12.3/mod.ts";
+
+const app = application();
+
+const headers = new Headers();
+headers.set("Content-Type", "text/html; charset=UTF-8");
+
+app.get("/", () => {
+  const html = <string> render(
+    "<h4>The answer to everything is <%= it.answer %></h4>",
+    {
+      answer: 42,
+    },
+  );
+
+  return new Response(html, { headers });
+});
+
+console.log("Listening on: http://localhost:8000");
+
+app.serve();
+```
+
+```
+deno run -A https://fastro.dev/examples/render.ts
+```
+
+## Set, Get, and Delete a Cookie
+
+```ts
+import application, {
+  Cookie,
+  deleteCookie,
+  getCookies,
+  setCookie,
+} from "https://fastro.dev/server/mod.ts";
+
+const app = application();
+
+app.post("/", () => {
+  const headers = new Headers();
+  const cookie: Cookie = { name: "Space", value: "Cat" };
+  setCookie(headers, cookie);
+
+  return new Response(JSON.stringify(cookie), { headers });
+});
+
+app.get("/", (req: Request) => {
+  const headers = req.headers;
+  const cookies = getCookies(headers);
+
+  return new Response(JSON.stringify(cookies));
+});
+
+app.delete("/", () => {
+  const headers = new Headers();
+  deleteCookie(headers, "Space");
+  const cookies = getCookies(headers);
+
+  return new Response(JSON.stringify(cookies), {
+    headers,
+  });
+});
+
+console.log("Listening on: http://localhost:8000");
+
+app.serve();
+```
+
+```
+deno run -A https://fastro.dev/examples/cookies.ts
 ```
 
 ## Routing
@@ -297,35 +379,4 @@ await app.serve();
 
 ```
 deno run -A https://fastro.dev/examples/route_level_middleware_with_array.ts
-```
-
-## Render with ETA template engine
-
-```ts
-import application from "https://fastro.dev/server/mod.ts";
-import { render } from "https://deno.land/x/eta@v1.12.3/mod.ts";
-
-const app = application();
-
-const headers = new Headers();
-headers.set("Content-Type", "text/html; charset=UTF-8");
-
-app.get("/", () => {
-  const html = <string> render(
-    "<h4>The answer to everything is <%= it.answer %></h4>",
-    {
-      answer: 42,
-    },
-  );
-
-  return new Response(html, { headers });
-});
-
-console.log("Listening on: http://localhost:8000");
-
-app.serve();
-```
-
-```
-deno run -A https://fastro.dev/examples/render.ts
 ```

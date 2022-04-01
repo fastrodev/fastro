@@ -1,4 +1,4 @@
-import application from "https://fastro.dev/server/mod.ts";
+import application from "../server/mod.ts";
 import { render } from "https://deno.land/x/eta@v1.12.3/mod.ts";
 
 const app = application();

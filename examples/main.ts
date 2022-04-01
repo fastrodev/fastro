@@ -1,4 +1,4 @@
-import application from "https://fastro.dev/server/mod.ts";
+import application from "../server/mod.ts";
 
 const app = application();
 
