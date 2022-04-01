@@ -327,3 +327,7 @@ console.log("Listening on: http://localhost:8000");
 
 app.serve();
 ```
+
+```
+deno run -A https://fastro.dev/examples/render.ts
+```
