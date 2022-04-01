@@ -1,24 +1,22 @@
-import application, { ConnInfo, Next } from "https://fastro.dev/server/mod.ts";
+import application, {
+  ConnInfo,
+  Next,
+  router,
+} from "https://fastro.dev/server/mod.ts";
 
 const app = application();
+const r = router();
+const middleware = (_req: Request, _connInfo: ConnInfo, next: Next) => {
+  console.log("v2 - 1");
+  next();
+};
 
-app.get("/efgh", (_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("middleware #1");
-  next();
-}, () => new Response("Route level middleware #1"));
+r.get("/", () => new Response("Get"))
+  .post("/", () => new Response("Post"))
+  .put("/", () => new Response("Put"))
+  .delete("/", () => new Response("Delete"));
 
-app.get("/ijkl", (_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("middleware #1");
-  next();
-}, (_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("middleware #2");
-  next();
-}, (_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("middleware #3");
-  next();
-}, (_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("middleware #4");
-  next();
-}, () => new Response("Route level middleware #2"));
+app.use("/v1", r);
+app.use("/v2", middleware, r);
 
 await app.serve();
