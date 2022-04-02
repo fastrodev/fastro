@@ -1,4 +1,4 @@
-import { application } from "https://deno.land/x/fastro@v0.38.0/server/mod.ts";
+import application from "https://deno.land/x/fastro@v0.45.0/server/mod.ts";
 
 const app = application();
 
