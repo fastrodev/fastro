@@ -1,9 +1,10 @@
-import application, {
+import {
   Cookie,
   deleteCookie,
   getCookies,
   setCookie,
-} from "../server/mod.ts";
+} from "https://deno.land/std@0.133.0/http/cookie.ts";
+import application from "../server/mod.ts";
 
 const app = application();
 

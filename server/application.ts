@@ -1,4 +1,4 @@
-import { serve, ServeInit } from "./deps.ts";
+import { serve, ServeInit, Server } from "./deps.ts";
 import { handler } from "./handler.ts";
 import { middleware } from "./middleware.ts";
 import { router } from "./router.ts";
@@ -14,6 +14,7 @@ interface Application {
   options(path: PathArgument, ...handlers: HandlerArgument[]): Application;
   patch(path: PathArgument, ...handlers: HandlerArgument[]): Application;
   use(...middlewares: MiddlewareArgument[]): Application;
+  close(): void;
 }
 
 const appHandler = handler();
@@ -22,12 +23,24 @@ export const { getParams, getParam } = appHandler;
 export function application(): Application {
   const appRouter = router();
   const appMiddleware = middleware();
+  let server: Server;
   const app = {
+    close: () => {
+      return server.close();
+    },
     serve: (options: ServeInit = {}) => {
-      return serve(
-        appHandler.createHandler(appRouter.routes, appMiddleware.middlewares),
-        options,
-      );
+      server = new Server({
+        onError: options.onError,
+        hostname: options.hostname,
+        port: options.port,
+        handler: appHandler.createHandler(
+          appRouter.routes,
+          appMiddleware.middlewares,
+        ),
+      });
+      const port = options.port ?? 8000;
+      const listener = Deno.listen({ port });
+      return server.serve(listener);
     },
     get: (path: PathArgument, ...handlers: HandlerArgument[]) => {
       appRouter.get(path, ...handlers);
