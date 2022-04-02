@@ -1,4 +1,4 @@
-import { serve, ServeInit, Server } from "./deps.ts";
+import { ServeInit, Server } from "./deps.ts";
 import { handler } from "./handler.ts";
 import { middleware } from "./middleware.ts";
 import { router } from "./router.ts";
