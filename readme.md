@@ -1,12 +1,13 @@
 # Fastro
 
-Fast and simple web application framework with native Deno Request and Response.
+Fast and simple web application framework for deno.
 
-You can use the deno built-in functions and objects that are already available
-according to your needs -- such as all the
-[`Request`](https://deno.com/deploy/docs/runtime-request),
-[`Response`](https://deno.com/deploy/docs/runtime-request), and
-[`Headers`](https://deno.com/deploy/docs/runtime-headers).
+You can use the deno built-in functions and objects that are already available:
+[Request](https://deno.com/deploy/docs/runtime-request),
+[Response](https://deno.com/deploy/docs/runtime-request), and
+[Headers](https://deno.com/deploy/docs/runtime-headers).
+
+---
 
 - [Getting Started](#getting-started)
 - [Custom Port](#custom-port)
@@ -21,6 +22,8 @@ according to your needs -- such as all the
 - [Route Level Middleware](#route-level-middleware)
 - [Route Level Middleware with Array](#route-level-middleware-with-array)
 - [Benchmarks](https://deno.land/x/fastro@v0.44.0/benchmarks)
+
+---
 
 ## Getting started
 
@@ -92,6 +95,7 @@ deno run -A https://deno.land/x/fastro@v0.44.0/examples/render.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@0.44.0/examples/render.ts)
+
 
 ## Set, Get, and Delete a Cookie
 
@@ -345,6 +349,7 @@ deno run -A https://deno.land/x/fastro@v0.44.0/examples/application_level_middle
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@0.44.0/examples/application_level_middleware_with_array.ts)
 
+
 ## Route Level Middleware
 
 ```ts
@@ -418,3 +423,4 @@ deno run -A https://deno.land/x/fastro@v0.44.0/examples/route_level_middleware_w
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@0.44.0/examples/route_level_middleware_with_array.ts)
+
