@@ -37,7 +37,7 @@ export function handler() {
 
   let routerList: AppMiddleware[] = [];
   let hostname = EMPTY;
-  let isMiddlewareInit = false;
+  let isInit = false;
 
   function buildMiddleware(
     element: MiddlewareArgument,
@@ -98,23 +98,26 @@ export function handler() {
     }
   }
 
+  function initAllMiddlewares(
+    middlewares: AppMiddleware[],
+    routes: Map<string, Route>,
+    req: Request,
+  ) {
+    routerList = initHandlerMiddlewares(middlewares, req.url);
+    if (routerList.length > 0) {
+      handleRouterMiddleware(routerList, req.url);
+    }
+    initHandlerRoutes(routes, req.url);
+    isInit = true;
+  }
+
   function handleRequest(
     req: Request,
     connInfo: ConnInfo,
     routes: Map<string, Route>,
     middlewares: AppMiddleware[],
   ): Response | Promise<Response> {
-    if (!isMiddlewareInit) {
-      routerList = initHandlerMiddlewares(middlewares, req.url);
-      if (routerList.length > 0) {
-        handleRouterMiddleware(routerList, req.url);
-      }
-      isMiddlewareInit = true;
-    }
-
-    if (handlerRoutes.size < 1) {
-      initHandlerRoutes(routes, req.url);
-    }
+    if (!isInit) initAllMiddlewares(middlewares, routes, req);
 
     if (handlerMiddlewares.length > 0) {
       const done = processHandlerMiddleware(handlerMiddlewares, req, connInfo);
@@ -218,9 +221,7 @@ export function handler() {
   ) {
     let done = false;
     middleware(req, connInfo, (err) => {
-      if (err) {
-        throw err;
-      }
+      if (err) throw err;
       done = true;
     });
     return done;

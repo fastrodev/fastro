@@ -2,10 +2,14 @@
 
 Fast and simple web application framework for deno.
 
-You can use the deno built-in functions and objects that are already available:
-[Request](https://deno.com/deploy/docs/runtime-request),
-[Response](https://deno.com/deploy/docs/runtime-request), and
-[Headers](https://deno.com/deploy/docs/runtime-headers).
+With [near-native speeds](https://deno.land/x/fastro@v{{version}}/benchmarks), you
+can manage routing and middleware cleanly. And take advantage of existing deno
+objects and methods: [Request](https://deno.com/deploy/docs/runtime-request),
+[Response](https://deno.com/deploy/docs/runtime-request),
+[Headers](https://deno.com/deploy/docs/runtime-headers), and
+[Cookie](https://deno.land/std@0.133.0/http)
+
+## Examples
 
 - [Getting Started](#getting-started)
 - [Custom Port](#custom-port)
@@ -96,12 +100,14 @@ deno run -A https://deno.land/x/fastro@v{{version}}/examples/render.ts
 ## Set, Get, and Delete a Cookie
 
 ```ts
-import application, {
+import {
   Cookie,
   deleteCookie,
   getCookies,
   setCookie,
-} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
+} from "https://deno.land/std@0.133.0/http/cookie.ts";
+
+import application from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
