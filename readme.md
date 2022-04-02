@@ -7,8 +7,6 @@ You can use the deno built-in functions and objects that are already available:
 [Response](https://deno.com/deploy/docs/runtime-request), and
 [Headers](https://deno.com/deploy/docs/runtime-headers).
 
----
-
 - [Getting Started](#getting-started)
 - [Custom Port](#custom-port)
 - [Set, Get, and Delete a Cookie](#set-get-and-delete-a-cookie)
@@ -22,8 +20,6 @@ You can use the deno built-in functions and objects that are already available:
 - [Route Level Middleware](#route-level-middleware)
 - [Route Level Middleware with Array](#route-level-middleware-with-array)
 - [Benchmarks](https://deno.land/x/fastro@v0.44.0/benchmarks)
-
----
 
 ## Getting started
 
