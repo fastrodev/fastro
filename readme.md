@@ -7,7 +7,9 @@ can manage routing and middleware cleanly. And take advantage of existing deno
 objects and methods: [Request](https://deno.com/deploy/docs/runtime-request),
 [Response](https://deno.com/deploy/docs/runtime-request),
 [Headers](https://deno.com/deploy/docs/runtime-headers), and
-[Cookie](https://deno.land/std@0.133.0/http)
+[Cookie](https://deno.land/std@0.133.0/http).
+
+![](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/logo.svg)
 
 ## Examples
 
@@ -95,6 +97,7 @@ deno run -A https://deno.land/x/fastro@v0.45.0/examples/render.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@0.45.0/examples/render.ts)
+
 
 ## Set, Get, and Delete a Cookie
 
@@ -350,6 +353,7 @@ deno run -A https://deno.land/x/fastro@v0.45.0/examples/application_level_middle
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@0.45.0/examples/application_level_middleware_with_array.ts)
 
+
 ## Route Level Middleware
 
 ```ts
@@ -423,3 +427,4 @@ deno run -A https://deno.land/x/fastro@v0.45.0/examples/route_level_middleware_w
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@0.45.0/examples/route_level_middleware_with_array.ts)
+

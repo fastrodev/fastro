@@ -7,7 +7,9 @@ can manage routing and middleware cleanly. And take advantage of existing deno
 objects and methods: [Request](https://deno.com/deploy/docs/runtime-request),
 [Response](https://deno.com/deploy/docs/runtime-request),
 [Headers](https://deno.com/deploy/docs/runtime-headers), and
-[Cookie](https://deno.land/std@0.133.0/http)
+[Cookie](https://deno.land/std@0.133.0/http).
+
+![](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/logo.svg)
 
 ## Examples
 
