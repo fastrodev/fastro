@@ -2,8 +2,9 @@ import { ServeInit, Server } from "./deps.ts";
 import { handler } from "./handler.ts";
 import { middleware } from "./middleware.ts";
 import { router } from "./router.ts";
+import { dependency } from "./container.ts";
 import {
-  Deps,
+  Dependency,
   HandlerArgument,
   MiddlewareArgument,
   PathArgument,
@@ -25,16 +26,35 @@ interface Application {
 
 const appHandler = handler();
 export const { getParams, getParam } = appHandler;
-export const deps = new Map<string, unknown>();
-export function application(dependencies?: Deps): Application {
+export function application(): Application {
   const appRouter = router();
   const appMiddleware = middleware();
-  const appDeps = dependencies ?? deps;
+  let appDeps: Dependency = dependency();
   let server: Server;
+
+  function containDeps(array: MiddlewareArgument[]) {
+    for (let index = 0; index < array.length; index++) {
+      const element = array[index];
+      if (isDeps(element)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function isDeps(first: MiddlewareArgument) {
+    const deps = <Dependency> first;
+    return deps.deps !== undefined;
+  }
+
   const app = {
-    deps: appDeps,
+    deps: appDeps.deps,
     getDeps: (key: string) => {
       return appDeps.get(key);
+    },
+    setDeps: (key: string, val: unknown) => {
+      appDeps.set(key, val);
+      return app;
     },
     close: () => {
       return server.close();
@@ -82,7 +102,15 @@ export function application(dependencies?: Deps): Application {
       return app;
     },
     use: (...middlewares: MiddlewareArgument[]) => {
-      appMiddleware.useMiddleware(...middlewares);
+      const [first, ...rest] = middlewares;
+      if (isDeps(first)) {
+        appDeps = <Dependency> first;
+        if (containDeps(rest)) {
+          throw Error("Dependency only used at first argument");
+        }
+      } else {
+        appMiddleware.useMiddleware(...middlewares);
+      }
       return app;
     },
   };

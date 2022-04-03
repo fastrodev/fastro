@@ -23,16 +23,19 @@ export type RequestHandler = (
 ) => void | Promise<void> | Response | Promise<Response>;
 
 export type HandlerArgument = Handler | RequestHandler | RequestHandler[];
-
 export type Route = {
   method: string;
   path: PathArgument;
   handlers: HandlerArgument[];
 };
 
-export type Deps = Map<string, unknown>;
-
+export interface Dependency {
+  deps: Map<string, unknown>;
+  set(key: string, val: unknown): Dependency;
+  get(key: string): unknown;
+}
 export type MiddlewareArgument =
+  | Dependency
   | PathArgument
   | Router
   | RequestHandler
