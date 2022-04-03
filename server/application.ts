@@ -2,9 +2,15 @@ import { ServeInit, Server } from "./deps.ts";
 import { handler } from "./handler.ts";
 import { middleware } from "./middleware.ts";
 import { router } from "./router.ts";
-import { HandlerArgument, MiddlewareArgument, PathArgument } from "./types.ts";
+import {
+  Deps,
+  HandlerArgument,
+  MiddlewareArgument,
+  PathArgument,
+} from "./types.ts";
 
 interface Application {
+  getDeps(key: string): unknown;
   serve(options?: ServeInit): Promise<void>;
   get(path: PathArgument, ...handlers: HandlerArgument[]): Application;
   post(path: PathArgument, ...handlers: HandlerArgument[]): Application;
@@ -19,12 +25,17 @@ interface Application {
 
 const appHandler = handler();
 export const { getParams, getParam } = appHandler;
-
-export function application(): Application {
+export const deps = new Map<string, unknown>();
+export function application(dependencies?: Deps): Application {
   const appRouter = router();
   const appMiddleware = middleware();
+  const appDeps = dependencies ?? deps;
   let server: Server;
   const app = {
+    deps: appDeps,
+    getDeps: (key: string) => {
+      return appDeps.get(key);
+    },
     close: () => {
       return server.close();
     },

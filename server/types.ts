@@ -30,6 +30,8 @@ export type Route = {
   handlers: HandlerArgument[];
 };
 
+export type Deps = Map<string, unknown>;
+
 export type MiddlewareArgument =
   | PathArgument
   | Router
