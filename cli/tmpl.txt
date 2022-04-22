@@ -90,7 +90,7 @@ app.get("/", () => {
 
 console.log("Listening on: http://localhost:8000");
 
-app.serve();
+await app.serve();
 ```
 
 ```
@@ -141,7 +141,7 @@ app.delete("/", () => {
 
 console.log("Listening on: http://localhost:8000");
 
-app.serve();
+await app.serve();
 ```
 
 ```
