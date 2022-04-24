@@ -66,7 +66,7 @@ deno run -A https://deno.land/x/fastro@v0.51.2/examples/custom_port.ts
 ### HTML Response
 
 ```ts
-import application from "https://deno.land/x/fastro@v0.51.0/server/mod.ts"
+import application from "https://deno.land/x/fastro@v0.51.2/server/mod.ts"
 
 const app = application()
 
