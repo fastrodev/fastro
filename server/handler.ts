@@ -136,6 +136,7 @@ export function handler() {
         status: Status.NotFound,
       })
     }
+
     const { length, [length - 1]: handler } = res.handlers
     if (length > 1) return loopHandlers(res, req, connInfo)
     if (!isHandler(handler)) throw new Error("The argument must be a handler")
@@ -143,8 +144,10 @@ export function handler() {
     const stringResult = stringHandler()
     if (isStringHandler(stringResult)) {
       return new Response(stringResult)
+    } else {
+      const appHandler = <Handler>handler
+      return appHandler(req, connInfo)
     }
-    return handler(req, connInfo)
   }
 
   function processHandlerMiddleware(
@@ -189,7 +192,8 @@ export function handler() {
         if (!isHandler(handler)) {
           throw new Error("The last argument must be a handler")
         }
-        return handler(req, connInfo)
+        const appHandler = <Handler>handler
+        return appHandler(req, connInfo)
       }
 
       if (Array.isArray(handler)) done = loopExecute(handler, req, connInfo)
@@ -332,12 +336,14 @@ export function handler() {
   }
 
   function getParams(req: Request) {
+    if (!req) return {}
     const obj: Record<string, string> = {}
     extractParams(req).forEach((val) => obj[val.name] = val.value)
     return obj
   }
 
   function getParam(name: string, req: Request) {
+    if (!req) return ""
     const [res] = extractParams(req).filter((val) => val.name === name)
     return res.value
   }
