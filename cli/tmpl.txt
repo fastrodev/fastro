@@ -14,6 +14,7 @@ take advantage of existing the standard deno objects and methods:
 
 - [Getting Started](#getting-started)
 - [Custom Port](#custom-port)
+- [HTML response](#html-response)
 - [Set, Get, and Delete a Cookie](#set-get-and-delete-a-cookie)
 - [Render with Eta Template Engine](#render-with-eta-template-engine)
 - [Routing](#routing)
@@ -61,6 +62,34 @@ deno run -A https://deno.land/x/fastro@v{{version}}/examples/custom_port.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/custom_port.ts)
+
+### HTML Response
+
+```ts
+import application from "https://deno.land/x/fastro@v0.51.0/server/mod.ts";
+
+const app = application();
+
+app.get("/", () => {
+  return new Response("<html> Hello world </html>", {
+    status: 200,
+    headers: {
+      "content-type": "text/html",
+    },
+  });
+});
+
+console.log("Listening on: http://localhost:8000");
+
+await app.serve();
+```
+
+```
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/html_response.ts
+```
+
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/html_response.ts)
+
 
 ### Render with Eta Template Engine
 
