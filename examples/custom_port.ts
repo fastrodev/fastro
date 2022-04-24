@@ -1,7 +1,7 @@
-import application from "../server/mod.ts";
+import application from "../server/mod.ts"
 
-const app = application();
+const app = application()
 
-app.get("/", () => new Response("Hello world!"));
+app.get("/", () => new Response("Hello world!"))
 
-await app.serve({ port: 3000 });
+await app.serve({ port: 3000 })

@@ -1,9 +1,9 @@
-import application from "https://deno.land/x/fastro@v0.45.0/server/mod.ts";
+import application from "https://deno.land/x/fastro@v0.45.0/server/mod.ts"
 
-const app = application();
+const app = application()
 
-app.get("/", () => new Response("Hello world"));
+app.get("/", () => new Response("Hello world"))
 
-console.log("Listening on: http://localhost:8000");
+console.log("Listening on: http://localhost:8000")
 
-await app.serve();
+await app.serve()
