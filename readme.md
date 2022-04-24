@@ -30,13 +30,13 @@ take advantage of existing the standard deno objects and methods:
 ### Getting started
 
 ```ts
-import application from "https://deno.land/x/fastro@v0.51.1/server/mod.ts";
+import application from "https://deno.land/x/fastro@v0.51.1/server/mod.ts"
 
-const app = application();
+const app = application()
 
-app.get("/", () => "Hello world");
+app.get("/", () => "Hello world")
 
-await app.serve();
+await app.serve()
 ```
 
 ```
@@ -48,13 +48,13 @@ deno run -A https://deno.land/x/fastro@v0.51.1/examples/main.ts
 ### Custom port
 
 ```ts
-import application from "https://deno.land/x/fastro@v0.51.1/server/mod.ts";
+import application from "https://deno.land/x/fastro@v0.51.1/server/mod.ts"
 
-const app = application();
+const app = application()
 
-app.get("/", () => new Response("Hello world!"));
+app.get("/", () => new Response("Hello world!"))
 
-await app.serve({ port: 3000 });
+await app.serve({ port: 3000 })
 ```
 
 ```
@@ -90,16 +90,17 @@ deno run -A https://deno.land/x/fastro@v0.51.1/examples/html_response.ts
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.51.1/examples/html_response.ts)
 
+
 ### Render with Eta Template Engine
 
 ```ts
-import application from "https://deno.land/x/fastro@v0.51.1/server/mod.ts";
-import { render } from "https://deno.land/x/eta@v1.12.3/mod.ts";
+import application from "https://deno.land/x/fastro@v0.51.1/server/mod.ts"
+import { render } from "https://deno.land/x/eta@v1.12.3/mod.ts"
 
-const app = application();
+const app = application()
 
-const headers = new Headers();
-headers.set("Content-Type", "text/html charset=UTF-8");
+const headers = new Headers()
+headers.set("Content-Type", "text/html charset=UTF-8")
 
 app.get("/", () => {
   const html = <string> render(
@@ -107,14 +108,14 @@ app.get("/", () => {
     {
       answer: 42,
     },
-  );
+  )
 
-  return new Response(html, { headers });
-});
+  return new Response(html, { headers })
+})
 
-console.log("Listening on: http://localhost:8000");
+console.log("Listening on: http://localhost:8000")
 
-await app.serve();
+await app.serve()
 ```
 
 ```
@@ -122,6 +123,7 @@ deno run -A https://deno.land/x/fastro@v0.51.1/examples/render.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.51.1/examples/render.ts)
+
 
 ### Set, Get, and Delete a Cookie
 
@@ -131,40 +133,40 @@ import {
   deleteCookie,
   getCookies,
   setCookie,
-} from "https://deno.land/std@0.133.0/http/cookie.ts";
+} from "https://deno.land/std@0.133.0/http/cookie.ts"
 
-import application from "https://deno.land/x/fastro@v0.51.1/server/mod.ts";
+import application from "https://deno.land/x/fastro@v0.51.1/server/mod.ts"
 
-const app = application();
+const app = application()
 
 app.post("/", () => {
-  const headers = new Headers();
-  const cookie: Cookie = { name: "Space", value: "Cat" };
-  setCookie(headers, cookie);
+  const headers = new Headers()
+  const cookie: Cookie = { name: "Space", value: "Cat" }
+  setCookie(headers, cookie)
 
-  return new Response(JSON.stringify(cookie), { headers });
-});
+  return new Response(JSON.stringify(cookie), { headers })
+})
 
 app.get("/", (req: Request) => {
-  const headers = req.headers;
-  const cookies = getCookies(headers);
+  const headers = req.headers
+  const cookies = getCookies(headers)
 
-  return new Response(JSON.stringify(cookies));
-});
+  return new Response(JSON.stringify(cookies))
+})
 
 app.delete("/", () => {
-  const headers = new Headers();
-  deleteCookie(headers, "Space");
-  const cookies = getCookies(headers);
+  const headers = new Headers()
+  deleteCookie(headers, "Space")
+  const cookies = getCookies(headers)
 
   return new Response(JSON.stringify(cookies), {
     headers,
-  });
-});
+  })
+})
 
-console.log("Listening on: http://localhost:8000");
+console.log("Listening on: http://localhost:8000")
 
-await app.serve();
+await app.serve()
 ```
 
 ```
@@ -176,25 +178,25 @@ deno run -A https://deno.land/x/fastro@v0.51.1/examples/cookies.ts
 ### Routing
 
 ```ts
-import application from "https://deno.land/x/fastro@v0.51.1/server/mod.ts";
+import application from "https://deno.land/x/fastro@v0.51.1/server/mod.ts"
 
-const app = application();
+const app = application()
 
-app.get("/abcd", () => new Response("/abcd"));
+app.get("/abcd", () => new Response("/abcd"))
 
-app.get("/ef?gh", () => new Response("/ef?gh"));
+app.get("/ef?gh", () => new Response("/ef?gh"))
 
-app.get("/ij+kl", () => new Response("/ij+kl"));
+app.get("/ij+kl", () => new Response("/ij+kl"))
 
-app.get("/mn*op", () => new Response("mn*op"));
+app.get("/mn*op", () => new Response("mn*op"))
 
-app.get("/qr(st)?u", () => new Response("qr(st)?u"));
+app.get("/qr(st)?u", () => new Response("qr(st)?u"))
 
-app.get(/v/, () => new Response("/v/"));
+app.get(/v/, () => new Response("/v/"))
 
-app.get(/.*fast$/, () => new Response("/.*fast$/"));
+app.get(/.*fast$/, () => new Response("/.*fast$/"))
 
-await app.serve();
+await app.serve()
 ```
 
 ```
@@ -209,21 +211,21 @@ deno run -A https://deno.land/x/fastro@v0.51.1/examples/routing.ts
 import application, {
   getParam,
   getParams,
-} from "https://deno.land/x/fastro@v0.51.1/server/mod.ts";
+} from "https://deno.land/x/fastro@v0.51.1/server/mod.ts"
 
-const app = application();
+const app = application()
 
 app.get("/:id/user/:name", (req: Request) => {
-  const params = getParams(req);
-  return new Response(JSON.stringify({ params }));
-});
+  const params = getParams(req)
+  return new Response(JSON.stringify({ params }))
+})
 
 app.get("/post/:id", (req: Request) => {
-  const param = getParam("id", req);
-  return new Response(param);
-});
+  const param = getParam("id", req)
+  return new Response(param)
+})
 
-await app.serve();
+await app.serve()
 ```
 
 ```
@@ -239,24 +241,24 @@ import application, {
   ConnInfo,
   Next,
   router,
-} from "https://deno.land/x/fastro@v0.51.1/server/mod.ts";
+} from "https://deno.land/x/fastro@v0.51.1/server/mod.ts"
 
-const app = application();
-const r = router();
+const app = application()
+const r = router()
 const middleware = (_req: Request, _connInfo: ConnInfo, next: Next) => {
-  console.log("v2 - 1");
-  next();
-};
+  console.log("v2 - 1")
+  next()
+}
 
 r.get("/", () => new Response("Get"))
   .post("/", () => new Response("Post"))
   .put("/", () => new Response("Put"))
-  .delete("/", () => new Response("Delete"));
+  .delete("/", () => new Response("Delete"))
 
-app.use("/v1", r);
-app.use("/v2", middleware, r);
+app.use("/v1", r)
+app.use("/v2", middleware, r)
 
-await app.serve();
+await app.serve()
 ```
 
 ```
@@ -272,27 +274,27 @@ import application, {
   ConnInfo,
   Next,
   router,
-} from "https://deno.land/x/fastro@v0.51.1/server/mod.ts";
+} from "https://deno.land/x/fastro@v0.51.1/server/mod.ts"
 
-const app = application();
-const r = router();
+const app = application()
+const r = router()
 const middlewares = [(_req: Request, _connInfo: ConnInfo, next: Next) => {
-  console.log("v2 - 1");
-  next();
+  console.log("v2 - 1")
+  next()
 }, (_req: Request, _connInfo: ConnInfo, next: Next) => {
-  console.log("v2 - 2");
-  next();
-}];
+  console.log("v2 - 2")
+  next()
+}]
 
 r.get("/", () => new Response("Get"))
   .post("/", () => new Response("Post"))
   .put("/", () => new Response("Put"))
-  .delete("/", () => new Response("Delete"));
+  .delete("/", () => new Response("Delete"))
 
-app.use("/v1", r);
-app.use("/v2", middlewares, r);
+app.use("/v1", r)
+app.use("/v2", middlewares, r)
 
-await app.serve();
+await app.serve()
 ```
 
 ```
@@ -307,31 +309,31 @@ deno run -A https://deno.land/x/fastro@v0.51.1/examples/router_middleware_with_a
 import application, {
   ConnInfo,
   Next,
-} from "https://deno.land/x/fastro@v0.51.1/server/mod.ts";
+} from "https://deno.land/x/fastro@v0.51.1/server/mod.ts"
 
-const app = application();
-
-app.use((_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("app middleware #1");
-  next();
-});
+const app = application()
 
 app.use((_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("app middleware #2");
-  next();
-});
+  console.log("app middleware #1")
+  next()
+})
 
 app.use((_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("app middleware #3");
-  next();
+  console.log("app middleware #2")
+  next()
+})
+
+app.use((_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("app middleware #3")
+  next()
 }, (_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("app middleware #4");
-  next();
-});
+  console.log("app middleware #4")
+  next()
+})
 
-app.get("/", () => new Response("App level #1"));
+app.get("/", () => new Response("App level #1"))
 
-await app.serve();
+await app.serve()
 ```
 
 ```
@@ -346,29 +348,29 @@ deno run -A https://deno.land/x/fastro@v0.51.1/examples/application_level_middle
 import application, {
   ConnInfo,
   Next,
-} from "https://deno.land/x/fastro@v0.51.1/server/mod.ts";
+} from "https://deno.land/x/fastro@v0.51.1/server/mod.ts"
 
-const app = application();
+const app = application()
 
 const middlewares = [(_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("middleware #1");
-  next();
+  console.log("middleware #1")
+  next()
 }, (_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("middleware #2");
-  next();
+  console.log("middleware #2")
+  next()
 }, (_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("middleware #3");
-  next();
+  console.log("middleware #3")
+  next()
 }, (_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("middleware #4");
-  next();
-}];
+  console.log("middleware #4")
+  next()
+}]
 
-app.use(middlewares);
+app.use(middlewares)
 
-app.get("/", () => new Response("App level #1"));
+app.get("/", () => new Response("App level #1"))
 
-await app.serve();
+await app.serve()
 ```
 
 ```
@@ -377,37 +379,24 @@ deno run -A https://deno.land/x/fastro@v0.51.1/examples/application_level_middle
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.51.1/examples/application_level_middleware_with_array.ts)
 
+
 ### Route Level Middleware
 
 ```ts
 import application, {
   ConnInfo,
   Next,
-} from "https://deno.land/x/fastro@v0.51.1/server/mod.ts";
+} from "https://deno.land/x/fastro@v0.51.1/server/mod.ts"
+const app = application()
 
-const app = application();
+const middlewares = (_req: Request, _conn: ConnInfo, next: Next) => {
+  console.log("middleware #1")
+  next()
+}
 
-app.use((_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("app middleware #1");
-  next();
-});
+app.get("/", middlewares, () => new Response("App level #1"))
 
-app.use((_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("app middleware #2");
-  next();
-});
-
-app.use((_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("app middleware #3");
-  next();
-}, (_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("app middleware #4");
-  next();
-});
-
-app.get("/", () => new Response("App level #1"));
-
-await app.serve();
+await app.serve()
 ```
 
 ```
@@ -422,27 +411,27 @@ deno run -A https://deno.land/x/fastro@v0.51.1/examples/route_level_middleware.t
 import application, {
   ConnInfo,
   Next,
-} from "https://deno.land/x/fastro@v0.51.1/server/mod.ts";
+} from "https://deno.land/x/fastro@v0.51.1/server/mod.ts"
 
-const app = application();
+const app = application()
 
 const middlewares = [(_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("middleware #1");
-  next();
+  console.log("middleware #1")
+  next()
 }, (_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("middleware #2");
-  next();
+  console.log("middleware #2")
+  next()
 }, (_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("middleware #3");
-  next();
+  console.log("middleware #3")
+  next()
 }, (_req: Request, _conn: ConnInfo, next: Next) => {
-  console.log("middleware #4");
-  next();
-}];
+  console.log("middleware #4")
+  next()
+}]
 
-app.get("/mnop", middlewares, () => new Response("Route level middleware #3"));
+app.get("/mnop", middlewares, () => new Response("Route level middleware #3"))
 
-await app.serve();
+await app.serve()
 ```
 
 ```
@@ -451,51 +440,51 @@ deno run -A https://deno.land/x/fastro@v0.51.1/examples/route_level_middleware_w
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.51.1/examples/route_level_middleware_with_array.ts)
 
+
 ### SQLite and Dependency Injection
 
 ```ts
-import application, {
-  dependency,
-} from "https://deno.land/x/fastro@v0.51.1/server/mod.ts";
-import { DB } from "https://deno.land/x/sqlite@v3.3.0/mod.ts";
+import application, { dependency } from "https://deno.land/x/fastro@v0.51.1/server/mod.ts"
+import { DB } from "https://deno.land/x/sqlite@v3.3.0/mod.ts"
 
-const app = application();
-const db = new DB("test.db");
+const app = application()
+const db = new DB("test.db")
 
-const deps = dependency();
-deps.set("hello", () => "Hello world");
-deps.set("db", db);
-app.use(deps);
+const deps = dependency()
+deps.set("hello", () => "Hello world")
+deps.set("db", db)
+app.use(deps)
 
 app.get("/", () => {
-  type FunctionType = () => string;
-  const fn = <FunctionType> app.getDeps("hello");
-  return new Response(fn());
-});
+  type FunctionType = () => string
+  const fn = <FunctionType> app.getDeps("hello")
+  return new Response(fn())
+})
 
 app.post("/name", () => {
-  const db = <DB> app.getDeps("db");
+  const db = <DB> app.getDeps("db")
   db.query(`CREATE TABLE IF NOT EXISTS people (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT)`);
+    name TEXT)`)
 
-  const names = ["Peter Parker", "Clark Kent", "Bruce Wayne"];
+  const names = ["Peter Parker", "Clark Kent", "Bruce Wayne"]
   for (const name of names) {
-    db.query("INSERT INTO people (name) VALUES (?)", [name]);
+    db.query("INSERT INTO people (name) VALUES (?)", [name])
   }
 
-  return new Response(JSON.stringify(names));
-});
+  return new Response(JSON.stringify(names))
+})
 
 app.get("/name", () => {
-  const db = <DB> app.getDeps("db");
-  const res = db.query("SELECT name FROM people");
-  return new Response(JSON.stringify(res));
-});
+  const db = <DB> app.getDeps("db")
+  const res = db.query("SELECT name FROM people")
+  return new Response(JSON.stringify(res))
+})
 
-console.log("Listening on: http://localhost:8000");
+console.log("Listening on: http://localhost:8000")
 
-await app.serve();
+await app.serve()
+
 ```
 
 ```
@@ -503,3 +492,4 @@ deno run -A https://deno.land/x/fastro@v0.51.1/examples/deps_injection.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.51.1/examples/deps_injection.ts)
+
