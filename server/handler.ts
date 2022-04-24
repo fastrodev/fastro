@@ -141,7 +141,7 @@ export function handler() {
     if (length > 1) return loopHandlers(res, req, connInfo)
     if (!isHandler(handler)) throw new Error("The argument must be a handler")
     const stringHandler = <StringHandler><unknown>handler
-    const stringResult = stringHandler()
+    const stringResult = stringHandler(req, connInfo)
     if (isStringHandler(stringResult)) {
       return new Response(stringResult)
     } else {

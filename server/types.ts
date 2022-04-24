@@ -1,6 +1,6 @@
 import { ConnInfo, Handler } from "./deps.ts"
 
-export type StringHandler = () => string
+export type StringHandler = (request?: Request, connInfo?: ConnInfo) => string
 export interface Router {
   routes: Map<string, Route>
   get(path: PathArgument, ...handlers: HandlerArgument[]): Router
