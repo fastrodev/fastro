@@ -21,5 +21,6 @@
   "deno.suggest.imports.hosts": {
     "https://deno.land": true
   },
-  "deno.config": "./deno.json"
+  "deno.config": "./deno.json",
+  "prettier.enable": false
 }
