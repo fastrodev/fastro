@@ -114,7 +114,11 @@ export function handler() {
 
   function isStringHandler(stringResult: unknown) {
     const str = <string>stringResult
-    return (str.includes != undefined && str.replaceAll != undefined)
+    try {
+      return (str.includes != undefined && str.replaceAll != undefined)
+    } catch (_error) {
+      throw new Error(`Handler return void`)
+    }
   }
 
   function handleRequest(

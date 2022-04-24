@@ -3,7 +3,7 @@
 Fast and simple web application framework for deno.
 
 With
-[near-native perfomance](https://deno.land/x/fastro@v0.52.0/benchmarks),
+[near-native perfomance](https://deno.land/x/fastro@v{{version}}/benchmarks),
 you can manage your routing, middlewares, and dependencies cleanly. You can also
 take advantage of existing Deno objects and methods:
 [Request](https://deno.com/deploy/docs/runtime-request),
@@ -37,7 +37,7 @@ take advantage of existing Deno objects and methods:
 ### Getting started
 
 ```ts
-import application from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+import application from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -47,15 +47,15 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/main.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/main.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/main.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/main.ts)
 
 ### Custom port
 
 ```ts
-import application from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+import application from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -65,15 +65,15 @@ await app.serve({ port: 3000 });
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/custom_port.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/custom_port.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/custom_port.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/custom_port.ts)
 
 ### Set HTML
 
 ```ts
-import application from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+import application from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -92,17 +92,17 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/html_response.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/html_response.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/html_response.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/html_response.ts)
 
 ### Set HTML with RequestResponse
 
 ```ts
 import application, {
   response,
-} from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -117,17 +117,17 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/response_html.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/response_html.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/response_html.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/response_html.ts)
 
 ### Set JSON
 
 ```ts
 import application, {
   response,
-} from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -142,17 +142,17 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/response_json.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/response_json.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/response_json.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/response_json.ts)
 
 ### Set Content Type
 
 ```ts
 import application, {
   response,
-} from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -168,17 +168,17 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/response_content_type.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/response_content_type.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/response_content_type.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/response_content_type.ts)
 
 ### Set HTTP Status
 
 ```ts
 import application, {
   response,
-} from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -193,17 +193,17 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/response_status.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/response_status.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/response_status.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/response_status.ts)
 
 ### Set Authorization
 
 ```ts
 import application, {
   response,
-} from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -219,10 +219,10 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/response_auth.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/response_auth.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/response_auth.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/response_auth.ts)
 
 ### Set, Get, and Delete a Cookie
 
@@ -234,7 +234,7 @@ import {
   setCookie,
 } from "https://deno.land/std@0.133.0/http/cookie.ts";
 
-import application from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+import application from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -269,10 +269,10 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/cookies.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/cookies.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/cookies.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/cookies.ts)
 
 ### Set, Get, and Delete a Cookie with RequestResponse
 
@@ -281,7 +281,7 @@ import application, {
   Cookie,
   getCookies,
   response,
-} from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -310,15 +310,15 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/response_cookies.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/response_cookies.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/response_cookies.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/response_cookies.ts)
 
 ### Render with Eta Template Engine
 
 ```ts
-import application from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+import application from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 import { render } from "https://deno.land/x/eta@v1.12.3/mod.ts";
 
 const app = application();
@@ -343,15 +343,15 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/render.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/render.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/render.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/render.ts)
 
 ### Routing
 
 ```ts
-import application from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+import application from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -373,10 +373,10 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/routing.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/routing.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/routing.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/routing.ts)
 
 ### Route parameters
 
@@ -384,7 +384,7 @@ deno run -A https://deno.land/x/fastro@v0.52.0/examples/routing.ts
 import application, {
   getParam,
   getParams,
-} from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -402,10 +402,10 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/route_params.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/route_params.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/route_params.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/route_params.ts)
 
 ### Router Middleware
 
@@ -414,7 +414,7 @@ import application, {
   ConnInfo,
   Next,
   router,
-} from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 const r = router();
@@ -435,10 +435,10 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/router_middleware.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/router_middleware.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/router_middleware.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/router_middleware.ts)
 
 ### Router Middleware with Array
 
@@ -447,7 +447,7 @@ import application, {
   ConnInfo,
   Next,
   router,
-} from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 const r = router();
@@ -471,10 +471,10 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/router_middleware_with_array.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/router_middleware_with_array.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/router_middleware_with_array.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/router_middleware_with_array.ts)
 
 ### Application Level Middleware
 
@@ -482,7 +482,7 @@ deno run -A https://deno.land/x/fastro@v0.52.0/examples/router_middleware_with_a
 import application, {
   ConnInfo,
   Next,
-} from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -510,10 +510,10 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/application_level_middleware.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/application_level_middleware.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/application_level_middleware.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/application_level_middleware.ts)
 
 ### Application Level Middleware with Array
 
@@ -521,7 +521,7 @@ deno run -A https://deno.land/x/fastro@v0.52.0/examples/application_level_middle
 import application, {
   ConnInfo,
   Next,
-} from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -547,10 +547,10 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/application_level_middleware_with_array.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/application_level_middleware_with_array.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/application_level_middleware_with_array.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/application_level_middleware_with_array.ts)
 
 ### Route Level Middleware
 
@@ -558,7 +558,7 @@ deno run -A https://deno.land/x/fastro@v0.52.0/examples/application_level_middle
 import application, {
   ConnInfo,
   Next,
-} from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -573,10 +573,10 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/route_level_middleware.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/route_level_middleware.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/route_level_middleware.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/route_level_middleware.ts)
 
 ### Route Level Middleware with Array
 
@@ -584,7 +584,7 @@ deno run -A https://deno.land/x/fastro@v0.52.0/examples/route_level_middleware.t
 import application, {
   ConnInfo,
   Next,
-} from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 
 const app = application();
 
@@ -608,17 +608,17 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/route_level_middleware_with_array.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/route_level_middleware_with_array.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/route_level_middleware_with_array.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/route_level_middleware_with_array.ts)
 
 ### SQLite and Dependency Injection
 
 ```ts
 import application, {
   dependency,
-} from "https://deno.land/x/fastro@v0.52.0/server/mod.ts";
+} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 import { DB } from "https://deno.land/x/sqlite@v3.3.0/mod.ts";
 
 const app = application();
@@ -661,8 +661,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.52.0/examples/deps_injection.ts
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/deps_injection.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.52.0/examples/deps_injection.ts)
-
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/deps_injection.ts)

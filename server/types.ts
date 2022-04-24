@@ -1,4 +1,19 @@
-import { ConnInfo, Handler } from "./deps.ts"
+import { ConnInfo, Handler, Cookie } from "./deps.ts"
+
+export interface RequestResponse {
+  deleteCookie: (name: string, attributes?: {
+    path?: string | undefined
+    domain?: string | undefined
+  } | undefined) => RequestResponse
+  setCookie: (cookie: Cookie) => RequestResponse
+  headers: (headers: Headers) => RequestResponse
+  authorization: (type: string) => RequestResponse
+  contentType: (type: string) => RequestResponse
+  status: (status: number) => RequestResponse
+  send: (object: unknown) => Response
+  json: (object: unknown) => Response
+  html: (html: string) => Response
+}
 
 export type StringHandler = (request?: Request, connInfo?: ConnInfo) => string
 export interface Router {
