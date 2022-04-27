@@ -36,7 +36,7 @@ export type RequestHandler = (
   request: Request,
   connInfo: ConnInfo,
   next: Next,
-) => void | Promise<void> | string | Promise<string> | Response | Promise<Response>
+) => void | Promise<void> | string | Promise<string> | Response | Promise<Response> | JSX.Element
 
 export type HandlerArgument = Handler | RequestHandler | RequestHandler[]
 export type Route = {

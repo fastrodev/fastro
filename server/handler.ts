@@ -1,3 +1,4 @@
+import ReactDOMServer from "https://esm.sh/react-dom/server"
 import { ConnInfo, Handler, Status, STATUS_TEXT } from "./deps.ts"
 import {
   AppMiddleware,
@@ -121,6 +122,11 @@ export function handler() {
     }
   }
 
+  function isJSX(element: unknown) {
+    const el = <JSX.Element>element
+    return el.props != undefined && el.type != undefined
+  }
+
   function handleRequest(
     req: Request,
     connInfo: ConnInfo,
@@ -148,6 +154,13 @@ export function handler() {
     const stringResult = stringHandler(req, connInfo)
     if (isStringHandler(stringResult)) {
       return new Response(stringResult)
+    } else if (isJSX(stringResult)) {
+      const html = ReactDOMServer.renderToString(<JSX.Element><unknown>stringResult)
+      return new Response(html, {
+        headers: {
+          "content-type": "text/html",
+        }
+      })
     } else {
       const appHandler = <Handler>handler
       return appHandler(req, connInfo)
