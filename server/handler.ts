@@ -10,6 +10,7 @@ import {
   StringHandler
 } from "./types.ts"
 import { router as appRouter } from "./router.ts"
+import { render } from "./render.ts"
 
 interface HandlerRoute {
   method: string
@@ -121,6 +122,11 @@ export function handler() {
     }
   }
 
+  function isJSX(element: unknown) {
+    const el = <JSX.Element>element
+    return el.props != undefined && el.type != undefined
+  }
+
   function handleRequest(
     req: Request,
     connInfo: ConnInfo,
@@ -148,6 +154,8 @@ export function handler() {
     const stringResult = stringHandler(req, connInfo)
     if (isStringHandler(stringResult)) {
       return new Response(stringResult)
+    } else if (isJSX(stringResult)) {
+      return render(<JSX.Element><unknown>stringResult)
     } else {
       const appHandler = <Handler>handler
       return appHandler(req, connInfo)

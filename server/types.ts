@@ -10,9 +10,10 @@ export interface RequestResponse {
   authorization: (type: string) => RequestResponse
   contentType: (type: string) => RequestResponse
   status: (status: number) => RequestResponse
-  send: (object: unknown) => Response
-  json: (object: unknown) => Response
-  html: (html: string) => Response
+  send: (object: unknown) => Response | Promise<Response>
+  json: (object: unknown) => Response | Promise<Response>
+  ssr: (el: JSX.Element, client?: string) => Response | Promise<Response>
+  html: (html: string) => Response | Promise<Response>
 }
 
 export type StringHandler = (request?: Request, connInfo?: ConnInfo) => string
@@ -36,7 +37,7 @@ export type RequestHandler = (
   request: Request,
   connInfo: ConnInfo,
   next: Next,
-) => void | Promise<void> | string | Promise<string> | Response | Promise<Response>
+) => void | Promise<void> | string | Promise<string> | Response | Promise<Response> | JSX.Element
 
 export type HandlerArgument = Handler | RequestHandler | RequestHandler[]
 export type Route = {

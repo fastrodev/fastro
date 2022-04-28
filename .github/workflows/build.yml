@@ -9,4 +9,4 @@ jobs:
         with:
           deno-version: 1.20.4
       - run: deno lint
-      - run: deno test -A
+      - run: deno test -A --unstable

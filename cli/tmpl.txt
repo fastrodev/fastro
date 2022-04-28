@@ -18,6 +18,8 @@ take advantage of existing Deno objects and methods:
 - [Set HTML](#set-html)
 - [Set HTML with RequestResponse](#set-html-with-requestresponse)
 - [Set JSON](#set-json)
+- [Set JSX](#set-jsx)
+- [Set Server Side Rendering](#set-ssr)
 - [Set Content Type](#set-content-type)
 - [Set HTTP Status](#set-http-status)
 - [Set Authorization](#set-authorization)
@@ -146,6 +148,89 @@ deno run -A https://deno.land/x/fastro@v{{version}}/examples/response_json.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/response_json.ts)
+
+### Set JSX
+
+```ts
+import application from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
+
+const app = application();
+
+app.get("/", () => <h1>Hello world</h1>);
+
+console.log("Listening on: http://localhost:8000");
+
+await app.serve();
+```
+
+```
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/jsx_response.ts
+```
+
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/jsx_response.ts)
+
+### Set SSR
+
+#### React Component
+
+```ts
+import React from "https://esm.sh/react";
+
+const App = () => {
+  const [count, setCount] = React.useState(0);
+
+  return (
+    <div>
+      <h1>Hello Deno Land!</h1>
+      <button onClick={() => setCount(count + 1)}>Click the 🦕</button>
+      <p>You clicked the 🦕 {count} times</p>
+    </div>
+  );
+};
+
+export default App;
+```
+
+#### Endpoint
+
+```ts
+import application, { response } from "../server/mod.ts";
+import App from "./response_ssrApp.tsx";
+
+const app = application();
+const hydratePath = "./examples/response_ssrClient.tsx";
+
+app.get("/", () => {
+  const res = response();
+  return res.ssr(<App />, hydratePath);
+});
+
+console.log("Listening on: http://localhost:8000");
+
+await app.serve();
+```
+
+#### SSR Hydration
+
+```ts
+import React from "https://esm.sh/react";
+import ReactDOM from "https://esm.sh/react-dom";
+import App from "./response_ssrApp.tsx";
+
+ReactDOM.hydrate(
+  <App />,
+  //@ts-ignore: used by Deno.emit
+  document.getElementById("root"),
+);
+```
+
+#### How to run
+
+```
+deno run -A https://deno.land/x/fastro@v{{version}}/examples/response_ssr.ts
+```
+
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/response_ssr.ts)
 
 ### Set Content Type
 

@@ -1,4 +1,5 @@
 import { RequestResponse } from "./types.ts"
+import { ssr } from "./render.ts"
 import {
     Cookie,
     deleteCookie,
@@ -35,6 +36,9 @@ export function response(): RequestResponse {
             } catch (error) {
                 throw new Error(`jsonError: ${error.toString()}`)
             }
+        },
+        ssr: (el: JSX.Element, client?: string) => {
+            return ssr(el, client)
         },
         html: (html: string) => {
             contentType = "text/html; charset=UTF-8"
