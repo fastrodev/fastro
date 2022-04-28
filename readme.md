@@ -163,8 +163,20 @@ console.log("Listening on: http://localhost:8000");
 await app.serve();
 ```
 
+#### tsconfig: `deno.json`
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "https://esm.sh/react"
+  }
+}
 ```
-deno run -A https://deno.land/x/fastro@v0.53.0/examples/jsx_response.tsx
+
+```
+deno run -A --unstable --config deno.json https://deno.land/x/fastro@v0.53.0/examples/jsx_response.tsx
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.53.0/examples/jsx_response.tsx)
