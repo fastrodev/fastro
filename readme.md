@@ -151,7 +151,7 @@ deno run -A https://deno.land/x/fastro@v0.53.0/examples/response_json.ts
 
 ### Set JSX
 
-```ts
+```tsx
 import application from "https://deno.land/x/fastro@v0.53.0/server/mod.ts";
 
 const app = application();
