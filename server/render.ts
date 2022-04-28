@@ -1,4 +1,4 @@
-import ReactDOMServer from "https://esm.sh/react-dom/server"
+import ReactDOMServer from "https://esm.sh/react-dom@17.0.2/server"
 
 async function createHTML(element: JSX.Element, client?: string) {
     const component = ReactDOMServer.renderToString(element)

@@ -183,8 +183,8 @@ deno run -A --unstable --config deno.json https://deno.land/x/fastro@v{{version}
 
 #### React Component: `response_ssrApp.tsx`
 
-```ts
-import React from "https://esm.sh/react";
+```tsx
+import React from "https://esm.sh/react@17.0.2";
 
 const App = () => {
   const [count, setCount] = React.useState(0);
@@ -225,8 +225,8 @@ await app.serve();
 #### SSR Hydration `response_ssrClient.tsx`
 
 ```ts
-import React from "https://esm.sh/react";
-import ReactDOM from "https://esm.sh/react-dom";
+import React from "https://esm.sh/react@17.0.2";
+import ReactDOM from "https://esm.sh/react-dom@17.0.2";
 import App from "./response_ssrApp.tsx";
 
 ReactDOM.hydrate(

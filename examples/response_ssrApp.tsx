@@ -1,4 +1,4 @@
-import React from "https://esm.sh/react"
+import React from "https://esm.sh/react@17.0.2"
 
 const App = () => {
     const [count, setCount] = React.useState(0)

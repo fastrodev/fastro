@@ -1,5 +1,5 @@
-import React from "https://esm.sh/react"
-import ReactDOM from "https://esm.sh/react-dom"
+import React from "https://esm.sh/react@17.0.2"
+import ReactDOM from "https://esm.sh/react-dom@17.0.2"
 import App from "./response_ssrApp.tsx"
 
 ReactDOM.hydrate(
