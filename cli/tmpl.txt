@@ -171,7 +171,7 @@ deno run -A https://deno.land/x/fastro@v{{version}}/examples/jsx_response.tsx
 
 ### Set SSR
 
-#### React Component
+#### React Component: `response_ssrApp.tsx`
 
 ```ts
 import React from "https://esm.sh/react";
@@ -191,14 +191,16 @@ const App = () => {
 export default App;
 ```
 
-#### Endpoint
+#### Endpoint: `response_ssr.tsx`
 
 ```ts
-import application, { response } from "../server/mod.ts";
+import application, {
+  response,
+} from "https://deno.land/x/fastro@v{{version}}/server/mod.ts";
 import App from "./response_ssrApp.tsx";
 
 const app = application();
-const hydratePath = "./examples/response_ssrClient.tsx";
+const hydratePath = "./response_ssrClient.tsx";
 
 app.get("/", () => {
   const res = response();
@@ -210,7 +212,7 @@ console.log("Listening on: http://localhost:8000");
 await app.serve();
 ```
 
-#### SSR Hydration
+#### SSR Hydration `response_ssrClient.tsx`
 
 ```ts
 import React from "https://esm.sh/react";
@@ -224,13 +226,23 @@ ReactDOM.hydrate(
 );
 ```
 
-#### How to run
+#### tsconfig: `deno.json`
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "https://esm.sh/react"
+  }
+}
+```
+
+#### How to run locally
 
 ```
-deno run -A --unstable https://deno.land/x/fastro@v{{version}}/examples/response_ssr.tsx
+deno run -A --unstable response_ssr.tsx
 ```
-
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/response_ssr.tsx)
 
 ### Set Content Type
 
