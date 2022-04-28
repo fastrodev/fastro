@@ -1,4 +1,3 @@
-import ReactDOMServer from "https://esm.sh/react-dom/server"
 import { ConnInfo, Handler, Status, STATUS_TEXT } from "./deps.ts"
 import {
   AppMiddleware,
@@ -11,6 +10,7 @@ import {
   StringHandler
 } from "./types.ts"
 import { router as appRouter } from "./router.ts"
+import { render } from "./render.ts"
 
 interface HandlerRoute {
   method: string
@@ -155,12 +155,7 @@ export function handler() {
     if (isStringHandler(stringResult)) {
       return new Response(stringResult)
     } else if (isJSX(stringResult)) {
-      const html = ReactDOMServer.renderToString(<JSX.Element><unknown>stringResult)
-      return new Response(html, {
-        headers: {
-          "content-type": "text/html",
-        }
-      })
+      return render(<JSX.Element><unknown>stringResult)
     } else {
       const appHandler = <Handler>handler
       return appHandler(req, connInfo)

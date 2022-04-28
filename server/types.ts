@@ -10,9 +10,10 @@ export interface RequestResponse {
   authorization: (type: string) => RequestResponse
   contentType: (type: string) => RequestResponse
   status: (status: number) => RequestResponse
-  send: (object: unknown) => Response
-  json: (object: unknown) => Response
-  html: (html: string) => Response
+  send: (object: unknown) => Response | Promise<Response>
+  json: (object: unknown) => Response | Promise<Response>
+  ssr: (el: JSX.Element, client?: string) => Response | Promise<Response>
+  html: (html: string) => Response | Promise<Response>
 }
 
 export type StringHandler = (request?: Request, connInfo?: ConnInfo) => string
