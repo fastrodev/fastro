@@ -227,7 +227,7 @@ ReactDOM.hydrate(
 #### How to run
 
 ```
-deno run -A https://deno.land/x/fastro@v{{version}}/examples/response_ssr.ts
+deno run -A --unstable https://deno.land/x/fastro@v{{version}}/examples/response_ssr.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v{{version}}/examples/response_ssr.ts)
