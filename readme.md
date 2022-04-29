@@ -49,7 +49,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/main.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/main.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/main.ts)
@@ -67,7 +67,7 @@ await app.serve({ port: 3000 });
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/custom_port.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/custom_port.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/custom_port.ts)
@@ -94,7 +94,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/html_response.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/html_response.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/html_response.ts)
@@ -119,7 +119,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/response_html.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/response_html.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/response_html.ts)
@@ -144,7 +144,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/response_json.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/response_json.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/response_json.ts)
@@ -275,7 +275,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/response_content_type.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/response_content_type.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/response_content_type.ts)
@@ -300,7 +300,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/response_status.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/response_status.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/response_status.ts)
@@ -326,7 +326,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/response_auth.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/response_auth.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/response_auth.ts)
@@ -376,7 +376,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/cookies.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/cookies.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/cookies.ts)
@@ -417,7 +417,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/response_cookies.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/response_cookies.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/response_cookies.ts)
@@ -450,7 +450,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/render.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/render.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/render.ts)
@@ -480,7 +480,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/routing.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/routing.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/routing.ts)
@@ -509,7 +509,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/route_params.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/route_params.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/route_params.ts)
@@ -542,7 +542,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/router_middleware.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/router_middleware.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/router_middleware.ts)
@@ -578,7 +578,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/router_middleware_with_array.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/router_middleware_with_array.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/router_middleware_with_array.ts)
@@ -617,7 +617,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/application_level_middleware.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/application_level_middleware.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/application_level_middleware.ts)
@@ -654,7 +654,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/application_level_middleware_with_array.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/application_level_middleware_with_array.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/application_level_middleware_with_array.ts)
@@ -680,7 +680,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/route_level_middleware.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/route_level_middleware.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/route_level_middleware.ts)
@@ -715,7 +715,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/route_level_middleware_with_array.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/route_level_middleware_with_array.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/route_level_middleware_with_array.ts)
@@ -768,7 +768,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.54.0/examples/deps_injection.ts
+deno run -A --unstable https://deno.land/x/fastro@v0.54.0/examples/deps_injection.ts
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.54.0/examples/deps_injection.ts)
