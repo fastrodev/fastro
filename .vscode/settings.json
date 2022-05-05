@@ -9,6 +9,9 @@
       "source.organizeImports": true
     }
   },
+  "[markdown]": {
+    "editor.formatOnSave": false
+  },
   "deno.enable": true,
   "deno.unstable": true,
   "deno.lint": true,

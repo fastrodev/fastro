@@ -1,9 +1,11 @@
-import { VERSION } from "../server/version.ts"
-
 function readme(version: string) {
   Deno.readTextFile("./cli/tmpl.txt").then((txt) =>
     console.info(txt.replaceAll("{{version}}", version))
   )
 }
 
-readme(VERSION)
+const decoder = new TextDecoder('utf-8')
+const data = await Deno.readFile('./server/version.json')
+const { version } = JSON.parse(decoder.decode(data))
+
+readme(version)
