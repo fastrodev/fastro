@@ -8,22 +8,17 @@ import application from "../server/mod.ts"
 
 const app = application()
 
-app.post("/", () => {
+app.get("/set", () => {
   const headers = new Headers()
   const cookie: Cookie = { name: "Space", value: "Cat" }
   setCookie(headers, cookie)
 
-  return new Response(JSON.stringify(cookie), { headers })
+  return new Response(JSON.stringify(cookie), {
+    headers
+  })
 })
 
-app.get("/", (req: Request) => {
-  const headers = req.headers
-  const cookies = getCookies(headers)
-
-  return new Response(JSON.stringify(cookies))
-})
-
-app.delete("/", () => {
+app.get("/delete", () => {
   const headers = new Headers()
   deleteCookie(headers, "Space")
   const cookies = getCookies(headers)
@@ -33,6 +28,11 @@ app.delete("/", () => {
   })
 })
 
+app.get("/check", (req: Request) => {
+  const cookie = getCookies(req.headers)
+  return new Response(JSON.stringify(cookie))
+})
+
 console.log("Listening on: http://localhost:8000")
 
-app.serve()
+await app.serve()
