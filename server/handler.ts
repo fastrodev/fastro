@@ -127,6 +127,14 @@ export function handler() {
     return el.props != undefined && el.type != undefined
   }
 
+  function isJSON(str: unknown) {
+    try {
+      return [true, JSON.stringify(<string>str)]
+    } catch (_err) {
+      return [false, ""]
+    }
+  }
+
   function handleRequest(
     req: Request,
     connInfo: ConnInfo,
@@ -152,11 +160,18 @@ export function handler() {
     if (!isHandler(handler)) throw new Error("The argument must be a handler")
     const stringHandler = <StringHandler><unknown>handler
     const stringResult = stringHandler(req, connInfo)
+
     if (isStringHandler(stringResult)) {
       return new Response(stringResult)
     } else if (isJSX(stringResult)) {
       return render(<JSX.Element><unknown>stringResult)
     } else {
+      const [jsonYes, jsonStr] = isJSON(stringResult)
+      if (jsonYes) {
+        const headers = new Headers()
+        headers.set("content-type", "application/json")
+        return new Response(<string>jsonStr, { headers })
+      }
       const appHandler = <Handler>handler
       return appHandler(req, connInfo)
     }

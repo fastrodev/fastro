@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { ConnInfo, Handler, Cookie } from "./deps.ts"
 
 export interface RequestResponse {
@@ -37,7 +38,7 @@ export type RequestHandler = (
   request: Request,
   connInfo: ConnInfo,
   next: Next,
-) => void | Promise<void> | string | Promise<string> | Response | Promise<Response> | JSX.Element
+) => void | Promise<void> | string | Promise<string> | Response | Promise<Response> | JSX.Element | any | Promise<any>
 
 export type HandlerArgument = Handler | RequestHandler | RequestHandler[]
 export type Route = {
