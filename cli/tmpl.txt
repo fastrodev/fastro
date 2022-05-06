@@ -229,8 +229,8 @@ import application, { response } from "https://deno.land/x/fastro@{{version}}/se
 const app = application()
 
 app.get("/", () => {
-  const res = response()
-  return res.contentType("application/json")
+  return response()
+    .contentType("application/json")
     .send(JSON.stringify({ msg: "Hello world" }))
 })
 
@@ -253,8 +253,7 @@ import application, { response } from "https://deno.land/x/fastro@{{version}}/se
 const app = application()
 
 app.get("/", () => {
-  const res = response()
-  return res.status(200).send("status")
+  return response().status(200).send("status")
 })
 
 console.log("Listening on: http://localhost:8000")
@@ -276,8 +275,8 @@ import application, { response } from "https://deno.land/x/fastro@{{version}}/se
 const app = application()
 
 app.get("/", () => {
-  const res = response()
-  return res.authorization("Basic YWxhZGRpbjpvcGVuc2VzYW1l")
+  return response()
+    .authorization("Basic YWxhZGRpbjpvcGVuc2VzYW1l")
     .send("Basic auth")
 })
 
