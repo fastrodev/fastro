@@ -3,8 +3,8 @@ import application, { response } from "../server/mod.ts"
 const app = application()
 
 app.get("/", () => {
-    const res = response()
-    return res.contentType("application/json")
+    return response()
+        .contentType("application/json")
         .send(JSON.stringify({ msg: "Hello world" }))
 })
 

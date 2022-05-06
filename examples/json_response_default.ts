@@ -2,9 +2,9 @@ import application from "../server/mod.ts"
 
 const app = application()
 
-app.get("/", () => {
-    return { text: "Hello world" }
-})
+const json = { text: "Hello world" }
+
+app.get("/", () => json)
 
 console.log("Listening on: http://localhost:8000")
 

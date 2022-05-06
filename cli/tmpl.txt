@@ -1,8 +1,6 @@
 # Fastro
 
-Fast and simple web application framework for deno.
-
-With
+Fast and simple web application framework for deno. With
 [near-native perfomance](https://deno.land/x/fastro@{{version}}/benchmarks),
 you can manage your routing, middlewares, and dependencies cleanly. You can also
 take advantage of existing Deno objects and methods:
@@ -11,21 +9,23 @@ take advantage of existing Deno objects and methods:
 [Headers](https://deno.com/deploy/docs/runtime-headers), and
 [Cookie](https://deno.land/std@0.133.0/http).
 
-### Examples
+## Examples
 
 - [Getting Started](#getting-started)
 - [Custom Port](#custom-port)
+- [JSON Response](#json-response)
+- [JSON with Native Response](#json-with-native-response)
+- [JSON with Fastro Response](#json-with-fastro-response)
 - [HTML with Native Response](#html-with-native-response)
 - [HTML with Fastro Response](#html-with-fastro-response)
-- [Set JSON](#set-json)
-- [Set JSX](#set-jsx)
-- [Set Server Side Rendering](#set-ssr)
+- [HTML with JSX](#html-with-jsx)
+- [Server Side Rendering (SSR)](#server-side-rendering)
+- [Render with Eta Template Engine](#render-with-eta-template-engine)
+- [Cookie with Native Response](#cookie-with-native-response)
+- [Cookie with Fastro Response](#cookie-with-fastro-response)
 - [Set Content Type](#set-content-type)
 - [Set HTTP Status](#set-http-status)
 - [Set Authorization](#set-authorization)
-- [Set, Get, and Delete a Cookie](#set-get-and-delete-a-cookie)
-- [Set, Get, and Delete a Cookie with RequestResponse](#set-get-and-delete-a-cookie-with-requestresponse)
-- [Render with Eta Template Engine](#render-with-eta-template-engine)
 - [Routing](#routing)
 - [Route Parameters](#route-parameters)
 - [Router Middleware](#router-middleware)
@@ -71,6 +71,78 @@ deno run -A --unstable https://deno.land/x/fastro@{{version}}/examples/custom_po
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/custom_port.ts)
+
+
+
+### JSON Response
+
+```ts
+import application from "https://deno.land/x/fastro@{{version}}/server/mod.ts"
+
+const app = application()
+
+const json = { text: "Hello world" }
+
+app.get("/", () => json)
+
+console.log("Listening on: http://localhost:8000")
+
+await app.serve()
+```
+
+```
+deno run -A --unstable https://deno.land/x/fastro@{{version}}/examples/json_response_default.ts
+```
+
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/json_response_default.ts)
+
+### JSON with Native Response
+
+```ts
+import application from "https://deno.land/x/fastro@{{version}}/server/mod.ts"
+
+const app = application()
+
+app.get("/", () => {
+    const json = { text: "Hello world" }
+    return new Response(JSON.stringify(json), {
+        status: 200,
+        headers: {
+            "content-type": "application/json",
+        },
+    })
+})
+
+console.log("Listening on: http://localhost:8000")
+
+await app.serve()
+```
+
+```
+deno run -A --unstable https://deno.land/x/fastro@{{version}}/examples/response_json_native.ts
+```
+
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/response_json_native.ts)
+
+### JSON with Fastro Response
+
+```ts
+import application, { response } from "https://deno.land/x/fastro@{{version}}/server/mod.ts"
+
+const app = application()
+
+app.get("/", () => response().json({ text: "Hello world" }))
+
+console.log("Listening on: http://localhost:8000")
+
+await app.serve()
+```
+
+```
+deno run -A --unstable https://deno.land/x/fastro@{{version}}/examples/response_json.ts
+```
+
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/response_json.ts)
 
 ### HTML with Native Response
 
@@ -119,30 +191,7 @@ deno run -A --unstable https://deno.land/x/fastro@{{version}}/examples/response_
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/response_html.ts)
 
-### Set JSON
-
-```ts
-import application, { response } from "https://deno.land/x/fastro@{{version}}/server/mod.ts"
-
-const app = application()
-
-app.get("/", () => {
-  const res = response()
-  return res.json({ text: "Hello world" })
-})
-
-console.log("Listening on: http://localhost:8000")
-
-await app.serve()
-```
-
-```
-deno run -A --unstable https://deno.land/x/fastro@{{version}}/examples/response_json.ts
-```
-
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/response_json.ts)
-
-### Set JSX
+### HTML with JSX
 
 ```tsx
 import application from "https://deno.land/x/fastro@{{version}}/server/mod.ts"
@@ -170,81 +219,6 @@ await app.serve()
 
 ```
 deno run -A --unstable --config deno.json https://deno.land/x/fastro@{{version}}/examples/jsx_response.tsx
-```
-
-### Set SSR
-
-#### React Component: `response_ssrApp.tsx`
-
-```tsx
-import React from "https://esm.sh/react@17.0.2"
-
-const App = () => {
-  const [count, setCount] = React.useState(0)
-
-  return (
-    <div>
-      <h1>Hello Deno Land!</h1>
-      <button onClick={() => setCount(count + 1)}>Click the 🦕</button>
-      <p>You clicked the 🦕 {count} times</p>
-    </div>
-  )
-}
-
-export default App
-```
-
-#### Endpoint: `response_ssr.tsx`
-
-```ts
-import application, {
-  response,
-} from "https://deno.land/x/fastro@{{version}}/server/mod.ts"
-import App from "./response_ssrApp.tsx"
-
-const app = application()
-const hydratePath = "./response_ssrClient.tsx"
-
-app.get("/", () => {
-  const res = response()
-  return res.ssr(<App />, hydratePath)
-})
-
-console.log("Listening on: http://localhost:8000")
-
-await app.serve()
-```
-
-#### SSR Hydration `response_ssrClient.tsx`
-
-```ts
-import React from "https://esm.sh/react@17.0.2"
-import ReactDOM from "https://esm.sh/react-dom@17.0.2"
-import App from "./response_ssrApp.tsx"
-
-ReactDOM.hydrate(
-  <App />,
-  //@ts-ignore: used by Deno.emit
-  document.getElementById("root"),
-)
-```
-
-#### tsconfig: `deno.json`
-
-```json
-{
-  "compilerOptions": {
-    "strict": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "https://esm.sh/react"
-  }
-}
-```
-
-#### How to run locally
-
-```
-deno run -A --unstable response_ssr.tsx
 ```
 
 ### Set Content Type
@@ -318,7 +292,7 @@ deno run -A --unstable https://deno.land/x/fastro@{{version}}/examples/response_
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/response_auth.ts)
 
-### Set, Get, and Delete a Cookie
+### Cookie with Native Response
 
 ```ts
 import {
@@ -368,7 +342,7 @@ deno run -A --unstable https://deno.land/x/fastro@{{version}}/examples/cookies.t
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/cookies.ts)
 
-### Set, Get, and Delete a Cookie with RequestResponse
+### Cookie with Fastro Response
 
 ```ts
 import application, {
@@ -756,3 +730,81 @@ deno run -A --unstable https://deno.land/x/fastro@{{version}}/examples/deps_inje
 ```
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/deps_injection.ts)
+
+
+### Server Side Rendering
+
+#### Component
+
+Create react component: `app.tsx`
+
+```tsx
+import React from "https://esm.sh/react@17.0.2"
+
+const App = () => {
+  const [count, setCount] = React.useState(0)
+
+  return (
+    <div>
+      <h1>Hello Deno Land!</h1>
+      <button onClick={() => setCount(count + 1)}>Click the 🦕</button>
+      <p>You clicked the 🦕 {count} times</p>
+    </div>
+  )
+}
+
+export default App
+```
+
+#### SSR Hydration
+
+Create react hydration: `hydrate.tsx`. See: [hydrate](https://reactjs.org/docs/react-dom.html#hydrate).
+
+```ts
+import React from "https://esm.sh/react@17.0.2"
+import ReactDOM from "https://esm.sh/react-dom@17.0.2"
+import App from "./app.tsx"
+
+ReactDOM.hydrate(
+    <App />,
+    //@ts-ignore: used by Deno.emit
+    document.getElementById("root")
+)
+```
+
+#### Endpoint
+Create routing file: `api.tsx`
+
+```ts
+import application, { response } from "https://deno.land/x/fastro@{{version}}/server/mod.ts"
+import App from "./app.tsx"
+
+const app = application()
+const hydratePath = "./examples/ssr/hydrate.tsx"
+
+app.get("/", () => {
+    return response().ssr(<App />, hydratePath)
+})
+
+console.log("Listening on: http://localhost:8000")
+
+await app.serve()
+```
+
+#### tsconfig: `deno.json`
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "https://esm.sh/react"
+  }
+}
+```
+
+#### How to run locally
+
+```
+deno run -A --unstable api.tsx
+```

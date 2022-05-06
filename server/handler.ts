@@ -113,7 +113,7 @@ export function handler() {
     isInit = true
   }
 
-  function isStringHandler(stringResult: unknown) {
+  function isString(stringResult: unknown) {
     const str = <string>stringResult
     try {
       return (str.includes != undefined && str.replaceAll != undefined)
@@ -127,12 +127,21 @@ export function handler() {
     return el.props != undefined && el.type != undefined
   }
 
-  function isJSON(str: unknown) {
+  function isHTML(element: unknown) {
+    return element instanceof Response
+  }
+
+  function isJSON(element: unknown) {
+    let stringify
+    let str = ''
     try {
-      return [true, JSON.stringify(<string>str)]
+      str = <string>element
+      stringify = JSON.stringify(str)
+      JSON.parse(stringify)
     } catch (_err) {
       return [false, ""]
     }
+    return [true, stringify]
   }
 
   function handleRequest(
@@ -161,20 +170,19 @@ export function handler() {
     const stringHandler = <StringHandler><unknown>handler
     const stringResult = stringHandler(req, connInfo)
 
-    if (isStringHandler(stringResult)) {
-      return new Response(stringResult)
-    } else if (isJSX(stringResult)) {
-      return render(<JSX.Element><unknown>stringResult)
-    } else {
-      const [jsonYes, jsonStr] = isJSON(stringResult)
-      if (jsonYes) {
-        const headers = new Headers()
-        headers.set("content-type", "application/json")
-        return new Response(<string>jsonStr, { headers })
-      }
-      const appHandler = <Handler>handler
-      return appHandler(req, connInfo)
+    if (isString(stringResult)) return new Response(stringResult)
+    if (isHTML(stringResult)) return <Response><unknown>stringResult
+    if (isJSX(stringResult)) return render(<JSX.Element><unknown>stringResult)
+
+    const [json, jsonObject] = isJSON(stringResult)
+    if (json) {
+      const headers = new Headers()
+      headers.set("content-type", "application/json")
+      return new Response(<string>jsonObject, { headers })
     }
+
+    const appHandler = <Handler>handler
+    return appHandler(req, connInfo)
   }
 
   function processHandlerMiddleware(

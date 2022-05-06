@@ -3,8 +3,8 @@ import application, { response } from "../server/mod.ts"
 const app = application()
 
 app.get("/", () => {
-    const res = response()
-    return res.authorization("Basic YWxhZGRpbjpvcGVuc2VzYW1l")
+    return response()
+        .authorization("Basic YWxhZGRpbjpvcGVuc2VzYW1l")
         .send("Basic auth")
 })
 
