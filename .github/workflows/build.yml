@@ -8,5 +8,5 @@ jobs:
       - uses: denolib/setup-deno@master
         with:
           deno-version: 1.20.4
-      - run: deno lint
+      - run: deno lint --unstable
       - run: deno test -A --unstable
