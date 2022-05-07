@@ -734,7 +734,7 @@ import App from "./app.tsx";
 
 ReactDOM.hydrate(
   <App />,
-  //@ts-ignore: used by Deno.emit
+  //@ts-ignore:
   document.getElementById("root"),
 );
 
@@ -744,7 +744,8 @@ ReactDOM.hydrate(
 Create routing file: `api.tsx`
 
 ```ts
-import application, { response } from "https://deno.land/x/fastro@v0.56.0/server/mod.ts";import render from "https://deno.land/x/fastro@v0.56.0/server/ssr.ts";
+import application, { response } from "https://deno.land/x/fastro@v0.56.0/server/mod.ts";
+import render from "https://deno.land/x/fastro@v0.56.0/server/ssr.ts";
 import App from "./app.tsx";
 
 const app = application();
