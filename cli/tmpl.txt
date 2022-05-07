@@ -743,7 +743,7 @@ ReactDOM.hydrate(
 #### Endpoint
 Create routing file: `api.tsx`
 
-```ts
+```tsx
 import application, { response } from "https://deno.land/x/fastro@{{version}}/server/mod.ts";
 import render from "https://deno.land/x/fastro@{{version}}/server/ssr.ts";
 import App from "./app.tsx";
