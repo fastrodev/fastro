@@ -341,10 +341,10 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@{{version}}/examples/response_cookies.ts
+deno run -A https://deno.land/x/fastro@{{version}}/examples/cookies_fastro.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/response_cookies.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/cookies_fastro.ts)
 
 ### HTML Render with Eta Template Engine
 
