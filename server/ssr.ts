@@ -48,7 +48,6 @@ export default function ssr(): SSR {
           title,
         });
       }
-      // console.log("html", html);
       return new Response(html, {
         status,
         headers: {
