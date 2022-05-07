@@ -1,4 +1,5 @@
 import ReactDOMServer from "https://esm.sh/react-dom@17.0.2/server";
+import { minify } from "https://esm.sh/terser@5.13.1";
 import { SSR } from "../server/types.ts";
 
 export default function ssr(): SSR {
@@ -16,19 +17,15 @@ export default function ssr(): SSR {
     },
   ) {
     const component = ReactDOMServer.renderToString(element);
-    let js = `(() => {})();`;
     const { hydratePath, title } = options;
 
     const { files } = await Deno.emit(hydratePath, {
       bundle: "module",
       compilerOptions: { lib: ["dom", "dom.iterable", "esnext"] },
     });
-    js = files["deno:///bundle.js"];
 
-    const html =
-      `<!DOCTYPE html><html><head><title>${title}</title></head><body><div id="root">${component}</div><script>${js}</script><body></html>`;
-
-    return html;
+    const result = await minify(files["deno:///bundle.js"], { toplevel: true });
+    return `<!DOCTYPE html><html><head><title>${title}</title></head><body><div id="root">${component}</div><script>${result.code}</script><body></html>`;
   }
 
   const instance = {
