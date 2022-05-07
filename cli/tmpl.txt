@@ -315,32 +315,24 @@ import application, {
   response,
 } from "https://deno.land/x/fastro@{{version}}/server/mod.ts";
 
-
 const app = application();
 
 app.get("/set", () => {
-  const headers = new Headers();
   const cookie: Cookie = { name: "Space", value: "Cat" };
-  setCookie(headers, cookie);
-
-  return new Response(JSON.stringify(cookie), {
-    headers,
-  });
+  return response()
+    .setCookie(cookie)
+    .send(JSON.stringify(cookie));
 });
 
 app.get("/delete", () => {
-  const headers = new Headers();
-  deleteCookie(headers, "Space");
-  const cookies = getCookies(headers);
-
-  return new Response(JSON.stringify(cookies), {
-    headers,
-  });
+  return response()
+    .deleteCookie("Space")
+    .send("Cookie deleted");
 });
 
 app.get("/check", (req: Request) => {
   const cookie = getCookies(req.headers);
-  return new Response(JSON.stringify(cookie));
+  return response().send(JSON.stringify(cookie));
 });
 
 console.log("Listening on: http://localhost:8000");
