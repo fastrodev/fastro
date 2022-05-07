@@ -1,11 +1,11 @@
-import application, { response } from "../server/mod.ts"
+import application, { response } from "../server/mod.ts";
 
-const app = application()
+const app = application();
 
 app.get("/", () => {
-    return response().json({ text: "Hello world" })
-})
+  return response().json({ text: "Hello world" });
+});
 
-console.log("Listening on: http://localhost:8000")
+console.log("Listening on: http://localhost:8000");
 
-await app.serve()
+await app.serve();

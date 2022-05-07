@@ -1,12 +1,11 @@
-import { RequestResponse } from "./types.ts"
-import { ssr } from "./render.ts"
+import { RequestResponse, SSR } from "./types.ts"
 import {
     Cookie,
     deleteCookie,
     setCookie,
 } from "./deps.ts"
 
-export function response(): RequestResponse {
+export function response(ssrInstance?: SSR): RequestResponse {
     let headers = new Headers()
     let responseAuthorization: string
     let responseStatus = 200
@@ -37,8 +36,9 @@ export function response(): RequestResponse {
                 throw new Error(`jsonError: ${error.toString()}`)
             }
         },
-        ssr: (el: JSX.Element, client?: string) => {
-            return ssr(el, client)
+        ssr: () => {
+            if (!ssrInstance) throw new Error("SSR undefined")
+            return ssrInstance.render()
         },
         html: (html: string) => {
             contentType = "text/html; charset=UTF-8"

@@ -1,6 +1,13 @@
 // deno-lint-ignore-file no-explicit-any
 import { ConnInfo, Handler, Cookie } from "./deps.ts"
 
+export interface SSR {
+  title: (title: string) => SSR
+  hydrate: (path: string) => SSR
+  element: (el: JSX.Element) => SSR
+  render: () => Promise<Response>
+}
+
 export interface RequestResponse {
   deleteCookie: (name: string, attributes?: {
     path?: string | undefined
@@ -13,7 +20,7 @@ export interface RequestResponse {
   status: (status: number) => RequestResponse
   send: (object: unknown) => Response | Promise<Response>
   json: (object: unknown) => Response | Promise<Response>
-  ssr: (el: JSX.Element, client?: string) => Response | Promise<Response>
+  ssr: () => Response | Promise<Response>
   html: (html: string) => Response | Promise<Response>
 }
 

@@ -1,9 +1,9 @@
-import application from "../server/mod.ts"
+import application from "../server/mod.ts";
 
-const app = application()
+const app = application();
 
-app.get("/", () => "Hello world")
+app.get("/", () => "Hello world");
 
-console.log("Listening on: http://localhost:8000")
+console.log("Listening on: http://localhost:8000");
 
-await app.serve()
+await app.serve();

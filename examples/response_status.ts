@@ -1,11 +1,15 @@
-import application, { response } from "../server/mod.ts"
+import application, { response } from "../server/mod.ts";
 
-const app = application()
+const app = application();
 
 app.get("/", () => {
-    return response().status(200).send("status")
-})
+  return response()
+    .contentType("application/json")
+    .authorization("Basic YWxhZGRpbjpvcGVuc2VzYW1l")
+    .status(200)
+    .send(JSON.stringify({ message: "Hello world" }));
+});
 
-console.log("Listening on: http://localhost:8000")
+console.log("Listening on: http://localhost:8000");
 
-await app.serve()
+await app.serve();
