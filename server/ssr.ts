@@ -1,7 +1,7 @@
 import ReactDOMServer from "https://esm.sh/react-dom@17.0.2/server";
 import { SSR } from "../server/types.ts";
 
-export function render(): SSR {
+export default function ssr(): SSR {
   let element: JSX.Element;
   let hydratePath: string;
   let title: string;
@@ -10,8 +10,10 @@ export function render(): SSR {
 
   async function createHTML(
     element: JSX.Element,
-    // deno-lint-ignore no-explicit-any
-    options: any,
+    options: {
+      hydratePath: string;
+      title: string;
+    },
   ) {
     const component = ReactDOMServer.renderToString(element);
     let js = `(() => {})();`;
@@ -24,9 +26,9 @@ export function render(): SSR {
     js = files["deno:///bundle.js"];
 
     const html = `<!DOCTYPE html>
-      <html><head><title>${title}</title></head>
-      <body><div id="root">${component}</div>
-      <script>${js}</script><body>
+      <html>
+      <head><title>${title}</title></head>
+      <body><div id="root">${component}</div><script>${js}</script><body>
       </html>`;
 
     return html;
@@ -41,7 +43,7 @@ export function render(): SSR {
       hydratePath = path;
       return instance;
     },
-    element: (el: JSX.Element) => {
+    component: (el: JSX.Element) => {
       element = el;
       return instance;
     },

@@ -5,7 +5,7 @@ function readme(version: string) {
 }
 
 const decoder = new TextDecoder("utf-8");
-const data = await Deno.readFile("./server/version.json");
+const data = await Deno.readFile("./version.json");
 const { version } = JSON.parse(decoder.decode(data));
 
 readme(version);

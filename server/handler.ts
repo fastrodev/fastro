@@ -146,6 +146,7 @@ export function handler() {
   }
 
   function isJSON(element: unknown) {
+    if (element instanceof Promise) return [false, ""];
     let stringify;
     let str = "";
     try {
@@ -185,27 +186,22 @@ export function handler() {
     const stringResult = stringHandler(req, connInfo);
 
     if (isString(stringResult)) {
-      console.log("1");
       return new Response(stringResult);
     }
     if (isHTML(stringResult)) {
-      console.log("2");
       return <Response> <unknown> stringResult;
     }
     if (isJSX(stringResult)) {
-      console.log("3");
       return render(<JSX.Element> <unknown> stringResult);
     }
 
     const [json, jsonObject] = isJSON(stringResult);
     if (json) {
-      console.log("4");
       const headers = new Headers();
       headers.set("content-type", "application/json");
       return new Response(<string> jsonObject, { headers });
     }
 
-    console.log("5");
     const appHandler = <Handler> handler;
     return appHandler(req, connInfo);
   }
