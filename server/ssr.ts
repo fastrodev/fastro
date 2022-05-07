@@ -25,11 +25,8 @@ export default function ssr(): SSR {
     });
     js = files["deno:///bundle.js"];
 
-    const html = `<!DOCTYPE html>
-      <html>
-      <head><title>${title}</title></head>
-      <body><div id="root">${component}</div><script>${js}</script><body>
-      </html>`;
+    const html =
+      `<!DOCTYPE html><html><head><title>${title}</title></head><body><div id="root">${component}</div><script>${js}</script><body></html>`;
 
     return html;
   }
