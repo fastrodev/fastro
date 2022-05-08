@@ -34,7 +34,6 @@ deno run -A main.ts
 
 ## More examples
 
-- [Getting Started](#getting-started)
 - [Custom Port](#custom-port)
 - [JSON Response](#json-response)
 - [JSON with Native Response](#json-with-native-response)
@@ -123,10 +122,10 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.56.2/examples/response_json_native.ts
+deno run -A https://deno.land/x/fastro@v0.56.2/examples/json_response_native.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.56.2/examples/response_json_native.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@v0.56.2/examples/json_response_native.ts)
 
 ### JSON with Fastro Response
 
