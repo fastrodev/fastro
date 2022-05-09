@@ -16,6 +16,7 @@ import {
   StringHandler,
 } from "./types.ts";
 import { router as appRouter } from "./router.ts";
+import { handleStaticFile } from "./static.ts";
 
 interface HandlerRoute {
   method: string;
@@ -53,7 +54,7 @@ export function handler() {
 
   let routerList: AppMiddleware[] = [];
   let hostname = EMPTY;
-  let staticPath: string;
+  let staticURL: string;
   let isInit = false;
 
   function buildMiddleware(
@@ -115,6 +116,13 @@ export function handler() {
     }
   }
 
+  function initStaticPath(sttcPath: string, url: string) {
+    const [http, path] = url.split(DOUBLE_SLASH);
+    const [host] = path.split(SLASH);
+    hostname = `${http}${DOUBLE_SLASH}${host}`;
+    staticURL = `${hostname}${sttcPath}`;
+  }
+
   function initAllMiddlewares(
     path: string,
     middlewares: AppMiddleware[],
@@ -126,7 +134,7 @@ export function handler() {
       handleRouterMiddleware(routerList, req.url);
     }
     initHandlerRoutes(routes, req.url);
-    staticPath = path;
+    initStaticPath(path, req.url);
     isInit = true;
   }
 
@@ -185,9 +193,7 @@ export function handler() {
 
     const res = handlerRoutes.get(createMapKey(req));
     if (!res) {
-      return new Response(STATUS_TEXT.get(Status.NotFound), {
-        status: Status.NotFound,
-      });
+      return handleStaticFile(staticURL, req.url);
     }
 
     const { length, [length - 1]: handler } = res.handlers;

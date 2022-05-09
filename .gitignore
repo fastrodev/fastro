@@ -6,3 +6,4 @@ resources/
 configurationCache.log
 dryrun.log
 targets.log
+static/
