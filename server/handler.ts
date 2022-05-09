@@ -16,6 +16,7 @@ import {
   StringHandler,
 } from "./types.ts";
 import { router as appRouter } from "./router.ts";
+import { handleStaticFile } from "./static.ts";
 
 interface HandlerRoute {
   method: string;
@@ -53,6 +54,7 @@ export function handler() {
 
   let routerList: AppMiddleware[] = [];
   let hostname = EMPTY;
+  let staticURL: string;
   let isInit = false;
 
   function buildMiddleware(
@@ -114,7 +116,15 @@ export function handler() {
     }
   }
 
+  function initStaticPath(sttcPath: string, url: string) {
+    const [http, path] = url.split(DOUBLE_SLASH);
+    const [host] = path.split(SLASH);
+    hostname = `${http}${DOUBLE_SLASH}${host}`;
+    staticURL = `${hostname}${sttcPath}`;
+  }
+
   function initAllMiddlewares(
+    path: string,
     middlewares: AppMiddleware[],
     routes: Map<string, Route>,
     req: Request,
@@ -124,6 +134,7 @@ export function handler() {
       handleRouterMiddleware(routerList, req.url);
     }
     initHandlerRoutes(routes, req.url);
+    initStaticPath(path, req.url);
     isInit = true;
   }
 
@@ -164,8 +175,16 @@ export function handler() {
     connInfo: ConnInfo,
     routes: Map<string, Route>,
     middlewares: AppMiddleware[],
+    path: string,
   ): Response | Promise<Response> {
-    if (!isInit) initAllMiddlewares(middlewares, routes, req);
+    if (!isInit) {
+      initAllMiddlewares(
+        path,
+        middlewares,
+        routes,
+        req,
+      );
+    }
 
     if (handlerMiddlewares.length > 0) {
       const done = processHandlerMiddleware(handlerMiddlewares, req, connInfo);
@@ -174,9 +193,7 @@ export function handler() {
 
     const res = handlerRoutes.get(createMapKey(req));
     if (!res) {
-      return new Response(STATUS_TEXT.get(Status.NotFound), {
-        status: Status.NotFound,
-      });
+      return handleStaticFile(staticURL, req.url);
     }
 
     const { length, [length - 1]: handler } = res.handlers;
@@ -468,6 +485,7 @@ export function handler() {
   }
 
   function createHandler(
+    staticPath: string,
     routes: Map<string, Route>,
     middlewares: AppMiddleware[],
   ) {
@@ -475,7 +493,7 @@ export function handler() {
       req: Request,
       connInfo: ConnInfo,
     ): Response | Promise<Response> {
-      return handleRequest(req, connInfo, routes, middlewares);
+      return handleRequest(req, connInfo, routes, middlewares, staticPath);
     };
   }
 

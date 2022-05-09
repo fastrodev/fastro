@@ -1,4 +1,4 @@
-import { RequestResponse, SSR } from "./types.ts";
+import { RenderOptions, RequestResponse, SSR } from "./types.ts";
 import { Cookie, deleteCookie, setCookie } from "./deps.ts";
 
 export function response(ssrInstance?: SSR): RequestResponse {
@@ -34,9 +34,9 @@ export function response(ssrInstance?: SSR): RequestResponse {
         throw new Error(`jsonError: ${error.toString()}`);
       }
     },
-    render: () => {
+    render: (options: RenderOptions) => {
       if (!ssrInstance) throw new Error("SSR undefined");
-      return ssrInstance.render();
+      return ssrInstance.render(options);
     },
     html: (html: string) => {
       contentType = "text/html; charset=UTF-8";

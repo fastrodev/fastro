@@ -1,16 +1,16 @@
 import application, { response } from "../../server/mod.ts";
-import render from "../../server/ssr.ts";
+import rendering from "../../server/ssr.ts";
 import App from "./app.tsx";
 
-const app = application();
-const ssr = render()
-  .component(<App />)
-  .title("Hello world")
-  .hydrate("./examples/ssr/hydrate.tsx");
+const ssr = rendering()
+  .dir("./examples/ssr")
+  .component(<App />);
 
-app.get("/", () => {
-  return response(ssr).render();
-});
+const app = application(ssr)
+  .static("/static")
+  .get("/", () => {
+    return response(ssr).render({ title: "Hello world" });
+  });
 
 console.log("Listening on: http://localhost:8000");
 

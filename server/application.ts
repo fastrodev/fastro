@@ -8,9 +8,11 @@ import {
   HandlerArgument,
   MiddlewareArgument,
   PathArgument,
+  SSR,
 } from "./types.ts";
 
 interface Application {
+  static(path: string, options?: unknown): Application;
   getDeps(key: string): unknown;
   serve(options?: ServeInit): Promise<void>;
   get(path: PathArgument, ...handlers: HandlerArgument[]): Application;
@@ -25,12 +27,17 @@ interface Application {
 }
 
 const appHandler = handler();
+
 export const { getParams, getParam } = appHandler;
-export function application(): Application {
+
+export function application(ssr?: SSR): Application {
   const appRouter = router();
   const appMiddleware = middleware();
   let appDeps: Dependency = dependency();
   let server: Server;
+  let staticDirPath: string;
+
+  if (ssr) ssr.createBundle();
 
   function containDeps(array: MiddlewareArgument[]) {
     for (let index = 0; index < array.length; index++) {
@@ -48,6 +55,10 @@ export function application(): Application {
   }
 
   const app = {
+    static: (path: string) => {
+      staticDirPath = path;
+      return app;
+    },
     deps: appDeps.deps,
     getDeps: (key: string) => {
       return appDeps.get(key);
@@ -65,6 +76,7 @@ export function application(): Application {
         hostname: options.hostname,
         port: options.port,
         handler: appHandler.createHandler(
+          staticDirPath,
           appRouter.routes,
           appMiddleware.middlewares,
         ),

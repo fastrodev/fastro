@@ -1,52 +1,69 @@
 import ReactDOMServer from "https://esm.sh/react-dom@17.0.2/server";
-import { minify } from "https://esm.sh/terser@5.13.1";
-import { SSR } from "../server/types.ts";
+import { RenderOptions, SSR } from "../server/types.ts";
 
-export default function ssr(): SSR {
+function createHydrate(appPath: string) {
+  return `import React from "https://esm.sh/react@17.0.2";
+import ReactDOM from "https://esm.sh/react-dom@17.0.2";
+import App from "${appPath}";
+ReactDOM.hydrate(
+  <App />,
+  //@ts-ignore:
+  document.getElementById("root"),
+);`;
+}
+
+export default function rendering(): SSR {
   let element: JSX.Element;
-  let hydratePath: string;
-  let title: string;
   let status: 200;
   let html: string;
+  let dir = "./app";
 
-  async function createHTML(
-    element: JSX.Element,
-    options: {
-      hydratePath: string;
-      title: string;
-    },
-  ) {
-    const component = ReactDOMServer.renderToString(element);
-    const { hydratePath, title } = options;
+  async function createBundle() {
+    const hydrateTarget = `${dir}/.hydrate.tsx`;
+    const bundle = "module";
+    const bundlePath = "./static/bundle.js";
+    const denoBundle = "deno:///bundle.js";
+    const appPath = `./app.tsx`;
+    const lib = ["dom", "dom.iterable", "esnext"];
 
-    const { files } = await Deno.emit(hydratePath, {
-      bundle: "module",
-      compilerOptions: { lib: ["dom", "dom.iterable", "esnext"] },
+    try {
+      Deno.writeTextFile(
+        hydrateTarget,
+        createHydrate(appPath),
+      );
+    } catch (err) {
+      throw err;
+    }
+
+    const { files } = await Deno.emit(hydrateTarget, {
+      bundle,
+      compilerOptions: { lib },
     });
 
-    const result = await minify(files["deno:///bundle.js"], { toplevel: true });
-    return `<!DOCTYPE html><html><head><title>${title}</title></head><body><div id="root">${component}</div><script>${result.code}</script><body></html>`;
+    const js = files[denoBundle];
+    Deno.writeTextFile(bundlePath, js);
+  }
+
+  function createHTML(
+    element: JSX.Element,
+    options: { title: string },
+  ) {
+    const component = ReactDOMServer.renderToString(element);
+    return `<!DOCTYPE html><html><head><title>${options.title}</title></head><body><div id="root">${component}</div><script type="module" src="/static/bundle.js"></script><body></html>`;
   }
 
   const instance = {
-    title: (arg: string) => {
-      title = arg;
-      return instance;
-    },
-    hydrate: (path: string) => {
-      hydratePath = path;
+    dir: (d: string) => {
+      dir = d;
       return instance;
     },
     component: (el: JSX.Element) => {
       element = el;
       return instance;
     },
-    render: async () => {
+    render: (options: RenderOptions) => {
       if (!html) {
-        html = await createHTML(element, {
-          hydratePath,
-          title,
-        });
+        html = createHTML(element, options);
       }
       return new Response(html, {
         status,
@@ -55,6 +72,8 @@ export default function ssr(): SSR {
         },
       });
     },
+    createBundle,
+    createHydrate,
   };
 
   return instance;

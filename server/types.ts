@@ -2,11 +2,19 @@
 import { ConnInfo, Cookie, Handler } from "./deps.ts";
 
 export interface SSR {
-  title: (title: string) => SSR;
-  hydrate: (path: string) => SSR;
+  dir: (dir: string) => SSR;
   component: (el: JSX.Element) => SSR;
-  render: () => Promise<Response>;
+  render: (options: RenderOptions) => Response;
+  createBundle: () => Promise<void>;
 }
+
+export type RenderOptions = {
+  title: string;
+  style?: string;
+  link?: string;
+  script?: string;
+  meta?: string;
+};
 
 export interface RequestResponse {
   deleteCookie: (
@@ -23,7 +31,9 @@ export interface RequestResponse {
   status: (status: number) => RequestResponse;
   send: (object: unknown) => Response | Promise<Response>;
   json: (object: unknown) => Response | Promise<Response>;
-  render: () => Response | Promise<Response>;
+  render: (
+    options: RenderOptions,
+  ) => Response | Promise<Response>;
   html: (html: string) => Response | Promise<Response>;
 }
 
