@@ -11,6 +11,7 @@ import {
 } from "./types.ts";
 
 interface Application {
+  static(path: string, options?: {}): Application;
   getDeps(key: string): unknown;
   serve(options?: ServeInit): Promise<void>;
   get(path: PathArgument, ...handlers: HandlerArgument[]): Application;
@@ -31,6 +32,7 @@ export function application(): Application {
   const appMiddleware = middleware();
   let appDeps: Dependency = dependency();
   let server: Server;
+  let staticDirPath: string;
 
   function containDeps(array: MiddlewareArgument[]) {
     for (let index = 0; index < array.length; index++) {
@@ -48,6 +50,10 @@ export function application(): Application {
   }
 
   const app = {
+    static: (path: string) => {
+      staticDirPath = path;
+      return app;
+    },
     deps: appDeps.deps,
     getDeps: (key: string) => {
       return appDeps.get(key);
@@ -65,6 +71,7 @@ export function application(): Application {
         hostname: options.hostname,
         port: options.port,
         handler: appHandler.createHandler(
+          staticDirPath,
           appRouter.routes,
           appMiddleware.middlewares,
         ),

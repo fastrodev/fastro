@@ -53,6 +53,7 @@ export function handler() {
 
   let routerList: AppMiddleware[] = [];
   let hostname = EMPTY;
+  let staticPath: string;
   let isInit = false;
 
   function buildMiddleware(
@@ -115,6 +116,7 @@ export function handler() {
   }
 
   function initAllMiddlewares(
+    path: string,
     middlewares: AppMiddleware[],
     routes: Map<string, Route>,
     req: Request,
@@ -124,6 +126,7 @@ export function handler() {
       handleRouterMiddleware(routerList, req.url);
     }
     initHandlerRoutes(routes, req.url);
+    staticPath = path;
     isInit = true;
   }
 
@@ -164,8 +167,16 @@ export function handler() {
     connInfo: ConnInfo,
     routes: Map<string, Route>,
     middlewares: AppMiddleware[],
+    path: string,
   ): Response | Promise<Response> {
-    if (!isInit) initAllMiddlewares(middlewares, routes, req);
+    if (!isInit) {
+      initAllMiddlewares(
+        path,
+        middlewares,
+        routes,
+        req,
+      );
+    }
 
     if (handlerMiddlewares.length > 0) {
       const done = processHandlerMiddleware(handlerMiddlewares, req, connInfo);
@@ -468,6 +479,7 @@ export function handler() {
   }
 
   function createHandler(
+    staticPath: string,
     routes: Map<string, Route>,
     middlewares: AppMiddleware[],
   ) {
@@ -475,7 +487,7 @@ export function handler() {
       req: Request,
       connInfo: ConnInfo,
     ): Response | Promise<Response> {
-      return handleRequest(req, connInfo, routes, middlewares);
+      return handleRequest(req, connInfo, routes, middlewares, staticPath);
     };
   }
 
