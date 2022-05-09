@@ -710,44 +710,21 @@ export default App;
 
 ```
 
-#### SSR Hydration
-
-It is used to hydrate a container whose HTML contents were rendered by ReactDOMServer. React will attempt to attach event listeners to the existing markup.
-
-See: [hydrate](https://reactjs.org/docs/react-dom.html#hydrate).
-
-Create react hydration: `hydrate.tsx`.
-
-```ts
-import React from "https://esm.sh/react@17.0.2";
-import ReactDOM from "https://esm.sh/react-dom@17.0.2";
-import App from "./app.tsx";
-
-ReactDOM.hydrate(
-  <App />,
-  //@ts-ignore:
-  document.getElementById("root"),
-);
-
-```
-
 #### Endpoint
 Create routing file: `api.tsx`
 
 ```tsx
 import application, { response } from "https://deno.land/x/fastro@{{version}}/server/mod.ts";
-import render from "https://deno.land/x/fastro@{{version}}/server/ssr.ts";
+import rendering from "https://deno.land/x/fastro@{{version}}/server/ssr.ts";
 import App from "./app.tsx";
 
-const app = application();
-const ssr = render()
-  .component(<App />)
-  .title("Hello world")
-  .hydrate("./hydrate.tsx");
+const ssr = rendering().component(<App />);
 
-app.get("/", () => {
-  return response(ssr).render();
-});
+const app = application(ssr)
+  .static("/static")
+  .get("/", () => {
+    return response(ssr).render({ title: "Hello world" });
+  });
 
 console.log("Listening on: http://localhost:8000");
 

@@ -19,5 +19,14 @@ export async function handleStaticFile(staticUrl: string, url: string) {
     });
   }
 
-  return new Response(file.readable);
+  let options = {};
+  if (path.includes(".js")) {
+    options = {
+      headers: {
+        "content-type": "text/javascript",
+      },
+    };
+  }
+
+  return new Response(file.readable, options);
 }

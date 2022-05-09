@@ -8,10 +8,11 @@ import {
   HandlerArgument,
   MiddlewareArgument,
   PathArgument,
+  SSR,
 } from "./types.ts";
 
 interface Application {
-  static(path: string, options?: {}): Application;
+  static(path: string, options?: unknown): Application;
   getDeps(key: string): unknown;
   serve(options?: ServeInit): Promise<void>;
   get(path: PathArgument, ...handlers: HandlerArgument[]): Application;
@@ -26,13 +27,17 @@ interface Application {
 }
 
 const appHandler = handler();
+
 export const { getParams, getParam } = appHandler;
-export function application(): Application {
+
+export function application(ssr?: SSR): Application {
   const appRouter = router();
   const appMiddleware = middleware();
   let appDeps: Dependency = dependency();
   let server: Server;
   let staticDirPath: string;
+
+  if (ssr) ssr.createBundle();
 
   function containDeps(array: MiddlewareArgument[]) {
     for (let index = 0; index < array.length; index++) {
