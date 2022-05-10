@@ -41,7 +41,8 @@ export default function rendering(): SSR {
     });
 
     const js = files[denoBundle];
-    Deno.writeTextFile(bundlePath, js);
+    await Deno.writeTextFile(bundlePath, js);
+    await Deno.remove(hydrateTarget);
   }
 
   function createHTML(
