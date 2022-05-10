@@ -9,11 +9,13 @@ const container = document.getElementById("root");
 const root = hydrateRoot(container, <App/>);`;
 }
 
-export default function rendering(): SSR {
+export default function rendering(el?: JSX.Element): SSR {
   let element: JSX.Element;
   let status: 200;
   let html: string;
   let dir = "./components";
+
+  if (el) element = el;
 
   async function createBundle() {
     const hydrateTarget = `${dir}/.hydrate.tsx`;
