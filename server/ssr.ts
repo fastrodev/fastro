@@ -1,15 +1,12 @@
-import ReactDOMServer from "https://esm.sh/react-dom@17.0.2/server";
+import ReactDOMServer from "https://esm.sh/react-dom@18.1.0/server";
 import { RenderOptions, SSR } from "../server/types.ts";
 
 function createHydrate(appPath: string) {
-  return `import React from "https://esm.sh/react@17.0.2";
-import ReactDOM from "https://esm.sh/react-dom@17.0.2";
+  return `import React from "https://esm.sh/react@18.1.0";
+import { hydrateRoot } from "https://esm.sh/react-dom@18.1.0/client";
 import App from "${appPath}";
-ReactDOM.hydrate(
-  <App />,
-  //@ts-ignore:
-  document.getElementById("root"),
-);`;
+const container = document.getElementById("root");
+const root = hydrateRoot(container, <App/>);`;
 }
 
 export default function rendering(): SSR {
