@@ -13,7 +13,7 @@ export default function rendering(): SSR {
   let element: JSX.Element;
   let status: 200;
   let html: string;
-  let dir = "./app";
+  let dir = "./components";
 
   async function createBundle() {
     const hydrateTarget = `${dir}/.hydrate.tsx`;
