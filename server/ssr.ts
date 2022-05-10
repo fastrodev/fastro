@@ -46,10 +46,14 @@ export default function rendering(): SSR {
 
   function createHTML(
     element: JSX.Element,
-    options: { title: string },
+    options: RenderOptions,
   ) {
     const component = ReactDOMServer.renderToString(element);
-    return `<!DOCTYPE html><html><head><title>${options.title}</title></head><body><div id="root">${component}</div><script type="module" src="/static/bundle.js"></script><body></html>`;
+    const link = options.link ? options.link : "";
+    const meta = options.meta ? options.meta : "";
+    const script = options.script ? options.script : "";
+    const style = options.style ? options.style : "";
+    return `<!DOCTYPE html><html><head><title>${options.title}</title>${link} ${meta} ${script} ${style}</head><body><div id="root">${component}</div><script type="module" src="/static/bundle.js"></script><body></html>`;
   }
 
   const instance = {
