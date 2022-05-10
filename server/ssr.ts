@@ -1,4 +1,4 @@
-import ReactDOMServer from "https://esm.sh/react-dom@18.1.0/server";
+import * as ReactDOMServer from "https://esm.sh/react-dom@18.1.0/server";
 import { RenderOptions, SSR } from "../server/types.ts";
 
 function createHydrate(appPath: string) {
@@ -46,7 +46,7 @@ export default function rendering(): SSR {
     element: JSX.Element,
     options: RenderOptions,
   ) {
-    const component = ReactDOMServer.renderToString(element);
+    const component = ReactDOMServer.renderToReadableStream(element);
     const link = options.link ? options.link : "";
     const meta = options.meta ? options.meta : "";
     const script = options.script ? options.script : "";
