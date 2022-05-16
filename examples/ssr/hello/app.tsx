@@ -2,10 +2,13 @@
 import React from "https://esm.sh/react@18.1.0";
 
 const App = () => {
+  const [count, setCount] = React.useState(0);
+
   return (
     <div>
       <h1>Hello World</h1>
-      <a href="/hello">hello</a>
+      <button onClick={() => setCount(count + 1)}>Click the 🦕</button>
+      <p>You clicked the 🦕 {count} times</p>
     </div>
   );
 };

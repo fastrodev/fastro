@@ -1,7 +1,8 @@
-import { ServeInit, Server } from "./deps.ts";
+import { Handler, ServeInit, Server } from "./deps.ts";
 import { handler } from "./handler.ts";
 import { middleware } from "./middleware.ts";
 import { router } from "./router.ts";
+import { page } from "./page.ts";
 import { dependency } from "./container.ts";
 import {
   Dependency,
@@ -23,6 +24,11 @@ interface Application {
   options(path: PathArgument, ...handlers: HandlerArgument[]): Application;
   patch(path: PathArgument, ...handlers: HandlerArgument[]): Application;
   use(...middlewares: MiddlewareArgument[]): Application;
+  page(
+    path: PathArgument,
+    ssr: SSR,
+    handler: Handler,
+  ): Application;
   close(): void;
 }
 
@@ -30,14 +36,13 @@ const appHandler = handler();
 
 export const { getParams, getParam } = appHandler;
 
-export function application(ssr?: SSR): Application {
+export function application(): Application {
+  const appPage = page();
   const appRouter = router();
   const appMiddleware = middleware();
   let appDeps: Dependency = dependency();
   let server: Server;
   let staticDirPath: string;
-
-  if (ssr) ssr.createBundle();
 
   function containDeps(array: MiddlewareArgument[]) {
     for (let index = 0; index < array.length; index++) {
@@ -52,6 +57,15 @@ export function application(ssr?: SSR): Application {
   function isDeps(first: MiddlewareArgument) {
     const deps = <Dependency> first;
     return deps.deps !== undefined;
+  }
+
+  function init() {
+    if (appPage.pages && appPage.pages.size > 0) {
+      appPage.pages.forEach((v, k) => {
+        const [, bundle] = k.split("#/");
+        v.ssr.createBundle(bundle);
+      });
+    }
   }
 
   const app = {
@@ -71,6 +85,7 @@ export function application(ssr?: SSR): Application {
       return server.close();
     },
     serve: (options: ServeInit = {}) => {
+      init();
       server = new Server({
         onError: options.onError,
         hostname: options.hostname,
@@ -79,6 +94,7 @@ export function application(ssr?: SSR): Application {
           staticDirPath,
           appRouter.routes,
           appMiddleware.middlewares,
+          appPage.pages,
         ),
       });
       const port = options.port ?? 8000;
@@ -123,6 +139,14 @@ export function application(ssr?: SSR): Application {
       } else {
         appMiddleware.useMiddleware(...middlewares);
       }
+      return app;
+    },
+    page: (
+      path: PathArgument,
+      ssr: SSR,
+      handler: Handler,
+    ) => {
+      appPage.set(path, ssr, handler);
       return app;
     },
   };
