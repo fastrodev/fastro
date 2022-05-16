@@ -35,10 +35,6 @@ export function response(): RequestResponse {
         throw new Error(`jsonError: ${error.toString()}`);
       }
     },
-    render: () => {
-      if (!ssr) throw new Error("SSR undefined");
-      return ssr.render();
-    },
     html: (html: string) => {
       contentType = "text/html; charset=UTF-8";
       return createResponse(html);

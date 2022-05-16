@@ -43,7 +43,6 @@ export interface RequestResponse {
   status: (status: number) => RequestResponse;
   send: (object: unknown) => Response | Promise<Response>;
   json: (object: unknown) => Response | Promise<Response>;
-  render: () => Response | Promise<Response>;
   ssr: (ssr: SSR) => SSR;
   html: (html: string) => Response | Promise<Response>;
 }
