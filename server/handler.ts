@@ -13,10 +13,13 @@ import {
   RequestHandler,
   Route,
   Router,
+  SSR,
+  SSRHandler,
   StringHandler,
 } from "./types.ts";
 import { router as appRouter } from "./router.ts";
 import { handleStaticFile } from "./static.ts";
+import { handleJSXPage } from "./page.ts";
 
 interface HandlerRoute {
   method: string;
@@ -51,6 +54,13 @@ export function handler() {
   const COLON = ":";
   const handlerRoutes: Map<string, HandlerRoute> = new Map();
   const handlerMiddlewares: HandlerMiddleware[] = [];
+  const handlerPages: Map<string, {
+    url: string;
+    host: string;
+    path: PathArgument;
+    ssr: SSR;
+    handler: Handler;
+  }> = new Map();
 
   let routerList: AppMiddleware[] = [];
   let hostname = EMPTY;
@@ -123,10 +133,11 @@ export function handler() {
     staticURL = `${hostname}${sttcPath}`;
   }
 
-  function initAllMiddlewares(
+  function initHandler(
     path: string,
     middlewares: AppMiddleware[],
     routes: Map<string, Route>,
+    pages: Map<string, SSRHandler>,
     req: Request,
   ) {
     routerList = initHandlerMiddlewares(middlewares, req.url);
@@ -135,6 +146,7 @@ export function handler() {
     }
     initHandlerRoutes(routes, req.url);
     initStaticPath(path, req.url);
+    initPages(pages, req.url);
     isInit = true;
   }
 
@@ -157,6 +169,7 @@ export function handler() {
   }
 
   function isJSON(element: unknown) {
+    // potensial ada bug
     if (element instanceof Promise) return [false, ""];
     let stringify;
     let str = "";
@@ -176,12 +189,14 @@ export function handler() {
     routes: Map<string, Route>,
     middlewares: AppMiddleware[],
     path: string,
+    pages: Map<string, SSRHandler>,
   ): Response | Promise<Response> {
     if (!isInit) {
-      initAllMiddlewares(
+      initHandler(
         path,
         middlewares,
         routes,
+        pages,
         req,
       );
     }
@@ -190,6 +205,9 @@ export function handler() {
       const done = processHandlerMiddleware(handlerMiddlewares, req, connInfo);
       if (!done) throw Error("Middleware execution not finished");
     }
+
+    const ssr = handlerPages.get(createPageKey(req));
+    if (ssr) return handleJSXPage(ssr, req, connInfo);
 
     const res = handlerRoutes.get(createMapKey(req));
     if (!res) {
@@ -312,6 +330,18 @@ export function handler() {
     return done;
   }
 
+  function createPageKey(req: Request) {
+    let result = EMPTY;
+    handlerPages.forEach((v) => {
+      if (
+        req.method && validateURL(v.url, req.url, v.host, v.path)
+      ) {
+        result = `${req.method}${COLON}${v.url}`;
+      }
+    });
+    return result;
+  }
+
   function createMapKey(req: Request): string {
     let result = EMPTY;
     handlerRoutes.forEach((v) => {
@@ -365,14 +395,21 @@ export function handler() {
     return true;
   }
 
+  function isQuery(path: string, incoming: string) {
+    const str = `${path}${incoming}`;
+    return str.charAt(str.length) === "?";
+  }
+
   function isValidPath(path: string, incoming: string[], idx: number) {
-    return (path === incoming[idx] || regex(incoming[idx], path));
+    return (path === incoming[idx] ||
+      regex(incoming[idx], path)) ||
+      isQuery(path, incoming[idx]);
   }
 
   function regex(incoming: string, path: string) {
     if (path) {
       if (path.charAt(0) === COLON) return true;
-      const regex = new RegExp(path);
+      const regex = new RegExp("\\b" + path + "\\b", "g");
       return regex.test(incoming);
     }
     return false;
@@ -463,6 +500,27 @@ export function handler() {
     return routerList;
   }
 
+  function initPages(pages: Map<string, SSRHandler>, url: string) {
+    const [http, path] = url.split(DOUBLE_SLASH);
+    const [host] = path.split(SLASH);
+    hostname = `${http}${DOUBLE_SLASH}${host}`;
+
+    if (pages.size > 0) {
+      pages.forEach((v, k) => {
+        const [method, , kpath] = k.split(HASHTAG);
+        const key = `${method}:${hostname}${kpath}`;
+        handlerPages.set(key, {
+          host: hostname,
+          url: `${hostname}${kpath}`,
+          path: v.path,
+          ssr: v.ssr,
+          handler: v.handler,
+        });
+      });
+      pages.clear();
+    }
+  }
+
   function initHandlerRoutes(
     map: Map<string, Route>,
     url: string,
@@ -488,12 +546,20 @@ export function handler() {
     staticPath: string,
     routes: Map<string, Route>,
     middlewares: AppMiddleware[],
+    pages: Map<string, SSRHandler>,
   ) {
     return function (
       req: Request,
       connInfo: ConnInfo,
     ): Response | Promise<Response> {
-      return handleRequest(req, connInfo, routes, middlewares, staticPath);
+      return handleRequest(
+        req,
+        connInfo,
+        routes,
+        middlewares,
+        staticPath,
+        pages,
+      );
     };
   }
 

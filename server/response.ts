@@ -1,12 +1,16 @@
-import { RenderOptions, RequestResponse, SSR } from "./types.ts";
+import { RequestResponse, SSR } from "./types.ts";
 import { Cookie, deleteCookie, setCookie } from "./deps.ts";
 
-export function response(ssrInstance?: SSR): RequestResponse {
+export function response(req?: Request): RequestResponse {
   let headers = new Headers();
   let responseAuthorization: string;
   let responseStatus = 200;
   let contentType = "text/plain;charset=UTF-8";
   let cookie: Cookie;
+  let ssr: SSR;
+  let requestInstance: Request;
+
+  if (req) requestInstance = req;
 
   function createResponse(str: BodyInit | null | undefined) {
     if (responseAuthorization) {
@@ -33,10 +37,6 @@ export function response(ssrInstance?: SSR): RequestResponse {
       } catch (error) {
         throw new Error(`jsonError: ${error.toString()}`);
       }
-    },
-    render: (options: RenderOptions) => {
-      if (!ssrInstance) throw new Error("SSR undefined");
-      return ssrInstance.render(options);
     },
     html: (html: string) => {
       contentType = "text/html; charset=UTF-8";
@@ -71,6 +71,11 @@ export function response(ssrInstance?: SSR): RequestResponse {
     ) => {
       deleteCookie(headers, name, attributes);
       return instance;
+    },
+    ssr: (ssrInstance: SSR) => {
+      ssr = ssrInstance;
+      ssr._setRequest(requestInstance);
+      return ssr;
     },
   };
 

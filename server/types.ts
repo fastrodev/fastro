@@ -1,11 +1,25 @@
 // deno-lint-ignore-file no-explicit-any
 import { ConnInfo, Cookie, Handler } from "./deps.ts";
 
+export type SSRHandler = {
+  path: PathArgument;
+  ssr: SSR;
+  handler: Handler;
+};
+
 export interface SSR {
   dir: (dir: string) => SSR;
   component: (el: JSX.Element) => SSR;
-  render: (options: RenderOptions) => Response;
-  createBundle: () => Promise<void>;
+  title: (title: string) => SSR;
+  meta: (meta: string) => SSR;
+  script: (script: string) => SSR;
+  style: (style: string) => SSR;
+  link: (link: string) => SSR;
+  render: () => Response;
+  /** Used by internal system to hydrate and create bundle on application initiation */
+  _createBundle: (bundle?: string) => Promise<void>;
+  /** Used by internal system to set request on response init to get the url. This url is used to get the hydrated and bundled JS file. */
+  _setRequest: (req: Request) => void;
 }
 
 export type RenderOptions = {
@@ -14,6 +28,7 @@ export type RenderOptions = {
   link?: string;
   script?: string;
   meta?: string;
+  bundle?: string;
 };
 
 export interface RequestResponse {
@@ -31,9 +46,7 @@ export interface RequestResponse {
   status: (status: number) => RequestResponse;
   send: (object: unknown) => Response | Promise<Response>;
   json: (object: unknown) => Response | Promise<Response>;
-  render: (
-    options: RenderOptions,
-  ) => Response | Promise<Response>;
+  ssr: (ssr: SSR) => SSR;
   html: (html: string) => Response | Promise<Response>;
 }
 

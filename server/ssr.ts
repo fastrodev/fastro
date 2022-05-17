@@ -1,12 +1,29 @@
 import * as ReactDOMServer from "https://esm.sh/react-dom@18.1.0/server";
 import { RenderOptions, SSR } from "../server/types.ts";
 
-function createHydrate(appPath: string) {
+function createHydrate() {
   return `import React from "https://esm.sh/react@18.1.0";
-import { hydrateRoot } from "https://esm.sh/react-dom@18.1.0/client";
-import App from "${appPath}";
+import { createRoot } from "https://esm.sh/react-dom@18.1.0/client";
+import App from "./app.tsx";
 const container = document.getElementById("root");
-const root = hydrateRoot(container, <App/>);`;
+const root = createRoot(container);
+root.render(<App />);`;
+}
+
+function createMeta(meta: string) {
+  return `<meta ${meta} /> `;
+}
+
+function createScript(script: string) {
+  return `<script> ${script} </script>`;
+}
+
+function createLink(link: string) {
+  return `<link ${link} />`;
+}
+
+function createStyle(style: string) {
+  return `<style>${style}</style>`;
 }
 
 export default function rendering(el?: JSX.Element): SSR {
@@ -14,28 +31,31 @@ export default function rendering(el?: JSX.Element): SSR {
   let status: 200;
   let html: string;
   let dir = "./components";
+  let title: string;
+  const scriptInstance: string[] = [];
+  const styleInstance: string[] = [];
+  const linkInstance: string[] = [];
+  const metaInstance: string[] = [];
+  let reqInstance: Request;
 
   if (el) element = el;
 
-  async function createBundle() {
+  async function createBundle(bundle?: string) {
+    const b = bundle ? bundle : "bundle";
     const hydrateTarget = `${dir}/.hydrate.tsx`;
-    const bundle = "module";
-    const bundlePath = "./static/bundle.js";
-    const denoBundle = "deno:///bundle.js";
-    const appPath = `./app.tsx`;
+    const bundlePath = `./static/${b}.js`;
+    const denoBundle = `deno:///bundle.js`;
     const lib = ["dom", "dom.iterable", "esnext"];
 
     try {
-      Deno.writeTextFile(
-        hydrateTarget,
-        createHydrate(appPath),
-      );
+      Deno.writeTextFile(hydrateTarget, createHydrate());
     } catch (err) {
+      console.log(err);
       throw err;
     }
 
     const { files } = await Deno.emit(hydrateTarget, {
-      bundle,
+      bundle: "module",
       compilerOptions: { lib },
     });
 
@@ -48,12 +68,19 @@ export default function rendering(el?: JSX.Element): SSR {
     element: JSX.Element,
     options: RenderOptions,
   ) {
-    const component = ReactDOMServer.renderToReadableStream(element);
+    const component = ReactDOMServer.renderToString(element);
     const link = options.link ? options.link : "";
     const meta = options.meta ? options.meta : "";
     const script = options.script ? options.script : "";
     const style = options.style ? options.style : "";
-    return `<!DOCTYPE html><html><head><title>${options.title}</title>${link} ${meta} ${script} ${style}</head><body><div id="root">${component}</div><script type="module" src="/static/bundle.js"></script><body></html>`;
+    const bundle = options.bundle ? options.bundle : "bundle";
+    return `<!DOCTYPE html><html><head><title>${options.title}</title>${link} ${meta} ${script} ${style}</head><body><div id="root">${component}</div><script type="module" src="/static/${bundle}.js"></script><body></html>`;
+  }
+
+  function getBundle(req: Request) {
+    const [, path] = req.url.split("://");
+    const items = path.split("/");
+    return items[items.length - 1];
   }
 
   const instance = {
@@ -61,13 +88,46 @@ export default function rendering(el?: JSX.Element): SSR {
       dir = d;
       return instance;
     },
+    title: (t: string) => {
+      title = t;
+      return instance;
+    },
+    script: (s: string) => {
+      scriptInstance.push(createScript(s));
+      return instance;
+    },
+    meta: (m: string) => {
+      metaInstance.push(createMeta(m));
+      return instance;
+    },
+    style: (s: string) => {
+      styleInstance.push(createStyle(s));
+      return instance;
+    },
+    link: (l: string) => {
+      linkInstance.push(createLink(l));
+      return instance;
+    },
     component: (el: JSX.Element) => {
       element = el;
       return instance;
     },
-    render: (options: RenderOptions) => {
+    render: () => {
+      const bundle = reqInstance ? getBundle(reqInstance) : "bundle";
+      const meta = metaInstance.length > 0 ? metaInstance.join("") : "";
+      const script = scriptInstance.length > 0 ? scriptInstance.join("") : "";
+      const link = linkInstance.length > 0 ? linkInstance.join("") : "";
+      const style = styleInstance.length > 0 ? styleInstance.join("") : "";
+      const opt = {
+        title,
+        meta,
+        script,
+        link,
+        style,
+        bundle,
+      };
       if (!html) {
-        html = createHTML(element, options);
+        html = createHTML(element, opt);
       }
       return new Response(html, {
         status,
@@ -76,8 +136,10 @@ export default function rendering(el?: JSX.Element): SSR {
         },
       });
     },
-    createBundle,
-    createHydrate,
+    _createBundle: createBundle,
+    _setRequest: (req: Request) => {
+      reqInstance = req;
+    },
   };
 
   return instance;

@@ -42,7 +42,7 @@ deno run -A main.ts
 - [HTML with Fastro Response](#html-with-fastro-response)
 - [HTML with React JSX](#html-with-react-jsx)
 - [HTML Render with Eta Template Engine](#html-render-with-eta-template-engine)
-- [HTML Render with SSR](https://fastro.dev/blog/ssr-simple-example-with-deno/)
+- [HTML Render with SSR](https://github.com/fastrodev/multipage-ssr-example)
 - [Cookie with Native Response](#cookie-with-native-response)
 - [Cookie with Fastro Response](#cookie-with-fastro-response)
 - [Send custom HTTP Status, Content Type, and Authorization](#send-custom-http-status-content-type-and-authorization)
