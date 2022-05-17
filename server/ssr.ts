@@ -30,7 +30,7 @@ export default function rendering(el?: JSX.Element): SSR {
   let element: JSX.Element;
   let status: 200;
   let html: string;
-  let dir = "./components";
+  let dir = "./";
   let title: string;
   const scriptInstance: string[] = [];
   const styleInstance: string[] = [];
