@@ -6,7 +6,7 @@ With [near-native perfomance](https://deno.land/x/fastro@{{version}}/benchmarks)
 you can:
 
 - Manage your routing, middlewares, and dependencies cleanly.
-- Simplifies JSON, HTML, JSX, and [SSR initiation](https://fastro.dev/blog/ssr-simple-example-with-deno/).
+- Simplifies JSON, HTML, JSX, and [SSR initiation](https://github.com/fastrodev/multipage-ssr-example).
 - Take advantage of existing Deno objects and methods.
 
 ### Getting started
