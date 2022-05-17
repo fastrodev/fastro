@@ -6,7 +6,7 @@ With [near-native perfomance](https://deno.land/x/fastro@{{version}}/benchmarks)
 you can:
 
 - Manage your routing, middlewares, and dependencies cleanly.
-- Simplifies JSON, HTML, JSX, and [SSR initiation](https://github.com/fastrodev/multipage-ssr-example).
+- Simplifies JSX and [SSR initiation](https://github.com/fastrodev/multipage-ssr-example).
 - Take advantage of existing Deno objects and methods.
 
 ### Getting started
@@ -34,15 +34,14 @@ deno run -A main.ts
 
 ## More examples
 
-- [Custom Port](#custom-port)
+- [HTML with React JSX](#html-with-react-jsx)
+- [HTML Render with React SSR](https://github.com/fastrodev/multipage-ssr-example)
+- [HTML with Native Response](#html-with-native-response)
+- [HTML with Fastro Response](#html-with-fastro-response)
+- [HTML Render with Eta Template Engine](#html-render-with-eta-template-engine)
 - [JSON Response](#json-response)
 - [JSON with Native Response](#json-with-native-response)
 - [JSON with Fastro Response](#json-with-fastro-response)
-- [HTML with Native Response](#html-with-native-response)
-- [HTML with Fastro Response](#html-with-fastro-response)
-- [HTML with React JSX](#html-with-react-jsx)
-- [HTML Render with Eta Template Engine](#html-render-with-eta-template-engine)
-- [HTML Render with SSR](https://github.com/fastrodev/multipage-ssr-example)
 - [Cookie with Native Response](#cookie-with-native-response)
 - [Cookie with Fastro Response](#cookie-with-fastro-response)
 - [Send custom HTTP Status, Content Type, and Authorization](#send-custom-http-status-content-type-and-authorization)
@@ -56,25 +55,84 @@ deno run -A main.ts
 - [Route Level Middleware with Array](#route-level-middleware-with-array)
 - [SQLite and Dependency Injection](#sqlite-and-dependency-injection)
 
-### Custom port
+### HTML with React JSX
+
+```tsx
+import application, { h }  from "https://deno.land/x/fastro@{{version}}/server/mod.ts";
+
+const app = application();
+
+app.get("/", () => <h1>Hello world</h1>);
+
+console.log("Listening on: http://localhost:8000");
+
+await app.serve();
+```
+
+#### tsconfig: `deno.json`
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "https://esm.sh/react"
+  }
+}
+```
+
+```
+deno run -A --config deno.json https://deno.land/x/fastro@{{version}}/examples/html_response_jsx.tsx
+```
+
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/html_response_jsx.ts)
+
+### HTML with Native Response
 
 ```ts
 import application from "https://deno.land/x/fastro@{{version}}/server/mod.ts";
 
 const app = application();
 
-app.get("/", () => new Response("Hello world!"));
+app.get("/", () => {
+  return new Response("<html> Hello world </html>", {
+    status: 200,
+    headers: {
+      "content-type": "text/html",
+    },
+  });
+});
 
-await app.serve({ port: 3000 });
+console.log("Listening on: http://localhost:8000");
 
+await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@{{version}}/examples/custom_port.ts
+deno run -A https://deno.land/x/fastro@{{version}}/examples/html_response_native.ts
 ```
 
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/custom_port.ts)
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/html_response_native.ts)
 
+### HTML with Fastro Response
+
+```ts
+import application, { response } from "https://deno.land/x/fastro@{{version}}/server/mod.ts";
+
+const app = application();
+
+app.get("/", () => response().html("<h2>Hello world</h2"));
+
+console.log("Listening on: http://localhost:8000");
+
+await app.serve();
+```
+
+```
+deno run -A https://deno.land/x/fastro@{{version}}/examples/html_response_fastro.ts
+```
+
+[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/html_response_fastro.ts)
 
 
 ### JSON Response
@@ -149,82 +207,6 @@ deno run -A https://deno.land/x/fastro@{{version}}/examples/json_response_fastro
 
 [![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/json_response_fastro.ts)
 
-### HTML with Native Response
-
-```ts
-import application from "https://deno.land/x/fastro@{{version}}/server/mod.ts";
-
-const app = application();
-
-app.get("/", () => {
-  return new Response("<html> Hello world </html>", {
-    status: 200,
-    headers: {
-      "content-type": "text/html",
-    },
-  });
-});
-
-console.log("Listening on: http://localhost:8000");
-
-await app.serve();
-```
-
-```
-deno run -A https://deno.land/x/fastro@{{version}}/examples/html_response_native.ts
-```
-
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/html_response_native.ts)
-
-### HTML with Fastro Response
-
-```ts
-import application, { response } from "https://deno.land/x/fastro@{{version}}/server/mod.ts";
-
-const app = application();
-
-app.get("/", () => response().html("<h2>Hello world</h2"));
-
-console.log("Listening on: http://localhost:8000");
-
-await app.serve();
-```
-
-```
-deno run -A https://deno.land/x/fastro@{{version}}/examples/html_response_fastro.ts
-```
-
-[![alt text](https://raw.githubusercontent.com/fastrodev/fastro/gh-pages/assets/img/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://deno.land/x/fastro@{{version}}/examples/html_response_fastro.ts)
-
-### HTML with React JSX
-
-```tsx
-import application from "https://deno.land/x/fastro@{{version}}/server/mod.ts";
-
-const app = application();
-
-app.get("/", () => <h1>Hello world</h1>);
-
-console.log("Listening on: http://localhost:8000");
-
-await app.serve();
-```
-
-#### tsconfig: `deno.json`
-
-```json
-{
-  "compilerOptions": {
-    "strict": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "https://esm.sh/react"
-  }
-}
-```
-
-```
-deno run -A --config deno.json https://deno.land/x/fastro@{{version}}/examples/html_response_jsx.tsx
-```
 
 ### Send Custom HTTP Status, Content Type, and Authorization
 

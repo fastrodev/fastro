@@ -1,5 +1,5 @@
 // @deno-types="https://cdn.esm.sh/v78/@types/react@18.0.9/react.d.ts"
-import React from "https://esm.sh/react@18.1.0";
+import React, { createElement as h } from "https://esm.sh/react@18.1.0";
 
 const App = () => {
   return (

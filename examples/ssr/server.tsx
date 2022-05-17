@@ -1,4 +1,4 @@
-import application, { response } from "../../server/mod.ts";
+import application, { h, response } from "../../server/mod.ts";
 import rendering from "../../server/ssr.ts";
 import App from "./app.tsx";
 import Hello from "./hello/app.tsx";
