@@ -63,7 +63,7 @@ export function application(): Application {
     if (appPage.pages && appPage.pages.size > 0) {
       appPage.pages.forEach((v, k) => {
         const [, bundle] = k.split("#/");
-        v.ssr.createBundle(bundle);
+        v.ssr._createBundle(bundle);
       });
     }
   }

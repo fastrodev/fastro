@@ -10,16 +10,33 @@ const root = createRoot(container);
 root.render(<App />);`;
 }
 
+function createMeta(meta: string) {
+  return `<meta ${meta} /> `;
+}
+
+function createScript(script: string) {
+  return `<script> ${script} </script>`;
+}
+
+function createLink(link: string) {
+  return `<link ${link} />`;
+}
+
+function createStyle(style: string) {
+  return `<style>${style}</style>`;
+}
+
 export default function rendering(el?: JSX.Element): SSR {
   let element: JSX.Element;
   let status: 200;
   let html: string;
   let dir = "./components";
   let title: string;
-  let script: string;
-  let style: string;
-  let link: string;
-  let meta: string;
+  const scriptInstance: string[] = [];
+  const styleInstance: string[] = [];
+  const linkInstance: string[] = [];
+  const metaInstance: string[] = [];
+  let reqInstance: Request;
 
   if (el) element = el;
 
@@ -76,27 +93,31 @@ export default function rendering(el?: JSX.Element): SSR {
       return instance;
     },
     script: (s: string) => {
-      script = s;
+      scriptInstance.push(createScript(s));
       return instance;
     },
     meta: (m: string) => {
-      meta = m;
+      metaInstance.push(createMeta(m));
       return instance;
     },
     style: (s: string) => {
-      style = s;
+      styleInstance.push(createStyle(s));
       return instance;
     },
     link: (l: string) => {
-      link = l;
+      linkInstance.push(createLink(l));
       return instance;
     },
     component: (el: JSX.Element) => {
       element = el;
       return instance;
     },
-    render: (req?: Request) => {
-      const bundle = req ? getBundle(req) : "bundle";
+    render: () => {
+      const bundle = reqInstance ? getBundle(reqInstance) : "bundle";
+      const meta = metaInstance.length > 0 ? metaInstance.join("") : "";
+      const script = scriptInstance.length > 0 ? scriptInstance.join("") : "";
+      const link = linkInstance.length > 0 ? linkInstance.join("") : "";
+      const style = styleInstance.length > 0 ? styleInstance.join("") : "";
       const opt = {
         title,
         meta,
@@ -115,8 +136,10 @@ export default function rendering(el?: JSX.Element): SSR {
         },
       });
     },
-    createBundle,
-    createHydrate,
+    _createBundle: createBundle,
+    _setRequest: (req: Request) => {
+      reqInstance = req;
+    },
   };
 
   return instance;

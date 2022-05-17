@@ -18,13 +18,14 @@ const app = application()
       .render();
   })
   .page("/hello", helloPage, (req: Request) => {
-    return response()
+    return response(req)
       .ssr(helloPage)
       .title("Click me")
-      .meta(`<meta charset="utf-8" />`)
-      .script(`<script>(function (){})();</script>`)
-      .style(`<style>body {background-color: powderblue;}</style>`)
-      .render(req);
+      .meta(`charset="utf-8"`)
+      .meta(`name="viewport" content="width=device-width"`)
+      .script(`(function (){console.log("hello")})();`)
+      .style(`body {background-color: powderblue;}`)
+      .render();
   });
 
 console.log("Listening on: http://localhost:8000");

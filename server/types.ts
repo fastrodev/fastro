@@ -15,8 +15,11 @@ export interface SSR {
   script: (script: string) => SSR;
   style: (style: string) => SSR;
   link: (link: string) => SSR;
-  createBundle: (bundle?: string) => Promise<void>;
-  render: (req?: Request) => Response;
+  render: () => Response;
+  /** Used by internal system to hydrate and create bundle on application initiation */
+  _createBundle: (bundle?: string) => Promise<void>;
+  /** Used by internal system to set request on response init to get the url. This url is used to get the hydrated and bundled JS file. */
+  _setRequest: (req: Request) => void;
 }
 
 export type RenderOptions = {
