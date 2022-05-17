@@ -59,8 +59,12 @@ export function application(): Application {
     return deps.deps !== undefined;
   }
 
+  function getProduction() {
+    return Deno.env.get("ENVIRONMENT") === "PRODUCTION";
+  }
+
   function init() {
-    if (appPage.pages && appPage.pages.size > 0) {
+    if (!getProduction() && appPage.pages && appPage.pages.size > 0) {
       appPage.pages.forEach((v, k) => {
         const [, bundle] = k.split("#/");
         v.ssr._createBundle(bundle);
