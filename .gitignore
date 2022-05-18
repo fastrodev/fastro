@@ -7,3 +7,4 @@ configurationCache.log
 dryrun.log
 targets.log
 static/
+Makefile
