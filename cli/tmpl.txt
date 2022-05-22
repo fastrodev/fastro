@@ -7,7 +7,7 @@ you can:
 
 - Manage your routing, middlewares, and dependencies cleanly.
 - Take advantage of existing Deno objects and methods.
-- [Simplifies JSX](#html-render-with-react-jsx) and [SSR initiation](https://github.com/fastrodev/multipage-ssr-example).
+- [Simplifies JSX](#html-render-with-react-jsx) and [Multipage SSR Initiation](https://github.com/fastrodev/multipage-ssr-example).
 
 ### Getting started
 

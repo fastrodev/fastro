@@ -7,7 +7,7 @@ you can:
 
 - Manage your routing, middlewares, and dependencies cleanly.
 - Take advantage of existing Deno objects and methods.
-- [Simplifies JSX](#html-render-with-react-jsx) and [SSR initiation](https://github.com/fastrodev/multipage-ssr-example).
+- [Simplifies JSX](#html-render-with-react-jsx) and [Multipage SSR Initiation](https://github.com/fastrodev/multipage-ssr-example).
 
 ### Getting started
 
@@ -391,7 +391,7 @@ deno run -A https://deno.land/x/fastro@v0.59.0/examples/route_params.ts
 ### Route query
 
 ```ts
-import application, { getQueries, getQuery } from "https://deno.land/x/fastro@v0.58.4/server/mod.ts";
+import application, { getQueries, getQuery } from "https://deno.land/x/fastro@v0.59.0/server/mod.ts";
 
 const app = application();
 
@@ -409,7 +409,7 @@ await app.serve();
 ```
 
 ```
-deno run -A https://deno.land/x/fastro@v0.58.4/examples/query_params.ts
+deno run -A https://deno.land/x/fastro@v0.59.0/examples/query_params.ts
 ```
 
 ### Router Middleware
