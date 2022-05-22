@@ -458,6 +458,32 @@ export function handler() {
     return res.value;
   }
 
+  function getQueries(req: Request) {
+    if (!req) return {};
+    const [, queries] = req.url.split("?");
+    if (!queries) return {};
+    const obj: Record<string, string> = {};
+    const pairs = queries.split("&");
+    pairs.forEach((element) => {
+      const [key, name] = element.split("=");
+      obj[key] = name;
+    });
+    return obj;
+  }
+
+  function getQuery(req: Request, name: string) {
+    if (!req) return {};
+    const [, queries] = req.url.split("?");
+    if (!queries) return {};
+    const pairs = queries.split("&");
+    const map: Map<string, string> = new Map();
+    pairs.forEach((element) => {
+      const [key, name] = element.split("=");
+      map.set(key, name);
+    });
+    return map.get(name);
+  }
+
   function isRequestHandler(
     handler: HandlerArgument,
   ): handler is RequestHandler {
@@ -567,5 +593,7 @@ export function handler() {
     createHandler,
     getParams,
     getParam,
+    getQueries,
+    getQuery,
   };
 }

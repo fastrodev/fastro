@@ -3,6 +3,8 @@ import application, {
   ConnInfo,
   getParam,
   getParams,
+  getQueries,
+  getQuery,
   Next,
   router,
 } from "./mod.ts";
@@ -27,6 +29,12 @@ Deno.test("app", async (t) => {
   app.get("/account/:name", (req: Request) => {
     const params = getParams(req);
     return new Response(JSON.stringify(params));
+  });
+  app.get("/hello", (req: Request) => {
+    return getQueries(req);
+  });
+  app.get("/welcome", (req: Request) => {
+    return getQuery(req, "name");
   });
 
   // app middleware
@@ -191,6 +199,32 @@ Deno.test("app", async (t) => {
     fn: async () => {
       const response = await fetch(`${host}/account/agus`, { method: "GET" });
       assertEquals(await response.text(), JSON.stringify({ name: "agus" }));
+    },
+  });
+
+  await t.step({
+    name: "Route get queries",
+    fn: async () => {
+      const response = await fetch(`${host}/hello?id=1&name=agus`, {
+        method: "GET",
+      });
+      assertEquals(
+        await response.text(),
+        JSON.stringify({ id: "1", name: "agus" }),
+      );
+    },
+  });
+
+  await t.step({
+    name: "Route get query",
+    fn: async () => {
+      const response = await fetch(`${host}/welcome?id=1&name=agus`, {
+        method: "GET",
+      });
+      assertEquals(
+        await response.text(),
+        "agus",
+      );
     },
   });
 

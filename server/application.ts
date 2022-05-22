@@ -34,7 +34,7 @@ interface Application {
 
 const appHandler = handler();
 
-export const { getParams, getParam } = appHandler;
+export const { getParams, getParam, getQueries, getQuery } = appHandler;
 
 export function application(): Application {
   const appPage = page();
