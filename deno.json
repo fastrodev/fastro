@@ -3,5 +3,12 @@
     "strict": true,
     "jsx": "react-jsx",
     "jsxImportSource": "https://esm.sh/react"
+  },
+  "lint": {
+    "files": {
+      "exclude": [
+        "static/"
+      ]
+    }
   }
 }
