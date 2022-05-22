@@ -1,5 +1,5 @@
-import * as ReactDOMServer from "https://esm.sh/react-dom@18.1.0/server";
 import { RenderOptions, SSR } from "../server/types.ts";
+import { denoPlugin, esbuild, ReactDOMServer } from "./deps.ts";
 
 function createHydrate() {
   return `import React from "https://esm.sh/react@18.1.0";
@@ -40,12 +40,10 @@ export default function rendering(el?: JSX.Element): SSR {
 
   if (el) element = el;
 
-  async function createBundle(bundle?: string) {
+  function createBundle(bundle?: string) {
     const b = bundle ? bundle : "bundle";
     const hydrateTarget = `${dir}/.hydrate.tsx`;
     const bundlePath = `./static/${b}.js`;
-    const denoBundle = `deno:///bundle.js`;
-    const lib = ["dom", "dom.iterable", "esnext"];
 
     try {
       Deno.writeTextFile(hydrateTarget, createHydrate());
@@ -54,14 +52,15 @@ export default function rendering(el?: JSX.Element): SSR {
       throw err;
     }
 
-    const { files } = await Deno.emit(hydrateTarget, {
-      bundle: "module",
-      compilerOptions: { lib },
+    esbuild.build({
+      plugins: [denoPlugin()],
+      entryPoints: [hydrateTarget],
+      outfile: bundlePath,
+      bundle: true,
+      format: "esm",
+    }).then(() => {
+      Deno.remove(hydrateTarget);
     });
-
-    const js = files[denoBundle];
-    await Deno.writeTextFile(bundlePath, js);
-    await Deno.remove(hydrateTarget);
   }
 
   function createHTML(
@@ -74,7 +73,7 @@ export default function rendering(el?: JSX.Element): SSR {
     const script = options.script ? options.script : "";
     const style = options.style ? options.style : "";
     const bundle = options.bundle ? options.bundle : "bundle";
-    return `<!DOCTYPE html><html><head><title>${options.title}</title>${link} ${meta} ${script} ${style}</head><body><div id="root">${component}</div><script type="module" src="/static/${bundle}.js"></script><body></html>`;
+    return `<!DOCTYPE html><html><head><title>${options.title}</title>${link}${meta}${script}${style}</head><body><div id="root">${component}</div><script type="module" src="/static/${bundle}.js"></script><body></html>`;
   }
 
   function getBundle(req: Request) {
