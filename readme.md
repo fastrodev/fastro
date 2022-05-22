@@ -45,6 +45,7 @@ deno run -A main.ts
 - [Send custom HTTP Status, Content Type, and Authorization](#send-custom-http-status-content-type-and-authorization)
 - [Routing](#routing)
 - [Route Parameters](#route-parameters)
+- [Route Query](#route-query)
 - [Router Middleware](#router-middleware)
 - [Router Middleware with Array](#route-level-middleware-with-array)
 - [Application Level Middleware](#application-level-middleware)
@@ -385,6 +386,30 @@ await app.serve();
 
 ```
 deno run -A https://deno.land/x/fastro@v0.59.0/examples/route_params.ts
+```
+
+### Route query
+
+```ts
+import application, { getQueries, getQuery } from "https://deno.land/x/fastro@v0.58.4/server/mod.ts";
+
+const app = application();
+
+app.get("/hello", (req: Request) => {
+  return getQueries(req);
+});
+
+app.get("/welcome", (req: Request) => {
+  return getQuery(req, "name");
+});
+
+console.log("Listening on: http://localhost:8000");
+
+await app.serve();
+```
+
+```
+deno run -A https://deno.land/x/fastro@v0.58.4/examples/query_params.ts
 ```
 
 ### Router Middleware
