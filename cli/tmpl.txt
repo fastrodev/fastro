@@ -1,6 +1,7 @@
 # Fastro
 
-[![Build Status - Cirrus][]][Build status]
+[![Build Status - Cirrus][]][Build status] [![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https://deno.land/x/fastro/server/mod.ts)
+
 
 <img align="right" src="https://raw.githubusercontent.com/fastrodev/fastro.dev/main/images/fstr.svg" height="150px" alt="A dinosaur is looking back.">
 
