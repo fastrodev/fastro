@@ -1,6 +1,5 @@
-import { assertEquals } from "./deps.ts";
+import { assertEquals, ConnInfo } from "./deps.ts";
 import application, {
-  ConnInfo,
   getParam,
   getParams,
   getQueries,
