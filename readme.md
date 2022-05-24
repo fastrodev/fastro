@@ -2,7 +2,9 @@
 
 Fast and simple web application framework for deno.
 
-With [near-native perfomance](https://deno.land/x/fastro@v0.59.0/benchmarks),
+<img align="right" src="https://raw.githubusercontent.com/fastrodev/fastro.dev/main/images/fstr.svg" height="150px" alt="the deno mascot dinosaur standing in the rain">
+
+With [near-native perfomance](https://github.com/fastrodev/fastro/tree/main/benchmarks),
 you can:
 
 - Manage your routing, middlewares, and dependencies cleanly.
