@@ -2,12 +2,7 @@ import { RenderOptions, SSR } from "../server/types.ts";
 import { denoPlugin, esbuild, ReactDOMServer } from "./deps.ts";
 
 function createHydrate() {
-  return `import React from "https://esm.sh/react@18.1.0";
-import { createRoot } from "https://esm.sh/react-dom@18.1.0/client";
-import App from "./app.tsx";
-const container = document.getElementById("root");
-const root = createRoot(container);
-root.render(<App />);`;
+  return `import React from "https://esm.sh/react@18.1.0";import { createRoot } from "https://esm.sh/react-dom@18.1.0/client";import App from "./app.tsx";const container = document.getElementById("root");const root = createRoot(container);root.render(<App />);`;
 }
 
 function createMeta(meta: string) {
@@ -43,7 +38,7 @@ export default function rendering(el?: JSX.Element): SSR {
   function createBundle(bundle?: string) {
     const b = bundle ? bundle : "bundle";
     const hydrateTarget = `${dir}/.hydrate.tsx`;
-    const bundlePath = `./static/${b}.js`;
+    const bundlePath = `./public/${b}.js`;
 
     try {
       Deno.writeTextFile(hydrateTarget, createHydrate());

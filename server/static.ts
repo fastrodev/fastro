@@ -2,7 +2,7 @@ import { Status, STATUS_TEXT } from "./deps.ts";
 
 export async function handleStaticFile(staticUrl: string, url: string) {
   let file;
-  const staticPath = "./static";
+  const staticPath = "./public";
 
   const [, path] = url.split(staticUrl);
   if (!path) {

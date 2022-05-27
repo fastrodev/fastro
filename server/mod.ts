@@ -11,3 +11,4 @@ export * from "./container.ts";
 export * from "./response.ts";
 export { getParam, getParams, getQueries, getQuery };
 export default application;
+export { h } from "./deps.ts";
