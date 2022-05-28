@@ -2,13 +2,12 @@
 
 [![Build Status - Cirrus][]][Build status] [![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https://deno.land/x/fastro/server/mod.ts)
 
-
-<img align="right" src="https://raw.githubusercontent.com/fastrodev/fastro.dev/main/images/fstr.svg" height="150px" alt="A dinosaur is looking back.">
-
 Fast and simple web application framework for deno.
 
 With [near-native perfomance](https://github.com/fastrodev/fastro/tree/main/benchmarks),
 you can:
+
+<img align="right" src="https://raw.githubusercontent.com/fastrodev/fastro.dev/main/images/fstr.svg" height="150px" alt="A dinosaur is looking back.">
 
 - Manage your routing, middlewares, and dependencies cleanly.
 - Take advantage of existing Deno objects and methods.
