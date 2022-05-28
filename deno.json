@@ -7,7 +7,7 @@
   "lint": {
     "files": {
       "exclude": [
-        "static/"
+        "public/"
       ]
     }
   }
