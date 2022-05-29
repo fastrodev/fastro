@@ -120,7 +120,7 @@ import application, { response } from "https://deno.land/x/fastro@{{version}}/se
 
 const app = application();
 
-app.get("/", () => response().html("<h2>Hello world</h2"));
+app.get("/", () => response().html("<h2>Hello world</h2>"));
 
 console.log("Listening on: http://localhost:8000");
 
