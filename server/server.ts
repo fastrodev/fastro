@@ -18,30 +18,50 @@ import {
 export function fastro(startOptions?: StartOptions): Fastro {
   const routes: Array<Route> = [];
   const ac = new AbortController();
+  let staticFolder = "./public";
+  let staticPath = "/";
   let server: Server;
 
   const app = {
     serve: (serveOptions: ServeInit) => {
+      const hostname = serveOptions?.hostname || "127.0.0.1";
+      const port = serveOptions?.port || 9000;
+      const baseUrl = `http://${hostname}:${port}`;
+      const baseStaticPath = `${baseUrl}${staticPath}`;
+      const cache = {};
+
+      const handler = createHandler(
+        routes,
+        baseStaticPath,
+        staticFolder,
+        cache,
+      );
+
       if (startOptions && startOptions.flash) {
         return Deno.serve({
-          hostname: serveOptions?.hostname,
-          handler: createHandler(routes),
-          signal: ac.signal,
-          port: serveOptions?.port,
+          hostname,
+          port,
+          handler,
           onListen: serveOptions?.onListen,
           onError: serveOptions?.onError,
+          signal: ac.signal,
         });
       }
 
       server = new Server({
-        handler: createHandler(routes),
+        hostname,
+        port,
+        handler,
         onError: serveOptions?.onError,
       });
-      const port = serveOptions?.port || 9000;
-      const hostname = serveOptions?.hostname || "127.0.0.1";
-      const listener = Deno.listen({ port, hostname });
+
       console.info(`Listening on http://${hostname}:${port}/`);
-      return server.serve(listener);
+      return server.listenAndServe();
+    },
+    static: (path: string, folder?: string) => {
+      staticPath = path;
+      if (folder) staticFolder = folder;
+      return app;
     },
     close: () => {
       if (startOptions && startOptions.flash) {

@@ -4,9 +4,29 @@ export interface Next {
   (error?: unknown): void;
 }
 
+export type RequestResponse = {
+  deleteCookie: (
+    name: string,
+    attributes?: {
+      path?: string | undefined;
+      domain?: string | undefined;
+    } | undefined,
+  ) => RequestResponse;
+  // setCookie: (cookie: Cookie) => RequestResponse;
+  headers: (headers: Headers) => RequestResponse;
+  authorization: (type: string) => RequestResponse;
+  contentType: (type: string) => RequestResponse;
+  status: (status: number) => RequestResponse;
+  send: (object: unknown) => Response | Promise<Response>;
+  json: (object: unknown) => Response | Promise<Response>;
+  // ssr: (ssr: SSR) => SSR;
+  html: (html: string) => Response | Promise<Response>;
+};
+
 export type RequestHandler = (
   request: Request,
-  next: Next,
+  response?: RequestResponse,
+  next?: Next,
 ) =>
   | void
   | Promise<void>
@@ -28,8 +48,36 @@ export type Route = {
 };
 
 export type Fastro = {
+  /**
+   * Accept incoming connections on the given listener, and handle requests on these connections with the given handler.
+   *
+   * HTTP/2 support is only enabled if the provided Deno.Listener returns TLS connections and was configured with "h2" in the ALPN protocols.
+   *
+   * Throws a server closed error if called after the server has been closed.
+   *
+   * @param options
+   */
   serve(options?: ServeInit): Promise<void>;
+  /**
+   * Immediately close the server listeners and associated HTTP connections.
+   *
+   * Throws a server closed error if called after the server has been closed.
+   */
   close(): void;
+  /**
+   * Add url endpoint for static files
+   *
+   * ```ts
+   * import application from "$fastro/server/mod.ts";
+   * const app = application();
+   * app.static("/", "./public");
+   * await app.serve();
+   * ```
+   *
+   * @param path The base endpoint to access a file
+   * @param folder The base folder to save all files
+   */
+  static(path: string, folder?: string): Fastro;
   get(path: string, handler: HandlerArgument): Fastro;
   post(path: string, handler: HandlerArgument): Fastro;
   put(path: string, handler: HandlerArgument): Fastro;
