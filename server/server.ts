@@ -10,13 +10,13 @@ import {
   StartOptions,
 } from "./types.ts";
 
-export function fastro(startOptions?: StartOptions): Fastro {
+export function fastro(_startOptions?: StartOptions): Fastro {
   const routes: Array<Route> = [];
   const pages: Array<SSRHandler> = [];
   const ac = new AbortController();
   let staticFolder = "./public";
   let staticPath = "/";
-  let server: Server;
+  let _server: Server;
 
   const app = {
     serve: (serveOptions: ServeInit) => {
@@ -41,26 +41,23 @@ export function fastro(startOptions?: StartOptions): Fastro {
         pages,
       );
 
-      if (startOptions && startOptions.flash) {
-        return Deno.serve({
-          hostname,
-          port,
-          handler,
-          onListen: serveOptions?.onListen,
-          onError: serveOptions?.onError,
-          signal: ac.signal,
-        });
-      }
-
-      server = new Server({
+      return Deno.serve({
         hostname,
         port,
         handler,
+        onListen: serveOptions?.onListen,
         onError: serveOptions?.onError,
+        signal: ac.signal,
       });
 
-      console.info(`Listening on http://${hostname}:${port}/`);
-      return server.listenAndServe();
+      // server = new Server({
+      //   hostname,
+      //   port,
+      //   handler,
+      //   onError: serveOptions?.onError,
+      // });
+      // console.info(`Listening on http://${hostname}:${port}/`);
+      // return server.listenAndServe();
     },
     static: (path: string, folder?: string) => {
       staticPath = path;
@@ -68,10 +65,11 @@ export function fastro(startOptions?: StartOptions): Fastro {
       return app;
     },
     close: () => {
-      if (startOptions && startOptions.flash) {
-        return ac.abort();
-      }
-      return server.close();
+      return ac.abort();
+      // if (startOptions && startOptions.flash) {
+      //   return ac.abort();
+      // }
+      // return server.close();
     },
     get: (path: string, handler: HandlerArgument) => {
       routes.push({ method: GET, path, handler });
