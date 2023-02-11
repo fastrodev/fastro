@@ -1,12 +1,14 @@
 import { ReactDOMServer } from "$fastro/server/deps.ts";
+import { response } from "$fastro/server/response.ts";
 import { handleStaticFile } from "$fastro/server/static.ts";
 import {
   HandlerArgument,
   Next,
-  RequestResponse,
   Route,
+  SSRHandler,
   StringHandler,
 } from "$fastro/server/types.ts";
+import { handleJSXPage } from "./page.ts";
 
 export function createHandler(
   routes: Array<Route>,
@@ -14,12 +16,21 @@ export function createHandler(
   staticFolder: string,
   // deno-lint-ignore no-explicit-any
   cache: any,
+  pages: Array<SSRHandler>,
 ) {
   return function (req: Request) {
     const id = req.method + req.url;
-    const res: RequestResponse | undefined = undefined;
-    const next: Next | undefined = undefined;
     let handler: HandlerArgument | undefined = undefined;
+
+    const page = pages.find((page) => {
+      let pattern: URLPattern | null = new URLPattern({
+        pathname: page.path,
+      });
+      const match = pattern.exec(req.url);
+      pattern = null;
+      return (match);
+    });
+    if (page) return handleJSXPage(page, req);
 
     if (cache[id]) handler = cache[id];
     else {
@@ -40,8 +51,10 @@ export function createHandler(
     }
 
     cache[id] = handler;
+    const res = response(req);
+    const next: Next | undefined = undefined;
     const stringHandler = <StringHandler> <unknown> handler;
-    const result = stringHandler(req);
+    const result = stringHandler(req, res, next);
 
     if (isString(result)) {
       return new Response(result);
@@ -75,11 +88,6 @@ function isString(stringResult: unknown) {
   }
 }
 
-function isJSX(element: unknown) {
-  const el = <JSX.Element> element;
-  return el.props != undefined && el.type != undefined;
-}
-
 function isHTML(element: unknown) {
   return element instanceof Response;
 }
@@ -96,6 +104,11 @@ function isJSON(element: unknown) {
     return [false, ""];
   }
   return [true, stringify];
+}
+
+function isJSX(element: unknown) {
+  const el = <JSX.Element> element;
+  return el.props != undefined && el.type != undefined;
 }
 
 function render(element: JSX.Element) {

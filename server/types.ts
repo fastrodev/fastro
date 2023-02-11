@@ -1,4 +1,4 @@
-import { ConnInfo, ServeInit } from "$fastro/server/deps.ts";
+import { Cookie, ServeInit } from "$fastro/server/deps.ts";
 
 export interface Next {
   (error?: unknown): void;
@@ -12,20 +12,22 @@ export type RequestResponse = {
       domain?: string | undefined;
     } | undefined,
   ) => RequestResponse;
-  // setCookie: (cookie: Cookie) => RequestResponse;
+  setCookie: (cookie: Cookie) => RequestResponse;
   headers: (headers: Headers) => RequestResponse;
   authorization: (type: string) => RequestResponse;
   contentType: (type: string) => RequestResponse;
   status: (status: number) => RequestResponse;
   send: (object: unknown) => Response | Promise<Response>;
   json: (object: unknown) => Response | Promise<Response>;
-  // ssr: (ssr: SSR) => SSR;
+  ssr: (ssr: SSR) => SSR;
   html: (html: string) => Response | Promise<Response>;
 };
 
+export type HttpRequest = Request;
+
 export type RequestHandler = (
-  request: Request,
-  response?: RequestResponse,
+  request: HttpRequest,
+  response: RequestResponse,
   next?: Next,
 ) =>
   | void
@@ -84,10 +86,53 @@ export type Fastro = {
   delete(path: string, handler: HandlerArgument): Fastro;
   patch(path: string, handler: HandlerArgument): Fastro;
   options(path: string, handler: HandlerArgument): Fastro;
+  page(
+    path: string,
+    ssr: SSR,
+    handler: HandlerArgument,
+  ): Fastro;
+};
+
+export type SSRHandler = {
+  path: string;
+  ssr: SSR;
+  handler: HandlerArgument;
 };
 
 export type StartOptions = {
   flash: boolean;
 };
 
-export type StringHandler = (request?: Request, connInfo?: ConnInfo) => string;
+export type StringHandler = (
+  request?: Request,
+  response?: RequestResponse,
+  next?: Next,
+) => string;
+
+export type RenderOptions = {
+  title: string;
+  style?: string;
+  link?: string;
+  script?: string;
+  meta?: string;
+  bundle?: string;
+};
+
+export interface SSR {
+  dir: (dir: string) => SSR;
+  component: (el: JSX.Element) => SSR;
+  title: (title: string) => SSR;
+  meta: (meta: string) => SSR;
+  script: (script: string) => SSR;
+  style: (style: string) => SSR;
+  link: (link: string) => SSR;
+  render: () => Response;
+  /** Used by internal system to hydrate and create bundle on application initiation */
+  _createBundle: (
+    bundle?: string,
+    rootComponent?: string,
+    rootTSX?: string,
+  ) => void;
+  /** Used by internal system to set request on response init to get the url. This url is used to get the hydrated and bundled JS file. */
+  _setRequest: (req: Request) => void;
+}

@@ -12,11 +12,14 @@ import {
   Fastro,
   HandlerArgument,
   Route,
+  SSR,
+  SSRHandler,
   StartOptions,
 } from "$fastro/server/types.ts";
 
 export function fastro(startOptions?: StartOptions): Fastro {
   const routes: Array<Route> = [];
+  const pages: Array<SSRHandler> = [];
   const ac = new AbortController();
   let staticFolder = "./public";
   let staticPath = "/";
@@ -30,11 +33,21 @@ export function fastro(startOptions?: StartOptions): Fastro {
       const baseStaticPath = `${baseUrl}${staticPath}`;
       const cache = {};
 
+      for (const p of pages) {
+        let bundle = "";
+        if (p.path === "/") bundle = "bundle";
+
+        const rootComponent = `App`;
+        const rootTSX = `app`;
+        p.ssr._createBundle(bundle, rootComponent, rootTSX);
+      }
+
       const handler = createHandler(
         routes,
         baseStaticPath,
         staticFolder,
         cache,
+        pages,
       );
 
       if (startOptions && startOptions.flash) {
@@ -91,6 +104,14 @@ export function fastro(startOptions?: StartOptions): Fastro {
     },
     options: (path: string, handler: HandlerArgument) => {
       routes.push({ method: OPTIONS, path, handler });
+      return app;
+    },
+    page: (
+      path: string,
+      ssr: SSR,
+      handler: HandlerArgument,
+    ) => {
+      pages.push({ path, ssr, handler });
       return app;
     },
   };
