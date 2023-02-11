@@ -21,30 +21,9 @@ export function createHandler(
   return function (req: Request) {
     const id = req.method + "-" + req.url;
     let handler: HandlerArgument | undefined = undefined;
-    let page: SSRHandler | undefined = undefined;
 
     if (pages.length > 0) {
-      const pageId = "page-" + id;
-      if (cache[pageId]) {
-        page = cache[pageId];
-      } else {
-        const p = pages.find((page) => {
-          let pattern: URLPattern | null = new URLPattern({
-            pathname: page.path,
-          });
-          const match = pattern.exec(req.url);
-          pattern = null;
-          return (match);
-        });
-        cache[pageId] = p;
-        page = p;
-      }
-
-      if (!page) {
-        return handleStaticFile(staticUrl, req.url, staticFolder);
-      }
-
-      return handleJSXPage(page, req);
+      return handlePages(cache, id, pages, req, staticUrl, staticFolder);
     }
 
     if (cache[id]) handler = cache[id];
@@ -92,6 +71,49 @@ export function createHandler(
 
     return handler(req, res, next);
   };
+}
+
+/**
+ * @param cache
+ * @param id
+ * @param pages
+ * @param req
+ * @param staticUrl
+ * @param staticFolder
+ * @returns
+ */
+function handlePages(
+  // deno-lint-ignore no-explicit-any
+  cache: any,
+  id: string,
+  pages: Array<SSRHandler>,
+  req: Request,
+  staticUrl: string,
+  staticFolder: string,
+) {
+  let page: SSRHandler | undefined = undefined;
+
+  const pageId = "page-" + id;
+  if (cache[pageId]) {
+    page = cache[pageId];
+  } else {
+    const p = pages.find((page) => {
+      let pattern: URLPattern | null = new URLPattern({
+        pathname: page.path,
+      });
+      const match = pattern.exec(req.url);
+      pattern = null;
+      return (match);
+    });
+    cache[pageId] = p;
+    page = p;
+  }
+
+  if (!page) {
+    return handleStaticFile(staticUrl, req.url, staticFolder);
+  }
+
+  return handleJSXPage(page, req);
 }
 
 function isString(stringResult: unknown) {
