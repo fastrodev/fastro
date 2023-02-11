@@ -95,7 +95,7 @@ function handlePages(
 
   const pageId = "page-" + id;
   if (cache[pageId]) {
-    page = cache[pageId];
+    page = cache[pageId] === "non-page" ? undefined : cache[pageId];
   } else {
     const p = pages.find((page) => {
       let pattern: URLPattern | null = new URLPattern({
@@ -105,7 +105,7 @@ function handlePages(
       pattern = null;
       return (match);
     });
-    cache[pageId] = p;
+    cache[pageId] = p ? p : "non-page";
     page = p;
   }
 
