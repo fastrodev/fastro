@@ -1,5 +1,5 @@
-import { Cookie, deleteCookie, setCookie } from "$fastro/server/deps.ts";
-import { RequestResponse, SSR } from "$fastro/server/types.ts";
+import { Cookie, deleteCookie, setCookie } from "./deps.ts";
+import { RequestResponse, SSR } from "./types.ts";
 
 export function response(req: Request): RequestResponse {
   let headers = new Headers();

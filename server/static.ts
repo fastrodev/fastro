@@ -1,4 +1,4 @@
-import { Status, STATUS_TEXT } from "$fastro/server/deps.ts";
+import { Status, STATUS_TEXT } from "./deps.ts";
 
 export async function handleStaticFile(
   baseStaticUrl: string,

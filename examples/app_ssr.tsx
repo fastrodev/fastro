@@ -1,6 +1,6 @@
-import App from "$fastro/examples/pages/app.tsx";
-import Hello from "$fastro/examples/pages/hello.tsx";
-import fastro, { render } from "$fastro/server/mod.ts";
+import fastro, { render } from "../server/mod.ts";
+import App from "./pages/app.tsx";
+import Hello from "./pages/hello.tsx";
 
 // define an app component to render
 // with bundle name 'app'

@@ -1,5 +1,5 @@
-import { response } from "$fastro/server/response.ts";
-import { HandlerArgument, SSR, SSRHandler } from "$fastro/server/types.ts";
+import { response } from "./response.ts";
+import { HandlerArgument, SSR, SSRHandler } from "./types.ts";
 
 interface Page {
   pages: Map<string, SSRHandler>;
