@@ -1,28 +1,21 @@
 {
-  "files.eol": "\n",
-  "files.trimTrailingWhitespace": true,
-  "[typescript]": {
+    "deno.enable": true,
+    "deno.lint": true,
+    "deno.unstable": true,
+    "deno.codeLens.test": true,
     "editor.defaultFormatter": "denoland.vscode-deno",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-    }
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "denoland.vscode-deno",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-    }
-  },
-  "[markdown]": {
-    "editor.formatOnSave": false
-  },
-  "deno.enable": true,
-  "deno.unstable": true,
-  "deno.lint": true,
-  "deno.suggest.imports.hosts": {
-    "https://deno.land": true
-  },
-  "deno.config": "./deno.json"
+    "[typescript]": {
+        "editor.defaultFormatter": "denoland.vscode-deno",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "denoland.vscode-deno",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
 }

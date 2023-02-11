@@ -1,18 +1,20 @@
-import { RequestResponse, SSR } from "./types.ts";
-import { Cookie, deleteCookie, setCookie } from "./deps.ts";
+import { Cookie, deleteCookie, setCookie } from "$fastro/server/deps.ts";
+import { RequestResponse, SSR } from "$fastro/server/types.ts";
 
-export function response(req?: Request): RequestResponse {
+export function response(req: Request): RequestResponse {
   let headers = new Headers();
   let responseAuthorization: string;
   let responseStatus = 200;
-  let contentType = "text/plain;charset=UTF-8";
   let cookie: Cookie;
-  let ssr: SSR;
+  let contentType = "text/plain;charset=UTF-8";
   let requestInstance: Request;
+  let ssr: SSR;
 
   if (req) requestInstance = req;
 
-  function createResponse(str: BodyInit | null | undefined) {
+  function createResponse(
+    str: BodyInit | null | undefined,
+  ) {
     if (responseAuthorization) {
       headers.set("Authorization", responseAuthorization);
     }

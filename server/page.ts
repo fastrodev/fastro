@@ -1,12 +1,12 @@
-import { ConnInfo, Handler } from "./deps.ts";
-import { PathArgument, SSR, SSRHandler } from "./types.ts";
+import { response } from "$fastro/server/response.ts";
+import { HandlerArgument, SSR, SSRHandler } from "$fastro/server/types.ts";
 
 interface Page {
   pages: Map<string, SSRHandler>;
   set: (
-    path: PathArgument,
+    path: string,
     ssr: SSR,
-    handler: Handler,
+    handler: HandlerArgument,
   ) => Page;
 }
 
@@ -17,9 +17,9 @@ export function page(): Page {
   const instance = {
     pages,
     set: (
-      path: PathArgument,
+      path: string,
       ssr: SSR,
-      handler: Handler,
+      handler: HandlerArgument,
     ) => {
       const component = {
         path,
@@ -37,7 +37,6 @@ export function page(): Page {
 export function handleJSXPage(
   ssr: SSRHandler,
   req: Request,
-  connInfo: ConnInfo,
 ): Response | Promise<Response> {
-  return ssr.handler(req, connInfo);
+  return ssr.handler(req, response(req), () => {});
 }

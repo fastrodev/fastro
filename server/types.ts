@@ -1,37 +1,10 @@
-// deno-lint-ignore-file no-explicit-any
-import { ConnInfo, Cookie, Handler } from "./deps.ts";
+import { Cookie, ServeInit } from "$fastro/server/deps.ts";
 
-export type SSRHandler = {
-  path: PathArgument;
-  ssr: SSR;
-  handler: Handler;
-};
-
-export interface SSR {
-  dir: (dir: string) => SSR;
-  component: (el: JSX.Element) => SSR;
-  title: (title: string) => SSR;
-  meta: (meta: string) => SSR;
-  script: (script: string) => SSR;
-  style: (style: string) => SSR;
-  link: (link: string) => SSR;
-  render: () => Response;
-  /** Used by internal system to hydrate and create bundle on application initiation */
-  _createBundle: (bundle?: string) => void;
-  /** Used by internal system to set request on response init to get the url. This url is used to get the hydrated and bundled JS file. */
-  _setRequest: (req: Request) => void;
+export interface Next {
+  (error?: unknown): void;
 }
 
-export type RenderOptions = {
-  title: string;
-  style?: string;
-  link?: string;
-  script?: string;
-  meta?: string;
-  bundle?: string;
-};
-
-export interface RequestResponse {
+export type RequestResponse = {
   deleteCookie: (
     name: string,
     attributes?: {
@@ -48,29 +21,14 @@ export interface RequestResponse {
   json: (object: unknown) => Response | Promise<Response>;
   ssr: (ssr: SSR) => SSR;
   html: (html: string) => Response | Promise<Response>;
-}
+};
 
-export type StringHandler = (request?: Request, connInfo?: ConnInfo) => string;
-export interface Router {
-  routes: Map<string, Route>;
-  get(path: PathArgument, ...handlers: HandlerArgument[]): Router;
-  post(path: PathArgument, ...handlers: HandlerArgument[]): Router;
-  put(path: PathArgument, ...handlers: HandlerArgument[]): Router;
-  delete(path: PathArgument, ...handlers: HandlerArgument[]): Router;
-  patch(path: PathArgument, ...handlers: HandlerArgument[]): Router;
-  head(path: PathArgument, ...handlers: HandlerArgument[]): Router;
-  options(path: PathArgument, ...handlers: HandlerArgument[]): Router;
-}
+export type HttpRequest = Request;
 
-export type PathArgument = string | RegExp;
-
-export interface Next {
-  (error?: unknown): void;
-}
 export type RequestHandler = (
-  request: Request,
-  connInfo: ConnInfo,
-  next: Next,
+  request: HttpRequest,
+  response: RequestResponse,
+  next?: Next,
 ) =>
   | void
   | Promise<void>
@@ -78,31 +36,104 @@ export type RequestHandler = (
   | Promise<string>
   | Response
   | Promise<Response>
-  | JSX.Element
+  // deno-lint-ignore no-explicit-any
   | any
+  // deno-lint-ignore no-explicit-any
   | Promise<any>;
 
-export type HandlerArgument = Handler | RequestHandler | RequestHandler[];
+export type HandlerArgument = Deno.ServeHandler | RequestHandler;
+
 export type Route = {
   method: string;
-  path: PathArgument;
-  handlers: HandlerArgument[];
+  path: string;
+  handler: HandlerArgument;
 };
 
-export interface Dependency {
-  deps: Map<string, unknown>;
-  set(key: string, val: unknown): Dependency;
-  get(key: string): unknown;
-}
-export type MiddlewareArgument =
-  | Dependency
-  | PathArgument
-  | Router
-  | RequestHandler
-  | RequestHandler[];
+export type Fastro = {
+  /**
+   * Accept incoming connections on the given listener, and handle requests on these connections with the given handler.
+   *
+   * HTTP/2 support is only enabled if the provided Deno.Listener returns TLS connections and was configured with "h2" in the ALPN protocols.
+   *
+   * Throws a server closed error if called after the server has been closed.
+   *
+   * @param options
+   */
+  serve(options?: ServeInit): Promise<void>;
+  /**
+   * Immediately close the server listeners and associated HTTP connections.
+   *
+   * Throws a server closed error if called after the server has been closed.
+   */
+  close(): void;
+  /**
+   * Add url endpoint for static files
+   *
+   * ```ts
+   * import application from "$fastro/server/mod.ts";
+   * const app = application();
+   * app.static("/", "./public");
+   * await app.serve();
+   * ```
+   *
+   * @param path The base endpoint to access a file
+   * @param folder The base folder to save all files
+   */
+  static(path: string, folder?: string): Fastro;
+  get(path: string, handler: HandlerArgument): Fastro;
+  post(path: string, handler: HandlerArgument): Fastro;
+  put(path: string, handler: HandlerArgument): Fastro;
+  delete(path: string, handler: HandlerArgument): Fastro;
+  patch(path: string, handler: HandlerArgument): Fastro;
+  options(path: string, handler: HandlerArgument): Fastro;
+  page(
+    path: string,
+    ssr: SSR,
+    handler: HandlerArgument,
+  ): Fastro;
+};
 
-export interface AppMiddleware {
-  type: string;
-  path: PathArgument;
-  middlewares: MiddlewareArgument[];
+export type SSRHandler = {
+  path: string;
+  ssr: SSR;
+  handler: HandlerArgument;
+};
+
+export type StartOptions = {
+  flash: boolean;
+};
+
+export type StringHandler = (
+  request?: Request,
+  response?: RequestResponse,
+  next?: Next,
+) => string;
+
+export type RenderOptions = {
+  title: string;
+  style?: string;
+  link?: string;
+  script?: string;
+  meta?: string;
+  bundle?: string;
+};
+
+export interface SSR {
+  dir: (dir: string) => SSR;
+  title: (title: string) => SSR;
+  meta: (meta: string) => SSR;
+  script: (script: string) => SSR;
+  style: (style: string) => SSR;
+  link: (link: string) => SSR;
+  render: () => Response;
+  /** Used by internal system to hydrate and create bundle on application initiation */
+  _createBundle: (
+    bundle?: string,
+    rootComponent?: string,
+    rootTSX?: string,
+  ) => void;
+  /** Used by internal system to set request on response init to get the url. This url is used to get the hydrated and bundled JS file. */
+  _setRequest: (req: Request) => void;
+  _getBundleName: () => string;
+  setBundleName: (name: string) => SSR;
 }

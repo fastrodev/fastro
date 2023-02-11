@@ -1,14 +1,5 @@
-import {
-  application,
-  getParam,
-  getParams,
-  getQueries,
-  getQuery,
-} from "./application.ts";
-export * from "./types.ts";
-export * from "./router.ts";
-export * from "./container.ts";
-export * from "./response.ts";
-export { getParam, getParams, getQueries, getQuery };
-export default application;
-export { h } from "./deps.ts";
+import { fastro } from "$fastro/server/server.ts";
+export { render } from "$fastro/server/ssr.ts";
+export * from "$fastro/server/types.ts";
+
+export default fastro;

@@ -1,15 +1,10 @@
-// @deno-types="https://cdn.esm.sh/v78/@types/react@18.0.9/react.d.ts"
-import React, {
-  createElement as h,
-  useState,
-} from "https://esm.sh/react@18.1.0";
+import React, { useState } from "https://esm.sh/react@18.2.0";
 
 const App = () => {
   const [count, setCount] = useState(0);
-
   return (
     <div>
-      <h1>Hello World</h1>
+      <h1>Hello DenoLand!</h1>
       <button onClick={() => setCount(count + 1)}>Click the 🦕</button>
       <p>You clicked the 🦕 {count} times</p>
     </div>

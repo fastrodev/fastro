@@ -1,20 +1,23 @@
-import { Status, STATUS_TEXT } from "./deps.ts";
+import { Status, STATUS_TEXT } from "$fastro/server/deps.ts";
 
-export async function handleStaticFile(staticUrl: string, url: string) {
+export async function handleStaticFile(
+  baseStaticUrl: string,
+  reqUrl: string,
+  staticFolder: string,
+) {
   let file;
-  const staticPath = "./public";
-
-  const [, path] = url.split(staticUrl);
+  const [, path] = reqUrl.split(baseStaticUrl);
   if (!path) {
-    return new Response(STATUS_TEXT.get(Status.NotFound), {
+    return new Response(STATUS_TEXT[Status.NotFound], {
       status: Status.NotFound,
     });
   }
 
   try {
-    file = await Deno.open(staticPath + path, { read: true });
+    const filePath = `${staticFolder}/${path}`;
+    file = await Deno.open(filePath, { read: true });
   } catch {
-    return new Response(STATUS_TEXT.get(Status.NotFound), {
+    return new Response(STATUS_TEXT[Status.NotFound], {
       status: Status.NotFound,
     });
   }
