@@ -1,5 +1,5 @@
-import { fastro } from "$fastro/server/server.ts";
 import { assertEquals } from "$std/testing/asserts.ts";
+import { fastro } from "./server.ts";
 
 const host = "http://localhost:9000";
 

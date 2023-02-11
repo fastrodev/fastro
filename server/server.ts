@@ -1,13 +1,6 @@
-import {
-  DELETE,
-  GET,
-  OPTIONS,
-  PATCH,
-  POST,
-  PUT,
-} from "$fastro/server/constant.ts";
-import { ServeInit, Server } from "$fastro/server/deps.ts";
-import { createHandler } from "$fastro/server/handler.ts";
+import { DELETE, GET, OPTIONS, PATCH, POST, PUT } from "./constant.ts";
+import { ServeInit, Server } from "./deps.ts";
+import { createHandler } from "./handler.ts";
 import {
   Fastro,
   HandlerArgument,
@@ -15,7 +8,7 @@ import {
   SSR,
   SSRHandler,
   StartOptions,
-} from "$fastro/server/types.ts";
+} from "./types.ts";
 
 export function fastro(startOptions?: StartOptions): Fastro {
   const routes: Array<Route> = [];

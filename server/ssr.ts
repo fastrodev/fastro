@@ -1,11 +1,10 @@
-import { ReactDOMServer } from "$fastro/server/deps.ts";
-import { RenderOptions, SSR } from "$fastro/server/types.ts";
 import * as esbuild from "https://deno.land/x/esbuild@v0.15.10/mod.js";
 import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts";
+import { ReactDOMServer } from "./deps.ts";
+import { RenderOptions, SSR } from "./types.ts";
 
 function createHydrate(rootComponent: string, rootTSX: string) {
-  return `import React from "https://esm.sh/react@18.2.0";
-import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
+  return `import React from "https://esm.sh/react@18.2.0";import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
 import ${rootComponent} from "./${rootTSX}.tsx";
 const container = document.getElementById("root");
 const root = createRoot(container);

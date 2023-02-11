@@ -1,4 +1,4 @@
-import { Cookie, ServeInit } from "$fastro/server/deps.ts";
+import { Cookie, ServeInit } from "./deps.ts";
 
 export interface Next {
   (error?: unknown): void;
@@ -70,7 +70,7 @@ export type Fastro = {
    * Add url endpoint for static files
    *
    * ```ts
-   * import application from "$fastro/server/mod.ts";
+   * import application from "./mod.ts";
    * const app = application();
    * app.static("/", "./public");
    * await app.serve();

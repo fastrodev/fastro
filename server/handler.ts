@@ -1,14 +1,14 @@
-import { ReactDOMServer } from "$fastro/server/deps.ts";
-import { handleJSXPage } from "$fastro/server/page.ts";
-import { response } from "$fastro/server/response.ts";
-import { handleStaticFile } from "$fastro/server/static.ts";
+import { ReactDOMServer } from "./deps.ts";
+import { handleJSXPage } from "./page.ts";
+import { response } from "./response.ts";
+import { handleStaticFile } from "./static.ts";
 import {
   HandlerArgument,
   Next,
   Route,
   SSRHandler,
   StringHandler,
-} from "$fastro/server/types.ts";
+} from "./types.ts";
 
 export function createHandler(
   routes: Array<Route>,
