@@ -39,7 +39,7 @@ export function render(el?: JSX.Element): SSR {
   const styleInstance: string[] = [];
   const linkInstance: string[] = [];
   const metaInstance: string[] = [];
-  let reqInstance: Request;
+  let _reqInstance: Request;
 
   if (el) element = el;
 
@@ -146,8 +146,8 @@ export function render(el?: JSX.Element): SSR {
       return instance;
     },
     _createBundle: createBundle,
-    _setRequest: (req: Request) => {
-      reqInstance = req;
+    _setRequest: (_req: Request) => {
+      // reqInstance = req;
     },
     _getBundleName: () => bundleName,
   };
