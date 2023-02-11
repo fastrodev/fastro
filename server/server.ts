@@ -34,11 +34,9 @@ export function fastro(startOptions?: StartOptions): Fastro {
       const cache = {};
 
       for (const p of pages) {
-        let bundle = "";
-        if (p.path === "/") bundle = "bundle";
-
         const rootComponent = `App`;
-        const rootTSX = `app`;
+        const bundle = p.ssr._getBundleName();
+        const rootTSX = bundle;
         p.ssr._createBundle(bundle, rootComponent, rootTSX);
       }
 

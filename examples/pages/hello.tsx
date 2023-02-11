@@ -1,9 +1,9 @@
 import React from "https://esm.sh/react@18.2.0";
 
-const App = () => (
+const Hello = () => (
   <div>
-    <h1>Hello World</h1>
+    <h1>Hello</h1>
   </div>
 );
 
-export default App;
+export default Hello;

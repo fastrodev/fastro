@@ -11,7 +11,8 @@
     "hello-jsx": "deno run -A examples/hello_jsx.tsx",
     "hello-json": "deno run -A examples/hello_json.ts",
     "hello": "deno run -A examples/hello_world.ts",
-    "static": "deno run -A examples/static_file.ts"
+    "static": "deno run -A examples/static_file.ts",
+    "ssr": "deno run -A examples/app_ssr.tsx"
   },
   "importMap": "./import_map.json"
 }

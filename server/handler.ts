@@ -19,18 +19,33 @@ export function createHandler(
   pages: Array<SSRHandler>,
 ) {
   return function (req: Request) {
-    const id = req.method + req.url;
+    const id = req.method + "-" + req.url;
     let handler: HandlerArgument | undefined = undefined;
+    let page: SSRHandler | undefined = undefined;
 
-    const page = pages.find((page) => {
-      let pattern: URLPattern | null = new URLPattern({
-        pathname: page.path,
-      });
-      const match = pattern.exec(req.url);
-      pattern = null;
-      return (match);
-    });
-    if (page) return handleJSXPage(page, req);
+    if (pages.length > 0) {
+      const pageId = "page-" + id;
+      if (cache[pageId]) {
+        page = cache[pageId];
+      } else {
+        const p = pages.find((page) => {
+          let pattern: URLPattern | null = new URLPattern({
+            pathname: page.path,
+          });
+          const match = pattern.exec(req.url);
+          pattern = null;
+          return (match);
+        });
+        cache[pageId] = p;
+        page = p;
+      }
+
+      if (!page) {
+        return handleStaticFile(staticUrl, req.url, staticFolder);
+      }
+
+      return handleJSXPage(page, req);
+    }
 
     if (cache[id]) handler = cache[id];
     else {

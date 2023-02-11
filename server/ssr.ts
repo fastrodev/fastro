@@ -5,11 +5,11 @@ import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts
 
 function createHydrate(rootComponent: string, rootTSX: string) {
   return `import React from "https://esm.sh/react@18.2.0";
-  import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
-  import ${rootComponent} from "./${rootTSX}.tsx";
-  const container = document.getElementById("root");
-  const root = createRoot(container);
-  root.render(<${rootComponent} />);`;
+import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
+import ${rootComponent} from "./${rootTSX}.tsx";
+const container = document.getElementById("root");
+const root = createRoot(container);
+root.render(<${rootComponent} />);`;
 }
 
 function createMeta(meta: string) {
@@ -28,12 +28,13 @@ function createStyle(style: string) {
   return `<style>${style}</style>`;
 }
 
-export default function rendering(el?: JSX.Element): SSR {
+export function render(el?: JSX.Element): SSR {
   let element: JSX.Element;
   let status: 200;
   let html: string;
   let dir = "./";
   let title: string;
+  let bundleName: string;
   const scriptInstance: string[] = [];
   const styleInstance: string[] = [];
   const linkInstance: string[] = [];
@@ -70,6 +71,7 @@ export default function rendering(el?: JSX.Element): SSR {
       entryPoints: [hydrateTarget],
       outfile: bundlePath,
       bundle: true,
+      minify: true,
       format: "esm",
     }).then(() => {
       Deno.remove(hydrateTarget);
@@ -81,19 +83,13 @@ export default function rendering(el?: JSX.Element): SSR {
     options: RenderOptions,
   ) {
     const component = ReactDOMServer.renderToString(element);
+    const title = options.title ? options.title : "";
     const link = options.link ? options.link : "";
     const meta = options.meta ? options.meta : "";
     const script = options.script ? options.script : "";
     const style = options.style ? options.style : "";
     const bundle = options.bundle ? options.bundle : "bundle";
-    return `<!DOCTYPE html><html><head><title>${options.title}</title>${link}${meta}${script}${style}</head><body><div id="root">${component}</div><script type="module" src="/static/${bundle}.js"></script><body></html>`;
-  }
-
-  function getBundle(req: Request) {
-    console.log(req.url);
-    const [, path] = req.url.split("://");
-    const items = path.split("/");
-    return items[items.length - 1];
+    return `<!DOCTYPE html><html><head><title>${title}</title>${link}${meta}${script}${style}</head><body><div id="root">${component}</div><script type="module" src="/static/${bundle}.js"></script><body></html>`;
   }
 
   const instance = {
@@ -121,13 +117,8 @@ export default function rendering(el?: JSX.Element): SSR {
       linkInstance.push(createLink(l));
       return instance;
     },
-    component: (el: JSX.Element) => {
-      element = el;
-      return instance;
-    },
     render: () => {
-      const bundle = getBundle(reqInstance);
-
+      const bundle = bundleName;
       const meta = metaInstance.length > 0 ? metaInstance.join("") : "";
       const script = scriptInstance.length > 0 ? scriptInstance.join("") : "";
       const link = linkInstance.length > 0 ? linkInstance.join("") : "";
@@ -150,10 +141,15 @@ export default function rendering(el?: JSX.Element): SSR {
         },
       });
     },
+    setBundleName: (name: string) => {
+      bundleName = name;
+      return instance;
+    },
     _createBundle: createBundle,
     _setRequest: (req: Request) => {
       reqInstance = req;
     },
+    _getBundleName: () => bundleName,
   };
 
   return instance;

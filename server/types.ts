@@ -120,7 +120,6 @@ export type RenderOptions = {
 
 export interface SSR {
   dir: (dir: string) => SSR;
-  component: (el: JSX.Element) => SSR;
   title: (title: string) => SSR;
   meta: (meta: string) => SSR;
   script: (script: string) => SSR;
@@ -135,4 +134,6 @@ export interface SSR {
   ) => void;
   /** Used by internal system to set request on response init to get the url. This url is used to get the hydrated and bundled JS file. */
   _setRequest: (req: Request) => void;
+  _getBundleName: () => string;
+  setBundleName: (name: string) => SSR;
 }
