@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { ReactDOMServer } from "./deps.ts";
 import { handleJSXPage } from "./page.ts";
 import { response } from "./response.ts";
@@ -14,17 +15,12 @@ export function createHandler(
   routes: Array<Route>,
   staticUrl: string,
   staticFolder: string,
-  // deno-lint-ignore no-explicit-any
   cache: any,
   pages: Array<SSRHandler>,
 ) {
   return function (req: Request) {
     const id = req.method + "-" + req.url;
     let handler: HandlerArgument | undefined = undefined;
-
-    if (pages.length > 0) {
-      return handlePages(cache, id, pages, req, staticUrl, staticFolder);
-    }
 
     if (cache[id]) handler = cache[id];
     else {
@@ -41,7 +37,7 @@ export function createHandler(
     }
 
     if (!handler) {
-      return handleStaticFile(staticUrl, req.url, staticFolder);
+      return handlePages(cache, id, pages, req, staticUrl, staticFolder);
     }
 
     cache[id] = handler;
@@ -83,7 +79,6 @@ export function createHandler(
  * @returns
  */
 function handlePages(
-  // deno-lint-ignore no-explicit-any
   cache: any,
   id: string,
   pages: Array<SSRHandler>,

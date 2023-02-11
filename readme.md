@@ -6,14 +6,14 @@
 
 Fast and simple web application framework for deno.
 
-With [near-native perfomance](https://github.com/fastrodev/fastro/tree/main/benchmarks),
+With [deno near-native perfomance](https://github.com/denosaurs/bench#overview),
 you can:
 
-- Manage your routing, middlewares, and dependencies cleanly.
-- Take advantage of existing Deno objects and methods.
-- [Simplifies JSX](#html-render-with-react-jsx) and [Multipage SSR Initiation](https://github.com/fastrodev/multipage-ssr-example).
+- Take advantage of existing Deno objects and methods
+- Manage your routing cleanly
+- Simplifies JSX and [Multipage SSR Initiation](https://github.com/fastrodev/multipage-ssr-example)
 
-### Getting started
+## Getting started
 
 Create a `main.ts` file for deno-cli entry point.
 
@@ -29,7 +29,7 @@ await f.serve();
 ```
 Run the app
 ```
-deno run -A main.ts
+deno run -A --unstable main.ts
 ```
 
 [Build Status - Cirrus]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg?branch=main&event=push

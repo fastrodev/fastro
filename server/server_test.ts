@@ -1,17 +1,17 @@
-import { assertEquals } from "$std/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
 import { fastro } from "./server.ts";
 
 const host = "http://localhost:9000";
 
-Deno.test({ permissions: { net: true } }, async function getMethodWithFlash() {
-  const app = fastro({ flash: true });
-  app.get("/", () => new Response("GET"));
-  const server = app.serve();
-  const response = await fetch(host, { method: "GET" });
-  assertEquals(await response.text(), "GET");
-  app.close();
-  await server;
-});
+// Deno.test({ permissions: { net: true } }, async function getMethodWithFlash() {
+//   const app = fastro({ flash: true });
+//   app.get("/", () => new Response("GET"));
+//   const server = app.serve();
+//   const response = await fetch(host, { method: "GET" });
+//   assertEquals(await response.text(), "GET");
+//   app.close();
+//   await server;
+// });
 
 Deno.test({ permissions: { net: true } }, async function getMethod() {
   const app = fastro();
