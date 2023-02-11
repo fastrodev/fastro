@@ -1,5 +1,5 @@
-import { fastro } from "$fastro/server/server.ts";
-export { render } from "$fastro/server/ssr.ts";
-export * from "$fastro/server/types.ts";
+import { fastro } from "../server/server.ts";
+export { render } from "../server/ssr.ts";
+export * from "../server/types.ts";
 
 export default fastro;
