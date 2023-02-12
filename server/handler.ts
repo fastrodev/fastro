@@ -84,8 +84,8 @@ export function createHandler(
     cache[id] = handler;
     const res = response(req);
     const next: Next | undefined = undefined;
-    const stringHandler = <ExecHandler> <unknown> handler;
-    const result = stringHandler(req, res, next);
+    const execHandler = <ExecHandler> <unknown> handler;
+    const result = execHandler(req, res, next);
 
     if (isString(result)) {
       return new Response(result);
