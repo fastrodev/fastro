@@ -13,10 +13,10 @@ import {
 
 export function createHandler(
   routes: Array<Route>,
+  pages: Array<SSRHandler>,
   staticUrl: string,
   staticFolder: string,
   cache: any,
-  pages: Array<SSRHandler>,
 ) {
   return function (req: Request) {
     const id = req.method + "-" + req.url;
@@ -37,7 +37,7 @@ export function createHandler(
     }
 
     if (!handler) {
-      return handlePages(cache, id, pages, req, staticUrl, staticFolder);
+      return handlePages(req, id);
     }
 
     cache[id] = handler;
@@ -67,48 +67,32 @@ export function createHandler(
 
     return handler(req, res, next);
   };
-}
 
-/**
- * @param cache
- * @param id
- * @param pages
- * @param req
- * @param staticUrl
- * @param staticFolder
- * @returns
- */
-function handlePages(
-  cache: any,
-  id: string,
-  pages: Array<SSRHandler>,
-  req: Request,
-  staticUrl: string,
-  staticFolder: string,
-) {
-  let page: SSRHandler | undefined = undefined;
+  function handlePages(req: Request, id: string) {
+    let page: SSRHandler | undefined = undefined;
 
-  const pageId = "page-" + id;
-  if (cache[pageId]) {
-    page = cache[pageId] === "non-page" ? undefined : cache[pageId];
-  } else {
-    const p = pages.find((page) => {
-      let pattern: URLPattern | null = new URLPattern({
-        pathname: page.path,
+    const pageId = "page-" + id;
+    if (cache[pageId]) {
+      page = cache[pageId] === "non-page" ? undefined : cache[pageId];
+    } else {
+      const p = pages.find((page) => {
+        let pattern: URLPattern | null = new URLPattern({
+          pathname: page.path,
+        });
+        const match = pattern.exec(req.url);
+        pattern = null;
+        return (match);
       });
-      const match = pattern.exec(req.url);
-      pattern = null;
-      return (match);
-    });
-    cache[pageId] = p ? p : "non-page";
-    page = p;
-  }
+      cache[pageId] = p ? p : "non-page";
+      page = p;
+    }
 
-  if (!page) {
-    return handleStaticFile(staticUrl, req.url, staticFolder);
-  }
+    if (!page) {
+      return handleStaticFile(staticUrl, req.url, staticFolder);
+    }
 
-  return handleJSXPage(page, req);
+    return handleJSXPage(page, req);
+  }
 }
 
 function isString(stringResult: unknown) {

@@ -35,10 +35,10 @@ export function fastro(_startOptions?: StartOptions): Fastro {
 
       const handler = createHandler(
         routes,
+        pages,
         baseStaticPath,
         staticFolder,
         cache,
-        pages,
       );
 
       return Deno.serve({
