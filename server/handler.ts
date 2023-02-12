@@ -161,7 +161,7 @@ function isJSON(element: unknown) {
   return [true, stringify];
 }
 
-function isJSX(element: unknown) {
+export function isJSX(element: unknown) {
   const el = <JSX.Element> element;
   return el.props != undefined && el.type != undefined;
 }

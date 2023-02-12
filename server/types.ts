@@ -22,6 +22,7 @@ export type HttpResponse = {
   json: (object: unknown) => Response | Promise<Response>;
   ssr: (ssr: SSR) => SSR;
   html: (html: string) => Response | Promise<Response>;
+  jsx: (element: JSX.Element) => Response | Promise<Response>;
 };
 
 export class HttpRequest extends Request {
