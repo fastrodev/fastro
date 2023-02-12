@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { Cookie, ServeInit } from "./deps.ts";
 
 export interface Next {
@@ -36,9 +37,21 @@ export type RequestHandler = (
   | Promise<string>
   | Response
   | Promise<Response>
-  // deno-lint-ignore no-explicit-any
   | any
-  // deno-lint-ignore no-explicit-any
+  | Promise<any>;
+
+export type MiddlewareArgument = (
+  request: HttpRequest,
+  response: RequestResponse,
+  next: Next,
+) =>
+  | void
+  | Promise<void>
+  | string
+  | Promise<string>
+  | Response
+  | Promise<Response>
+  | any
   | Promise<any>;
 
 export type HandlerArgument = Deno.ServeHandler | RequestHandler;
@@ -80,6 +93,7 @@ export type Fastro = {
    * @param folder The base folder to save all files
    */
   static(path: string, folder?: string): Fastro;
+  use(...middleware: Array<MiddlewareArgument>): Fastro;
   get(path: string, handler: HandlerArgument): Fastro;
   post(path: string, handler: HandlerArgument): Fastro;
   put(path: string, handler: HandlerArgument): Fastro;

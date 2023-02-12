@@ -1,9 +1,10 @@
 import { DELETE, GET, OPTIONS, PATCH, POST, PUT } from "./constant.ts";
-import { ServeInit, Server } from "./deps.ts";
+import { ServeInit } from "./deps.ts";
 import { createHandler } from "./handler.ts";
 import {
   Fastro,
   HandlerArgument,
+  MiddlewareArgument,
   Route,
   SSR,
   SSRHandler,
@@ -13,10 +14,10 @@ import {
 export function fastro(_startOptions?: StartOptions): Fastro {
   const routes: Array<Route> = [];
   const pages: Array<SSRHandler> = [];
+  const middlewares: Array<MiddlewareArgument> = [];
   const ac = new AbortController();
   let staticFolder = "./public";
   let staticPath = "/";
-  let _server: Server;
 
   const app = {
     serve: (serveOptions: ServeInit) => {
@@ -34,6 +35,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       }
 
       const handler = createHandler(
+        middlewares,
         routes,
         pages,
         baseStaticPath,
@@ -49,15 +51,6 @@ export function fastro(_startOptions?: StartOptions): Fastro {
         onError: serveOptions?.onError,
         signal: ac.signal,
       });
-
-      // server = new Server({
-      //   hostname,
-      //   port,
-      //   handler,
-      //   onError: serveOptions?.onError,
-      // });
-      // console.info(`Listening on http://${hostname}:${port}/`);
-      // return server.listenAndServe();
     },
     static: (path: string, folder?: string) => {
       staticPath = path;
@@ -66,10 +59,12 @@ export function fastro(_startOptions?: StartOptions): Fastro {
     },
     close: () => {
       return ac.abort();
-      // if (startOptions && startOptions.flash) {
-      //   return ac.abort();
-      // }
-      // return server.close();
+    },
+    use: (...middleware: Array<MiddlewareArgument>) => {
+      middleware.forEach((m) => {
+        middlewares.push(m);
+      });
+      return app;
     },
     get: (path: string, handler: HandlerArgument) => {
       routes.push({ method: GET, path, handler });
