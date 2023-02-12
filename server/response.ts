@@ -1,7 +1,7 @@
 import { Cookie, deleteCookie, setCookie } from "./deps.ts";
-import { RequestResponse, SSR } from "./types.ts";
+import { HttpResponse, SSR } from "./types.ts";
 
-export function response(req: Request): RequestResponse {
+export function response(req: Request): HttpResponse {
   let headers = new Headers();
   let responseAuthorization: string;
   let responseStatus = 200;

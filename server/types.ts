@@ -5,30 +5,31 @@ export interface Next {
   (error?: unknown): void;
 }
 
-export type RequestResponse = {
+export type HttpResponse = {
   deleteCookie: (
     name: string,
     attributes?: {
       path?: string | undefined;
       domain?: string | undefined;
     } | undefined,
-  ) => RequestResponse;
-  setCookie: (cookie: Cookie) => RequestResponse;
-  headers: (headers: Headers) => RequestResponse;
-  authorization: (type: string) => RequestResponse;
-  contentType: (type: string) => RequestResponse;
-  status: (status: number) => RequestResponse;
+  ) => HttpResponse;
+  setCookie: (cookie: Cookie) => HttpResponse;
+  headers: (headers: Headers) => HttpResponse;
+  authorization: (type: string) => HttpResponse;
+  contentType: (type: string) => HttpResponse;
+  status: (status: number) => HttpResponse;
   send: (object: unknown) => Response | Promise<Response>;
   json: (object: unknown) => Response | Promise<Response>;
   ssr: (ssr: SSR) => SSR;
   html: (html: string) => Response | Promise<Response>;
 };
 
-export type HttpRequest = Request;
+export class HttpRequest extends Request {
+}
 
 export type RequestHandler = (
   request: HttpRequest,
-  response: RequestResponse,
+  response: HttpResponse,
   next?: Next,
 ) =>
   | void
@@ -42,7 +43,7 @@ export type RequestHandler = (
 
 export type MiddlewareArgument = (
   request: HttpRequest,
-  response: RequestResponse,
+  response: HttpResponse,
   next: Next,
 ) =>
   | void
@@ -119,7 +120,7 @@ export type StartOptions = {
 
 export type StringHandler = (
   request?: Request,
-  response?: RequestResponse,
+  response?: HttpResponse,
   next?: Next,
 ) => string;
 
