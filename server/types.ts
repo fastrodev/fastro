@@ -123,7 +123,7 @@ export type StringHandler = (
   request?: Request,
   response?: HttpResponse,
   next?: Next,
-) => string;
+) => any;
 
 export type RenderOptions = {
   title: string;
