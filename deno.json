@@ -6,7 +6,6 @@
     "jsxImportSource": "https://esm.sh/react"
   },
   "tasks": {
-    "hello-flash": "deno run -A --unstable examples/hello_world_flash.ts",
     "hello-string": "deno run -A --unstable examples/hello_string.ts",
     "hello-jsx": "deno run -A --unstable examples/hello_jsx.tsx",
     "hello-json": "deno run -A --unstable examples/hello_json.ts",
