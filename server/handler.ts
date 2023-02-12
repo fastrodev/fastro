@@ -4,12 +4,12 @@ import { handleJSXPage } from "./page.ts";
 import { response } from "./response.ts";
 import { handleStaticFile } from "./static.ts";
 import {
+  ExecHandler,
   HandlerArgument,
   MiddlewareArgument,
   Next,
   Route,
   SSRHandler,
-  StringHandler,
 } from "./types.ts";
 
 export function createHandler(
@@ -84,7 +84,7 @@ export function createHandler(
     cache[id] = handler;
     const res = response(req);
     const next: Next | undefined = undefined;
-    const stringHandler = <StringHandler> <unknown> handler;
+    const stringHandler = <ExecHandler> <unknown> handler;
     const result = stringHandler(req, res, next);
 
     if (isString(result)) {

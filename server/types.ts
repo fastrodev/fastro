@@ -119,8 +119,8 @@ export type StartOptions = {
   flash: boolean;
 };
 
-export type StringHandler = (
-  request?: Request,
+export type ExecHandler = (
+  request?: HttpRequest,
   response?: HttpResponse,
   next?: Next,
 ) => any;
