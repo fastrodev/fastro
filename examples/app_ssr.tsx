@@ -25,8 +25,7 @@ const f = fastro()
   .page("/", app, (req, res) => {
     // you can access the http request object
     console.log(req.url);
-    return res.ssr(app)
-      .render();
+    return res.ssr(app).render();
   })
   // set endpoint for hello page
   .page("/hello", hello, (req, res) => {
