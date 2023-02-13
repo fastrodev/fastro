@@ -11,7 +11,7 @@
     "hello-json": "deno run -A --unstable examples/hello_json.ts",
     "hello": "deno run -A --unstable examples/hello_world.ts",
     "static": "deno run -A --unstable examples/static_file.ts",
-    "ssr": "deno run -A --unstable examples/app_ssr.tsx",
+    "ssr": "deno run -A --unstable examples/ssr.tsx",
     "middleware": "deno run -A --unstable examples/middleware.ts",
     "jsx": "deno run -A --unstable examples/hello_world_fastro_jsx.tsx"
   }

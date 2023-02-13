@@ -86,3 +86,19 @@ Deno.test({ permissions: { net: true } }, async function middleware() {
   app.close();
   await server;
 });
+
+Deno.test({ permissions: { net: true } }, async function params() {
+  const app = fastro();
+  app.get("/:user", (req, res) => {
+    const r = req.params();
+    if (!r) return res.send("not found");
+    const { user } = r;
+    return res.send(user);
+  });
+  const server = app.serve();
+  const response = await fetch(`${host}/agus`, { method: "GET" });
+  const r = await response.text();
+  assertEquals(r, "agus");
+  app.close();
+  await server;
+});

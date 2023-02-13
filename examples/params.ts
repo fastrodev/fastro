@@ -1,10 +1,14 @@
-import application from "../server/mod.ts";
+import fastro from "../server/mod.ts";
 
-const app = application();
+const f = fastro();
 
-app.get("/:user", (req, res) => {
-  const u = req.params;
-  return res.json({ user: u });
+f.get("/:user", (req, res) => {
+  const r = req.params();
+  if (!r) return res.send("not found");
+  const { user } = r;
+  return res.json({ user });
+}).get("/", (_req, res) => {
+  return res.send("Hello params");
 });
 
-await app.serve();
+await f.serve();

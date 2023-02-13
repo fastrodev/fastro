@@ -23,16 +23,16 @@ export function createHandler(
 ) {
   return function (request: Request) {
     let handler: HandlerArgument | undefined = undefined;
-    const req = transformRequest(request);
     if (middlewares.length > 0) {
-      handler = handleMiddleware(req, middlewares);
+      handler = handleMiddleware(request, middlewares);
     }
 
     if (!handler) {
-      return handleRoutes(req);
+      return handleRoutes(request);
     }
 
-    return handler(req, response(req));
+    const req = transformRequest(request);
+    return handler(req, response(request));
   };
 
   function handlePages(req: HttpRequest, id: string) {
@@ -61,33 +61,39 @@ export function createHandler(
     return handleJSXPage(page, req);
   }
 
-  function handleRoutes(req: HttpRequest) {
+  function handleRoutes(req: Request) {
     const id = req.method + "-" + req.url;
+    const paramId = "param-" + id;
     let handler: HandlerArgument | undefined = undefined;
+    let path = "";
 
-    if (cache[id]) handler = cache[id];
-    else {
-      const route = routes.find((route) => {
+    if (cache[id] || cache[paramId]) {
+      handler = cache[id];
+      path = cache[paramId];
+    } else {
+      routes.find((route) => {
         let pattern: URLPattern | null = new URLPattern({
           pathname: route.path,
         });
         const match = pattern.exec(req.url);
         pattern = null;
-        return (match && (route.method === req.method));
+        if (match) {
+          path = route.path;
+          handler = route?.handler;
+          return (route.method === req.method);
+        }
       });
-
-      handler = route?.handler;
     }
 
-    if (!handler) {
-      return handlePages(req, id);
-    }
+    const request = transformRequest(req, path);
+    if (!handler) return handlePages(request, id);
 
     cache[id] = handler;
-    const res = response(req);
+    cache[paramId] = path;
+    const res = response(request);
     const next: Next | undefined = undefined;
     const execHandler = <ExecHandler> <unknown> handler;
-    const result = execHandler(req, res, next);
+    const result = execHandler(request, res, next);
 
     if (isString(result)) {
       return new Response(result);
@@ -108,11 +114,11 @@ export function createHandler(
       return new Response(<string> object, { headers });
     }
 
-    return handler(req, res, next);
+    return handler(request, res, next);
   }
 
   function handleMiddleware(
-    req: HttpRequest,
+    req: Request,
     middlewares: Array<MiddlewareArgument>,
   ) {
     let done = false;
@@ -120,7 +126,7 @@ export function createHandler(
     for (let index = 0; index < middlewares.length; index++) {
       const m = middlewares[index];
       const res = response(req);
-      m(req, res, (err) => {
+      m(transformRequest(req), res, (err) => {
         if (err) throw err;
         done = true;
       });
@@ -139,7 +145,7 @@ function isString(stringResult: unknown) {
   const str = <string> stringResult;
   try {
     return (str.includes != undefined && str.replaceAll != undefined);
-  } catch (_error) {
+  } catch {
     throw new Error(`Handler return void`);
   }
 }
@@ -176,6 +182,20 @@ function render(element: JSX.Element) {
   });
 }
 
-function transformRequest(request: Request) {
-  return request;
+function getParams(req: Request, path: string) {
+  let pattern: URLPattern | null = new URLPattern({
+    pathname: path,
+  });
+  const match = pattern.exec(req.url);
+  pattern = null;
+  if (match) return match.pathname.groups;
+}
+
+export function transformRequest(request: Request, path?: string) {
+  const req = <HttpRequest> request;
+  req.params = () => {
+    if (!path) return undefined;
+    return getParams(request, path);
+  };
+  return req;
 }

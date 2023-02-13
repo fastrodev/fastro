@@ -1,3 +1,4 @@
+import { transformRequest } from "./handler.ts";
 import { response } from "./response.ts";
 import { HandlerArgument, SSR, SSRHandler } from "./types.ts";
 
@@ -38,5 +39,5 @@ export function handleJSXPage(
   ssr: SSRHandler,
   req: Request,
 ): Response | Promise<Response> {
-  return ssr.handler(req, response(req), () => {});
+  return ssr.handler(transformRequest(req), response(req), () => {});
 }
