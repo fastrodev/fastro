@@ -36,18 +36,25 @@ export function createHandler(
 
   function handlePages(req: HttpRequest, id: string) {
     let page: SSRHandler | undefined = undefined;
-
+    let match: URLPatternResult | null = null;
     const pageId = "page-" + id;
+    const matchId = "match-" + pageId;
+
     if (cache[pageId]) {
       page = cache[pageId] === "non-page" ? undefined : cache[pageId];
+      if (cache[matchId]) match = cache[matchId];
     } else {
       const p = pages.find((page) => {
         let pattern: URLPattern | null = new URLPattern({
           pathname: page.path,
         });
-        const match = pattern.exec(req.url);
+        const m = pattern.exec(req.url);
         pattern = null;
-        return (match);
+        if (m) {
+          match = m;
+          cache[matchId] = m;
+          return (m);
+        }
       });
       cache[pageId] = p ? p : "non-page";
       page = p;
@@ -57,7 +64,7 @@ export function createHandler(
       return handleStaticFile(staticUrl, req.url, staticFolder);
     }
 
-    return handleJSXPage(page, req);
+    return handleJSXPage(page, transformRequest(req, match));
   }
 
   function handleRoutes(req: Request) {
