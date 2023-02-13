@@ -161,7 +161,7 @@ function isJSON(element: unknown) {
     str = <string> element;
     stringify = JSON.stringify(str);
     JSON.parse(stringify);
-  } catch (_err) {
+  } catch {
     return [false, ""];
   }
   return [true, stringify];
