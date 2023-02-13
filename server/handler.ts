@@ -6,6 +6,7 @@ import { handleStaticFile } from "./static.ts";
 import {
   ExecHandler,
   HandlerArgument,
+  HttpRequest,
   MiddlewareArgument,
   Next,
   Route,
@@ -20,8 +21,9 @@ export function createHandler(
   staticFolder: string,
   cache: any,
 ) {
-  return function (req: Request) {
+  return function (request: Request) {
     let handler: HandlerArgument | undefined = undefined;
+    const req = transformRequest(request);
     if (middlewares.length > 0) {
       handler = handleMiddleware(req, middlewares);
     }
@@ -33,7 +35,7 @@ export function createHandler(
     return handler(req, response(req));
   };
 
-  function handlePages(req: Request, id: string) {
+  function handlePages(req: HttpRequest, id: string) {
     let page: SSRHandler | undefined = undefined;
 
     const pageId = "page-" + id;
@@ -59,7 +61,7 @@ export function createHandler(
     return handleJSXPage(page, req);
   }
 
-  function handleRoutes(req: Request) {
+  function handleRoutes(req: HttpRequest) {
     const id = req.method + "-" + req.url;
     let handler: HandlerArgument | undefined = undefined;
 
@@ -110,15 +112,14 @@ export function createHandler(
   }
 
   function handleMiddleware(
-    request: Request,
+    req: HttpRequest,
     middlewares: Array<MiddlewareArgument>,
   ) {
     let done = false;
     let handler: HandlerArgument | undefined = undefined;
     for (let index = 0; index < middlewares.length; index++) {
       const m = middlewares[index];
-      const req = transformRequest(request);
-      const res = response(request);
+      const res = response(req);
       m(req, res, (err) => {
         if (err) throw err;
         done = true;
