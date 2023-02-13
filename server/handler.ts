@@ -34,7 +34,7 @@ export function createHandler(
     return handler(transformRequest(request), response(request));
   };
 
-  function handlePages(req: HttpRequest, id: string) {
+  function handlePages(req: Request, id: string) {
     let page: SSRHandler | undefined = undefined;
     let match: URLPatternResult | null = null;
     const pageId = "page-" + id;
@@ -91,14 +91,14 @@ export function createHandler(
       });
     }
 
-    const request = transformRequest(req, match);
-    if (!handler) return handlePages(request, id);
+    if (!handler) return handlePages(req, id);
 
     cache[id] = handler;
     cache[paramId] = match;
     const res = response(req);
     const next: Next | undefined = undefined;
     const execHandler = <ExecHandler> <unknown> handler;
+    const request = transformRequest(req, match);
     const result = execHandler(request, res, next);
 
     if (isString(result)) {
