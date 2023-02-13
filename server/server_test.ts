@@ -90,7 +90,7 @@ Deno.test({ permissions: { net: true } }, async function middleware() {
 Deno.test({ permissions: { net: true } }, async function params() {
   const app = fastro();
   app.get("/:user", (req, res) => {
-    const r = req.params();
+    const r = req.match?.pathname.groups;
     if (!r) return res.send("not found");
     const { user } = r;
     return res.send(user);

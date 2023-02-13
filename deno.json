@@ -13,6 +13,7 @@
     "static": "deno run -A --unstable examples/static_file.ts",
     "ssr": "deno run -A --unstable examples/ssr.tsx",
     "middleware": "deno run -A --unstable examples/middleware.ts",
-    "jsx": "deno run -A --unstable examples/hello_world_fastro_jsx.tsx"
+    "jsx": "deno run -A --unstable examples/hello_world_fastro_jsx.tsx",
+    "params": "deno run -A --unstable examples/params.ts"
   }
 }

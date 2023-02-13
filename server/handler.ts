@@ -31,8 +31,7 @@ export function createHandler(
       return handleRoutes(request);
     }
 
-    const req = transformRequest(request);
-    return handler(req, response(request));
+    return handler(transformRequest(request), response(request));
   };
 
   function handlePages(req: HttpRequest, id: string) {
@@ -65,32 +64,32 @@ export function createHandler(
     const id = req.method + "-" + req.url;
     const paramId = "param-" + id;
     let handler: HandlerArgument | undefined = undefined;
-    let path = "";
+    let match: URLPatternResult | null = null;
 
-    if (cache[id] || cache[paramId]) {
+    if (cache[id]) {
       handler = cache[id];
-      path = cache[paramId];
+      if (cache[paramId]) match = cache[paramId];
     } else {
       routes.find((route) => {
         let pattern: URLPattern | null = new URLPattern({
           pathname: route.path,
         });
-        const match = pattern.exec(req.url);
+        const m = pattern.exec(req.url);
         pattern = null;
-        if (match) {
-          path = route.path;
+        if (m) {
+          match = m;
           handler = route?.handler;
           return (route.method === req.method);
         }
       });
     }
 
-    const request = transformRequest(req, path);
+    const request = transformRequest(req, match);
     if (!handler) return handlePages(request, id);
 
     cache[id] = handler;
-    cache[paramId] = path;
-    const res = response(request);
+    cache[paramId] = match;
+    const res = response(req);
     const next: Next | undefined = undefined;
     const execHandler = <ExecHandler> <unknown> handler;
     const result = execHandler(request, res, next);
@@ -182,20 +181,15 @@ function render(element: JSX.Element) {
   });
 }
 
-function getParams(req: Request, path: string) {
-  let pattern: URLPattern | null = new URLPattern({
-    pathname: path,
-  });
-  const match = pattern.exec(req.url);
-  pattern = null;
-  if (match) return match.pathname.groups;
-}
-
-export function transformRequest(request: Request, path?: string) {
+export function transformRequest(
+  request: Request,
+  match?: URLPatternResult | null,
+) {
   const req = <HttpRequest> request;
-  req.params = () => {
-    if (!path) return undefined;
-    return getParams(request, path);
-  };
+  if (!match) {
+    req.match = null;
+    return req;
+  }
+  req.match = match;
   return req;
 }

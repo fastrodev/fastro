@@ -26,9 +26,7 @@ export type HttpResponse = {
 };
 
 export class HttpRequest extends Request {
-  params!: {
-    (): Record<string, string> | undefined;
-  };
+  match!: URLPatternResult | null;
 }
 
 export type RequestHandler = (
