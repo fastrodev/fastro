@@ -91,7 +91,7 @@ export function createHandler(
       return new Response(result);
     }
 
-    if (isHTML(result)) {
+    if (isResponse(result)) {
       return <Response> <unknown> result;
     }
 
@@ -143,7 +143,7 @@ function isString(stringResult: unknown) {
   }
 }
 
-function isHTML(element: unknown) {
+function isResponse(element: unknown) {
   return element instanceof Response;
 }
 
