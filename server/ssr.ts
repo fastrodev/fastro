@@ -32,6 +32,7 @@ export function render(el?: JSX.Element): SSR {
   let status: 200;
   let html: string;
   let dir = "./";
+  let cdn = "/static";
   let title: string;
   let bundleName: string;
   const scriptInstance: string[] = [];
@@ -88,7 +89,7 @@ export function render(el?: JSX.Element): SSR {
     const script = options.script ? options.script : "";
     const style = options.style ? options.style : "";
     const bundle = options.bundle ? options.bundle : "bundle";
-    return `<!DOCTYPE html><html><head><title>${title}</title>${link}${meta}${script}${style}</head><body><div id="root">${component}</div><script type="module" src="/static/${bundle}.js"></script><body></html>`;
+    return `<!DOCTYPE html><html><head>${title}${link}${meta}${script}${style}<script type="module" src="${cdn}/${bundle}.js"></script></head><body><div id="root">${component}</div><body></html>`;
   }
 
   const instance = {
@@ -97,7 +98,7 @@ export function render(el?: JSX.Element): SSR {
       return instance;
     },
     title: (t: string) => {
-      title = t;
+      title = `<title>${t}</title>`;
       return instance;
     },
     script: (s: string) => {
@@ -114,6 +115,10 @@ export function render(el?: JSX.Element): SSR {
     },
     link: (l: string) => {
       linkInstance.push(createLink(l));
+      return instance;
+    },
+    cdn: (path: string) => {
+      cdn = path;
       return instance;
     },
     render: () => {

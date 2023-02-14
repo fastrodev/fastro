@@ -142,6 +142,7 @@ export interface SSR {
   script: (script: string) => SSR;
   style: (style: string) => SSR;
   link: (link: string) => SSR;
+  cdn: (cdn: string) => SSR;
   render: () => Response;
   /** Used by internal system to hydrate and create bundle on application initiation */
   _createBundle: (

@@ -2,18 +2,16 @@ import fastro, { render } from "../server/mod.ts";
 import App from "./pages/app.tsx";
 import Hello from "./pages/hello.tsx";
 
-// define an app component to render
-// with bundle name 'app'
-// attach this to page declaration
-const app = render(<App />)
-  .setBundleName("app")
-  .dir("./examples/pages");
-
 // define a hello component to render
-// with bundle name 'hello'
 // attach this to page declaration
 const hello = render(<Hello />)
-  .setBundleName("hello")
+  // used for SSR hydration process
+  .dir("./examples/pages")
+  // with bundle js file name 'hello'
+  .setBundleName("hello");
+
+const app = render(<App />)
+  .setBundleName("app")
   .dir("./examples/pages");
 
 const f = fastro()
@@ -22,17 +20,17 @@ const f = fastro()
   // this is a place where hydrated files generated
   .static("/static")
   // set endpoint for app page
-  .page("/", app, (req, res) => {
+  .page("/", hello, (req, res) => {
     // you can access the http request object
     console.log(req.url);
-    return res.ssr(app).render();
+    return res.ssr(hello).render();
   })
   // set endpoint for hello page
-  .page("/hello", hello, (req, res) => {
-    return res.ssr(hello)
+  .page("/app", app, (req, res) => {
+    return res.ssr(app)
       // and set the html title and other meta data
       // for seo purpose
-      .title("hello")
+      .title("click app")
       .meta(`name="viewport" content="width=device-width"`)
       .render();
   });
