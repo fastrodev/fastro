@@ -4,16 +4,16 @@ import { HttpResponse, SSR } from "./types.ts";
 
 type BodyInitResponse = BodyInit | null | undefined;
 
-export function response(req: Request): HttpResponse {
+export function response(_req: Request): HttpResponse {
   let headers = new Headers();
   let responseAuthorization: string;
   let responseStatus = 200;
   let cookie: Cookie;
   let contentType = "text/plain;charset=UTF-8";
-  let requestInstance: Request;
+  // let requestInstance: Request;
   let ssr: SSR;
 
-  if (req) requestInstance = req;
+  // if (req) requestInstance = req;
 
   function createResponse(
     str: BodyInitResponse | JSX.Element,
