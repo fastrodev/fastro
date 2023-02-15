@@ -93,7 +93,6 @@ export function response(req: Request): HttpResponse {
     },
     ssr: (ssrInstance: SSR) => {
       ssr = ssrInstance;
-      ssr._setRequest(requestInstance);
       return ssr;
     },
   };

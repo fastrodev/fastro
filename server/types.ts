@@ -143,15 +143,13 @@ export interface SSR {
   style: (style: string) => SSR;
   link: (link: string) => SSR;
   cdn: (cdn: string) => SSR;
+  props: (props: any) => SSR;
   render: () => Response;
-  /** Used by internal system to hydrate and create bundle on application initiation */
   _createBundle: (
     bundle?: string,
     rootComponent?: string,
     rootTSX?: string,
   ) => void;
-  /** Used by internal system to set request on response init to get the url. This url is used to get the hydrated and bundled JS file. */
-  _setRequest: (req: Request) => void;
   _getBundleName: () => string;
-  setBundleName: (name: string) => SSR;
+  bundle: (name: string) => SSR;
 }

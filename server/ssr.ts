@@ -1,14 +1,17 @@
+// deno-lint-ignore-file no-explicit-any
 import * as esbuild from "https://deno.land/x/esbuild@v0.15.10/mod.js";
 import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts";
 import { ReactDOMServer } from "./deps.ts";
 import { RenderOptions, SSR } from "./types.ts";
 
 function createHydrate(rootComponent: string, rootTSX: string) {
-  return `import React from "https://esm.sh/react@18.2.0";import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
+  return `import React from "https://esm.sh/react@18.2.0";
+import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
 import ${rootComponent} from "./${rootTSX}.tsx";
+const props = window.__INITIAL_STATE__ || {};
 const container = document.getElementById("root");
 const root = createRoot(container);
-root.render(<${rootComponent} />);`;
+root.render(<${rootComponent}  {...props} />);`;
 }
 
 function createMeta(meta: string) {
@@ -39,7 +42,7 @@ export function render(el?: JSX.Element): SSR {
   const styleInstance: string[] = [];
   const linkInstance: string[] = [];
   const metaInstance: string[] = [];
-  let _reqInstance: Request;
+  let props: any;
 
   if (el) element = el;
 
@@ -60,7 +63,10 @@ export function render(el?: JSX.Element): SSR {
     try {
       if (!rootComponent) rootComponent = "App";
       if (!rootTSX) rootTSX = "app";
-      Deno.writeTextFile(hydrateTarget, createHydrate(rootComponent, rootTSX));
+      Deno.writeTextFile(
+        hydrateTarget,
+        createHydrate(rootComponent, rootTSX),
+      );
     } catch (err) {
       console.error(err);
       throw err;
@@ -81,6 +87,7 @@ export function render(el?: JSX.Element): SSR {
   function createHTML(
     element: JSX.Element,
     options: RenderOptions,
+    initialData: any,
   ) {
     const component = ReactDOMServer.renderToString(element);
     const title = options.title ? options.title : "";
@@ -89,7 +96,9 @@ export function render(el?: JSX.Element): SSR {
     const script = options.script ? options.script : "";
     const style = options.style ? options.style : "";
     const bundle = options.bundle ? options.bundle : "bundle";
-    return `<!DOCTYPE html><html><head>${title}${link}${meta}${script}${style}<script type="module" src="${cdn}/${bundle}.js"></script></head><body><div id="root">${component}</div><body></html>`;
+    return `<!DOCTYPE html><html><head>${title}${link}${meta}${script}${style}<script type="module" src="${cdn}/${bundle}.js"></script></head><body><div id="root">${component}</div><script>window.__INITIAL_STATE__ = ${
+      JSON.stringify(initialData)
+    };</script><body></html>`;
   }
 
   const instance = {
@@ -121,6 +130,10 @@ export function render(el?: JSX.Element): SSR {
       cdn = path;
       return instance;
     },
+    props: (p: any) => {
+      props = p;
+      return instance;
+    },
     render: () => {
       const bundle = bundleName;
       const meta = metaInstance.length > 0 ? metaInstance.join("") : "";
@@ -135,9 +148,7 @@ export function render(el?: JSX.Element): SSR {
         style,
         bundle,
       };
-      if (!html) {
-        html = createHTML(element, opt);
-      }
+      html = createHTML(element, opt, props);
       return new Response(html, {
         status,
         headers: {
@@ -145,14 +156,11 @@ export function render(el?: JSX.Element): SSR {
         },
       });
     },
-    setBundleName: (name: string) => {
+    bundle: (name: string) => {
       bundleName = name;
       return instance;
     },
     _createBundle: createBundle,
-    _setRequest: (_req: Request) => {
-      // reqInstance = req;
-    },
     _getBundleName: () => bundleName,
   };
 
