@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import React, { useState } from "https://esm.sh/react@18.2.0";
 
 const App = (props: any) => {
