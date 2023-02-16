@@ -30,14 +30,14 @@ function createStyle(style: string) {
   return `<style>${style}</style>`;
 }
 
-export function render(el?: JSX.Element): SSR {
+export function render(el: JSX.Element): SSR {
   let element: JSX.Element;
   let status: 200;
   let html: string;
-  let dir = "./";
+  let dir = "./pages";
   let cdn = "/static";
   let title: string;
-  let bundleName: string;
+  let bundleName = el.type.name;
   const scriptInstance: string[] = [];
   const styleInstance: string[] = [];
   const linkInstance: string[] = [];
@@ -96,9 +96,9 @@ export function render(el?: JSX.Element): SSR {
     const script = options.script ? options.script : "";
     const style = options.style ? options.style : "";
     const bundle = options.bundle ? options.bundle : "bundle";
-    return `<!DOCTYPE html><html><head>${title}${link}${meta}${script}${style}<script type="module" src="${cdn}/${bundle}.js"></script></head><body><div id="root">${component}</div><script>window.__INITIAL_STATE__ = ${
+    return `<!DOCTYPE html><html><head>${title}${link}${meta}${script}${style}</head><body><div id="root">${component}</div><script>window.__INITIAL_STATE__ = ${
       JSON.stringify(initialData)
-    };</script><body></html>`;
+    };</script><script type="module" src="${cdn}/${bundle}.js"></script><body></html>`;
   }
 
   const instance = {
@@ -111,19 +111,39 @@ export function render(el?: JSX.Element): SSR {
       return instance;
     },
     script: (s: string) => {
-      scriptInstance.push(createScript(s));
+      const script = createScript(s);
+      const found = scriptInstance.find((v) => {
+        return v === script;
+      });
+      if (found) return instance;
+      scriptInstance.push(script);
       return instance;
     },
     meta: (m: string) => {
-      metaInstance.push(createMeta(m));
+      const meta = createMeta(m);
+      const found = metaInstance.find((v) => {
+        return v === meta;
+      });
+      if (found) return instance;
+      metaInstance.push(meta);
       return instance;
     },
     style: (s: string) => {
-      styleInstance.push(createStyle(s));
+      const style = createStyle(s);
+      const found = styleInstance.find((v) => {
+        return v === style;
+      });
+      if (found) return instance;
+      styleInstance.push(style);
       return instance;
     },
     link: (l: string) => {
-      linkInstance.push(createLink(l));
+      const link = createLink(l);
+      const found = linkInstance.find((v) => {
+        return v === link;
+      });
+      if (found) return instance;
+      linkInstance.push(link);
       return instance;
     },
     cdn: (path: string) => {
