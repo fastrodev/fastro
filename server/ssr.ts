@@ -36,7 +36,7 @@ export function render(el: JSX.Element | JSXHandler): SSR {
   let status: 200;
   let html: string;
   let dir = "./pages";
-  let cdn = "/static";
+  let cdn = "/public";
   let title: string;
   let bundleName: string;
   const scriptInstance: string[] = [];

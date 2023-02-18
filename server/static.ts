@@ -2,19 +2,18 @@ import { Status, STATUS_TEXT } from "./deps.ts";
 
 export async function handleStaticFile(
   reqUrl: string,
-  staticFolder: string,
+  staticURL: string,
 ) {
   let file;
-  const r = getPathUrl(reqUrl);
-  if (!r) {
+  const path = getPathUrl(reqUrl, staticURL);
+  if (!path) {
     return new Response(STATUS_TEXT[Status.NotFound], {
       status: Status.NotFound,
     });
   }
 
   try {
-    const filePath = `${staticFolder}${r}`;
-    file = await Deno.open(filePath, { read: true });
+    file = await Deno.open(`.${path}`, { read: true });
   } catch (error) {
     console.error(error);
     return new Response(STATUS_TEXT[Status.NotFound], {
@@ -23,7 +22,7 @@ export async function handleStaticFile(
   }
 
   let options = {};
-  if (r.includes(".js")) {
+  if (path.includes(".js")) {
     options = {
       headers: {
         "content-type": "text/javascript",
@@ -34,9 +33,12 @@ export async function handleStaticFile(
   return new Response(file.readable, options);
 }
 
-function getPathUrl(url: string) {
+function getPathUrl(url: string, staticURL: string) {
   const res = url.match(/^https?:\/\/[^/]+/);
   if (!res) return null;
   const [baseUrl] = res;
+  const p = `${staticURL}/:file`;
+  const pattern = new URLPattern(p, baseUrl);
+  if (!pattern.test(url)) return null;
   return url.substring(baseUrl.length);
 }

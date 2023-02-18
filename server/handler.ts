@@ -17,7 +17,8 @@ export function createHandler(
   middlewares: Array<MiddlewareArgument>,
   routes: Array<Route>,
   pages: Array<SSRHandler>,
-  staticFolder: string,
+  _staticFolder: string,
+  staticURL: string,
   cache: any,
 ) {
   return function (request: Request) {
@@ -60,7 +61,7 @@ export function createHandler(
     }
 
     if (!page) {
-      return handleStaticFile(req.url, staticFolder);
+      return handleStaticFile(req.url, staticURL);
     }
 
     return handleJSXPage(page, transformRequest(req, match));
