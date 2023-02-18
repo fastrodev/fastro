@@ -1,33 +1,37 @@
+// deno-lint-ignore-file no-explicit-any
 import { Cookie, ServeInit } from "./deps.ts";
 
 export interface Next {
   (error?: unknown): void;
 }
 
-export type RequestResponse = {
+export type HttpResponse = {
   deleteCookie: (
     name: string,
     attributes?: {
       path?: string | undefined;
       domain?: string | undefined;
     } | undefined,
-  ) => RequestResponse;
-  setCookie: (cookie: Cookie) => RequestResponse;
-  headers: (headers: Headers) => RequestResponse;
-  authorization: (type: string) => RequestResponse;
-  contentType: (type: string) => RequestResponse;
-  status: (status: number) => RequestResponse;
+  ) => HttpResponse;
+  setCookie: (cookie: Cookie) => HttpResponse;
+  headers: (headers: Headers) => HttpResponse;
+  authorization: (type: string) => HttpResponse;
+  contentType: (type: string) => HttpResponse;
+  status: (status: number) => HttpResponse;
   send: (object: unknown) => Response | Promise<Response>;
   json: (object: unknown) => Response | Promise<Response>;
   ssr: (ssr: SSR) => SSR;
   html: (html: string) => Response | Promise<Response>;
+  jsx: (element: JSX.Element) => Response | Promise<Response>;
 };
 
-export type HttpRequest = Request;
+export class HttpRequest extends Request {
+  match!: URLPatternResult | null;
+}
 
 export type RequestHandler = (
   request: HttpRequest,
-  response: RequestResponse,
+  response: HttpResponse,
   next?: Next,
 ) =>
   | void
@@ -36,9 +40,21 @@ export type RequestHandler = (
   | Promise<string>
   | Response
   | Promise<Response>
-  // deno-lint-ignore no-explicit-any
   | any
-  // deno-lint-ignore no-explicit-any
+  | Promise<any>;
+
+export type MiddlewareArgument = (
+  request: HttpRequest,
+  response: HttpResponse,
+  next: Next,
+) =>
+  | void
+  | Promise<void>
+  | string
+  | Promise<string>
+  | Response
+  | Promise<Response>
+  | any
   | Promise<any>;
 
 export type HandlerArgument = Deno.ServeHandler | RequestHandler;
@@ -80,12 +96,14 @@ export type Fastro = {
    * @param folder The base folder to save all files
    */
   static(path: string, folder?: string): Fastro;
+  use(...middleware: Array<MiddlewareArgument>): Fastro;
   get(path: string, handler: HandlerArgument): Fastro;
   post(path: string, handler: HandlerArgument): Fastro;
   put(path: string, handler: HandlerArgument): Fastro;
   delete(path: string, handler: HandlerArgument): Fastro;
   patch(path: string, handler: HandlerArgument): Fastro;
   options(path: string, handler: HandlerArgument): Fastro;
+  flash(isFlash: boolean): Fastro;
   page(
     path: string,
     ssr: SSR,
@@ -103,11 +121,11 @@ export type StartOptions = {
   flash: boolean;
 };
 
-export type StringHandler = (
-  request?: Request,
-  response?: RequestResponse,
+export type ExecHandler = (
+  request?: HttpRequest,
+  response?: HttpResponse,
   next?: Next,
-) => string;
+) => any;
 
 export type RenderOptions = {
   title: string;
@@ -125,15 +143,16 @@ export interface SSR {
   script: (script: string) => SSR;
   style: (style: string) => SSR;
   link: (link: string) => SSR;
+  cdn: (cdn: string) => SSR;
+  props: (props: any) => SSR;
   render: () => Response;
-  /** Used by internal system to hydrate and create bundle on application initiation */
   _createBundle: (
     bundle?: string,
     rootComponent?: string,
     rootTSX?: string,
   ) => void;
-  /** Used by internal system to set request on response init to get the url. This url is used to get the hydrated and bundled JS file. */
-  _setRequest: (req: Request) => void;
   _getBundleName: () => string;
-  setBundleName: (name: string) => SSR;
+  bundle: (name: string) => SSR;
 }
+
+export type JSXHandler = (props?: any) => JSX.Element;

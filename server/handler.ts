@@ -4,53 +4,108 @@ import { handleJSXPage } from "./page.ts";
 import { response } from "./response.ts";
 import { handleStaticFile } from "./static.ts";
 import {
+  ExecHandler,
   HandlerArgument,
+  HttpRequest,
+  MiddlewareArgument,
   Next,
   Route,
   SSRHandler,
-  StringHandler,
 } from "./types.ts";
 
 export function createHandler(
+  middlewares: Array<MiddlewareArgument>,
   routes: Array<Route>,
+  pages: Array<SSRHandler>,
   staticUrl: string,
   staticFolder: string,
   cache: any,
-  pages: Array<SSRHandler>,
 ) {
-  return function (req: Request) {
-    const id = req.method + "-" + req.url;
+  return function (request: Request) {
     let handler: HandlerArgument | undefined = undefined;
-
-    if (cache[id]) handler = cache[id];
-    else {
-      const route = routes.find((route) => {
-        let pattern: URLPattern | null = new URLPattern({
-          pathname: route.path,
-        });
-        const match = pattern.exec(req.url);
-        pattern = null;
-        return (match && (route.method === req.method));
-      });
-
-      handler = route?.handler;
+    if (middlewares.length > 0) {
+      handler = handleMiddleware(request, middlewares);
     }
 
     if (!handler) {
-      return handlePages(cache, id, pages, req, staticUrl, staticFolder);
+      return handleRoutes(request);
     }
 
+    return handler(transformRequest(request), response(request));
+  };
+
+  function handlePages(req: Request, id: string) {
+    let page: SSRHandler | undefined = undefined;
+    let match: URLPatternResult | null = null;
+    const pageId = "page-" + id;
+    const matchId = "match-" + pageId;
+
+    if (cache[pageId]) {
+      page = cache[pageId] === "non-page" ? undefined : cache[pageId];
+      if (cache[matchId]) match = cache[matchId];
+    } else {
+      const p = pages.find((page) => {
+        let pattern: URLPattern | null = new URLPattern({
+          pathname: page.path,
+        });
+        const m = pattern.exec(req.url);
+        pattern = null;
+        if (m) {
+          match = m;
+          cache[matchId] = m;
+          return (m);
+        }
+      });
+      cache[pageId] = p ? p : "non-page";
+      page = p;
+    }
+
+    if (!page) {
+      return handleStaticFile(staticUrl, req.url, staticFolder);
+    }
+
+    return handleJSXPage(page, transformRequest(req, match));
+  }
+
+  function handleRoutes(req: Request) {
+    const id = req.method + "-" + req.url;
+    const paramId = "param-" + id;
+    let handler: HandlerArgument | undefined = undefined;
+    let match: URLPatternResult | null = null;
+
+    if (cache[id]) {
+      handler = cache[id];
+      if (cache[paramId]) match = cache[paramId];
+    } else {
+      routes.find((route) => {
+        let pattern: URLPattern | null = new URLPattern({
+          pathname: route.path,
+        });
+        const m = pattern.exec(req.url);
+        pattern = null;
+        if (m) {
+          match = m;
+          handler = route?.handler;
+          return (route.method === req.method);
+        }
+      });
+    }
+
+    if (!handler) return handlePages(req, id);
+
     cache[id] = handler;
+    cache[paramId] = match;
     const res = response(req);
     const next: Next | undefined = undefined;
-    const stringHandler = <StringHandler> <unknown> handler;
-    const result = stringHandler(req, res, next);
+    const execHandler = <ExecHandler> <unknown> handler;
+    const request = transformRequest(req, match);
+    const result = execHandler(request, res, next);
 
     if (isString(result)) {
       return new Response(result);
     }
 
-    if (isHTML(result)) {
+    if (isResponse(result)) {
       return <Response> <unknown> result;
     }
 
@@ -65,62 +120,43 @@ export function createHandler(
       return new Response(<string> object, { headers });
     }
 
-    return handler(req, res, next);
-  };
-}
+    return handler(request, res, next);
+  }
 
-/**
- * @param cache
- * @param id
- * @param pages
- * @param req
- * @param staticUrl
- * @param staticFolder
- * @returns
- */
-function handlePages(
-  cache: any,
-  id: string,
-  pages: Array<SSRHandler>,
-  req: Request,
-  staticUrl: string,
-  staticFolder: string,
-) {
-  let page: SSRHandler | undefined = undefined;
-
-  const pageId = "page-" + id;
-  if (cache[pageId]) {
-    page = cache[pageId] === "non-page" ? undefined : cache[pageId];
-  } else {
-    const p = pages.find((page) => {
-      let pattern: URLPattern | null = new URLPattern({
-        pathname: page.path,
+  function handleMiddleware(
+    req: Request,
+    middlewares: Array<MiddlewareArgument>,
+  ) {
+    let done = false;
+    let handler: HandlerArgument | undefined = undefined;
+    for (let index = 0; index < middlewares.length; index++) {
+      const m = middlewares[index];
+      const res = response(req);
+      m(transformRequest(req), res, (err) => {
+        if (err) throw err;
+        done = true;
       });
-      const match = pattern.exec(req.url);
-      pattern = null;
-      return (match);
-    });
-    cache[pageId] = p ? p : "non-page";
-    page = p;
-  }
 
-  if (!page) {
-    return handleStaticFile(staticUrl, req.url, staticFolder);
-  }
+      if (!done) {
+        handler = <HandlerArgument> m;
+        break;
+      }
+    }
 
-  return handleJSXPage(page, req);
+    return handler;
+  }
 }
 
 function isString(stringResult: unknown) {
   const str = <string> stringResult;
   try {
     return (str.includes != undefined && str.replaceAll != undefined);
-  } catch (_error) {
+  } catch {
     throw new Error(`Handler return void`);
   }
 }
 
-function isHTML(element: unknown) {
+function isResponse(element: unknown) {
   return element instanceof Response;
 }
 
@@ -132,13 +168,13 @@ function isJSON(element: unknown) {
     str = <string> element;
     stringify = JSON.stringify(str);
     JSON.parse(stringify);
-  } catch (_err) {
+  } catch {
     return [false, ""];
   }
   return [true, stringify];
 }
 
-function isJSX(element: unknown) {
+export function isJSX(element: unknown) {
   const el = <JSX.Element> element;
   return el.props != undefined && el.type != undefined;
 }
@@ -150,4 +186,17 @@ function render(element: JSX.Element) {
       "content-type": "text/html",
     },
   });
+}
+
+export function transformRequest(
+  request: Request,
+  match?: URLPatternResult | null,
+) {
+  const req = <HttpRequest> request;
+  if (!match) {
+    req.match = null;
+    return req;
+  }
+  req.match = match;
+  return req;
 }

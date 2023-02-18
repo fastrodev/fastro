@@ -8,7 +8,7 @@ export type {
   ConnInfo,
   ServeInit,
 } from "https://deno.land/std@0.177.0/http/server.ts";
-export { h, ReactDOMServer };
+export { h, React, ReactDOMServer };
 
 import ReactDOMServer from "https://esm.sh/react-dom@18.2.0/server";
-import { createElement as h } from "https://esm.sh/react@18.2.0";
+import React, { createElement as h } from "https://esm.sh/react@18.2.0";

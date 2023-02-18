@@ -1,26 +1,39 @@
-import { Cookie, deleteCookie, setCookie } from "./deps.ts";
-import { RequestResponse, SSR } from "./types.ts";
+import { Cookie, deleteCookie, ReactDOMServer, setCookie } from "./deps.ts";
+import { isJSX } from "./handler.ts";
+import { HttpResponse, SSR } from "./types.ts";
 
-export function response(req: Request): RequestResponse {
+type BodyInitResponse = BodyInit | null | undefined;
+
+export function response(_req: Request): HttpResponse {
   let headers = new Headers();
   let responseAuthorization: string;
   let responseStatus = 200;
   let cookie: Cookie;
   let contentType = "text/plain;charset=UTF-8";
-  let requestInstance: Request;
+  // let requestInstance: Request;
   let ssr: SSR;
 
-  if (req) requestInstance = req;
+  // if (req) requestInstance = req;
 
   function createResponse(
-    str: BodyInit | null | undefined,
+    str: BodyInitResponse | JSX.Element,
   ) {
     if (responseAuthorization) {
       headers.set("Authorization", responseAuthorization);
     }
     if (cookie) setCookie(headers, cookie);
     headers.set("Content-Type", contentType);
-    return new Response(str, {
+
+    if (isJSX(str)) {
+      const component = ReactDOMServer.renderToString(<JSX.Element> str);
+
+      return new Response(component, {
+        status: responseStatus,
+        headers,
+      });
+    }
+
+    return new Response(<BodyInitResponse> str, {
       status: responseStatus,
       headers,
     });
@@ -43,6 +56,10 @@ export function response(req: Request): RequestResponse {
     html: (html: string) => {
       contentType = "text/html; charset=UTF-8";
       return createResponse(html);
+    },
+    jsx: (element: JSX.Element) => {
+      contentType = "text/html; charset=UTF-8";
+      return createResponse(element);
     },
     status: (status: number) => {
       responseStatus = status;
@@ -76,7 +93,6 @@ export function response(req: Request): RequestResponse {
     },
     ssr: (ssrInstance: SSR) => {
       ssr = ssrInstance;
-      ssr._setRequest(requestInstance);
       return ssr;
     },
   };
