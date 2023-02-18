@@ -1,20 +1,15 @@
+import App from "../pages/app.tsx";
+import Hello from "../pages/hello.tsx";
+import Register from "../pages/register.tsx";
+import User from "../pages/user.tsx";
 import fastro, { render } from "../server/mod.ts";
-import App from "./pages/app.tsx";
-import Hello from "./pages/hello.tsx";
-import User from "./pages/user.tsx";
 
 // define a hello component to render
 // attach this to page declaration
-const hello = render(<Hello />)
-  // used for SSR hydration process
-  // if you don't specify, the default is "./pages"
-  .dir("./examples/pages");
-
-const app = render(<App />)
-  .dir("./examples/pages");
-
-const user = render(<User />)
-  .dir("./examples/pages");
+const hello = render(<Hello />);
+const app = render(<App />);
+const user = render(<User />);
+const register = render(<Register />);
 
 const f = fastro()
   // set static endpoint url
@@ -56,6 +51,18 @@ const f = fastro()
         `rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"`,
       )
       .props({ data: user })
+      .meta(`name="viewport" content="width=device-width"`)
+      .render();
+  })
+  .page("/app/register", register, (req, res) => {
+    return res.ssr(register)
+      // and set the html title and other meta data
+      // for seo purpose
+      .title(`Register`)
+      .link(
+        `href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"`,
+      )
+      .link(`/static/app.css" rel="stylesheet"`)
       .meta(`name="viewport" content="width=device-width"`)
       .render();
   });

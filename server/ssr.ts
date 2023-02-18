@@ -1,8 +1,9 @@
 // deno-lint-ignore-file no-explicit-any
 import * as esbuild from "https://deno.land/x/esbuild@v0.15.10/mod.js";
 import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts";
-import { ReactDOMServer } from "./deps.ts";
-import { RenderOptions, SSR } from "./types.ts";
+import { React, ReactDOMServer } from "./deps.ts";
+import { isJSX } from "./handler.ts";
+import { JSXHandler, RenderOptions, SSR } from "./types.ts";
 
 function createHydrate(rootComponent: string, rootTSX: string) {
   return `import React from "https://esm.sh/react@18.2.0";
@@ -19,7 +20,7 @@ function createMeta(meta: string) {
 }
 
 function createScript(script: string) {
-  return `<script> ${script} </script>`;
+  return `<script ${script}></script>`;
 }
 
 function createLink(link: string) {
@@ -30,21 +31,29 @@ function createStyle(style: string) {
   return `<style>${style}</style>`;
 }
 
-export function render(el: JSX.Element): SSR {
+export function render(el: JSX.Element | JSXHandler): SSR {
   let element: JSX.Element;
   let status: 200;
   let html: string;
   let dir = "./pages";
   let cdn = "/static";
   let title: string;
-  let bundleName = el.type.name;
+  let bundleName: string;
   const scriptInstance: string[] = [];
   const styleInstance: string[] = [];
   const linkInstance: string[] = [];
   const metaInstance: string[] = [];
   let props: any;
 
-  if (el) element = el;
+  if (isJSX(el)) {
+    const jsxElement = <JSX.Element> el;
+    bundleName = jsxElement.type.name;
+    element = jsxElement;
+  } else {
+    const jsxElement = <JSXHandler> el;
+    bundleName = jsxElement.name;
+    element = React.createElement(jsxElement);
+  }
 
   /**
    * @param bundle
@@ -96,9 +105,9 @@ export function render(el: JSX.Element): SSR {
     const script = options.script ? options.script : "";
     const style = options.style ? options.style : "";
     const bundle = options.bundle ? options.bundle : "bundle";
-    return `<!DOCTYPE html><html><head>${title}${link}${meta}${script}${style}</head><body><div id="root">${component}</div><script>window.__INITIAL_STATE__ = ${
+    return `<!DOCTYPE html><html><head>${title}${link}${meta}${style}</head><body><div id="root">${component}</div><script>window.__INITIAL_STATE__ = ${
       JSON.stringify(initialData)
-    };</script><script type="module" src="${cdn}/${bundle}.js"></script><body></html>`;
+    };</script><script type="module" src="${cdn}/${bundle}.js"></script>${script}<body></html>`;
   }
 
   const instance = {

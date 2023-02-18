@@ -103,6 +103,7 @@ export type Fastro = {
   delete(path: string, handler: HandlerArgument): Fastro;
   patch(path: string, handler: HandlerArgument): Fastro;
   options(path: string, handler: HandlerArgument): Fastro;
+  flash(isFlash: boolean): Fastro;
   page(
     path: string,
     ssr: SSR,
@@ -153,3 +154,5 @@ export interface SSR {
   _getBundleName: () => string;
   bundle: (name: string) => SSR;
 }
+
+export type JSXHandler = (props?: any) => JSX.Element;
