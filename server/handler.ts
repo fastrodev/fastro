@@ -17,7 +17,6 @@ export function createHandler(
   middlewares: Array<MiddlewareArgument>,
   routes: Array<Route>,
   pages: Array<SSRHandler>,
-  _staticFolder: string,
   staticURL: string,
   cache: any,
 ) {

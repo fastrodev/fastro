@@ -34,10 +34,11 @@ export async function handleStaticFile(
 }
 
 function getPathUrl(url: string, staticURL: string) {
+  const s = staticURL === "/" ? "" : staticURL;
   const res = url.match(/^https?:\/\/[^/]+/);
   if (!res) return null;
   const [baseUrl] = res;
-  const p = `${staticURL}/:file`;
+  const p = `${s}/:file`;
   const pattern = new URLPattern(p, baseUrl);
   if (!pattern.test(url)) return null;
   return url.substring(baseUrl.length);
