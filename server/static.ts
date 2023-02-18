@@ -6,8 +6,10 @@ export async function handleStaticFile(
   staticFolder: string,
 ) {
   let file;
+  console.log("baseStaticUrl", baseStaticUrl);
   const [, path] = reqUrl.split(baseStaticUrl);
   if (!path) {
+    console.log("emang ga ada");
     return new Response(STATUS_TEXT[Status.NotFound], {
       status: Status.NotFound,
     });
