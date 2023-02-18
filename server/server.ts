@@ -16,7 +16,6 @@ export function fastro(_startOptions?: StartOptions): Fastro {
   const pages: Array<SSRHandler> = [];
   const middlewares: Array<MiddlewareArgument> = [];
   const ac = new AbortController();
-  let staticFolder = "./public";
   let staticURL = "/public";
   let flash = false;
   let server: Server;
@@ -48,7 +47,6 @@ export function fastro(_startOptions?: StartOptions): Fastro {
         middlewares,
         routes,
         pages,
-        staticFolder,
         staticURL,
         cache,
       );
@@ -75,9 +73,8 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       console.log(`Listen on ${baseUrl}/`);
       return server.listenAndServe();
     },
-    static: (path: string, folder?: string) => {
+    static: (path: string) => {
       staticURL = path;
-      if (folder) staticFolder = folder;
       return app;
     },
     close: () => {

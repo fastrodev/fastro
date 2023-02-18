@@ -83,19 +83,32 @@ export type Fastro = {
    */
   close(): void;
   /**
-   * Add url endpoint for static files
+   * Add url endpoint for static files.
+   *
+   * Place your files in the public folder
    *
    * ```ts
    * import application from "./mod.ts";
    * const app = application();
-   * app.static("/", "./public");
+   * app.static("/public");
    * await app.serve();
    * ```
    *
+   * Place your files in the static folder
+   *
+   * ```ts
+   * app.static("/static");
+   * ```
+   *
+   * Place your files in the app root folder
+   *
+   * ```ts
+   * app.static("/");
+   * ```
+   *
    * @param path The base endpoint to access a file
-   * @param folder The base folder to save all files
    */
-  static(path: string, folder?: string): Fastro;
+  static(path: string): Fastro;
   use(...middleware: Array<MiddlewareArgument>): Fastro;
   get(path: string, handler: HandlerArgument): Fastro;
   post(path: string, handler: HandlerArgument): Fastro;
