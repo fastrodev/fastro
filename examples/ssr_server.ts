@@ -12,10 +12,6 @@ const user = render(User);
 const register = render(Register);
 
 const f = fastro()
-  // set static endpoint url
-  // default folder is at ./public
-  // this is a place where hydrated files generated
-  .static("/static")
   // set endpoint for app page
   .page("/", register, (_req, res) => {
     const css =
