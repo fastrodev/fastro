@@ -33,8 +33,6 @@ export function fastro(_startOptions?: StartOptions): Fastro {
     serve: (serveOptions: ServeInit) => {
       const hostname = serveOptions?.hostname || "127.0.0.1";
       const port = serveOptions?.port || 9000;
-      const baseUrl = `http://${hostname}:${port}`;
-      const baseStaticPath = `${baseUrl}${staticPath}`;
       const cache = {};
 
       if (build) {
@@ -50,7 +48,6 @@ export function fastro(_startOptions?: StartOptions): Fastro {
         middlewares,
         routes,
         pages,
-        baseStaticPath,
         staticFolder,
         cache,
       );
@@ -73,6 +70,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
         handler,
       });
 
+      const baseUrl = `http://${hostname}:${port}`;
       console.log(`Listen on ${baseUrl}/`);
       return server.listenAndServe();
     },
