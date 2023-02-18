@@ -5,16 +5,16 @@ const Register = () => (
     <h2 className="text-center mt-5 mb-5">Buat toko online kamu</h2>
     <form>
       <div className="mb-3">
-        <label htmlFor="whatshapp" className="form-label">
+        <label htmlFor="wa" className="form-label">
           Nomor WhatsApp
         </label>
         <input
           type="text"
           className="form-control"
-          id="whatshapp"
-          aria-describedby="whatsappHelp"
+          id="wa"
+          aria-describedby="waHelp"
         />
-        <div id="whatsappHelp" className="form-text">
+        <div id="waHelp" className="form-text">
           Kamu akan terima order di nomor ini
         </div>
       </div>

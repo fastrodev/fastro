@@ -98,6 +98,11 @@ export function render(el: JSX.Element | JSXHandler): SSR {
     options: RenderOptions,
     initialData: any,
   ) {
+    const props = initialData
+      ? `<script>window.__INITIAL_STATE__ = ${
+        JSON.stringify(initialData)
+      };</script>`
+      : "";
     const component = ReactDOMServer.renderToString(element);
     const title = options.title ? options.title : "";
     const link = options.link ? options.link : "";
@@ -105,9 +110,7 @@ export function render(el: JSX.Element | JSXHandler): SSR {
     const script = options.script ? options.script : "";
     const style = options.style ? options.style : "";
     const bundle = options.bundle ? options.bundle : "bundle";
-    return `<!DOCTYPE html><html><head>${title}${link}${meta}${style}</head><body><div id="root">${component}</div><script>window.__INITIAL_STATE__ = ${
-      JSON.stringify(initialData)
-    };</script><script type="module" src="${cdn}/${bundle}.js"></script>${script}<body></html>`;
+    return `<!DOCTYPE html><html><head>${title}${link}${meta}${style}${props}</head><body><div id="root">${component}</div><script type="module" src="${cdn}/${bundle}.js"></script>${script}<body></html>`;
   }
 
   const instance = {
