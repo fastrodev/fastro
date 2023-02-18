@@ -1,9 +1,10 @@
-import { DELETE, GET, OPTIONS, PATCH, POST, PUT } from "./constant.ts";
+import { DELETE, GET, OPTIONS, PATCH, POST } from "./constant.ts";
 import { ServeInit, Server } from "./deps.ts";
 import { createHandler } from "./handler.ts";
 import {
   Fastro,
   HandlerArgument,
+  MiddlewareArgument,
   Route,
   SSR,
   SSRHandler,
@@ -13,10 +14,19 @@ import {
 export function fastro(_startOptions?: StartOptions): Fastro {
   const routes: Array<Route> = [];
   const pages: Array<SSRHandler> = [];
+  const middlewares: Array<MiddlewareArgument> = [];
   const ac = new AbortController();
   let staticFolder = "./public";
   let staticPath = "/";
-  let _server: Server;
+  let flash = false;
+  let server: Server;
+
+  function push(method: string, path: string, handler: HandlerArgument) {
+    const r = { method, path, handler };
+    const res = routes.find((val) => (val === r));
+    if (!res) routes.push(r);
+    return app;
+  }
 
   const app = {
     serve: (serveOptions: ServeInit) => {
@@ -34,30 +44,33 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       }
 
       const handler = createHandler(
+        middlewares,
         routes,
+        pages,
         baseStaticPath,
         staticFolder,
         cache,
-        pages,
       );
 
-      return Deno.serve({
-        hostname,
+      if (!flash) {
+        return Deno.serve({
+          hostname,
+          port,
+          handler,
+          onListen: serveOptions?.onListen,
+          onError: serveOptions?.onError,
+          signal: ac.signal,
+        });
+      }
+
+      const s = new Server({
+        onError: serveOptions?.onError,
+        hostname: hostname,
         port,
         handler,
-        onListen: serveOptions?.onListen,
-        onError: serveOptions?.onError,
-        signal: ac.signal,
       });
 
-      // server = new Server({
-      //   hostname,
-      //   port,
-      //   handler,
-      //   onError: serveOptions?.onError,
-      // });
-      // console.info(`Listening on http://${hostname}:${port}/`);
-      // return server.listenAndServe();
+      return s.listenAndServe();
     },
     static: (path: string, folder?: string) => {
       staticPath = path;
@@ -65,35 +78,32 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       return app;
     },
     close: () => {
-      return ac.abort();
-      // if (startOptions && startOptions.flash) {
-      //   return ac.abort();
-      // }
-      // return server.close();
+      if (!flash) return ac.abort();
+      return server.close();
+    },
+    use: (...middleware: Array<MiddlewareArgument>) => {
+      middleware.forEach((m) => {
+        middlewares.push(m);
+      });
+      return app;
     },
     get: (path: string, handler: HandlerArgument) => {
-      routes.push({ method: GET, path, handler });
-      return app;
+      return push(GET, path, handler);
     },
     post: (path: string, handler: HandlerArgument) => {
-      routes.push({ method: POST, path, handler });
-      return app;
+      return push(POST, path, handler);
     },
     put: (path: string, handler: HandlerArgument) => {
-      routes.push({ method: PUT, path, handler });
-      return app;
+      return push(POST, path, handler);
     },
     delete: (path: string, handler: HandlerArgument) => {
-      routes.push({ method: DELETE, path, handler });
-      return app;
+      return push(DELETE, path, handler);
     },
     patch: (path: string, handler: HandlerArgument) => {
-      routes.push({ method: PATCH, path, handler });
-      return app;
+      return push(PATCH, path, handler);
     },
     options: (path: string, handler: HandlerArgument) => {
-      routes.push({ method: OPTIONS, path, handler });
-      return app;
+      return push(OPTIONS, path, handler);
     },
     page: (
       path: string,
@@ -101,6 +111,10 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       handler: HandlerArgument,
     ) => {
       pages.push({ path, ssr, handler });
+      return app;
+    },
+    flash: (f: boolean) => {
+      flash = f;
       return app;
     },
   };
