@@ -104,6 +104,7 @@ export type Fastro = {
   patch(path: string, handler: HandlerArgument): Fastro;
   options(path: string, handler: HandlerArgument): Fastro;
   flash(isFlash: boolean): Fastro;
+  build(isBuild: boolean): Fastro;
   page(
     path: string,
     ssr: SSR,
