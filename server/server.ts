@@ -52,7 +52,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
         cache,
       );
 
-      if (!flash) {
+      if (flash) {
         return Deno.serve({
           hostname,
           port,
@@ -63,14 +63,15 @@ export function fastro(_startOptions?: StartOptions): Fastro {
         });
       }
 
-      const s = new Server({
+      server = new Server({
         onError: serveOptions?.onError,
         hostname: hostname,
         port,
         handler,
       });
 
-      return s.listenAndServe();
+      console.log(`Listen on ${baseUrl}/`);
+      return server.listenAndServe();
     },
     static: (path: string, folder?: string) => {
       staticPath = path;
@@ -78,8 +79,8 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       return app;
     },
     close: () => {
-      if (!flash) return ac.abort();
-      return server.close();
+      if (!flash) return server.close();
+      return ac.abort();
     },
     use: (...middleware: Array<MiddlewareArgument>) => {
       middleware.forEach((m) => {
