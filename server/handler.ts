@@ -61,7 +61,7 @@ export function createHandler(
     }
 
     if (!page) {
-      return handleStaticFile(staticUrl, req.url, staticFolder);
+      return handleStaticFile(req.url, staticFolder);
     }
 
     return handleJSXPage(page, transformRequest(req, match));
