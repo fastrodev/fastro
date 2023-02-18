@@ -20,6 +20,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
   let staticPath = "/";
   let flash = false;
   let server: Server;
+  let build = true;
 
   function push(method: string, path: string, handler: HandlerArgument) {
     const r = { method, path, handler };
@@ -36,11 +37,13 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       const baseStaticPath = `${baseUrl}${staticPath}`;
       const cache = {};
 
-      for (const p of pages) {
-        const rootComponent = `App`;
-        const bundle = p.ssr._getBundleName();
-        const rootTSX = bundle;
-        p.ssr._createBundle(bundle, rootComponent, rootTSX);
+      if (build) {
+        for (const p of pages) {
+          const rootComponent = `App`;
+          const bundle = p.ssr._getBundleName();
+          const rootTSX = bundle;
+          p.ssr._createBundle(bundle, rootComponent, rootTSX);
+        }
       }
 
       const handler = createHandler(
@@ -116,6 +119,10 @@ export function fastro(_startOptions?: StartOptions): Fastro {
     },
     flash: (f: boolean) => {
       flash = f;
+      return app;
+    },
+    build: (b: boolean) => {
+      build = b;
       return app;
     },
   };
