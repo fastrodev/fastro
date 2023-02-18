@@ -15,8 +15,11 @@ export async function handleStaticFile(
 
   try {
     const filePath = `${staticFolder}/${path}`;
+    console.log(filePath);
     file = await Deno.open(filePath, { read: true });
-  } catch {
+  } catch (error) {
+    console.log(staticFolder);
+    console.log(error);
     return new Response(STATUS_TEXT[Status.NotFound], {
       status: Status.NotFound,
     });
