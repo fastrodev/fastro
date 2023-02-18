@@ -7,6 +7,7 @@ export async function handleStaticFile(
 ) {
   let file;
   console.log("baseStaticUrl", baseStaticUrl);
+  console.log("reqUrl", reqUrl);
   const [, path] = reqUrl.split(baseStaticUrl);
   if (!path) {
     console.log("emang ga ada");
