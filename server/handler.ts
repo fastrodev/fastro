@@ -19,6 +19,7 @@ export function createHandler(
   pages: Array<SSRHandler>,
   staticURL: string,
   cache: any,
+  maxAge: number,
 ) {
   return function (request: Request) {
     let handler: HandlerArgument | undefined = undefined;
@@ -60,7 +61,7 @@ export function createHandler(
     }
 
     if (!page) {
-      return handleStaticFile(req.url, staticURL);
+      return handleStaticFile(req.url, staticURL, maxAge);
     }
 
     return handleJSXPage(page, transformRequest(req, match));

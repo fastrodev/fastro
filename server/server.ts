@@ -20,6 +20,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
   let flash = true;
   let server: Server;
   let build = true;
+  let maxAge: number;
 
   function push(method: string, path: string, handler: HandlerArgument) {
     const r = { method, path, handler };
@@ -49,6 +50,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
         pages,
         staticURL,
         cache,
+        maxAge,
       );
 
       if (flash) {
@@ -73,7 +75,8 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       console.log(`Listen on ${baseUrl}/`);
       return server.listenAndServe();
     },
-    static: (path: string) => {
+    static: (path: string, m?: number) => {
+      maxAge = m ? m : 31536000;
       staticURL = path;
       return app;
     },

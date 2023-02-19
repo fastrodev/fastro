@@ -8,6 +8,7 @@ const app = render(App);
 const user = render(User);
 
 const f = fastro()
+  .static("/public")
   .page("/", hello, (_req, res) => {
     return createSSR(res, hello)
       .title(`Hello`)

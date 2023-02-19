@@ -3,6 +3,7 @@ import { Status, STATUS_TEXT } from "./deps.ts";
 export async function handleStaticFile(
   reqUrl: string,
   staticURL: string,
+  maxAge: number,
 ) {
   let file;
   const path = getPathUrl(reqUrl, staticURL);
@@ -26,7 +27,7 @@ export async function handleStaticFile(
     options = {
       headers: {
         "content-type": "text/javascript",
-        "Cache-Control": "max-age=31536000",
+        "Cache-Control": `max-age=${maxAge}`,
       },
     };
   }

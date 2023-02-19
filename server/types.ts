@@ -107,8 +107,9 @@ export type Fastro = {
    * ```
    *
    * @param path The base endpoint to access a file
+   * @param maxAge Cache control of the file
    */
-  static(path: string): Fastro;
+  static(path: string, maxAge?: number): Fastro;
   use(...middleware: Array<MiddlewareArgument>): Fastro;
   get(path: string, handler: HandlerArgument): Fastro;
   post(path: string, handler: HandlerArgument): Fastro;
