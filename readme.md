@@ -11,7 +11,7 @@ you can:
 
 - Leverage existing Deno objects and methods such as [Request](https://deno.land/api?s=Request), [Headers](https://deno.land/api?s=Headers), [Cookie](https://deno.land/std/http/cookie.ts), and [URLPattern](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API)
 - Manage your app and routing cleanly with [builder pattern](https://en.wikipedia.org/wiki/Builder_pattern)
-- [Simplifies the complex steps of React Server Side Rendering](https://github.com/fastrodev/fastro/blob/main/examples/ssr_server.ts)
+- [Simplifies the complex steps of React Server Side Rendering](https://github.com/fastrodev/fastro/blob/main/examples/ssr.ts)
 
 ## Getting started
 
