@@ -17,7 +17,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
   const middlewares: Array<MiddlewareArgument> = [];
   const ac = new AbortController();
   let staticURL = "/public";
-  let flash = false;
+  let flash = true;
   let server: Server;
   let build = true;
 
@@ -51,7 +51,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
         cache,
       );
 
-      if (!flash) {
+      if (flash) {
         return Deno.serve({
           hostname,
           port,
@@ -78,7 +78,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       return app;
     },
     close: () => {
-      if (!flash) return ac.abort();
+      if (flash) return ac.abort();
       return server.close();
     },
     use: (...middleware: Array<MiddlewareArgument>) => {
