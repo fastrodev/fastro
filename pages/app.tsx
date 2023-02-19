@@ -3,7 +3,7 @@ import React, { useState } from "https://esm.sh/react@18.2.0";
 const App = (props: { data: string }) => {
   const [count, setCount] = useState(0);
   return (
-    <div className="container">
+    <>
       <h1>Hello {props.data}</h1>
       <button
         type="button"
@@ -13,7 +13,7 @@ const App = (props: { data: string }) => {
         Click the 🦕
       </button>
       <p>You clicked the 🦕 {count} times</p>
-    </div>
+    </>
   );
 };
 

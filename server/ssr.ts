@@ -1,7 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import * as esbuild from "https://deno.land/x/esbuild@v0.15.10/mod.js";
 import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts";
-import { React, ReactDOMServer } from "./deps.ts";
+import { React, ReactDOMServer, Status, STATUS_TEXT } from "./deps.ts";
 import { isJSX } from "./handler.ts";
 import { JSXHandler, RenderOptions, SSR } from "./types.ts";
 
@@ -39,6 +39,9 @@ export function render(el: JSX.Element | JSXHandler): SSR {
   const metaInstance: string[] = [];
   let props: any;
   let lang: string;
+  let htmlAttr: string;
+  let bodyAttr: string;
+  let rootAttr: string;
 
   if (isJSX(el)) {
     const jsxElement = <JSX.Element> el;
@@ -99,6 +102,9 @@ export function render(el: JSX.Element | JSXHandler): SSR {
       };</script>`
       : "";
     const htmlLang = lang ? ` lang =${lang}` : "";
+    const initAttr = htmlAttr ? htmlAttr : ``;
+    const initBodyAttr = bodyAttr ? ` ${bodyAttr}` : ``;
+    const initRootAttr = rootAttr ? ` ${rootAttr}` : ``;
     const component = ReactDOMServer.renderToString(element);
     const title = options.title ? options.title : "";
     const link = options.link ? options.link : "";
@@ -106,7 +112,7 @@ export function render(el: JSX.Element | JSXHandler): SSR {
     const script = options.script ? options.script : "";
     const style = options.style ? options.style : "";
     const bundle = options.bundle ? options.bundle : "bundle";
-    return `<!DOCTYPE html><html${htmlLang}><head><meta charset="UTF-8">${meta}${title}${link}${style}${props}</head><body><div id="root">${component}</div><script type="module" src="${cdn}/${bundle}.js"></script>${script}<body></html>`;
+    return `<!DOCTYPE html><html ${htmlLang}${initAttr}><head><meta charset="UTF-8">${meta}${title}${link}${style}${props}</head><body${initBodyAttr}><div id="root" ${initRootAttr}>${component}</div><script type="module" src="${cdn}/${bundle}.js"></script>${script}<body></html>`;
   }
 
   const instance = {
@@ -125,6 +131,18 @@ export function render(el: JSX.Element | JSXHandler): SSR {
       });
       if (found) return instance;
       scriptInstance.push(script);
+      return instance;
+    },
+    htmlAttr: (a: string) => {
+      htmlAttr = a;
+      return instance;
+    },
+    bodyAttr: (b: string) => {
+      bodyAttr = b;
+      return instance;
+    },
+    rootAttr: (r: string) => {
+      rootAttr = r;
       return instance;
     },
     meta: (m: string) => {
@@ -183,6 +201,7 @@ export function render(el: JSX.Element | JSXHandler): SSR {
       html = createHTML(element, opt, props);
       return new Response(html, {
         status,
+        statusText: STATUS_TEXT[<Status> status],
         headers: {
           "Cache-Control": "max-age=31536000",
           "content-type": "text/html",

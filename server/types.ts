@@ -157,6 +157,9 @@ export interface SSR {
   script: (script: string) => SSR;
   style: (style: string) => SSR;
   link: (link: string) => SSR;
+  htmlAttr: (attr: string) => SSR;
+  bodyAttr: (attr: string) => SSR;
+  rootAttr: (attr: string) => SSR;
   lang: (lang: string) => SSR;
   cdn: (cdn: string) => SSR;
   props: (props: any) => SSR;
