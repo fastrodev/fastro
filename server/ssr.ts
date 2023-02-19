@@ -10,7 +10,7 @@ function createHydrate(rootComponent: string, rootTSX: string) {
 }
 
 function createMeta(meta: string) {
-  return `<meta ${meta} /> `;
+  return `<meta ${meta}>`;
 }
 
 function createScript(script: string) {
@@ -18,7 +18,7 @@ function createScript(script: string) {
 }
 
 function createLink(link: string) {
-  return `<link ${link} />`;
+  return `<link ${link}>`;
 }
 
 function createStyle(style: string) {
