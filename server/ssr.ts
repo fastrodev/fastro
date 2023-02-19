@@ -184,6 +184,7 @@ export function render(el: JSX.Element | JSXHandler): SSR {
       return new Response(html, {
         status,
         headers: {
+          "Cache-Control": "max-age=31536000",
           "content-type": "text/html",
         },
       });
