@@ -51,7 +51,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
         cache,
       );
 
-      if (flash) {
+      if (!flash) {
         return Deno.serve({
           hostname,
           port,
@@ -78,8 +78,8 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       return app;
     },
     close: () => {
-      if (!flash) return server.close();
-      return ac.abort();
+      if (!flash) return ac.abort();
+      return server.close();
     },
     use: (...middleware: Array<MiddlewareArgument>) => {
       middleware.forEach((m) => {
