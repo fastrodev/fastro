@@ -6,13 +6,7 @@ import { isJSX } from "./handler.ts";
 import { JSXHandler, RenderOptions, SSR } from "./types.ts";
 
 function createHydrate(rootComponent: string, rootTSX: string) {
-  return `import React from "https://esm.sh/react@18.2.0";
-import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
-import ${rootComponent} from "./${rootTSX}.tsx";
-const props = window.__INITIAL_STATE__ || {};
-const container = document.getElementById("root");
-const root = createRoot(container);
-root.render(<${rootComponent}  {...props} />);`;
+  return `import React from "https://esm.sh/react@18.2.0";import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";import ${rootComponent} from "./${rootTSX}.tsx";const props = window.__INITIAL_STATE__ || {};const container = document.getElementById("root");const root = createRoot(container);root.render(<${rootComponent}  {...props} />);`;
 }
 
 function createMeta(meta: string) {
@@ -44,6 +38,7 @@ export function render(el: JSX.Element | JSXHandler): SSR {
   const linkInstance: string[] = [];
   const metaInstance: string[] = [];
   let props: any;
+  let lang: string;
 
   if (isJSX(el)) {
     const jsxElement = <JSX.Element> el;
@@ -51,7 +46,7 @@ export function render(el: JSX.Element | JSXHandler): SSR {
     element = jsxElement;
   } else {
     const jsxElement = <JSXHandler> el;
-    bundleName = jsxElement.name;
+    bundleName = jsxElement.name.toLowerCase();
     element = React.createElement(jsxElement);
   }
 
@@ -103,6 +98,7 @@ export function render(el: JSX.Element | JSXHandler): SSR {
         JSON.stringify(initialData)
       };</script>`
       : "";
+    const htmlLang = lang ? ` lang =${lang}` : "";
     const component = ReactDOMServer.renderToString(element);
     const title = options.title ? options.title : "";
     const link = options.link ? options.link : "";
@@ -110,7 +106,7 @@ export function render(el: JSX.Element | JSXHandler): SSR {
     const script = options.script ? options.script : "";
     const style = options.style ? options.style : "";
     const bundle = options.bundle ? options.bundle : "bundle";
-    return `<!DOCTYPE html><html><head>${title}${link}${meta}${style}${props}</head><body><div id="root">${component}</div><script type="module" src="${cdn}/${bundle}.js"></script>${script}<body></html>`;
+    return `<!DOCTYPE html><html${htmlLang}><head>${meta}${title}${link}${style}${props}</head><body><div id="root">${component}</div><script type="module" src="${cdn}/${bundle}.js"></script>${script}<body></html>`;
   }
 
   const instance = {
@@ -164,6 +160,10 @@ export function render(el: JSX.Element | JSXHandler): SSR {
     },
     props: (p: any) => {
       props = p;
+      return instance;
+    },
+    lang: (l: string) => {
+      lang = l;
       return instance;
     },
     render: () => {

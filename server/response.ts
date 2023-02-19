@@ -1,4 +1,11 @@
-import { Cookie, deleteCookie, ReactDOMServer, setCookie } from "./deps.ts";
+import {
+  Cookie,
+  deleteCookie,
+  ReactDOMServer,
+  setCookie,
+  Status,
+  STATUS_TEXT,
+} from "./deps.ts";
 import { isJSX } from "./handler.ts";
 import { HttpResponse, SSR } from "./types.ts";
 
@@ -10,10 +17,7 @@ export function response(_req: Request): HttpResponse {
   let responseStatus = 200;
   let cookie: Cookie;
   let contentType = "text/plain;charset=UTF-8";
-  // let requestInstance: Request;
   let ssr: SSR;
-
-  // if (req) requestInstance = req;
 
   function createResponse(
     str: BodyInitResponse | JSX.Element,
@@ -29,12 +33,14 @@ export function response(_req: Request): HttpResponse {
 
       return new Response(component, {
         status: responseStatus,
+        statusText: STATUS_TEXT[<Status> responseStatus],
         headers,
       });
     }
 
     return new Response(<BodyInitResponse> str, {
       status: responseStatus,
+      statusText: STATUS_TEXT[<Status> responseStatus],
       headers,
     });
   }
