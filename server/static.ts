@@ -26,6 +26,7 @@ export async function handleStaticFile(
     options = {
       headers: {
         "content-type": "text/javascript",
+        "Cache-Control": "max-age=31536000",
       },
     };
   }
