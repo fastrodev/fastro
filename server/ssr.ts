@@ -106,7 +106,7 @@ export function render(el: JSX.Element | JSXHandler): SSR {
     const script = options.script ? options.script : "";
     const style = options.style ? options.style : "";
     const bundle = options.bundle ? options.bundle : "bundle";
-    return `<!DOCTYPE html><html${htmlLang}><head>${meta}${title}${link}${style}${props}</head><body><div id="root">${component}</div><script type="module" src="${cdn}/${bundle}.js"></script>${script}<body></html>`;
+    return `<!DOCTYPE html><html${htmlLang}><head><meta charset="UTF-8">${meta}${title}${link}${style}${props}</head><body><div id="root">${component}</div><script type="module" src="${cdn}/${bundle}.js"></script>${script}<body></html>`;
   }
 
   const instance = {
