@@ -1,0 +1,27 @@
+{
+  "scriptId": "8",
+  "url": "internal:ext/console/02_console.js",
+  "functions": [
+    {
+      "functionName": "inspectArgs",
+      "ranges": [
+        { "startOffset": 56380, "endOffset": 59683, "count": 8 },
+        { "startOffset": 56694, "endOffset": 59082, "count": 0 },
+        { "startOffset": 59136, "endOffset": 59168, "count": 0 },
+        { "startOffset": 59243, "endOffset": 59386, "count": 0 },
+        { "startOffset": 59435, "endOffset": 59659, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getConsoleInspectOptions",
+      "ranges": [{ "startOffset": 59805, "endOffset": 59936, "count": 8 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "log",
+      "ranges": [{ "startOffset": 60719, "endOffset": 60911, "count": 8 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

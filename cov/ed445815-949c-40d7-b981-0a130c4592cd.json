@@ -1,0 +1,14 @@
+{
+  "scriptId": "92",
+  "url": "",
+  "functions": [
+    {
+      "functionName": "op_read_all",
+      "ranges": [
+        { "startOffset": 151, "endOffset": 653, "count": 1 },
+        { "startOffset": 350, "endOffset": 507, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

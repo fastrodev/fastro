@@ -1,0 +1,11 @@
+{
+  "scriptId": "208",
+  "url": "https://esm.sh/react-dom@18.2.0/server",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 187, "count": 1 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

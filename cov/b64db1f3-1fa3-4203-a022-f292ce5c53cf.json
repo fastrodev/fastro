@@ -1,0 +1,26 @@
+{
+  "scriptId": "193",
+  "url": "file:///Users/pro/Documents/deno/fastro/server/container_test.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 914, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 166, "endOffset": 911, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 709, "endOffset": 907, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 741, "endOffset": 893, "count": 1 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

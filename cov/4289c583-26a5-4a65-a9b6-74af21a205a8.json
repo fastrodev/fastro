@@ -1,0 +1,39 @@
+{
+  "scriptId": "12",
+  "url": "internal:ext/web/01_dom_exception.js",
+  "functions": [
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [{ "startOffset": 3225, "endOffset": 5211, "count": 8 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DOMException",
+      "ranges": [
+        { "startOffset": 3362, "endOffset": 4454, "count": 8 },
+        { "startOffset": 3743, "endOffset": 3747, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "get message",
+      "ranges": [{ "startOffset": 4460, "endOffset": 4567, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get name",
+      "ranges": [{ "startOffset": 4573, "endOffset": 4674, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get code",
+      "ranges": [{ "startOffset": 4680, "endOffset": 4781, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 4787, "endOffset": 5207, "count": 0 }],
+      "isBlockCoverage": false
+    }
+  ]
+}

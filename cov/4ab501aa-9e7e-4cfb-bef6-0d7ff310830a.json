@@ -1,0 +1,11 @@
+{
+  "scriptId": "226",
+  "url": "[internal:cli/worker.rs:208:39]",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 63, "count": 1 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

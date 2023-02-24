@@ -1,0 +1,23 @@
+{
+  "scriptId": "60",
+  "url": "internal:runtime/js/10_permissions.js",
+  "functions": [
+    {
+      "functionName": "serializePermissions",
+      "ranges": [
+        { "startOffset": 6319, "endOffset": 7230, "count": 8 },
+        { "startOffset": 6565, "endOffset": 6846, "count": 32 },
+        { "startOffset": 6611, "endOffset": 6764, "count": 0 },
+        { "startOffset": 6943, "endOffset": 7160, "count": 32 },
+        { "startOffset": 6989, "endOffset": 7078, "count": 0 },
+        { "startOffset": 7202, "endOffset": 7229, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 6713, "endOffset": 6740, "count": 0 }],
+      "isBlockCoverage": false
+    }
+  ]
+}

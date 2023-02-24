@@ -1,0 +1,11 @@
+{
+  "scriptId": "201",
+  "url": "file:///Users/pro/Documents/deno/fastro/server/constant.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 210, "count": 1 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

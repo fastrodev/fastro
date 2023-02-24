@@ -1,0 +1,11 @@
+{
+  "scriptId": "194",
+  "url": "https://esm.sh/react@18.2.0/jsx-runtime",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 194, "count": 1 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

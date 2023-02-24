@@ -1,0 +1,14 @@
+{
+  "scriptId": "11",
+  "url": "internal:ext/web/00_infra.js",
+  "functions": [
+    {
+      "functionName": "assert",
+      "ranges": [
+        { "startOffset": 7297, "endOffset": 7411, "count": 11 },
+        { "startOffset": 7363, "endOffset": 7407, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

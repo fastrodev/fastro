@@ -1,0 +1,21 @@
+{
+  "scriptId": "212",
+  "url": "file:///Users/pro/Documents/deno/fastro/server/static.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 1200, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "handleStaticFile",
+      "ranges": [{ "startOffset": 56, "endOffset": 848, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getPathUrl",
+      "ranges": [{ "startOffset": 849, "endOffset": 1199, "count": 0 }],
+      "isBlockCoverage": false
+    }
+  ]
+}

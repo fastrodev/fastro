@@ -1,0 +1,103 @@
+{
+  "scriptId": "204",
+  "url": "file:///Users/pro/Documents/deno/fastro/server/handler.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 5077, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "createHandler",
+      "ranges": [{ "startOffset": 225, "endOffset": 3660, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        { "startOffset": 315, "endOffset": 582, "count": 1 },
+        { "startOffset": 398, "endOffset": 465, "count": 0 },
+        { "startOffset": 511, "endOffset": 581, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "handlePages",
+      "ranges": [{ "startOffset": 588, "endOffset": 1592, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "handleRoutes",
+      "ranges": [
+        { "startOffset": 1597, "endOffset": 3139, "count": 1 },
+        { "startOffset": 1792, "endOffset": 1904, "count": 0 },
+        { "startOffset": 2356, "endOffset": 2382, "count": 0 },
+        { "startOffset": 2697, "endOffset": 2725, "count": 0 },
+        { "startOffset": 2772, "endOffset": 3138, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 1936, "endOffset": 2321, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "handleMiddleware",
+      "ranges": [{ "startOffset": 3144, "endOffset": 3658, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isString",
+      "ranges": [
+        { "startOffset": 3661, "endOffset": 3878, "count": 1 },
+        { "startOffset": 3776, "endOffset": 3806, "count": 0 },
+        { "startOffset": 3814, "endOffset": 3876, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "isResponse",
+      "ranges": [{ "startOffset": 3879, "endOffset": 3951, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "isJSON",
+      "ranges": [{ "startOffset": 3952, "endOffset": 4335, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isJSX",
+      "ranges": [{ "startOffset": 4343, "endOffset": 4452, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "render",
+      "ranges": [{ "startOffset": 4453, "endOffset": 4657, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "transformRequest",
+      "ranges": [
+        { "startOffset": 4665, "endOffset": 5076, "count": 1 },
+        { "startOffset": 4749, "endOffset": 4802, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "req.get",
+      "ranges": [{ "startOffset": 4840, "endOffset": 4889, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "req.set",
+      "ranges": [{ "startOffset": 4905, "endOffset": 4986, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "req.delete",
+      "ranges": [{ "startOffset": 5005, "endOffset": 5057, "count": 0 }],
+      "isBlockCoverage": false
+    }
+  ]
+}

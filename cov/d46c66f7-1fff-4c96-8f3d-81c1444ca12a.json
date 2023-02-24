@@ -1,0 +1,46 @@
+{
+  "scriptId": "206",
+  "url": "https://deno.land/std@0.177.0/http/http_status.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 10230, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 847, "endOffset": 6158, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "isInformationalStatus",
+      "ranges": [{ "startOffset": 9346, "endOffset": 9430, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isSuccessfulStatus",
+      "ranges": [{ "startOffset": 9508, "endOffset": 9589, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isRedirectStatus",
+      "ranges": [{ "startOffset": 9670, "endOffset": 9749, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isClientErrorStatus",
+      "ranges": [{ "startOffset": 9831, "endOffset": 9913, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isServerErrorStatus",
+      "ranges": [{ "startOffset": 9995, "endOffset": 10077, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isErrorStatus",
+      "ranges": [{ "startOffset": 10153, "endOffset": 10229, "count": 0 }],
+      "isBlockCoverage": false
+    }
+  ]
+}

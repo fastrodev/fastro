@@ -1,0 +1,64 @@
+{
+  "scriptId": "5",
+  "url": "internal:core/02_error.js",
+  "functions": [
+    {
+      "functionName": "formatLocation",
+      "ranges": [
+        { "startOffset": 456, "endOffset": 1047, "count": 2 },
+        { "startOffset": 509, "endOffset": 539, "count": 0 },
+        { "startOffset": 645, "endOffset": 858, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "formatCallSiteEval",
+      "ranges": [
+        { "startOffset": 1095, "endOffset": 2443, "count": 2 },
+        { "startOffset": 1172, "endOffset": 1205, "count": 0 },
+        { "startOffset": 1232, "endOffset": 1319, "count": 0 },
+        { "startOffset": 1362, "endOffset": 1382, "count": 1 },
+        { "startOffset": 1407, "endOffset": 2054, "count": 1 },
+        { "startOffset": 1747, "endOffset": 1809, "count": 0 },
+        { "startOffset": 1827, "endOffset": 2048, "count": 0 },
+        { "startOffset": 2054, "endOffset": 2376, "count": 1 },
+        { "startOffset": 2083, "endOffset": 2236, "count": 0 },
+        { "startOffset": 2264, "endOffset": 2305, "count": 0 },
+        { "startOffset": 2376, "endOffset": 2442, "count": 1 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "evaluateCallSite",
+      "ranges": [{ "startOffset": 2447, "endOffset": 3174, "count": 2 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "sourceMapCallSiteEval",
+      "ranges": [
+        { "startOffset": 3178, "endOffset": 3377, "count": 2 },
+        { "startOffset": 3357, "endOffset": 3376, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "prepareStackTrace",
+      "ranges": [
+        { "startOffset": 3448, "endOffset": 4525, "count": 1 },
+        { "startOffset": 3849, "endOffset": 4017, "count": 2 },
+        { "startOffset": 4082, "endOffset": 4086, "count": 0 },
+        { "startOffset": 4143, "endOffset": 4152, "count": 0 },
+        { "startOffset": 4212, "endOffset": 4262, "count": 0 },
+        { "startOffset": 4278, "endOffset": 4288, "count": 0 },
+        { "startOffset": 4324, "endOffset": 4334, "count": 0 },
+        { "startOffset": 4341, "endOffset": 4378, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 4476, "endOffset": 4498, "count": 2 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

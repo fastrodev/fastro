@@ -1,0 +1,99 @@
+{
+  "scriptId": "10",
+  "url": "internal:ext/url/01_urlpattern.js",
+  "functions": [
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [{ "startOffset": 1185, "endOffset": 6476, "count": 7 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "URLPattern",
+      "ranges": [
+        { "startOffset": 1345, "endOffset": 2307, "count": 7 },
+        { "startOffset": 1697, "endOffset": 1826, "count": 0 },
+        { "startOffset": 1982, "endOffset": 2262, "count": 56 },
+        { "startOffset": 2156, "endOffset": 2254, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "get protocol",
+      "ranges": [{ "startOffset": 2313, "endOffset": 2445, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get username",
+      "ranges": [{ "startOffset": 2451, "endOffset": 2583, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get password",
+      "ranges": [{ "startOffset": 2589, "endOffset": 2721, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get hostname",
+      "ranges": [{ "startOffset": 2727, "endOffset": 2859, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get port",
+      "ranges": [{ "startOffset": 2865, "endOffset": 2989, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get pathname",
+      "ranges": [{ "startOffset": 2995, "endOffset": 3127, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get search",
+      "ranges": [{ "startOffset": 3133, "endOffset": 3261, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get hash",
+      "ranges": [{ "startOffset": 3267, "endOffset": 3391, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "test",
+      "ranges": [{ "startOffset": 3510, "endOffset": 4454, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exec",
+      "ranges": [
+        { "startOffset": 4589, "endOffset": 6089, "count": 7 },
+        { "startOffset": 4956, "endOffset": 5085, "count": 0 },
+        { "startOffset": 5209, "endOffset": 5239, "count": 0 },
+        { "startOffset": 5503, "endOffset": 6061, "count": 56 },
+        { "startOffset": 5748, "endOffset": 5782, "count": 0 },
+        { "startOffset": 6061, "endOffset": 6088, "count": 56 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        { "startOffset": 5876, "endOffset": 5915, "count": 50 },
+        { "startOffset": 5909, "endOffset": 5914, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 6095, "endOffset": 6472, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "webidl.converters.URLPatternInput",
+      "ranges": [
+        { "startOffset": 7309, "endOffset": 7517, "count": 14 },
+        { "startOffset": 7401, "endOffset": 7516, "count": 7 }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: denoland/setup-deno@v1.1.1
         with:
-          deno-version: v1.x
+          deno-version: vx.x.x
       # Check if the code is formatted according to Deno's default
       # formatting conventions.
       - run: deno fmt --check
@@ -18,8 +18,8 @@ jobs:
 
       # Run all test files in the repository and collect code coverage. The example
       # runs with all permissions, but it is recommended to run with the minimal permissions your program needs (for example --allow-read).
-      - run: deno test --unstable --allow-all --coverage=cov/
+      - run: deno test --allow-all --unstable --coverage=cov/
 
       # This generates a report from the collected coverage in `deno test --coverage`. It is
       # stored as a .lcov file which integrates well with services such as Codecov, Coveralls and Travis CI.
-      - run: deno coverage --unstable --lcov cov/ > cov.lcov
+      - run: deno coverage --lcov cov/ > cov.lcov

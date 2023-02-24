@@ -1,0 +1,36 @@
+{
+  "scriptId": "202",
+  "url": "https://deno.land/std@0.177.0/http/server.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 20047, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [{ "startOffset": 604, "endOffset": 13190, "count": 0 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "serveListener",
+      "ranges": [{ "startOffset": 13956, "endOffset": 14244, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "hostnameForDisplay",
+      "ranges": [{ "startOffset": 14245, "endOffset": 14555, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "serve",
+      "ranges": [{ "startOffset": 16162, "endOffset": 16825, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "serveTls",
+      "ranges": [{ "startOffset": 18865, "endOffset": 20046, "count": 0 }],
+      "isBlockCoverage": false
+    }
+  ]
+}

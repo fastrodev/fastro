@@ -1,0 +1,65 @@
+{
+  "scriptId": "202",
+  "url": "file:///Users/pro/Documents/deno/fastro/server/container.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 1388, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "createContainer",
+      "ranges": [{ "startOffset": 7, "endOffset": 1387, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "size",
+      "ranges": [{ "startOffset": 94, "endOffset": 110, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "clear",
+      "ranges": [{ "startOffset": 127, "endOffset": 146, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "delete",
+      "ranges": [{ "startOffset": 164, "endOffset": 190, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set",
+      "ranges": [
+        { "startOffset": 205, "endOffset": 902, "count": 2 },
+        { "startOffset": 272, "endOffset": 296, "count": 0 },
+        { "startOffset": 297, "endOffset": 320, "count": 0 },
+        { "startOffset": 365, "endOffset": 385, "count": 0 },
+        { "startOffset": 386, "endOffset": 406, "count": 0 },
+        { "startOffset": 651, "endOffset": 854, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 698, "endOffset": 770, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        { "startOffset": 917, "endOffset": 1207, "count": 1 },
+        { "startOffset": 994, "endOffset": 1014, "count": 0 },
+        { "startOffset": 1016, "endOffset": 1036, "count": 0 },
+        { "startOffset": 1065, "endOffset": 1084, "count": 0 },
+        { "startOffset": 1085, "endOffset": 1118, "count": 0 },
+        { "startOffset": 1120, "endOffset": 1172, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "removeExpiredObject",
+      "ranges": [{ "startOffset": 1219, "endOffset": 1385, "count": 0 }],
+      "isBlockCoverage": false
+    }
+  ]
+}

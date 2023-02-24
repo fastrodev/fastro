@@ -1,0 +1,70 @@
+{
+  "scriptId": "35",
+  "url": "internal:ext/fetch/23_response.js",
+  "functions": [
+    {
+      "functionName": "nullBodyStatus",
+      "ranges": [{ "startOffset": 2486, "endOffset": 2604, "count": 2 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "redirectStatus",
+      "ranges": [{ "startOffset": 2672, "endOffset": 2814, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "newInnerResponse",
+      "ranges": [{ "startOffset": 3642, "endOffset": 3994, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "url",
+      "ranges": [{ "startOffset": 3862, "endOffset": 3982, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "initializeAResponse",
+      "ranges": [
+        { "startOffset": 4612, "endOffset": 6107, "count": 1 },
+        { "startOffset": 4732, "endOffset": 4753, "count": 0 },
+        { "startOffset": 4755, "endOffset": 4901, "count": 0 },
+        { "startOffset": 5015, "endOffset": 5078, "count": 0 },
+        { "startOffset": 5471, "endOffset": 5581, "count": 0 },
+        { "startOffset": 6011, "endOffset": 6089, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 6323, "endOffset": 6379, "count": 2 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Response",
+      "ranges": [{ "startOffset": 8655, "endOffset": 9355, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "webidl.converters.ResponseInit_fast",
+      "ranges": [
+        { "startOffset": 12484, "endOffset": 13259, "count": 1 },
+        { "startOffset": 12553, "endOffset": 12626, "count": 0 },
+        { "startOffset": 12859, "endOffset": 12864, "count": 0 },
+        { "startOffset": 12988, "endOffset": 12992, "count": 0 },
+        { "startOffset": 13108, "endOffset": 13119, "count": 0 },
+        { "startOffset": 13172, "endOffset": 13258, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "toInnerResponse",
+      "ranges": [{ "startOffset": 13338, "endOffset": 13410, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "fromInnerResponse",
+      "ranges": [{ "startOffset": 13571, "endOffset": 13797, "count": 1 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

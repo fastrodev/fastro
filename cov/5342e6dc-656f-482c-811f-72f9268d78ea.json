@@ -1,0 +1,11 @@
+{
+  "scriptId": "7",
+  "url": "internal:ext/console/01_colors.js",
+  "functions": [
+    {
+      "functionName": "getNoColor",
+      "ranges": [{ "startOffset": 353, "endOffset": 400, "count": 16 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

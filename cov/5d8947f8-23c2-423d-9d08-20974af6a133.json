@@ -1,0 +1,84 @@
+{
+  "scriptId": "214",
+  "url": "file:///Users/pro/Documents/deno/fastro/server/response.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 2563, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "response",
+      "ranges": [{ "startOffset": 127, "endOffset": 2562, "count": 9 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "createResponse",
+      "ranges": [
+        { "startOffset": 330, "endOffset": 1016, "count": 3 },
+        { "startOffset": 396, "endOffset": 472, "count": 0 },
+        { "startOffset": 493, "endOffset": 520, "count": 0 },
+        { "startOffset": 595, "endOffset": 854, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "send",
+      "ranges": [{ "startOffset": 1054, "endOffset": 1147, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "json",
+      "ranges": [
+        { "startOffset": 1163, "endOffset": 1474, "count": 2 },
+        { "startOffset": 1368, "endOffset": 1464, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "html",
+      "ranges": [{ "startOffset": 1490, "endOffset": 1604, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "jsx",
+      "ranges": [{ "startOffset": 1619, "endOffset": 1739, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "status",
+      "ranges": [{ "startOffset": 1757, "endOffset": 1844, "count": 2 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "contentType",
+      "ranges": [{ "startOffset": 1867, "endOffset": 1947, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "authorization",
+      "ranges": [{ "startOffset": 1972, "endOffset": 2080, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "headers",
+      "ranges": [{ "startOffset": 2099, "endOffset": 2193, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "setCookie",
+      "ranges": [{ "startOffset": 2214, "endOffset": 2299, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deleteCookie",
+      "ranges": [{ "startOffset": 2323, "endOffset": 2436, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ssr",
+      "ranges": [{ "startOffset": 2451, "endOffset": 2532, "count": 0 }],
+      "isBlockCoverage": false
+    }
+  ]
+}

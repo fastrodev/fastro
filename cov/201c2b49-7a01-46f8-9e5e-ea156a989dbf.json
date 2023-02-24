@@ -1,0 +1,61 @@
+{
+  "scriptId": "200",
+  "url": "https://deno.land/std@0.177.0/http/cookie.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 9760, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "toString",
+      "ranges": [{ "startOffset": 392, "endOffset": 1919, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validateName",
+      "ranges": [{ "startOffset": 1981, "endOffset": 2134, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validatePath",
+      "ranges": [{ "startOffset": 2262, "endOffset": 2599, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validateValue",
+      "ranges": [{ "startOffset": 2728, "endOffset": 3408, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validateDomain",
+      "ranges": [{ "startOffset": 3554, "endOffset": 3867, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getCookies",
+      "ranges": [{ "startOffset": 4329, "endOffset": 4756, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "setCookie",
+      "ranges": [{ "startOffset": 5274, "endOffset": 5534, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deleteCookie",
+      "ranges": [{ "startOffset": 6202, "endOffset": 6378, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseSetCookie",
+      "ranges": [{ "startOffset": 6379, "endOffset": 8829, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getSetCookies",
+      "ranges": [{ "startOffset": 9438, "endOffset": 9759, "count": 0 }],
+      "isBlockCoverage": false
+    }
+  ]
+}

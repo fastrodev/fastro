@@ -1,0 +1,107 @@
+{
+  "scriptId": "196",
+  "url": "file:///Users/pro/Documents/deno/fastro/server/server.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 3431, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "fastro",
+      "ranges": [{ "startOffset": 206, "endOffset": 3430, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "push",
+      "ranges": [{ "startOffset": 502, "endOffset": 740, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 662, "endOffset": 678, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "serve",
+      "ranges": [
+        { "startOffset": 774, "endOffset": 2001, "count": 1 },
+        { "startOffset": 833, "endOffset": 843, "count": 0 },
+        { "startOffset": 897, "endOffset": 903, "count": 0 },
+        { "startOffset": 976, "endOffset": 1220, "count": 0 },
+        { "startOffset": 1524, "endOffset": 1534, "count": 0 },
+        { "startOffset": 1577, "endOffset": 1586, "count": 0 },
+        { "startOffset": 1659, "endOffset": 1740, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "static",
+      "ranges": [{ "startOffset": 2019, "endOffset": 2127, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "close",
+      "ranges": [
+        { "startOffset": 2144, "endOffset": 2236, "count": 1 },
+        { "startOffset": 2191, "endOffset": 2235, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "use",
+      "ranges": [{ "startOffset": 2251, "endOffset": 2394, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [{ "startOffset": 2409, "endOffset": 2482, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "post",
+      "ranges": [{ "startOffset": 2498, "endOffset": 2572, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "put",
+      "ranges": [{ "startOffset": 2587, "endOffset": 2661, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "delete",
+      "ranges": [{ "startOffset": 2679, "endOffset": 2755, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "patch",
+      "ranges": [{ "startOffset": 2772, "endOffset": 2847, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "options",
+      "ranges": [{ "startOffset": 2866, "endOffset": 2943, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set",
+      "ranges": [{ "startOffset": 2958, "endOffset": 3064, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "page",
+      "ranges": [{ "startOffset": 3080, "endOffset": 3245, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "flash",
+      "ranges": [{ "startOffset": 3262, "endOffset": 3325, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "build",
+      "ranges": [{ "startOffset": 3342, "endOffset": 3405, "count": 0 }],
+      "isBlockCoverage": false
+    }
+  ]
+}

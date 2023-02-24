@@ -1,0 +1,16 @@
+{
+  "scriptId": "21",
+  "url": "internal:ext/web/08_text_encoding.js",
+  "functions": [
+    {
+      "functionName": "TextEncoder",
+      "ranges": [{ "startOffset": 4935, "endOffset": 4997, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "encode",
+      "ranges": [{ "startOffset": 5212, "endOffset": 5645, "count": 67 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

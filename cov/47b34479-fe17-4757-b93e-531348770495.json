@@ -1,0 +1,21 @@
+{
+  "scriptId": "3",
+  "url": "internal:core/00_primordials.js",
+  "functions": [
+    {
+      "functionName": "SafeIterator",
+      "ranges": [{ "startOffset": 10009, "endOffset": 10084, "count": 7 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "next",
+      "ranges": [{ "startOffset": 10091, "endOffset": 10144, "count": 14 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 10151, "endOffset": 10200, "count": 7 }],
+      "isBlockCoverage": false
+    }
+  ]
+}

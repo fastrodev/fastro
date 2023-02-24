@@ -1,0 +1,16 @@
+{
+  "scriptId": "214",
+  "url": "https://deno.land/std@0.177.0/datetime/to_imf.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 1414, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "toIMF",
+      "ranges": [{ "startOffset": 622, "endOffset": 1413, "count": 0 }],
+      "isBlockCoverage": false
+    }
+  ]
+}
