@@ -10,7 +10,7 @@ jobs:
           deno-version: v1.x
       # Check if the code is formatted according to Deno's default
       # formatting conventions.
-      - run: deno fmt --check --unstable
+      - run: deno fmt --check
 
       # Scan the code for syntax errors and style issues. If
       # you want to use a custom linter configuration you can add a configuration file with --config <myconfig>
