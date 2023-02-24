@@ -5,32 +5,12 @@ import { React, ReactDOMServer, Status, STATUS_TEXT } from "./deps.ts";
 import { isJSX } from "./handler.ts";
 import { JSXHandler, RenderOptions, SSR } from "./types.ts";
 
-function createHydrate(rootComponent: string, rootTSX: string) {
-  return `import React from "https://esm.sh/react@18.2.0";import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";import ${rootComponent} from "./${rootTSX}.tsx";const props = window.__INITIAL_STATE__ || {};const container = document.getElementById("root");const root = createRoot(container);root.render(<${rootComponent}  {...props} />);`;
-}
-
-function createMeta(meta: string) {
-  return `<meta ${meta}>`;
-}
-
-function createScript(script: string) {
-  return `<script ${script}></script>`;
-}
-
-function createLink(link: string) {
-  return `<link ${link}>`;
-}
-
-function createStyle(style: string) {
-  return `<style>${style}</style>`;
-}
-
-export function render(el: JSX.Element | JSXHandler): SSR {
+export function createSSR(el: JSXHandler | JSX.Element): SSR {
   let element: JSX.Element;
   let status: 200;
   let html: string;
-  let dir = "./pages";
-  let cdn = "/public";
+  let pageDir = "./pages";
+  let staticPath = "/public";
   let title: string;
   let bundleName: string;
   const scriptInstance: string[] = [];
@@ -50,7 +30,27 @@ export function render(el: JSX.Element | JSXHandler): SSR {
   } else {
     const jsxElement = <JSXHandler> el;
     bundleName = jsxElement.name.toLowerCase();
-    element = React.createElement(jsxElement);
+    element = React.createElement(jsxElement, props);
+  }
+
+  function createHydrate(rootComponent: string, rootTSX: string) {
+    return `import React from "https://esm.sh/react@18.2.0";import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";import ${rootComponent} from "./${rootTSX}.tsx";const props = window.__INITIAL_STATE__ || {};const container = document.getElementById("root");const root = createRoot(container);root.render(<${rootComponent}  {...props} />);`;
+  }
+
+  function createMeta(meta: string) {
+    return `<meta ${meta}>`;
+  }
+
+  function createScript(script: string) {
+    return `<script ${script}></script>`;
+  }
+
+  function createLink(link: string) {
+    return `<link ${link}>`;
+  }
+
+  function createStyle(style: string) {
+    return `<style>${style}</style>`;
   }
 
   /**
@@ -64,7 +64,7 @@ export function render(el: JSX.Element | JSXHandler): SSR {
     rootTSX?: string,
   ) {
     const b = bundle ? bundle : "bundle";
-    const hydrateTarget = `${dir}/${rootTSX}.hydrate.tsx`;
+    const hydrateTarget = `${pageDir}/${rootTSX}.hydrate.tsx`;
     const bundlePath = `./public/${b}.js`;
 
     try {
@@ -112,12 +112,12 @@ export function render(el: JSX.Element | JSXHandler): SSR {
     const script = options.script ? options.script : "";
     const style = options.style ? options.style : "";
     const bundle = options.bundle ? options.bundle : "bundle";
-    return `<!DOCTYPE html><html ${htmlLang}${initAttr}><head><meta charset="UTF-8">${meta}${title}${link}${style}${props}</head><body${initBodyAttr}><div id="root" ${initRootAttr}>${component}</div><script type="module" src="${cdn}/${bundle}.js"></script>${script}<body></html>`;
+    return `<!DOCTYPE html><html ${initAttr} ${htmlLang}><head><meta charset="UTF-8">${meta}${title}${link}${style}${props}</head><body${initBodyAttr}><div id="root" ${initRootAttr}>${component}</div><script type="module" src="${staticPath}/${bundle}.js"></script>${script}<body></html>`;
   }
 
   const instance = {
     dir: (d: string) => {
-      dir = d;
+      pageDir = d;
       return instance;
     },
     title: (t: string) => {
@@ -173,7 +173,7 @@ export function render(el: JSX.Element | JSXHandler): SSR {
       return instance;
     },
     cdn: (path: string) => {
-      cdn = path;
+      staticPath = path;
       return instance;
     },
     props: (p: any) => {

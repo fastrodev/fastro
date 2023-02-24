@@ -1,6 +1,31 @@
 // deno-lint-ignore-file no-explicit-any
 import { Cookie, ServeInit } from "./deps.ts";
 
+export type SetOptions = {
+  isExpired?: boolean;
+  expirySeconds?: number;
+};
+
+export interface Container {
+  set: <T>(
+    key: string,
+    value: T,
+    options?: SetOptions,
+  ) => void;
+  get: <T>(key: string) => T | null;
+  size: () => number;
+  clear: () => void;
+  delete: (key: string) => boolean;
+}
+
+export type Data = {
+  key: string;
+  value: any;
+  isExpired: boolean;
+  expiryTime: number;
+  timeoutId?: number;
+};
+
 export interface Next {
   (error?: unknown): void;
 }
@@ -27,6 +52,9 @@ export type HttpResponse = {
 
 export class HttpRequest extends Request {
   match!: URLPatternResult | null;
+  get!: <T>(key: string) => T | null;
+  set!: <T>(key: string, value: T, options?: SetOptions) => void;
+  delete!: (key: string) => void;
 }
 
 export type RequestHandler = (
@@ -119,6 +147,24 @@ export type Fastro = {
   options(path: string, handler: HandlerArgument): Fastro;
   flash(isFlash: boolean): Fastro;
   build(isBuild: boolean): Fastro;
+  /**
+   * Set data to container
+   *
+   * ```ts
+   * app.set("key1", "value1")
+   * ```
+   *
+   * you can access them from handler
+   *
+   * ```ts
+   * req.get("key1")
+   * ```
+   *
+   * @param key
+   * @param value
+   * @param options
+   */
+  set<T>(key: string, value: T, options?: SetOptions): Fastro;
   page(
     path: string,
     ssr: SSR,

@@ -1,21 +1,21 @@
 {
-    "deno.enable": true,
-    "deno.lint": true,
-    "deno.unstable": true,
-    "deno.codeLens.test": true,
+  "deno.enable": true,
+  "deno.lint": true,
+  "deno.unstable": true,
+  "deno.codeLens.test": true,
+  "editor.defaultFormatter": "denoland.vscode-deno",
+  "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno",
-    "[typescript]": {
-        "editor.defaultFormatter": "denoland.vscode-deno",
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": true
-        }
-    },
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "denoland.vscode-deno",
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": true
-        }
-    },
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "denoland.vscode-deno",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  }
 }

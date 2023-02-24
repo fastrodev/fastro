@@ -1,4 +1,5 @@
 import { DELETE, GET, OPTIONS, PATCH, POST } from "./constant.ts";
+import { createContainer } from "./container.ts";
 import { ServeInit, Server } from "./deps.ts";
 import { createHandler } from "./handler.ts";
 import {
@@ -6,6 +7,7 @@ import {
   HandlerArgument,
   MiddlewareArgument,
   Route,
+  SetOptions,
   SSR,
   SSRHandler,
   StartOptions,
@@ -16,6 +18,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
   const pages: Array<SSRHandler> = [];
   const middlewares: Array<MiddlewareArgument> = [];
   const ac = new AbortController();
+  const container = createContainer();
   let staticURL = "/public";
   let flash = true;
   let server: Server;
@@ -33,7 +36,6 @@ export function fastro(_startOptions?: StartOptions): Fastro {
     serve: (serveOptions: ServeInit) => {
       const hostname = serveOptions?.hostname || "127.0.0.1";
       const port = serveOptions?.port || 9000;
-      const cache = {};
 
       if (build) {
         for (const p of pages) {
@@ -49,7 +51,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
         routes,
         pages,
         staticURL,
-        cache,
+        container,
         maxAge,
       );
 
@@ -76,7 +78,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       return server.listenAndServe();
     },
     static: (path: string, m?: number) => {
-      maxAge = m ? m : 31536000;
+      maxAge = m ? m : 0;
       staticURL = path;
       return app;
     },
@@ -107,6 +109,10 @@ export function fastro(_startOptions?: StartOptions): Fastro {
     },
     options: (path: string, handler: HandlerArgument) => {
       return push(OPTIONS, path, handler);
+    },
+    set: <T>(key: string, value: T, options?: SetOptions) => {
+      container.set(key, value, options);
+      return app;
     },
     page: (
       path: string,

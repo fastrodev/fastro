@@ -1,19 +1,30 @@
 import React, { useState } from "https://esm.sh/react@18.2.0";
 
+type D = { msg: string };
+
 const App = (props: { data: string }) => {
-  const [count, setCount] = useState(0);
+  const data: D = { msg: "___" };
+  const [d, setD] = useState(data);
+
+  const handleClick = async () => {
+    const res = await fetch("/api");
+    const jsonData = await res.json();
+    setD(jsonData);
+  };
+
   return (
-    <>
+    <div className="container">
       <h1>Hello {props.data}</h1>
       <button
         type="button"
         className="btn btn-primary"
-        onClick={() => setCount(count + 1)}
+        onClick={handleClick}
       >
-        Click the 🦕
+        Hit the API
       </button>
-      <p>You clicked the 🦕 {count} times</p>
-    </>
+
+      <pre className="mt-2">The API Response is {JSON.stringify(d)}</pre>
+    </div>
   );
 };
 
