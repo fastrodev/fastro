@@ -1,5 +1,5 @@
 import { NONPAGE } from "./constant.ts";
-import { ReactDOMServer } from "./deps.ts";
+import { ReactDOMServer, Status, STATUS_TEXT } from "./deps.ts";
 import { handleJSXPage } from "./page.ts";
 import { response } from "./response.ts";
 import { handleStaticFile } from "./static.ts";
@@ -115,7 +115,9 @@ export function createHandler(
       return new Response(<string> object, { headers });
     }
 
-    return new Response("");
+    return new Response(STATUS_TEXT[Status.NotFound], {
+      status: Status.NotFound,
+    });
   }
 
   function handleMiddleware(
