@@ -1,6 +1,7 @@
 import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
 import { Status, STATUS_TEXT } from "./deps.ts";
 import { fastro } from "./server.ts";
+import { HttpRequest, HttpResponse } from "./types.ts";
 
 const host = "http://localhost:9000";
 
@@ -89,7 +90,7 @@ Deno.test({ permissions: { net: true } }, async function middleware() {
 
 Deno.test({ permissions: { net: true } }, async function params() {
   const app = fastro();
-  app.get("/:user", (req, res) => {
+  app.get("/:user", (req: HttpRequest, res: HttpResponse) => {
     const r = req.match?.pathname.groups;
     if (!r) return res.send("not found");
     const { user } = r;
