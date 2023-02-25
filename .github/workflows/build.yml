@@ -4,9 +4,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: denolib/setup-deno@master
+    - uses: actions/checkout@v3
+    - uses: denoland/setup-deno@v1.1.1
         with:
-          deno-version: 1.30.0
-      - run: deno lint --unstable
-      - run: deno test -A --unstable
+          deno-version: v1.30.3
+    - run: deno lint --unstable
+    - run: deno test -A --unstable
