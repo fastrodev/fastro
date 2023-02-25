@@ -10,6 +10,7 @@ import {
   HttpRequest,
   MiddlewareArgument,
   Next,
+  RequestHandler,
   Route,
   SetOptions,
   SSRHandler,
@@ -27,9 +28,13 @@ export function createHandler(
     let handler: HandlerArgument | undefined = undefined;
     if (middlewares.length > 0) {
       handler = handleMiddleware(r, middlewares);
+      if (handler) {
+        const h = <RequestHandler> handler;
+        return h(transformRequest(r, cache, null), response(r), undefined);
+      }
     }
-    if (!handler) return handleRoutes(r);
-    return handler(transformRequest(r, cache), response(r));
+
+    return handleRoutes(r);
   };
 
   function handlePages(r: Request, id: string) {
@@ -110,7 +115,7 @@ export function createHandler(
       return new Response(<string> object, { headers });
     }
 
-    return handler(request, res, next);
+    return new Response("");
   }
 
   function handleMiddleware(

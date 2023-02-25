@@ -1,5 +1,11 @@
 import { response } from "./response.ts";
-import { HandlerArgument, HttpRequest, SSR, SSRHandler } from "./types.ts";
+import {
+  HandlerArgument,
+  HttpRequest,
+  RequestHandler,
+  SSR,
+  SSRHandler,
+} from "./types.ts";
 
 interface Page {
   pages: Map<string, SSRHandler>;
@@ -36,7 +42,8 @@ export function page(): Page {
 
 export function handleJSXPage(
   ssr: SSRHandler,
-  req: HttpRequest,
+  r: HttpRequest,
 ): Response | Promise<Response> {
-  return ssr.handler(req, response(req), () => {});
+  const h = <RequestHandler> ssr.handler;
+  return h(r, response(r), undefined);
 }
