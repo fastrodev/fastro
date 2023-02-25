@@ -17,5 +17,8 @@
     "editor.codeActionsOnSave": {
       "source.organizeImports": true
     }
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
