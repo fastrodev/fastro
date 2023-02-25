@@ -30,6 +30,7 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
   let ogSiteName: string;
   let twitterCard: string;
   let twitterImageAlt: string;
+  let metaDesc: string;
 
   if (isJSX(el)) {
     const jsxElement = <JSX.Element> el;
@@ -63,6 +64,10 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
 
   function createDescription(desc: string) {
     return `<meta property="og:description" content="${desc}">`;
+  }
+
+  function createMetaDescription(metaDesc: string) {
+    return `<meta  name="description" content="${metaDesc}">`;
   }
 
   function createSiteName(siteName: string) {
@@ -160,7 +165,8 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
     const initOgURL = ogURL ? createURL(ogURL) : "";
     const initTwitterCard = twitterCard ? createTwitterCard(twitterCard) : "";
     const alt = twitterImageAlt ? createTwitterImageAlt(twitterImageAlt) : "";
-    return `<!DOCTYPE html><html ${initAttr} ${htmlLang}><head><meta charset="UTF-8">${meta}${description}${initOgTitle}${initOgImage}${initOgSiteName}${initOgType}${initOgURL}${initTwitterCard}${alt}${title}${link}${style}${props}</head><body${initBodyAttr}><div id="root" ${initRootAttr}>${component}</div><script type="module" src="${staticPath}/${bundle}.js"></script>${script}<body></html>`;
+    const initMetaDesc = metaDesc ? createMetaDescription(metaDesc) : "";
+    return `<!DOCTYPE html><html ${initAttr} ${htmlLang}><head><meta charset="UTF-8">${meta}${initMetaDesc}${description}${initOgTitle}${initOgImage}${initOgSiteName}${initOgType}${initOgURL}${initTwitterCard}${alt}${title}${link}${style}${props}</head><body${initBodyAttr}><div id="root" ${initRootAttr}>${component}</div><script type="module" src="${staticPath}/${bundle}.js"></script>${script}<body></html>`;
   }
 
   const instance = {
