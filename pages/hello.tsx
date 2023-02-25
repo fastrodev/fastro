@@ -21,7 +21,7 @@ const Hello = () => {
           aria-label="Guest"
           onChange={handleChange}
         />
-        <button className="btn btn-primary ms-2" type="submit">
+        <button className="btn btn-primary ms-2 col-2" type="submit">
           Go
         </button>
       </form>
