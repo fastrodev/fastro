@@ -22,6 +22,14 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
   let htmlAttr: string;
   let bodyAttr: string;
   let rootAttr: string;
+  let ogDescription: string;
+  let ogTitle: string;
+  let ogImage: string;
+  let ogURL: string;
+  let ogType: string;
+  let ogSiteName: string;
+  let twitterCard: string;
+  let twitterImageAlt: string;
 
   if (isJSX(el)) {
     const jsxElement = <JSX.Element> el;
@@ -51,6 +59,38 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
 
   function createStyle(style: string) {
     return `<style>${style}</style>`;
+  }
+
+  function createDescription(desc: string) {
+    return `<meta property="og:description" content="${desc}">`;
+  }
+
+  function createSiteName(siteName: string) {
+    return `<meta property="og:site_name" content="${siteName}">`;
+  }
+
+  function createURL(url: string) {
+    return `<meta property="og:url" content="${url}">`;
+  }
+
+  function createImage(img: string) {
+    return `<meta property="og:image" content="${img}">`;
+  }
+
+  function createType(type: string) {
+    return `<meta property="og:type" content="${type}">`;
+  }
+
+  function createTitle(title: string) {
+    return `<meta property="og:title" content="${title}">`;
+  }
+
+  function createTwitterCard(card: string) {
+    return `<meta name="twitter:card" content="${card}">`;
+  }
+
+  function createTwitterImageAlt(alt: string) {
+    return `<meta name="twitter:image:alt" content="${alt}">`;
   }
 
   /**
@@ -112,7 +152,15 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
     const script = options.script ? options.script : "";
     const style = options.style ? options.style : "";
     const bundle = options.bundle ? options.bundle : "bundle";
-    return `<!DOCTYPE html><html ${initAttr} ${htmlLang}><head><meta charset="UTF-8">${meta}${title}${link}${style}${props}</head><body${initBodyAttr}><div id="root" ${initRootAttr}>${component}</div><script type="module" src="${staticPath}/${bundle}.js"></script>${script}<body></html>`;
+    const description = ogDescription ? createDescription(ogDescription) : "";
+    const initOgTitle = ogTitle ? createTitle(ogTitle) : "";
+    const initOgImage = ogImage ? createImage(ogImage) : "";
+    const initOgSiteName = ogSiteName ? createSiteName(ogSiteName) : "";
+    const initOgType = ogType ? createType(ogType) : "";
+    const initOgURL = ogURL ? createURL(ogURL) : "";
+    const initTwitterCard = twitterCard ? createTwitterCard(twitterCard) : "";
+    const alt = twitterImageAlt ? createTwitterImageAlt(twitterImageAlt) : "";
+    return `<!DOCTYPE html><html ${initAttr} ${htmlLang}><head><meta charset="UTF-8">${meta}${description}${initOgTitle}${initOgImage}${initOgSiteName}${initOgType}${initOgURL}${initTwitterCard}${alt}${title}${link}${style}${props}</head><body${initBodyAttr}><div id="root" ${initRootAttr}>${component}</div><script type="module" src="${staticPath}/${bundle}.js"></script>${script}<body></html>`;
   }
 
   const instance = {
@@ -143,6 +191,34 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
     },
     rootAttr: (r: string) => {
       rootAttr = r;
+      return instance;
+    },
+    ogDesc: (d: string) => {
+      ogDescription = d;
+      return instance;
+    },
+    ogTitle: (t: string) => {
+      ogTitle = t;
+      return instance;
+    },
+    ogType: (t: string) => {
+      ogType = t;
+      return instance;
+    },
+    ogImage: (i: string) => {
+      ogImage = i;
+      return instance;
+    },
+    ogURL: (u: string) => {
+      ogURL = u;
+      return instance;
+    },
+    ogSiteName: (name: string) => {
+      ogSiteName = name;
+      return instance;
+    },
+    twitterCard: (c: string) => {
+      twitterCard = c;
       return instance;
     },
     meta: (m: string) => {

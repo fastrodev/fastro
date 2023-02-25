@@ -209,6 +209,13 @@ export interface SSR {
   rootAttr: (attr: string) => SSR;
   lang: (lang: string) => SSR;
   cdn: (cdn: string) => SSR;
+  ogTitle: (title: string) => SSR;
+  ogType: (type: string) => SSR;
+  ogImage: (image: string) => SSR;
+  ogURL: (url: string) => SSR;
+  ogSiteName: (name: string) => SSR;
+  ogDesc: (desc: string) => SSR;
+  twitterCard: (card: string) => SSR;
   props: (props: any) => SSR;
   render: () => Response;
   _createBundle: (
