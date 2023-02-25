@@ -227,6 +227,10 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
       twitterCard = c;
       return instance;
     },
+    metaDesc: (d: string) => {
+      metaDesc = d;
+      return instance;
+    },
     meta: (m: string) => {
       const meta = createMeta(m);
       const found = metaInstance.find((v) => {

@@ -216,6 +216,7 @@ export interface SSR {
   ogSiteName: (name: string) => SSR;
   ogDesc: (desc: string) => SSR;
   twitterCard: (card: string) => SSR;
+  metaDesc: (desc: string) => SSR;
   props: (props: any) => SSR;
   render: () => Response;
   _createBundle: (
