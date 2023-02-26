@@ -15,6 +15,7 @@
     "middleware": "deno run -A --unstable examples/middleware.ts",
     "jsx": "deno run -A --unstable examples/hello_world_fastro_jsx.tsx",
     "params": "deno run -A --unstable examples/params.ts",
-    "container": "deno run -A --unstable examples/container.ts"
+    "container": "deno run -A --unstable examples/container.ts",
+    "cms": "deno run -A --unstable cms/main.ts"
   }
 }

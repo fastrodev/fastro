@@ -9,7 +9,7 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
   let element: JSX.Element;
   let status: 200;
   let html: string;
-  let pageDir = "./pages";
+  let pageDir = "pages";
   let staticPath = "/public";
   let title: string;
   let bundleName: string;
@@ -108,9 +108,10 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
     rootComponent?: string,
     rootTSX?: string,
   ) {
+    const cwd = Deno.cwd();
     const b = bundle ? bundle : "bundle";
-    const hydrateTarget = `${pageDir}/${rootTSX}.hydrate.tsx`;
-    const bundlePath = `./public/${b}.js`;
+    const hydrateTarget = `${cwd}/${pageDir}/${rootTSX}.hydrate.tsx`;
+    const bundlePath = `${cwd}${staticPath}/${b}.js`;
 
     try {
       if (!rootComponent) rootComponent = "App";
