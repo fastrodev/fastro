@@ -2,6 +2,7 @@ import application from "../server/mod.ts";
 
 const app = application();
 
-app.get("/", () => new Response("Hello world"));
+// use std Request
+app.get("/", (_req: Request) => new Response("Hello world"));
 
 await app.serve();

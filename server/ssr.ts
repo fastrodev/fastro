@@ -3,7 +3,13 @@ import * as esbuild from "https://deno.land/x/esbuild@v0.15.10/mod.js";
 import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts";
 import { React, ReactDOMServer, Status, STATUS_TEXT } from "./deps.ts";
 import { isJSX } from "./handler.ts";
-import { JSXHandler, RenderOptions, SSR } from "./types.ts";
+import {
+  Container,
+  HttpRequest,
+  JSXHandler,
+  RenderOptions,
+  SSR,
+} from "./types.ts";
 
 export function createSSR(el: JSXHandler | JSX.Element): SSR {
   let element: JSX.Element;
@@ -31,6 +37,8 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
   let twitterCard: string;
   let twitterImageAlt: string;
   let metaDesc: string;
+  let httpRequest: HttpRequest;
+  let cache: Container;
 
   if (isJSX(el)) {
     const jsxElement = <JSX.Element> el;
@@ -271,6 +279,14 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
       lang = l;
       return instance;
     },
+    request: (r: HttpRequest) => {
+      httpRequest = r;
+      return instance;
+    },
+    cache: (c: Container) => {
+      cache = c;
+      return instance;
+    },
     render: () => {
       const bundle = bundleName;
       const meta = metaInstance.length > 0 ? metaInstance.join("") : "";
@@ -285,12 +301,20 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
         style,
         bundle,
       };
-      html = createHTML(element, opt, props);
+
+      const pageID = "ssr-" + httpRequest.url;
+      if (cache.get(pageID)) {
+        html = <string> cache.get(pageID);
+      } else {
+        html = createHTML(element, opt, props);
+        cache.set(pageID, html, { isExpired: true, expirySeconds: 10 });
+      }
+
       return new Response(html, {
         status,
         statusText: STATUS_TEXT[<Status> status],
         headers: {
-          "Cache-Control": "max-age=31536000",
+          "Cache-Control": "max-age=0",
           "content-type": "text/html",
         },
       });

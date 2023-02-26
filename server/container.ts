@@ -4,6 +4,7 @@ export function createContainer(): Container {
   const objects = new Map<string, Data>();
 
   return {
+    objects: () => objects,
     size: () => objects.size,
     clear: () => objects.clear(),
     delete: (key: string) => objects.delete(key),
@@ -20,17 +21,17 @@ export function createContainer(): Container {
         ? options?.isExpired
         : false;
 
-      const expiryTime = Date.now() + expirySeconds * 1000;
-      const object: Data = { key, value, isExpired, expiryTime };
-
       if (isExpired) {
+        const expiryTime = Date.now() + expirySeconds * 1000;
+        const object: Data = { key, value, isExpired, expiryTime };
         const timeoutId = setTimeout(() => {
           removeExpiredObject(object);
         }, expirySeconds * 1000);
         object.timeoutId = timeoutId;
+        return objects.set(key, object);
+      } else {
+        objects.set(key, { key, value, isExpired, expiryTime: 0 });
       }
-
-      objects.set(key, object);
     },
 
     get: <T>(key: string) => {
