@@ -7,6 +7,7 @@ export type SetOptions = {
 };
 
 export interface Container {
+  objects: () => Map<string, Data>;
   set: <T>(
     key: string,
     value: T,
@@ -52,6 +53,7 @@ export type HttpResponse = {
 
 export class HttpRequest extends Request {
   match!: URLPatternResult | null;
+  container!: () => Container;
   get!: <T>(key: string) => T | null;
   set!: <T>(key: string, value: T, options?: SetOptions) => void;
   delete!: (key: string) => void;
@@ -218,6 +220,8 @@ export interface SSR {
   twitterCard: (card: string) => SSR;
   metaDesc: (desc: string) => SSR;
   props: (props: any) => SSR;
+  request: (req: HttpRequest) => SSR;
+  cache: (cache: Container) => SSR;
   render: () => Response;
   _createBundle: (
     bundle?: string,

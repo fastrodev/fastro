@@ -1,5 +1,6 @@
 import { response } from "./response.ts";
 import {
+  Container,
   HandlerArgument,
   HttpRequest,
   RequestHandler,
@@ -41,9 +42,12 @@ export function page(): Page {
 }
 
 export function handleJSXPage(
-  ssr: SSRHandler,
+  s: SSRHandler,
   r: HttpRequest,
+  c: Container,
 ): Response | Promise<Response> {
-  const h = <RequestHandler> ssr.handler;
+  s.ssr.request(r);
+  s.ssr.cache(c);
+  const h = <RequestHandler> s.handler;
   return h(r, response(r), undefined);
 }

@@ -67,7 +67,7 @@ export function createHandler(
       return handleStaticFile(r.url, staticURL, maxAge);
     }
 
-    return handleJSXPage(page, transformRequest(r, cache, match));
+    return handleJSXPage(page, transformRequest(r, cache, match), cache);
   }
 
   function handleRoutes(r: Request) {
@@ -195,6 +195,7 @@ export function transformRequest(
     req.match = null;
     return req;
   }
+  req.container = () => container;
   req.match = match;
   req.get = <T>(key: string) => {
     return <T> container.get(key);
