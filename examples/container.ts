@@ -1,4 +1,5 @@
 import application from "../server/mod.ts";
+import { HttpRequest, HttpResponse } from "../server/types.ts";
 
 const app = application();
 
@@ -14,7 +15,7 @@ app.set("key1", "value1")
   .set<MyData>("myData", { key: "myData", value: "ok", status: true })
   // set data with expired time
   .set("expired", "the expired data", { isExpired: true, expirySeconds: 5 })
-  .get("/", (req, res) => {
+  .get("/", (req: HttpRequest, res: HttpResponse) => {
     // you can also set data from handler
     req.set("new", "data from handler");
     return res.json({
@@ -23,7 +24,7 @@ app.set("key1", "value1")
       expired: req.get("expired"),
     });
   })
-  .get("/my-data", (req, res) => {
+  .get("/my-data", (req: HttpRequest, res: HttpResponse) => {
     return res.json({
       new: req.get("new"),
       // get data with custom type

@@ -2,6 +2,7 @@ import App from "../pages/app.tsx";
 import Hello from "../pages/hello.tsx";
 import User from "../pages/user.tsx";
 import fastro, { createSSR, HttpResponse, SSR } from "../server/mod.ts";
+import { HttpRequest } from "../server/types.ts";
 
 const hello = createSSR(Hello);
 const app = createSSR(App);
@@ -11,18 +12,18 @@ const f = fastro();
 
 // SSR page initiation
 f.static("/public")
-  .page("/", hello, (_req, res) => {
+  .page("/", hello, (_req: HttpRequest, res: HttpResponse) => {
     return initSSR(res, hello)
       .title(`Hello`)
       .render();
   })
-  .page("/:user", user, (req, res) => {
+  .page("/:user", user, (req: HttpRequest, res: HttpResponse) => {
     const data = req.match?.pathname.groups.user;
     return initSSR(res, user)
       .props({ data })
       .render();
   })
-  .page("/:user/count", app, (req, res) => {
+  .page("/:user/count", app, (req: HttpRequest, res: HttpResponse) => {
     const data = req.match?.pathname.groups.user;
     return initSSR(res, app)
       .title(`Hello ${data}`)
@@ -31,7 +32,7 @@ f.static("/public")
   });
 
 // API initiation
-f.get("/api", (_req, res) => {
+f.get("/api", (_req: HttpRequest, res: HttpResponse) => {
   return res.json({ msg: "hello" });
 });
 
