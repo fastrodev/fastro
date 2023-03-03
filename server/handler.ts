@@ -1,5 +1,6 @@
-import { NONPAGE } from "./constant.ts";
-import { ReactDOMServer, Status, STATUS_TEXT } from "./deps.ts";
+// deno-lint-ignore-file no-explicit-any
+import { CACHE, NONPAGE } from "./constant.ts";
+import { ReactDOMServer } from "./deps.ts";
 import { handleJSXPage } from "./page.ts";
 import { response } from "./response.ts";
 import { handleStaticFile } from "./static.ts";
@@ -9,9 +10,9 @@ import {
   HandlerArgument,
   HttpRequest,
   MiddlewareArgument,
-  Next,
   RequestHandler,
   Route,
+  Row,
   SetOptions,
   SSRHandler,
 } from "./types.ts";
@@ -21,19 +22,20 @@ export function createHandler(
   routes: Array<Route>,
   pages: Array<SSRHandler>,
   staticURL: string,
-  cache: Container,
+  container: Container,
   maxAge: number,
 ) {
+  let cache: Row = {};
   return function (r: Request) {
+    cache = <Row> container.get(CACHE);
     let handler: HandlerArgument | undefined = undefined;
     if (middlewares.length > 0) {
       handler = handleMiddleware(r, middlewares);
       if (handler) {
         const h = <RequestHandler> handler;
-        return h(transformRequest(r, cache, null), response(r), undefined);
+        return h(transformRequest(r, container, null), response(r), undefined);
       }
     }
-
     return handleRoutes(r);
   };
 
@@ -43,9 +45,9 @@ export function createHandler(
     const pageId = `page-${id}`;
     const matchId = `match-${pageId}`;
 
-    if (cache.get(pageId)) {
-      page = cache.get(pageId) === NONPAGE ? undefined : cache.get(pageId);
-      if (cache.get(matchId)) match = cache.get(matchId);
+    if (cache[pageId]) {
+      page = cache[pageId] === NONPAGE ? undefined : cache[pageId];
+      if (cache[matchId]) match = cache[matchId];
     } else {
       const p = pages.find((page) => {
         let pattern: URLPattern | null = new URLPattern({
@@ -55,11 +57,11 @@ export function createHandler(
         pattern = null;
         if (m) {
           match = m;
-          cache.set(matchId, m);
+          cache[matchId] = m;
           return (m);
         }
       });
-      cache.set(pageId, p ? p : NONPAGE);
+      cache[pageId] = p ? p : NONPAGE;
       page = p;
     }
 
@@ -67,7 +69,11 @@ export function createHandler(
       return handleStaticFile(r.url, staticURL, maxAge);
     }
 
-    return handleJSXPage(page, transformRequest(r, cache, match), cache);
+    return handleJSXPage(
+      page,
+      transformRequest(r, container, match),
+      container,
+    );
   }
 
   function handleRoutes(r: Request) {
@@ -76,9 +82,9 @@ export function createHandler(
     let handler: HandlerArgument | undefined | null = undefined;
     let match: URLPatternResult | null = null;
 
-    if (cache.get(id)) {
-      handler = cache.get(id);
-      if (cache.get(paramId)) match = cache.get(paramId);
+    if (cache[id]) {
+      handler = cache[id];
+      if (cache[paramId]) match = cache[paramId];
     } else {
       routes.find((route) => {
         let pattern: URLPattern | null = new URLPattern({
@@ -96,16 +102,19 @@ export function createHandler(
 
     if (!handler) return handlePages(r, id);
 
-    cache.set(id, handler);
-    cache.set(paramId, match);
-    const res = response(r);
-    const next: Next | undefined = undefined;
+    cache[id] = handler;
+    cache[paramId] = match;
     const execHandler = <ExecHandler> <unknown> handler;
-    const request = transformRequest(r, cache, match);
-    const result = execHandler(request, res, next);
+    const result = execHandler(
+      transformRequest(r, container, match),
+      response(r),
+      undefined,
+    );
 
     if (isString(result)) return new Response(result);
+
     if (isResponse(result)) return <Response> <unknown> result;
+
     if (isJSX(result)) return render(<JSX.Element> <unknown> result);
 
     const [isJson, object] = isJSON(result);
@@ -115,9 +124,7 @@ export function createHandler(
       return new Response(<string> object, { headers });
     }
 
-    return new Response(STATUS_TEXT[Status.NotFound], {
-      status: Status.NotFound,
-    });
+    return new Response(result);
   }
 
   function handleMiddleware(
@@ -129,7 +136,7 @@ export function createHandler(
     for (let index = 0; index < middlewares.length; index++) {
       const m = middlewares[index];
       const res = response(r);
-      m(transformRequest(r, cache), res, (err) => {
+      m(transformRequest(r, container), res, (err) => {
         if (err) throw err;
         done = true;
       });
@@ -144,13 +151,8 @@ export function createHandler(
   }
 }
 
-function isString(stringResult: unknown) {
-  const str = <string> stringResult;
-  try {
-    return (str.includes != undefined && str.replaceAll != undefined);
-  } catch {
-    throw new Error(`Handler return void`);
-  }
+function isString(stringResult: any) {
+  return stringResult.startsWith != undefined;
 }
 
 function isResponse(element: unknown) {

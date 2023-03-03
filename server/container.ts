@@ -1,7 +1,18 @@
+import { CACHE, TIMEOUT } from "./constant.ts";
 import { Container, Data, SetOptions } from "./types.ts";
 
 export function createContainer(): Container {
+  const SECOND = 1000;
   const objects = new Map<string, Data>();
+  const timeoutId = setInterval(() => {
+    const object: Data = {
+      key: CACHE,
+      value: {},
+      isExpired: false,
+      expiryTime: 0,
+    };
+    objects.set(CACHE, object);
+  }, TIMEOUT * SECOND);
 
   return {
     objects: () => objects,
@@ -15,7 +26,7 @@ export function createContainer(): Container {
     ) => {
       const expirySeconds = options && options.expirySeconds
         ? options.expirySeconds
-        : 10;
+        : TIMEOUT;
 
       const isExpired = options && options.isExpired
         ? options?.isExpired
@@ -26,7 +37,7 @@ export function createContainer(): Container {
         const object: Data = { key, value, isExpired, expiryTime };
         const timeoutId = setTimeout(() => {
           removeExpiredObject(object);
-        }, expirySeconds * 1000);
+        }, expirySeconds * SECOND);
         object.timeoutId = timeoutId;
         return objects.set(key, object);
       } else {
@@ -41,6 +52,9 @@ export function createContainer(): Container {
         return <T> object.value;
       }
       return null;
+    },
+    clearInterval: () => {
+      return clearInterval(timeoutId);
     },
   };
 
