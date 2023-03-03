@@ -17,6 +17,7 @@ export interface Container {
   size: () => number;
   clear: () => void;
   delete: (key: string) => boolean;
+  clearInterval: () => void;
 }
 
 export type Data = {
@@ -172,6 +173,7 @@ export type Fastro = {
     ssr: SSR,
     handler: HandlerArgument,
   ): Fastro;
+  container: Container;
 };
 
 export type SSRHandler = {
@@ -233,3 +235,5 @@ export interface SSR {
 }
 
 export type JSXHandler = (props?: any) => JSX.Element;
+
+export type Row = Record<string, any>;

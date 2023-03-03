@@ -1,8 +1,7 @@
-import application from "../server/mod.ts";
+import fastro from "../server/mod.ts";
 
-const app = application();
+const f = fastro();
 
-// use std Request
-app.get("/", (_req: Request) => new Response("Hello world"));
+f.get("/", () => new Response("Hello world"));
 
-await app.serve();
+await f.serve();

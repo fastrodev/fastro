@@ -22,6 +22,7 @@ Deno.test("container set and get", () => {
     setTimeout(() => {
       assertEquals(container.get("key2"), "value2");
       assertEquals(container.get("key3"), null);
+      container.clearInterval();
       resolve();
     }, 2000);
   });

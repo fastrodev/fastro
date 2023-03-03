@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import * as esbuild from "https://deno.land/x/esbuild@v0.15.10/mod.js";
 import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts";
+import { EXPIRY_SECONDS } from "./constant.ts";
 import { React, ReactDOMServer, Status, STATUS_TEXT } from "./deps.ts";
 import { isJSX } from "./handler.ts";
 import {
@@ -307,7 +308,10 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
         html = <string> cache.get(pageID);
       } else {
         html = createHTML(element, opt, props);
-        cache.set(pageID, html, { isExpired: true, expirySeconds: 10 });
+        cache.set(pageID, html, {
+          isExpired: true,
+          expirySeconds: EXPIRY_SECONDS,
+        });
       }
 
       return new Response(html, {

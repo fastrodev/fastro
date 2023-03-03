@@ -12,6 +12,7 @@ Deno.test({ permissions: { net: true } }, async function getMethod() {
   const response = await fetch(host, { method: "GET" });
   assertEquals(await response.text(), "GET");
   app.close();
+  app.container.clearInterval();
   await server;
 });
 
@@ -22,6 +23,7 @@ Deno.test({ permissions: { net: true } }, async function postMethod() {
   const response = await fetch(host, { method: "POST" });
   assertEquals(await response.text(), "POST");
   app.close();
+  app.container.clearInterval();
   await server;
 });
 
@@ -32,6 +34,7 @@ Deno.test({ permissions: { net: true } }, async function putMethod() {
   const response = await fetch(host, { method: "PUT" });
   assertEquals(await response.text(), "PUT");
   app.close();
+  app.container.clearInterval();
   await server;
 });
 
@@ -42,6 +45,7 @@ Deno.test({ permissions: { net: true } }, async function deleteMethod() {
   const response = await fetch(host, { method: "DELETE" });
   assertEquals(await response.text(), "DELETE");
   app.close();
+  app.container.clearInterval();
   await server;
 });
 
@@ -52,6 +56,7 @@ Deno.test({ permissions: { net: true } }, async function patchMethod() {
   const response = await fetch(host, { method: "PATCH" });
   assertEquals(await response.text(), "PATCH");
   app.close();
+  app.container.clearInterval();
   await server;
 });
 
@@ -62,6 +67,7 @@ Deno.test({ permissions: { net: true } }, async function optionsMethod() {
   const response = await fetch(host, { method: "OPTIONS" });
   assertEquals(await response.text(), "OPTIONS");
   app.close();
+  app.container.clearInterval();
   await server;
 });
 
@@ -85,6 +91,7 @@ Deno.test({ permissions: { net: true } }, async function middleware() {
   const r = await response.text();
   assertEquals(r, `{"status":403,"text":"Forbidden"}`);
   app.close();
+  app.container.clearInterval();
   await server;
 });
 
@@ -101,5 +108,6 @@ Deno.test({ permissions: { net: true } }, async function params() {
   const r = await response.text();
   assertEquals(r, "agus");
   app.close();
+  app.container.clearInterval();
   await server;
 });

@@ -1,4 +1,4 @@
-import { DELETE, GET, OPTIONS, PATCH, POST } from "./constant.ts";
+import { CACHE, DELETE, GET, OPTIONS, PATCH, POST } from "./constant.ts";
 import { createContainer } from "./container.ts";
 import { ServeInit, Server } from "./deps.ts";
 import { createHandler } from "./handler.ts";
@@ -7,6 +7,7 @@ import {
   HandlerArgument,
   MiddlewareArgument,
   Route,
+  Row,
   SetOptions,
   SSR,
   SSRHandler,
@@ -18,12 +19,12 @@ export function fastro(_startOptions?: StartOptions): Fastro {
   const pages: Array<SSRHandler> = [];
   const middlewares: Array<MiddlewareArgument> = [];
   const ac = new AbortController();
-  const container = createContainer();
   let staticURL = "/public";
   let flash = true;
   let server: Server;
   let build = true;
   let maxAge: number;
+  const container = createContainer();
 
   function push(method: string, path: string, handler: HandlerArgument) {
     const r = { method, path, handler };
@@ -46,6 +47,8 @@ export function fastro(_startOptions?: StartOptions): Fastro {
         }
       }
 
+      const c: Row = {};
+      container.set(CACHE, c);
       const handler = createHandler(
         middlewares,
         routes,
@@ -130,6 +133,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       build = b;
       return app;
     },
+    container: container,
   };
   return app;
 }
