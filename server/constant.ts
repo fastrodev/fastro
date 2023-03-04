@@ -6,5 +6,5 @@ export const OPTIONS = "OPTIONS";
 export const PATCH = "PATCH";
 export const NONPAGE = "NONPAGE";
 export const EXPIRY_SECONDS = 5;
-export const TIMEOUT = 5;
+export const TIMEOUT = 40;
 export const CACHE = "cache";
