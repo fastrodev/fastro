@@ -12,5 +12,7 @@ jobs:
           deno-version: vx.x.x
       - run: deno lint --unstable
       - run: deno test -A --unstable
+      - run: deno test -A --unstable --coverage=cov/
+      - run: deno coverage --lcov cov/ > cov.lcov
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
