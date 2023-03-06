@@ -18,6 +18,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
   const routes: Array<Route> = [];
   const pages: Array<SSRHandler> = [];
   const middlewares: Array<MiddlewareArgument> = [];
+  const patterns: Record<string, URLPattern> = {};
   const ac = new AbortController();
   let staticURL = "/public";
   let flash = true;
@@ -29,7 +30,12 @@ export function fastro(_startOptions?: StartOptions): Fastro {
   function push(method: string, path: string, handler: HandlerArgument) {
     const r = { method, path, handler };
     const res = routes.find((val) => (val === r));
-    if (!res) routes.push(r);
+    if (!res) {
+      routes.push(r);
+      patterns[path] = new URLPattern({
+        pathname: path,
+      });
+    }
     return app;
   }
 
@@ -52,6 +58,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       const handler = createHandler(
         middlewares,
         routes,
+        patterns,
         pages,
         staticURL,
         container,
@@ -123,6 +130,9 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       handler: HandlerArgument,
     ) => {
       pages.push({ path, ssr, handler });
+      patterns[path] = new URLPattern({
+        pathname: path,
+      });
       return app;
     },
     flash: (f: boolean) => {

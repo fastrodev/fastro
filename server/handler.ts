@@ -20,6 +20,7 @@ import {
 export function createHandler(
   middlewares: Array<MiddlewareArgument>,
   routes: Array<Route>,
+  patterns: Record<string, URLPattern>,
   pages: Array<SSRHandler>,
   staticURL: string,
   container: Container,
@@ -50,11 +51,7 @@ export function createHandler(
       if (cache[matchId]) match = cache[matchId];
     } else {
       const p = pages.find((page) => {
-        let pattern: URLPattern | null = new URLPattern({
-          pathname: page.path,
-        });
-        const m = pattern.exec(r.url);
-        pattern = null;
+        const m = patterns[page.path].exec(r.url);
         if (m) {
           match = m;
           cache[matchId] = m;
@@ -86,31 +83,29 @@ export function createHandler(
       handler = cache[id];
       if (cache[paramId]) match = cache[paramId];
     } else {
-      routes.find((route) => {
-        let pattern: URLPattern | null = new URLPattern({
-          pathname: route.path,
-        });
-        const m = pattern.exec(r.url);
-        pattern = null;
+      for (let index = 0; index < routes.length; index++) {
+        const route = routes[index];
+        const m = patterns[route.path].exec(r.url);
         if (m) {
-          match = m;
           handler = route?.handler;
-          return (route.method === r.method);
+          match = m;
+          cache[id] = handler;
+          cache[paramId] = match;
         }
-      });
+      }
     }
 
     if (!handler) return handlePages(r, id);
 
-    cache[id] = handler;
-    cache[paramId] = match;
     const execHandler = <ExecHandler> <unknown> handler;
-    const result = execHandler(
+    return handleResult(execHandler(
       transformRequest(r, container, match),
       response(r),
       undefined,
-    );
+    ));
+  }
 
+  function handleResult(result: any) {
     if (isString(result)) return new Response(result);
 
     if (isResponse(result)) return <Response> <unknown> result;
@@ -151,21 +146,19 @@ export function createHandler(
   }
 }
 
-function isString(stringResult: any) {
-  return stringResult.startsWith != undefined;
+function isString(res: any) {
+  return typeof res === "string";
 }
 
-function isResponse(element: unknown) {
-  return element instanceof Response;
+function isResponse(res: any) {
+  return res instanceof Response;
 }
 
-function isJSON(element: unknown) {
-  if (element instanceof Promise) return [false, ""];
+function isJSON(res: any) {
+  if (res instanceof Promise) return [false, ""];
   let stringify;
-  let str = "";
   try {
-    str = <string> element;
-    stringify = JSON.stringify(str);
+    stringify = JSON.stringify(res);
     JSON.parse(stringify);
   } catch {
     return [false, ""];
@@ -173,8 +166,8 @@ function isJSON(element: unknown) {
   return [true, stringify];
 }
 
-export function isJSX(element: unknown) {
-  const el = <JSX.Element> element;
+export function isJSX(res: any) {
+  const el = <JSX.Element> res;
   return el.props != undefined && el.type != undefined;
 }
 
