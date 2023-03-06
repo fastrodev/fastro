@@ -7,7 +7,6 @@ import {
   HandlerArgument,
   MiddlewareArgument,
   Route,
-  Row,
   SetOptions,
   SSR,
   SSRHandler,
@@ -53,8 +52,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
         }
       }
 
-      const c: Row = {};
-      container.set(CACHE, c);
+      container.set(CACHE, {});
       const handler = createHandler(
         middlewares,
         routes,
