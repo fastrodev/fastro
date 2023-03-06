@@ -11,8 +11,11 @@ jobs:
         with:
           deno-version: vx.x.x
       - run: deno lint --unstable
-      - run: deno test -A --unstable
-      - run: deno test -A --unstable --coverage=cov/
-      - run: deno coverage --lcov cov/ > cov.lcov
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+      - name: Run tests
+        run: deno test -A --unstable --coverage=cov_profile
+      - name: Generate report
+        run: deno coverage cov_profile --lcov > cov_profile.lcov
+      - uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./cov_profile.lcov
