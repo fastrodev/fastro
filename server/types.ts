@@ -60,6 +60,12 @@ export class HttpRequest extends Request {
   delete!: (key: string) => void;
 }
 
+export type RouteMidleware = {
+  method: string;
+  path: string;
+  handler: MiddlewareArgument;
+};
+
 export type RequestHandler = (
   request: HttpRequest,
   response: HttpResponse,
@@ -88,7 +94,10 @@ export type MiddlewareArgument = (
   | any
   | Promise<any>;
 
-export type HandlerArgument = Deno.ServeHandler | RequestHandler;
+export type HandlerArgument =
+  | Deno.ServeHandler
+  | RequestHandler
+  | MiddlewareArgument;
 
 export type Route = {
   method: string;
@@ -142,12 +151,12 @@ export type Fastro = {
    */
   static(path: string, maxAge?: number): Fastro;
   use(...middleware: Array<MiddlewareArgument>): Fastro;
-  get(path: string, handler: HandlerArgument): Fastro;
-  post(path: string, handler: HandlerArgument): Fastro;
-  put(path: string, handler: HandlerArgument): Fastro;
-  delete(path: string, handler: HandlerArgument): Fastro;
-  patch(path: string, handler: HandlerArgument): Fastro;
-  options(path: string, handler: HandlerArgument): Fastro;
+  get(path: string, ...handler: Array<HandlerArgument>): Fastro;
+  post(path: string, ...handler: Array<HandlerArgument>): Fastro;
+  put(path: string, ...handler: Array<HandlerArgument>): Fastro;
+  delete(path: string, ...handler: Array<HandlerArgument>): Fastro;
+  patch(path: string, ...handler: Array<HandlerArgument>): Fastro;
+  options(path: string, ...handler: Array<HandlerArgument>): Fastro;
   flash(isFlash: boolean): Fastro;
   build(isBuild: boolean): Fastro;
   /**

@@ -1,4 +1,4 @@
-import { CACHE, DELETE, GET, OPTIONS, PATCH, POST } from "./constant.ts";
+import { CACHE, DELETE, GET, OPTIONS, PATCH, POST, PUT } from "./constant.ts";
 import { createContainer } from "./container.ts";
 import { ServeInit, Server } from "./deps.ts";
 import { createHandler } from "./handler.ts";
@@ -7,6 +7,7 @@ import {
   HandlerArgument,
   MiddlewareArgument,
   Route,
+  RouteMidleware,
   SetOptions,
   SSR,
   SSRHandler,
@@ -25,8 +26,35 @@ export function fastro(_startOptions?: StartOptions): Fastro {
   let build = true;
   let maxAge: number;
   const container = createContainer();
+  const routeMiddlewares: Array<RouteMidleware> = [];
 
-  function push(method: string, path: string, handler: HandlerArgument) {
+  function push(
+    method: string,
+    path: string,
+    ...handler: Array<HandlerArgument>
+  ) {
+    if (handler.length === 1) return pushHandler(method, path, handler[0]);
+    pushHandler(method, path, handler[handler.length - 1]);
+    for (let index = 0; index < handler.length - 1; index++) {
+      pushMiddleware(method, path, <MiddlewareArgument> handler[index]);
+    }
+    return app;
+  }
+
+  function pushMiddleware(
+    method: string,
+    path: string,
+    handler: MiddlewareArgument,
+  ) {
+    routeMiddlewares.push({ method, path, handler });
+    return app;
+  }
+
+  function pushHandler(
+    method: string,
+    path: string,
+    handler: HandlerArgument,
+  ) {
     const r = { method, path, handler };
     const res = routes.find((val) => (val === r));
     if (!res) {
@@ -55,6 +83,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       container.set(CACHE, {});
       const handler = createHandler(
         middlewares,
+        routeMiddlewares,
         routes,
         patterns,
         pages,
@@ -100,23 +129,23 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       });
       return app;
     },
-    get: (path: string, handler: HandlerArgument) => {
-      return push(GET, path, handler);
+    get: (path: string, ...handler: Array<HandlerArgument>) => {
+      return push(GET, path, ...handler);
     },
-    post: (path: string, handler: HandlerArgument) => {
-      return push(POST, path, handler);
+    post: (path: string, ...handler: Array<HandlerArgument>) => {
+      return push(POST, path, ...handler);
     },
-    put: (path: string, handler: HandlerArgument) => {
-      return push(POST, path, handler);
+    put: (path: string, ...handler: Array<HandlerArgument>) => {
+      return push(PUT, path, ...handler);
     },
-    delete: (path: string, handler: HandlerArgument) => {
-      return push(DELETE, path, handler);
+    delete: (path: string, ...handler: Array<HandlerArgument>) => {
+      return push(DELETE, path, ...handler);
     },
-    patch: (path: string, handler: HandlerArgument) => {
-      return push(PATCH, path, handler);
+    patch: (path: string, ...handler: Array<HandlerArgument>) => {
+      return push(PATCH, path, ...handler);
     },
-    options: (path: string, handler: HandlerArgument) => {
-      return push(OPTIONS, path, handler);
+    options: (path: string, ...handler: Array<HandlerArgument>) => {
+      return push(OPTIONS, path, ...handler);
     },
     set: <T>(key: string, value: T, options?: SetOptions) => {
       container.set(key, value, options);

@@ -12,6 +12,7 @@ import {
   MiddlewareArgument,
   RequestHandler,
   Route,
+  RouteMidleware,
   Row,
   SetOptions,
   SSRHandler,
@@ -19,6 +20,7 @@ import {
 
 export function createHandler(
   middlewares: Array<MiddlewareArgument>,
+  routeMiddlewares: Array<RouteMidleware>,
   routes: Array<Route>,
   patterns: Record<string, URLPattern>,
   pages: Array<SSRHandler>,
@@ -86,7 +88,7 @@ export function createHandler(
       for (let index = 0; index < routes.length; index++) {
         const route = routes[index];
         const m = patterns[route.path].exec(r.url);
-        if (m) {
+        if (m && (route.method === r.method)) {
           handler = route?.handler;
           match = m;
           cache[id] = handler;
@@ -98,6 +100,14 @@ export function createHandler(
     if (!handler) return handlePages(r, id);
 
     const execHandler = <ExecHandler> <unknown> handler;
+    if (routeMiddlewares.length > 0) {
+      handler = handleRouteMiddleware(r, routeMiddlewares);
+      if (handler) {
+        const h = <RequestHandler> handler;
+        return h(transformRequest(r, container, null), response(r), undefined);
+      }
+    }
+
     return handleResult(execHandler(
       transformRequest(r, container, match),
       response(r),
@@ -122,13 +132,39 @@ export function createHandler(
     return new Response(result);
   }
 
+  function handleRouteMiddleware(
+    r: Request,
+    routeMiddlewares: Array<RouteMidleware>,
+  ) {
+    let handler: HandlerArgument | undefined = undefined;
+
+    for (let index = 0; index < routeMiddlewares.length; index++) {
+      let done = false;
+      const m = routeMiddlewares[index];
+      const match = patterns[m.path].exec(r.url);
+      if (match && (m.method === r.method)) {
+        const res = response(r);
+        m.handler(transformRequest(r, container), res, (err) => {
+          if (err) throw err;
+          done = true;
+        });
+
+        if (!done) {
+          handler = <HandlerArgument> m.handler;
+          break;
+        }
+      }
+    }
+    return handler;
+  }
+
   function handleMiddleware(
     r: Request,
     middlewares: Array<MiddlewareArgument>,
   ) {
-    let done = false;
     let handler: HandlerArgument | undefined = undefined;
     for (let index = 0; index < middlewares.length; index++) {
+      let done = false;
       const m = middlewares[index];
       const res = response(r);
       m(transformRequest(r, container), res, (err) => {
