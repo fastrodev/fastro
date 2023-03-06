@@ -8,7 +8,7 @@
 Fast and simple web application framework for deno.
 
 With
-[deno near native performance](https://github.com/denosaurs/bench#overview), you
+[deno near native performance](https://github.com/ynwd/bench#overview), you
 can:
 
 - Manage your app and routing cleanly with
@@ -20,13 +20,12 @@ can:
   [URLPattern](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API)
 - Access the request, the response, and the next callback before execute the
   route handler with
-  [app middleware](https://github.com/fastrodev/fastro/blob/main/examples/middleware.ts)
+  [route and app middleware](https://github.com/fastrodev/fastro/blob/main/examples/middleware.ts)
 - Manage your global object in
   [a container with auto-deleted data](https://github.com/fastrodev/fastro/blob/main/examples/container.ts)
-- Get url param with URLPattern and set the react component props from the
-  server side
-- Attach your API and React-SSR-SEO-ready pages
-  [in a single file](https://github.com/fastrodev/fastro/blob/main/examples/ssr.ts)
+- Get url param with URLPattern
+- Set the react component props from the server side 
+- Attach your API and React-SSR-SEO-ready pages [in a single file](https://github.com/fastrodev/fastro/blob/main/examples/ssr.ts)
 
 ## Getting started
 
