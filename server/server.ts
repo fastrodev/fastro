@@ -34,6 +34,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
     ...handler: Array<HandlerArgument>
   ) {
     if (handler.length === 1) return pushHandler(method, path, handler[0]);
+    pushHandler(method, path, handler[handler.length - 1]);
     for (let index = 0; index < handler.length - 1; index++) {
       pushMiddleware(method, path, <MiddlewareArgument> handler[index]);
     }
