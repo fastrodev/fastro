@@ -15,6 +15,5 @@ Deno.test({ permissions: { net: true } }, async function jsx() {
   const response = await fetch(host, { method: "GET" });
   assertEquals(await response.text(), `<h1>Hello, jsx</h1>`);
   app.close();
-  app.container.clearInterval();
   await server;
 });

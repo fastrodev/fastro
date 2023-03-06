@@ -120,6 +120,7 @@ export function fastro(_startOptions?: StartOptions): Fastro {
       return app;
     },
     close: () => {
+      container.clearInterval();
       if (flash) return ac.abort();
       return server.close();
     },
