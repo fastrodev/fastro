@@ -2,6 +2,7 @@
 
 [![Build Status - Cirrus][]][Build status]
 [![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https://deno.land/x/fastro/server/mod.ts)
+[![codecov](https://codecov.io/gh/fastrodev/fastro/branch/main/graph/badge.svg?token=IZRJ131RIL)](https://codecov.io/gh/fastrodev/fastro)
 
 <img align="right" src="https://avatars.githubusercontent.com/u/84224795" height="70px" alt="A dinosaur is looking back.">
 
