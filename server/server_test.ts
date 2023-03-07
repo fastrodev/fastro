@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.178.0/testing/asserts.ts";
 import { Status, STATUS_TEXT } from "./deps.ts";
 import { fastro } from "./server.ts";
 import { HttpRequest, HttpResponse } from "./types.ts";
