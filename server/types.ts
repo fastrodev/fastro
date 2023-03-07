@@ -69,16 +69,9 @@ export type RouteMidleware = {
 export type RequestHandler = (
   request: HttpRequest,
   response: HttpResponse,
-  next?: Next,
 ) =>
-  | void
-  | Promise<void>
-  | string
-  | Promise<string>
   | Response
-  | Promise<Response>
-  | any
-  | Promise<any>;
+  | Promise<Response>;
 
 export type MiddlewareArgument = (
   request: HttpRequest,
@@ -199,8 +192,7 @@ export type StartOptions = {
 export type ExecHandler = (
   request?: HttpRequest,
   response?: HttpResponse,
-  next?: Next,
-) => any;
+) => any | Promise<any>;
 
 export type RenderOptions = {
   title: string;

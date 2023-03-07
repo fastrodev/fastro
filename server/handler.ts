@@ -36,7 +36,7 @@ export function createHandler(
       handler = handleMiddleware(r, middlewares);
       if (handler) {
         const h = <RequestHandler> handler;
-        return h(transformRequest(r, container, null), response(r), undefined);
+        return h(transformRequest(r, container, null), response(r));
       }
     }
     return handleRoutes(r);
@@ -99,20 +99,23 @@ export function createHandler(
 
     if (!handler) return handlePages(r, id);
 
-    const execHandler = <ExecHandler> <unknown> handler;
     if (routeMiddlewares.length > 0) {
       handler = handleRouteMiddleware(r, routeMiddlewares);
       if (handler) {
-        const h = <RequestHandler> handler;
-        return h(transformRequest(r, container, null), response(r), undefined);
+        return (<RequestHandler> handler)(
+          transformRequest(r, container, match),
+          response(r),
+        );
       }
     }
 
-    return handleResult(execHandler(
+    const execHandler = <ExecHandler> <unknown> handler;
+    const result = execHandler(
       transformRequest(r, container, match),
       response(r),
-      undefined,
-    ));
+    );
+
+    return handleResult(result);
   }
 
   function handleResult(result: any) {

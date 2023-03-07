@@ -49,5 +49,5 @@ export function handleJSXPage(
   s.ssr.request(r);
   s.ssr.cache(c);
   const h = <RequestHandler> s.handler;
-  return h(r, response(r), undefined);
+  return h(r, response(r));
 }
