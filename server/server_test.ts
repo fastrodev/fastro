@@ -12,7 +12,6 @@ Deno.test({ permissions: { net: true } }, async function getMethod() {
   const response = await fetch(host, { method: "GET" });
   assertEquals(await response.text(), "GET");
   app.close();
-
   await server;
 });
 
@@ -62,6 +61,16 @@ Deno.test({ permissions: { net: true } }, async function optionsMethod() {
   const server = app.serve();
   const response = await fetch(host, { method: "OPTIONS" });
   assertEquals(await response.text(), "OPTIONS");
+  app.close();
+  await server;
+});
+
+Deno.test({ permissions: { net: true } }, async function headMethod() {
+  const app = fastro();
+  app.head("/", () => new Response("HEAD"));
+  const server = app.serve();
+  const response = await fetch(host, { method: "HEAD" });
+  assertEquals(await response.text(), "");
   app.close();
   await server;
 });

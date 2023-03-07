@@ -1,4 +1,13 @@
-import { CACHE, DELETE, GET, OPTIONS, PATCH, POST, PUT } from "./constant.ts";
+import {
+  CACHE,
+  DELETE,
+  GET,
+  HEAD,
+  OPTIONS,
+  PATCH,
+  POST,
+  PUT,
+} from "./constant.ts";
 import { createContainer } from "./container.ts";
 import { ServeInit, Server } from "./deps.ts";
 import { createHandler } from "./handler.ts";
@@ -147,6 +156,9 @@ export function fastro(_startOptions?: StartOptions): Fastro {
     },
     options: (path: string, ...handler: Array<HandlerArgument>) => {
       return push(OPTIONS, path, ...handler);
+    },
+    head: (path: string, ...handler: Array<HandlerArgument>) => {
+      return push(HEAD, path, ...handler);
     },
     set: <T>(key: string, value: T, options?: SetOptions) => {
       container.set(key, value, options);

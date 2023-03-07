@@ -157,6 +157,7 @@ export type Fastro = {
   delete(path: string, ...handler: Array<HandlerArgument>): Fastro;
   patch(path: string, ...handler: Array<HandlerArgument>): Fastro;
   options(path: string, ...handler: Array<HandlerArgument>): Fastro;
+  head(path: string, ...handler: Array<HandlerArgument>): Fastro;
   flash(isFlash: boolean): Fastro;
   build(isBuild: boolean): Fastro;
   /**
