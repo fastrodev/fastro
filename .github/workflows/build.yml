@@ -8,14 +8,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: denoland/setup-deno@v1.1.1
-        with:
-          deno-version: vx.x.x
       - run: deno lint --unstable
       - name: Run tests
         run: deno test -A --unstable --coverage=cov_profile
       - name: Generate report
         run: deno coverage cov_profile --lcov > cov_profile.lcov
-      - uses: codecov/codecov-action@v3
+      - name: Coveralls
+        uses: coverallsapp/github-action@v1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./cov_profile.lcov
+          path-to-lcov: ./cov_profile.lcov
+          github-token: ${{ secrets.GITHUB_TOKEN }}
