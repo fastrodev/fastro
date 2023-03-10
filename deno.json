@@ -6,7 +6,7 @@
     "jsxImportSource": "https://esm.sh/react"
   },
   "tasks": {
-    "test": "deno test -A --unstable --coverage=cov && deno coverage cov",
+    "test": "rm -rf cov && deno test -A --unstable --trace-ops --coverage=cov && deno coverage cov",
     "deno": "deno run -A --unstable examples/deno.ts",
     "hello-string": "deno run -A --unstable examples/hello_string.ts",
     "hello-jsx": "deno run -A --unstable examples/hello_jsx.tsx",

@@ -132,7 +132,7 @@ export function createHandler(
       return new Response(<string> object, { headers });
     }
 
-    return new Response(result);
+    return new Response("Internal Server Error", { status: 500 });
   }
 
   function handleRouteMiddleware(
@@ -147,9 +147,9 @@ export function createHandler(
       const match = patterns[m.path].test(r.url);
       if (match && (m.method === r.method)) {
         const res = response(r);
-        m.handler(transformRequest(r, container), res, (err) => {
-          if (err) throw err;
+        m.handler(transformRequest(r, container), res, (val) => {
           done = true;
+          if (val) new Response(<string> val);
         });
 
         if (!done) {
@@ -170,9 +170,9 @@ export function createHandler(
       let done = false;
       const m = middlewares[index];
       const res = response(r);
-      m(transformRequest(r, container), res, (err) => {
-        if (err) throw err;
+      m(transformRequest(r, container), res, (val) => {
         done = true;
+        if (val) new Response(<string> val);
       });
 
       if (!done) {
@@ -194,7 +194,6 @@ function isResponse(res: any) {
 }
 
 function isJSON(res: any) {
-  if (res instanceof Promise) return [false, ""];
   let stringify;
   try {
     stringify = JSON.stringify(res);
