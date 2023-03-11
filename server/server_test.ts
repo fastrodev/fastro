@@ -1,5 +1,11 @@
 import Hello from "../pages/hello.tsx";
-import { assertEquals, assertExists, Status, STATUS_TEXT } from "./deps.ts";
+import {
+  assertEquals,
+  assertExists,
+  Cookie,
+  Status,
+  STATUS_TEXT,
+} from "./deps.ts";
 import { fastro } from "./server.ts";
 import { createSSR } from "./ssr.ts";
 import { HttpRequest, HttpResponse, Next } from "./types.ts";
@@ -32,6 +38,77 @@ Deno.test({ permissions: { net: true } }, async function getMethod() {
 
   response = await fetch(host, { method: "DELETE" });
   assertEquals(await response.text(), '{"txt":"hello"}');
+
+  app.close();
+  await server;
+});
+
+Deno.test({ permissions: { net: true } }, async function getMethod() {
+  const app = fastro();
+  app.get("/", (_req: HttpRequest, res: HttpResponse) => {
+    const cookie: Cookie = { name: "Space", value: "Cat" };
+
+    const headers = new Headers();
+    headers.set("x", "x");
+    res.headers(headers);
+    res.authorization("token");
+    res.contentType("text/html; charset=utf-8");
+
+    return res.setCookie(cookie).html("<div>Hello</div>");
+  });
+
+  const server = app.serve();
+
+  const response = await fetch(host, { method: "GET" });
+
+  const cookie = response.headers.get("Set-Cookie");
+
+  const x = response.headers.get("x");
+
+  assertEquals(cookie, "Space=Cat");
+  assertEquals(x, "x");
+  assertEquals(await response.text(), "<div>Hello</div>");
+
+  app.close();
+  await server;
+});
+
+Deno.test({ permissions: { net: true } }, async function getJson() {
+  const app = fastro();
+  app.get("/", (_req: HttpRequest, res: HttpResponse) => {
+    return res.json({ txt: "hello" });
+  });
+
+  const server = app.serve();
+
+  const response = await fetch(host, { method: "GET" });
+  const r = await response.text();
+  assertEquals(r, '{"txt":"hello"}');
+  app.close();
+  await server;
+});
+
+Deno.test({ permissions: { net: true } }, async function getMethod() {
+  const app = fastro();
+  app.get("/", (_req: HttpRequest, res: HttpResponse) => {
+    const cookie: Cookie = { name: "Space", value: "Cat" };
+    res.setCookie(cookie);
+    res.deleteCookie("Space");
+    return res.setCookie(cookie).html("<div>Hello</div>");
+  });
+
+  const server = app.serve();
+
+  const response = await fetch(host, { method: "GET" });
+
+  const cookie = response.headers.get("Set-Cookie");
+  console.log(cookie);
+
+  assertEquals(
+    cookie,
+    "Space=; Expires=Thu, 01 Jan 1970 00:00:00 GMT, Space=Cat",
+  );
+  assertEquals(await response.text(), "<div>Hello</div>");
 
   app.close();
   await server;
