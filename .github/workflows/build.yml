@@ -10,8 +10,10 @@ jobs:
       - run: deno lint --unstable
       - name: Run tests
         run: deno task test
+      - name: Generate report
+        run: deno task coverage
       - name: Coveralls
         uses: coverallsapp/github-action@v1
         with:
-          path-to-lcov: ./cov.lcov
+          path-to-lcov: ./cov_profile.lcov
           github-token: ${{ secrets.GITHUB_TOKEN }}
