@@ -11,7 +11,7 @@ jobs:
       - name: Run tests
         run: deno test -A --unstable --coverage=cov
       - name: Generate report
-        run: deno coverage cov_profile --lcov > cov.lcov
+        run: deno coverage cov --lcov > cov.lcov
       - name: Coveralls
         uses: coverallsapp/github-action@v1
         with:
