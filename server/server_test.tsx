@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
+import { assertEquals } from "./deps.ts";
 import { fastro } from "./server.ts";
 import { HttpRequest, HttpResponse } from "./types.ts";
 
@@ -9,11 +9,17 @@ Deno.test({ permissions: { net: true } }, async function jsx() {
   app.get(
     "/",
     (req: HttpRequest, res: HttpResponse) =>
-      res.status(200).jsx(<h1>Hello, jsx</h1>),
+      res.status(200).jsx(<h1>Hello jsx</h1>),
   );
+  app.post("/", () => <h1>Hello jsx</h1>);
   const server = app.serve();
-  const response = await fetch(host, { method: "GET" });
-  assertEquals(await response.text(), `<h1>Hello, jsx</h1>`);
+
+  let response = await fetch(host, { method: "GET" });
+  assertEquals(await response.text(), `<h1>Hello jsx</h1>`);
+
+  response = await fetch(host, { method: "POST" });
+  assertEquals(await response.text(), `<h1>Hello jsx</h1>`);
+
   app.close();
   await server;
 });

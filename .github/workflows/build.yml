@@ -1,6 +1,5 @@
 name: build
 'on':
-  - push
   - pull_request
 jobs:
   build:
@@ -10,11 +9,11 @@ jobs:
       - uses: denoland/setup-deno@v1.1.1
       - run: deno lint --unstable
       - name: Run tests
-        run: deno test -A --unstable --coverage=cov_profile
+        run: deno test -A --unstable --coverage=cov
       - name: Generate report
-        run: deno coverage cov_profile --lcov > cov_profile.lcov
+        run: deno coverage cov_profile --lcov > cov.lcov
       - name: Coveralls
         uses: coverallsapp/github-action@v1
         with:
-          path-to-lcov: ./cov_profile.lcov
+          path-to-lcov: ./cov.lcov
           github-token: ${{ secrets.GITHUB_TOKEN }}

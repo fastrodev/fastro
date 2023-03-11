@@ -1,8 +1,9 @@
 import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
 import { createContainer } from "./container.ts";
+import { Data } from "./types.ts";
 
 Deno.test("container set and get", () => {
-  const container = createContainer();
+  const container = createContainer(1);
 
   container.set("key1", "value1");
   assertEquals(container.get("key1"), "value1");
@@ -22,6 +23,9 @@ Deno.test("container set and get", () => {
     setTimeout(() => {
       assertEquals(container.get("key2"), "value2");
       assertEquals(container.get("key3"), null);
+      container.clear();
+      assertEquals(container.size(), 0);
+      assertEquals(container.objects(), new Map<string, Data>());
       container.clearInterval();
       resolve();
     }, 2000);

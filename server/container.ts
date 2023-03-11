@@ -1,9 +1,10 @@
 import { CACHE, TIMEOUT } from "./constant.ts";
 import { Container, Data, SetOptions } from "./types.ts";
 
-export function createContainer(): Container {
+export function createContainer(t?: number): Container {
   const SECOND = 1000;
   const objects = new Map<string, Data>();
+  const timeout = t ?? TIMEOUT;
   const timeoutId = setInterval(() => {
     const object: Data = {
       key: CACHE,
@@ -12,7 +13,7 @@ export function createContainer(): Container {
       expiryTime: 0,
     };
     objects.set(CACHE, object);
-  }, TIMEOUT * SECOND);
+  }, timeout * SECOND);
 
   return {
     objects: () => objects,

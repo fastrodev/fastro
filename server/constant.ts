@@ -4,6 +4,7 @@ export const PUT = "PUT";
 export const DELETE = "DELETE";
 export const OPTIONS = "OPTIONS";
 export const PATCH = "PATCH";
+export const HEAD = "HEAD";
 export const NONPAGE = "NONPAGE";
 export const EXPIRY_SECONDS = 5;
 export const TIMEOUT = 40;
