@@ -9,9 +9,7 @@ jobs:
       - uses: denoland/setup-deno@v1.1.1
       - run: deno lint --unstable
       - name: Run tests
-        run: deno test -A --unstable --coverage=cov
-      - name: Generate report
-        run: deno coverage cov_profile --lcov > cov.lcov
+        run: deno task test
       - name: Coveralls
         uses: coverallsapp/github-action@v1
         with:
