@@ -1,9 +1,5 @@
-import {
-  assertEquals,
-  assertExists,
-} from "https://deno.land/std@0.178.0/testing/asserts.ts";
 import Hello from "../pages/hello.tsx";
-import { Status, STATUS_TEXT } from "./deps.ts";
+import { assertEquals, assertExists, Status, STATUS_TEXT } from "./deps.ts";
 import { fastro } from "./server.ts";
 import { createSSR } from "./ssr.ts";
 import { HttpRequest, HttpResponse, Next } from "./types.ts";
@@ -161,7 +157,6 @@ Deno.test({
     const response = await fetch(host + "/public/hello.js", { method: "GET" });
     const r = await response.text();
     assertEquals(r, "Not Found");
-
     f.close();
     await server;
   },
