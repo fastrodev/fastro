@@ -2,7 +2,7 @@
 
 [![Build Status - Cirrus][]][Build status]
 [![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https://deno.land/x/fastro/server/mod.ts)
-[![Coverage Status](https://coveralls.io/repos/github/fastrodev/fastro/badge.svg)](https://coveralls.io/github/fastrodev/fastro)
+[![Coverage Status](https://coveralls.io/repos/github/fastrodev/fastro/badge.png?branch=main)](https://coveralls.io/github/fastrodev/fastro?branch=main)
 
 <img align="right" src="https://avatars.githubusercontent.com/u/84224795" height="70px">
 
