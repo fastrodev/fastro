@@ -4,7 +4,7 @@
 [![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https://deno.land/x/fastro/server/mod.ts)
 [![Coverage Status](https://coveralls.io/repos/github/fastrodev/fastro/badge.svg)](https://coveralls.io/github/fastrodev/fastro)
 
-<img align="right" src="https://avatars.githubusercontent.com/u/84224795" height="70px" alt="A dinosaur is looking back.">
+<img align="right" src="https://avatars.githubusercontent.com/u/84224795" height="70px">
 
 Fast and simple web application framework for deno.
 
