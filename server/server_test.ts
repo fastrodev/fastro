@@ -101,70 +101,6 @@ Deno.test({ permissions: { net: true } }, async function headMethod() {
   await server;
 });
 
-Deno.test({
-  name: "page",
-  fn: async () => {
-    const f = fastro();
-    const hello = createSSR(Hello);
-
-    f.build(true);
-    f.flash(true);
-    f.static("/public", 5)
-      .page("/", hello, (_req: HttpRequest, res: HttpResponse) => {
-        return res.ssr(hello)
-          .title(`Hello`)
-          .render();
-      });
-
-    const server = f.serve();
-
-    let response = await fetch(host, { method: "GET" });
-    let r = await response.text();
-    assertExists(r, "Hello");
-
-    response = await fetch(host, { method: "GET" });
-    r = await response.text();
-    assertExists(r, "Hello");
-
-    response = await fetch(host + "/public/hello.js", { method: "GET" });
-    r = await response.text();
-    assertExists(r, "@license Reactllo");
-
-    response = await fetch(host + "/public/hello.js", { method: "GET" });
-    r = await response.text();
-    assertExists(r, "@license Reactllo");
-
-    const notfoundres = await fetch(host + "/public/notfound.js", {
-      method: "GET",
-    });
-    const notfound = await notfoundres.text();
-    assertExists(notfound, "Not Found");
-
-    f.close();
-    await server;
-  },
-
-  sanitizeResources: false,
-  sanitizeOps: false,
-});
-
-Deno.test({
-  name: "static",
-  fn: async () => {
-    const f = fastro();
-    f.static("/");
-    const server = f.serve();
-    const response = await fetch(host + "/public/hello.js", { method: "GET" });
-    const r = await response.text();
-    assertEquals(r, "Not Found");
-    f.close();
-    await server;
-  },
-
-  sanitizeResources: false,
-  sanitizeOps: false,
-});
-
 Deno.test({ permissions: { net: true } }, async function middleware() {
   const app = fastro();
   app.get(
@@ -223,4 +159,72 @@ Deno.test({ permissions: { net: true } }, async function params() {
   assertEquals(r, "agus");
   app.close();
   await server;
+});
+
+Deno.test({
+  name: "static",
+  fn: async () => {
+    const f = fastro();
+    f.static("/");
+    f.serve();
+    const response = await fetch(host + "/public/hello.js", { method: "GET" });
+    const r = await response.text();
+    assertEquals(r, "Not Found");
+    f.close();
+    await new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
+  },
+
+  sanitizeResources: false,
+  sanitizeOps: false,
+});
+
+Deno.test({
+  name: "page",
+  fn: async () => {
+    const f = fastro();
+    const hello = createSSR(Hello);
+
+    f.build(true);
+    f.flash(true);
+    f.static("/public", 5)
+      .page("/", hello, (_req: HttpRequest, res: HttpResponse) => {
+        return res.ssr(hello)
+          .title(`Hello`)
+          .render();
+      });
+
+    const server = f.serve();
+
+    let response = await fetch(host, { method: "GET" });
+    let r = await response.text();
+    assertExists(r, "Hello");
+
+    response = await fetch(host, { method: "GET" });
+    r = await response.text();
+    assertExists(r, "Hello");
+
+    response = await fetch(host + "/public/hello.js", { method: "GET" });
+    r = await response.text();
+    assertExists(r, "@license Reactllo");
+
+    response = await fetch(host + "/public/hello.js", { method: "GET" });
+    r = await response.text();
+    assertExists(r, "@license Reactllo");
+
+    const notfoundres = await fetch(host + "/public/notfound.js", {
+      method: "GET",
+    });
+    const notfound = await notfoundres.text();
+    assertExists(notfound, "Not Found");
+
+    f.close();
+    await server;
+  },
+
+  sanitizeResources: false,
+  sanitizeOps: false,
 });
