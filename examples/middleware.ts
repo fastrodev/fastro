@@ -2,6 +2,7 @@ import { Status, STATUS_TEXT } from "../server/deps.ts";
 import fastro, { HttpRequest, HttpResponse, Next } from "../server/mod.ts";
 
 const f = fastro();
+f.flash(false);
 
 const appMiddleware = (
   req: HttpRequest,
@@ -47,8 +48,7 @@ const optionsMiddleware = (
   _res: HttpResponse,
   next: Next,
 ) => {
-  console.log("optionsMiddleware");
-  next();
+  next(new Error("optionsMiddleware Error"));
 };
 
 f.use(appMiddleware);

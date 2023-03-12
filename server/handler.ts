@@ -152,9 +152,9 @@ export function createHandler(
       if (match && (m.method === r.method)) {
         cache[mid] = match;
         const res = response(r);
-        m.handler(transformRequest(r, container), res, (val) => {
+        m.handler(transformRequest(r, container), res, (error) => {
           done = true;
-          if (val) new Response(<string> val);
+          if (error) throw error;
         });
 
         if (!done) {
@@ -175,9 +175,9 @@ export function createHandler(
       let done = false;
       const m = middlewares[index];
       const res = response(r);
-      m(transformRequest(r, container), res, (val) => {
+      m(transformRequest(r, container), res, (error) => {
         done = true;
-        if (val) new Response(<string> val);
+        if (error) throw error;
       });
 
       if (!done) {
