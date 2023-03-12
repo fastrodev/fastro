@@ -31,9 +31,8 @@ export function createHandler(
   let cache: Row = {};
   return function (r: Request) {
     cache = <Row> container.get(CACHE);
-    let handler: HandlerArgument | undefined = undefined;
     if (middlewares.length > 0) {
-      handler = handleMiddleware(r, middlewares);
+      const handler = handleMiddleware(r, middlewares);
       if (handler) {
         const h = <RequestHandler> handler;
         return h(transformRequest(r, container, null), response(r));
@@ -100,9 +99,9 @@ export function createHandler(
     if (!handler) return handlePages(r, id);
 
     if (routeMiddlewares.length > 0) {
-      handler = handleRouteMiddleware(r, routeMiddlewares);
-      if (handler) {
-        return (<RequestHandler> handler)(
+      const h = handleRouteMiddleware(r, routeMiddlewares);
+      if (h) {
+        return (<RequestHandler> h)(
           transformRequest(r, container, match),
           response(r),
         );

@@ -20,7 +20,7 @@ const appMiddleware = (
 };
 
 const getMiddleware = (_req: HttpRequest, res: HttpResponse, _next: Next) => {
-  console.log("getMiddleware");
+  // console.log("getMiddleware");
   return res.status(Status.Forbidden)
     .json({
       status: Status.Forbidden,
@@ -38,7 +38,7 @@ const deleteMiddleware = (
   _res: HttpResponse,
   next: Next,
 ) => {
-  console.log("deleteMiddleware");
+  // console.log("deleteMiddleware");
   next();
 };
 
@@ -47,17 +47,17 @@ const optionsMiddleware = (
   _res: HttpResponse,
   next: Next,
 ) => {
-  console.log("optionsMiddleware");
+  // console.log("optionsMiddleware");
   next();
 };
 
-f.use(appMiddleware);
+// f.use(appMiddleware);
 f.get(
   "/",
   putMiddleware,
-  deleteMiddleware,
-  optionsMiddleware,
-  getMiddleware,
+  // deleteMiddleware,
+  // optionsMiddleware,
+  // getMiddleware,
   () => "Hello world",
 );
 
