@@ -247,6 +247,23 @@ Deno.test({ permissions: { net: true } }, async function middleware() {
   await server;
 });
 
+Deno.test({ permissions: { net: true } }, async function middleware() {
+  const app = fastro();
+  app.flash(false);
+  app.use((_req: HttpRequest, _res: HttpResponse, next: Next) => {
+    next(new Error("error"));
+  });
+
+  const server = app.serve();
+
+  const response = await fetch(host, { method: "GET" });
+  const r = await response.text();
+  assertEquals(r, `error`);
+
+  app.close();
+  await server;
+});
+
 Deno.test({ permissions: { net: true } }, async function params() {
   const app = fastro();
   app.get("/:user", (req: HttpRequest, res: HttpResponse) => {
