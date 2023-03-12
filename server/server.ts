@@ -9,7 +9,7 @@ import {
   PUT,
 } from "./constant.ts";
 import { createContainer } from "./container.ts";
-import { ServeInit, Server } from "./deps.ts";
+import { ServeInit, Server, Status } from "./deps.ts";
 import { createHandler } from "./handler.ts";
 import {
   Fastro,
@@ -107,17 +107,25 @@ export function fastro(_startOptions?: StartOptions): Fastro {
           port,
           handler,
           onListen: serveOptions?.onListen,
-          onError: serveOptions?.onError,
+          onError: serveOptions?.onError, // TODO: https://github.com/denoland/deno/issues/15504
           signal: ac.signal,
         });
       }
 
       server = new Server({
-        onError: serveOptions?.onError,
+        onError: serveOptions?.onError ? serveOptions?.onError : onError,
         hostname: hostname,
         port,
         handler,
       });
+
+      function onError(err: unknown) {
+        const error = <Error> err;
+        console.error(error);
+        return new Response(error.message, {
+          status: Status.InternalServerError,
+        });
+      }
 
       const baseUrl = `http://${hostname}:${port}`;
       console.log(`Listen on ${baseUrl}/`);

@@ -29,7 +29,7 @@ export type Data = {
 };
 
 export interface Next {
-  (error?: unknown): void;
+  (error?: Error): void;
 }
 
 export type HttpResponse = {
@@ -66,12 +66,19 @@ export type RouteMidleware = {
   handler: MiddlewareArgument;
 };
 
+export type AppMidleware = {
+  path: string;
+  handler: MiddlewareArgument;
+};
+
 export type RequestHandler = (
   request: HttpRequest,
   response: HttpResponse,
 ) =>
   | Response
   | Promise<Response>;
+
+export type AppMiddlewareArgument = string | MiddlewareArgument;
 
 export type MiddlewareArgument = (
   request: HttpRequest,

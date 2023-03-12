@@ -190,14 +190,14 @@ Deno.test({ permissions: { net: true } }, async function middleware() {
       next();
     },
     (_req: HttpRequest, _res: HttpResponse, next: Next) => {
-      next("error");
+      next();
     },
     (_req: HttpRequest, res: HttpResponse, _next: Next) => res.send("GET"),
     () => "Hello world",
   );
   app.use(
     (_req, _res, next) => {
-      next("error");
+      next();
     },
     (req, res, next) => {
       if (req.method === "POST") {
@@ -221,6 +221,27 @@ Deno.test({ permissions: { net: true } }, async function middleware() {
   response = await fetch(host, { method: "GET" });
   r = await response.text();
   assertEquals(r, `GET`);
+
+  app.close();
+  await server;
+});
+
+Deno.test({ permissions: { net: true } }, async function middleware() {
+  const app = fastro();
+  app.flash(false);
+  app.get(
+    "/",
+    (_req: HttpRequest, _res: HttpResponse, next: Next) => {
+      next(new Error("error"));
+    },
+    () => "Hello world",
+  );
+
+  const server = app.serve();
+
+  const response = await fetch(host, { method: "GET" });
+  const r = await response.text();
+  assertEquals(r, `error`);
 
   app.close();
   await server;
