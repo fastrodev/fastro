@@ -143,9 +143,13 @@ export function createHandler(
 
     for (let index = 0; index < routeMiddlewares.length; index++) {
       let done = false;
+      let match = false;
       const m = routeMiddlewares[index];
-      const match = patterns[m.path].test(r.url);
+      const mid = r.method + m.path + r.url;
+
+      match = cache[mid] ? cache[mid] : patterns[m.path].test(r.url);
       if (match && (m.method === r.method)) {
+        cache[mid] = match;
         const res = response(r);
         m.handler(transformRequest(r, container), res, (val) => {
           done = true;
