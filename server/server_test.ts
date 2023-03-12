@@ -45,7 +45,11 @@ Deno.test({ permissions: { net: true } }, async function getMethod() {
 
 Deno.test({ permissions: { net: true } }, async function getMethod() {
   const app = fastro();
-  app.get("/", (_req: HttpRequest, res: HttpResponse) => {
+  app.get("/", (req: HttpRequest, res: HttpResponse) => {
+    req.set("key1", "key1");
+    req.get("key1");
+    req.delete("key1");
+    req.container();
     const cookie: Cookie = { name: "Space", value: "Cat" };
 
     const headers = new Headers();
