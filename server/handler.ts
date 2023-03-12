@@ -32,10 +32,12 @@ export function createHandler(
   return function (r: Request) {
     cache = <Row> container.get(CACHE);
     if (middlewares.length > 0) {
-      const handler = handleMiddleware(r, middlewares);
-      if (handler) {
-        const h = <RequestHandler> handler;
-        return h(transformRequest(r, container, null), response(r));
+      const h = handleMiddleware(r, middlewares);
+      if (h) {
+        return (<RequestHandler> h)(
+          transformRequest(r, container, null),
+          response(r),
+        );
       }
     }
     return handleRoutes(r);
