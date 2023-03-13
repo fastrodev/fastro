@@ -8,6 +8,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: denoland/setup-deno@v1.1.1
+      - name: Install Oha
+        uses: baptiste0928/cargo-install@v1
+        with:
+          crate: oha
+          version: 0.5.5
       - run: deno lint --unstable
       - name: Run tests
         run: deno test -A --unstable --coverage=cov
