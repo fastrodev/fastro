@@ -1,0 +1,1 @@
+import React from "https://esm.sh/react@18.2.0";import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";import App from "./Hello.tsx";const props = window.__INITIAL_STATE__ || {};const container = document.getElementById("root");const root = createRoot(container);root.render(<App  {...props} />);
