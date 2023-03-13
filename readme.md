@@ -9,7 +9,7 @@
 Fast and simple web application framework for deno.
 
 With
-[deno near native performance](https://github.com/ynwd/bench#overview), you
+[deno near native performance](https://github.com/fastrodev/fastro/blob/main/bench/result.md), you
 can:
 
 - Manage your app and routing cleanly with
