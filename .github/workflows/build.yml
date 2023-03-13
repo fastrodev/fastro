@@ -13,8 +13,15 @@ jobs:
         run: deno test -A --unstable --coverage=cov
       - name: Generate report
         run: deno coverage cov --lcov > cov.lcov
+      - name: Generate internal benchmarks
+        run: deno task bench
       - name: Coveralls
         uses: coverallsapp/github-action@v1
         with:
           path-to-lcov: ./cov.lcov
           github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push changes
+        uses: actions-js/push@v1
+        with:
+          github_token: '${{ secrets.GITHUB_TOKEN }}'
+          branch: main

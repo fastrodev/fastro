@@ -6,18 +6,23 @@
     "jsxImportSource": "https://esm.sh/react"
   },
   "tasks": {
-    "test": "rm -rf cov && deno test -A --unstable --coverage=cov && deno coverage cov",
-    "coverage": "deno coverage cov --lcov > cov.lcov",
-    "deno": "deno run -A --unstable examples/deno.ts",
-    "hello-string": "deno run -A --unstable examples/hello_string.ts",
-    "hello-jsx": "deno run -A --unstable examples/hello_jsx.tsx",
-    "hello-json": "deno run -A --unstable examples/hello_json.ts",
-    "hello": "deno run -A --unstable examples/hello_world.ts",
-    "static": "deno run -A --unstable examples/static_file.ts",
-    "ssr": "deno run -A --unstable examples/ssr.ts",
-    "middleware": "deno run -A --unstable examples/middleware.ts",
-    "jsx": "deno run -A --unstable examples/hello_world_fastro_jsx.tsx",
-    "params": "deno run -A --unstable examples/params.ts",
-    "container": "deno run -A --unstable examples/container.ts"
+    "bench":                        "deno run -A --unstable bench/run.ts",
+    "test":                         "rm -rf cov && deno test -A --unstable --coverage=cov && deno coverage cov",
+    "coverage":                     "deno coverage cov --lcov > cov.lcov",
+    "deno":                         "deno run -A --unstable examples/deno.ts",
+    "string":                       "deno run -A --unstable examples/string.ts",
+    "hello_json":                   "deno run -A --unstable examples/hello_json.ts",
+    "hello_jsx":                    "deno run -A --unstable examples/hello_jsx.tsx",
+    "hello_string":                 "deno run -A --unstable examples/hello_string.ts",
+    "hello_world_fastro_html":      "deno run -A --unstable examples/hello_world_fastro_html.ts",
+    "hello_world_fastro_json":      "deno run -A --unstable examples/hello_world_fastro_json.ts",
+    "hello_world_fastro_jsx":       "deno run -A --unstable examples/hello_world_fastro_jsx.tsx",
+    "hello_world_fastro":           "deno run -A --unstable examples/hello_world_fastro.ts",
+    "hello_world":                  "deno run -A --unstable examples/hello_world.ts",
+    "middleware":                   "deno run -A --unstable examples/middleware.ts",
+    "params":                       "deno run -A --unstable examples/params.ts",
+    "ssr":                          "deno run -A --unstable examples/ssr.ts",
+    "static_file":                  "deno run -A --unstable examples/static_file.ts",
+    "container":                    "deno run -A --unstable examples/container.ts"
   }
 }

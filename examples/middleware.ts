@@ -1,64 +1,23 @@
-import { Status, STATUS_TEXT } from "../server/deps.ts";
 import fastro, { HttpRequest, HttpResponse, Next } from "../server/mod.ts";
 
 const f = fastro();
-f.flash(false);
 
-const appMiddleware = (
-  req: HttpRequest,
-  res: HttpResponse,
-  next: Next,
-) => {
-  if (req.method === "POST") {
-    return res
-      .status(Status.Forbidden)
-      .json({
-        status: Status.Forbidden,
-        text: STATUS_TEXT[Status.Forbidden],
-      });
-  }
-  next();
-};
-
-const getMiddleware = (_req: HttpRequest, res: HttpResponse, _next: Next) => {
-  console.log("getMiddleware");
-  return res.status(Status.Forbidden)
-    .json({
-      status: Status.Forbidden,
-      text: STATUS_TEXT[Status.Forbidden],
-    });
-};
-
-const putMiddleware = (_req: HttpRequest, _res: HttpResponse, next: Next) => {
-  console.log("putMiddleware");
-  next();
-};
-
-const deleteMiddleware = (
+f.use((
   _req: HttpRequest,
   _res: HttpResponse,
   next: Next,
 ) => {
-  console.log("deleteMiddleware");
+  new Date();
   next();
-};
+});
 
-const optionsMiddleware = (
+f.get("/", (
   _req: HttpRequest,
   _res: HttpResponse,
   next: Next,
 ) => {
-  next(new Error("optionsMiddleware Error"));
-};
-
-f.use(appMiddleware);
-f.get(
-  "/",
-  putMiddleware,
-  deleteMiddleware,
-  optionsMiddleware,
-  getMiddleware,
-  () => "Hello world",
-);
+  new Date();
+  next();
+}, () => "Hello world");
 
 await f.serve();
