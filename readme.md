@@ -48,6 +48,10 @@ Run the app
 deno run -A --unstable main.ts
 ```
 
+Or deploy it in seconds
+
+[![Deploy](public/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://raw.githubusercontent.com/fastrodev/fastro/main/examples/hello_string.ts)
+
 ## Examples
 
 Find one that fits your use case

@@ -1,7 +1,7 @@
-import application from "../server/mod.ts";
+import fastro from "../server/mod.ts";
 
-const app = application();
+const f = fastro();
 
-app.get("/", () => "Hello string");
+f.get("/", () => "Hello, World!");
 
-await app.serve();
+await f.serve();
