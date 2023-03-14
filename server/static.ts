@@ -1,4 +1,4 @@
-import { Status, STATUS_TEXT } from "./deps.ts";
+import { contentType, extname, Status, STATUS_TEXT } from "./deps.ts";
 
 export async function handleStaticFile(
   reqUrl: string,
@@ -22,17 +22,12 @@ export async function handleStaticFile(
     });
   }
 
-  let options = {};
-  if (path.includes(".js")) {
-    options = {
-      headers: {
-        "content-type": "text/javascript",
-        "Cache-Control": `max-age=${maxAge}`,
-      },
-    };
-  }
-
-  return new Response(file.readable, options);
+  return new Response(file.readable, {
+    headers: {
+      "Content-Type": contentType(extname(path)) || "application/octet-stream",
+      "Cache-Control": `max-age=${maxAge}`,
+    },
+  });
 }
 
 function getPathUrl(url: string, staticURL: string) {
