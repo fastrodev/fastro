@@ -305,12 +305,16 @@ Deno.test({
   name: "markdown",
   fn: async () => {
     const f = fastro();
-    f.static("/bench");
+    f.static("/");
     f.serve();
 
-    const response = await fetch(host + "/bench/result.md", { method: "GET" });
-    const r = await response.text();
+    let response = await fetch(host + "/bench/result.md", { method: "GET" });
+    let r = await response.text();
     assertExists(r, "module");
+
+    response = await fetch(host + "/cov.lcov", { method: "GET" });
+    r = await response.text();
+    assertExists(r, "fastro/pages/hello.tsx");
 
     f.close();
     await new Promise<void>((resolve) => {
