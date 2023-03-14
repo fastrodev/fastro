@@ -38,7 +38,7 @@ async function bench(server: string) {
   Deno.run({
     cmd: ["deno", "task", `${server}`],
   });
-  await delay(500);
+  await delay(1000);
   const res = await oha();
   await killServer();
   return {
@@ -65,7 +65,7 @@ const max = table[0];
 
 const t = table.map((v) => {
   const relative = (v.requestsPerSec / max.requestsPerSec) * 100;
-  return [v.module, v.requestsPerSec.toFixed(2), relative.toFixed(2)];
+  return [v.module, v.requestsPerSec.toFixed(2), relative.toFixed(0) + "%"];
 });
 
 let markdown = "";
