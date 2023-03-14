@@ -32,8 +32,7 @@ export async function handleStaticFile(
 
 function getPathUrl(url: string, staticURL: string) {
   const s = staticURL === "/" ? "" : staticURL;
-  const res = url.match(/^https?:\/\/[^/]+/);
-  if (!res) return null;
+  const res = <RegExpMatchArray> url.match(/^https?:\/\/[^/]+/);
   const [baseUrl] = res;
   const p = `${s}/:file`;
   const pattern = new URLPattern(p, baseUrl);
