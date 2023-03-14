@@ -302,6 +302,29 @@ Deno.test({
 });
 
 Deno.test({
+  name: "markdown",
+  fn: async () => {
+    const f = fastro();
+    f.static("/bench");
+    f.serve();
+
+    const response = await fetch(host + "/bench/result.md", { method: "GET" });
+    const r = await response.text();
+    assertExists(r, "module");
+
+    f.close();
+    await new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
+  },
+
+  sanitizeResources: false,
+  sanitizeOps: false,
+});
+
+Deno.test({
   name: "page",
   fn: async () => {
     const f = fastro();
