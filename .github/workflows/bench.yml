@@ -2,9 +2,6 @@ name: bench
 on:
   schedule:
     - cron: 0 */3 * * *
-  pull_request:
-    branches:    
-      - main
   push:
      branches:    
       - main
