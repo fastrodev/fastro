@@ -312,7 +312,7 @@ Deno.test({
     let r = await response.text();
     assertExists(r, "module");
 
-    response = await fetch(host + "/cov.lcov", { method: "GET" });
+    response = await fetch(host + "/.gitignore", { method: "GET" });
     r = await response.text();
     assertExists(r, "fastro/pages/hello.tsx");
 
