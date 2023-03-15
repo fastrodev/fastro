@@ -7,7 +7,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: denoland/setup-deno@v1.1.1
-      - run: deno lint --unstable
+      - run: deno lint --unstable server
+      - run: deno lint --unstable examples
       - name: Run tests
         run: deno test -A --unstable --coverage=cov
       - name: Generate report

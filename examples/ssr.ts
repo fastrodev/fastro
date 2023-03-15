@@ -9,6 +9,8 @@ const app = createSSR(App);
 const user = createSSR(User);
 
 const f = fastro()
+  .flash(<boolean> <unknown> Deno.env.get("FLASH"))
+  .build(<boolean> <unknown> Deno.env.get("BUILD"))
   .page("/", hello, (_req: HttpRequest, res: HttpResponse) => {
     const desc = "Fastro React SSR Example";
     return initSSR(hello, res)
