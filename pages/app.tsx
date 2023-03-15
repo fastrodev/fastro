@@ -13,17 +13,20 @@ const App = (props: { data: string }) => {
   };
 
   return (
-    <div className="container">
-      <h1>Hello {props.data}</h1>
-      <button
-        type="button"
-        className="btn btn-primary"
-        onClick={handleClick}
-      >
-        Hit the API
-      </button>
-
-      <pre className="mt-2">The API Response is {JSON.stringify(d)}</pre>
+    <div className="row align-items-center" style={{ height: "100vh" }}>
+      <div className="mx-auto col-3">
+        <div className="container">
+          <h1>Hello {props.data}</h1>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleClick}
+          >
+            Hit the API
+          </button>
+          <pre className="mt-2">The API Response is {JSON.stringify(d)}</pre>
+        </div>
+      </div>
     </div>
   );
 };
