@@ -9,22 +9,28 @@ const Hello = () => {
   };
 
   return (
-    <div className="container">
-      <form
-        className="row row-cols-lg-auto g-3 align-items-center"
-        action={`/${link}`}
-      >
-        <input
-          className="ms-2 w-25 form-control form-control-md"
-          type="text"
-          placeholder="Hello Guest"
-          aria-label="Guest"
-          onChange={handleChange}
-        />
-        <button className="btn btn-primary ms-2 col-2" type="submit">
-          Go
-        </button>
-      </form>
+    <div className="row align-items-center" style={{ height: "100vh" }}>
+      <div className="mx-auto col-3">
+        <form
+          className="row column-gap-2"
+          action={`/${link}`}
+        >
+          <input
+            className="form-control form-control-md col"
+            type="text"
+            placeholder="Hello guest"
+            aria-label="Guest"
+            onChange={handleChange}
+          />
+          <button
+            className="btn btn-primary col-2"
+            style={{ width: "50px" }}
+            type="submit"
+          >
+            Go
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
