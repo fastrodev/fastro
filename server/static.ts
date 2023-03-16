@@ -28,7 +28,8 @@ export function handleStaticFile(
   if (cache[extID]) {
     extName = cache[extID];
   } else {
-    cache[extID] = extname(path);
+    extName = extname(path);
+    cache[extID] = extName;
   }
 
   const txtExt = [".js", ".css", ".html", ".txt", ".xml", ".svg", ".ts", ""];
