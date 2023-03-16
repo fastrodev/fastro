@@ -63,7 +63,7 @@ async function handleNonText(
   });
 }
 
-function handleTextFile(
+async function handleTextFile(
   ext: string,
   maxAge: number,
   path: string,
@@ -77,7 +77,7 @@ function handleTextFile(
     text = cache[txtID];
   } else {
     try {
-      text = Deno.readTextFileSync(`.${path}`);
+      text = await Deno.readTextFile(`.${path}`);
       cache[txtID] = text;
     } catch {
       return handleIndex(path, url, cache);
@@ -92,7 +92,7 @@ function handleTextFile(
   });
 }
 
-function handleIndex(path: string, url: string, cache: Row) {
+async function handleIndex(path: string, url: string, cache: Row) {
   let text;
   const idxID = "index" + url;
 
@@ -105,7 +105,7 @@ function handleIndex(path: string, url: string, cache: Row) {
     }
   } else {
     try {
-      text = Deno.readTextFileSync(`.${path}/index.html`);
+      text = await Deno.readTextFile(`.${path}/index.html`);
       cache[idxID] = text;
     } catch (err) {
       console.error(err);
