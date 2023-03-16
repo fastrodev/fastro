@@ -66,7 +66,7 @@ export function createHandler(
     }
 
     if (!page) {
-      return handleStaticFile(r.url, staticURL, maxAge);
+      return handleStaticFile(r.url, staticURL, maxAge, cache);
     }
 
     return handleJSXPage(

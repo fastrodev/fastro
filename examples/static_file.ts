@@ -21,6 +21,6 @@ const app = application();
  * app.static("/", 30);
  * ```
  */
-app.static("/public");
+app.static("/");
 
 await app.serve();
