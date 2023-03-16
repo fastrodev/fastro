@@ -1,28 +1,51 @@
 import { contentType, extname, Status, STATUS_TEXT } from "./deps.ts";
 import { Row } from "./types.ts";
 
-export async function handleStaticFile(
+export function handleStaticFile(
   reqUrl: string,
   staticURL: string,
   maxAge: number,
   cache: Row,
 ) {
-  let file;
-  const path = getPathUrl(reqUrl, staticURL);
+  const staticID = "static" + reqUrl;
+  const extID = "ext" + staticID + reqUrl;
+  let path;
+  let extName = "";
+
+  if (cache[staticID]) {
+    path = cache[staticID];
+  } else {
+    path = getPathUrl(reqUrl, staticURL);
+    cache[staticID] = path;
+  }
+
   if (!path) {
     return new Response(STATUS_TEXT[Status.NotFound], {
       status: Status.NotFound,
     });
   }
 
-  const ext = extname(path);
-  const txtExt = [".js", ".css", ".html", ".txt", ".xml", ".svg", ".ts", ""];
-  const r = txtExt.find((val) => val === ext);
-
-  if (r || r === "") {
-    return handleTextFile(ext, maxAge, path, cache, reqUrl);
+  if (cache[extID]) {
+    extName = cache[extID];
+  } else {
+    cache[extID] = extname(path);
   }
 
+  const txtExt = [".js", ".css", ".html", ".txt", ".xml", ".svg", ".ts", ""];
+  const r = txtExt.find((val) => val === extName);
+
+  if (r || r === "") {
+    return handleTextFile(extName, maxAge, path, cache, reqUrl);
+  }
+
+  return handleNonText(path, maxAge);
+}
+
+async function handleNonText(
+  path: string,
+  maxAge: number,
+) {
+  let file;
   try {
     file = await Deno.open(`.${path}`, { read: true });
   } catch (err) {
