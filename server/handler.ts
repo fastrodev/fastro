@@ -244,5 +244,11 @@ export function transformRequest(
   req.delete = (key: string) => {
     return container.delete(key);
   };
+  req.param = (name: string) => {
+    return match.pathname.groups[name];
+  };
+  req.query = (name: string) => {
+    return new URL(req.url).searchParams.get(name);
+  };
   return req;
 }
