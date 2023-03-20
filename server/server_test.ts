@@ -276,6 +276,20 @@ Deno.test({ permissions: { net: true } }, async function params() {
   await server;
 });
 
+Deno.test({ permissions: { net: true } }, async function params() {
+  const app = fastro();
+  app.get("/:user", (req: HttpRequest, res: HttpResponse) => {
+    return res.json({ user: req.params(), title: req.queries() });
+  });
+  const server = app.serve();
+  const response = await fetch(`${host}/agus?title=lead`, { method: "GET" });
+  const r = await response.text();
+  console.log("r", r);
+  assertEquals(r, `{"user":{"user":"agus"},"title":["lead"]}`);
+  app.close();
+  await server;
+});
+
 Deno.test({
   name: "page",
   fn: async () => {

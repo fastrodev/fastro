@@ -59,7 +59,9 @@ export class HttpRequest extends Request {
   set!: <T>(key: string, value: T, options?: SetOptions) => void;
   delete!: (key: string) => void;
   param!: (name: string) => string;
+  params!: () => Record<string, string>;
   query!: (name: string) => string | null;
+  queries!: () => string[];
 }
 
 export type RouteMidleware = {
