@@ -259,7 +259,6 @@ Deno.test({ permissions: { net: true } }, async function middleware() {
   const response = await fetch(host, { method: "GET" });
   const r = await response.text();
   assertEquals(r, `error`);
-
   app.close();
   await server;
 });
@@ -267,65 +266,14 @@ Deno.test({ permissions: { net: true } }, async function middleware() {
 Deno.test({ permissions: { net: true } }, async function params() {
   const app = fastro();
   app.get("/:user", (req: HttpRequest, res: HttpResponse) => {
-    const r = req.match?.pathname.groups;
-    if (!r) return res.send("not found");
-    const { user } = r;
-    return res.send(user);
+    return res.json({ user: req.param("user"), title: req.query("title") });
   });
   const server = app.serve();
-  const response = await fetch(`${host}/agus`, { method: "GET" });
+  const response = await fetch(`${host}/agus?title=lead`, { method: "GET" });
   const r = await response.text();
-  assertEquals(r, "agus");
+  assertEquals(r, `{"user":"agus","title":"lead"}`);
   app.close();
   await server;
-});
-
-Deno.test({
-  name: "static",
-  fn: async () => {
-    const f = fastro();
-    f.static("/");
-    f.serve();
-    const response = await fetch(host + "/public/hello.js", { method: "GET" });
-    const r = await response.text();
-    assertEquals(r, "Not Found");
-    f.close();
-    await new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 1000);
-    });
-  },
-
-  sanitizeResources: false,
-  sanitizeOps: false,
-});
-
-Deno.test({
-  name: "markdown",
-  fn: async () => {
-    const f = fastro();
-    f.static("/");
-    f.serve();
-
-    let response = await fetch(host + "/bench/result.md", { method: "GET" });
-    let r = await response.text();
-    assertExists(r, "module");
-
-    response = await fetch(host + "/.gitignore", { method: "GET" });
-    r = await response.text();
-    assertExists(r, "fastro/pages/hello.tsx");
-
-    f.close();
-    await new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 1000);
-    });
-  },
-
-  sanitizeResources: false,
-  sanitizeOps: false,
 });
 
 Deno.test({
@@ -369,6 +317,54 @@ Deno.test({
 
     f.close();
     await server;
+  },
+
+  sanitizeResources: false,
+  sanitizeOps: false,
+});
+
+Deno.test({
+  name: "static",
+  fn: async () => {
+    const f = fastro();
+    f.static("/");
+    f.serve();
+    const response = await fetch(host + "/public/hello.js", { method: "GET" });
+    const r = await response.text();
+    assertExists(r, "scheduler.production.min.js");
+    f.close();
+    await new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
+  },
+
+  sanitizeResources: false,
+  sanitizeOps: false,
+});
+
+Deno.test({
+  name: "markdown",
+  fn: async () => {
+    const f = fastro();
+    f.static("/");
+    f.serve();
+
+    let response = await fetch(host + "/bench/result.md", { method: "GET" });
+    let r = await response.text();
+    assertExists(r, "module");
+
+    response = await fetch(host + "/.gitignore", { method: "GET" });
+    r = await response.text();
+    assertExists(r, "fastro/pages/hello.tsx");
+
+    f.close();
+    await new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
   },
 
   sanitizeResources: false,
