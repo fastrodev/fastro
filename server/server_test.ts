@@ -266,7 +266,7 @@ Deno.test({ permissions: { net: true } }, async function middleware() {
 Deno.test({ permissions: { net: true } }, async function params() {
   const app = fastro();
   app.get("/:user", (req: HttpRequest, res: HttpResponse) => {
-    return res.json({ user: req.param("user"), title: req.query("title") });
+    return res.json({ user: req.params("user"), title: req.query("title") });
   });
   const server = app.serve();
   const response = await fetch(`${host}/agus?title=lead`, { method: "GET" });
@@ -279,13 +279,14 @@ Deno.test({ permissions: { net: true } }, async function params() {
 Deno.test({ permissions: { net: true } }, async function params() {
   const app = fastro();
   app.get("/:user", (req: HttpRequest, res: HttpResponse) => {
-    return res.json({ user: req.params(), title: req.queries() });
+    const p = <Record<string, string>> req.params();
+    const q = <Record<string, string>> req.query();
+    return res.json({ user: p.user, title: q.title });
   });
   const server = app.serve();
   const response = await fetch(`${host}/agus?title=lead`, { method: "GET" });
   const r = await response.text();
-  console.log("r", r);
-  assertEquals(r, `{"user":{"user":"agus"},"title":["lead"]}`);
+  assertEquals(r, `{"user":"agus","title":"lead"}`);
   app.close();
   await server;
 });
