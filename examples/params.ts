@@ -1,12 +1,10 @@
-import fastro from "../server/mod.ts";
-import { HttpRequest, HttpResponse } from "../server/types.ts";
+import fastro, { HttpRequest, HttpResponse } from "../server/mod.ts";
 
 const f = fastro();
 
 f.get("/:user", (req: HttpRequest, res: HttpResponse) => {
-  return res.json({ user: req.params("user"), title: req.query("title") });
-}).get("/", (_req: HttpRequest, res: HttpResponse) => {
-  return res.send("Hello params");
+  const data = { user: req.params("user"), title: req.query("title") };
+  return res.json(data);
 });
 
 await f.serve();

@@ -1,3 +1,4 @@
+import { HttpResponse, SSR } from "../types.d.ts";
 import {
   Cookie,
   deleteCookie,
@@ -7,7 +8,6 @@ import {
   STATUS_TEXT,
 } from "./deps.ts";
 import { isJSX } from "./handler.ts";
-import { HttpResponse, SSR } from "./types.ts";
 
 type BodyInitResponse = BodyInit | null | undefined;
 

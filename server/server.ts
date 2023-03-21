@@ -1,4 +1,15 @@
 import {
+  Fastro,
+  HandlerArgument,
+  MiddlewareArgument,
+  Route,
+  RouteMidleware,
+  SetOptions,
+  SSR,
+  SSRHandler,
+  StartOptions,
+} from "../types.d.ts";
+import {
   CACHE,
   DELETE,
   GET,
@@ -11,17 +22,6 @@ import {
 import { createContainer } from "./container.ts";
 import { ServeInit, Server, Status } from "./deps.ts";
 import { createHandler } from "./handler.ts";
-import {
-  Fastro,
-  HandlerArgument,
-  MiddlewareArgument,
-  Route,
-  RouteMidleware,
-  SetOptions,
-  SSR,
-  SSRHandler,
-  StartOptions,
-} from "./types.ts";
 
 export function fastro(_startOptions?: StartOptions): Fastro {
   const routes: Array<Route> = [];

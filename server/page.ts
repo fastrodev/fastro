@@ -1,5 +1,10 @@
+import {
+  Container,
+  HttpRequest,
+  RequestHandler,
+  SSRHandler,
+} from "../types.d.ts";
 import { response } from "./response.ts";
-import { Container, HttpRequest, RequestHandler, SSRHandler } from "./types.ts";
 
 export function handleJSXPage(
   s: SSRHandler,

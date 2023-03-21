@@ -1,5 +1,5 @@
+import { Container, Data, SetOptions } from "../types.d.ts";
 import { CACHE, TIMEOUT } from "./constant.ts";
-import { Container, Data, SetOptions } from "./types.ts";
 
 export function createContainer(t?: number): Container {
   const SECOND = 1000;

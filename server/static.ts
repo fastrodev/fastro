@@ -1,5 +1,5 @@
+import { Row } from "../types.d.ts";
 import { contentType, extname, Status, STATUS_TEXT } from "./deps.ts";
-import { Row } from "./types.ts";
 
 export function handleStaticFile(
   reqUrl: string,

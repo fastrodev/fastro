@@ -1,5 +1,5 @@
 import application from "../server/mod.ts";
-import { HttpRequest, HttpResponse } from "../server/types.ts";
+import { HttpRequest, HttpResponse } from "../types.d.ts";
 
 const app = application();
 

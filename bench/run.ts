@@ -1,13 +1,14 @@
 import { delay } from "https://deno.land/std@0.147.0/async/mod.ts";
 import { markdownTable } from "https://esm.sh/markdown-table@3.0.2";
 
-async function oha() {
+async function oha(url?: string) {
+  const u = url ?? "http://localhost:9000";
   const args = [
     "-j",
     "--no-tui",
     "-z",
     "10sec",
-    "http://localhost:9000",
+    u,
   ];
   console.log(`oha ${args.join().replaceAll(",", " ")}`);
   const command = new Deno.Command("oha", {
@@ -39,7 +40,13 @@ async function bench(server: string) {
     cmd: ["deno", "task", `${server}`],
   });
   await delay(1000);
-  const res = await oha();
+  let res;
+  if (server === "params") {
+    res = await oha("http://localhost:9000/agus?title=lead");
+  } else {
+    res = await oha();
+  }
+
   await killServer();
   return {
     "module": server,
