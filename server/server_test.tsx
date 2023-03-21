@@ -1,6 +1,6 @@
+import { HttpRequest, HttpResponse } from "../types.d.ts";
 import { assertEquals } from "./deps.ts";
 import { fastro } from "./server.ts";
-import { HttpRequest, HttpResponse } from "./types.ts";
 
 const host = "http://localhost:9000";
 

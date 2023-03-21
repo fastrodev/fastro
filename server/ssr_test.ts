@@ -1,8 +1,8 @@
 import Hello from "../pages/hello.tsx";
+import { HttpRequest, HttpResponse, SSR } from "../types.d.ts";
 import { assertExists } from "./deps.ts";
 import { fastro } from "./server.ts";
 import { createSSR } from "./ssr.ts";
-import { HttpRequest, HttpResponse, SSR } from "./types.ts";
 
 const host = "http://localhost:9000";
 

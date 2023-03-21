@@ -1,9 +1,4 @@
 // deno-lint-ignore-file no-explicit-any
-import { CACHE, NONPAGE } from "./constant.ts";
-import { ReactDOMServer } from "./deps.ts";
-import { handleJSXPage } from "./page.ts";
-import { response } from "./response.ts";
-import { handleStaticFile } from "./static.ts";
 import {
   Container,
   ExecHandler,
@@ -16,7 +11,12 @@ import {
   Row,
   SetOptions,
   SSRHandler,
-} from "./types.ts";
+} from "../types.d.ts";
+import { CACHE, NONPAGE } from "./constant.ts";
+import { ReactDOMServer } from "./deps.ts";
+import { handleJSXPage } from "./page.ts";
+import { response } from "./response.ts";
+import { handleStaticFile } from "./static.ts";
 
 export function createHandler(
   middlewares: Array<MiddlewareArgument>,

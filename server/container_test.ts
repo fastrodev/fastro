@@ -1,6 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
+import { Data } from "../types.d.ts";
 import { createContainer } from "./container.ts";
-import { Data } from "./types.ts";
 
 Deno.test("container set and get", () => {
   const container = createContainer(1);

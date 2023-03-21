@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { Cookie, ServeInit } from "./deps.ts";
+import { Cookie, ServeInit } from "./server/deps.ts";
 
 export type SetOptions = {
   isExpired?: boolean;
@@ -53,13 +53,13 @@ export type HttpResponse = {
 };
 
 export class HttpRequest extends Request {
-  match!: URLPatternResult | null;
-  container!: () => Container;
-  get!: <T>(key: string) => T | null;
-  set!: <T>(key: string, value: T, options?: SetOptions) => void;
-  delete!: (key: string) => void;
-  params!: (name?: string) => Record<string, string> | string;
-  query!: (name?: string) => Record<string, string> | string | null;
+  match: URLPatternResult | null;
+  container: () => Container;
+  get: <T>(key: string) => T | null;
+  set: <T>(key: string, value: T, options?: SetOptions) => void;
+  delete: (key: string) => void;
+  params: (name?: string) => Record<string, string> | string;
+  query: (name?: string) => Record<string, string> | string | null;
 }
 
 export type RouteMidleware = {

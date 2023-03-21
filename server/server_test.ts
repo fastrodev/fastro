@@ -1,4 +1,5 @@
 import Hello from "../pages/hello.tsx";
+import { HttpRequest, HttpResponse, Next } from "../types.d.ts";
 import {
   assertEquals,
   assertExists,
@@ -8,7 +9,6 @@ import {
 } from "./deps.ts";
 import { fastro } from "./server.ts";
 import { createSSR } from "./ssr.ts";
-import { HttpRequest, HttpResponse, Next } from "./types.ts";
 
 const host = "http://localhost:9000";
 

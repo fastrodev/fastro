@@ -1,16 +1,16 @@
 // deno-lint-ignore-file no-explicit-any
 import * as esbuild from "https://deno.land/x/esbuild@v0.15.10/mod.js";
 import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts";
-import { EXPIRY_SECONDS } from "./constant.ts";
-import { React, ReactDOMServer, Status, STATUS_TEXT } from "./deps.ts";
-import { isJSX } from "./handler.ts";
 import {
   Container,
   HttpRequest,
   JSXHandler,
   RenderOptions,
   SSR,
-} from "./types.ts";
+} from "../types.d.ts";
+import { EXPIRY_SECONDS } from "./constant.ts";
+import { React, ReactDOMServer, Status, STATUS_TEXT } from "./deps.ts";
+import { isJSX } from "./handler.ts";
 
 export function createSSR(el: JSXHandler | JSX.Element): SSR {
   let element: JSX.Element;
