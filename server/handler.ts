@@ -223,6 +223,14 @@ function render(element: JSX.Element) {
   });
 }
 
+function iterableToRecord(
+  params: URLSearchParams,
+): Record<string, string> {
+  const record: Record<string, string> = {};
+  params.forEach((v, k) => (record[k] = v));
+  return record;
+}
+
 export function transformRequest(
   r: Request,
   container: Container,
@@ -244,18 +252,15 @@ export function transformRequest(
   req.delete = (key: string) => {
     return container.delete(key);
   };
-  req.params = () => {
+  req.params = (name?: string) => {
+    if (name) return match.pathname.groups[name];
     return match.pathname.groups;
   };
-  req.param = (name: string) => {
-    return match.pathname.groups[name];
-  };
-  req.query = (name: string) => {
+  req.query = (name?: string) => {
+    if (!name) {
+      return iterableToRecord(new URL(req.url).searchParams);
+    }
     return new URL(req.url).searchParams.get(name);
-  };
-  req.queries = () => {
-    const v = new URL(req.url).searchParams.values();
-    return [...v];
   };
   return req;
 }
