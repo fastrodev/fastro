@@ -1,8 +1,8 @@
 import Hello from "../pages/hello.tsx";
+import { assertExists } from "../server/deps.ts";
+import fastro from "../server/mod.ts";
 import { HttpRequest, HttpResponse, SSR } from "../types.d.ts";
-import { assertExists } from "./deps.ts";
-import { fastro } from "./server.ts";
-import { createSSR } from "./ssr.ts";
+import { createSSR } from "./render.ts";
 
 const host = "http://localhost:9000";
 
@@ -10,7 +10,7 @@ Deno.test({
   name: "page",
   fn: async () => {
     const f = fastro();
-    const hello = createSSR(Hello);
+    const hello = createSSR(<Hello />);
 
     f.static("/public")
       .page("/", hello, (_req: HttpRequest, res: HttpResponse) => {

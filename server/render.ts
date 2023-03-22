@@ -1,6 +1,9 @@
 // deno-lint-ignore-file no-explicit-any
 import * as esbuild from "https://deno.land/x/esbuild@v0.15.10/mod.js";
 import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts";
+import { EXPIRY_SECONDS } from "../server/constant.ts";
+import { React, ReactDOMServer, Status, STATUS_TEXT } from "../server/deps.ts";
+import { isJSX } from "../server/handler.ts";
 import {
   Container,
   HttpRequest,
@@ -8,9 +11,6 @@ import {
   RenderOptions,
   SSR,
 } from "../types.d.ts";
-import { EXPIRY_SECONDS } from "./constant.ts";
-import { React, ReactDOMServer, Status, STATUS_TEXT } from "./deps.ts";
-import { isJSX } from "./handler.ts";
 
 export function createSSR(el: JSXHandler | JSX.Element): SSR {
   let element: JSX.Element;
@@ -162,12 +162,12 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
     const initBodyAttr = bodyAttr ? ` ${bodyAttr}` : ``;
     const initRootAttr = rootAttr ? ` ${rootAttr}` : ``;
     const component = ReactDOMServer.renderToString(element);
-    const title = options.title ? options.title : "";
-    const link = options.link ? options.link : "";
-    const meta = options.meta ? options.meta : "";
-    const script = options.script ? options.script : "";
-    const style = options.style ? options.style : "";
-    const bundle = options.bundle ? options.bundle : "bundle";
+    const title = options.title ?? "";
+    const link = options.link ?? "";
+    const meta = options.meta ?? "";
+    const script = options.script ?? "";
+    const style = options.style ?? "";
+    const bundle = options.bundle ?? "bundle";
     const description = ogDescription ? createDescription(ogDescription) : "";
     const initOgTitle = ogTitle ? createTitle(ogTitle) : "";
     const initOgImage = ogImage ? createImage(ogImage) : "";
@@ -194,8 +194,9 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
       const found = scriptInstance.find((v) => {
         return v === script;
       });
-      if (found) return instance;
-      scriptInstance.push(script);
+      if (!found) {
+        scriptInstance.push(script);
+      }
       return instance;
     },
     htmlAttr: (a: string) => {
@@ -247,8 +248,9 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
       const found = metaInstance.find((v) => {
         return v === meta;
       });
-      if (found) return instance;
-      metaInstance.push(meta);
+      if (!found) {
+        metaInstance.push(meta);
+      }
       return instance;
     },
     style: (s: string) => {
@@ -256,8 +258,9 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
       const found = styleInstance.find((v) => {
         return v === style;
       });
-      if (found) return instance;
-      styleInstance.push(style);
+      if (!found) {
+        styleInstance.push(style);
+      }
       return instance;
     },
     link: (l: string) => {
@@ -265,8 +268,9 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
       const found = linkInstance.find((v) => {
         return v === link;
       });
-      if (found) return instance;
-      linkInstance.push(link);
+      if (!found) {
+        linkInstance.push(link);
+      }
       return instance;
     },
     cdn: (path: string) => {

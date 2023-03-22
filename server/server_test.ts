@@ -7,8 +7,8 @@ import {
   Status,
   STATUS_TEXT,
 } from "./deps.ts";
+import { createSSR } from "./render.ts";
 import { fastro } from "./server.ts";
-import { createSSR } from "./ssr.ts";
 
 const host = "http://localhost:9000";
 
