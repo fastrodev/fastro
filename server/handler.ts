@@ -90,10 +90,9 @@ export function createHandler(
         const route = routes[index];
         const m = patterns[route.path].exec(r.url);
         if (m && (route.method === r.method)) {
-          handler = route?.handler;
-          match = m;
-          cache[id] = handler;
-          cache[paramId] = match;
+          cache[id] = route.handler;
+          cache[paramId] = m;
+          break;
         }
       }
     }
