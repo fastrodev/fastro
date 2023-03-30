@@ -54,10 +54,10 @@ export function createHandler(
       if (cache[matchId]) match = cache[matchId];
     } else {
       const p = pages.find((page) => {
-        const m = patterns[page.path].exec(r.url);
+        const m = patterns[page.path].test(r.url);
         if (m) {
-          match = m;
-          cache[matchId] = m;
+          match = patterns[page.path].exec(r.url);
+          cache[matchId] = match;
           return (m);
         }
       });
@@ -88,10 +88,10 @@ export function createHandler(
     } else {
       for (let index = 0; index < routes.length; index++) {
         const route = routes[index];
-        const m = patterns[route.path].exec(r.url);
+        const m = patterns[route.path].test(r.url);
         if (m && (route.method === r.method)) {
           handler = route?.handler;
-          match = m;
+          match = patterns[route.path].exec(r.url);
           cache[id] = handler;
           cache[paramId] = match;
         }
