@@ -19,16 +19,10 @@ export function handleStaticFile(
     cache[staticID] = path;
   }
 
-  if (!path) {
-    return new Response(STATUS_TEXT[Status.NotFound], {
-      status: Status.NotFound,
-    });
-  }
-
   if (cache[extID]) {
     extName = cache[extID];
   } else {
-    extName = extname(path);
+    extName = extname(path ?? "");
     cache[extID] = extName;
   }
 
@@ -56,9 +50,11 @@ async function handleNonText(
     });
   }
 
+  const ct = contentType(extname(path)) || "application/octet-stream";
+  console.log("CT", ct);
   return new Response(file.readable, {
     headers: {
-      "Content-Type": contentType(extname(path)) || "application/octet-stream",
+      "Content-Type": ct,
       "Cache-Control": `max-age=${maxAge}`,
     },
   });
@@ -126,12 +122,14 @@ async function handleIndex(path: string, url: string, cache: Row) {
 }
 
 function getPathUrl(url: string, staticURL: string) {
+  console.log("URL===>", url);
   const res = <RegExpMatchArray> url.match(/^https?:\/\/[^/]+/);
   const [baseUrl] = res;
   if (staticURL !== "/") {
     const p = `${staticURL}/:file*`;
     const pattern = new URLPattern(p, baseUrl);
-    if (!pattern.test(url)) return null;
+    const r = pattern.test(url);
+    if (!r) return null;
   }
   return url.substring(baseUrl.length);
 }
