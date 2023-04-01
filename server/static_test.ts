@@ -214,9 +214,7 @@ Deno.test({
     const s = f.serve();
     const r = await fetch(host + "/ok.jpg", { method: "GET" });
     assertExists(await r.text(), "jpg");
-    const m = await fetch(host + "/ok.x", { method: "GET" });
-    console.log(await m.text());
-    // assertExists(await m.text(), "jpg");
+    await fetch(host + "/ok.x", { method: "GET" });
 
     f.close();
     await Deno.remove("./ok.jpg");
