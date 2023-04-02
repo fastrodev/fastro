@@ -14,8 +14,6 @@ jobs:
         with:
           crate: oha
           version: 0.5.5
-      - name: Create index.html
-        run: echo '<h1>hi</h1>' > index.html
       - name: Generate internal benchmarks
         run: deno task bench
       - name: Push changes
