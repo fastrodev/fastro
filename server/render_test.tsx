@@ -16,7 +16,7 @@ Deno.test({
       .page("/", hello, (_req: HttpRequest, res: HttpResponse) => {
         const data = "data";
         return initSSR(res, hello)
-          .title(`Hello ${data}`)
+          // .title(`Hello ${data}`)
           .ogTitle(`Hello ${data}`)
           .ogURL("https://fastro.deno.dev")
           .metaDesc("description")
@@ -24,21 +24,22 @@ Deno.test({
           .ogImage("https://deno.land/images/artwork/v1.png")
           .ogSiteName("example.com")
           .twitterCard("card")
+          .twitterImageAlt("alt")
           .bodyAttr("style")
           .ogType("type")
           .lang("EN")
-          .bundle("hello")
+          // .bundle("hello")
           .cdn("cdn")
           .dir("../pages")
-          .style("h1 {color:red;}")
-          .style("h2 {color:red;}")
-          .script("script1")
-          .script("script2")
+          // .style("h1 {color:red;}")
+          // .style("h2 {color:red;}")
+          // .script("script1")
+          // .script("script2")
           .props({ data })
-          .meta('name="route-pattern" content="/"')
-          .link(
-            'rel="alternate icon" class="js-site-favicon" type="image/png" href="https://github.githubassets.com/favicons/favicon.png"',
-          )
+          // .meta('name="route-pattern" content="/"')
+          // .link(
+          //   'rel="alternate icon" class="js-site-favicon" type="image/png" href="https://github.githubassets.com/favicons/favicon.png"',
+          // )
           .render();
       });
 

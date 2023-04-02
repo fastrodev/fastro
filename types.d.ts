@@ -231,15 +231,16 @@ export interface SSR {
   ogSiteName: (name: string) => SSR;
   ogDesc: (desc: string) => SSR;
   twitterCard: (card: string) => SSR;
+  twitterImageAlt: (alt: string) => SSR;
   metaDesc: (desc: string) => SSR;
   props: (props: any) => SSR;
   request: (req: HttpRequest) => SSR;
   cache: (cache: Container) => SSR;
   render: () => Response;
   _createBundle: (
-    bundle?: string,
-    rootComponent?: string,
-    rootTSX?: string,
+    bundle: string,
+    rootComponent: string,
+    rootTSX: string,
   ) => void;
   _getBundleName: () => string;
   bundle: (name: string) => SSR;
