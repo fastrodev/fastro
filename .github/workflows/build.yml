@@ -10,7 +10,7 @@ jobs:
       - run: deno lint --unstable server
       - run: deno lint --unstable examples
       - name: Run tests
-        run: deno test -A --unstable --coverage=cov
+        run: deno task test
       - name: Generate report
         run: deno coverage cov --lcov > cov.lcov
       - name: Coveralls
