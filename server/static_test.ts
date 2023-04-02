@@ -32,7 +32,7 @@ Deno.test({
     f.flash(false);
     f.static("/");
     const s = f.serve();
-    const r = await fetch(host, { method: "GET" });
+    await fetch(host, { method: "GET" });
     f.close();
     await s;
   },
