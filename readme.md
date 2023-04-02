@@ -49,7 +49,7 @@ deno run -A --unstable main.ts
 ```
 ## Deployment
 
-Set [`flash(true)`](https://github.com/fastrodev/fastro/blob/main/examples/main.ts) if you want to deploy to deno.
+Set [`flash(false)`](https://github.com/fastrodev/fastro/blob/main/examples/main.ts) if you want to deploy to deno.
 
 [![Deploy](public/deno.svg)](https://dash.deno.com/new?url=https://raw.githubusercontent.com/fastrodev/fastro/main/examples/main.ts)
 
