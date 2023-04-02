@@ -12,7 +12,7 @@
     "file": "deno task ok && deno task mov  && deno task html",
     "bench":                        "deno task html && deno run -A --unstable bench/run.ts",
     "test":                         "deno task file && rm -rf cov && deno test -A --unstable --coverage=cov && deno coverage cov",
-    "coverage":                     "deno coverage cov --lcov > cov.lcov",
+    "coverage":                     "rm -rf cov && deno coverage cov --lcov > cov.lcov",
     "main":                         "deno run -A --unstable examples/main.ts",
     "deno":                         "deno run -A --unstable examples/deno.ts",
     "string":                       "deno run -A --unstable examples/string.ts",
