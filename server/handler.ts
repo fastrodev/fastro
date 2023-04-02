@@ -76,30 +76,37 @@ export function createHandler(
     );
   }
 
-  function handleRoutes(r: Request) {
-    const id = `${r.method}-${r.url}`;
+  function getHandler(r: Request, routes: Route[], id: string) {
     const paramId = `param-${id}`;
     let handler: HandlerArgument | undefined | null = undefined;
     let match: URLPatternResult | null = null;
 
-    if (cache[id]) {
-      handler = cache[id];
-      if (cache[paramId]) match = cache[paramId];
+    if (cache[id] && cache[paramId]) {
+      return {
+        handler: cache[id],
+        match: cache[paramId],
+      };
     } else {
       for (let index = 0; index < routes.length; index++) {
         const route = routes[index];
-        const m = patterns[route.path].test(r.url);
-        if (m && (route.method === r.method)) {
+        const m = patterns[route.path].exec(r.url);
+        if ((route.method === r.method) && m) {
           handler = route?.handler;
-          match = patterns[route.path].exec(r.url);
+          match = m;
           cache[id] = handler;
           cache[paramId] = match;
+          break;
         }
       }
     }
 
-    if (!handler) return handlePages(r, id);
+    return { handler, match };
+  }
 
+  function handleRoutes(r: Request) {
+    const routeId = `${r.method}-${r.url}`;
+    const { handler, match } = getHandler(r, routes, routeId);
+    if (!handler) return handlePages(r, routeId);
     if (routeMiddlewares.length > 0) {
       const h = handleRouteMiddleware(r, routeMiddlewares);
       if (h) {

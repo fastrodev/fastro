@@ -4,10 +4,6 @@ import React, { useState } from "https://esm.sh/react@18.2.0";
 const Hello = () => {
   const [link, setLink] = useState("Guest");
 
-  const handleChange = (e: any) => {
-    setLink(e.target.value);
-  };
-
   return (
     <div className="row align-items-center" style={{ height: "100vh" }}>
       <div className="mx-auto col-3">
@@ -20,7 +16,9 @@ const Hello = () => {
             type="text"
             placeholder="Hello guest"
             aria-label="Guest"
-            onChange={handleChange}
+            onChange={(e: any) => {
+              setLink(e.target.value);
+            }}
           />
           <button
             className="btn btn-primary col-2"
