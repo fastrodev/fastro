@@ -133,7 +133,7 @@ export function createHandler(
       return new Response(<string> object, { headers });
     }
 
-    return new Response("Internal Server Error", { status: 500 });
+    return new Response(result);
   }
 
   function handleRouteMiddleware(
@@ -199,13 +199,8 @@ function isResponse(res: any) {
 }
 
 function isJSON(res: any) {
-  let stringify;
-  try {
-    stringify = JSON.stringify(res);
-    JSON.parse(stringify);
-  } catch {
-    return [false, ""];
-  }
+  const stringify = JSON.stringify(res);
+  JSON.parse(stringify);
   return [true, stringify];
 }
 

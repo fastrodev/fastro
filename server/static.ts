@@ -102,6 +102,7 @@ async function handleIndex(path: string, url: string, cache: Row) {
     }
   } else {
     try {
+      path = path === "/" ? "" : path;
       text = await Deno.readTextFile(`.${path}/index.html`);
       cache[idxID] = text;
     } catch (err) {
@@ -122,7 +123,6 @@ async function handleIndex(path: string, url: string, cache: Row) {
 }
 
 function getPathUrl(url: string, staticURL: string) {
-  console.log("URL===>", url);
   const res = <RegExpMatchArray> url.match(/^https?:\/\/[^/]+/);
   const [baseUrl] = res;
   if (staticURL !== "/") {

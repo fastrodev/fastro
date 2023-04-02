@@ -9,6 +9,7 @@
     "bench":                        "deno run -A --unstable bench/run.ts",
     "test":                         "rm -rf cov && deno test -A --unstable --coverage=cov && deno coverage cov",
     "coverage":                     "deno coverage cov --lcov > cov.lcov",
+    "main":                         "deno run -A --unstable examples/main.ts",
     "deno":                         "deno run -A --unstable examples/deno.ts",
     "string":                       "deno run -A --unstable examples/string.ts",
     "hello_json":                   "deno run -A --unstable examples/hello_json.ts",

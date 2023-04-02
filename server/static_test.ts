@@ -14,25 +14,7 @@ Deno.test({
     f.static("/");
     const s = f.serve();
     let r = await fetch(host, { method: "GET" });
-    r = await fetch(host, { method: "GET" });
     assertEquals(await r.text(), "<h1>hi</h1>");
-    f.close();
-    await Deno.remove("./index.html");
-    await s;
-  },
-
-  sanitizeResources: false,
-  sanitizeOps: false,
-});
-
-Deno.test({
-  name: "index html",
-  fn: async () => {
-    await Deno.writeTextFile("./index.html", "<h1>hi</h1>");
-    const f = fastro();
-    f.static("/");
-    const s = f.serve();
-    let r = await fetch(host, { method: "GET" });
     r = await fetch(host, { method: "GET" });
     assertEquals(await r.text(), "<h1>hi</h1>");
     f.close();
