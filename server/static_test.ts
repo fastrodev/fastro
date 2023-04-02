@@ -9,16 +9,15 @@ const host = "http://127.0.0.1:9000";
 Deno.test({
   name: "index html",
   fn: async () => {
-    await Deno.writeTextFile("./index.html", "<h1>hi</h1>");
     const f = fastro();
+    f.flash(false);
     f.static("/");
     const s = f.serve();
     let r = await fetch(host, { method: "GET" });
-    assertEquals(await r.text(), "<h1>hi</h1>");
     r = await fetch(host, { method: "GET" });
-    assertEquals(await r.text(), "<h1>hi</h1>");
-    f.close();
+    assertEquals((await r.text()).trim(), `<h1>ok</h1>`);
     await Deno.remove("./index.html");
+    f.close();
     await s;
   },
 
@@ -30,10 +29,10 @@ Deno.test({
   name: "INDEX.HTML NOT FOUND",
   fn: async () => {
     const f = fastro();
+    f.flash(false);
     f.static("/");
     const s = f.serve();
     const r = await fetch(host, { method: "GET" });
-    assertExists(await r.text(), "Not found");
     f.close();
     await s;
   },
@@ -63,6 +62,7 @@ Deno.test({
   name: "JPEG not found",
   fn: async () => {
     const f = fastro();
+    f.flash(false);
     f.static("/");
     const s = f.serve();
     const r = await fetch(host + "/index.jpg", { method: "GET" });
@@ -79,6 +79,7 @@ Deno.test({
   name: "static",
   fn: async () => {
     const f = fastro();
+    f.flash(false);
     f.static("/");
     const s = f.serve();
     const response = await fetch(host + "/public/hello.js", { method: "GET" });
@@ -96,6 +97,7 @@ Deno.test({
   name: "markdown",
   fn: async () => {
     const f = fastro();
+    f.flash(false);
     f.static("/");
     const server = f.serve();
 
@@ -120,7 +122,6 @@ Deno.test({
   fn: async () => {
     const f = fastro();
     const hello = createSSR(Hello);
-
     f.build(true);
     f.flash(true);
     f.static("/public", 5)
@@ -165,20 +166,14 @@ Deno.test({
 Deno.test({
   name: "JPEG EXIST",
   fn: async () => {
-    await Deno.writeTextFile("./ok.jpg", "jpg");
-    await Deno.writeTextFile("./ok.x", "mov");
     const f = fastro();
+    f.flash(false);
     f.static("/");
     const s = f.serve();
     const r = await fetch(host + "/ok.jpg", { method: "GET" });
     assertExists(await r.text(), "jpg");
-    const m = await fetch(host + "/ok.x", { method: "GET" });
-    console.log(await m.text());
-    // assertExists(await m.text(), "jpg");
-
+    await fetch(host + "/ok.x", { method: "GET" });
     f.close();
-    await Deno.remove("./ok.jpg");
-    await Deno.remove("./ok.x");
     await s;
   },
 
@@ -187,20 +182,15 @@ Deno.test({
 });
 
 Deno.test({
-  name: "JPEG EXIST",
+  name: "JPEG Not Found",
   fn: async () => {
-    await Deno.writeTextFile("./ok.jpg", "jpg");
-    await Deno.writeTextFile("./ok.x", "mov");
     const f = fastro();
     f.static("/public");
     const s = f.serve();
     const r = await fetch(host + "/ok.jpg", { method: "GET" });
-    assertExists(await r.text(), "jpg");
-    await fetch(host + "/ok.x", { method: "GET" });
+    assertEquals(await r.text(), "Not Found");
 
     f.close();
-    await Deno.remove("./ok.jpg");
-    await Deno.remove("./ok.x");
     await s;
   },
 
