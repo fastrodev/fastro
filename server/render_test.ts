@@ -24,6 +24,7 @@ Deno.test({
           .ogImage("https://deno.land/images/artwork/v1.png")
           .ogSiteName("example.com")
           .twitterCard("card")
+          .twitterImageAlt("alt")
           .bodyAttr("style")
           .ogType("type")
           .lang("EN")

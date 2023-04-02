@@ -22,7 +22,7 @@ export function handleStaticFile(
   if (cache[extID]) {
     extName = cache[extID];
   } else {
-    extName = extname(path ?? "");
+    extName = extname(path);
     cache[extID] = extName;
   }
 
@@ -51,7 +51,6 @@ async function handleNonText(
   }
 
   const ct = contentType(extname(path)) || "application/octet-stream";
-  console.log("CT", ct);
   return new Response(file.readable, {
     headers: {
       "Content-Type": ct,
@@ -129,7 +128,7 @@ function getPathUrl(url: string, staticURL: string) {
     const p = `${staticURL}/:file*`;
     const pattern = new URLPattern(p, baseUrl);
     const r = pattern.test(url);
-    if (!r) return null;
+    if (!r) return "";
   }
   return url.substring(baseUrl.length);
 }

@@ -108,32 +108,19 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
     return `<meta name="twitter:image:alt" content="${alt}">`;
   }
 
-  /**
-   * @param bundle
-   * @param rootComponent
-   * @param rootTSX
-   */
   function createBundle(
-    bundle?: string,
-    rootComponent?: string,
-    rootTSX?: string,
+    bundle: string,
+    rootComponent: string,
+    rootTSX: string,
   ) {
     const cwd = Deno.cwd();
-    const b = bundle ? bundle : "bundle";
     const hydrateTarget = `${cwd}/${pageDir}/${rootTSX}.hydrate.tsx`;
-    const bundlePath = `${cwd}${staticPath}/${b}.js`;
+    const bundlePath = `${cwd}${staticPath}/${bundle}.js`;
 
-    try {
-      if (!rootComponent) rootComponent = "App";
-      if (!rootTSX) rootTSX = "app";
-      Deno.writeTextFile(
-        hydrateTarget,
-        createHydrate(rootComponent, rootTSX),
-      );
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
+    Deno.writeTextFile(
+      hydrateTarget,
+      createHydrate(rootComponent, rootTSX),
+    );
 
     esbuild.build({
       plugins: [denoPlugin()],
@@ -163,11 +150,11 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
     const initRootAttr = rootAttr ? ` ${rootAttr}` : ``;
     const component = ReactDOMServer.renderToString(element);
     const title = options.title ?? "";
-    const link = options.link ?? "";
-    const meta = options.meta ?? "";
-    const script = options.script ?? "";
-    const style = options.style ?? "";
-    const bundle = options.bundle ?? "bundle";
+    const link = options.link;
+    const meta = options.meta;
+    const script = options.script;
+    const style = options.style;
+    const bundle = options.bundle;
     const description = ogDescription ? createDescription(ogDescription) : "";
     const initOgTitle = ogTitle ? createTitle(ogTitle) : "";
     const initOgImage = ogImage ? createImage(ogImage) : "";
@@ -237,6 +224,10 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
     },
     twitterCard: (c: string) => {
       twitterCard = c;
+      return instance;
+    },
+    twitterImageAlt: (a: string) => {
+      twitterImageAlt = a;
       return instance;
     },
     metaDesc: (d: string) => {
