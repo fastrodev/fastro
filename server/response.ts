@@ -28,7 +28,7 @@ export function response(_req: Request): HttpResponse {
     if (cookie) setCookie(headers, cookie);
     headers.set("Content-Type", contentType);
 
-    if (isJSX(str)) {
+    if (isJSX(<JSX.Element> str)) {
       const component = ReactDOMServer.renderToString(<JSX.Element> str);
 
       return new Response(component, {

@@ -41,7 +41,7 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
   let httpRequest: HttpRequest;
   let cache: Container;
 
-  if (isJSX(el)) {
+  if (isJSX(<JSX.Element> el)) {
     const jsxElement = <JSX.Element> el;
     bundleName = jsxElement.type.name;
     element = jsxElement;

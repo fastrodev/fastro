@@ -117,7 +117,7 @@ export function createHandler(
       }
     }
 
-    const execHandler = <ExecHandler> <unknown> handler;
+    const execHandler = <ExecHandler> handler;
     const result = execHandler(
       transformRequest(r, container, match),
       response(r),
@@ -129,9 +129,9 @@ export function createHandler(
   function handleResult(result: any) {
     if (isString(result)) return new Response(result);
 
-    if (isResponse(result)) return <Response> <unknown> result;
+    if (isResponse(result)) return <Response> result;
 
-    if (isJSX(result)) return render(<JSX.Element> <unknown> result);
+    if (isJSX(result)) return render(result);
 
     const [isJson, object] = isJSON(result);
     if (isJson) {
@@ -211,9 +211,8 @@ function isJSON(res: any) {
   return [true, stringify];
 }
 
-export function isJSX(res: any) {
-  const el = <JSX.Element> res;
-  return el.props != undefined && el.type != undefined;
+export function isJSX(res: JSX.Element) {
+  return res.props != undefined && res.type != undefined;
 }
 
 function render(element: JSX.Element) {
