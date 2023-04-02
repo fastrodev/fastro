@@ -7,7 +7,7 @@
   },
   "tasks": {
     "bench":                        "deno run -A --unstable bench/run.ts",
-    "test":                         "rm -rf cov && deno test -A --unstable --coverage=cov && deno coverage cov",
+    "test":                         "echo '<h1>ok<h1>' > index.html  && rm -rf cov && deno test -A --unstable --coverage=cov && deno coverage cov",
     "coverage":                     "deno coverage cov --lcov > cov.lcov",
     "main":                         "deno run -A --unstable examples/main.ts",
     "deno":                         "deno run -A --unstable examples/deno.ts",
