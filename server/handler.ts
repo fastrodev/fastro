@@ -86,17 +86,17 @@ export function createHandler(
         handler: cache[id],
         match: cache[paramId],
       };
-    } else {
-      for (let index = 0; index < routes.length; index++) {
-        const route = routes[index];
-        const m = patterns[route.path].exec(r.url);
-        if ((route.method === r.method) && m) {
-          handler = route?.handler;
-          match = m;
-          cache[id] = handler;
-          cache[paramId] = match;
-          break;
-        }
+    }
+
+    for (let index = 0; index < routes.length; index++) {
+      const route = routes[index];
+      const m = patterns[route.path].exec(r.url);
+      if ((route.method === r.method) && m) {
+        handler = route?.handler;
+        match = m;
+        cache[id] = handler;
+        cache[paramId] = match;
+        break;
       }
     }
 
