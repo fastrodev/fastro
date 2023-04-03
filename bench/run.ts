@@ -36,7 +36,7 @@ async function killServer() {
   const pid = JSON.parse(new TextDecoder().decode(await l.output()));
   const c = Deno.run({ cmd: ["kill", "-9", `${pid}`] });
   await c.status();
-  await delay(4000);
+  await delay(1000);
 }
 
 async function bench(server: string) {
@@ -83,7 +83,7 @@ const t = table.map((v) => {
     v.module,
     v.requestsPerSec.toFixed(2),
     relative.toFixed(0) + "%",
-    v.oha,
+    `\`${v.oha}\``,
   ];
 });
 
