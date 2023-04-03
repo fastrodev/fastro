@@ -6,6 +6,7 @@ const host = "http://127.0.0.1:9000";
 
 Deno.test({ permissions: { net: true } }, async function getJson() {
   const app = fastro();
+  app.flash(false);
   app.get("/", (_req: HttpRequest, res: HttpResponse) => {
     return res.json({ txt: "hello" });
   });
