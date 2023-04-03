@@ -45,6 +45,7 @@ Deno.test({
   name: "INDEX.HTML NOT FOUND",
   fn: async () => {
     const f = fastro();
+    f.flash(false);
     f.static("/");
     const s = f.serve();
     let r = await fetch(host, { method: "GET" });
@@ -123,7 +124,7 @@ Deno.test({
     const f = fastro();
     const hello = createSSR(Hello);
     f.build(true);
-    f.flash(true);
+    f.flash(false);
     f.static("/public", 5)
       .page("/", hello, (_req: HttpRequest, res: HttpResponse) => {
         return res.ssr(hello)
@@ -185,6 +186,7 @@ Deno.test({
   name: "JPEG Not Found",
   fn: async () => {
     const f = fastro();
+    f.flash(false);
     f.static("/public");
     const s = f.serve();
     const r = await fetch(host + "/ok.jpg", { method: "GET" });

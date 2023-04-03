@@ -7,10 +7,11 @@ async function oha(url?: string) {
     "-j",
     "--no-tui",
     "-z",
-    "3m",
+    "1m",
     u,
   ];
-  console.log(`oha ${args.join().replaceAll(",", " ")}`);
+  const oh = `oha ${args.join().replaceAll(",", " ")}`;
+  console.log(oh);
   const command = new Deno.Command("oha", {
     args,
   });
@@ -18,7 +19,9 @@ async function oha(url?: string) {
   const err = new TextDecoder().decode(stderr);
   if (!err && code === 0) {
     const output = new TextDecoder().decode(stdout);
-    return JSON.parse(output);
+    const o = JSON.parse(output);
+    o["oha"] = oh;
+    return o;
   }
 }
 
@@ -33,26 +36,28 @@ async function killServer() {
   const pid = JSON.parse(new TextDecoder().decode(await l.output()));
   const c = Deno.run({ cmd: ["kill", "-9", `${pid}`] });
   await c.status();
-  await delay(1000);
+  await delay(4000);
 }
 
 async function bench(server: string) {
-  await delay(4000);
+  await delay(500);
   Deno.run({
     cmd: ["deno", "task", `${server}`],
   });
-  await delay(5000);
+  await delay(500);
   let res;
   if (server === "params") {
-    res = await oha("http://localhost:9000/agus?title=lead");
+    const url = "http://localhost:9000/agus?title=lead";
+    res = await oha(url);
   } else {
     res = await oha();
   }
 
   await killServer();
   return {
-    "module": server,
-    "requestsPerSec": <number> res.summary.requestsPerSec,
+    module: server,
+    requestsPerSec: <number> res.summary.requestsPerSec,
+    oha: res.oha,
   };
 }
 
@@ -74,13 +79,18 @@ const max = table[0];
 
 const t = table.map((v) => {
   const relative = (v.requestsPerSec / max.requestsPerSec) * 100;
-  return [v.module, v.requestsPerSec.toFixed(2), relative.toFixed(0) + "%"];
+  return [
+    v.module,
+    v.requestsPerSec.toFixed(2),
+    relative.toFixed(0) + "%",
+    v.oha,
+  ];
 });
 
-let markdown = "";
+let markdown = `# Benchmark`;
 markdown += `\n${
   markdownTable([
-    ["module", "rps", "relative"],
+    ["module", "rps", "relative", "cmd"],
     ...t,
   ])
 }`;
