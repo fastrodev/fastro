@@ -7,7 +7,7 @@ async function oha(url?: string) {
     "-j",
     "--no-tui",
     "-z",
-    "10sec",
+    "3m",
     u,
   ];
   console.log(`oha ${args.join().replaceAll(",", " ")}`);
@@ -33,13 +33,15 @@ async function killServer() {
   const pid = JSON.parse(new TextDecoder().decode(await l.output()));
   const c = Deno.run({ cmd: ["kill", "-9", `${pid}`] });
   await c.status();
+  await delay(1000);
 }
 
 async function bench(server: string) {
+  await delay(4000);
   Deno.run({
     cmd: ["deno", "task", `${server}`],
   });
-  await delay(1000);
+  await delay(5000);
   let res;
   if (server === "params") {
     res = await oha("http://localhost:9000/agus?title=lead");
