@@ -1,19 +1,19 @@
-
-| module                  | rps      | relative |
-| ----------------------- | -------- | -------- |
-| deno                    | 55543.92 | 100%     |
-| hello_string            | 53066.43 | 96%      |
-| hello_world             | 52918.24 | 95%      |
-| string                  | 52913.35 | 95%      |
-| middleware              | 49631.91 | 89%      |
-| main                    | 45489.32 | 82%      |
-| hello_jsx               | 41693.72 | 75%      |
-| hello_world_fastro      | 35994.90 | 65%      |
-| hello_world_fastro_html | 35982.87 | 65%      |
-| params                  | 35033.42 | 63%      |
-| hello_json              | 34061.82 | 61%      |
-| hello_world_fastro_json | 33943.66 | 61%      |
-| container               | 33879.71 | 61%      |
-| hello_world_fastro_jsx  | 30303.71 | 55%      |
-| ssr                     | 29394.14 | 53%      |
-| static_file             | 27675.01 | 50%      |
+# Benchmark
+| module                  | rps      | relative | cmd                                                         |
+| ----------------------- | -------- | -------- | ----------------------------------------------------------- |
+| deno                    | 47660.82 | 100%     | oha -j --no-tui -z 1m http://localhost:9000                 |
+| hello_world             | 46125.20 | 97%      | oha -j --no-tui -z 1m http://localhost:9000                 |
+| string                  | 45352.54 | 95%      | oha -j --no-tui -z 1m http://localhost:9000                 |
+| hello_string            | 44330.58 | 93%      | oha -j --no-tui -z 1m http://localhost:9000                 |
+| middleware              | 41464.80 | 87%      | oha -j --no-tui -z 1m http://localhost:9000                 |
+| main                    | 40133.22 | 84%      | oha -j --no-tui -z 1m http://localhost:9000                 |
+| hello_jsx               | 36116.73 | 76%      | oha -j --no-tui -z 1m http://localhost:9000                 |
+| hello_world_fastro      | 31069.87 | 65%      | oha -j --no-tui -z 1m http://localhost:9000                 |
+| hello_world_fastro_html | 30280.02 | 64%      | oha -j --no-tui -z 1m http://localhost:9000                 |
+| hello_json              | 29931.72 | 63%      | oha -j --no-tui -z 1m http://localhost:9000                 |
+| hello_world_fastro_json | 29564.26 | 62%      | oha -j --no-tui -z 1m http://localhost:9000                 |
+| container               | 29157.77 | 61%      | oha -j --no-tui -z 1m http://localhost:9000                 |
+| hello_world_fastro_jsx  | 28538.87 | 60%      | oha -j --no-tui -z 1m http://localhost:9000                 |
+| ssr                     | 27051.91 | 57%      | oha -j --no-tui -z 1m http://localhost:9000                 |
+| params                  | 26959.00 | 57%      | oha -j --no-tui -z 1m http://localhost:9000/agus?title=lead |
+| static_file             | 24637.22 | 52%      | oha -j --no-tui -z 1m http://localhost:9000                 |
