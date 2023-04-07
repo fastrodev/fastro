@@ -4,36 +4,9 @@ import { fastro } from "./server.ts";
 const host = "http://127.0.0.1:9000";
 
 Deno.test({
-  name: "non-root folder files",
-  fn: async () => {
-    const f = fastro();
-    f.static("/public", 6000);
-    const s = f.serve();
-
-    const nf = await fetch(`${host}/public`, { method: "GET" });
-    // console.log(await nf.text());
-    assertEquals("Not Found", await nf.text());
-
-    await fetch(`${host}/public/deno.svg`, { method: "GET" });
-    const x = await fetch(`${host}/public/deno.svg`, { method: "GET" });
-    assertExists(
-      await x.text(),
-      `<svg width="105" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">`,
-    );
-
-    f.close();
-    await s;
-  },
-
-  sanitizeResources: false,
-  sanitizeOps: false,
-});
-
-Deno.test({
   name: "FILES",
   fn: async () => {
     const f = fastro();
-    f.flash(false);
     f.static("/");
 
     const s = f.serve();
@@ -63,6 +36,32 @@ Deno.test({
 
     const m = await fetch(host + "/bench/result.md", { method: "GET" });
     assertExists("module", await m.text());
+
+    f.close();
+    await s;
+  },
+
+  sanitizeResources: false,
+  sanitizeOps: false,
+});
+
+Deno.test({
+  name: "non-root folder files",
+  fn: async () => {
+    const f = fastro();
+    f.flash(false);
+    f.static("/public", 6000);
+    const s = f.serve();
+
+    const nf = await fetch(`${host}/public`, { method: "GET" });
+    assertEquals("Not Found", await nf.text());
+
+    await fetch(`${host}/public/deno.svg`, { method: "GET" });
+    const x = await fetch(`${host}/public/deno.svg`, { method: "GET" });
+    assertExists(
+      await x.text(),
+      `<svg width="105" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">`,
+    );
 
     f.close();
     await s;
