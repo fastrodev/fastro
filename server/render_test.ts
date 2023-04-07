@@ -72,3 +72,35 @@ function initSSR(res: HttpResponse, ssr: SSR) {
     .script(js)
     .meta(meta);
 }
+
+Deno.test({
+  name: "page",
+  fn: async () => {
+    const f = fastro();
+    const hello = createSSR(Hello);
+    f.build(true);
+    f.flash(false);
+    f.static("/public", 5)
+      .page("/", hello, (_req: HttpRequest, res: HttpResponse) => {
+        return res.ssr(hello)
+          .title(`Hello`)
+          .render();
+      });
+
+    const server = f.serve();
+
+    let response = await fetch(host, { method: "GET" });
+    let r = await response.text();
+    assertExists(r, "Hello");
+
+    response = await fetch(host, { method: "GET" });
+    r = await response.text();
+    assertExists(r, "Hello");
+
+    f.close();
+    await server;
+  },
+
+  sanitizeResources: false,
+  sanitizeOps: false,
+});

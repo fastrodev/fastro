@@ -107,13 +107,13 @@ export function fastro(_startOptions?: StartOptions): Fastro {
           port,
           handler,
           onListen: serveOptions?.onListen,
-          onError: serveOptions?.onError, // TODO: https://github.com/denoland/deno/issues/15504
+          // onError: serveOptions?.onError, // TODO: https://github.com/denoland/deno/issues/15504
           signal: ac.signal,
         });
       }
 
       server = new Server({
-        onError: serveOptions?.onError ? serveOptions?.onError : onError,
+        onError: serveOptions?.onError ?? onError,
         hostname: hostname,
         port,
         handler,
