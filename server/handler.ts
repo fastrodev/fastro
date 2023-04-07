@@ -43,27 +43,35 @@ export function createHandler(
     return handleRoutes(r);
   };
 
-  function handlePages(r: Request, id: string) {
+  function getPageHadler(r: Request, id: string) {
     let page: SSRHandler | undefined | null = undefined;
     let match: URLPatternResult | null = null;
     const pageId = `page-${id}`;
     const matchId = `match-${pageId}`;
 
-    if (cache[pageId]) {
-      page = cache[pageId] === NONPAGE ? undefined : cache[pageId];
-      if (cache[matchId]) match = cache[matchId];
-    } else {
-      const p = pages.find((page) => {
-        const m = patterns[page.path].test(r.url);
-        if (m) {
-          match = patterns[page.path].exec(r.url);
-          cache[matchId] = match;
-          return (m);
-        }
-      });
-      cache[pageId] = p ? p : NONPAGE;
-      page = p;
+    if (cache[pageId] && cache[matchId]) {
+      return {
+        page: cache[pageId] === NONPAGE ? undefined : cache[pageId],
+        match: cache[matchId],
+      };
     }
+
+    const p = pages.find((page) => {
+      const m = patterns[page.path].test(r.url);
+      if (m) {
+        match = patterns[page.path].exec(r.url);
+        cache[matchId] = match;
+        return (m);
+      }
+    });
+    cache[pageId] = p ? p : NONPAGE;
+    page = p;
+
+    return { page, cache };
+  }
+
+  function handlePages(r: Request, id: string) {
+    const { page, match } = getPageHadler(r, id);
 
     if (!page) {
       return handleStaticFile(r.url, staticURL, maxAge, cache);

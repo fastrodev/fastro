@@ -26,7 +26,17 @@ export function handleStaticFile(
     cache[extID] = extName;
   }
 
-  const txtExt = [".js", ".css", ".html", ".txt", ".xml", ".svg", ".ts", ""];
+  const txtExt = [
+    ".js",
+    ".css",
+    ".html",
+    ".txt",
+    ".xml",
+    ".svg",
+    ".md",
+    ".ts",
+    "",
+  ];
   const r = txtExt.find((val) => val === extName);
 
   if (r || r === "") {
@@ -82,7 +92,7 @@ async function handleTextFile(
 
   return new Response(text, {
     headers: {
-      "Content-Type": contentType(ext) || "text/plain; charset=UTF-8",
+      "Content-Type": <string> contentType(ext),
       "Cache-Control": `max-age=${maxAge}`,
     },
   });
