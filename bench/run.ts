@@ -7,7 +7,7 @@ async function oha(url?: string) {
     "-j",
     "--no-tui",
     "-z",
-    "1m",
+    "3m",
     u,
   ];
   const oh = `oha ${args.join().replaceAll(",", " ")}`;
