@@ -50,6 +50,7 @@ export type HttpResponse = {
   ssr: (ssr: SSR) => SSR;
   html: (html: string) => Response | Promise<Response>;
   jsx: (element: JSX.Element) => Response | Promise<Response>;
+  [key: string]: any;
 };
 
 export class HttpRequest extends Request {
@@ -60,6 +61,7 @@ export class HttpRequest extends Request {
   delete: (key: string) => void;
   params: (name?: string) => Record<string, string> | string;
   query: (name?: string) => Record<string, string> | string | null;
+  [key: string]: any;
 }
 
 export type RouteMidleware = {
