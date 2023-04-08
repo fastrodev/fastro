@@ -61,6 +61,8 @@ async function bench(server: string) {
   };
 }
 
+await delay(2000);
+
 const server: string[] = [];
 
 for await (const f of Deno.readDir("./examples")) {
