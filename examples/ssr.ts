@@ -26,13 +26,13 @@ f.static("/public")
       .render();
   })
   .page("/:user", user, (req: HttpRequest, res: HttpResponse) => {
-    const data = req.match?.pathname.groups.user;
+    const data = req.params("user");
     return initSSR(user, res)
       .props({ data })
       .render();
   })
   .page("/:user/app", app, (req: HttpRequest, res: HttpResponse) => {
-    const data = req.match?.pathname.groups.user;
+    const data = req.params("user");
     return initSSR(app, res)
       .title(`Hello ${data}`)
       .props({ data })
