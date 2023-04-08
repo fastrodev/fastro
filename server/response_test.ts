@@ -8,20 +8,6 @@ Deno.test({ permissions: { net: true } }, async function getJson() {
   const app = fastro();
   app.flash(false);
   app.get("/", (_req: HttpRequest, res: HttpResponse) => {
-    return res.json({ txt: "hello" });
-  });
-  const server = app.serve();
-  const response = await fetch(host, { method: "GET" });
-  const r = await response.text();
-  assertEquals(r, '{"txt":"hello"}');
-  app.close();
-  await server;
-});
-
-Deno.test({ permissions: { net: true } }, async function getJson() {
-  const app = fastro();
-  app.flash(false);
-  app.get("/", (_req: HttpRequest, res: HttpResponse) => {
     return res.json(undefined);
   });
   const server = app.serve();
@@ -35,7 +21,7 @@ Deno.test({ permissions: { net: true } }, async function getJson() {
   await server;
 });
 
-Deno.test({ permissions: { net: true } }, async function getMethod() {
+Deno.test({ permissions: { net: true } }, async function getPage() {
   const app = fastro();
   app.get("/", (_req: HttpRequest, res: HttpResponse) => {
     const cookie: Cookie = { name: "Space", value: "Cat" };
