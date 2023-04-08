@@ -3,21 +3,26 @@ import fastro, { HttpRequest, HttpResponse, Next } from "../server/mod.ts";
 const f = fastro();
 
 f.use((
-  _req: HttpRequest,
+  req: HttpRequest,
   _res: HttpResponse,
   next: Next,
 ) => {
-  new Date();
+  req.date = new Date();
   next();
 });
 
 f.get("/", (
-  _req: HttpRequest,
+  req: HttpRequest,
   _res: HttpResponse,
   next: Next,
 ) => {
-  new Date();
+  req.value = "Hello world";
   next();
-}, () => "Hello world");
+}, (req: HttpRequest, res: HttpResponse) => {
+  return res.json({
+    date: req.date,
+    value: req.value,
+  });
+});
 
 await f.serve();
