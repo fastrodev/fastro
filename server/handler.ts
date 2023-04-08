@@ -43,35 +43,34 @@ export function createHandler(
     return handleRoutes(r);
   };
 
-  function getPageHadler(r: Request, id: string) {
+  function getPageHandler(r: Request, id: string) {
     let page: SSRHandler | undefined | null = undefined;
     let match: URLPatternResult | null = null;
     const pageId = `page-${id}`;
     const matchId = `match-${pageId}`;
 
-    if (cache[pageId] && cache[matchId]) {
-      return {
-        page: cache[pageId] === NONPAGE ? undefined : cache[pageId],
-        match: cache[matchId],
-      };
+    if (cache[pageId]) {
+      page = cache[pageId] === NONPAGE ? undefined : cache[pageId];
+      if (cache[matchId]) match = cache[matchId];
+      return { page, match };
     }
 
     const p = pages.find((page) => {
-      const m = patterns[page.path].test(r.url);
+      const m = patterns[page.path].exec(r.url);
       if (m) {
-        match = patterns[page.path].exec(r.url);
+        match = m;
         cache[matchId] = match;
         return (m);
       }
     });
-    cache[pageId] = p ? p : NONPAGE;
+    cache[pageId] = p ?? NONPAGE;
     page = p;
 
-    return { page, cache };
+    return { page, match };
   }
 
   function handlePages(r: Request, id: string) {
-    const { page, match } = getPageHadler(r, id);
+    const { page, match } = getPageHandler(r, id);
 
     if (!page) {
       return handleStaticFile(r.url, staticURL, maxAge, cache);
