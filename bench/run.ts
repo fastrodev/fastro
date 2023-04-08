@@ -61,7 +61,7 @@ async function bench(server: string) {
   };
 }
 
-await delay(2000);
+await delay(60 * 1000);
 
 const server: string[] = [];
 
