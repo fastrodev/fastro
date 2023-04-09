@@ -108,7 +108,7 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
     return `<meta name="twitter:image:alt" content="${alt}">`;
   }
 
-  function createBundle(
+  async function createBundle(
     bundle: string,
     rootComponent: string,
     rootTSX: string,
@@ -122,16 +122,20 @@ export function createSSR(el: JSXHandler | JSX.Element): SSR {
       createHydrate(rootComponent, rootTSX),
     );
 
-    esbuild.build({
+    const esbuildRes = await esbuild.build({
       plugins: [denoPlugin()],
       entryPoints: [hydrateTarget],
       outfile: bundlePath,
       bundle: true,
       minify: true,
       format: "esm",
-    }).then(() => {
-      Deno.remove(hydrateTarget);
     });
+
+    if (esbuildRes.errors.length > 0) {
+      throw esbuildRes.errors;
+    }
+
+    await Deno.remove(hydrateTarget);
   }
 
   function createHTML(
