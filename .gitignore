@@ -1,7 +1,8 @@
 cov/
 cov.lcov
 Hello.hydrate.tsx
-public/*.js
+public/hello.js
 index.html
 ok.jpg
 ok.x
+.env
