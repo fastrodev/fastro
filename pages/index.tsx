@@ -13,8 +13,12 @@ const Index = (props: { data: string }) => (
           >
             Home
           </a>
-          <a className="nav-link fw-bold py-1 px-0" href="#">Features</a>
-          <a className="nav-link fw-bold py-1 px-0" href="#">Contact</a>
+          <a
+            className="nav-link fw-bold py-1 px-0"
+            href="https://deno.land/x/fastro/bench/result.md?source"
+          >
+            Benchmarks
+          </a>
         </nav>
       </div>
     </header>
@@ -28,10 +32,10 @@ const Index = (props: { data: string }) => (
       </p>
       <p className="lead">
         <a
-          href="https://deno.land/x/fastro/examples?source"
+          href="https://deno.land/x/fastro#getting-started"
           className="btn btn-lg btn-light fw-bold border-white bg-white"
         >
-          Learn more
+          Get started
         </a>
       </p>
     </main>
