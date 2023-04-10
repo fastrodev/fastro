@@ -1,4 +1,4 @@
-import { fastro } from "../server/server.ts";
+import fastro from "../server/mod.ts";
 
 const f = fastro();
 

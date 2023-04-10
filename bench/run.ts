@@ -7,7 +7,7 @@ async function oha(url?: string) {
     "-j",
     "--no-tui",
     "-z",
-    "30s",
+    "10s",
     u,
   ];
   const oh = `oha ${args.join().replaceAll(",", " ")}`;
@@ -39,7 +39,7 @@ async function killServer() {
   await delay(1000);
 }
 
-async function bench(server: string) {
+async function bench(server: string, ext: string) {
   await delay(500);
   Deno.run({
     cmd: ["deno", "task", `${server}`],
@@ -55,6 +55,7 @@ async function bench(server: string) {
 
   await killServer();
   return {
+    ext,
     module: server,
     requestsPerSec: <number> res.summary.requestsPerSec,
     oha: res.oha,
@@ -63,16 +64,16 @@ async function bench(server: string) {
 
 await delay(60 * 1000);
 
-const server: string[] = [];
+const server: { name: string; ext: string }[] = [];
 
 for await (const f of Deno.readDir("./examples")) {
-  const [n] = f.name.split(".");
-  server.push(n);
+  const [name, ext] = f.name.split(".");
+  server.push({ name, ext });
 }
 
 const res = [];
-for (const file of server) {
-  const r = await bench(file);
+for (const f of server) {
+  const r = await bench(f.name, f.ext);
   res.push(r);
 }
 
@@ -81,8 +82,9 @@ const max = table[0];
 
 const t = table.map((v) => {
   const relative = (v.requestsPerSec / max.requestsPerSec) * 100;
+  const m = `[${v.module}](/examples/${v.module}.${v.ext})`;
   return [
-    v.module,
+    m,
     v.requestsPerSec.toFixed(2),
     relative.toFixed(0) + "%",
     `\`${v.oha}\``,
