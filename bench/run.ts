@@ -89,7 +89,7 @@ const t = table.map((v) => {
   ];
 });
 
-let markdown = `# Benchmark`;
+let markdown = `# Benchmarks`;
 markdown += `\n${
   markdownTable([
     ["module", "rps", "relative", "cmd"],
