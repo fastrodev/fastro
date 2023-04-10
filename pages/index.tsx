@@ -7,19 +7,6 @@ const Index = (props: { data: string }) => (
         <h3 className="float-md-start mb-0">Fastro</h3>
         <nav className="nav nav-masthead justify-content-center float-md-end">
           <a
-            className="nav-link fw-bold py-1 px-0 active"
-            aria-current="page"
-            href="#"
-          >
-            Home
-          </a>
-          <a
-            className="nav-link fw-bold py-1 px-0"
-            href="https://github.com/fastrodev/fastro/blob/main/bench/result.md"
-          >
-            Benchmarks
-          </a>
-          <a
             className="nav-link py-1 px-0"
             href="https://github.com/fastrodev/fastro"
           >
