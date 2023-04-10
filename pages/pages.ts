@@ -6,7 +6,6 @@ const index = createSSR(Index);
 
 export function createPage(f: Fastro) {
   return f.static("/public")
-    .flash(<boolean> <unknown> Deno.env.get("FLASH"))
     .build(<boolean> <unknown> Deno.env.get("BUILD"))
     .page("/", index, (_req: HttpRequest, res: HttpResponse) => {
       const desc = "Fast and simple web application framework for deno";
@@ -15,7 +14,11 @@ export function createPage(f: Fastro) {
         .ogImage("https://deno.land/images/artwork/v1.png")
         .metaDesc(desc)
         .title(title)
-        .props({ data: "world" })
+        .htmlAttr(`class="h-100"`)
+        .bodyAttr(`class="d-flex h-100 text-center text-bg-dark"`)
+        .rootAttr(
+          `class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column"`,
+        )
         .lang("EN")
         .render();
     });

@@ -9,7 +9,8 @@ export function initSSR(ssr: SSR, res: HttpResponse) {
   ];
   return res.ssr(ssr)
     .htmlAttr(dark)
-    .link(css)
     .script(js)
-    .meta(meta);
+    .meta(meta)
+    .link(css)
+    .link(`href="/public/cover.css" rel="stylesheet"`);
 }
