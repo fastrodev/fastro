@@ -1,19 +1,19 @@
 # Benchmarks
-| module                  | rps      | relative | cmd                                                            |
-| ----------------------- | -------- | -------- | -------------------------------------------------------------- |
-| deno                    | 55382.95 | 100%     | `oha -j --no-tui -z 30s http://localhost:9000`                 |
-| hello_world             | 53139.28 | 96%      | `oha -j --no-tui -z 30s http://localhost:9000`                 |
-| hello_string            | 52496.53 | 95%      | `oha -j --no-tui -z 30s http://localhost:9000`                 |
-| string                  | 52134.39 | 94%      | `oha -j --no-tui -z 30s http://localhost:9000`                 |
-| main                    | 47311.95 | 85%      | `oha -j --no-tui -z 30s http://localhost:9000`                 |
-| hello_jsx               | 40790.68 | 74%      | `oha -j --no-tui -z 30s http://localhost:9000`                 |
-| hello_world_fastro_html | 36114.82 | 65%      | `oha -j --no-tui -z 30s http://localhost:9000`                 |
-| hello_world_fastro      | 34571.26 | 62%      | `oha -j --no-tui -z 30s http://localhost:9000`                 |
-| params                  | 34367.35 | 62%      | `oha -j --no-tui -z 30s http://localhost:9000/agus?title=lead` |
-| hello_world_fastro_jsx  | 33772.76 | 61%      | `oha -j --no-tui -z 30s http://localhost:9000`                 |
-| hello_world_fastro_json | 33746.90 | 61%      | `oha -j --no-tui -z 30s http://localhost:9000`                 |
-| hello_json              | 33568.96 | 61%      | `oha -j --no-tui -z 30s http://localhost:9000`                 |
-| container               | 31841.63 | 57%      | `oha -j --no-tui -z 30s http://localhost:9000`                 |
-| ssr                     | 28553.35 | 52%      | `oha -j --no-tui -z 30s http://localhost:9000`                 |
-| middleware              | 28394.33 | 51%      | `oha -j --no-tui -z 30s http://localhost:9000`                 |
-| static_file             | 27496.38 | 50%      | `oha -j --no-tui -z 30s http://localhost:9000`                 |
+| module                                                          | rps      | relative | cmd                                                            |
+| --------------------------------------------------------------- | -------- | -------- | -------------------------------------------------------------- |
+| [deno](/examples/deno.ts)                                       | 49128.39 | 100%     | `oha -j --no-tui -z 10s http://localhost:9000`                 |
+| [string](/examples/string.ts)                                   | 46937.26 | 96%      | `oha -j --no-tui -z 10s http://localhost:9000`                 |
+| [hello_string](/examples/hello_string.ts)                       | 45697.64 | 93%      | `oha -j --no-tui -z 10s http://localhost:9000`                 |
+| [hello_world](/examples/hello_world.ts)                         | 44255.90 | 90%      | `oha -j --no-tui -z 10s http://localhost:9000`                 |
+| [main](/examples/main.ts)                                       | 42707.59 | 87%      | `oha -j --no-tui -z 10s http://localhost:9000`                 |
+| [hello_jsx](/examples/hello_jsx.tsx)                            | 35804.02 | 73%      | `oha -j --no-tui -z 10s http://localhost:9000`                 |
+| [hello_world_fastro_html](/examples/hello_world_fastro_html.ts) | 31278.40 | 64%      | `oha -j --no-tui -z 10s http://localhost:9000`                 |
+| [container](/examples/container.ts)                             | 30196.09 | 61%      | `oha -j --no-tui -z 10s http://localhost:9000`                 |
+| [hello_world_fastro](/examples/hello_world_fastro.ts)           | 30151.64 | 61%      | `oha -j --no-tui -z 10s http://localhost:9000`                 |
+| [hello_json](/examples/hello_json.ts)                           | 29581.73 | 60%      | `oha -j --no-tui -z 10s http://localhost:9000`                 |
+| [hello_world_fastro_json](/examples/hello_world_fastro_json.ts) | 29107.89 | 59%      | `oha -j --no-tui -z 10s http://localhost:9000`                 |
+| [hello_world_fastro_jsx](/examples/hello_world_fastro_jsx.tsx)  | 28398.19 | 58%      | `oha -j --no-tui -z 10s http://localhost:9000`                 |
+| [params](/examples/params.ts)                                   | 26807.92 | 55%      | `oha -j --no-tui -z 10s http://localhost:9000/agus?title=lead` |
+| [middleware](/examples/middleware.ts)                           | 24900.19 | 51%      | `oha -j --no-tui -z 10s http://localhost:9000`                 |
+| [ssr](/examples/ssr.ts)                                         | 24432.50 | 50%      | `oha -j --no-tui -z 10s http://localhost:9000`                 |
+| [static_file](/examples/static_file.ts)                         | 23636.35 | 48%      | `oha -j --no-tui -z 10s http://localhost:9000`                 |
