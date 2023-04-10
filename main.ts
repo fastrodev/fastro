@@ -4,6 +4,7 @@ import fastro from "./server/mod.ts";
 
 async function init() {
   const f = fastro();
+  f.flash(false);
   createPage(f);
   await f.serve();
 }
