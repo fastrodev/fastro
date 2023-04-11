@@ -8,10 +8,12 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      pull-requests: write
-      packages: write
       id-token: write
       contents: read
+      deployments: write
+      statuses: write
+      actions: write
+      checks: read
 
     steps:
       - name: Clone repository
