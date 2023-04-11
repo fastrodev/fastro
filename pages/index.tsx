@@ -26,11 +26,10 @@ const Index = (props: { data: string }) => (
     </header>
 
     <main className="px-3">
-      <h1 className="display-4 fw-bold">Fastro framework</h1>
+      <h1 className="display-4 fw-bold">Fast and Simple</h1>
       <p className="lead">
-        Introducing the ultimate solution for developers seeking speed and
-        simplicity in web development - a fast and simple web framework that
-        will revolutionize your workflow.
+        Fastro is the ultimate solution for developers seeking speed and
+        simplicity in web development.
       </p>
       <p className="lead">
         <a
