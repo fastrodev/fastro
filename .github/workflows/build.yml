@@ -9,12 +9,8 @@ jobs:
 
     permissions:
       id-token: write
-      contents: read
-      deployments: write
-      repository-projects: write
-      statuses: write
-      actions: write
-      checks: read
+      contents: write
+      packages: write
 
     steps:
       - name: Clone repository
