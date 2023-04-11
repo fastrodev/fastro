@@ -43,11 +43,7 @@ const Index = (props: { data: string }) => (
 
     <footer className="mt-auto text-white-50">
       <p>
-        Powered by{"  "}
-        <a href="https://deno.land/x/fastro" className="text-white">
-          Fastro framework
-        </a>
-        {" & "}
+        Powered by{" "}
         <a href="https://deno.com/deploy" className="text-white">
           Deno deploy
         </a>
