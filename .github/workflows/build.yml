@@ -11,6 +11,7 @@ jobs:
       id-token: write
       contents: read
       deployments: write
+      repository-projects: write
       statuses: write
       actions: write
       checks: read
