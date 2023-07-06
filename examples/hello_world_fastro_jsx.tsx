@@ -1,11 +1,12 @@
-import application, { HttpRequest, HttpResponse } from "../server/mod.ts";
+import fastro, { Context, HttpRequest } from "../server/mod.ts";
 
-const app = application();
+const f = fastro();
 
-app.get(
+f.get(
   "/",
-  (req: HttpRequest, res: HttpResponse) =>
-    res.status(200).jsx(<h1>Hello, jsx</h1>),
+  (_req: HttpRequest, ctx: Context) => {
+    return ctx.send(<h1>Hello, jsx!</h1>, 200);
+  },
 );
 
-await app.serve();
+f.serve();

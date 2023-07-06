@@ -1,0 +1,20 @@
+{
+  "lock": false,
+  "imports": {
+    "react/": "https://esm.sh/react@18.2.0/"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "dom.asynciterable",
+      "deno.ns",
+      "deno.unstable"
+    ]
+  },
+  "tasks": {
+    "start": "rm -rf hydrate && mkdir hydrate && deno run -A --watch main.ts"
+  }
+}

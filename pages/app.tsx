@@ -1,9 +1,9 @@
 import React, { useState } from "https://esm.sh/react@18.2.0";
 
-type D = { msg: string };
+type D = { time: string };
 
 const App = (props: { data: string }) => {
-  const data: D = { msg: "___" };
+  const data: D = { time: "___" };
   const [d, setD] = useState(data);
 
   const handleClick = async () => {
@@ -24,7 +24,7 @@ const App = (props: { data: string }) => {
           >
             Hit the API
           </button>
-          <pre className="mt-2">The API Response is {JSON.stringify(d)}</pre>
+          <pre className="mt-2">The API Response is: {JSON.stringify(d)}</pre>
         </div>
       </div>
     </div>

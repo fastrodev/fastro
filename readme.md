@@ -19,11 +19,9 @@ can:
   [Headers](https://deno.land/api?s=Headers),
   [Cookie](https://deno.land/std/http/cookie.ts), and
   [URLPattern](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API)
-- Access the request, the response, and the next callback before execute the
+- Access the request, the context, and the next callback before execute the
   route handler with
   [route and app middleware](https://github.com/fastrodev/fastro/blob/main/examples/middleware.ts)
-- Manage your global object in
-  [a container with auto-deleted data](https://github.com/fastrodev/fastro/blob/main/examples/container.ts)
 - Get url param with URLPattern
 - Set the react component props from the server side 
 - Attach your API and React-SSR-SEO-ready pages [in a single file](https://github.com/fastrodev/fastro/blob/main/examples/ssr.ts)
@@ -39,7 +37,7 @@ const f = fastro();
 
 f.get("/", () => "Hello, World!");
 
-await f.serve();
+f.serve();
 ```
 
 Run the app

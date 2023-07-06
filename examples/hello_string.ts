@@ -4,4 +4,4 @@ const f = fastro();
 
 f.get("/", () => "Hello, World!");
 
-await f.serve();
+f.serve();

@@ -1,26 +1,7 @@
-import application from "../server/mod.ts";
+import fastro from "../server/mod.ts";
 
-const app = application();
+const f = fastro();
 
-/**
- * Place your files in the static folder
- *
- * ```ts
- * app.static("/static");
- * ```
- *
- * Place your files in the app root folder
- *
- * ```ts
- * app.static("/");
- * ```
- *
- * Place your files in the app root folder with 30s maxAge cache expiration time
- *
- * ```ts
- * app.static("/", 30);
- * ```
- */
-app.static("/");
+f.static("/static", { folder: "static", maxAge: 90 });
 
-await app.serve();
+f.serve();

@@ -1,0 +1,12 @@
+@media (min-width: 576px) { .container { width: 540px; } }
+@media (min-width: 768px) { .container { width: 680px; } }
+@media (min-width: 992px) { .container { width: 680px; } }
+@media (min-width: 1200px) { .container { width: 680px; } }
+
+:root {
+  --color-fg-muted: #656d76;
+}
+
+.color-fg-muted {
+  color: var(--color-fg-muted)!important
+}
