@@ -3,7 +3,6 @@ import {
   contentType,
   extname,
   ReactDOMServer,
-  Server,
   Status,
   STATUS_TEXT,
   toHashString,
@@ -167,6 +166,7 @@ export interface Fastro {
     ...handler: Array<HandlerArgument>
   ): Fastro;
   onListen(handler: ListenHandler): void;
+  finished(): Promise<void> | undefined;
 }
 
 type ListenHandler = (params: { hostname: string; port: number }) => void;
@@ -187,7 +187,7 @@ export const BUILD_ID = Deno.env.get("DENO_DEPLOYMENT_ID") || toHashString(
 );
 
 export class HttpServer implements Fastro {
-  #server: Deno.Server | Server | undefined;
+  #server: Deno.Server | undefined;
   #routes: Route[];
   #middlewares: Middleware[];
   #pages: Page[];
@@ -795,12 +795,12 @@ export class HttpServer implements Fastro {
     }
   }
 
+  finished = () => {
+    return this.#server?.finished;
+  };
+
   close() {
     if (!this.#server) return;
-    if (this.#server instanceof Server) {
-      return this.#server.close();
-    }
-
     this.#server.finished.then(() => console.log("Server closed"));
     console.log("Closing server...");
     this.#ac.abort();

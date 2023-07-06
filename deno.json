@@ -15,6 +15,8 @@
     ]
   },
   "tasks": {
-    "start": "rm -rf hydrate && mkdir hydrate && deno run -A --watch main.ts"
+    "start": "rm -rf hydrate && mkdir hydrate && deno run -A --watch main.ts",
+    "test": "rm -rf cov && deno test -A --coverage=cov && deno coverage cov",
+    "coverage": "deno coverage cov --lcov > cov.lcov"
   }
 }

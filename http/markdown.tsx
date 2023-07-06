@@ -1,8 +1,8 @@
 // deno-lint-ignore-file no-explicit-any
 import matter from "https://esm.sh/gray-matter@4.0.3";
 import ReactMarkdown from "https://esm.sh/react-markdown@8.0.7";
-import { dark } from "https://esm.sh/react-syntax-highlighter/dist/esm/styles/prism";
 import { Prism as SyntaxHighlighter } from "https://esm.sh/react-syntax-highlighter@15.5.0";
+import * as prism from "https://esm.sh/react-syntax-highlighter@15.5.0/dist/esm/styles/prism";
 import remarkGfm from "https://esm.sh/remark-gfm@3.0.1";
 
 type Meta = {
@@ -83,7 +83,7 @@ export class Markdown {
                 <SyntaxHighlighter
                   {...props}
                   children={String(children).replace(/\n$/, "")}
-                  style={dark}
+                  style={prism.dark}
                   language={match[1]}
                   PreTag="div"
                 />
