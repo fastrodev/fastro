@@ -16,9 +16,9 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v3
 
-      - uses: denoland/setup-deno@v1.1.1
+      - uses: denoland/setup-deno@v1
         with:
-          deno-version: "1.35.0"
+          deno-version: vx.x.x
       - run: deno lint --unstable server
       - run: deno lint --unstable examples
 
