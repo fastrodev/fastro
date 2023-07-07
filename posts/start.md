@@ -1,7 +1,7 @@
 ---
 title: Get Started
 description: We will create a very simple web application with one route and returning the text hello-world.
-image: static/image.png
+image: https://fastro.dev/static/image.png
 author: Yanu Widodo
 date: 07/06/2023
 ---
