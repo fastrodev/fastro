@@ -234,6 +234,7 @@ es.onmessage = function(e) {
   }
 
   #renderToString = async (component: Component, cached?: boolean) => {
+    console.log("debug", component);
     this.#setDefaultLayout();
     this.#handleDevelopment();
     if (isJSX(component as JSX.Element)) {
