@@ -1,8 +1,11 @@
 // deno-lint-ignore-file
 import {
+  ConnInfo,
   contentType,
   extname,
+  Handler,
   ReactDOMServer,
+  Server,
   Status,
   STATUS_TEXT,
   toHashString,
@@ -10,7 +13,7 @@ import {
 import { Markdown, Post } from "./markdown.tsx";
 import { Render } from "./render.tsx";
 
-export type ServerHandler = Deno.ServeHandler;
+export type ServerHandler = Deno.ServeHandler | Handler;
 
 export type HandlerArgument =
   | ServerHandler
@@ -29,7 +32,7 @@ export class HttpRequest extends Request {
   [key: string]: any;
 }
 
-type Info = Deno.ServeHandlerInfo;
+type Info = Deno.ServeHandlerInfo | ConnInfo;
 
 type Meta = {
   name?: string;
@@ -187,7 +190,7 @@ export const BUILD_ID = Deno.env.get("DENO_DEPLOYMENT_ID") || toHashString(
 );
 
 export class HttpServer implements Fastro {
-  #server: Deno.Server | undefined;
+  #server: Deno.Server | Server | undefined;
   #routes: Route[];
   #middlewares: Middleware[];
   #pages: Page[];
@@ -796,11 +799,16 @@ export class HttpServer implements Fastro {
   }
 
   finished = () => {
+    if (this.#server instanceof Server) return;
     return this.#server?.finished;
   };
 
   close() {
     if (!this.#server) return;
+    if (this.#server instanceof Server) {
+      return this.#server.close();
+    }
+
     this.#server.finished.then(() => console.log("Server closed"));
     console.log("Closing server...");
     this.#ac.abort();
