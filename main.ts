@@ -10,7 +10,7 @@ import fastro, {
 const f = fastro();
 
 f.use((req: HttpRequest, _ctx: Context, next: Next) => {
-  console.log(`${req.method} ${req.url} ${req}`);
+  console.log(`${req.method} ${req.url}`);
   return next();
 });
 
