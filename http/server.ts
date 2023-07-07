@@ -59,6 +59,7 @@ type Link = {
 };
 
 export type RenderOptions = {
+  build?: boolean;
   cache?: boolean;
   pageFolder?: string;
   status?: number;

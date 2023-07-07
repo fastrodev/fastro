@@ -8,6 +8,11 @@ import fastro, {
 
 const f = fastro();
 
+f.use((req: HttpRequest, _ctx: Context, next: Next) => {
+  console.log(`${new Date().getTime()}: ${req.url}`);
+  return next();
+});
+
 f.get("/res", () => new Response("res"));
 f.get("/txt", () => "Text");
 f.get("/json", () => ({ status: true }));
@@ -20,12 +25,9 @@ f.static("/static", { folder: "static" });
 f.page(
   "/",
   Index,
-  (_req: HttpRequest, _ctx: Context, next: Next) => {
-    console.log(new Date());
-    return next();
-  },
   (_req: HttpRequest, ctx: Context) => {
     const options: RenderOptions = {
+      build: false,
       html: {
         class: "h-100",
         head: {

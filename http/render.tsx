@@ -236,7 +236,6 @@ es.onmessage = function(e) {
   }
 
   #renderToString = async (component: Component, cached?: boolean) => {
-    console.log("debug", component);
     this.#setDefaultLayout();
     this.#handleDevelopment();
     if (isJSX(component as JSX.Element)) {
@@ -246,7 +245,7 @@ es.onmessage = function(e) {
 
     const c = component as FunctionComponent;
     if (cached && this.#nest[c.name]) return this.#nest[c.name];
-    if (!this.#nest[this.#getRenderId(c.name)]) {
+    if (this.#options.build && !this.#nest[this.#getRenderId(c.name)]) {
       await this.#createBundle(c.name);
     }
 
