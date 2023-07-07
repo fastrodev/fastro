@@ -179,9 +179,9 @@ es.onmessage = function(e) {
     const esbuildWasmURL =
       new URL("./esbuild_v0.17.19.wasm", import.meta.url).href;
 
-    console.log(esbuildWasmURL);
-    console.log("Deno.run", Deno.run);
-    console.log("aman");
+    console.info(esbuildWasmURL);
+    console.info("Deno.run", Deno.run);
+    console.info("aman");
 
     // await esbuild.initialize({
     //   wasmURL: esbuildWasmURL,
