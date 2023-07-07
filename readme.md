@@ -17,7 +17,6 @@ can:
 - Leverage existing Deno objects and methods such as
   [Request](https://deno.land/api?s=Request),
   [Headers](https://deno.land/api?s=Headers),
-  [Cookie](https://deno.land/std/http/cookie.ts), and
   [URLPattern](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API)
 - Access the request, the context, and the next callback before execute the
   route handler with
@@ -45,11 +44,6 @@ Run the app
 ```
 deno run -A --unstable main.ts
 ```
-## Deployment
-
-Set [`flash(false)`](https://github.com/fastrodev/fastro/blob/main/examples/main.ts) if you want to deploy to deno.
-
-[![Deploy](public/deno.svg)](https://dash.deno.com/new?url=https://raw.githubusercontent.com/fastrodev/fastro/main/examples/main.ts)
 
 ## Examples
 
