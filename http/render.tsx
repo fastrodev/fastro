@@ -176,6 +176,17 @@ es.onmessage = function(e) {
     const componentPath =
       `${this.#internalRoute}/${elementName.toLowerCase()}.js`;
 
+    const esbuildWasmURL =
+      new URL("./esbuild_v0.17.19.wasm", import.meta.url).href;
+
+    console.log(esbuildWasmURL);
+    console.log("Deno.run", Deno.run);
+
+    // await esbuild.initialize({
+    //   wasmURL: esbuildWasmURL,
+    //   worker: false,
+    // });
+
     const absWorkingDir = Deno.cwd();
     const esbuildRes = await esbuild.build({
       plugins: [...denoPlugins()],
@@ -186,7 +197,6 @@ es.onmessage = function(e) {
       absWorkingDir,
       outdir: ".",
       bundle: true,
-      minify: true,
       treeShaking: true,
       write: false,
     });
@@ -254,14 +264,18 @@ es.onmessage = function(e) {
     }
 
     this.#setInitialProps();
+    this.#handleComponent(c);
+    const layout = this.#initHtml(this.#element);
+    const html = ReactDOMServer.renderToString(layout);
+    return this.#nest[c.name] = `<!DOCTYPE html>${html}`;
+  };
+
+  #handleComponent = (c: FunctionComponent) => {
     if (this.#options.html?.body) {
       this.#options.html?.body.script?.push({
         src: `${this.#internalRoute}/${c.name.toLocaleLowerCase()}.js`,
       });
     }
-    const layout = this.#initHtml(this.#element);
-    const html = ReactDOMServer.renderToString(layout);
-    return this.#nest[c.name] = `<!DOCTYPE html>${html}`;
   };
 
   #setInitialProps = () => {

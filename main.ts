@@ -1,3 +1,4 @@
+import app from "./pages/app.tsx";
 import Index from "./pages/index.tsx";
 import fastro, {
   Context,
@@ -9,7 +10,7 @@ import fastro, {
 const f = fastro();
 
 f.use((req: HttpRequest, _ctx: Context, next: Next) => {
-  console.log(`${new Date().getTime()}: ${req.url}`);
+  console.log(`${req.method} ${req.url} ${req}`);
   return next();
 });
 
@@ -22,6 +23,9 @@ f.get("/api", () => {
 });
 
 f.static("/static", { folder: "static" });
+f.page("/app", app, (_req: HttpRequest, ctx: Context) => {
+  return ctx.props({ time: "__" }).render({ build: true, html: {} });
+});
 f.page(
   "/",
   Index,
