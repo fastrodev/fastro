@@ -1,7 +1,7 @@
 ---
 title: Get Started
 description: We will create a very simple web application with one route and returning the text hello-world.
-image: https://github.githubassets.com/images/modules/gists/gist-og-image.png
+image: static/image.png
 author: Yanu Widodo
 date: 07/06/2023
 ---

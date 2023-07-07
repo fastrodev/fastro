@@ -713,8 +713,7 @@ export class HttpServer implements Fastro {
           status: Status.NotFound,
         });
       }
-
-      const file = await Deno.open(`.${filePath}`, { read: true });
+      const file = await Deno.open(`./${filePath}`, { read: true });
       return new Response(file.readable, {
         headers: {
           "Content-Type": ct,
