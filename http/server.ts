@@ -454,7 +454,7 @@ export class HttpServer implements Fastro {
                 content: md.meta?.description,
               },
               {
-                property: "og-image",
+                property: "og:image",
                 content: md.meta?.image,
               },
               {
