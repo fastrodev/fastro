@@ -176,6 +176,8 @@ es.onmessage = function(e) {
     const componentPath =
       `${this.#internalRoute}/${elementName.toLowerCase()}.js`;
 
+    console.log("hydrateTarget", hydrateTarget);
+
     const esbuildRes = await esbuild.build({
       plugins: [...denoPlugins()],
       entryPoints: [hydrateTarget],
