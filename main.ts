@@ -27,7 +27,7 @@ f.page(
   Index,
   (_req: HttpRequest, ctx: Context) => {
     const options: RenderOptions = {
-      build: true,
+      build: false,
       html: {
         class: "h-100",
         head: {
