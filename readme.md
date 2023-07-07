@@ -42,7 +42,7 @@ f.serve();
 Run the app
 
 ```
-deno run -A --unstable main.ts
+deno run -A main.ts
 ```
 
 ## Examples
