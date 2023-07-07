@@ -225,7 +225,7 @@ export class HttpServer implements Fastro {
     this.#staticUrl = "";
     this.#staticFolder = "";
     this.#maxAge = 0;
-    this.#development = true;
+    this.#development = Deno.env.get("DEVELOPMENT") === "true";
     this.#unstable = this.#getUnstable();
   }
 

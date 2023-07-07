@@ -176,14 +176,18 @@ es.onmessage = function(e) {
     const componentPath =
       `${this.#internalRoute}/${elementName.toLowerCase()}.js`;
 
-    console.log("hydrateTarget", hydrateTarget);
-
+    const absWorkingDir = Deno.cwd();
     const esbuildRes = await esbuild.build({
       plugins: [...denoPlugins()],
       entryPoints: [hydrateTarget],
+      platform: "browser",
+      target: ["chrome99", "firefox99", "safari15"],
+      format: "esm",
+      absWorkingDir,
+      outdir: ".",
       bundle: true,
       minify: true,
-      format: "esm",
+      treeShaking: true,
       write: false,
     });
     esbuild.stop();
