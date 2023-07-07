@@ -183,10 +183,10 @@ es.onmessage = function(e) {
     console.log("Deno.run", Deno.run);
     console.log("aman");
 
-    await esbuild.initialize({
-      wasmURL: esbuildWasmURL,
-      worker: false,
-    });
+    // await esbuild.initialize({
+    //   wasmURL: esbuildWasmURL,
+    //   worker: false,
+    // });
 
     const absWorkingDir = Deno.cwd();
     const esbuildRes = await esbuild.build({
