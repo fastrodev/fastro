@@ -3,9 +3,6 @@ import React from "https://esm.sh/react@18.2.0";
 const Index = () => (
   <>
     <header className="mb-auto">
-      <div>
-        <h3 className="float-md-start mb-0">Fastro</h3>
-      </div>
     </header>
 
     <main className="px-3">
