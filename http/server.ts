@@ -212,7 +212,7 @@ export class HttpServer implements Fastro {
   #listenHandler: ListenHandler | undefined;
 
   constructor(options?: { port?: number }) {
-    this.#port = options?.port;
+    this.#port = options?.port ?? 8000;
     this.#routes = [];
     this.#middlewares = [];
     this.#pages = [];
@@ -230,18 +230,31 @@ export class HttpServer implements Fastro {
 
   #getUnstable = () => {
     return Deno.args.length < 0
-      ? false
+      ? Deno.env.get("UNSTABLE") === "true"
       : (Deno.args[0] === "--unstable" ?? false);
   };
 
   serve = () => {
-    return this.#server = Deno.serve({
+    if (this.#unstable) {
+      return this.#server = Deno.serve({
+        port: this.#port,
+        handler: this.#handleRequest,
+        onListen: this.#listenHandler,
+        onError: this.#handleError,
+        signal: this.#ac.signal,
+      });
+    }
+
+    this.#server = new Server({
       port: this.#port,
       handler: this.#handleRequest,
-      onListen: this.#listenHandler,
       onError: this.#handleError,
-      signal: this.#ac.signal,
     });
+
+    if (this.#listenHandler) {
+      this.#listenHandler({ hostname: "localhost", port: this.#port });
+    }
+    this.#server.listenAndServe();
   };
 
   onListen = (handler: ListenHandler) => {
