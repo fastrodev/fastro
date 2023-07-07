@@ -39,6 +39,9 @@ f.page(
           }, {
             name: "description",
             content: "Fast & Simple Web Application Framework",
+          }, {
+            property: "og:image",
+            content: "https://fastro.dev/static/image.png",
           }],
           link: [{
             href:
