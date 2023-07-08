@@ -227,7 +227,10 @@ export class HttpServer implements Fastro {
     this.#maxAge = 0;
     this.#development = this.#getDevelopment();
     this.#unstable = this.#getUnstable();
-    console.log("this.#development", this.#development);
+    const status = this.#development
+      ? { development: true }
+      : { production: true };
+    console.info(status);
   }
 
   #getUnstable = () => {

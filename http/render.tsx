@@ -209,7 +209,8 @@ import ${component} from "../pages/${component}.tsx";
 
   createHydrateFile(elementName: string) {
     try {
-      const target = `./hydrate/${elementName.toLowerCase()}.hydrate.tsx`;
+      const target =
+        `${Deno.cwd()}/hydrate/${elementName.toLowerCase()}.hydrate.tsx`;
       Deno.writeTextFileSync(
         target,
         this.#createHydrate(elementName, this.#options.props),
