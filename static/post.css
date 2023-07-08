@@ -3,10 +3,12 @@
 @media (min-width: 992px) { .container { width: 680px; } }
 @media (min-width: 1200px) { .container { width: 680px; } }
 
-:root {
-  --color-fg-muted: #656d76;
-}
-
-.color-fg-muted {
-  color: var(--color-fg-muted)!important
+code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  white-space: break-spaces;
+  background-color: hsla(215,8%,47%,.4);
+  border-radius: 6px;
+  color: #e6edf3;
 }

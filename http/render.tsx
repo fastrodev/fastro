@@ -25,6 +25,7 @@ export class Render {
   #development: boolean;
   #server: Fastro;
   #internalRoute: string;
+  #staticPath: string;
 
   constructor(
     element: Component,
@@ -38,6 +39,7 @@ export class Render {
     this.#development = server.getDevelopmentStatus();
     this.#server = server;
     this.#internalRoute = `/___${BUILD_ID}`;
+    this.#staticPath = `${this.#server.getStaticPath()}/js`;
   }
 
   #initOptions = (opt: RenderOptions) => {
@@ -158,76 +160,54 @@ es.onmessage = function(e) {
       : `hydrateRoot(document.getElementById("root") as HTMLElement, <${component}/>);`;
 
     return `// deno-lint-ignore-file
-    // DO NOT EDIT. This file is generated automatically. 
-    // Required for the development and deployment process.
-    declare global { interface Window { __INITIAL_DATA__: any; } } 
-    import { decode } from "https://deno.land/std@0.192.0/encoding/base64.ts"; 
-    import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client"; 
-    import React from "https://esm.sh/react@18.2.0"; 
-    import ${component} from "../pages/${component}.tsx";
+// DO NOT EDIT. This file is generated automatically. 
+// Required for the development and deployment process.
+declare global { interface Window { __INITIAL_DATA__: any; } } 
+import { decode } from "https://deno.land/std@0.192.0/encoding/base64.ts"; 
+import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client"; 
+import React from "https://esm.sh/react@18.2.0"; 
+import ${component} from "../pages/${component}.tsx";
     ${properties}
     `;
   }
 
-  #createBundle = async (elementName: string) => {
+  createBundle = async (elementName: string) => {
     const cwd = Deno.cwd();
     const hydrateTarget =
       `${cwd}/hydrate/${elementName.toLowerCase()}.hydrate.tsx`;
     const componentPath =
       `${this.#internalRoute}/${elementName.toLowerCase()}.js`;
-
-    const esbuildWasmURL =
-      new URL("./esbuild_v0.17.19.wasm", import.meta.url).href;
-
-    console.info(esbuildWasmURL);
-    console.info("Deno.run", Deno.run);
-    console.info("aman");
-
-    // await esbuild.initialize({
-    //   wasmURL: esbuildWasmURL,
-    //   worker: false,
-    // });
+    const bundlePath =
+      `${cwd}/${this.#server.getStaticFolder()}/js/${elementName.toLowerCase()}.js`;
 
     const absWorkingDir = Deno.cwd();
     const esbuildRes = await esbuild.build({
       plugins: [...denoPlugins()],
       entryPoints: [hydrateTarget],
-      platform: "browser",
-      target: ["chrome99", "firefox99", "safari15"],
       format: "esm",
+      jsxImportSource: "react",
       absWorkingDir,
-      outdir: ".",
+      outfile: bundlePath,
       bundle: true,
       treeShaking: true,
-      write: false,
+      write: true,
+      minify: true,
+      minifySyntax: true,
+      minifyWhitespace: true,
     });
-    esbuild.stop();
 
     if (esbuildRes.errors.length > 0) {
       throw esbuildRes.errors;
-    }
-
-    for (const file of esbuildRes.outputFiles) {
-      const str = new TextDecoder().decode(file.contents);
-      this.#server.push("GET", componentPath, () =>
-        new Response(str, {
-          headers: {
-            "Content-Type": "application/javascript",
-          },
-        }));
     }
 
     this.#nest[this.#getRenderId(elementName)] = true;
   };
 
   #getRenderId = (el: string) => {
-    if (!this.#readHydrateFile(el)) {
-      this.#createHydrateFile(el);
-    }
     return `render${el}`;
   };
 
-  #createHydrateFile(elementName: string) {
+  createHydrateFile(elementName: string) {
     try {
       const target = `./hydrate/${elementName.toLowerCase()}.hydrate.tsx`;
       Deno.writeTextFileSync(
@@ -236,17 +216,6 @@ es.onmessage = function(e) {
       );
     } catch (error) {
       throw error;
-    }
-  }
-
-  #readHydrateFile(elementName: string) {
-    const target = `./hydrate/${elementName.toLowerCase()}.hydrate.tsx`;
-    if (this.#nest[target]) return this.#nest[target];
-    try {
-      Deno.readTextFileSync(target);
-      return this.#nest[target] = true;
-    } catch {
-      return this.#nest[target] = false;
     }
   }
 
@@ -260,9 +229,6 @@ es.onmessage = function(e) {
 
     const c = component as FunctionComponent;
     if (cached && this.#nest[c.name]) return this.#nest[c.name];
-    if (this.#options.build && !this.#nest[this.#getRenderId(c.name)]) {
-      await this.#createBundle(c.name);
-    }
 
     this.#setInitialProps();
     this.#handleComponent(c);
@@ -272,16 +238,21 @@ es.onmessage = function(e) {
   };
 
   #handleComponent = (c: FunctionComponent) => {
-    if (this.#options.html?.body) {
-      this.#options.html?.body.script?.push({
-        src: `${this.#internalRoute}/${c.name.toLocaleLowerCase()}.js`,
-      });
-    }
+    if (!this.#options.html?.body) return;
+    // if (this.#development) {
+    //   this.#options.html?.body.script?.push({
+    //     src: `${this.#internalRoute}/${c.name.toLocaleLowerCase()}.js`,
+    //   });
+    //   return;
+    // }
+    this.#options.html?.body.script?.push({
+      src: `${this.#staticPath}/${c.name.toLocaleLowerCase()}.js`,
+    });
   };
 
   #setInitialProps = () => {
     if (this.#options.props && this.#options.html?.body) {
-      const propsPath = `${this.#internalRoute}/props.js`;
+      const propsPath = `${this.#staticPath}/props.js`;
       this.#options.html?.body.script?.push({
         src: propsPath,
       });
@@ -331,7 +302,7 @@ es.onmessage = function(e) {
 
   #handleDevelopment = () => {
     if (!this.#development) return;
-    const refreshPath = `${this.#internalRoute}/refresh.js`;
+    const refreshPath = `${this.#staticPath}/refresh.js`;
     this.#server.push(
       "GET",
       refreshPath,

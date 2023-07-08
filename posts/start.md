@@ -1,5 +1,5 @@
 ---
-title: Get Started
+title: "Get started: hello world"
 description: We will create a very simple web application with one route and returning the text hello-world.
 image: https://fastro.dev/static/image.png
 author: Yanu Widodo

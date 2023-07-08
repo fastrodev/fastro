@@ -239,7 +239,8 @@ export class HttpServer implements Fastro {
     return Deno.args[0] === "--development";
   };
 
-  serve = () => {
+  serve = async () => {
+    await this.#build();
     if (this.#unstable) {
       return this.#server = Deno.serve({
         port: this.#port,
@@ -299,6 +300,32 @@ export class HttpServer implements Fastro {
 
     return this;
   }
+
+  #build = async () => {
+    try {
+      Deno.mkdirSync(`${Deno.cwd()}/hydrate`);
+    } catch (error) {
+      throw error;
+    }
+
+    for (let index = 0; index < this.#pages.length; index++) {
+      const page = this.#pages[index];
+      const r = new Render(
+        page.element,
+        {
+          props: {},
+          html: {},
+        },
+        this.#nest,
+        this,
+      );
+
+      const el = page.element as FunctionComponent;
+      r.createHydrateFile(el.name);
+      await r.createBundle(el.name);
+    }
+    Deno.removeSync(`${Deno.cwd()}/hydrate`, { recursive: true });
+  };
 
   #pushHandler(
     method: string,

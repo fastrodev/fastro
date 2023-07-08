@@ -7,12 +7,10 @@ const Index = () => (
 
     <main className="px-3">
       <h1 className="display-4 fw-bold">
-        Fast & Simple Web Application Framework
+        Fast and Simple Web Application Framework
       </h1>
-      <p className="lead">
-        Built on top of Deno. Handle thousands of requests per second. Easy to
-        learn and use. Has a minimal API, so you don't have to worry about
-        learning a lot of complex concepts.
+      <p className="lead text-white-50">
+        Handle thousands of requests per second with a minimalistic API
       </p>
       <p className="lead">
         <a

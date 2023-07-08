@@ -11,6 +11,8 @@ type Meta = {
   date?: string;
   description?: string;
   image?: string;
+  prev?: string;
+  next?: string;
 };
 
 export type Post = {
@@ -63,11 +65,40 @@ export class Markdown {
       <div className="container container-sm">
         <div className="text-center">
           <h1>{meta.title}</h1>
-          <h5 className="color-fg-muted">{meta.description}</h5>
-          <h6>{meta.author} · {formattedDate}</h6>
+          <h5 className="text-white-50">{meta.description}</h5>
+          <hr />
+          <p className="text-white-50">{meta.author} · {formattedDate}</p>
+          <hr />
         </div>
-        <hr />
         {child}
+        {meta.next || meta.prev
+          ? (
+            <div style={{ marginTop: 30 }}>
+              <hr />
+              <div className="row">
+                <div className="col-sm text-start">
+                  {meta.prev
+                    ? (
+                      <a href={meta.prev}>
+                        Previous
+                      </a>
+                    )
+                    : ""}
+                </div>
+                <div className="col-sm text-end">
+                  {meta.next
+                    ? (
+                      <a href={meta.next}>
+                        Next
+                      </a>
+                    )
+                    : ""}
+                </div>
+              </div>
+              <hr />
+            </div>
+          )
+          : ""}
       </div>
     );
   };

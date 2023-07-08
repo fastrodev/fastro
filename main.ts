@@ -1,5 +1,5 @@
 import app from "./pages/app.tsx";
-import Index from "./pages/index.tsx";
+import index from "./pages/index.tsx";
 import fastro, {
   Context,
   HttpRequest,
@@ -24,11 +24,11 @@ f.get("/api", () => {
 
 f.static("/static", { folder: "static" });
 f.page("/app", app, (_req: HttpRequest, ctx: Context) => {
-  return ctx.props({ time: "__" }).render({ build: true, html: {} });
+  return ctx.props({ data: "Guest" }).render({ build: true, html: {} });
 });
 f.page(
   "/",
-  Index,
+  index,
   (_req: HttpRequest, ctx: Context) => {
     const options: RenderOptions = {
       build: false,
