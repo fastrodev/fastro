@@ -4,7 +4,7 @@ import { assertEquals } from "./deps.ts";
 const host = "http://localhost:8000";
 
 Deno.test(
-  { permissions: { net: true, env: true } },
+  { permissions: { net: true, env: true, read: true, write: true } },
   async function getResponse() {
     const f = fastro();
     f.get("/", () => new Response("get"));
