@@ -1,6 +1,6 @@
 import fastro, { Context, HttpRequest } from "../server/mod.ts";
 
-const f = fastro();
+const f = new fastro();
 
 f.get(
   "/",

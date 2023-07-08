@@ -1,7 +1,7 @@
 import app from "../pages/app.tsx";
 import fastro, { Context, HttpRequest, Next } from "../server/mod.ts";
 
-const f = fastro();
+const f = new fastro();
 
 f.get("/api", () => Response.json({ msg: "hello" }));
 f.static("/static", { folder: "static", maxAge: 90 });

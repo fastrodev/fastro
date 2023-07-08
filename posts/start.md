@@ -55,8 +55,11 @@ Copy and paste the code below
 
 ```ts
 import fastro from "https://deno.land/x/fastro/server/mod.ts";
-const f = fastro();
+
+const f = new fastro();
+
 f.get("/", () => "Hello, World!");
+
 await f.serve();
 ```
 
