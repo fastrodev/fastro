@@ -209,7 +209,6 @@ export class HttpServer implements Fastro {
     RouteNest | URLPatternResult | Static | null | undefined
   >;
   #body: ReadableStream<any> | undefined;
-  #unstable: boolean | undefined;
   #listenHandler: ListenHandler | undefined;
 
   constructor(options?: { port?: number }) {
@@ -226,18 +225,11 @@ export class HttpServer implements Fastro {
     this.#staticFolder = "";
     this.#maxAge = 0;
     this.#development = this.#getDevelopment();
-    this.#unstable = this.#getUnstable();
     const status = this.#development
       ? { development: true }
       : { production: true };
     console.info(status);
   }
-
-  #getUnstable = () => {
-    return Deno.args.length < 0
-      ? Deno.env.get("UNSTABLE") === "true"
-      : (Deno.args[0] === "--unstable" ?? false);
-  };
 
   #getDevelopment = () => {
     return Deno.env.get("DEVELOPMENT") === "false"
@@ -247,26 +239,28 @@ export class HttpServer implements Fastro {
 
   serve = async () => {
     await this.#build();
-    if (this.#unstable) {
-      return this.#server = Deno.serve({
+    if (Deno.env.get("DENO_DEPLOYMENT_ID")) {
+      this.#server = new Server({
         port: this.#port,
         handler: this.#handleRequest,
-        onListen: this.#listenHandler,
         onError: this.#handleError,
-        signal: this.#ac.signal,
       });
+
+      if (this.#listenHandler) {
+        this.#listenHandler({ hostname: "localhost", port: this.#port });
+      } else {
+        console.info(`Listening on http://locahost:${this.#port}`);
+      }
+      return this.#server.listenAndServe();
     }
 
-    this.#server = new Server({
+    this.#server = Deno.serve({
       port: this.#port,
       handler: this.#handleRequest,
+      onListen: this.#listenHandler,
       onError: this.#handleError,
+      signal: this.#ac.signal,
     });
-
-    if (this.#listenHandler) {
-      this.#listenHandler({ hostname: "localhost", port: this.#port });
-    }
-    this.#server.listenAndServe();
   };
 
   onListen = (handler: ListenHandler) => {

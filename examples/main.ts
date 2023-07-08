@@ -2,6 +2,6 @@ import fastro from "../server/mod.ts";
 
 const f = fastro();
 
-f.get("/", () => new Response("Hello world"));
+f.get("/", () => "Hello, World!");
 
-f.serve();
+await f.serve();
