@@ -305,10 +305,7 @@ export class HttpServer implements Fastro {
   }
 
   #build = async () => {
-    if (!this.#development) {
-      console.log("this.#development===>", this.#development);
-      return;
-    }
+    if (!this.#development) return;
     try {
       Deno.mkdirSync(`${Deno.cwd()}/hydrate`);
     } catch (error) {
