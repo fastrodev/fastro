@@ -239,12 +239,6 @@ import ${component} from "../pages/${component}.tsx";
 
   #handleComponent = (c: FunctionComponent) => {
     if (!this.#options.html?.body) return;
-    // if (this.#development) {
-    //   this.#options.html?.body.script?.push({
-    //     src: `${this.#internalRoute}/${c.name.toLocaleLowerCase()}.js`,
-    //   });
-    //   return;
-    // }
     this.#options.html?.body.script?.push({
       src: `${this.#staticPath}/${c.name.toLocaleLowerCase()}.js`,
     });
