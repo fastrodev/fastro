@@ -9,4 +9,4 @@ f.get(
   },
 );
 
-f.serve();
+await f.serve();

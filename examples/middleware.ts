@@ -53,4 +53,4 @@ f.post("/:user", async (req: HttpRequest, _ctx: Context) => {
   return Response.json(u.value);
 });
 
-f.serve();
+await f.serve();

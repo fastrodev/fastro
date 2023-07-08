@@ -4,4 +4,4 @@ const f = fastro();
 
 f.get("/", () => ({ text: "Hello json" }));
 
-f.serve();
+await f.serve();

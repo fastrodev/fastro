@@ -55,12 +55,9 @@ Copy and paste the code below
 
 ```ts
 import fastro from "https://deno.land/x/fastro/server/mod.ts";
-
 const f = fastro();
-
 f.get("/", () => "Hello, World!");
-
-f.serve();
+await f.serve();
 ```
 
 Save the file. And run the app

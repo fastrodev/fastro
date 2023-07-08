@@ -47,13 +47,28 @@ export class Render {
     opt.pageFolder = opt.pageFolder ?? "pages";
     opt.cache = opt.cache ?? true;
     opt.development = opt.development ?? true;
-    opt.html.body = opt.html.body ?? {
-      script: [],
-    };
+    opt.html = opt.html ?? {};
     opt.html.head = opt.html.head ?? {
       meta: [],
       script: [],
       link: [],
+    };
+
+    const meta = [{ charset: "utf-8" }, {
+      name: "viewport",
+      content: "width=device-width, initial-scale=1.0",
+    }];
+    if (opt.html.head.descriptions) {
+      meta.push({
+        name: "description",
+        content: opt.html.head.descriptions,
+      });
+    }
+    opt.html.head.meta = opt.html.head.meta ?? meta;
+    opt.html.head.script = opt.html.head.script ?? [];
+
+    opt.html.body = opt.html.body ?? {
+      script: [],
     };
 
     const options = { ...opt };
@@ -79,48 +94,52 @@ export class Render {
 
     return (
       <html
-        lang={this.#options.html.lang}
-        className={this.#options.html.class}
+        lang={this.#options.html?.lang}
+        className={this.#options.html?.class}
       >
-        <head>
-          <title>{this.#options.html?.head?.title}</title>
-          {!this.#options.html?.head?.meta
-            ? ""
-            : this.#options.html?.head?.meta.map((m) => (
-              <meta
-                property={m.property}
-                name={m.name}
-                content={m.content}
-                itemProp={m.itemprop}
-                charSet={m.charset}
-              />
-            ))}
-          {!this.#options.html?.head?.link
-            ? ""
-            : this.#options.html?.head?.link.map((l) => (
-              <link
-                href={l.href}
-                integrity={l.integrity}
-                rel={l.rel}
-                media={l.media}
-                crossOrigin={l.crossorigin}
-              >
-              </link>
-            ))}
-          {!this.#options.html?.head?.script
-            ? ""
-            : this.#options.html?.head?.script.map((s) => (
-              <script
-                src={s.src}
-                type={s.type}
-                crossOrigin={s.crossorigin}
-                nonce={s.nonce}
-                integrity={s.integrity}
-              />
-            ))}
-        </head>
+        {!this.#options.html?.head ? "" : (
+          <head>
+            {this.#options.html?.head?.title
+              ? <title>{this.#options.html?.head?.title}</title>
+              : ""}
+            {!this.#options.html?.head?.meta
+              ? ""
+              : this.#options.html?.head?.meta.map((m) => (
+                <meta
+                  property={m.property}
+                  name={m.name}
+                  content={m.content}
+                  itemProp={m.itemprop}
+                  charSet={m.charset}
+                />
+              ))}
+            {!this.#options.html?.head?.link
+              ? ""
+              : this.#options.html?.head?.link.map((l) => (
+                <link
+                  href={l.href}
+                  integrity={l.integrity}
+                  rel={l.rel}
+                  media={l.media}
+                  crossOrigin={l.crossorigin}
+                >
+                </link>
+              ))}
+            {!this.#options.html?.head?.script
+              ? ""
+              : this.#options.html?.head?.script.map((s) => (
+                <script
+                  src={s.src}
+                  type={s.type}
+                  crossOrigin={s.crossorigin}
+                  nonce={s.nonce}
+                  integrity={s.integrity}
+                />
+              ))}
+          </head>
+        )}
         <body className={this.#options.html?.body?.class}>
-          <div id="root" className={this.#options.html.body?.rootClass}>
+          <div id="root" className={this.#options.html?.body?.rootClass}>
             {el}
           </div>
           {!this.#options.html?.body?.script
@@ -221,7 +240,6 @@ import ${component} from "../pages/${component}.tsx";
   }
 
   #renderToString = async (component: Component, cached?: boolean) => {
-    this.#setDefaultLayout();
     this.#handleDevelopment();
     if (isJSX(component as JSX.Element)) {
       const html = ReactDOMServer.renderToString(this.#initHtml(component));
@@ -264,37 +282,6 @@ import ${component} from "../pages/${component}.tsx";
     }
   };
 
-  #setDefaultLayout = () => {
-    if (!this.#options.html.lang) {
-      this.#options.html.lang = "en";
-    }
-
-    if (!this.#options.html.head?.meta) {
-      const meta = {
-        title: this.#options.html.head?.title,
-        descriptions: this.#options.html.head?.descriptions,
-        meta: [
-          { charset: "utf-8" },
-          {
-            name: "viewport",
-            content: "width=device-width, initial-scale=1.0",
-          },
-          {
-            name: "description",
-            content: this.#options.html.head?.descriptions,
-          },
-        ],
-      };
-      this.#options.html.head = { ...meta };
-    }
-
-    if (!this.#options.html.head?.script) {
-      const head = this.#options.html.head;
-      head.script = [];
-      this.#options.html.head = { ...head };
-    }
-  };
-
   #handleDevelopment = () => {
     if (!this.#development) return;
     const refreshPath = `${this.#staticPath}/refresh.js`;
@@ -309,7 +296,7 @@ import ${component} from "../pages/${component}.tsx";
         }),
     );
 
-    if (this.#options.html?.head) {
+    if (this.#options.html?.head?.script) {
       this.#options.html?.head.script?.push({
         src: refreshPath,
       });

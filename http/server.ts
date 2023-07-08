@@ -65,7 +65,7 @@ export type RenderOptions = {
   status?: number;
   props?: unknown;
   development?: boolean;
-  html: {
+  html?: {
     lang?: string;
     class?: string;
     head?: {

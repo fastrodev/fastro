@@ -7,4 +7,4 @@ f.get("/:user", (req: HttpRequest) => {
   return Response.json(data);
 });
 
-f.serve();
+await f.serve();

@@ -24,7 +24,10 @@ f.get("/api", () => {
 
 f.static("/static", { folder: "static" });
 f.page("/app", app, (_req: HttpRequest, ctx: Context) => {
-  return ctx.props({ data: "Guest" }).render({ build: true, html: {} });
+  return ctx.props({ data: "Guest" }).render({
+    build: true,
+    html: { head: { title: "React component" } },
+  });
 });
 f.page(
   "/",
@@ -81,4 +84,4 @@ f.onListen(({ port, hostname }) => {
   console.log(`Listening on http://${hostname}:${port}`);
 });
 
-f.serve();
+await f.serve();

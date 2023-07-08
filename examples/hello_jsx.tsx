@@ -4,4 +4,4 @@ const f = fastro();
 
 f.get("/", () => <h1>Hello jsx</h1>);
 
-f.serve();
+await f.serve();
