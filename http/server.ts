@@ -305,7 +305,7 @@ export class HttpServer implements Fastro {
   }
 
   #build = async () => {
-    if (this.#development) {
+    if (!this.#development) {
       console.log("this.#development===>", this.#development);
       return;
     }
