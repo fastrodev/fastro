@@ -227,6 +227,7 @@ export class HttpServer implements Fastro {
     this.#maxAge = 0;
     this.#development = this.#getDevelopment();
     this.#unstable = this.#getUnstable();
+    console.log("this.#development", this.#development);
   }
 
   #getUnstable = () => {
@@ -236,7 +237,9 @@ export class HttpServer implements Fastro {
   };
 
   #getDevelopment = () => {
-    return Deno.args[0] === "--development";
+    return Deno.env.get("DEVELOPMENT") === "false"
+      ? false
+      : Deno.args[0] === "--development";
   };
 
   serve = async () => {
