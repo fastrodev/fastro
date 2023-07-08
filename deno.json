@@ -17,6 +17,21 @@
   "tasks": {
     "start": "deno run -A --watch main.ts",
     "test": "rm -rf cov && deno test -A --coverage=cov && deno coverage cov",
-    "coverage": "deno coverage cov --lcov > cov.lcov"
+    "coverage": "deno coverage cov --lcov > cov.lcov",
+    "bench": "deno run -A bench/run.ts",
+    "deno": "deno run -A examples/deno.ts",
+    "fastro": "deno run -A examples/fastro.ts",
+    "hello_json": "deno run -A examples/hello_json.ts",
+    "hello_jsx": "deno run -A examples/hello_jsx.tsx",
+    "hello_string": "deno run -A examples/hello_string.ts",
+    "hello_world_fastro_json": "deno run -A examples/hello_world_fastro_json.ts",
+    "hello_world_fastro_jsx": "deno run -A examples/hello_world_fastro_jsx.tsx",
+    "hello_world_fastro": "deno run -A examples/hello_world_fastro.ts",
+    "hello_world": "deno run -A examples/hello_world.ts",
+    "middleware": "deno run -A --unstable examples/middleware.ts",
+    "params": "deno run -A examples/params.ts",
+    "ssr": "deno run -A examples/ssr.ts",
+    "static_file": "deno run -A examples/static_file.ts",
+    "string": "deno run -A examples/string.ts"
   }
 }

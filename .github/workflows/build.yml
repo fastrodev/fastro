@@ -44,7 +44,10 @@ jobs:
         uses: baptiste0928/cargo-install@v1
         with:
           crate: oha
-          version: 0.5.5
+          version: 0.6.0
+
+      - name: Generate internal benchmarks
+        run: deno task bench
 
       - name: Push changes
         uses: actions-js/push@v1
