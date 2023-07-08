@@ -32,11 +32,11 @@ Create a `main.ts` file for deno-cli entry point.
 ```ts
 import fastro from "https://deno.land/x/fastro/server/mod.ts";
 
-const f = fastro();
+const f = new fastro();
 
 f.get("/", () => "Hello, World!");
 
-f.serve();
+await f.serve();
 ```
 
 Run the app

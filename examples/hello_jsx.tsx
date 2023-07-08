@@ -1,6 +1,6 @@
 import fastro from "../server/mod.ts";
 
-const f = fastro();
+const f = new fastro();
 
 f.get("/", () => <h1>Hello jsx</h1>);
 

@@ -1,13 +1,10 @@
 import app from "./pages/app.tsx";
 import index from "./pages/index.tsx";
-import fastro, {
-  Context,
-  HttpRequest,
-  Next,
-  RenderOptions,
-} from "./server/mod.ts";
+import { Context, HttpRequest, Next, RenderOptions } from "./server/mod.ts";
 
-const f = fastro();
+import { HttpServer as fastro } from "./http/server.ts";
+
+const f = new fastro();
 
 f.use((req: HttpRequest, _ctx: Context, next: Next) => {
   console.log(`${req.method} ${req.url}`);

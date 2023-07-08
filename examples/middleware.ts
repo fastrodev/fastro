@@ -1,6 +1,6 @@
 import fastro, { Context, HttpRequest, Next } from "../server/mod.ts";
 
-const f = fastro();
+const f = new fastro();
 f.record["init"] = "Hello";
 // run deno with --unstable
 f.record["kv"] = await Deno.openKv();
