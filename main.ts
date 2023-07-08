@@ -84,4 +84,4 @@ f.onListen(({ port, hostname }) => {
   console.log(`Listening on http://${hostname}:${port}`);
 });
 
-await f.serve();
+await f.serve({ port: 3000 });

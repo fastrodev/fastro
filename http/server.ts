@@ -237,11 +237,12 @@ export class HttpServer implements Fastro {
       : Deno.args[0] === "--development";
   };
 
-  serve = async () => {
+  serve = async (options?: { port: number }) => {
     await this.#build();
+    const port = options?.port ?? this.#port;
     if (Deno.env.get("DENO_DEPLOYMENT_ID")) {
       this.#server = new Server({
-        port: this.#port,
+        port,
         handler: this.#handleRequest,
         onError: this.#handleError,
       });
@@ -255,7 +256,7 @@ export class HttpServer implements Fastro {
     }
 
     this.#server = Deno.serve({
-      port: this.#port,
+      port,
       handler: this.#handleRequest,
       onListen: this.#listenHandler,
       onError: this.#handleError,
