@@ -118,7 +118,7 @@ const formattedDate = date.toLocaleDateString("en-US", {
 });
 
 let markdown = `---
-title: "Fastro internal benchmark"
+title: "Fastro internal benchmarks"
 description: This is the final result of an internal benchmarks running on a github action
 image: https://fastro.dev/static/image.png
 author: Yanu Widodo
