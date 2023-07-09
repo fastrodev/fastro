@@ -127,7 +127,8 @@ date: ${formattedDate}
 
 ## Benchmark script
 
-This is the final output of an internal benchmark run on a github action. 
+This is the final output of an internal benchmark run on a github action. It consists of a simple application for a specific purpose. Each is then accessed by the OHA tool within 10 seconds. The results are then sorted by the fastest.
+
 You can find the benchmarks script on this page: [run.ts](https://github.com/fastrodev/fastro/blob/main/bench/run.ts)
 
 ## Benchmark results
