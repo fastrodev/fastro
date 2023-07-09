@@ -1,8 +1,7 @@
+import { HttpServer as fastro } from "./http/server.ts";
 import app from "./pages/app.tsx";
 import index from "./pages/index.tsx";
 import { Context, HttpRequest, Next, RenderOptions } from "./server/mod.ts";
-
-import { HttpServer as fastro } from "./http/server.ts";
 
 const f = new fastro();
 
@@ -11,10 +10,6 @@ f.use((req: HttpRequest, _ctx: Context, next: Next) => {
   return next();
 });
 
-f.get("/res", () => new Response("res"));
-f.get("/txt", () => "Text");
-f.get("/json", () => ({ status: true }));
-f.get("/array", () => [1, 2, 3, 4, 5]);
 f.get("/api", () => {
   return Response.json({ time: new Date().getTime() });
 });
@@ -29,7 +24,7 @@ f.page("/app", app, (_req: HttpRequest, ctx: Context) => {
 f.page(
   "/",
   index,
-  (_req: HttpRequest, ctx: Context) => {
+  async (_req: HttpRequest, ctx: Context) => {
     const options: RenderOptions = {
       build: false,
       html: {
@@ -73,7 +68,11 @@ f.page(
         },
       },
     };
-    return ctx.render(options);
+    const data = await fetch(
+      "https://api.github.com/repos/fastrodev/fastro/releases/latest",
+    );
+    const git = JSON.parse(await data.text());
+    return ctx.props({ version: git["name"] }).render(options);
   },
 );
 
