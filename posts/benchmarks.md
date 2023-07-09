@@ -6,19 +6,19 @@ author: Yanu Widodo
 date: Jul 9, 2023
 ---
 
-| module                                                                                                       | rps      | relative |
-| ------------------------------------------------------------------------------------------------------------ | -------- | -------- |
-| [deno](https://github.com/fastrodev/fastro/blob/main/examples/deno.ts)                                       | 67777.27 | 100%     |
-| [string](https://github.com/fastrodev/fastro/blob/main/examples/string.ts)                                   | 59433.35 | 88%      |
-| [fastro](https://github.com/fastrodev/fastro/blob/main/examples/fastro.ts)                                   | 58186.42 | 86%      |
-| [hello_world_fastro](https://github.com/fastrodev/fastro/blob/main/examples/hello_world_fastro.ts)           | 57362.93 | 85%      |
-| [params](https://github.com/fastrodev/fastro/blob/main/examples/params.ts)                                   | 56993.26 | 84%      |
-| [hello_world](https://github.com/fastrodev/fastro/blob/main/examples/hello_world.ts)                         | 55737.85 | 82%      |
-| [hello_world_fastro_json](https://github.com/fastrodev/fastro/blob/main/examples/hello_world_fastro_json.ts) | 55224.68 | 81%      |
-| [hello_json](https://github.com/fastrodev/fastro/blob/main/examples/hello_json.ts)                           | 54041.47 | 80%      |
-| [hello_jsx](https://github.com/fastrodev/fastro/blob/main/examples/hello_jsx.tsx)                            | 52716.61 | 78%      |
-| [hello_world_fastro_jsx](https://github.com/fastrodev/fastro/blob/main/examples/hello_world_fastro_jsx.tsx)  | 52451.69 | 77%      |
-| [hello_string](https://github.com/fastrodev/fastro/blob/main/examples/hello_string.ts)                       | 45861.47 | 68%      |
-| [middleware](https://github.com/fastrodev/fastro/blob/main/examples/middleware.ts)                           | 12627.00 | 19%      |
-| [static_file](https://github.com/fastrodev/fastro/blob/main/examples/static_file.ts)                         | 9948.42  | 15%      |
-| [ssr](https://github.com/fastrodev/fastro/blob/main/examples/ssr.ts)                                         | 6593.23  | 10%      |
+| module                                                                                                       |      rps | relative |
+| :----------------------------------------------------------------------------------------------------------- | -------: | -------: |
+| [deno](https://github.com/fastrodev/fastro/blob/main/examples/deno.ts)                                       | 67103.62 |     100% |
+| [fastro](https://github.com/fastrodev/fastro/blob/main/examples/fastro.ts)                                   | 58615.09 |      87% |
+| [hello_world_fastro](https://github.com/fastrodev/fastro/blob/main/examples/hello_world_fastro.ts)           | 57440.57 |      86% |
+| [hello_world](https://github.com/fastrodev/fastro/blob/main/examples/hello_world.ts)                         | 57411.43 |      86% |
+| [string](https://github.com/fastrodev/fastro/blob/main/examples/string.ts)                                   | 57146.55 |      85% |
+| [params](https://github.com/fastrodev/fastro/blob/main/examples/params.ts)                                   | 57042.81 |      85% |
+| [hello_json](https://github.com/fastrodev/fastro/blob/main/examples/hello_json.ts)                           | 55526.35 |      83% |
+| [hello_world_fastro_json](https://github.com/fastrodev/fastro/blob/main/examples/hello_world_fastro_json.ts) | 55331.76 |      82% |
+| [hello_string](https://github.com/fastrodev/fastro/blob/main/examples/hello_string.ts)                       | 54281.45 |      81% |
+| [hello_jsx](https://github.com/fastrodev/fastro/blob/main/examples/hello_jsx.tsx)                            | 52436.94 |      78% |
+| [hello_world_fastro_jsx](https://github.com/fastrodev/fastro/blob/main/examples/hello_world_fastro_jsx.tsx)  | 52293.75 |      78% |
+| [middleware](https://github.com/fastrodev/fastro/blob/main/examples/middleware.ts)                           | 12811.15 |      19% |
+| [static_file](https://github.com/fastrodev/fastro/blob/main/examples/static_file.ts)                         |  8538.16 |      13% |
+| [ssr](https://github.com/fastrodev/fastro/blob/main/examples/ssr.ts)                                         |  8480.04 |      13% |
