@@ -467,7 +467,7 @@ export class HttpServer implements Fastro {
       if (result) return this.#handleResponse(result);
     }
 
-    const md = this.#findMarkdownFiles(req);
+    const md = await this.#findMarkdownFiles(req);
     if (md) {
       const options: RenderOptions = {
         cache: true,
@@ -703,8 +703,8 @@ export class HttpServer implements Fastro {
     return this.#staticFolder;
   }
 
-  #findMarkdownFiles = (req: Request) => {
-    return new Markdown(this.#nest, req).getPost() as Post;
+  #findMarkdownFiles = async (req: Request) => {
+    return await new Markdown(this.#nest, req).getPost() as Post;
   };
 
   #findStaticFiles = async (staticUrl: string, reqUrl: string) => {

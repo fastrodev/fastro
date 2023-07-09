@@ -31,7 +31,7 @@ export class Markdown {
     this.#path = req.url;
   }
 
-  #readFile = (path: string) => {
+  #readFile = async (path: string) => {
     const pathname = `/*`;
     const nestID = pathname + path;
     if (this.#nest[nestID]) return this.#nest[nestID];
@@ -46,7 +46,11 @@ export class Markdown {
       const txt = Deno.readTextFileSync(`./posts/${file}.md`);
       const m = matter(txt);
       const markdown = this.#markdownToHtml(m.content);
-      const content = this.#contentContainer(markdown, m.data);
+      const data = await fetch(
+        "https://api.github.com/repos/fastrodev/fastro/releases/latest",
+      );
+      const git = JSON.parse(await data.text());
+      const content = this.#contentContainer(markdown, m.data, git["name"]);
       return this.#post[path] = {
         meta: m.data,
         content,
@@ -56,11 +60,16 @@ export class Markdown {
     }
   };
 
-  #contentContainer = (child: JSX.Element, meta: Meta) => {
+  #contentContainer = (
+    child: JSX.Element,
+    meta: Meta,
+    props: string,
+  ) => {
     const date = new Date(meta.date as string);
     const formattedDate = date.toLocaleString("en-US", {
       dateStyle: "medium",
     });
+    console.log("props", props);
     return (
       <div className="container container-sm">
         <div className="text-center">
@@ -99,6 +108,19 @@ export class Markdown {
             </div>
           )
           : ""}
+
+        <hr className="mt-5"></hr>
+        <footer className="text-center text-white-50">
+          <p>
+            Made with{" "}
+            <a
+              href="https://deno.land/x/fastro"
+              className="text-decoration-none text-white "
+            >
+              Fastro {props}
+            </a>
+          </p>
+        </footer>
       </div>
     );
   };
@@ -129,8 +151,8 @@ export class Markdown {
     );
   }
 
-  getPost = () => {
+  getPost = async () => {
     if (this.#nest[this.#path]) return this.#nest[this.#path];
-    return this.#nest[this.#path] = this.#readFile(this.#path);
+    return this.#nest[this.#path] = await this.#readFile(this.#path);
   };
 }
