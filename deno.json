@@ -20,18 +20,16 @@
     "coverage": "deno coverage cov --lcov > cov.lcov",
     "bench": "deno run -A bench/run.ts",
     "deno": "deno run -A examples/deno.ts",
-    "fastro": "deno run -A examples/fastro.ts",
-    "hello_json": "deno run -A examples/hello_json.ts",
-    "hello_jsx": "deno run -A examples/hello_jsx.tsx",
-    "hello_string": "deno run -A examples/hello_string.ts",
-    "hello_world_fastro_json": "deno run -A examples/hello_world_fastro_json.ts",
-    "hello_world_fastro_jsx": "deno run -A examples/hello_world_fastro_jsx.tsx",
-    "hello_world_fastro": "deno run -A examples/hello_world_fastro.ts",
-    "hello_world": "deno run -A examples/hello_world.ts",
+    "raw_json": "deno run -A examples/raw_json.ts",
+    "raw_jsx": "deno run -A examples/raw_jsx.tsx",
+    "raw_string": "deno run -A examples/raw_string.ts",
+    "ctx_json": "deno run -A examples/ctx_json.ts",
+    "ctx_jsx": "deno run -A examples/ctx_jsx.tsx",
+    "ctx_string": "deno run -A examples/ctx_string.ts",
+    "string_response": "deno run -A examples/string_response.ts",
     "middleware": "deno run -A --unstable examples/middleware.ts",
-    "params": "deno run -A examples/params.ts",
+    "params_query": "deno run -A examples/params_query.ts",
     "ssr": "deno run -A examples/ssr.ts",
-    "static_file": "deno run -A examples/static_file.ts",
-    "string": "deno run -A examples/string.ts"
+    "static_file": "deno run -A examples/static_file.ts"
   }
 }

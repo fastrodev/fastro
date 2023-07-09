@@ -11,10 +11,10 @@ async function oha(url?: string) {
     u,
   ];
   const oh = `oha ${args.join().replaceAll(",", " ")}`;
+  console.log(oh);
   const command = new Deno.Command("oha", {
     args,
   });
-
   const { code, stdout, stderr } = await command.output();
   const err = new TextDecoder().decode(stderr);
   if (!err && code === 0) {
@@ -105,7 +105,7 @@ const t = table.map((v) => {
     `[${v.module}](https://github.com/fastrodev/fastro/blob/main/examples/${v.module}.${v.ext})`;
   return [
     m,
-    v.requestsPerSec.toFixed(2),
+    v.requestsPerSec.toFixed(0),
     relative.toFixed(0) + "%",
   ];
 });
@@ -119,17 +119,25 @@ const formattedDate = date.toLocaleDateString("en-US", {
 
 let markdown = `---
 title: "Internal benchmarks"
-description: This is the final result of internal benchmarks running on a github action
+description: This is the final output of an internal benchmark run on a github action
 image: https://fastro.dev/static/image.png
 author: Yanu Widodo
 date: ${formattedDate}
 ---
+
+## Benchmark script
+
+This is the final output of an internal benchmark run on a github action. 
+You can find the benchmarks script on this page: [run.ts](https://github.com/fastrodev/fastro/blob/main/bench/run.ts)
+
+## Benchmark results
+
 `;
 markdown += `\n${
   markdownTable([
     ["module", "rps", "%"],
     ...t,
-  ], { align: ['l', 'r', 'r'] })
+  ], { align: ["l", "r", "r"] })
 }`;
 
 await Deno.writeTextFile("posts/benchmarks.md", markdown);

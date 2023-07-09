@@ -1,5 +1,5 @@
 import app from "../pages/app.tsx";
-import fastro, { Context, HttpRequest, Next } from "../server/mod.ts";
+import fastro, { Context, HttpRequest } from "../server/mod.ts";
 
 const f = new fastro();
 
@@ -8,10 +8,6 @@ f.static("/static", { folder: "static", maxAge: 90 });
 f.page(
   "/page",
   app,
-  (_req: HttpRequest, _ctx: Context, next: Next) => {
-    console.log(new Date());
-    return next();
-  },
   (_req: HttpRequest, ctx: Context) => {
     const options = {
       status: 200,
