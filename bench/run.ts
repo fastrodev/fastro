@@ -63,7 +63,7 @@ async function bench(server: string, ext: string) {
   d.spawn();
 
   let res;
-  if (server === "static") {
+  if (server === "static_file") {
     const url = "http://localhost:8000/static/post.css";
     res = await oha(url);
   } else if (server === "params") {
@@ -107,7 +107,6 @@ const t = table.map((v) => {
     m,
     v.requestsPerSec.toFixed(2),
     relative.toFixed(0) + "%",
-    `\`${v.oha}\``,
   ];
 });
 
@@ -128,7 +127,7 @@ date: ${formattedDate}
 `;
 markdown += `\n${
   markdownTable([
-    ["module", "rps", "relative", "cmd"],
+    ["module", "rps", "relative"],
     ...t,
   ])
 }`;
