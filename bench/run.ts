@@ -63,7 +63,10 @@ async function bench(server: string, ext: string) {
   d.spawn();
 
   let res;
-  if (server === "params") {
+  if (server === "static") {
+    const url = "http://localhost:8000/static/post.css";
+    res = await oha(url);
+  } else if (server === "params") {
     const url = "http://localhost:8000/agus?title=lead";
     res = await oha(url);
   } else {
@@ -98,7 +101,8 @@ const max = table[0];
 
 const t = table.map((v) => {
   const relative = (v.requestsPerSec / max.requestsPerSec) * 100;
-  const m = `[${v.module}](/examples/${v.module}.${v.ext})`;
+  const m =
+    `[${v.module}](https://github.com/fastrodev/fastro/blob/main/examples/${v.module}.${v.ext})`;
   return [
     m,
     v.requestsPerSec.toFixed(2),
@@ -107,7 +111,21 @@ const t = table.map((v) => {
   ];
 });
 
-let markdown = `# Benchmarks`;
+const date = new Date();
+const formattedDate = date.toLocaleDateString("en-US", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+});
+
+let markdown = `---
+title: "Fastro internal benchmark"
+description: This is the final result of an internal benchmark running on a github action
+image: https://fastro.dev/static/image.png
+author: Yanu Widodo
+date: ${formattedDate}
+---
+`;
 markdown += `\n${
   markdownTable([
     ["module", "rps", "relative", "cmd"],
@@ -115,5 +133,4 @@ markdown += `\n${
   ])
 }`;
 
-await Deno.writeTextFile("bench/result.json", JSON.stringify(table));
-await Deno.writeTextFile("bench/result.md", markdown);
+await Deno.writeTextFile("posts/benchmarks.md", markdown);
