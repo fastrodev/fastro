@@ -6,7 +6,7 @@ const f = new fastro();
 f.get("/api", () => Response.json({ msg: "hello" }));
 f.static("/static", { folder: "static", maxAge: 90 });
 f.page(
-  "/page",
+  "/",
   app,
   (_req: HttpRequest, ctx: Context) => {
     const options = {
