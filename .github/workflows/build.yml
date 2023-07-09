@@ -34,12 +34,6 @@ jobs:
           path-to-lcov: ./cov.lcov
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Deploy to Deno Deploy
-        uses: denoland/deployctl@v1
-        with:
-          project: fastro
-          entrypoint: main.ts
-
       - name: Install Oha
         uses: baptiste0928/cargo-install@v1
         with:
@@ -54,5 +48,11 @@ jobs:
         with:
           github_token: '${{ secrets.GITHUB_TOKEN }}'
           branch: main
+
+      - name: Deploy to Deno Deploy
+        uses: denoland/deployctl@v1
+        with:
+          project: fastro
+          entrypoint: main.ts
 
       
