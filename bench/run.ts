@@ -127,7 +127,7 @@ date: ${formattedDate}
 `;
 markdown += `\n${
   markdownTable([
-    ["module", "rps", "relative"],
+    ["module", "rps", "%"],
     ...t,
   ], { align: ['l', 'r', 'r'] })
 }`;
