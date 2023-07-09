@@ -119,11 +119,7 @@ export class Markdown {
                   PreTag="div"
                 />
               )
-              : (
-                <code {...props} className={className}>
-                  {children}
-                </code>
-              );
+              : <code {...props} className={className}>{children}</code>;
           },
         }}
         remarkPlugins={[remarkGfm]}
