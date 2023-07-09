@@ -129,7 +129,7 @@ markdown += `\n${
   markdownTable([
     ["module", "rps", "relative"],
     ...t,
-  ])
+  ], { align: ['l', 'r', 'r'] })
 }`;
 
 await Deno.writeTextFile("posts/benchmarks.md", markdown);
