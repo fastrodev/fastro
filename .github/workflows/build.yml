@@ -24,6 +24,12 @@ jobs:
 
       - name: Run tests
         run: deno task test
+
+      - name: Deploy to Deno Deploy
+        uses: denoland/deployctl@v1
+        with:
+          project: fastro
+          entrypoint: main.ts
       
       - name: Generate report
         run: deno coverage cov --lcov > cov.lcov
@@ -48,11 +54,5 @@ jobs:
         with:
           github_token: '${{ secrets.GITHUB_TOKEN }}'
           branch: main
-
-      - name: Deploy to Deno Deploy
-        uses: denoland/deployctl@v1
-        with:
-          project: fastro
-          entrypoint: main.ts
 
       
