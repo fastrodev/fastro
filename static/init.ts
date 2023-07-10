@@ -2,9 +2,9 @@ const version = "v0.73.0";
 export { version };
 
 const init = async (name?: string, version?: string) => {
-  const projectName = name ?? "my-project";
   try {
-    const v = version ?? "v0.73.0";
+    const projectName = name ?? "my-project";
+    const v = version ?? "v0.74.0";
     // vscode
     await Deno.mkdir(".vscode");
     await Deno.writeTextFile(
@@ -140,6 +140,32 @@ How to start production:
 \`\`\`
 deno task start
 \`\`\`
+
+`,
+    );
+    // page
+    await Deno.mkdir("pages");
+    await Deno.writeTextFile(
+      "pages/App.tsx",
+      `import React, { useState } from "https://esm.sh/react@18.2.0?dev";
+
+export default function App(props: { data: string }) {
+  return (
+    <>
+      <h1>Hello {props.data}</h1>
+      <Counter />
+    </>
+  );
+}
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      You clicked me {count} times
+    </button>
+  );
+}
 
 `,
     );
