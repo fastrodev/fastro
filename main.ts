@@ -21,10 +21,37 @@ f.page("/app", app, (_req: HttpRequest, ctx: Context) => {
     html: { head: { title: "React component" } },
   });
 });
+
+function denoRunCheck(req: HttpRequest) {
+  const regex = /^Deno\/(\d+\.\d+\.\d+)$/;
+  const string = req.headers.get("user-agent");
+  if (!string) return false;
+  const match = regex.exec(string);
+  if (!match) return false;
+  return true;
+}
+
+function init() {
+  const basePath = Deno.env.get("DENO_DEPLOYMENT_ID")
+    ? `https://raw.githubusercontent.com/fastrodev/fastro/main/static`
+    : "http://localhost:8000/static";
+  const code = `import init, { version } from "${basePath}/init.ts"; 
+  const name = Deno.args[0] ?? 'my-project';
+  await init(name, version)`;
+  return new Response(code, {
+    headers: {
+      "content-type": "application/typescript; charset=utf-8",
+    },
+  });
+}
+
 f.page(
   "/",
   index,
-  async (_req: HttpRequest, ctx: Context) => {
+  async (req: HttpRequest, ctx: Context) => {
+    const res = denoRunCheck(req);
+    if (res) return init();
+
     const options: RenderOptions = {
       build: false,
       html: {
