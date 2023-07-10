@@ -19,7 +19,7 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: vx.x.x
-      - run: deno lint --unstable server
+      - run: deno lint --unstable http
       - run: deno lint --unstable examples
 
       - name: Run tests
