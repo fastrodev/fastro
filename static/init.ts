@@ -4,8 +4,6 @@ export { version };
 const init = async (name?: string, version?: string) => {
   const projectName = name ?? "my-project";
   try {
-    await Deno.remove(".vscode", { recursive: true });
-    await Deno.remove(".github", { recursive: true });
     const v = version ?? "v0.73.0";
     // vscode
     await Deno.mkdir(".vscode");
@@ -145,8 +143,8 @@ deno task start
 
 `,
     );
-  } catch {
-    throw new Error("Project created");
+  } catch (error) {
+    throw error;
   }
 };
 export default init;

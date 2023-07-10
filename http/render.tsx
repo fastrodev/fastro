@@ -97,61 +97,57 @@ export class Render {
         lang={this.#options.html?.lang}
         className={this.#options.html?.class}
       >
-        {!this.#options.html?.head ? "" : (
-          <head>
-            {this.#options.html?.head?.title
-              ? <title>{this.#options.html?.head?.title}</title>
-              : ""}
-            {!this.#options.html?.head?.meta
-              ? ""
-              : this.#options.html?.head?.meta.map((m) => (
-                <meta
-                  property={m.property}
-                  name={m.name}
-                  content={m.content}
-                  itemProp={m.itemprop}
-                  charSet={m.charset}
-                />
-              ))}
-            {!this.#options.html?.head?.link
-              ? ""
-              : this.#options.html?.head?.link.map((l) => (
-                <link
-                  href={l.href}
-                  integrity={l.integrity}
-                  rel={l.rel}
-                  media={l.media}
-                  crossOrigin={l.crossorigin}
-                >
-                </link>
-              ))}
-            {!this.#options.html?.head?.script
-              ? ""
-              : this.#options.html?.head?.script.map((s) => (
-                <script
-                  src={s.src}
-                  type={s.type}
-                  crossOrigin={s.crossorigin}
-                  nonce={s.nonce}
-                  integrity={s.integrity}
-                />
-              ))}
-          </head>
-        )}
+        <head>
+          <title>{this.#options.html?.head?.title}</title>
+          {this.#options.html?.head?.meta
+            ? this.#options.html?.head?.meta.map((m) => (
+              <meta
+                property={m.property}
+                name={m.name}
+                content={m.content}
+                itemProp={m.itemprop}
+                charSet={m.charset}
+              />
+            ))
+            : ""}
+          {this.#options.html?.head?.link
+            ? this.#options.html?.head?.link.map((l) => (
+              <link
+                href={l.href}
+                integrity={l.integrity}
+                rel={l.rel}
+                media={l.media}
+                crossOrigin={l.crossorigin}
+              >
+              </link>
+            ))
+            : ""}
+          {this.#options.html?.head?.script
+            ? this.#options.html?.head?.script.map((s) => (
+              <script
+                src={s.src}
+                type={s.type}
+                crossOrigin={s.crossorigin}
+                nonce={s.nonce}
+                integrity={s.integrity}
+              />
+            ))
+            : ""}
+        </head>
         <body className={this.#options.html?.body?.class}>
           <div id="root" className={this.#options.html?.body?.rootClass}>
             {el}
           </div>
-          {!this.#options.html?.body?.script
-            ? ""
-            : this.#options.html?.body?.script.map((s) => (
+          {this.#options.html?.body?.script
+            ? this.#options.html?.body?.script.map((s) => (
               <script
                 src={s.src}
                 type={s.type}
                 crossOrigin={s.crossorigin}
                 nonce={s.nonce}
               />
-            ))}
+            ))
+            : ""}
         </body>
       </html>
     );
@@ -173,29 +169,20 @@ es.onmessage = function(e) {
   };
 
   #createHydrate(component: string, props?: any) {
-    const properties = props
-      ? `const props = JSON.parse(new TextDecoder("utf-8").decode(decode(window.__INITIAL_DATA__))) || {}; 
-    hydrateRoot(document.getElementById("root") as HTMLElement, <${component} {...props} />);`
-      : `hydrateRoot(document.getElementById("root") as HTMLElement, <${component}/>);`;
-
-    return `// deno-lint-ignore-file
-// DO NOT EDIT. This file is generated automatically. 
-// Required for the development and deployment process.
-declare global { interface Window { __INITIAL_DATA__: any; } } 
+    return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client?dev";
+import { createElement } from "https://esm.sh/react@18.2.0?dev";
 import { decode } from "https://deno.land/std@0.192.0/encoding/base64.ts"; 
-import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client"; 
-import React from "https://esm.sh/react@18.2.0"; 
 import ${component} from "../pages/${component}.tsx";
-    ${properties}
-    `;
+const props = JSON.parse(new TextDecoder("utf-8").decode(decode(window.__INITIAL_DATA__))) || {};
+const el = createElement(${component}, props);
+hydrateRoot(document.getElementById("root") as Element, el);
+`;
   }
 
   createBundle = async (elementName: string) => {
     const cwd = Deno.cwd();
     const hydrateTarget =
       `${cwd}/hydrate/${elementName.toLowerCase()}.hydrate.tsx`;
-    const componentPath =
-      `${this.#internalRoute}/${elementName.toLowerCase()}.js`;
     const bundlePath =
       `${cwd}/${this.#server.getStaticFolder()}/js/${elementName.toLowerCase()}.js`;
 
