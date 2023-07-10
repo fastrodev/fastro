@@ -1,5 +1,5 @@
+import fastro, { Context, HttpRequest } from "../mod.ts";
 import app from "../pages/app.tsx";
-import fastro, { Context, HttpRequest } from "../server/mod.ts";
 
 const f = new fastro();
 

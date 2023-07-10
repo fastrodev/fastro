@@ -1,4 +1,5 @@
 // deno-lint-ignore-file
+import { Markdown, Post } from "../markdown/mod.tsx";
 import {
   ConnInfo,
   contentType,
@@ -10,7 +11,6 @@ import {
   STATUS_TEXT,
   toHashString,
 } from "./deps.ts";
-import { Markdown, Post } from "./markdown.tsx";
 import { Render } from "./render.tsx";
 
 export type ServerHandler = Deno.ServeHandler | Handler;

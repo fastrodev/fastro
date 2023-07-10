@@ -30,7 +30,7 @@ can:
 Create a `main.ts` file for deno-cli entry point.
 
 ```ts
-import fastro from "https://deno.land/x/fastro/server/mod.ts";
+import fastro from "https://deno.land/x/fastro/mod.ts";
 
 const f = new fastro();
 

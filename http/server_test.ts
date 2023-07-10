@@ -1,4 +1,4 @@
-import fastro from "../server/mod.ts";
+import fastro from "../mod.ts";
 import { assertEquals } from "./deps.ts";
 
 const host = "http://localhost:8000";

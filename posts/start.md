@@ -54,7 +54,7 @@ Open the created file with vi or your favorite editor
 Copy and paste the code below
 
 ```ts
-import fastro from "https://deno.land/x/fastro/server/mod.ts";
+import fastro from "https://deno.land/x/fastro/mod.ts";
 
 const f = new fastro();
 
