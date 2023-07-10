@@ -3,8 +3,8 @@ import {
   encode as base64Encode,
 } from "https://deno.land/std@0.193.0/encoding/base64.ts";
 import * as esbuild from "https://deno.land/x/esbuild@v0.18.10/mod.js";
-import ReactDOMServer from "https://esm.sh/react-dom@18.2.0/server";
-import React, { createElement as h } from "https://esm.sh/react@18.2.0";
+import ReactDOMServer from "https://esm.sh/react-dom@18.2.0/server?dev";
+import React, { createElement as h } from "https://esm.sh/react@18.2.0?dev";
 
 export { toHashString } from "https://deno.land/std@0.193.0/crypto/to_hash_string.ts";
 export {
