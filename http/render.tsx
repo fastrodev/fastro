@@ -1,11 +1,5 @@
 // deno-lint-ignore-file
-import {
-  base64Encode,
-  denoPlugins,
-  esbuild,
-  React,
-  ReactDOMServer,
-} from "./deps.ts";
+import { denoPlugins, esbuild, React, ReactDOMServer } from "./deps.ts";
 import {
   BUILD_ID,
   Component,
@@ -163,17 +157,15 @@ es.onmessage = function(e) {
   };
 
   #initPropsJs = () => {
-    return `window.__INITIAL_DATA__ = "${
-      base64Encode(JSON.stringify(this.#options.props))
-    }"`;
+    return `window.__INITIAL_DATA__ = ${JSON.stringify(this.#options.props)}`;
   };
 
   #createHydrate(component: string, props?: any) {
     return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client?dev";
 import { createElement } from "https://esm.sh/react@18.2.0?dev";
-import { decode } from "https://deno.land/std@0.192.0/encoding/base64.ts"; 
 import ${component} from "../pages/${component}.tsx";
-const props = JSON.parse(new TextDecoder("utf-8").decode(decode(window.__INITIAL_DATA__))) || {};
+const props = window.__INITIAL_DATA__ || {};
+delete window.__INITIAL_DATA__ ;
 const el = createElement(${component}, props);
 hydrateRoot(document.getElementById("root") as Element, el);
 `;
