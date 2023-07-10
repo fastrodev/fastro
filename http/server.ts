@@ -88,7 +88,7 @@ export class Context {
   server!: Fastro;
   info!: Info;
   [key: string]: any;
-  props!: (props: unknown) => this;
+  // props!: (props: unknown) => this;
   render!: (options?: RenderOptions) => Response | Promise<Response>;
   send!: (data: unknown, status?: number) => Response | Promise<Response>;
 }
@@ -305,7 +305,7 @@ export class HttpServer implements Fastro {
   #build = async () => {
     if (!this.#development) return;
     try {
-      Deno.mkdirSync(`${Deno.cwd()}/hydrate`);
+      await Deno.mkdir(`${Deno.cwd()}/hydrate`);
     } catch (error) {
       throw error;
     }
@@ -771,17 +771,11 @@ export class HttpServer implements Fastro {
     info: Info,
     element?: Component,
   ) {
-    let props: unknown;
     const ctx = new Context();
     ctx.server = this;
     ctx.info = info;
-    ctx.props = (p: unknown) => {
-      props = p;
-      return ctx;
-    };
     ctx.render = (options?: RenderOptions) => {
       if (!element) return new Response("Component not found");
-      if (options) options.props = props;
       return this.#renderElement(element, options);
     };
     ctx.send = (data: unknown, status?: number) => {

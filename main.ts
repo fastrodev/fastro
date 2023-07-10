@@ -16,8 +16,9 @@ f.get("/api", () => {
 
 f.static("/static", { folder: "static" });
 f.page("/app", app, (_req: HttpRequest, ctx: Context) => {
-  return ctx.props({ data: "Guest" }).render({
+  return ctx.render({
     build: true,
+    props: { data: "Guest" },
     html: { head: { title: "React component" } },
   });
 });
@@ -52,8 +53,13 @@ f.page(
     const res = denoRunCheck(req);
     if (res) return init();
 
+    const data = await fetch(
+      "https://api.github.com/repos/fastrodev/fastro/releases/latest",
+    );
+    const git = JSON.parse(await data.text());
     const options: RenderOptions = {
       build: false,
+      props: { version: git["name"] },
       html: {
         class: "h-100",
         head: {
@@ -95,11 +101,7 @@ f.page(
         },
       },
     };
-    const data = await fetch(
-      "https://api.github.com/repos/fastrodev/fastro/releases/latest",
-    );
-    const git = JSON.parse(await data.text());
-    return ctx.props({ version: git["name"] }).render(options);
+    return ctx.render(options);
   },
 );
 
