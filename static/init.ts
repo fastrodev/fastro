@@ -1,6 +1,3 @@
-const version = "v0.73.0";
-export { version };
-
 const init = async (name?: string, version?: string) => {
   try {
     const projectName = name ?? "my-project";
