@@ -18,7 +18,6 @@ export class Render {
   #nest: Record<string, any>;
   #development: boolean;
   #server: Fastro;
-  #internalRoute: string;
   #staticPath: string;
 
   constructor(
@@ -32,7 +31,6 @@ export class Render {
     this.#nest = nest;
     this.#development = server.getDevelopmentStatus();
     this.#server = server;
-    this.#internalRoute = `/___${BUILD_ID}`;
     this.#staticPath = `${this.#server.getStaticPath()}/js`;
   }
 
@@ -205,18 +203,18 @@ hydrateRoot(document.getElementById("root") as Element, el);
     return `render${el}`;
   };
 
-  createHydrateFile(elementName: string) {
+  createHydrateFile = async (elementName: string) => {
     try {
       const target =
         `${Deno.cwd()}/hydrate/${elementName.toLowerCase()}.hydrate.tsx`;
-      Deno.writeTextFileSync(
+      await Deno.writeTextFile(
         target,
         this.#createHydrate(elementName, this.#options.props),
       );
     } catch (error) {
       throw error;
     }
-  }
+  };
 
   #renderToString = async (component: Component, cached?: boolean) => {
     this.#handleDevelopment();

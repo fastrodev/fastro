@@ -323,7 +323,7 @@ export class HttpServer implements Fastro {
       );
 
       const el = page.element as FunctionComponent;
-      r.createHydrateFile(el.name);
+      await r.createHydrateFile(el.name);
       await r.createBundle(el.name);
     }
     Deno.removeSync(`${Deno.cwd()}/hydrate`, { recursive: true });
