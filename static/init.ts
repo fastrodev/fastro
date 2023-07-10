@@ -1,7 +1,10 @@
-const init = async (name?: string, version?: string) => {
+const version = "v0.74.1";
+export { version };
+
+const init = async (name?: string, ver?: string) => {
   try {
     const projectName = name ?? "my-project";
-    const v = version ?? "v0.74.0";
+    const v = ver ?? version;
     // vscode
     await Deno.mkdir(".vscode");
     await Deno.writeTextFile(
