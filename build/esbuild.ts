@@ -1,35 +1,30 @@
 import { denoPlugins, esbuild, esbuildWasmURL } from "./deps.ts";
 
-async function initEsbuild() {
-  // deno-lint-ignore no-deprecated-deno-api
-  if (Deno.run === undefined) {
-    await esbuild.initialize({
-      wasmURL: esbuildWasmURL,
-      worker: false,
-    });
-    console.log("===ESBUILD WASM===");
-  } else {
-    await esbuild.initialize({});
-  }
-}
-
 export class Esbuild {
   #elementName: string;
-  // #staticFolder: string;
 
   constructor(name: string) {
     this.#elementName = name;
-    // this.#staticFolder = folder;
   }
 
+  #initEsbuild = async () => {
+    // deno-lint-ignore no-deprecated-deno-api
+    if (Deno.run === undefined) {
+      await esbuild.initialize({
+        wasmURL: esbuildWasmURL,
+        worker: false,
+      });
+    } else {
+      await esbuild.initialize({});
+    }
+  };
+
   build = async () => {
-    await initEsbuild();
+    await this.#initEsbuild();
 
     const cwd = Deno.cwd();
     const hydrateTarget =
       `${cwd}/hydrate/${this.#elementName.toLowerCase()}.hydrate.tsx`;
-    // const bundlePath =
-    //   `${cwd}/${this.#staticFolder}/js/${this.#elementName.toLowerCase()}.js`;
 
     const absWorkingDir = Deno.cwd();
     const esbuildRes = await esbuild.build({
@@ -38,7 +33,6 @@ export class Esbuild {
       format: "esm",
       jsxImportSource: "react",
       absWorkingDir,
-      // outfile: bundlePath,
       bundle: true,
       treeShaking: true,
       write: false,
@@ -55,7 +49,3 @@ export class Esbuild {
     return esbuildRes;
   };
 }
-
-// const b = new Esbuild("h");
-
-// b.build();

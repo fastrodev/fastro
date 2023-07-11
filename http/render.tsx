@@ -1,6 +1,6 @@
 // deno-lint-ignore-file
 import { Esbuild } from "../build/esbuild.ts";
-import { denoPlugins, esbuild, React, ReactDOMServer } from "./deps.ts";
+import { React, ReactDOMServer } from "./deps.ts";
 import {
   BUILD_ID,
   Component,
@@ -163,6 +163,8 @@ es.onmessage = function(e) {
     return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client?dev";
 import { createElement } from "https://esm.sh/react@18.2.0?dev";
 import ${component} from "../pages/${component}.tsx";
+// deno-lint-ignore no-explicit-any
+declare global { interface Window { __INITIAL_DATA__: any; } } 
 const props = window.__INITIAL_DATA__ || {};
 delete window.__INITIAL_DATA__ ;
 const el = createElement(${component}, props);
@@ -172,33 +174,16 @@ hydrateRoot(document.getElementById("root") as Element, el);
 
   createBundle = async (elementName: string) => {
     const es = new Esbuild(elementName);
-    const buildRes = await es.build();
-    console.log("buildRes", buildRes.outputFiles);
-
-    const cwd = Deno.cwd();
-    const hydrateTarget =
-      `${cwd}/hydrate/${elementName.toLowerCase()}.hydrate.tsx`;
-    const bundlePath =
-      `${cwd}/${this.#server.getStaticFolder()}/js/${elementName.toLowerCase()}.js`;
-
-    const absWorkingDir = Deno.cwd();
-    const esbuildRes = await esbuild.build({
-      plugins: [...denoPlugins()],
-      entryPoints: [hydrateTarget],
-      format: "esm",
-      jsxImportSource: "react",
-      absWorkingDir,
-      outfile: bundlePath,
-      bundle: true,
-      treeShaking: true,
-      write: true,
-      minify: true,
-      minifySyntax: true,
-      minifyWhitespace: true,
-    });
-
-    if (esbuildRes.errors.length > 0) {
-      throw esbuildRes.errors;
+    const bundle = await es.build();
+    const componentPath = `/static/js/${elementName.toLocaleLowerCase()}.js`;
+    for (const file of bundle.outputFiles) {
+      const str = new TextDecoder().decode(file.contents);
+      this.#server.push("GET", componentPath, () =>
+        new Response(str, {
+          headers: {
+            "Content-Type": "application/javascript",
+          },
+        }));
     }
 
     this.#nest[this.#getRenderId(elementName)] = true;
@@ -225,12 +210,6 @@ hydrateRoot(document.getElementById("root") as Element, el);
     let compID = "";
     this.#handleDevelopment();
     if (isJSX(component as JSX.Element)) {
-      // TEST
-      const es = new Esbuild("app");
-      const buildRes = await es.build();
-      console.log("buildRes", buildRes.outputFiles);
-      // END OF TEST
-
       compID = `default${this.#reqUrl}`;
       if (cached && this.#nest[compID]) return this.#nest[compID];
       const html = ReactDOMServer.renderToString(this.#initHtml(component));
@@ -241,13 +220,15 @@ hydrateRoot(document.getElementById("root") as Element, el);
     compID = `${c.name}${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
 
-    this.#handleComponent(c);
+    await this.#handleComponent(c);
     const layout = this.#initHtml(this.#element, this.#options.props);
     let html = ReactDOMServer.renderToString(layout);
     return this.#nest[compID] = `<!DOCTYPE html>${this.#setInitialProps(html)}`;
   };
 
-  #handleComponent = (c: FunctionComponent) => {
+  #handleComponent = async (c: FunctionComponent) => {
+    await this.createHydrateFile(c.name);
+    await this.createBundle(c.name);
     if (!this.#options.html?.body) return;
     this.#options.html?.body.script?.push({
       src: `${this.#staticPath}/${c.name.toLocaleLowerCase()}.js`,
