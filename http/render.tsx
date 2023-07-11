@@ -154,10 +154,6 @@ es.onmessage = function(e) {
 };`;
   };
 
-  #initPropsJs = () => {
-    return `window.__INITIAL_DATA__ = ${JSON.stringify(this.#options.props)}`;
-  };
-
   #createHydrate(component: string, props?: any) {
     return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client?dev";
 import { createElement } from "https://esm.sh/react@18.2.0?dev";
@@ -246,7 +242,10 @@ hydrateRoot(document.getElementById("root") as Element, el);
       this.#options.html?.body.script?.push({
         src: propsPath,
       });
-      const code = this.#initPropsJs();
+      const code = `window.__INITIAL_DATA__ = ${
+        JSON.stringify(this.#options.props)
+      }`;
+      console.log("code=====>", code);
       this.#server.push(
         "GET",
         propsPath,
