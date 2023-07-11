@@ -39,8 +39,16 @@ function init() {
     ? `https://raw.githubusercontent.com/fastrodev/fastro/main/static`
     : "http://localhost:8000/static";
   const code = `import init, { version } from "${basePath}/init.ts"; 
-  const name = Deno.args[0] ?? 'my-project';
-  await init(name, version)`;
+const name = Deno.args[0] ?? 'my-project';
+await init(name, version)
+const args = [
+  "task",
+  "dev",
+];
+const command = new Deno.Command("deno", {
+  args,
+});
+`;
   return new Response(code, {
     headers: {
       "content-type": "application/typescript; charset=utf-8",
