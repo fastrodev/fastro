@@ -70,7 +70,7 @@ export class Render {
     return this.#options = options;
   };
 
-  #initHtml = (element: Component) => {
+  #initHtml = (element: Component, props?: any) => {
     let el:
       | React.DetailedReactHTMLElement<
         React.InputHTMLAttributes<HTMLInputElement>,
@@ -133,6 +133,7 @@ export class Render {
           <div id="root" className={this.#options.html?.body?.rootClass}>
             {el}
           </div>
+          {props ? <script></script> : ""}
           {this.#options.html?.body?.script
             ? this.#options.html?.body?.script.map((s) => (
               <script
@@ -220,7 +221,6 @@ hydrateRoot(document.getElementById("root") as Element, el);
     this.#handleDevelopment();
     if (isJSX(component as JSX.Element)) {
       compID = `default${this.#reqUrl}`;
-      console.log(compID);
       if (cached && this.#nest[compID]) return this.#nest[compID];
       const html = ReactDOMServer.renderToString(this.#initHtml(component));
       return this.#nest[compID] = `<!DOCTYPE html>${html}`;
@@ -230,11 +230,10 @@ hydrateRoot(document.getElementById("root") as Element, el);
     compID = `${c.name}${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
 
-    this.#setInitialProps();
     this.#handleComponent(c);
-    const layout = this.#initHtml(this.#element);
-    const html = ReactDOMServer.renderToString(layout);
-    return this.#nest[compID] = `<!DOCTYPE html>${html}`;
+    const layout = this.#initHtml(this.#element, this.#options.props);
+    let html = ReactDOMServer.renderToString(layout);
+    return this.#nest[compID] = `<!DOCTYPE html>${this.#setInitialProps(html)}`;
   };
 
   #handleComponent = (c: FunctionComponent) => {
@@ -244,27 +243,13 @@ hydrateRoot(document.getElementById("root") as Element, el);
     });
   };
 
-  #setInitialProps = () => {
-    if (this.#options.props && this.#options.html?.body) {
-      const propsPath = `${this.#staticPath}/props.js`;
-      this.#options.html?.body.script?.push({
-        src: propsPath,
-      });
-      const code = `window.__INITIAL_DATA__ = ${
+  #setInitialProps = (layout: string) => {
+    return layout.replace(
+      `<script></script>`,
+      `<script>window.__INITIAL_DATA__ = ${
         JSON.stringify(this.#options.props)
-      }`;
-      this.#server.push(
-        "GET",
-        propsPath,
-        () =>
-          new Response(code, {
-            headers: {
-              "Content-Type": "application/javascript",
-              "Cache-Control": "max-age=0",
-            },
-          }),
-      );
-    }
+      }</script>`,
+    );
   };
 
   #handleDevelopment = () => {
