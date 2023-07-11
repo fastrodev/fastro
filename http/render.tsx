@@ -225,6 +225,12 @@ hydrateRoot(document.getElementById("root") as Element, el);
     let compID = "";
     this.#handleDevelopment();
     if (isJSX(component as JSX.Element)) {
+      // TEST
+      const es = new Esbuild("app");
+      const buildRes = await es.build();
+      console.log("buildRes", buildRes.outputFiles);
+      // END OF TEST
+
       compID = `default${this.#reqUrl}`;
       if (cached && this.#nest[compID]) return this.#nest[compID];
       const html = ReactDOMServer.renderToString(this.#initHtml(component));
