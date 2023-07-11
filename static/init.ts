@@ -1,4 +1,4 @@
-const version = "v0.74.6";
+const version = "v0.74.7";
 export { version };
 
 const init = async (name?: string, ver?: string) => {
@@ -56,9 +56,10 @@ f.page(
   (_req: HttpRequest, ctx: Context) => {
     const options = {
       status: 200,
+      props: { data: "Guest" },
       html: { head: { title: "React Component" } },
     };
-    return ctx.props({ data: "Guest" }).render(options);
+    return ctx.render(options);
   },
 );
 
