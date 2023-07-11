@@ -1,4 +1,5 @@
 // deno-lint-ignore-file
+import { Esbuild } from "../build/esbuild.ts";
 import { denoPlugins, esbuild, React, ReactDOMServer } from "./deps.ts";
 import {
   BUILD_ID,
@@ -170,6 +171,10 @@ hydrateRoot(document.getElementById("root") as Element, el);
   }
 
   createBundle = async (elementName: string) => {
+    const es = new Esbuild(elementName);
+    const buildRes = await es.build();
+    console.log("buildRes", buildRes.outputFiles);
+
     const cwd = Deno.cwd();
     const hydrateTarget =
       `${cwd}/hydrate/${elementName.toLowerCase()}.hydrate.tsx`;
