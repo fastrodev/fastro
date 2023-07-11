@@ -173,7 +173,7 @@ hydrateRoot(document.getElementById("root") as Element, el);
 `;
   }
 
-  createBundle = async (elementName: string) => {
+  #createBundle = async (elementName: string) => {
     const es = new Esbuild(elementName);
     const bundle = await es.build();
     const componentPath = `/static/js/${elementName.toLocaleLowerCase()}.js`;
@@ -194,7 +194,7 @@ hydrateRoot(document.getElementById("root") as Element, el);
     return `render${el}`;
   };
 
-  createHydrateFile = async (elementName: string) => {
+  #createHydrateFile = async (elementName: string) => {
     try {
       const target =
         `${Deno.cwd()}/hydrate/${elementName.toLowerCase()}.hydrate.tsx`;
@@ -228,8 +228,8 @@ hydrateRoot(document.getElementById("root") as Element, el);
   };
 
   #handleComponent = async (c: FunctionComponent) => {
-    await this.createHydrateFile(c.name);
-    await this.createBundle(c.name);
+    await this.#createHydrateFile(c.name);
+    await this.#createBundle(c.name);
     if (!this.#options.html?.body) return;
     this.#options.html?.body.script?.push({
       src: `${this.#staticPath}/${c.name.toLocaleLowerCase()}.js`,
