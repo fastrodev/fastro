@@ -202,7 +202,7 @@ hydrateRoot(document.getElementById("root") as Element, el);
         this.#createHydrate(elementName, this.#options.props),
       );
     } catch (error) {
-      throw error;
+      return;
     }
   };
 
