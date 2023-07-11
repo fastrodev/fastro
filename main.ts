@@ -41,13 +41,6 @@ function init() {
   const code = `import init, { version } from "${basePath}/init.ts"; 
 const name = Deno.args[0] ?? 'my-project';
 await init(name, version)
-const args = [
-  "task",
-  "dev",
-];
-const command = new Deno.Command("deno", {
-  args,
-});
 `;
   return new Response(code, {
     headers: {
