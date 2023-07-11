@@ -43,20 +43,31 @@ export class Markdown {
     const file = match?.pathname.groups["0"];
 
     try {
-      const txt = Deno.readTextFileSync(`./posts/${file}.md`);
+      const txt = await Deno.readTextFile(`./posts/${file}.md`);
       const m = matter(txt);
       const markdown = this.#markdownToHtml(m.content);
-      const data = await fetch(
-        "https://api.github.com/repos/fastrodev/fastro/releases/latest",
-      );
-      const git = JSON.parse(await data.text());
+      const git = await this.#getVersion();
       const content = this.#contentContainer(markdown, m.data, git["name"]);
       return this.#post[path] = {
         meta: m.data,
         content,
       };
-    } catch (error) {
+    } catch {
       return this.#nest[nestID] = null;
+    }
+  };
+
+  #getVersion = async () => {
+    try {
+      const data = await fetch(
+        "https://api.github.com/repos/fastrodev/fastro/releases/latest",
+      );
+      const git = JSON.parse(await data.text());
+      return git;
+    } catch (error) {
+      const git: any = {};
+      git["name"] = "local";
+      return git;
     }
   };
 
@@ -152,6 +163,7 @@ export class Markdown {
 
   getPost = async () => {
     if (this.#nest[this.#path]) return this.#nest[this.#path];
-    return this.#nest[this.#path] = await this.#readFile(this.#path);
+    const res = await this.#readFile(this.#path);
+    return this.#nest[this.#path] = res;
   };
 }

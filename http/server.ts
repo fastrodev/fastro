@@ -704,7 +704,8 @@ export class HttpServer implements Fastro {
   }
 
   #findMarkdownFiles = async (req: Request) => {
-    return await new Markdown(this.#nest, req).getPost() as Post;
+    const res = await new Markdown(this.#nest, req).getPost() as Post;
+    return res;
   };
 
   #findStaticFiles = async (staticUrl: string, reqUrl: string) => {

@@ -246,13 +246,15 @@ hydrateRoot(document.getElementById("root") as Element, el);
       this.#options.html?.body.script?.push({
         src: propsPath,
       });
+      const code = this.#initPropsJs();
       this.#server.push(
         "GET",
         propsPath,
         () =>
-          new Response(this.#initPropsJs(), {
+          new Response(code, {
             headers: {
               "Content-Type": "application/javascript",
+              "Cache-Control": "max-age=0",
             },
           }),
       );
