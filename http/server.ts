@@ -524,7 +524,7 @@ export class HttpServer implements Fastro {
           },
         },
       };
-      return this.#renderElement(md.content, options);
+      return this.#renderElement(md.content, options, req);
     }
 
     const s = (await this.#findStaticFiles(this.#staticUrl, req.url)) as Static;
@@ -577,7 +577,7 @@ export class HttpServer implements Fastro {
     element: Component,
   ) => {
     const searchParams = new URL(r.url).searchParams;
-    const ctx = this.#initContext(i, element);
+    const ctx = this.#initContext(i, element, r);
     let result: unknown;
 
     for (let index = 0; index < handlers.length; index++) {
@@ -771,13 +771,14 @@ export class HttpServer implements Fastro {
   #initContext(
     info: Info,
     element?: Component,
+    req?: Request,
   ) {
     const ctx = new Context();
     ctx.server = this;
     ctx.info = info;
     ctx.render = (options?: RenderOptions) => {
       if (!element) return new Response("Component not found");
-      return this.#renderElement(element, options);
+      return this.#renderElement(element, options, req);
     };
     ctx.send = (data: unknown, status?: number) => {
       return this.#handleResponse(data, status);
@@ -810,9 +811,13 @@ export class HttpServer implements Fastro {
     });
   }
 
-  #renderElement(element: Component, options?: RenderOptions) {
+  #renderElement(
+    element: Component,
+    options?: RenderOptions,
+    req?: Request,
+  ) {
     const opt = options ?? { html: {} };
-    const r = new Render(element, opt, this.#nest, this);
+    const r = new Render(element, opt, this.#nest, this, req);
     return r.render();
   }
 

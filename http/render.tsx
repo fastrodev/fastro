@@ -19,12 +19,14 @@ export class Render {
   #development: boolean;
   #server: Fastro;
   #staticPath: string;
+  #reqUrl?: string;
 
   constructor(
     element: Component,
     options: RenderOptions,
     nest: Record<string, any>,
     server: Fastro,
+    request?: Request,
   ) {
     this.#options = this.#initOptions(options);
     this.#element = element;
@@ -32,6 +34,7 @@ export class Render {
     this.#development = server.getDevelopmentStatus();
     this.#server = server;
     this.#staticPath = `${this.#server.getStaticPath()}/js`;
+    this.#reqUrl = request?.url;
   }
 
   #initOptions = (opt: RenderOptions) => {
@@ -213,20 +216,25 @@ hydrateRoot(document.getElementById("root") as Element, el);
   };
 
   #renderToString = async (component: Component, cached?: boolean) => {
+    let compID = "";
     this.#handleDevelopment();
     if (isJSX(component as JSX.Element)) {
+      compID = `default${this.#reqUrl}`;
+      console.log(compID);
+      if (cached && this.#nest[compID]) return this.#nest[compID];
       const html = ReactDOMServer.renderToString(this.#initHtml(component));
-      return this.#nest["default"] = `<!DOCTYPE html>${html}`;
+      return this.#nest[compID] = `<!DOCTYPE html>${html}`;
     }
 
     const c = component as FunctionComponent;
-    if (cached && this.#nest[c.name]) return this.#nest[c.name];
+    compID = `${c.name}${this.#reqUrl}`;
+    if (cached && this.#nest[compID]) return this.#nest[compID];
 
     this.#setInitialProps();
     this.#handleComponent(c);
     const layout = this.#initHtml(this.#element);
     const html = ReactDOMServer.renderToString(layout);
-    return this.#nest[c.name] = `<!DOCTYPE html>${html}`;
+    return this.#nest[compID] = `<!DOCTYPE html>${html}`;
   };
 
   #handleComponent = (c: FunctionComponent) => {
@@ -245,7 +253,6 @@ hydrateRoot(document.getElementById("root") as Element, el);
       const code = `window.__INITIAL_DATA__ = ${
         JSON.stringify(this.#options.props)
       }`;
-      console.log("code=====>", code);
       this.#server.push(
         "GET",
         propsPath,
