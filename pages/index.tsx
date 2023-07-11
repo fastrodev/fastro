@@ -13,19 +13,17 @@ const Index = (props: { version: string }) => {
         <p className="lead text-white-50">
           Handle thousands of requests per second with a minimalistic API
         </p>
-        <div className="container" style={{ maxWidth: 450 }}>
-          <div className="row">
-            <div className="col-5">
-              <a
-                href="/start"
-                className="btn btn-lg btn-light fw-normal bg-white align-middle"
-              >
-                Get started
-              </a>
-            </div>
-            <div className="col-7 pt-2 bg-black border border-light rounded fw-lighter align-middle">
-              deno run -A -r https://fastro.dev
-            </div>
+        <div className="d-flex p-2 bd-highlight justify-content-center">
+          <div className="me-2">
+            <a
+              href="/start"
+              className="btn btn-lg btn-light fw-light bg-white align-middle"
+            >
+              Get started
+            </a>
+          </div>
+          <div className="pt-2 pb-2 ps-3 pe-3 bg-black border border-light rounded fw-lighter align-middle">
+            deno run -A -r https://fastro.dev
           </div>
         </div>
       </main>
