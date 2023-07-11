@@ -1,4 +1,4 @@
-const version = "v0.75.0";
+const version = "v0.75.1";
 export { version };
 
 const init = async (name?: string, ver?: string) => {
@@ -44,7 +44,7 @@ const init = async (name?: string, ver?: string) => {
   Context,
   HttpRequest,
 } from "https://deno.land/x/fastro@${v}/mod.ts";
-import App from "./pages/app.tsx";
+import app from "./pages/app.tsx";
 
 const f = new fastro();
 
@@ -52,7 +52,7 @@ f.get("/api", () => Response.json({ msg: "hello" }));
 f.static("/static", { folder: "static", maxAge: 90 });
 f.page(
   "/",
-  App,
+  app,
   (_req: HttpRequest, ctx: Context) => {
     const options = {
       status: 200,
@@ -147,7 +147,7 @@ deno task start
     // page
     await Deno.mkdir("pages");
     await Deno.writeTextFile(
-      "pages/App.tsx",
+      "pages/app.tsx",
       `import React, { useState } from "https://esm.sh/react@18.2.0?dev";
 
 export default function App(props: { data: string }) {

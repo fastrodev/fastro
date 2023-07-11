@@ -194,7 +194,23 @@ hydrateRoot(document.getElementById("root") as Element, el);
     return `render${el}`;
   };
 
+  #hydrateExist = async (name: string) => {
+    try {
+      for await (const dirEntry of Deno.readDir(`${Deno.cwd()}/hydrate`)) {
+        if (dirEntry.name === `${name}.hydrate.tsx`) {
+          return true;
+        }
+      }
+    } catch {
+      await Deno.mkdir(`${Deno.cwd()}/hydrate`);
+      return false;
+    }
+
+    return false;
+  };
+
   #createHydrateFile = async (elementName: string) => {
+    if (await this.#hydrateExist(elementName)) return;
     try {
       const target =
         `${Deno.cwd()}/hydrate/${elementName.toLowerCase()}.hydrate.tsx`;
