@@ -159,7 +159,8 @@ es.onmessage = function(e) {
 };`;
   };
 
-  #createHydrate(component: string, props?: any) {
+  #createHydrate(comp: string, props?: any) {
+    const component = comp.toLowerCase();
     return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client?dev";
 import { createElement } from "https://esm.sh/react@18.2.0?dev";
 import ${component} from "../pages/${component}.tsx";
