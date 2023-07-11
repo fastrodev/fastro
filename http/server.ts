@@ -306,6 +306,7 @@ export class HttpServer implements Fastro {
     if (!this.#development) return;
     try {
       await Deno.mkdir(`${Deno.cwd()}/hydrate`);
+      await Deno.remove(`${Deno.cwd()}/static/js`, { recursive: true });
     } catch (error) {
       throw error;
     }
