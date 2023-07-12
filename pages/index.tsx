@@ -3,7 +3,7 @@ import React from "https://esm.sh/react@18.2.0";
 const Index = (props: { version: string }) => {
   return (
     <>
-      <header className="mb-auto">
+      <header className="mb-auto text-center">
         <h3 className="float-md-start mb-0">Fastro</h3>
         <nav className="nav nav-masthead justify-content-center float-md-end">
           <a
@@ -46,7 +46,7 @@ const Index = (props: { version: string }) => {
         </nav>
       </header>
 
-      <main className="px-3">
+      <main className="px-3 text-center">
         <h1 className="display-5 fw-bold">
           Fast and Simple Web Application Framework
         </h1>
@@ -57,7 +57,7 @@ const Index = (props: { version: string }) => {
           <div className="me-2">
             <a
               href="/start"
-              className="p-3 btn btn-light fw-light bg-white align-middle"
+              className="p-3 btn btn-light fw-semibold bg-white align-middle"
             >
               Get started
             </a>
@@ -73,7 +73,7 @@ const Index = (props: { version: string }) => {
               <div className="mb-3">
                 <a
                   href="/start"
-                  className="p-3 btn btn-light fw-light bg-white w-100 h-50"
+                  className="p-3 btn btn-light fw-semibold bg-white w-100 h-50"
                 >
                   Get started
                 </a>
@@ -86,7 +86,7 @@ const Index = (props: { version: string }) => {
         </div>
       </main>
 
-      <footer className="mt-auto text-white-50">
+      <footer className="mt-auto text-center text-white-50">
         <p>
           Made with{" "}
           <a

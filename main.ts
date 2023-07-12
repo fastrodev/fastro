@@ -73,18 +73,23 @@ f.page(
       html: {
         class: "h-100",
         head: {
-          title: "Fastro | Web Application Framework",
+          title: "Web Application Framework | Fastro",
           descriptions: "Fast & Simple Web Application Framework",
-          meta: [{ charset: "utf-8" }, {
-            name: "viewport",
-            content: "width=device-width, initial-scale=1.0",
-          }, {
-            name: "description",
-            content: "Fast & Simple Web Application Framework",
-          }, {
-            property: "og:image",
-            content: "https://fastro.dev/static/image.png",
-          }],
+          meta: [
+            { charset: "utf-8" },
+            {
+              name: "viewport",
+              content: "width=device-width, initial-scale=1.0",
+            },
+            {
+              name: "description",
+              content: "Fast & Simple Web Application Framework",
+            },
+            {
+              property: "og:image",
+              content: "https://fastro.dev/static/image.png",
+            },
+          ],
           link: [{
             href:
               "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css",
@@ -105,7 +110,7 @@ f.page(
           }],
         },
         body: {
-          class: "d-flex h-100 text-center text-bg-dark",
+          class: "d-flex h-100 text-bg-dark",
           rootClass:
             "cover-container d-flex w-100 h-100 p-3 mx-auto flex-column",
         },
