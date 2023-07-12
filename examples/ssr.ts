@@ -10,10 +10,11 @@ f.page(
   app,
   (_req: HttpRequest, ctx: Context) => {
     const options = {
+      props: { data: "Guest" },
       status: 200,
       html: { head: { title: "React Component" } },
     };
-    return ctx.props({ data: "Guest" }).render(options);
+    return ctx.render(options);
   },
 );
 
