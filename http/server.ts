@@ -254,6 +254,7 @@ export class HttpServer implements Fastro {
       return this.#server.listenAndServe();
     }
 
+    await this.#build();
     this.#server = Deno.serve({
       port,
       handler: this.#handleRequest,
@@ -261,6 +262,31 @@ export class HttpServer implements Fastro {
       onError: this.#handleError,
       signal: this.#ac.signal,
     });
+  };
+
+  #hydrateExist = async () => {
+    try {
+      for await (const dirEntry of Deno.readDir(`${Deno.cwd()}`)) {
+        if (dirEntry.name === `hydrate`) {
+          return true;
+        }
+      }
+    } catch {
+      return false;
+    }
+    return false;
+  };
+
+  #build = async () => {
+    if (!await this.#hydrateExist()) {
+      await Deno.mkdir(`${Deno.cwd()}/hydrate`);
+    }
+    for (let index = 0; index < this.#pages.length; index++) {
+      const page = this.#pages[index];
+      const c = page.element as FunctionComponent;
+      const r = new Render(page.element, { props: {} }, this.#nest, this);
+      r.createHydrateFile(c.name);
+    }
   };
 
   onListen = (handler: ListenHandler) => {

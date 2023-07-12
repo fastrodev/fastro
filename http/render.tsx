@@ -206,14 +206,12 @@ hydrateRoot(document.getElementById("root") as Element, el);
         }
       }
     } catch {
-      await Deno.mkdir(`${Deno.cwd()}/hydrate`);
       return false;
     }
-
     return false;
   };
 
-  #createHydrateFile = async (elementName: string) => {
+  createHydrateFile = async (elementName: string) => {
     if (await this.#hydrateExist(elementName)) return;
     try {
       const target =
@@ -248,7 +246,6 @@ hydrateRoot(document.getElementById("root") as Element, el);
   };
 
   #handleComponent = async (c: FunctionComponent) => {
-    await this.#createHydrateFile(c.name);
     await this.#createBundle(c.name);
     if (!this.#options.html?.body) return;
     this.#options.html?.body.script?.push({
