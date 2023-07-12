@@ -17,15 +17,15 @@ You can find the benchmarks script on this page: [run.ts](https://github.com/fas
 
 | module                                                                                       |   rps |    % |
 | :------------------------------------------------------------------------------------------- | ----: | ---: |
-| [deno](https://github.com/fastrodev/fastro/blob/main/examples/deno.ts)                       | 64804 | 100% |
-| [raw_string](https://github.com/fastrodev/fastro/blob/main/examples/raw_string.ts)           | 59280 |  91% |
-| [ctx_string](https://github.com/fastrodev/fastro/blob/main/examples/ctx_string.ts)           | 58318 |  90% |
-| [string_response](https://github.com/fastrodev/fastro/blob/main/examples/string_response.ts) | 57096 |  88% |
-| [raw_json](https://github.com/fastrodev/fastro/blob/main/examples/raw_json.ts)               | 56321 |  87% |
-| [ctx_json](https://github.com/fastrodev/fastro/blob/main/examples/ctx_json.ts)               | 54692 |  84% |
-| [ctx_jsx](https://github.com/fastrodev/fastro/blob/main/examples/ctx_jsx.tsx)                | 51338 |  79% |
-| [raw_jsx](https://github.com/fastrodev/fastro/blob/main/examples/raw_jsx.tsx)                | 50481 |  78% |
-| [middleware](https://github.com/fastrodev/fastro/blob/main/examples/middleware.ts)           | 13610 |  21% |
-| [static_file](https://github.com/fastrodev/fastro/blob/main/examples/static_file.ts)         | 10254 |  16% |
-| [ssr](https://github.com/fastrodev/fastro/blob/main/examples/ssr.ts)                         |  8438 |  13% |
-| [params_query](https://github.com/fastrodev/fastro/blob/main/examples/params_query.ts)       |  6798 |  10% |
+| [deno](https://github.com/fastrodev/fastro/blob/main/examples/deno.ts)                       | 58875 | 100% |
+| [raw_string](https://github.com/fastrodev/fastro/blob/main/examples/raw_string.ts)           | 54774 |  93% |
+| [ctx_string](https://github.com/fastrodev/fastro/blob/main/examples/ctx_string.ts)           | 53684 |  91% |
+| [string_response](https://github.com/fastrodev/fastro/blob/main/examples/string_response.ts) | 52049 |  88% |
+| [ctx_json](https://github.com/fastrodev/fastro/blob/main/examples/ctx_json.ts)               | 51873 |  88% |
+| [raw_json](https://github.com/fastrodev/fastro/blob/main/examples/raw_json.ts)               | 51540 |  88% |
+| [raw_jsx](https://github.com/fastrodev/fastro/blob/main/examples/raw_jsx.tsx)                | 46478 |  79% |
+| [ctx_jsx](https://github.com/fastrodev/fastro/blob/main/examples/ctx_jsx.tsx)                | 41770 |  71% |
+| [middleware](https://github.com/fastrodev/fastro/blob/main/examples/middleware.ts)           | 11902 |  20% |
+| [ssr](https://github.com/fastrodev/fastro/blob/main/examples/ssr.ts)                         |  9506 |  16% |
+| [static_file](https://github.com/fastrodev/fastro/blob/main/examples/static_file.ts)         |  9452 |  16% |
+| [params_query](https://github.com/fastrodev/fastro/blob/main/examples/params_query.ts)       |  8423 |  14% |
