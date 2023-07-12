@@ -14,8 +14,6 @@ export class Esbuild {
         wasmURL: esbuildWasmURL,
         worker: false,
       });
-    } else {
-      await esbuild.initialize({});
     }
   };
 

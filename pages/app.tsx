@@ -22,9 +22,9 @@ const App = (props: { data: string }) => {
             className="btn btn-primary"
             onClick={handleClick}
           >
-            Hit the API
+            Hit API
           </button>
-          <pre className="mt-2">The API Response is: {JSON.stringify(d)}</pre>
+          <pre className="mt-2">Response {JSON.stringify(d)}</pre>
         </div>
       </div>
     </div>
