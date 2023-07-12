@@ -18,6 +18,12 @@ const Index = (props: { version: string }) => {
           </a>
           <a
             className="nav-link fw-bold py-1 px-0"
+            href="https://github.com/fastrodev/fastro/tree/main/examples"
+          >
+            Examples
+          </a>
+          <a
+            className="nav-link fw-bold py-1 px-0"
             href="https://deno.land/x/fastro/mod.ts"
           >
             Docs
@@ -51,12 +57,12 @@ const Index = (props: { version: string }) => {
           <div className="me-2">
             <a
               href="/start"
-              className="btn btn-lg btn-light fw-light bg-white align-middle"
+              className="p-3 btn btn-light fw-light bg-white align-middle"
             >
               Get started
             </a>
           </div>
-          <div className="pt-2 pb-2 ps-3 pe-3 bg-black border border-light rounded fw-lighter align-middle">
+          <div className="p-3 bg-black border border-light rounded fw-light align-middle">
             deno run -A -r https://fastro.dev
           </div>
         </div>
@@ -67,12 +73,12 @@ const Index = (props: { version: string }) => {
               <div className="mb-3">
                 <a
                   href="/start"
-                  className="btn btn-lg btn-light fw-light bg-white w-100"
+                  className="p-3 btn btn-light fw-light bg-white w-100 h-50"
                 >
                   Get started
                 </a>
               </div>
-              <div className="pt-2 pb-2 ps-3 pe-3 bg-black border border-light rounded fw-lighter w-100">
+              <div className="p-3 bg-black border border-light rounded fw-light w-100">
                 deno run -A -r https://fastro.dev
               </div>
             </div>

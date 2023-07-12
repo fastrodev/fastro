@@ -63,7 +63,10 @@ async function bench(server: string, ext: string) {
   d.spawn();
 
   let res;
-  if (server === "static_file") {
+  if (server === "middleware") {
+    const url = "http://localhost:8000/user?name=john";
+    res = await oha(url);
+  } else if (server === "static_file") {
     const url = "http://localhost:8000/static/post.css";
     res = await oha(url);
   } else if (server === "params") {

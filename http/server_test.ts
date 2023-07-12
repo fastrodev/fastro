@@ -1,5 +1,5 @@
+import { assertEquals } from "https://deno.land/std@0.193.0/testing/asserts.ts";
 import fastro from "../mod.ts";
-import { assertEquals } from "./deps.ts";
 
 const host = "http://localhost:8000";
 
