@@ -1,6 +1,6 @@
 ---
 title: "Get started, hello world!"
-description: We will create a very simple web application with one route and returning the text hello-world.
+description: We will create a SSR web application with one page and returning very simple react component.
 image: https://fastro.dev/static/image.png
 author: Yanu Widodo
 date: 07/06/2023
