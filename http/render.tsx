@@ -174,20 +174,24 @@ hydrateRoot(document.getElementById("root") as Element, el);
   }
 
   #createBundle = async (elementName: string) => {
-    const es = new Esbuild(elementName);
-    const bundle = await es.build();
-    const componentPath = `/static/js/${elementName.toLocaleLowerCase()}.js`;
-    for (const file of bundle.outputFiles) {
-      const str = new TextDecoder().decode(file.contents);
-      this.#server.push("GET", componentPath, () =>
-        new Response(str, {
-          headers: {
-            "Content-Type": "application/javascript",
-          },
-        }));
+    try {
+      if (this.#nest[this.#getRenderId(elementName)]) return;
+      const es = new Esbuild(elementName);
+      const bundle = await es.build();
+      const componentPath = `/static/js/${elementName.toLocaleLowerCase()}.js`;
+      for (const file of bundle.outputFiles) {
+        const str = new TextDecoder().decode(file.contents);
+        this.#server.push("GET", componentPath, () =>
+          new Response(str, {
+            headers: {
+              "Content-Type": "application/javascript",
+            },
+          }));
+      }
+      this.#nest[this.#getRenderId(elementName)] = true;
+    } catch {
+      return;
     }
-
-    this.#nest[this.#getRenderId(elementName)] = true;
   };
 
   #getRenderId = (el: string) => {
