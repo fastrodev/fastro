@@ -24,12 +24,6 @@ jobs:
 
       - name: Run tests
         run: deno task test
-
-      - name: Deploy to Deno Deploy
-        uses: denoland/deployctl@v1
-        with:
-          project: fastro
-          entrypoint: main.ts
       
       - name: Generate report
         run: deno coverage cov --lcov > cov.lcov
@@ -40,19 +34,25 @@ jobs:
           path-to-lcov: ./cov.lcov
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Install Oha
-      #   uses: baptiste0928/cargo-install@v1
-      #   with:
-      #     crate: oha
-      #     version: 0.6.0
+      - name: Install Oha
+        uses: baptiste0928/cargo-install@v1
+        with:
+          crate: oha
+          version: 0.6.0
 
-      # - name: Generate internal benchmarks
-      #   run: deno task bench
+      - name: Generate internal benchmarks
+        run: deno task bench
 
-      # - name: Push changes
-      #   uses: actions-js/push@v1
-      #   with:
-      #     github_token: '${{ secrets.GITHUB_TOKEN }}'
-      #     branch: main
+      - name: Push changes
+        uses: actions-js/push@v1
+        with:
+          github_token: '${{ secrets.GITHUB_TOKEN }}'
+          branch: main
+      
+      - name: Deploy to Deno Deploy
+        uses: denoland/deployctl@v1
+        with:
+          project: fastro
+          entrypoint: main.ts
 
       
