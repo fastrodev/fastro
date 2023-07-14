@@ -162,8 +162,12 @@ es.onmessage = function(e) {
 
   #createHydrate(comp: string, props?: any) {
     const component = comp.toLowerCase();
-    const dev = Deno.env.get("DENO_DEPLOYMENT_ID") ? "" : "?dev";
+    const dev = Deno.env.get("DENO_DEPLOYMENT_ID") === "" ? "" : "?dev";
     console.log("DEV=======>", dev);
+    console.log(
+      `Deno.env.get("DENO_DEPLOYMENT_ID")====>`,
+      Deno.env.get("DENO_DEPLOYMENT_ID"),
+    );
     return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client${dev}";
 import { createElement } from "https://esm.sh/react@18.2.0${dev}";
 import ${component} from "../pages/${component}.tsx";
