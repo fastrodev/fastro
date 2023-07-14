@@ -62,7 +62,7 @@ Please note, the `-A` argument allows deno to access all permissions, and `-r` a
 Now let's run the application
 
 ```zsh
-deno task dev
+deno task start
 ```
 
 If there is no problem, you will see this message on the terminal
