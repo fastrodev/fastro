@@ -23,7 +23,7 @@ v8 11.6.189.7
 typescript 5.1.6
 ```
 
-If it hasn't been installed properly, please follow the detailed installation steps [here](https://deno.land/manual/getting_started/installation).
+If it hasn't been installed properly, please follow the detailed installation steps here: [Installation](https://deno.land/manual/getting_started/installation).
 
 
 ### Let's start coding

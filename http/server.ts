@@ -476,6 +476,7 @@ export class HttpServer implements Fastro {
       const options: RenderOptions = {
         cache: true,
         html: {
+          lang: "en",
           head: {
             title: md.meta?.title,
             descriptions: md.meta?.description,
