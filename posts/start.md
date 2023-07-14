@@ -37,7 +37,7 @@ mkdir my-project && cd my-project
 Generate default project from command line.
 
 ```zsh
-deno run -A -r https://fastro.dev
+deno run -A -r https://fastro.deno.dev
 ```
 
 Above command will generate default folders and files you can use for initial project.
