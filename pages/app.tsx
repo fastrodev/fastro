@@ -1,29 +1,5 @@
 import React, { useState } from "https://esm.sh/react@18.2.0";
 
-// import ReactProd, {
-//   useState as useStateProd,
-// } from "https://esm.sh/react@18.2.0";
-
-// import ReactDev, {
-//   useState as useStateDev,
-// } from "https://esm.sh/react@18.2.0?dev";
-
-// declare global {
-//   interface Window {
-//     __ENV__: string;
-//   }
-// }
-
-// let dev = false;
-// try {
-//   dev = Deno.run !== undefined;
-// } catch {
-//   dev = window.__ENV__ === "DEVELOPMENT";
-// }
-
-// const React = dev ? ReactDev : ReactProd;
-// const useState = dev ? useStateDev : useStateProd;
-
 type D = { time: string };
 
 const App = (props: { data: string }) => {
