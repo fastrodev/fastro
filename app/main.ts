@@ -1,7 +1,7 @@
-import { HttpServer as fastro } from "./http/server.ts";
-import { Context, HttpRequest, Next, RenderOptions } from "./mod.ts";
-import app from "./pages/app.tsx";
-import index from "./pages/index.tsx";
+import { HttpServer as fastro } from "../http/server.ts";
+import { Context, HttpRequest, Next, RenderOptions } from "../mod.ts";
+import app from "../pages/app.tsx";
+import index from "../pages/index.tsx";
 
 const f = new fastro();
 

@@ -56,6 +56,6 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: fastro
-          entrypoint: main.ts
+          entrypoint: app/main.ts
 
       

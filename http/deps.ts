@@ -1,11 +1,5 @@
 const dev = Deno.env.get("DENO_DEPLOYMENT_ID") === undefined;
 
-console.log("dev====>", dev);
-console.log(
-  'Deno.env.get("DENO_DEPLOYMENT_ID")=====>',
-  Deno.env.get("DENO_DEPLOYMENT_ID"),
-);
-
 const ReactDOMServer = dev
   ? await import("https://esm.sh/react-dom@18.2.0/server?dev")
   : await import("https://esm.sh/react-dom@18.2.0/server");
