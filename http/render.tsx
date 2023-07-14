@@ -160,14 +160,11 @@ es.onmessage = function(e) {
 };`;
   };
 
-  #createHydrate(comp: string, props?: any) {
+  #createHydrate(comp: string) {
     const component = comp.toLowerCase();
-    const dev = Deno.env.get("DENO_DEPLOYMENT_ID") ? "?dev" : "";
-    console.log("DEV=======>", dev);
-    console.log(
-      `Deno.env.get("DENO_DEPLOYMENT_ID")====>`,
-      Deno.env.get("DENO_DEPLOYMENT_ID"),
-    );
+    const [s] = Deno.args.filter((v) => v === "--development");
+    const dev = s === "--development" ? "?dev" : "";
+
     return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client${dev}";
 import { createElement } from "https://esm.sh/react@18.2.0${dev}";
 import ${component} from "../pages/${component}.tsx";
@@ -225,7 +222,7 @@ hydrateRoot(document.getElementById("root") as Element, el);
         `${Deno.cwd()}/hydrate/${elementName.toLowerCase()}.hydrate.tsx`;
       await Deno.writeTextFile(
         target,
-        this.#createHydrate(elementName, this.#options.props),
+        this.#createHydrate(elementName),
       );
     } catch (error) {
       return;
