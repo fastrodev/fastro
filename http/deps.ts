@@ -1,10 +1,18 @@
-const ReactDOMServer = Deno.env.get("DENO_DEPLOYMENT_ID")
-  ? await import("https://esm.sh/react-dom@18.2.0/server")
-  : await import("https://esm.sh/react-dom@18.2.0/server?dev");
+const dev = Deno.env.get("DENO_DEPLOYMENT_ID") === undefined;
 
-const React = Deno.env.get("DENO_DEPLOYMENT_ID")
-  ? await import("https://esm.sh/react@18.2.0")
-  : await import("https://esm.sh/react@18.2.0?dev");
+console.log("dev====>", dev);
+console.log(
+  'Deno.env.get("DENO_DEPLOYMENT_ID")=====>',
+  Deno.env.get("DENO_DEPLOYMENT_ID"),
+);
+
+const ReactDOMServer = dev
+  ? await import("https://esm.sh/react-dom@18.2.0/server?dev")
+  : await import("https://esm.sh/react-dom@18.2.0/server");
+
+const React = dev
+  ? await import("https://esm.sh/react@18.2.0?dev")
+  : await import("https://esm.sh/react@18.2.0");
 
 const h = React.createElement;
 

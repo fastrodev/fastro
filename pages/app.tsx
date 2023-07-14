@@ -16,7 +16,7 @@ const App = (props: { data: string }) => {
     <div className="row align-items-center" style={{ height: "100vh" }}>
       <div className="mx-auto col-3">
         <div className="container">
-          <h1>Hello {props.data}</h1>
+          <h1>Hellooooooo {props.data}</h1>
           <button
             type="button"
             className="btn btn-primary"

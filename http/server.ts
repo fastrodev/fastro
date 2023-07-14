@@ -288,6 +288,7 @@ export class HttpServer implements Fastro {
       const c = page.element as FunctionComponent;
       const r = new Render(page.element, { props: {} }, this.#nest, this);
       r.createHydrateFile(c.name);
+      console.log(`${c.name.toLowerCase()}.hydrate.tsx: created!`);
     }
 
     if (Deno.run == undefined) return [];
