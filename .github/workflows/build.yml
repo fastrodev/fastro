@@ -25,6 +25,9 @@ jobs:
       - name: Run tests
         run: deno task test
       
+      - name: Run hydrate
+        run: deno task hydrate
+      
       - name: Generate report
         run: deno coverage cov --lcov > cov.lcov
 

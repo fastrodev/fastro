@@ -254,7 +254,9 @@ export class HttpServer implements Fastro {
       return this.#server.listenAndServe();
     }
 
-    await this.#build();
+    const [s] = await this.#build();
+    if (s) return;
+
     this.#server = Deno.serve({
       port,
       handler: this.#handleRequest,
@@ -287,6 +289,9 @@ export class HttpServer implements Fastro {
       const r = new Render(page.element, { props: {} }, this.#nest, this);
       r.createHydrateFile(c.name);
     }
+
+    if (Deno.run == undefined) return [];
+    return Deno.args.filter((v) => v === "--hydrate");
   };
 
   onListen = (handler: ListenHandler) => {

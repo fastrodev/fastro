@@ -162,8 +162,9 @@ es.onmessage = function(e) {
 
   #createHydrate(comp: string, props?: any) {
     const component = comp.toLowerCase();
-    return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client?dev";
-import { createElement } from "https://esm.sh/react@18.2.0?dev";
+    const dev = Deno.env.get("DENO_DEPLOYMENT_ID") ? "" : "?dev";
+    return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client${dev}";
+import { createElement } from "https://esm.sh/react@18.2.0${dev}";
 import ${component} from "../pages/${component}.tsx";
 // deno-lint-ignore no-explicit-any
 declare global { interface Window { __INITIAL_DATA__: any; } } 
