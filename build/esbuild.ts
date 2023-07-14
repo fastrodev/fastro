@@ -20,32 +20,27 @@ export class Esbuild {
   };
 
   build = async () => {
-    await this.#initEsbuild();
-
-    const cwd = Deno.cwd();
-    const hydrateTarget =
-      `${cwd}/hydrate/${this.#elementName.toLowerCase()}.hydrate.tsx`;
-
-    const absWorkingDir = Deno.cwd();
-    const esbuildRes = await esbuild.build({
-      plugins: [...denoPlugins()],
-      entryPoints: [hydrateTarget],
-      format: "esm",
-      jsxImportSource: "react",
-      absWorkingDir,
-      bundle: true,
-      treeShaking: true,
-      write: false,
-      minify: true,
-      minifySyntax: true,
-      minifyWhitespace: true,
-    });
-
-    if (esbuildRes.errors.length > 0) {
-      throw esbuildRes.errors;
+    try {
+      await this.#initEsbuild();
+      const cwd = Deno.cwd();
+      const hydrateTarget =
+        `${cwd}/hydrate/${this.#elementName.toLowerCase()}.hydrate.tsx`;
+      const esbuildRes = await esbuild.build({
+        plugins: [...denoPlugins()],
+        entryPoints: [hydrateTarget],
+        format: "esm",
+        jsxImportSource: "react",
+        absWorkingDir: cwd,
+        bundle: true,
+        treeShaking: true,
+        write: false,
+        minify: true,
+        minifySyntax: true,
+        minifyWhitespace: true,
+      });
+      return esbuildRes;
+    } finally {
+      esbuild.stop();
     }
-
-    esbuild.stop();
-    return esbuildRes;
   };
 }

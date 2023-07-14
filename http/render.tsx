@@ -134,6 +134,7 @@ export class Render {
           <div id="root" className={this.#options.html?.body?.rootClass}>
             {el}
           </div>
+          <script type="env"></script>
           {props ? <script></script> : ""}
           {this.#options.html?.body?.script
             ? this.#options.html?.body?.script.map((s) => (
@@ -254,12 +255,21 @@ hydrateRoot(document.getElementById("root") as Element, el);
   };
 
   #setInitialProps = (layout: string) => {
-    return layout.replace(
+    // inject props
+    let l = layout.replace(
       `<script></script>`,
       `<script>window.__INITIAL_DATA__ = ${
         JSON.stringify(this.#options.props)
       }</script>`,
     );
+
+    // inject env
+    const env = Deno.run === undefined
+      ? ""
+      : `<script>window.__ENV__ = "DEVELOPMENT"</script>`;
+    l = l.replace(`<script type="env"></script>`, env);
+
+    return l;
   };
 
   #handleDevelopment = () => {

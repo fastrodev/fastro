@@ -2,7 +2,7 @@
 title: "Get started, hello world!"
 description: We will create a SSR web application with one page and returning very simple react component.
 image: https://fastro.dev/static/image.png
-author: Yanu Widodo
+author: Fastro
 date: 07/06/2023
 ---
 

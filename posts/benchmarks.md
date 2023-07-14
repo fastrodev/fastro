@@ -2,7 +2,7 @@
 title: "Internal benchmarks"
 description: This is the final output of an internal benchmark run on localhost
 image: https://fastro.dev/static/image.png
-author: Yanu Widodo
+author: Fastro
 date: Jul 13, 2023
 ---
 
