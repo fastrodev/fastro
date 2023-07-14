@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import React, { useState } from "https://esm.sh/react@18.2.0";
+import React, { useState } from "https://esm.sh/react@18.2.0?dev";
 
 const Hello = () => {
   const [link, setLink] = useState("Guest");

@@ -1,13 +1,12 @@
 import fastro, { Context, HttpRequest } from "../mod.ts";
-import app from "../pages/app.tsx";
+import user from "../pages/user.tsx";
 
 const f = new fastro();
 
-f.get("/api", () => Response.json({ msg: "hello" }));
 f.static("/static", { folder: "static", maxAge: 90 });
 f.page(
   "/",
-  app,
+  user,
   (_req: HttpRequest, ctx: Context) => {
     const options = {
       props: { data: "Guest" },

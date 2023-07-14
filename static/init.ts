@@ -92,6 +92,9 @@ await f.serve();
         - uses: denoland/setup-deno@v1
           with:
             deno-version: vx.x.x
+
+        - name: Run hydrate
+          run: deno task hydrate
   
         - name: Deploy to Deno Deploy
           uses: denoland/deployctl@v1
@@ -122,7 +125,7 @@ await f.serve();
   "tasks": {
     "dev": "deno run -A --watch main.ts --development",
     "start": "deno run -A main.ts",
-    "test": "rm -rf cov && deno test -A --coverage=cov && deno coverage cov"
+    "hydrate": "deno run -A main.ts --hydrate"
   }
 }`,
     );
@@ -169,6 +172,12 @@ function Counter() {
 }
 
 `,
+    );
+
+    // gitignore
+    await Deno.writeTextFile(
+      ".gitignore",
+      `hydrate`,
     );
   } catch (error) {
     throw error;
