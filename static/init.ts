@@ -123,8 +123,7 @@ await f.serve();
     ]
   },
   "tasks": {
-    "dev": "deno run -A --watch main.ts --development",
-    "start": "deno run -A main.ts",
+    "start": "deno run -A -r --watch main.ts --development",
     "hydrate": "deno run -A main.ts --hydrate"
   }
 }`,
@@ -136,14 +135,9 @@ await f.serve();
 
 How to start development:
 \`\`\`
-deno task dev
-\`\`\`
-It will reload your browser automatically if changes occur.
-
-How to start production:
-\`\`\`
 deno task start
 \`\`\`
+It will reload your browser automatically if changes occur.
 
 `,
     );
@@ -151,7 +145,9 @@ deno task start
     await Deno.mkdir("pages");
     await Deno.writeTextFile(
       "pages/app.tsx",
-      `import React, { useState } from "https://esm.sh/react@18.2.0?dev";
+      `// uncomment this line if you want to deploy to production (deno deploy)
+// import React, { useState } from "https://esm.sh/react@18.2.0"
+import React, { useState } from "https://esm.sh/react@18.2.0?dev";
 
 export default function App(props: { data: string }) {
   return (

@@ -15,8 +15,7 @@
     ]
   },
   "tasks": {
-    "watch": "deno run -A -r --watch main.ts --development",
-    "start": "deno run -A main.ts",
+    "start": "deno run -A -r --watch app/main.ts --development",
     "hydrate": "deno run -A app/main.ts --hydrate",
     "test": "rm -rf cov && deno test -A --coverage=cov && deno coverage cov",
     "coverage": "deno coverage cov --lcov > cov.lcov",
