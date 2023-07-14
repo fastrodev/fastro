@@ -47,11 +47,11 @@ async function killServer() {
   });
 
   await c.output();
-  await delay(500);
+  await delay(1000);
 }
 
 async function bench(server: string, ext: string) {
-  await delay(500);
+  await delay(1000);
 
   const d = new Deno.Command("deno", {
     args: [
