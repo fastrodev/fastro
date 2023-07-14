@@ -162,7 +162,7 @@ es.onmessage = function(e) {
 
   #createHydrate(comp: string, props?: any) {
     const component = comp.toLowerCase();
-    const dev = Deno.env.get("DENO_DEPLOYMENT_ID") === "" ? "" : "?dev";
+    const dev = Deno.env.get("DENO_DEPLOYMENT_ID") ? "?dev" : "";
     console.log("DEV=======>", dev);
     console.log(
       `Deno.env.get("DENO_DEPLOYMENT_ID")====>`,
