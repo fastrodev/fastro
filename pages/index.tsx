@@ -87,7 +87,7 @@ const Index = (props: { version: string }) => {
       </main>
 
       <footer className="mt-auto text-center text-white-50">
-        <p>
+        <p className="fw-lighter">
           Made with{" "}
           <a
             href="https://deno.land/x/fastro"

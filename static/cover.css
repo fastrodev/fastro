@@ -121,3 +121,7 @@ body {
 .bd-mode-toggle {
     z-index: 1500;
 }
+
+a:link, a:visited, a:hover, a:active {
+  text-decoration: none;
+}

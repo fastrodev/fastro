@@ -124,12 +124,15 @@ export class Markdown {
             </a>
           </nav>
         </header>
+        <hr />
         <main>
-          <hr />
           <div className="text-center">
-            <h1>{meta.title}</h1>
-            <h5 className="text-white-50">{meta.description}</h5>
-            <p className="text-white-50">{meta.author} · {formattedDate}</p>
+            <h1 className="display-6 fw-bold">{meta.title}</h1>
+            <p className="lead text-white-50 fw-lighter">{meta.description}</p>
+            <hr />
+            <p className="text-white-50 fw-lighter">
+              {meta.author} · {formattedDate}
+            </p>
             <hr />
           </div>
           {child}
@@ -164,11 +167,11 @@ export class Markdown {
         </main>
         <footer className="text-center text-white-50">
           <hr className="mt-5"></hr>
-          <p>
+          <p className="fw-lighter">
             Made with{" "}
             <a
               href="https://deno.land/x/fastro"
-              className="text-decoration-none text-white "
+              className="text-decoration-none text-white"
             >
               Fastro {props}
             </a>
