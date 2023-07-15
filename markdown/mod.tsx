@@ -127,10 +127,10 @@ export class Markdown {
         <hr />
         <main>
           <div className="text-center">
-            <h1 className="display-6 fw-bold">{meta.title}</h1>
-            <p className="lead text-white-50 fw-lighter">{meta.description}</p>
+            <h1 className="display-5 fw-bold">{meta.title}</h1>
+            <p className="text-white-50 h5">{meta.description}</p>
             <hr />
-            <p className="text-white-50 fw-lighter">
+            <p className="text-white-50 fw-light">
               {meta.author} · {formattedDate}
             </p>
             <hr />

@@ -122,6 +122,7 @@ body {
     z-index: 1500;
 }
 
-a:link, a:visited, a:hover, a:active {
+a {
+  color: #2f81f7;
   text-decoration: none;
 }
