@@ -1,10 +1,12 @@
 ---
 title: "Internal benchmarks"
 description: This is the final output of an internal benchmark run on localhost
-image: https://fastro.dev/static/image.png
+image: https://fastro.dev/static/bench.png
 author: Fastro
 date: Jul 15, 2023
 ---
+
+![bench](/static/bench.png)
 
 ## Benchmark script
 
