@@ -5,9 +5,7 @@ image: https://fastro.dev/static/bench.png
 author: Fastro
 date: Jul 15, 2023
 ---
-
 ![bench](/static/bench.png)
-
 ## Benchmark script
 
 This is the final output of an internal benchmark run on a localhost. It consists of a simple application for [a specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json). Each is then accessed by the [OHA tool](https://github.com/hatoo/oha) within 10 seconds. The results are then sorted by the fastest.

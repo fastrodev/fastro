@@ -86,7 +86,7 @@ export class Markdown {
       <>
         <Header path="" />
         <hr />
-        <main style={{ marginBottom: 50 }}>
+        <main className="markdown" style={{ marginBottom: 50 }}>
           <div className="text-center">
             <h1 className="display-5 fw-bold">{meta.title}</h1>
             <p className="text-white-50 h5">{meta.description}</p>
