@@ -36,22 +36,28 @@ async function killServer() {
     stderr: "piped",
   });
 
-  const o = await l.output();
-  const pid = JSON.parse(new TextDecoder().decode(o.stdout));
+  try {
+    const o = await l.output();
+    if (o && o.success) {
+      const pid = JSON.parse(new TextDecoder().decode(o.stdout));
 
-  const c = new Deno.Command("kill", {
-    args: [
-      "-9",
-      `${pid}`,
-    ],
-  });
+      const c = new Deno.Command("kill", {
+        args: [
+          "-9",
+          `${pid}`,
+        ],
+      });
 
-  await c.output();
-  await delay(1000);
+      await c.output();
+      await delay(1000);
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function bench(server: string, ext: string) {
-  await delay(1000);
+  await delay(2000);
 
   const d = new Deno.Command("deno", {
     args: [
@@ -63,7 +69,10 @@ async function bench(server: string, ext: string) {
   d.spawn();
 
   let res;
-  if (server === "middleware") {
+  if (server === "markdown") {
+    const url = "http://localhost:8000/start";
+    res = await oha(url);
+  } else if (server === "middleware") {
     const url = "http://localhost:8000/user?name=john";
     res = await oha(url);
   } else if (server === "static_file") {
