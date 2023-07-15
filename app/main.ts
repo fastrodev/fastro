@@ -69,7 +69,7 @@ f.page(
 
     const options: RenderOptions = {
       build: false,
-      props: { version: git["name"] },
+      props: { version: git["name"], path: "home" },
       html: {
         class: "h-100",
         head: {
