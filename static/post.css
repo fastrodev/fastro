@@ -43,7 +43,3 @@ table th,
 table td {
   padding: 6px 13px;
 }
-
-tr:nth-child(even) {
-  background-color: #282828;
-}

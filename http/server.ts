@@ -478,7 +478,7 @@ export class HttpServer implements Fastro {
         html: {
           lang: "en",
           head: {
-            title: md.meta?.title,
+            title: `${md.meta?.title} | Fastro`,
             descriptions: md.meta?.description,
             meta: [
               { charset: "utf-8" },

@@ -1,5 +1,4 @@
 export default function (props: { path: string }) {
-  console.log(props);
   return (
     <header className="mb-auto text-center">
       <h3 className="float-md-start mb-0">Fastro</h3>
