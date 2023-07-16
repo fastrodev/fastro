@@ -14,6 +14,11 @@ f.get("/api", () => {
   return Response.json({ time: new Date().getTime() });
 });
 
+f.get("/robots.txt", () =>
+  `User-agent: *
+Allow: /
+`);
+
 f.static("/static", { folder: "static" });
 
 f.page("/app", app, (_req: HttpRequest, ctx: Context) => {
