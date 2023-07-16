@@ -88,19 +88,18 @@ export class Context {
   server!: Fastro;
   info!: Info;
   [key: string]: any;
-  // props!: (props: unknown) => this;
   render!: (options?: RenderOptions) => Response | Promise<Response>;
   send!: (data: unknown, status?: number) => Response | Promise<Response>;
 }
 
-export type RequestHandler = (
+type RequestHandler = (
   request: HttpRequest,
   ctx: Context,
 ) =>
   | Response
   | Promise<Response>;
 
-export type MiddlewareArgument = (
+type MiddlewareArgument = (
   request: HttpRequest,
   ctx: Context,
   next: Next,
@@ -108,12 +107,12 @@ export type MiddlewareArgument = (
   | Promise<unknown>
   | unknown;
 
-export type ExecHandler = (
+type ExecHandler = (
   request?: HttpRequest,
   ctx?: Context,
 ) => Response;
 
-export type RouteNest = {
+type RouteNest = {
   handler: HandlerArgument;
   method?: string;
   pathname?: string;
@@ -124,13 +123,13 @@ export type RouteNest = {
   handlers?: Array<MiddlewareArgument>;
 };
 
-export type Route = {
+type Route = {
   method: string;
   path: string;
   handler: HandlerArgument;
 };
 
-export type Middleware = {
+type Middleware = {
   method?: string;
   path?: string;
   handler: MiddlewareArgument;
@@ -139,7 +138,7 @@ export type Middleware = {
 export type Component = FunctionComponent | JSX.Element;
 
 export type FunctionComponent = (props?: any) => JSX.Element;
-export type Page = {
+type Page = {
   path: string;
   element: Component;
   handlers: Array<MiddlewareArgument>;
@@ -175,7 +174,7 @@ export interface Fastro {
 
 type ListenHandler = (params: { hostname: string; port: number }) => void;
 
-export type Static = {
+type Static = {
   file: string;
   contentType: string;
 };
