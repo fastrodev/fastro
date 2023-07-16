@@ -22,27 +22,27 @@ jobs:
       - run: deno lint --unstable http
       - run: deno lint --unstable examples
 
-      # - name: Run tests
-      #   run: deno task test
-      
       - name: Run hydrate
         run: deno task hydrate
-      
-      # - name: Generate report
-      #   run: deno coverage cov --lcov > cov.lcov
 
-      # - name: Coveralls
-      #   uses: coverallsapp/github-action@v1
-      #   with:
-      #     path-to-lcov: ./cov.lcov
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-          
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: fastro
           entrypoint: app/main.ts
 
+      - name: Run tests
+        run: deno task test
+         
+      - name: Generate report
+        run: deno coverage cov --lcov > cov.lcov
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@v1
+        with:
+          path-to-lcov: ./cov.lcov
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Install Oha
         uses: baptiste0928/cargo-install@v1
         with:
