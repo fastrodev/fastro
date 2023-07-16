@@ -1,9 +1,14 @@
 import { HttpServer as fastro } from "../http/server.ts";
+import markdown from "../middlewares/markdown.tsx";
 import { Context, HttpRequest, Next, RenderOptions } from "../mod.ts";
 import app from "../pages/app.tsx";
 import index from "../pages/index.tsx";
 
 const f = new fastro();
+
+const m = new markdown();
+
+f.use(m.middleware);
 
 f.use((req: HttpRequest, _ctx: Context, next: Next) => {
   console.log(`${req.method} ${req.url}`);
