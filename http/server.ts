@@ -107,11 +107,6 @@ type MiddlewareArgument = (
   | Promise<unknown>
   | unknown;
 
-type ExecHandler = (
-  request?: HttpRequest,
-  ctx?: Context,
-) => Response;
-
 type RouteNest = {
   handler: HandlerArgument;
   method?: string;
