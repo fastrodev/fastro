@@ -723,7 +723,8 @@ export class HttpServer implements Fastro {
     return res;
   };
 
-  #findStaticFiles = async (staticUrl: string, reqUrl: string) => {
+  #findStaticFiles = async (url: string, reqUrl: string) => {
+    const staticUrl = url === "/" ? "" : url;
     const pathname = staticUrl + `/*`;
     const nestID = pathname + reqUrl;
     if (this.#nest[nestID]) return this.#nest[nestID];

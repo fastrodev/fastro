@@ -1,5 +1,5 @@
 import fastro from "../mod.ts";
-import { assertEquals } from "./deps.ts";
+import { assertEquals, assertExists } from "./deps.ts";
 
 const host = "http://localhost:8000";
 
@@ -33,6 +33,32 @@ Deno.test(
     const head = await fetch(host, { method: "HEAD" });
     assertEquals(await head.text(), "");
 
+    f.close();
+    await f.finished();
+  },
+);
+
+Deno.test(
+  { permissions: { net: true, env: true, read: true, write: true } },
+  async function getStaticFileWithStaticPath() {
+    const f = new fastro();
+    f.static("/static", { folder: "static", maxAge: 90 });
+    f.serve();
+    const get = await fetch(`${host}/static/post.css`, { method: "GET" });
+    assertExists(await get.text(), `@media (min-width: 576px)`);
+    f.close();
+    await f.finished();
+  },
+);
+
+Deno.test(
+  { permissions: { net: true, env: true, read: true, write: true } },
+  async function getStaticFileWithRootPath() {
+    const f = new fastro();
+    f.static("/", { folder: "static", maxAge: 90 });
+    f.serve();
+    const get = await fetch(`${host}/static/post.css`, { method: "GET" });
+    assertExists(await get.text(), `@media (min-width: 576px)`);
     f.close();
     await f.finished();
   },

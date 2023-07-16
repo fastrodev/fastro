@@ -35,7 +35,8 @@ export class Markdown {
 
   #readFile = async (path: string) => {
     const pathname = `/*`;
-    const nestID = pathname + path;
+    // console.log("pathname", pathname);
+    const nestID = `markdown${pathname}${path}`;
     if (this.#nest[nestID]) return this.#nest[nestID];
 
     const pattern = new URLPattern({ pathname });
@@ -43,6 +44,8 @@ export class Markdown {
     if (!match) return this.#nest[nestID] = null;
 
     const file = match?.pathname.groups["0"];
+    // console.log('file?.endsWith(".css")', file?.endsWith(".css"));
+    // if (!file?.endsWith(".css")) return this.#nest[nestID] = null;
 
     try {
       const txt = await Deno.readTextFile(`./posts/${file}.md`);
@@ -159,8 +162,9 @@ export class Markdown {
   }
 
   getPost = async () => {
-    if (this.#nest[this.#path]) return this.#nest[this.#path];
+    const nestID = `markdown${this.#path}`;
+    if (this.#nest[nestID]) return this.#nest[nestID];
     const res = await this.#readFile(this.#path);
-    return this.#nest[this.#path] = res;
+    return this.#nest[nestID] = res;
   };
 }
