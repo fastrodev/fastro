@@ -1,5 +1,4 @@
 // deno-lint-ignore-file
-import { Markdown, Post } from "../markdown/mod.tsx";
 import {
   ConnInfo,
   contentType,
@@ -165,6 +164,7 @@ export interface Fastro {
   ): Fastro;
   onListen(handler: ListenHandler): void;
   finished(): Promise<void> | undefined;
+  getNest(): Nest;
 }
 
 type ListenHandler = (params: { hostname: string; port: number }) => void;
@@ -173,6 +173,11 @@ type Static = {
   file: string;
   contentType: string;
 };
+
+type Nest = Record<
+  string,
+  RouteNest | URLPatternResult | Static | null | undefined
+>;
 
 export const BUILD_ID = Deno.env.get("DENO_DEPLOYMENT_ID") || toHashString(
   new Uint8Array(
@@ -198,10 +203,7 @@ export class HttpServer implements Fastro {
   #maxAge: number;
   record: Record<string, any>;
   #development: boolean;
-  #nest: Record<
-    string,
-    RouteNest | URLPatternResult | Static | null | undefined
-  >;
+  #nest: Nest;
   #body: ReadableStream<any> | undefined;
   #listenHandler: ListenHandler | undefined;
 
@@ -223,6 +225,10 @@ export class HttpServer implements Fastro {
       ? { development: true }
       : { production: true };
     console.info(status);
+  }
+
+  getNest(): Nest {
+    return this.#nest;
   }
 
   #getDevelopment = () => {
@@ -465,77 +471,6 @@ export class HttpServer implements Fastro {
       if (result) return this.#handleResponse(result);
     }
 
-    const md = await this.#findMarkdownFiles(req);
-    if (md) {
-      const options: RenderOptions = {
-        cache: true,
-        html: {
-          lang: "en",
-          head: {
-            title: `${md.meta?.title} | Fastro`,
-            descriptions: md.meta?.description,
-            meta: [
-              { charset: "utf-8" },
-              {
-                name: "viewport",
-                content: "width=device-width, initial-scale=1.0",
-              },
-              {
-                name: "description",
-                content: md.meta?.description,
-              },
-              {
-                property: "og:image",
-                content: md.meta?.image,
-              },
-              {
-                name: "twitter:image:src",
-                content: md.meta?.image,
-              },
-              {
-                name: "twitter:description",
-                content: md.meta?.description,
-              },
-              {
-                name: "og-description",
-                content: md.meta?.description,
-              },
-              {
-                property: "og:title",
-                content: md.meta?.title,
-              },
-            ],
-            link: [{
-              href:
-                "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css",
-              rel: "stylesheet",
-              integrity:
-                "sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD",
-              crossorigin: "anonymous",
-            }, {
-              href: "/static/post.css",
-              rel: "stylesheet",
-            }, {
-              href: "/static/cover.css",
-              rel: "stylesheet",
-            }],
-            script: [{
-              src:
-                "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js",
-              integrity:
-                "sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN",
-              crossorigin: "anonymous",
-            }],
-          },
-          body: {
-            class: "d-flex h-100 text-bg-dark",
-            rootClass: "cover-container d-flex w-100 p-3 mx-auto flex-column",
-          },
-        },
-      };
-      return this.#renderElement(md.content, options, req);
-    }
-
     const s = (await this.#findStaticFiles(this.#staticUrl, req.url)) as Static;
     if (s) {
       return new Response(s.file, {
@@ -711,11 +646,6 @@ export class HttpServer implements Fastro {
   getStaticFolder() {
     return this.#staticFolder;
   }
-
-  #findMarkdownFiles = async (req: Request) => {
-    const res = await new Markdown(this.#nest, req).getPost() as Post;
-    return res;
-  };
 
   #findStaticFiles = async (url: string, reqUrl: string) => {
     const staticUrl = url === "/" ? "" : url;

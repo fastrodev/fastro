@@ -4,8 +4,11 @@ import ReactMarkdown from "https://esm.sh/react-markdown@8.0.7";
 import { Prism as SyntaxHighlighter } from "https://esm.sh/react-syntax-highlighter@15.5.0";
 import * as prism from "https://esm.sh/react-syntax-highlighter@15.5.0/dist/esm/styles/prism";
 import remarkGfm from "https://esm.sh/remark-gfm@3.0.1";
-import Footer from "../components/footer.tsx";
-import Header from "../components/header.tsx";
+import DefaultFooter from "../components/footer.tsx";
+import DefaultHeader from "../components/header.tsx";
+import { Render } from "../http/render.tsx";
+import { Context, HttpRequest, Next, RenderOptions } from "../http/server.ts";
+import { FunctionComponent } from "../mod.ts";
 
 type Meta = {
   title?: string;
@@ -17,25 +20,139 @@ type Meta = {
   next?: string;
 };
 
-export type Post = {
+type Post = {
   meta?: Meta;
   content: JSX.Element;
 };
 
-export class Markdown {
+export default class Instance {
+  #header: FunctionComponent;
+  #footer: FunctionComponent;
+  #options: RenderOptions | undefined;
+
+  constructor(
+    header?: FunctionComponent,
+    footer?: FunctionComponent,
+    options?: RenderOptions,
+  ) {
+    this.#header = header ?? DefaultHeader;
+    this.#footer = footer ?? DefaultFooter;
+    this.#options = options;
+  }
+
+  #getDefaultOptions = (md: Post) => {
+    return {
+      cache: true,
+      html: {
+        lang: "en",
+        head: {
+          title: `${md.meta?.title} | Fastro`,
+          descriptions: md.meta?.description,
+          meta: [
+            { charset: "utf-8" },
+            {
+              name: "viewport",
+              content: "width=device-width, initial-scale=1.0",
+            },
+            {
+              name: "description",
+              content: md.meta?.description,
+            },
+            {
+              property: "og:image",
+              content: md.meta?.image,
+            },
+            {
+              name: "twitter:image:src",
+              content: md.meta?.image,
+            },
+            {
+              name: "twitter:description",
+              content: md.meta?.description,
+            },
+            {
+              name: "og-description",
+              content: md.meta?.description,
+            },
+            {
+              property: "og:title",
+              content: md.meta?.title,
+            },
+          ],
+          link: [{
+            href:
+              "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css",
+            rel: "stylesheet",
+            integrity:
+              "sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD",
+            crossorigin: "anonymous",
+          }, {
+            href: "/static/post.css",
+            rel: "stylesheet",
+          }, {
+            href: "/static/cover.css",
+            rel: "stylesheet",
+          }],
+          script: [{
+            src:
+              "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js",
+            integrity:
+              "sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN",
+            crossorigin: "anonymous",
+          }],
+        },
+        body: {
+          class: "d-flex h-100 text-bg-dark",
+          rootClass: "cover-container d-flex w-100 p-3 mx-auto flex-column",
+        },
+      },
+    } as RenderOptions;
+  };
+
+  middleware = async (req: HttpRequest, ctx: Context, _next: Next) => {
+    const md = await new Markdown(
+      ctx.server.getNest(),
+      req,
+      this.#header,
+      this.#footer,
+    ).getPost() as Post;
+
+    if (md) {
+      const opt = this.#options ?? this.#getDefaultOptions(md);
+      const r = new Render(
+        md.content,
+        opt,
+        ctx.server.getNest(),
+        ctx.server,
+        req,
+      );
+      return r.render();
+    }
+  };
+}
+
+class Markdown {
   #post: Record<string, Post>;
   #nest: Record<string, any>;
   #path: string;
+  #header: FunctionComponent;
+  #footer: FunctionComponent;
 
-  constructor(nest: Record<string, any>, req: Request) {
+  constructor(
+    nest: Record<string, any>,
+    req: Request,
+    header: FunctionComponent,
+    footer: FunctionComponent,
+  ) {
     this.#post = {};
     this.#nest = nest;
     this.#path = req.url;
+    this.#header = header;
+    this.#footer = footer;
   }
 
   #readFile = async (path: string) => {
     const pathname = `/*`;
-    // console.log("pathname", pathname);
     const nestID = `markdown${pathname}${path}`;
     if (this.#nest[nestID]) return this.#nest[nestID];
 
@@ -44,8 +161,6 @@ export class Markdown {
     if (!match) return this.#nest[nestID] = null;
 
     const file = match?.pathname.groups["0"];
-    // console.log('file?.endsWith(".css")', file?.endsWith(".css"));
-    // if (!file?.endsWith(".css")) return this.#nest[nestID] = null;
 
     try {
       const txt = await Deno.readTextFile(`./posts/${file}.md`);
@@ -85,6 +200,10 @@ export class Markdown {
     const formattedDate = date.toLocaleString("en-US", {
       dateStyle: "medium",
     });
+
+    const Header = this.#header;
+    const Footer = this.#footer;
+
     return (
       <>
         <Header path="" />
