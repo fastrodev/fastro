@@ -13,9 +13,9 @@ import {
 } from "./deps.ts";
 import { Render } from "./render.tsx";
 
-export type ServerHandler = Deno.ServeHandler | Handler;
+type ServerHandler = Deno.ServeHandler | Handler;
 
-export type HandlerArgument =
+type HandlerArgument =
   | ServerHandler
   | RequestHandler
   | MiddlewareArgument;
