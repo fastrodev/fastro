@@ -137,7 +137,7 @@ author: Fastro
 date: ${formattedDate}
 ---
 
-## Benchmark script
+![bench](/static/bench.png)
 
 This is the final output of an internal benchmark run on a localhost. It consists of a simple application for [a specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json). Each is then accessed by the [OHA tool](https://github.com/hatoo/oha) within 10 seconds. The results are then sorted by the fastest.
 
