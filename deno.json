@@ -21,6 +21,7 @@
     "coverage": "deno coverage cov --lcov > cov.lcov",
     "bench": "deno run -A bench/run.ts",
     "deno": "deno run -A examples/deno.ts",
+    "hook": "deno run -A examples/hook.ts",
     "raw_json": "deno run -A examples/raw_json.ts",
     "raw_jsx": "deno run -A examples/raw_jsx.tsx",
     "raw_string": "deno run -A examples/raw_string.ts",

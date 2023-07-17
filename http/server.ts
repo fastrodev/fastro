@@ -23,6 +23,11 @@ export interface Next {
   (error?: Error, data?: unknown): unknown;
 }
 
+export type Hook = (
+  server: Fastro,
+  request: Request,
+  info: Info,
+) => Response | Promise<Response>;
 export class HttpRequest extends Request {
   record!: Record<string, any>;
   match?: URLPatternResult | null;
@@ -31,7 +36,7 @@ export class HttpRequest extends Request {
   [key: string]: any;
 }
 
-type Info = Deno.ServeHandlerInfo | ConnInfo;
+export type Info = Deno.ServeHandlerInfo | ConnInfo;
 
 type Meta = {
   name?: string;
@@ -206,6 +211,7 @@ export class HttpServer implements Fastro {
   #nest: Nest;
   #body: ReadableStream<any> | undefined;
   #listenHandler: ListenHandler | undefined;
+  #hook: Hook | undefined;
 
   constructor(options?: { port?: number }) {
     this.#port = options?.port ?? 8000;
@@ -445,6 +451,9 @@ export class HttpServer implements Fastro {
     req: Request,
     i: Info,
   ) => {
+    const h = this.#findHook();
+    if (h) return await h(this, req, i);
+
     const m = await this.#findMiddleware(req, i);
     if (m) return this.#handleResponse(m);
 
@@ -482,6 +491,15 @@ export class HttpServer implements Fastro {
     }
 
     return this.#handleBinary(this.#staticUrl, req.url);
+  };
+
+  hook = (hook: Hook) => {
+    this.#hook = hook;
+    return this;
+  };
+
+  #findHook = () => {
+    return this.#hook;
   };
 
   #findPage = (r: Request) => {
