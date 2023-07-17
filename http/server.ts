@@ -153,6 +153,7 @@ export interface Fastro {
   patch(path: string, ...handler: Array<HandlerArgument>): Fastro;
   options(path: string, ...handler: Array<HandlerArgument>): Fastro;
   head(path: string, ...handler: Array<HandlerArgument>): Fastro;
+  hook(hook: Hook): Fastro;
   static(path: string, options?: { maxAge?: number; folder?: string }): Fastro;
   page(
     path: string,
@@ -181,7 +182,7 @@ type Static = {
 
 type Nest = Record<
   string,
-  RouteNest | URLPatternResult | Static | null | undefined
+  any
 >;
 
 export const BUILD_ID = Deno.env.get("DENO_DEPLOYMENT_ID") || toHashString(
@@ -211,13 +212,14 @@ export class HttpServer implements Fastro {
   #nest: Nest;
   #body: ReadableStream<any> | undefined;
   #listenHandler: ListenHandler | undefined;
-  #hook: Hook | undefined;
+  #hooks: Hook[];
 
   constructor(options?: { port?: number }) {
     this.#port = options?.port ?? 8000;
     this.#routes = [];
     this.#middlewares = [];
     this.#pages = [];
+    this.#hooks = [];
     this.#patterns = {};
     this.#nest = {};
     this.record = {};
@@ -447,12 +449,29 @@ export class HttpServer implements Fastro {
     return new Response(err.stack);
   };
 
+  #handleHook = async (h: Hook[], r: Request, i: Info) => {
+    let result: Response | Promise<Response> | undefined;
+    for (let index = 0; index < h.length; index++) {
+      const hook = h[index];
+      const x = await hook(this, r, i);
+      if (this.#isResponse(x)) {
+        result = x;
+        break;
+      }
+    }
+
+    return result;
+  };
+
   #handleRequest = async (
     req: Request,
     i: Info,
   ) => {
     const h = this.#findHook();
-    if (h) return await h(this, req, i);
+    if (h) {
+      const res = await this.#handleHook(h, req, i);
+      if (res) return this.#handleResponse(res);
+    }
 
     const m = await this.#findMiddleware(req, i);
     if (m) return this.#handleResponse(m);
@@ -494,12 +513,13 @@ export class HttpServer implements Fastro {
   };
 
   hook = (hook: Hook) => {
-    this.#hook = hook;
+    this.#hooks.push(hook);
     return this;
   };
 
   #findHook = () => {
-    return this.#hook;
+    if (this.#hooks.length === 0) return undefined;
+    return this.#hooks;
   };
 
   #findPage = (r: Request) => {
@@ -620,7 +640,7 @@ export class HttpServer implements Fastro {
   }
 
   #findRoute(method: string, url: string) {
-    const nestID = method + url;
+    const nestID = `route${method + url}`;
     const r = this.#nest[nestID];
     if (r) return r as RouteNest;
 

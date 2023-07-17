@@ -1,4 +1,4 @@
-import { delay } from "https://deno.land/std@0.147.0/async/mod.ts";
+import { delay } from "https://deno.land/std@0.194.0/async/mod.ts";
 import { markdownTable } from "https://esm.sh/markdown-table@3.0.2";
 
 async function oha(url?: string) {
@@ -7,7 +7,7 @@ async function oha(url?: string) {
     "-j",
     "--no-tui",
     "-z",
-    "10s",
+    "5s",
     u,
   ];
   const oh = `oha ${args.join().replaceAll(",", " ")}`;
@@ -49,7 +49,7 @@ async function killServer() {
       });
 
       await c.output();
-      await delay(1000);
+      await delay(2000);
     }
   } catch (error) {
     console.log(error);
@@ -57,7 +57,7 @@ async function killServer() {
 }
 
 async function bench(server: string, ext: string) {
-  await delay(2000);
+  await delay(500);
 
   const d = new Deno.Command("deno", {
     args: [
@@ -139,7 +139,7 @@ date: ${formattedDate}
 
 ![bench](/static/bench.png)
 
-This is the final output of an internal benchmark run on a localhost. It consists of a simple application for [a specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json). Each is then accessed by the [OHA tool](https://github.com/hatoo/oha) within 10 seconds. The results are then sorted by the fastest.
+This is the final output of an internal benchmark run on a localhost. It consists of a simple application for [a specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json). Each is then accessed by the [OHA tool](https://github.com/hatoo/oha) within 5 seconds. The results are then sorted by the fastest.
 
 You can find the benchmarks script on this page: [run.ts](https://github.com/fastrodev/fastro/blob/main/bench/run.ts)
 

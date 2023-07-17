@@ -93,13 +93,6 @@ export default class Instance {
             href: "/static/cover.css",
             rel: "stylesheet",
           }],
-          script: [{
-            src:
-              "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js",
-            integrity:
-              "sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN",
-            crossorigin: "anonymous",
-          }],
         },
         body: {
           class: "d-flex h-100 text-bg-dark",
@@ -117,16 +110,17 @@ export default class Instance {
       this.#footer,
     ).getPost() as Post;
 
-    if (!md) return new Response("Not found");
-    const opt = this.#options ?? this.#getDefaultOptions(md);
-    const render = new Render(
-      md.content,
-      opt,
-      f.getNest(),
-      f,
-      r,
-    );
-    return render.render();
+    if (md) {
+      const opt = this.#options ?? this.#getDefaultOptions(md);
+      const render = new Render(
+        md.content,
+        opt,
+        f.getNest(),
+        f,
+        r,
+      );
+      return render.render();
+    }
   };
 }
 
