@@ -73,13 +73,13 @@ async function bench(server: string, ext: string) {
     const url = "http://localhost:8000/start";
     res = await oha(url);
   } else if (server === "middleware") {
-    const url = "http://localhost:8000/user?name=john";
+    const url = "http://localhost:8000/user\?name\=john";
     res = await oha(url);
   } else if (server === "static_file") {
     const url = "http://localhost:8000/static/post.css";
     res = await oha(url);
-  } else if (server === "params") {
-    const url = "http://localhost:8000/agus?title=lead";
+  } else if (server === "params_query") {
+    const url = "http://localhost:8000/agus\?title\=lead";
     res = await oha(url);
   } else {
     res = await oha();
