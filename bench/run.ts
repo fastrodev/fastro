@@ -72,7 +72,7 @@ async function bench(server: string, ext: string) {
   if (server === "markdown") {
     const url = "http://localhost:8000/start";
     res = await oha(url);
-  } else if (server === "middleware") {
+  } else if (server === "middleware_deno_kv") {
     const url = "http://localhost:8000/user\?name\=john";
     res = await oha(url);
   } else if (server === "static_file") {

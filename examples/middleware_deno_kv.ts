@@ -18,9 +18,6 @@ f.use((req: HttpRequest, _ctx: Context, next: Next) => {
   const kv: Deno.Kv = req.record["kv"];
   kv.set(["users", "john"], { name: "john", id: crypto.randomUUID() });
   return next();
-}, (_req: HttpRequest, _ctx: Context, next: Next) => {
-  console.log("getTime:", new Date().getTime());
-  return next();
 });
 
 // add parameterized endpoint with route level middleware
@@ -29,13 +26,6 @@ f.get("/:user", (
   _ctx: Context,
   next: Next,
 ) => {
-  console.log("date:", new Date());
-  return next();
-}, (req: HttpRequest, _ctx: Context, next: Next) => {
-  console.log("req.params:", req.params);
-  console.log("req.query:", req.query);
-  console.log("req.data-init:", req.record["init"]);
-  console.log("req.data-value:", req.record["value"]);
   return next();
 }, async (req: HttpRequest, _ctx: Context) => {
   // get the initialized kv data
