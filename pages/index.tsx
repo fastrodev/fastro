@@ -23,7 +23,7 @@ const Index = (props: { version: string; path: string }) => {
             </a>
           </div>
           <div className="p-3 bg-black border border-light rounded fw-light align-middle">
-            deno run -A -r https://fastro.dev
+            deno run -A -r https://fastro.deno.dev
           </div>
         </div>
 
