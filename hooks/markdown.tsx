@@ -6,6 +6,7 @@ import * as prism from "https://esm.sh/react-syntax-highlighter@15.5.0/dist/esm/
 import remarkGfm from "https://esm.sh/remark-gfm@3.0.1";
 import DefaultFooter from "../components/footer.tsx";
 import DefaultHeader from "../components/header.tsx";
+import { Status, STATUS_TEXT } from "../http/deps.ts";
 import { Render } from "../http/render.tsx";
 import { Fastro, RenderOptions } from "../http/server.ts";
 import { FunctionComponent, Info } from "../mod.ts";
@@ -121,6 +122,10 @@ export default class Instance {
       );
       return render.render();
     }
+
+    return new Response(STATUS_TEXT[Status.NotFound], {
+      status: Status.NotFound,
+    });
   };
 }
 
