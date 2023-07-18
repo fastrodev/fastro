@@ -33,6 +33,6 @@
     "params_query": "deno run -A examples/params_query.ts",
     "ssr": "deno run -A examples/ssr.ts",
     "static_file": "deno run -A examples/static_file.ts",
-    "markdown": "deno run -A examples/static_file.ts"
+    "markdown": "deno run -A examples/markdown.ts"
   }
 }
