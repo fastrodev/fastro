@@ -1,23 +1,18 @@
 import fastro, { Context, HttpRequest, Next } from "../mod.ts";
 
+const uuid = crypto.randomUUID();
 const f = new fastro();
-f.record["init"] = "Hello";
+
 // run deno with --unstable
-f.record["kv"] = await Deno.openKv();
+const kv = await Deno.openKv();
+kv.set(["users", "john"], { name: "john", id: uuid });
+f.record["kv"] = kv;
 
 f.static("/public", { maxAge: 90, folder: "/bench" });
 
 // add endpoint
 f.get("/", () => {
   return new Response("root");
-});
-
-// add application level middleware
-f.use((req: HttpRequest, _ctx: Context, next: Next) => {
-  req.record["value"] = crypto.randomUUID();
-  const kv: Deno.Kv = req.record["kv"];
-  kv.set(["users", "john"], { name: "john", id: crypto.randomUUID() });
-  return next();
 });
 
 // add parameterized endpoint with route level middleware
