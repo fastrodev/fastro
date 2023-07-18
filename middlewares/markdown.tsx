@@ -32,15 +32,18 @@ export default class Instance {
   #folder: string | undefined;
 
   constructor(
-    header?: FunctionComponent,
-    footer?: FunctionComponent,
-    folder?: string,
-    options?: RenderOptions,
+    options?: {
+      header?: FunctionComponent;
+      footer?: FunctionComponent;
+      folder?: string;
+      options?: RenderOptions;
+    },
   ) {
-    this.#header = header ?? DefaultHeader;
-    this.#footer = footer ?? DefaultFooter;
-    this.#folder = folder ?? "posts";
-    this.#options = options;
+    const opts = options ?? {};
+    this.#header = opts?.header ?? DefaultHeader;
+    this.#footer = opts?.footer ?? DefaultFooter;
+    this.#folder = opts?.folder ?? "posts";
+    this.#options = opts?.options;
   }
 
   #getDefaultOptions = (md: Post) => {
