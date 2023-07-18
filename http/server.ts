@@ -153,6 +153,22 @@ export interface Fastro {
   patch(path: string, ...handler: Array<HandlerArgument>): Fastro;
   options(path: string, ...handler: Array<HandlerArgument>): Fastro;
   head(path: string, ...handler: Array<HandlerArgument>): Fastro;
+  /**
+   * Allows you access Server, Request, and Info before Middleware, Routes, Pages, and Static File Processing.
+   * It can return `Response`, `Promise<Response>` or `void`.
+   *
+   * ### Example
+   *
+   * ```ts
+   * import fastro, { Fastro, Info } from "../mod.ts";
+   * const f = new fastro();
+   * f.hook((_f: Fastro, _r: Request, _i: Info) => new Response("Hello World"));
+   * await f.serve();
+   *
+   * ```
+   *
+   * @param hook
+   */
   hook(hook: Hook): Fastro;
   static(path: string, options?: { maxAge?: number; folder?: string }): Fastro;
   page(
@@ -212,14 +228,14 @@ export class HttpServer implements Fastro {
   #nest: Nest;
   #body: ReadableStream<any> | undefined;
   #listenHandler: ListenHandler | undefined;
-  #hooks: Hook[];
+  #hook: Hook | undefined;
 
   constructor(options?: { port?: number }) {
     this.#port = options?.port ?? 8000;
     this.#routes = [];
     this.#middlewares = [];
     this.#pages = [];
-    this.#hooks = [];
+    this.#hook = undefined;
     this.#patterns = {};
     this.#nest = {};
     this.record = {};
@@ -449,18 +465,9 @@ export class HttpServer implements Fastro {
     return new Response(err.stack);
   };
 
-  #handleHook = async (h: Hook[], r: Request, i: Info) => {
-    let result: Response | Promise<Response> | undefined;
-    for (let index = 0; index < h.length; index++) {
-      const hook = h[index];
-      const x = await hook(this, r, i);
-      if (this.#isResponse(x)) {
-        result = x;
-        break;
-      }
-    }
-
-    return result;
+  #handleHook = async (h: Hook, r: Request, i: Info) => {
+    const x = await h(this, r, i);
+    if (this.#isResponse(x)) return x;
   };
 
   #handleRequest = async (
@@ -513,13 +520,12 @@ export class HttpServer implements Fastro {
   };
 
   hook = (hook: Hook) => {
-    this.#hooks.push(hook);
+    this.#hook = hook;
     return this;
   };
 
   #findHook = () => {
-    if (this.#hooks.length === 0) return undefined;
-    return this.#hooks;
+    return this.#hook;
   };
 
   #findPage = (r: Request) => {
