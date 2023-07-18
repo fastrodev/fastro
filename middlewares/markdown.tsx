@@ -29,14 +29,17 @@ export default class Instance {
   #header: FunctionComponent;
   #footer: FunctionComponent;
   #options: RenderOptions | undefined;
+  #folder: string | undefined;
 
   constructor(
     header?: FunctionComponent,
     footer?: FunctionComponent,
+    folder?: string,
     options?: RenderOptions,
   ) {
     this.#header = header ?? DefaultHeader;
     this.#footer = footer ?? DefaultFooter;
+    this.#folder = folder ?? "posts";
     this.#options = options;
   }
 
@@ -115,6 +118,7 @@ export default class Instance {
       req,
       this.#header,
       this.#footer,
+      this.#folder,
     ).getPost() as Post;
 
     if (md) {
@@ -137,18 +141,21 @@ class Markdown {
   #path: string;
   #header: FunctionComponent;
   #footer: FunctionComponent;
+  #folder: string | undefined;
 
   constructor(
     nest: Record<string, any>,
     req: Request,
     header: FunctionComponent,
     footer: FunctionComponent,
+    folder?: string,
   ) {
     this.#post = {};
     this.#nest = nest;
     this.#path = req.url;
     this.#header = header;
     this.#footer = footer;
+    this.#folder = folder ?? "posts";
   }
 
   #readFile = async (path: string) => {
@@ -163,7 +170,7 @@ class Markdown {
     const file = match?.pathname.groups["0"];
 
     try {
-      const txt = await Deno.readTextFile(`./posts/${file}.md`);
+      const txt = await Deno.readTextFile(`./${this.#folder}/${file}.md`);
       const m = extract(txt);
       const markdown = this.#markdownToHtml(m.body);
       const git = await this.#getVersion();
