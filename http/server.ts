@@ -154,23 +154,70 @@ export interface Fastro {
   options(path: string, ...handler: Array<HandlerArgument>): Fastro;
   head(path: string, ...handler: Array<HandlerArgument>): Fastro;
   /**
-   * Allows you access Server, Request, and Info before Middleware, Routes, Pages, and Static File Processing.
+   * Allow you access Server, Request, and Info before Middleware, Routes, Pages, and Static File Processing.
    * It can return `Response`, `Promise<Response>` or `void`.
    *
    * ### Example
    *
    * ```ts
    * import fastro, { Fastro, Info } from "../mod.ts";
-   * const f = new fastro();
-   * f.hook((_f: Fastro, _r: Request, _i: Info) => new Response("Hello World"));
-   * await f.serve();
    *
+   * const f = new fastro();
+   *
+   * f.hook((_f: Fastro, _r: Request, _i: Info) => new Response("Hello World"));
+   *
+   * await f.serve();
    * ```
    *
    * @param hook
    */
   hook(hook: Hook): Fastro;
+  /**
+   * Allow you to access static files with custom `path`, `folder`, and `maxAge`
+   *
+   * ### Example
+   *
+   * ```ts
+   * import fastro from "../mod.ts";
+   *
+   * const f = new fastro();
+   *
+   * f.static("/static", { folder: "static", maxAge: 90 });
+   *
+   * await f.serve();
+   * ```
+   * @param path
+   * @param options
+   */
   static(path: string, options?: { maxAge?: number; folder?: string }): Fastro;
+  /**
+   * Allow you to define SSR page with custom `path`, `element`, and `handler`
+   *
+   * ### Example
+   *
+   * ```ts
+   * import fastro, { Context, HttpRequest } from "../mod.ts";
+   * import user from "../pages/user.tsx";
+   *
+   * const f = new fastro();
+   *
+   * f.static("/static", { folder: "static", maxAge: 90 });
+   *
+   * f.page("/", user, (_req: HttpRequest, ctx: Context) => {
+   *     const options = {
+   *       props: { data: "Guest" },
+   *       status: 200,
+   *       html: { head: { title: "React Component" } },
+   *     };
+   *     return ctx.render(options);
+   *   },
+   * );
+   * await f.serve();
+   * ```
+   * @param path
+   * @param element
+   * @param handler
+   */
   page(
     path: string,
     element: Component,
