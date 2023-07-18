@@ -8,13 +8,6 @@ const kv = await Deno.openKv();
 kv.set(["users", "john"], { name: "john", id: uuid });
 f.record["kv"] = kv;
 
-f.static("/public", { maxAge: 90, folder: "/bench" });
-
-// add endpoint
-f.get("/", () => {
-  return new Response("root");
-});
-
 // add parameterized endpoint with route level middleware
 f.get("/:user", (
   _req: HttpRequest,
