@@ -1,14 +1,16 @@
 // deno-lint-ignore-file no-explicit-any
-import { extract } from "https://deno.land/std@0.194.0/front_matter/any.ts";
-import ReactMarkdown from "https://esm.sh/react-markdown@8.0.7";
-import { Prism as SyntaxHighlighter } from "https://esm.sh/react-syntax-highlighter@15.5.0";
-import * as prism from "https://esm.sh/react-syntax-highlighter@15.5.0/dist/esm/styles/prism";
-import remarkGfm from "https://esm.sh/remark-gfm@3.0.1";
 import DefaultFooter from "../components/footer.tsx";
 import DefaultHeader from "../components/header.tsx";
 import { Render } from "../http/render.tsx";
 import { Context, HttpRequest, Next, RenderOptions } from "../http/server.ts";
 import { FunctionComponent } from "../mod.ts";
+import {
+  extract,
+  prism,
+  ReactMarkdown,
+  remarkGfm,
+  SyntaxHighlighter,
+} from "./deps.ts";
 
 type Meta = {
   title?: string;
