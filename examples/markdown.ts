@@ -1,10 +1,9 @@
-import markdown from "../hooks/markdown.tsx";
+import markdown from "../middlewares/markdown.tsx";
 import fastro from "../mod.ts";
 
 const f = new fastro();
 const m = new markdown();
-f.hook(m.hook);
-
+f.use(m.middleware);
 f.static("/static", { folder: "static", maxAge: 90 });
 
 await f.serve();
