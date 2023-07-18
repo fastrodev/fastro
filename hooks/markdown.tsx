@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import matter from "https://esm.sh/gray-matter@4.0.3";
+import { extract } from "https://deno.land/std@0.194.0/front_matter/any.ts";
 import ReactMarkdown from "https://esm.sh/react-markdown@8.0.7";
 import { Prism as SyntaxHighlighter } from "https://esm.sh/react-syntax-highlighter@15.5.0";
 import * as prism from "https://esm.sh/react-syntax-highlighter@15.5.0/dist/esm/styles/prism";
@@ -162,12 +162,12 @@ class Markdown {
 
     try {
       const txt = await Deno.readTextFile(`./posts/${file}.md`);
-      const m = matter(txt);
-      const markdown = this.#markdownToHtml(m.content);
+      const e = extract(txt);
+      const markdown = this.#markdownToHtml(e.body);
       const git = await this.#getVersion();
-      const content = this.#contentContainer(markdown, m.data, git["name"]);
+      const content = this.#contentContainer(markdown, e.attrs, git["name"]);
       return this.#post[path] = {
-        meta: m.data,
+        meta: e.attrs,
         content,
       };
     } catch {
