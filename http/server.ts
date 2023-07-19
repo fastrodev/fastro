@@ -154,7 +154,7 @@ export interface Fastro {
   options(path: string, ...handler: Array<HandlerArgument>): Fastro;
   head(path: string, ...handler: Array<HandlerArgument>): Fastro;
   /**
-   * Allow you access Server, Request, and Info before Middleware, Routes, Pages, and Static File Processing.
+   * Allow you access Server, Request, and Info after Middleware, Routes, Pages, and Static File Processing.
    * It can return `Response`, `Promise<Response>` or `void`.
    *
    * ### Example
@@ -521,12 +521,6 @@ export class HttpServer implements Fastro {
     req: Request,
     i: Info,
   ) => {
-    const h = this.#findHook();
-    if (h) {
-      const res = await this.#handleHook(h, req, i);
-      if (res) return this.#handleResponse(res);
-    }
-
     const m = await this.#findMiddleware(req, i);
     if (m) return this.#handleResponse(m);
 
@@ -563,7 +557,18 @@ export class HttpServer implements Fastro {
       });
     }
 
-    return this.#handleBinary(this.#staticUrl, req.url);
+    const b = await this.#handleBinary(this.#staticUrl, req.url);
+    if (b) return this.#handleResponse(b);
+
+    const h = this.#findHook();
+    if (h) {
+      const res = await this.#handleHook(h, req, i);
+      if (res) return this.#handleResponse(res);
+    }
+
+    return new Response(STATUS_TEXT[Status.NotFound], {
+      status: Status.NotFound,
+    });
   };
 
   hook = (hook: Hook) => {
@@ -739,9 +744,7 @@ export class HttpServer implements Fastro {
   }
 
   #findStaticFiles = async (url: string, reqUrl: string) => {
-    const staticUrl = url === "/" ? "" : url;
-    const pathname = staticUrl + `/*`;
-    const nestID = pathname + reqUrl;
+    const [nestID, pathname] = this.#nestIDPathname(url, reqUrl);
     if (this.#nest[nestID]) return this.#nest[nestID];
 
     const pattern = new URLPattern({ pathname });
@@ -766,17 +769,22 @@ export class HttpServer implements Fastro {
     return this.#nest[nestID] = { contentType: ct, file };
   };
 
-  #handleBinary = async (staticUrl: string, reqUrl: string) => {
+  #nestIDPathname = (url: string, reqUrl: string) => {
+    const staticUrl = url === "/" ? "" : url;
+    const pathname = `${staticUrl}/*`;
+    const nestID = `${pathname}${reqUrl}`;
+
+    return [nestID, pathname];
+  };
+
+  #handleBinary = async (url: string, reqUrl: string) => {
+    const [nestID, pathname] = this.#nestIDPathname(url, reqUrl);
     try {
-      const match = new URLPattern({ pathname: staticUrl + `/*` }).exec(reqUrl);
+      const match = new URLPattern({ pathname }).exec(reqUrl);
       const filePath = `${this.#staticFolder}/${match?.pathname.groups["0"]}`;
       const ct = contentType(extname(filePath)) || "application/octet-stream";
 
-      if (filePath === "/") {
-        return new Response(STATUS_TEXT[Status.NotFound], {
-          status: Status.NotFound,
-        });
-      }
+      if (filePath === "/") return this.#nest[nestID] = null;
       const file = await Deno.open(`./${filePath}`, { read: true });
       return new Response(file.readable, {
         headers: {
@@ -785,9 +793,7 @@ export class HttpServer implements Fastro {
         },
       });
     } catch {
-      return new Response(STATUS_TEXT[Status.NotFound], {
-        status: Status.NotFound,
-      });
+      return this.#nest[nestID] = null;
     }
   };
 

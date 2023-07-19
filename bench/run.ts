@@ -69,14 +69,20 @@ async function bench(server: string, ext: string) {
   d.spawn();
 
   let res;
-  if (server === "markdown") {
-    const url = "http://localhost:8000/start";
+  if (server === "markdown_hook") {
+    const url = "http://localhost:8000/hello";
+    res = await oha(url);
+  } else if (server === "markdown_middleware") {
+    const url = "http://localhost:8000/hello";
     res = await oha(url);
   } else if (server === "middleware_deno_kv") {
     const url = "http://localhost:8000/user\?name\=john";
     res = await oha(url);
-  } else if (server === "static_file") {
+  } else if (server === "static_file_string") {
     const url = "http://localhost:8000/static/post.css";
+    res = await oha(url);
+  } else if (server === "static_file_string_image") {
+    const url = "http://localhost:8000/static/image.png";
     res = await oha(url);
   } else if (server === "params_query") {
     const url = "http://localhost:8000/agus\?title\=lead";

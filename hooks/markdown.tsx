@@ -2,7 +2,7 @@
 import DefaultFooter from "../components/footer.tsx";
 import DefaultHeader from "../components/header.tsx";
 import { Render } from "../http/render.tsx";
-import { Context, HttpRequest, Next, RenderOptions } from "../http/server.ts";
+import { Fastro, Info, RenderOptions } from "../http/server.ts";
 import { FunctionComponent } from "../mod.ts";
 import {
   extract,
@@ -110,26 +110,24 @@ export default class Instance {
     } as RenderOptions;
   };
 
-  middleware = async (req: HttpRequest, ctx: Context, _next: Next) => {
+  hook = async (server: Fastro, req: Request, info: Info) => {
     const md = await new Markdown(
-      ctx.server.getNest(),
+      server.getNest(),
       req,
       this.#header,
       this.#footer,
       this.#folder,
     ).getPost() as Post;
 
-    if (md) {
-      const opt = this.#options ?? this.#getDefaultOptions(md);
-      const r = new Render(
-        md.content,
-        opt,
-        ctx.server.getNest(),
-        ctx.server,
-        req,
-      );
-      return r.render();
-    }
+    const opt = this.#options ?? this.#getDefaultOptions(md);
+    const r = new Render(
+      md.content,
+      opt,
+      server.getNest(),
+      server,
+      req,
+    );
+    return r.render();
   };
 }
 

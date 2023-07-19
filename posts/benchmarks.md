@@ -3,7 +3,7 @@ title: "Internal benchmarks"
 description: This is the final output of an internal benchmark run on localhost
 image: https://fastro.dev/static/image.png
 author: Fastro
-date: Jul 18, 2023
+date: Jul 20, 2023
 ---
 
 ![bench](/static/bench.png)
