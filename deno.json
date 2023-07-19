@@ -29,7 +29,7 @@
     "ctx_jsx": "deno run -A examples/ctx_jsx.tsx",
     "ctx_string": "deno run -A examples/ctx_string.ts",
     "string_response": "deno run -A examples/string_response.ts",
-    "middleware_deno_kv": "deno run -A --unstable examples/middleware_deno_kv.ts",
+    "deno_kv": "deno run -A --unstable examples/deno_kv.ts",
     "params_query": "deno run -A examples/params_query.ts",
     "ssr": "deno run -A examples/ssr.ts",
     "static_file_string": "deno run -A examples/static_file_string.ts",

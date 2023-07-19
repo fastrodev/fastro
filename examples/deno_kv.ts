@@ -10,6 +10,7 @@ await kv.set(["users", "john"], { name: "john", id: uuid });
 f.record["kv"] = kv;
 
 // add parameterized endpoint with route level middleware
+// http://localhost:8000/user?name=john
 f.get("/:user", async (req: HttpRequest, _ctx: Context) => {
   // get the initialized kv data
   const kv: Deno.Kv = req.record["kv"];
