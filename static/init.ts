@@ -384,7 +384,7 @@ export default function (
         class: "h-100 text-bg-dark",
         script: [],
         root: {
-          class: "cover-container d-flex w-100 p-3 mx-auto flex-column",
+          class: "cover-container d-flex w-100 h-100 p-3 mx-auto flex-column",
         },
       },
     },
