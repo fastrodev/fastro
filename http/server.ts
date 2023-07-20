@@ -253,6 +253,13 @@ export interface Fastro {
   getStaticFolder(): string;
   getStaticPath(): string;
   getDevelopmentStatus(): boolean;
+  /**
+   * Add a handler directly
+   *
+   * @param method
+   * @param path
+   * @param handler
+   */
   push(
     method?: string,
     path?: string,
@@ -261,6 +268,12 @@ export interface Fastro {
   onListen(handler: ListenHandler): void;
   finished(): Promise<void> | undefined;
   getNest(): Nest;
+  /**
+   * Serves HTTP requests
+   *
+   * If the server was constructed without a specified port, 8000 is used.
+   */
+  serve(): Promise<void>;
 }
 
 type ListenHandler = (params: { hostname: string; port: number }) => void;
