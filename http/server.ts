@@ -91,6 +91,8 @@ export type RenderOptions = {
   };
 };
 
+export const hydrateFolder = ".hydrate";
+
 export class Context {
   server!: Fastro;
   info!: Info;
@@ -343,7 +345,7 @@ export class HttpServer implements Fastro {
   #hydrateExist = async () => {
     try {
       for await (const dirEntry of Deno.readDir(`${Deno.cwd()}`)) {
-        if (dirEntry.name === `hydrate`) {
+        if (dirEntry.name === hydrateFolder) {
           return true;
         }
       }
@@ -355,7 +357,7 @@ export class HttpServer implements Fastro {
 
   #build = async () => {
     if (!await this.#hydrateExist()) {
-      await Deno.mkdir(`${Deno.cwd()}/hydrate`);
+      await Deno.mkdir(`${Deno.cwd()}/${hydrateFolder}`);
     }
     for (let index = 0; index < this.#pages.length; index++) {
       const page = this.#pages[index];

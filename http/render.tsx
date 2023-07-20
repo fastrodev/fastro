@@ -6,6 +6,7 @@ import {
   Component,
   Fastro,
   FunctionComponent,
+  hydrateFolder,
   RenderOptions,
 } from "./server.ts";
 
@@ -227,7 +228,7 @@ hydrateRoot(document.getElementById("root") as Element, el);
     if (await this.#hydrateExist(elementName)) return;
     try {
       const target =
-        `${Deno.cwd()}/hydrate/${elementName.toLowerCase()}.hydrate.tsx`;
+        `${Deno.cwd()}/${hydrateFolder}/${elementName.toLowerCase()}.hydrate.tsx`;
       await Deno.writeTextFile(
         target,
         this.#createHydrate(elementName),

@@ -196,7 +196,7 @@ export default function App(props: { data: string }) {
     // gitignore
     await Deno.writeTextFile(
       ".gitignore",
-      `hydrate`,
+      `.hydrate`,
     );
 
     // css
