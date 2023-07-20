@@ -1,3 +1,3 @@
-import { HttpServer } from "./http/mod.ts";
-export * from "./http/mod.ts";
+import { HttpServer } from "./http/server.ts";
+export * from "./http/server.ts";
 export default HttpServer;
