@@ -2,8 +2,13 @@
 import DefaultFooter from "../components/footer.tsx";
 import DefaultHeader from "../components/header.tsx";
 import { Render } from "../http/render.tsx";
-import { Context, HttpRequest, Next, RenderOptions } from "../http/server.ts";
-import { FunctionComponent } from "../mod.ts";
+import {
+  Context,
+  FunctionComponent,
+  HttpRequest,
+  Next,
+  RenderOptions,
+} from "../http/server.ts";
 import {
   extract,
   prism,

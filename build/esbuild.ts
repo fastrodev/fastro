@@ -1,4 +1,4 @@
-import { hydrateFolder } from "../mod.ts";
+import { hydrateFolder } from "../http/server.ts";
 import { denoPlugins, esbuild, esbuildWasmURL } from "./deps.ts";
 
 export class Esbuild {

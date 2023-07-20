@@ -1,4 +1,4 @@
-import fastro, { Context, HttpRequest } from "../mod.ts";
+import fastro, { Context, HttpRequest } from "../http/server.ts";
 import uuid from "../pages/uuid.tsx";
 import layout from "./l.ts";
 

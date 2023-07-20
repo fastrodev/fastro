@@ -2,8 +2,12 @@
 import DefaultFooter from "../components/footer.tsx";
 import DefaultHeader from "../components/header.tsx";
 import { Render } from "../http/render.tsx";
-import { Fastro, Info, RenderOptions } from "../http/server.ts";
-import { FunctionComponent } from "../mod.ts";
+import {
+  Fastro,
+  FunctionComponent,
+  Info,
+  RenderOptions,
+} from "../http/server.ts";
 import {
   extract,
   prism,

@@ -1,6 +1,10 @@
-import { HttpServer as fastro } from "../http/server.ts";
+import fastro, {
+  Context,
+  HttpRequest,
+  Next,
+  RenderOptions,
+} from "../http/server.ts";
 import markdown from "../middlewares/markdown.tsx";
-import { Context, HttpRequest, Next, RenderOptions } from "../mod.ts";
 import app from "../pages/app.tsx";
 import index from "../pages/index.tsx";
 

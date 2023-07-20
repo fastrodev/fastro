@@ -1,3 +1,3 @@
-import { HttpServer } from "./http/server.ts";
+import fastro from "./http/server.ts";
 export * from "./http/server.ts";
-export default HttpServer;
+export default fastro;

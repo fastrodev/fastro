@@ -1,4 +1,4 @@
-import { RenderOptions } from "../mod.ts";
+import { RenderOptions } from "../http/server.ts";
 
 export default function (
   props: { title: string; description: string },

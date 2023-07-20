@@ -1,4 +1,4 @@
-import { HttpServer } from "../http/mod.ts";
+import fastro from "../http/server.ts";
 export default function (options?: { port?: number }) {
-  return new HttpServer(options);
+  return new fastro(options);
 }

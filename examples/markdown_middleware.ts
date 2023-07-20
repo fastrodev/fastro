@@ -1,5 +1,5 @@
+import fastro from "../http/server.ts";
 import markdown from "../middlewares/markdown.tsx";
-import fastro from "../mod.ts";
 
 const f = new fastro();
 f.static("/static", { folder: "static", maxAge: 90 });

@@ -1,5 +1,5 @@
 import markdown from "../hooks/markdown.tsx";
-import fastro from "../mod.ts";
+import fastro from "../http/server.ts";
 
 const f = new fastro();
 f.static("/static", { folder: "static", maxAge: 90 });

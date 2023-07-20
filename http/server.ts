@@ -263,7 +263,7 @@ export const BUILD_ID = Deno.env.get("DENO_DEPLOYMENT_ID") || toHashString(
   "hex",
 );
 
-export class HttpServer implements Fastro {
+export default class HttpServer implements Fastro {
   #server: Deno.Server | Server | undefined;
   #routes: Route[];
   #middlewares: Middleware[];
