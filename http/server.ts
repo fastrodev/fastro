@@ -149,7 +149,29 @@ type Page = {
 };
 
 export interface Fastro {
+  /**
+   * Immediately close the server listeners and associated HTTP connections.
+   * @returns void
+   */
   close: () => void;
+  /**
+   * Add application level middleware
+   *
+   * ### Example
+   *
+   * ```ts
+   * import fastro from "../mod.ts";
+   *
+   * const f = new fastro();
+   * f.use((req: HttpRequest, _ctx: Context, next: Next) => {
+   *   console.log(`${req.method} ${req.url}`);
+   *   return next();
+   * });
+   *
+   * await f.serve();
+   * ```
+   * @param handler
+   */
   use(...handler: Array<HandlerArgument>): Fastro;
   get(path: string, ...handler: Array<HandlerArgument>): Fastro;
   post(path: string, ...handler: Array<HandlerArgument>): Fastro;
