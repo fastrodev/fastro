@@ -65,6 +65,7 @@ export class Render {
 
     opt.html.body = opt.html.body ?? {
       script: [],
+      root: {},
     };
 
     const options = { ...opt };
@@ -130,8 +131,15 @@ export class Render {
             ))
             : ""}
         </head>
-        <body className={this.#options.html?.body?.class}>
-          <div id="root" className={this.#options.html?.body?.rootClass}>
+        <body
+          className={this.#options.html?.body?.class}
+          style={this.#options.html?.body?.style}
+        >
+          <div
+            id="root"
+            className={this.#options.html?.body?.root.class}
+            style={this.#options.html?.body?.root.style}
+          >
             {el}
           </div>
           <script type="env"></script>

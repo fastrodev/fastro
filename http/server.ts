@@ -80,10 +80,13 @@ export type RenderOptions = {
       link?: Link[];
     };
     body?: {
-      rootClass?: string;
       class?: string;
-      style?: string;
+      style?: React.CSSProperties;
       script?: Script[];
+      root: {
+        class?: string;
+        style?: React.CSSProperties;
+      };
     };
   };
 };

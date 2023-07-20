@@ -104,7 +104,9 @@ export default class Instance {
         },
         body: {
           class: "d-flex h-100 text-bg-dark",
-          rootClass: "cover-container d-flex w-100 p-3 mx-auto flex-column",
+          root: {
+            class: "cover-container d-flex w-100 p-3 mx-auto flex-column",
+          },
         },
       },
     } as RenderOptions;

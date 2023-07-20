@@ -1,6 +1,8 @@
 import { RenderOptions } from "../mod.ts";
 
-export default function (props: { title: string; description: string }) {
+export default function (
+  props: { title: string; description: string },
+): RenderOptions {
   return {
     props,
     cache: false,
@@ -46,9 +48,11 @@ export default function (props: { title: string; description: string }) {
       },
       body: {
         class: "d-flex h-100 text-bg-dark",
-        rootClass: "cover-container d-flex w-100 h-100 p-3 mx-auto flex-column",
         script: [],
+        root: {
+          class: "cover-container d-flex w-100 h-100 p-3 mx-auto flex-column",
+        },
       },
     },
-  } as RenderOptions;
+  };
 }

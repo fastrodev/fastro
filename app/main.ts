@@ -77,14 +77,17 @@ f.page(
       git["name"] = "local";
     }
 
+    const title = "The React Framework for Fullstack Web Development";
+    const description =
+      "Handle server side rendering and thousands of requests per second with a minimalistic API";
     const options: RenderOptions = {
       build: false,
-      props: { version: git["name"], path: "home" },
+      props: { version: git["name"], path: "home", title, description },
       html: {
         class: "h-100",
         head: {
-          title: "Web Application Framework | Fastro",
-          descriptions: "Fast & Simple Web Application Framework",
+          title: `${title} | Fastro`,
+          descriptions: description,
           meta: [
             { charset: "utf-8" },
             {
@@ -93,7 +96,7 @@ f.page(
             },
             {
               name: "description",
-              content: "Fast & Simple Web Application Framework",
+              content: "The Fullstack React Framework",
             },
             {
               property: "og:image",
@@ -121,8 +124,9 @@ f.page(
         },
         body: {
           class: "d-flex h-100 text-bg-dark",
-          rootClass:
-            "cover-container d-flex w-100 h-100 p-3 mx-auto flex-column",
+          root: {
+            class: "cover-container d-flex w-100 h-100 p-3 mx-auto flex-column",
+          },
         },
       },
     };

@@ -1,4 +1,4 @@
-const version = "v0.75.11";
+const version = "v0.75.12";
 export { version };
 
 const init = async (name?: string, ver?: string) => {
@@ -337,7 +337,7 @@ body {
 
 export default function (
   props: { data: string; title: string; description: string },
-) {
+): RenderOptions {
   return {
     props: { data: props.data },
     cache: false,
@@ -382,11 +382,13 @@ export default function (
       },
       body: {
         class: "h-100 text-bg-dark",
-        rootClass: "cover-container mx-auto h-100",
         script: [],
+        root: {
+          class: "cover-container d-flex w-100 p-3 mx-auto flex-column",
+        },
       },
     },
-  } as RenderOptions;
+  };
 }
 `,
     );

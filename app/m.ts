@@ -13,7 +13,6 @@ f.page(
       title: "React component",
       description: "This is simple react component",
     });
-    // console.log(options);
     return ctx.render(options);
   },
 );
