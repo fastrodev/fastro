@@ -1,3 +1,4 @@
+import { hydrateFolder } from "../mod.ts";
 import { denoPlugins, esbuild, esbuildWasmURL } from "./deps.ts";
 
 export class Esbuild {
@@ -24,7 +25,7 @@ export class Esbuild {
       await this.#initEsbuild();
       const cwd = Deno.cwd();
       const hydrateTarget =
-        `${cwd}/hydrate/${this.#elementName.toLowerCase()}.hydrate.tsx`;
+        `${cwd}/${hydrateFolder}/${this.#elementName.toLowerCase()}.hydrate.tsx`;
       const esbuildRes = await esbuild.build({
         plugins: [...denoPlugins()],
         entryPoints: [hydrateTarget],
