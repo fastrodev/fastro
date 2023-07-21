@@ -9,7 +9,7 @@ const Index = (
     <>
       <Header path={props.path} />
       <main className="px-3 text-center">
-        <h1 className="display-6 fw-bold">
+        <h1 className="d-sm-block display-5 fw-bold">
           {props.title}
         </h1>
         <p className="lead text-white-50">

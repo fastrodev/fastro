@@ -1,12 +1,9 @@
-import fastro, {
-  Context,
-  HttpRequest,
-  Next,
-  RenderOptions,
-} from "../http/server.ts";
+import fastro, { Context, HttpRequest, Next } from "../http/server.ts";
 import markdown from "../middlewares/markdown.tsx";
 import app from "../pages/app.tsx";
+import Example from "../pages/example.tsx";
 import index from "../pages/index.tsx";
+import { html } from "./layout.ts";
 
 const f = new fastro();
 
@@ -81,62 +78,40 @@ f.page(
       git["name"] = "local";
     }
 
-    const title = "The React Framework for Fullstack Web Development";
+    const title = "React Framework for Fullstack Development";
     const description =
       "Handle server side rendering and thousands of requests per second with a minimalistic API";
-    const options: RenderOptions = {
-      build: false,
-      props: { version: git["name"], path: "home", title, description },
-      html: {
-        class: "h-100",
-        head: {
-          title: `${title} | Fastro`,
-          descriptions: description,
-          meta: [
-            { charset: "utf-8" },
-            {
-              name: "viewport",
-              content: "width=device-width, initial-scale=1.0",
-            },
-            {
-              name: "description",
-              content: "The Fullstack React Framework",
-            },
-            {
-              property: "og:image",
-              content: "https://fastro.dev/static/image.png",
-            },
-          ],
-          link: [{
-            href:
-              "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css",
-            rel: "stylesheet",
-            integrity:
-              "sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD",
-            crossorigin: "anonymous",
-          }, {
-            href: "/static/cover.css",
-            rel: "stylesheet",
-          }],
-          script: [{
-            src:
-              "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js",
-            integrity:
-              "sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN",
-            crossorigin: "anonymous",
-          }],
-        },
-        body: {
-          class: "d-flex h-100 text-bg-dark",
-          root: {
-            class: "cover-container d-flex w-100 h-100 p-3 mx-auto flex-column",
-          },
-        },
-      },
-    };
-    return ctx.render(options);
+
+    const opt = html(
+      { version: git["name"], path: "home", title, description },
+      title,
+      description,
+    );
+    return ctx.render(opt);
   },
 );
+
+f.page("/examples", Example, async (req: HttpRequest, ctx: Context) => {
+  const res = denoRunCheck(req);
+  if (res) return init();
+
+  let git: Record<string, string>;
+  try {
+    const data = await fetch(
+      "https://api.github.com/repos/fastrodev/fastro/releases/latest",
+    );
+    git = JSON.parse(await data.text());
+  } catch {
+    git = {};
+    git["name"] = "local";
+  }
+
+  const title = "The React Framework for Fullstack Web Development";
+  const description =
+    "Handle server side rendering and thousands of requests per second with a minimalistic API";
+  const options = html(undefined, title, description);
+  return ctx.render(options);
+});
 
 f.onListen(({ port, hostname }) => {
   console.log(`Listening on http://${hostname}:${port}`);
