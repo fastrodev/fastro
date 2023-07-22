@@ -81,7 +81,7 @@ async function bench(server: string, ext: string) {
   } else if (server === "static_file_string") {
     const url = "http://localhost:8000/static/post.css";
     res = await oha(url);
-  } else if (server === "static_file_string_image") {
+  } else if (server === "static_file_image") {
     const url = "http://localhost:8000/static/image.png";
     res = await oha(url);
   } else if (server === "params_query") {
@@ -125,6 +125,7 @@ const t = table.map((v) => {
     m,
     v.requestsPerSec.toFixed(0),
     relative.toFixed(0) + "%",
+    v.oha,
   ];
 });
 
@@ -137,7 +138,7 @@ const formattedDate = date.toLocaleDateString("en-US", {
 
 let markdown = `---
 title: "Internal benchmarks"
-description: This is the final output of an internal benchmark run on localhost
+description: This is the final output of an internal benchmark run on github action
 image: https://fastro.dev/static/image.png
 author: Fastro
 date: ${formattedDate}
@@ -145,7 +146,7 @@ date: ${formattedDate}
 
 ![bench](/static/bench.png)
 
-This is the final output of an internal benchmark run on a localhost. It consists of a simple application for [a specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json). Each is then accessed by the [OHA tool](https://github.com/hatoo/oha) within 5 seconds. The results are then sorted by the fastest.
+This is the final output of an internal benchmark run on a [github action](https://github.com/fastrodev/fastro/actions). It consists of a simple application for [a specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json). Each is then accessed by the [OHA tool](https://github.com/hatoo/oha) within 5 seconds. The results are then sorted by the fastest.
 
 You can find the benchmarks script on this page: [run.ts](https://github.com/fastrodev/fastro/blob/main/bench/run.ts)
 
@@ -154,9 +155,9 @@ You can find the benchmarks script on this page: [run.ts](https://github.com/fas
 `;
 markdown += `\n${
   markdownTable([
-    ["module", "rps", "%"],
+    ["module", "rps", "%", "url"],
     ...t,
-  ], { align: ["l", "r", "r"] })
+  ], { align: ["l", "r", "r", "l"] })
 }`;
 
 await Deno.writeTextFile("static/benchmarks.md", markdown);

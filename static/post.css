@@ -44,6 +44,14 @@ table td {
   padding: 6px 13px;
 }
 
+table {
+  display: block;
+  width: 100%;
+  width: max-content;
+  max-width: 100%;
+  overflow: auto;
+}
+
 .markdown img {
   margin-left: auto;
   margin-right: auto;
