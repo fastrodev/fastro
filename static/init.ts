@@ -1,4 +1,4 @@
-const version = "v0.75.13";
+const version = "v0.76.0";
 export { version };
 
 const init = async (name?: string, ver?: string) => {
