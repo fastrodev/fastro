@@ -172,14 +172,19 @@ class Markdown {
     const match = pattern.exec(path);
     if (!match) return this.#nest[nestID] = null;
 
-    const file = match?.pathname.groups["0"];
+    const filePath = match?.pathname.groups["0"];
 
     try {
-      const txt = await Deno.readTextFile(`./${this.#folder}/${file}.md`);
+      const txt = await Deno.readTextFile(`./${this.#folder}/${filePath}.md`);
       const m = extract(txt);
       const markdown = this.#markdownToHtml(m.body);
       const git = await this.#getVersion();
-      const content = this.#contentContainer(markdown, m.attrs, git["name"]);
+      const content = this.#contentContainer(
+        markdown,
+        m.attrs,
+        git["name"],
+        filePath,
+      );
       return this.#post[path] = {
         meta: m.attrs,
         content,
@@ -207,6 +212,7 @@ class Markdown {
     child: JSX.Element,
     meta: Meta,
     props: string,
+    path?: string,
   ) => {
     const date = new Date(meta.date as string);
     const formattedDate = date.toLocaleString("en-US", {
@@ -218,7 +224,7 @@ class Markdown {
 
     return (
       <>
-        <Header path="" />
+        <Header path={path} />
         <hr />
         <main className="markdown" style={{ marginBottom: 50 }}>
           <div className="text-center">

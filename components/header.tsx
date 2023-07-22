@@ -12,7 +12,12 @@ export default function (props: { path: string }) {
         >
           Home
         </a>
-        <a className="nav-link fw-bold py-1 px-0" href="/benchmarks">
+        <a
+          className={`nav-link fw-bold py-1 px-0 ${
+            props.path === "benchmarks" ? "active" : ""
+          }`}
+          href="/benchmarks"
+        >
           Benchmarks
         </a>
         <a

@@ -28,7 +28,7 @@ export default function Example(
   return (
     <>
       <Header path={props.path} />
-      <div className="container">
+      <div className="container" style={{ marginBottom: 50 }}>
         <div className="d-flex flex-wrap flex-fill">
           {list}
         </div>
