@@ -28,11 +28,13 @@ export default function Example(
   return (
     <>
       <Header path={props.path} />
-      <div className="container" style={{ marginBottom: 50, marginTop: 20 }}>
+      <hr />
+      <main>
         <div className="d-flex flex-wrap flex-fill">
           {list}
         </div>
-      </div>
+      </main>
+      <hr />
       <Footer version={props.version} />
     </>
   );
