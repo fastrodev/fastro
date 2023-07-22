@@ -29,7 +29,7 @@ export default function Example(
     <>
       <Header path={props.path} />
       <main>
-        <div className="d-flex flex-wrap flex-fill">
+        <div className="d-flex flex-wrap justify-content-center">
           {list}
         </div>
       </main>
