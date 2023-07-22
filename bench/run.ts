@@ -159,4 +159,4 @@ markdown += `\n${
   ], { align: ["l", "r", "r"] })
 }`;
 
-await Deno.writeTextFile("posts/benchmarks.md", markdown);
+await Deno.writeTextFile("static/benchmarks.md", markdown);
