@@ -8,7 +8,7 @@ import { html } from "./layout.ts";
 
 const title = "Web Framework for Fullstack Development";
 const description =
-  "Handle react server side rendering and thousands of requests per second with a minimalistic API";
+  "Handle React SSR and thousands of requests per second with a minimalistic API";
 const f = new fastro();
 const m = new markdown({ folder: "static" });
 
