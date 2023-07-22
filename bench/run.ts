@@ -155,7 +155,7 @@ You can find the benchmarks script on this page: [run.ts](https://github.com/fas
 `;
 markdown += `\n${
   markdownTable([
-    ["module", "rps", "%", "url"],
+    ["module", "rps", "%", "oha cmd"],
     ...t,
   ], { align: ["l", "r", "r", "l"] })
 }`;
