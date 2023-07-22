@@ -96,7 +96,7 @@ async function bench(server: string, ext: string) {
     ext,
     module: server,
     requestsPerSec: <number> res.summary.requestsPerSec,
-    oha: res.oha,
+    oha: `\`${res.oha}\``,
   };
 }
 
