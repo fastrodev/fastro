@@ -19,7 +19,7 @@ export default function Example(
         href={path}
         className="me-2 mb-2 border rounded-3"
       >
-        <div style={{ padding: 20 }}>
+        <div style={{ padding: 10 }}>
           {e.name}
         </div>
       </a>
@@ -28,13 +28,11 @@ export default function Example(
   return (
     <>
       <Header path={props.path} />
-      <hr />
       <main>
         <div className="d-flex flex-wrap flex-fill">
           {list}
         </div>
       </main>
-      <hr />
       <Footer version={props.version} />
     </>
   );
