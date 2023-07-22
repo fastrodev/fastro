@@ -59,7 +59,7 @@ f.page("/examples", Example, async (_req: HttpRequest, ctx: Context) => {
   const examples = await getExamples();
   const git = await getVersion();
   const options = html(
-    { version: git["name"], path: "home", title, description, examples },
+    { version: git["name"], path: "examples", title, description, examples },
     title,
     description,
   );

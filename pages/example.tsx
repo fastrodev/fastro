@@ -15,8 +15,11 @@ export default function Example(
     const path =
       `https://github.com/fastrodev/fastro/blob/main/examples/${e.file}`;
     return (
-      <a href={path} className="me-2 mb-2 border rounded-3">
-        <div style={{ padding: 10 }}>
+      <a
+        href={path}
+        className="me-2 mb-2 border rounded-3"
+      >
+        <div style={{ padding: 20 }}>
           {e.name}
         </div>
       </a>
@@ -26,7 +29,7 @@ export default function Example(
     <>
       <Header path={props.path} />
       <div className="container">
-        <div className="d-flex flex-wrap">
+        <div className="d-flex flex-wrap flex-fill">
           {list}
         </div>
       </div>
