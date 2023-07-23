@@ -285,8 +285,9 @@ class Markdown {
                 <SyntaxHighlighter
                   {...props}
                   children={String(children).replace(/\n$/, "")}
-                  style={prism.dark}
+                  style={prism["dracula"]}
                   language={match[1]}
+                  wrapLongLines={true}
                   PreTag="div"
                 />
               )

@@ -60,3 +60,9 @@ table {
   width: 100%;
   height: auto;
 }
+
+pre>div {
+  border-style: solid;
+  border-color: var(--bs-border-width);
+  border-width: 1px;
+}
