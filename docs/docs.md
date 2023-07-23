@@ -338,3 +338,31 @@ f.page(
 );
 
 ```
+
+### Deployment
+
+You can use the template created on [getting-started page](/start).
+
+```
+.
+├── .github
+│   └── workflows
+│       └── build.yml
+├── .gitignore
+├── .vscode
+│   └── settings.json
+├── deno.json
+├── layout.ts
+├── main.ts
+├── pages
+│   └── app.tsx
+├── readme.md
+└── static
+    └── app.css
+```
+
+- Push your project to [github repo](https://github.com).
+- [Create a project](https://dash.deno.com/new).
+- Link the project to the `main.ts` file.
+
+And `your-project` will be deployed to a public `your-project`.deno.dev subdomain.
