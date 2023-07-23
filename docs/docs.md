@@ -1,6 +1,6 @@
 ---
-title: "Manual & API"
-description: This is documentation on how to build and deploy the app and all of its APIs.
+title: "Manual"
+description: This is documentation on how to use, build, and deploy the app.
 image: https://fastro.dev/static/image.png
 author: Fastro
 date: 07/23/2023
@@ -227,7 +227,32 @@ await f.serve();
 
 ```
 
+### Markdown
+
+You can render `markdown` files using [middleware](https://deno.land/x/fastro/middlewares/markdown.tsx).
+
+The constructor has optional `options` consisting of:
+- `header`: `FunctionComponent`.
+- `footer`: `FunctionComponent`.
+- `folder`: `string`.
+- `options`: `RenderOptions`.
+
+Just put your markdown to your child of your root project, and access them without file extension.
+
+```ts
+import fastro from "https://deno.land/x/fastro/mod.ts";
+import markdown from "https://deno.land/x/fastro/middlewares/markdown.tsx";
+
+const f = new fastro();
+const m = new markdown({ folder: "docs" });
+
+f.use(m.middleware);
+f.static("/static", { folder: "static", maxAge: 90 });
+
+await f.serve();
+
+```
+
 Todo:
-- Markdown
 - SSR
 - Hook
