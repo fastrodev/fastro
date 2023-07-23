@@ -6,7 +6,6 @@ import {
   Component,
   Fastro,
   FunctionComponent,
-  hydrateFolder,
   RenderOptions,
 } from "./server.ts";
 
@@ -169,23 +168,6 @@ es.onmessage = function(e) {
 };`;
   };
 
-  #createHydrate(comp: string) {
-    const component = comp.toLowerCase();
-    const [s] = Deno.args.filter((v) => v === "--development");
-    const dev = s === "--development" ? "?dev" : "";
-
-    return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client${dev}";
-import { createElement } from "https://esm.sh/react@18.2.0${dev}";
-import ${component} from "../pages/${component}.tsx";
-// deno-lint-ignore no-explicit-any
-declare global { interface Window { __INITIAL_DATA__: any; } } 
-const props = window.__INITIAL_DATA__ || {};
-delete window.__INITIAL_DATA__ ;
-const el = createElement(${component}, props);
-hydrateRoot(document.getElementById("root") as Element, el);
-`;
-  }
-
   #createBundle = async (elementName: string) => {
     try {
       if (this.#nest[this.#getRenderId(elementName)]) return;
@@ -209,33 +191,6 @@ hydrateRoot(document.getElementById("root") as Element, el);
 
   #getRenderId = (el: string) => {
     return `render${el}`;
-  };
-
-  #hydrateExist = async (name: string) => {
-    try {
-      for await (const dirEntry of Deno.readDir(`${Deno.cwd()}/hydrate`)) {
-        if (dirEntry.name === `${name}.hydrate.tsx`) {
-          return true;
-        }
-      }
-    } catch {
-      return false;
-    }
-    return false;
-  };
-
-  createHydrateFile = async (elementName: string) => {
-    if (await this.#hydrateExist(elementName)) return;
-    try {
-      const target =
-        `${Deno.cwd()}/${hydrateFolder}/${elementName.toLowerCase()}.hydrate.tsx`;
-      await Deno.writeTextFile(
-        target,
-        this.#createHydrate(elementName),
-      );
-    } catch (error) {
-      return;
-    }
   };
 
   #renderToString = async (component: Component, cached?: boolean) => {

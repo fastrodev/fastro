@@ -397,14 +397,43 @@ export default class HttpServer implements Fastro {
     for (let index = 0; index < this.#pages.length; index++) {
       const page = this.#pages[index];
       const c = page.element as FunctionComponent;
-      const r = new Render(page.element, { props: {} }, this.#nest, this);
-      r.createHydrateFile(c.name);
+      this.#createHydrateFile(c.name);
       console.log(`${c.name.toLowerCase()}.hydrate.tsx: created!`);
     }
 
     if (Deno.run == undefined) return [];
     return Deno.args.filter((v) => v === "--hydrate");
   };
+
+  #createHydrateFile = async (elementName: string) => {
+    try {
+      const target =
+        `${Deno.cwd()}/${hydrateFolder}/${elementName.toLowerCase()}.hydrate.tsx`;
+      await Deno.writeTextFile(
+        target,
+        this.#createHydrate(elementName),
+      );
+    } catch (error) {
+      return;
+    }
+  };
+
+  #createHydrate(comp: string) {
+    const component = comp.toLowerCase();
+    const [s] = Deno.args.filter((v) => v === "--development");
+    const dev = s === "--development" ? "?dev" : "";
+
+    return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client${dev}";
+import { createElement } from "https://esm.sh/react@18.2.0${dev}";
+import ${component} from "../pages/${component}.tsx";
+// deno-lint-ignore no-explicit-any
+declare global { interface Window { __INITIAL_DATA__: any; } } 
+const props = window.__INITIAL_DATA__ || {};
+delete window.__INITIAL_DATA__ ;
+const el = createElement(${component}, props);
+hydrateRoot(document.getElementById("root") as Element, el);
+`;
+  }
 
   onListen = (handler: ListenHandler) => {
     this.#listenHandler = handler;
