@@ -287,7 +287,6 @@ class Markdown {
                   children={String(children).replace(/\n$/, "")}
                   style={prism["dracula"]}
                   language={match[1]}
-                  wrapLongLines={true}
                   PreTag="div"
                 />
               )
