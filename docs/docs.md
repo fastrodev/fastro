@@ -266,7 +266,7 @@ It has 3 arguments:
 - `Handler`: `HandlerArgument`
 
 > - If you use `JSX.Element`, server will only render the element into HTML with no JS file. 
-> - If you use `FunctionComponent`, create hydration file and render `FunctionComponent` together with bundled file from hydration process.
+> - If you use `FunctionComponent`, server will create hydration file and render `FunctionComponent` as HTML together with bundled file from build process.
 
 ```ts
 import fastro, { Context, HttpRequest } from "https://deno.land/x/fastro/mod.ts";
