@@ -22,6 +22,7 @@
   }
 }
 
+td>code,
 li>code,
 p>code {
   padding: 0.2em 0.4em;
