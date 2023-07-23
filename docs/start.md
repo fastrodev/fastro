@@ -25,15 +25,19 @@ Please note, the `-A` argument allows deno to access all permissions, and `-r` a
 ```zsh
 .
 ├── .github
-│   └── workflows
-│       └── build.yml
+│   └── workflows
+│       └── build.yml
+├── .gitignore
 ├── .vscode
-│   └── settings.json
+│   └── settings.json
 ├── deno.json
+├── layout.ts
 ├── main.ts
 ├── pages
-│   └── app.tsx
-└── readme.md
+│   └── app.tsx
+├── readme.md
+└── static
+    └── app.css
 ```
 
 Now let's run the application
