@@ -6,6 +6,9 @@ author: Fastro
 date: 07/23/2023
 ---
 
+Make sure you have Deno installed. See [the deno manual](https://deno.land/manual/getting_started/installation) for details.
+
+
 ## Your first end point
 
 Create a folder for your project and enter to it.

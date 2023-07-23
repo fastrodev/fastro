@@ -693,7 +693,7 @@ export default class HttpServer implements Fastro {
 
     for (let index = 0; index < this.#middlewares.length; index++) {
       const m = this.#middlewares[index];
-      const nestId = method + m.method + m.path + url;
+      const nestId = `${method}${m.method}${m.path}${url}`;
 
       const match = this.#findMatch(m, nestId, url);
       if (!match) continue;
