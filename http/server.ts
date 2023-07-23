@@ -566,7 +566,7 @@ export default class HttpServer implements Fastro {
 
     const r = this.#findRoute(req.method, req.url);
     if (r?.handler) {
-      const h = r?.handler as any;
+      const h = r?.handler as RequestHandler;
       const res = await h(
         this.#transformRequest(this.record, req, r.params, r.query, r.match),
         this.#initContext(i),
@@ -740,7 +740,7 @@ export default class HttpServer implements Fastro {
   #findRoute(method: string, url: string) {
     const nestID = `route${method + url}`;
     const r = this.#nest[nestID];
-    if (r) return r as RouteNest;
+    if (r) return r;
 
     let h: Route | undefined = undefined;
     let p: URLPattern | null = null;

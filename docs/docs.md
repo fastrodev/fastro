@@ -208,8 +208,26 @@ f.get(
 );
 ```
 
+### Static file
+
+You can setup static file with `static` function.
+
+It has two arguments:
+- `path` for example: `/static`
+- `options` for example: `{ folder: "static", maxAge: 90 }`
+
+```ts
+import fastro from "https://deno.land/x/fastro/mod.ts";
+
+const f = new fastro();
+
+f.static("/static", { folder: "static", maxAge: 90 });
+
+await f.serve();
+
+```
+
 Todo:
-- Static file
 - Markdown
 - SSR
 - Hook
