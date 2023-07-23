@@ -10,7 +10,7 @@ const title = "Web Framework for Fullstack Development";
 const description =
   "Handle React SSR and thousands of requests per second with a minimalistic API";
 const f = new fastro();
-const m = new markdown({ folder: "static" });
+const m = new markdown({ folder: "docs" });
 
 f.use(m.middleware);
 

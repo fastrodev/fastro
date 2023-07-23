@@ -14,7 +14,6 @@ You can find the benchmarks script on this page: [run.ts](https://github.com/fas
 
 ## Benchmark results
 
-
 | module                                                                                               |   rps |    % | oha cmd                                                        |
 | :--------------------------------------------------------------------------------------------------- | ----: | ---: | :------------------------------------------------------------- |
 | [deno](https://github.com/fastrodev/fastro/blob/main/examples/deno.ts)                               | 68979 | 100% | `oha -j --no-tui -z 5s http://localhost:8000`                  |

@@ -214,10 +214,12 @@ class Markdown {
     props: string,
     path?: string,
   ) => {
-    const date = new Date(meta.date as string);
-    const formattedDate = date.toLocaleString("en-US", {
-      dateStyle: "medium",
-    });
+    const date = meta.date ? new Date(meta.date as string) : undefined;
+    const formattedDate = date
+      ? date.toLocaleString("en-US", {
+        dateStyle: "medium",
+      })
+      : undefined;
 
     const Header = this.#header;
     const Footer = this.#footer;
@@ -232,7 +234,7 @@ class Markdown {
             <p className="text-white-50 h5">{meta.description}</p>
             <hr />
             <p className="text-white-50 fw-light">
-              {meta.author} · {formattedDate}
+              {meta.author} {formattedDate ? `· ${formattedDate}` : ""}
             </p>
             <hr />
           </div>

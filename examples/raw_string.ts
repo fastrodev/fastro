@@ -1,7 +1,10 @@
-import fastro from "../http/server.ts";
+import { ConnInfo } from "../http/deps.ts";
+import fastro from "../mod.ts";
 
 const f = new fastro();
 
-f.get("/", () => "Hello, World!");
+f.get("/", (_req: Request, _info: ConnInfo) => {
+  return new Response("Hello, World!");
+});
 
 await f.serve();
