@@ -18,7 +18,7 @@ export default function (props: { path: string }) {
           } nav-link fw-bold py-1 px-0 `}
           href="/benchmarks"
         >
-          Benchmarks
+          Bench
         </a>
         <a
           className={`${
