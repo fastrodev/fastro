@@ -566,7 +566,7 @@ export default class HttpServer implements Fastro {
 
     const r = this.#findRoute(req.method, req.url);
     if (r?.handler) {
-      const h = r?.handler as RequestHandler;
+      const h = r?.handler as any;
       const res = await h(
         this.#transformRequest(this.record, req, r.params, r.query, r.match),
         this.#initContext(i),
