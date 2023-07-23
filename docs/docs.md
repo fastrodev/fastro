@@ -121,3 +121,7 @@ f.get("/:user", (req: HttpRequest, ctx: Context) => {
 await f.serve();
 
 ```
+
+Todo
+- SSR
+- Middleware
