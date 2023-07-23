@@ -343,7 +343,7 @@ f.page(
 
 You can use the template created on [getting-started page](/start).
 
-```
+```zsh
 .
 ├── .github
 │   └── workflows
