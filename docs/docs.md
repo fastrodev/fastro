@@ -256,6 +256,85 @@ await f.serve();
 
 ```
 
-Todo:
-- SSR
-- Hook
+### Server Side Rendering
+
+You can create SSR endpoint by using `f.page`.
+
+It has 3 arguments:
+- `path`: `string`
+- `Component`: `JSX.Element` or `FunctionComponent`
+- `Handler`: `HandlerArgument`
+
+> - If you use `JSX.Element`, server will only render the element into HTML with no JS file. 
+> - If you use `FunctionComponent`, create hydration file and render `FunctionComponent` together with bundled file from hydration process.
+
+```ts
+import fastro, { Context, HttpRequest } from "https://deno.land/x/fastro/mod.ts";
+import user from "../pages/user.tsx";
+
+const f = new fastro();
+
+f.static("/static", { folder: "static", maxAge: 90 });
+f.page(
+  // path
+  "/",
+  // react component
+  user,
+  // handler
+  (_req: HttpRequest, ctx: Context) => {
+    const options = {
+      props: { data: "Guest" },
+      status: 200,
+      html: { head: { title: "React Component" } },
+    };
+    return ctx.render(options);
+  },
+);
+
+await f.serve();
+
+```
+
+This is the `user.tsx` page.
+
+```tsx
+import React from "https://esm.sh/react@18.2.0";
+
+const User = (props: { data: string }) => (
+  <h1>Hello {props.data}</h1>
+);
+
+export default User;
+
+```
+
+You can also add route middleware to `f.page` before actual handler.
+
+```ts
+f.page(
+  // path
+  "/",
+  // react component
+  user,
+  // middleware #1
+  (_req: HttpRequest, _ctx: Context, next: Next) => {
+    // middleware implementation
+    return next();
+  },
+   // middleware #2
+  (_req: HttpRequest, _ctx: Context, next: Next) => {
+    // middleware implementation
+    return next();
+  },
+  // handler
+  (_req: HttpRequest, ctx: Context) => {
+    const options = {
+      props: { data: "Guest" },
+      status: 200,
+      html: { head: { title: "React Component" } },
+    };
+    return ctx.render(options);
+  },
+);
+
+```
