@@ -13,7 +13,9 @@ import {
   extract,
   prism,
   ReactMarkdown,
+  remark,
   remarkGfm,
+  remarkToc,
   SyntaxHighlighter,
 } from "./deps.ts";
 
@@ -175,12 +177,19 @@ class Markdown {
     const filePath = match?.pathname.groups["0"];
 
     try {
-      const txt = await Deno.readTextFile(`./${this.#folder}/${filePath}.md`);
+      const md = `./${this.#folder}/${filePath}.md`;
+      const txt = await Deno.readTextFile(md);
       const m = extract(txt);
-      const markdown = this.#markdownToHtml(m.body);
+
+      const file = await remark()
+        .use(remarkToc)
+        .processSync(m.body);
+
+      const markdownHtml = this.#markdownToHtml(String(file));
+
       const git = await this.#getVersion();
       const content = this.#contentContainer(
-        markdown,
+        markdownHtml,
         m.attrs,
         git["name"],
         filePath,
@@ -189,7 +198,8 @@ class Markdown {
         meta: m.attrs,
         content,
       };
-    } catch {
+    } catch (err) {
+      // console.log(err);
       return this.#nest[nestID] = null;
     }
   };
@@ -232,12 +242,8 @@ class Markdown {
           <div className="text-center">
             <h1 className="display-5 fw-bold">{meta.title}</h1>
             <p className="text-white-50 h5">{meta.description}</p>
-            <hr />
-            <p className="text-white-50 fw-light">
-              {meta.author} {formattedDate ? `· ${formattedDate}` : ""}
-            </p>
-            <hr />
           </div>
+          <hr />
           {child}
           {meta.next || meta.prev
             ? (

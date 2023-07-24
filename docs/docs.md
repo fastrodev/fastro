@@ -2,9 +2,9 @@
 title: "Manual"
 description: This is documentation on how to use, build, and deploy the app.
 image: https://fastro.dev/static/image.png
-author: Fastro
-date: 07/23/2023
 ---
+
+## Table of contents
 
 Make sure you have Deno installed. See [the deno manual](https://deno.land/manual/getting_started/installation) for details.
 
@@ -71,7 +71,7 @@ Fastro extends `Request` and `ConnInfo` to add functionality.
 - `ConnInfo` become [`Context`](https://deno.land/x/fastro/mod.ts?s=Context).
 
 
-### Text
+## Text
 
 This code will send response `Hello world` text with the http status.
 
@@ -93,7 +93,7 @@ await f.serve();
 
 > You can also send several types of document: `JSON`, `Array`, `Number`, `Boolean`, and `JSX` (Server Side Rendering).
 
-### URL Params and Query
+## URL Params and Query
 
 This code will get url params and query from url `http://localhost:8000/agus?title=lead` and then send JSON response with http status.
 
@@ -111,7 +111,7 @@ await f.serve();
 
 ```
 
-### Middleware
+## Middleware
 
 You can access `HttpRequest` and `Context` and process them before the handler you define.
 
@@ -123,7 +123,7 @@ There are two types middleware:
 - App level middleware
 - Route level middleware
 
-### App level middleware
+## App level middleware
 
 This type of middleware will run on all routes.
 
@@ -157,7 +157,7 @@ f.get(
 await f.serve();
 ```
 
-### Route level middleware
+## Route level middleware
 
 This type of middleware only executed for specific route.
 
@@ -211,7 +211,7 @@ f.get(
 );
 ```
 
-### Static file
+## Static file
 
 You can setup static file with `static` function.
 
@@ -230,7 +230,7 @@ await f.serve();
 
 ```
 
-### Markdown
+## Markdown
 
 You can render `markdown` files using [middleware](https://deno.land/x/fastro/middlewares/markdown.tsx).
 
@@ -256,7 +256,7 @@ await f.serve();
 
 ```
 
-### Server Side Rendering
+## Server Side Rendering
 
 You can create SSR endpoint by using `f.page`.
 
@@ -339,7 +339,7 @@ f.page(
 
 ```
 
-### Deployment
+## Deployment
 
 You can use the template created on [getting-started page](/start).
 

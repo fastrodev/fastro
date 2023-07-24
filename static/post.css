@@ -69,9 +69,7 @@ pre>div {
 
 
 blockquote {
-  background-color: #282a36;
   border-left: 10px solid #818080;
   padding: 1em 10px 0.1em 20px;
   quotes: "\201C" "\201D" "\2018" "\2019";
-  border-radius: 5px;
 }
