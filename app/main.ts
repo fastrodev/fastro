@@ -23,6 +23,10 @@ f.get("/api", () => {
   return Response.json({ time: new Date().getTime() });
 });
 
+f.get("/docs", () => {
+  return Response.redirect("https://fastro.dev/manual", 307);
+});
+
 f.get("/robots.txt", () =>
   `User-agent: *
 Allow: /
