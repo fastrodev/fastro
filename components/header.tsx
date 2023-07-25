@@ -13,28 +13,18 @@ export default function (props: { path: string }) {
           Home
         </a>
         <a
-          className={`${
-            props.path === "benchmarks" ? "active" : ""
-          } nav-link fw-bold py-1 px-0 `}
-          href="/benchmarks"
+          className={`nav-link fw-bold py-1 px-0`}
+          href="#"
         >
-          Bench
+          Showcase
         </a>
         <a
           className={`${
-            props.path === "examples" ? "active" : ""
+            props.path === "manual" ? "active" : ""
           } nav-link fw-bold py-1 px-0`}
-          href="/examples"
+          href="/manual"
         >
-          Examples
-        </a>
-        <a
-          className={`${
-            props.path === "docs" ? "active" : ""
-          } nav-link fw-bold py-1 px-0`}
-          href="/docs"
-        >
-          Docs
+          Manual
         </a>
       </nav>
     </header>

@@ -274,7 +274,6 @@ class Markdown {
             )
             : ""}
         </main>
-        <hr />
         <Footer version={props} />
       </>
     );
