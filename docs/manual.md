@@ -351,6 +351,10 @@ To generate default SSR app folders and files, execute this command:
 ```zsh
 deno run -A -r https://fastro.deno.dev
 ```
+
+> Please note, the `-A` argument allows deno to access all permissions, and `-r` argument is to reload source code cache (recompile TypeScript).
+
+
 You will see several scripts:
 
 ```zsh

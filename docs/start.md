@@ -20,8 +20,6 @@ Generate default project from command line. This will generate default folders a
 deno run -A -r https://fastro.deno.dev
 ```
 
-Please note, the `-A` argument allows deno to access all permissions, and `-r` argument is to reload source code cache (recompile TypeScript).
-
 Now let's run the application
 
 ```zsh
