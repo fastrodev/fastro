@@ -1,9 +1,4 @@
 cov/
 cov.lcov
-Hello.hydrate.tsx
-public/hello.js
-index.html
-ok.jpg
-ok.x
-.env
 .hydrate
+.DS_Store
