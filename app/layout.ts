@@ -28,8 +28,7 @@ const html = (
             content: "Fastro Software",
           },
           {
-            name: "publish_date",
-            property: "og:publish_date",
+            property: "article:published_time",
             content: getPublishDate(),
           },
           {

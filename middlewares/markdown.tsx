@@ -1,4 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
+import { getPublishDate } from "../app/function.ts";
 import DefaultFooter from "../components/footer.tsx";
 import DefaultHeader from "../components/header.tsx";
 import { Render } from "../http/render.tsx";
@@ -86,6 +87,10 @@ export default class Instance {
             {
               name: "author",
               content: "Fastro Software",
+            },
+            {
+              property: "article:published_time",
+              content: getPublishDate(),
             },
             {
               property: "og:image",
