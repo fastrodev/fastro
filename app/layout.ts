@@ -23,6 +23,10 @@ const html = (
             content: "The Fullstack React Framework",
           },
           {
+            name: "author",
+            content: "Fastro Software",
+          },
+          {
             property: "og:image",
             content: "https://fastro.dev/static/image.png",
           },

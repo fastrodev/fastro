@@ -74,6 +74,10 @@ export default class Instance {
               content: md.meta?.description,
             },
             {
+              name: "author",
+              content: "Fastro Software",
+            },
+            {
               property: "og:image",
               content: md.meta?.image,
             },
