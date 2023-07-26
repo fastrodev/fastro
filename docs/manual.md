@@ -269,9 +269,7 @@ It has 3 arguments:
 - `Component`: `JSX.Element` or `FunctionComponent`
 - `Handler`: `HandlerArgument`
 
-> If you use `JSX.Element`, server will only render the element into HTML with no JS file. 
->
-> If you use `FunctionComponent`, server will create hydration file and render `FunctionComponent` as HTML together with bundled file from build process.
+This is the simple SSR entry-point:
 
 ```ts
 import fastro, { Context, HttpRequest } from "https://deno.land/x/fastro/mod.ts";
@@ -300,7 +298,13 @@ await f.serve();
 
 ```
 
-This is the `user.tsx` page.
+For app pages, these are the rules:
+
+> If you use `JSX.Element`, server will only render the element into HTML with no JS file. 
+>
+> If you use `FunctionComponent`, server will create hydration file and render `FunctionComponent` as HTML together with bundled file from build process.
+
+This is the `user.tsx` page that return `FunctionComponent` with props. So you can pass a dynamic value to it.
 
 ```tsx
 import React from "https://esm.sh/react@18.2.0";
@@ -308,6 +312,17 @@ import React from "https://esm.sh/react@18.2.0";
 const User = (props: { data: string }) => (
   <h1>Hello {props.data}</h1>
 );
+
+export default User;
+
+```
+
+This is the `user.tsx` page that return `JSX.Element` with no props. So you can not pass anything.
+
+```tsx
+import React from "https://esm.sh/react@18.2.0?dev";
+
+const User = <h1>Hello Guest</h1>;
 
 export default User;
 
