@@ -1,4 +1,4 @@
-import React from "https://esm.sh/react@18.2.0?dev";
+import React from "https://esm.sh/react@18.2.0";
 import Footer from "../components/footer.tsx";
 import Header from "../components/header.tsx";
 
