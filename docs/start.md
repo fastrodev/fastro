@@ -40,4 +40,4 @@ Open that link on [your browser](http://localhost:8000) or hit them via `curl`
 curl http://localhost:8000
 ```
 
-You can find more detailed instructions in [the manual page](/manual#default-ssr-template).
+You can find more detailed instructions in [the manual page](/manual#server-side-rendering).
