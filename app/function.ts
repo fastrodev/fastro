@@ -1,12 +1,9 @@
 import { HttpRequest } from "../http/server.ts";
 
-export function getYearMonthDay(dateStr?: string) {
-  const date = dateStr ? new Date(dateStr) : new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-
-  const formattedDate = `${year}-${month}-${day}`;
+export function getPublishDate(dateStr?: string) {
+  const currentDate = dateStr ? new Date(dateStr) : new Date();
+  const offset = -6 * 60 * 60; // 6 hours behind UTC
+  const formattedDate = currentDate.toISOString().replace(/Z$/, `-${offset}`);
   return formattedDate;
 }
 

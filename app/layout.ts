@@ -1,5 +1,5 @@
 import { RenderOptions } from "../http/server.ts";
-import { getYearMonthDay } from "./function.ts";
+import { getPublishDate } from "./function.ts";
 
 const html = (
   props: unknown,
@@ -21,15 +21,16 @@ const html = (
           },
           {
             name: "description",
-            content: "The Fullstack React Framework",
+            content: description,
           },
           {
             name: "author",
             content: "Fastro Software",
           },
           {
-            property: "article:published_time",
-            content: getYearMonthDay(),
+            name: "publish_date",
+            property: "og:publish_date",
+            content: getPublishDate(),
           },
           {
             property: "og:image",
