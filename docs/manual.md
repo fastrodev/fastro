@@ -38,6 +38,8 @@ deno run -A main.ts
 > You can change the method with: `f.post`, `f.put`, `f.delete`, `f.options`, and `f.head`.  
 > 
 > You can also return handlers of several types: `JSON`, `Array`, `Number`, `Boolean`, `Response` and `JSX` (Server Side Rendering).
+> 
+> You can find more cases on [the examples page](/examples).
 
 ## Deno standard handler signature
 
@@ -92,6 +94,8 @@ await f.serve();
 ```
 
 > You can also send several types of document: `JSON`, `Array`, `Number`, `Boolean`, and `JSX` (Server Side Rendering).
+> 
+> You can find more cases on [the examples page](/examples).
 
 ## URL params and query
 
