@@ -2,8 +2,7 @@ import { HttpRequest } from "../http/server.ts";
 
 export function getPublishDate(dateStr?: string) {
   const currentDate = dateStr ? new Date(dateStr) : new Date();
-  const offset = -6 * 60 * 60; // 6 hours behind UTC
-  const formattedDate = currentDate.toISOString().replace(/Z$/, `-${offset}`);
+  const formattedDate = currentDate.toISOString();
   return formattedDate;
 }
 
