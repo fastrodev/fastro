@@ -6,7 +6,7 @@ import index from "../pages/index.tsx";
 import { denoRunCheck, getExamples, getVersion, init } from "./function.ts";
 import { html } from "./layout.ts";
 
-const title = "The Web Framework for Full Stack Developers";
+const title = "The Web Framework for Full Stack Apps";
 const description =
   "Handle React SSR and thousands of RPS with a minimalistic API";
 const f = new fastro();
