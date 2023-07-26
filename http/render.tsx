@@ -199,24 +199,17 @@ es.onmessage = function(e) {
 
   #processHtml = async (html: string) => {
     const processor = unified()
-      .use(rehypeParse)
+      .use(rehypeParse as any)
       .use(rehypeSlug)
-      .use(rehypeStringify);
-
-    let outputHTML = await processor.process(html);
-    return outputHTML;
+      .use(rehypeStringify as any);
+    return String(await processor.process(html));
   };
 
   #renderToString = async (component: Component, cached?: boolean) => {
     let compID = "";
     this.#handleDevelopment();
     if (isJSX(component as JSX.Element)) {
-      compID = `default${this.#reqUrl}`;
-      if (cached && this.#nest[compID]) return this.#nest[compID];
-      let html = ReactDOMServer.renderToString(this.#initHtml(component));
-      html = this.#setHTMLEnv(html);
-      html = await this.#processHtml(html);
-      return this.#nest[compID] = `<!DOCTYPE html>${html}`;
+      return this.#handleJSXElement(compID, component, cached);
     }
 
     const c = component as FunctionComponent;
@@ -230,6 +223,19 @@ es.onmessage = function(e) {
     return this.#nest[compID] = `<!DOCTYPE html>${this.#setInitialProps(html)}`;
   };
 
+  #handleJSXElement = async (
+    compID: string,
+    component: Component,
+    cached?: boolean,
+  ) => {
+    compID = `default${this.#reqUrl}`;
+    if (cached && this.#nest[compID]) return this.#nest[compID];
+    let html = ReactDOMServer.renderToString(this.#initHtml(component));
+    html = this.#setHTMLEnv(html);
+    html = await this.#processHtml(html);
+    return this.#nest[compID] = `<!DOCTYPE html>${html}`;
+  };
+
   #handleComponent = async (c: FunctionComponent) => {
     await this.#createBundle(c.name);
     if (!this.#options.html?.body) return;
@@ -239,17 +245,13 @@ es.onmessage = function(e) {
   };
 
   #setHTMLEnv = (l: string) => {
-    console.log(typeof l);
-    // inject env
     const env = Deno.run === undefined
       ? ""
       : `<script>window.__ENV__ = "DEVELOPMENT"</script>`;
-    l = l.replace(`<script type="env"></script>`, env);
-    return l;
+    return l.replace(`<script type="env"></script>`, env);
   };
 
   #setInitialProps = (layout: string) => {
-    // inject props
     let l = layout.replace(
       `<script></script>`,
       `<script>window.__INITIAL_DATA__ = ${
