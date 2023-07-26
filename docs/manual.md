@@ -304,7 +304,9 @@ For app pages, these are the rules:
 >
 > If you use `FunctionComponent`, server will create hydration file and render `FunctionComponent` as HTML together with bundled file from build process.
 
-This is the `user.tsx` page that return `FunctionComponent` with props. So you can pass a dynamic value to it.
+This is the `user.tsx` page that return `FunctionComponent` with props. So you can pass a dynamic value to it. 
+
+Look at the simple SSR deno-cli entry point above. There is `props` field in the `ctx.render` options.
 
 ```tsx
 import React from "https://esm.sh/react@18.2.0";
