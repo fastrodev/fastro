@@ -396,6 +396,7 @@ export default class HttpServer implements Fastro {
     }
     for (let index = 0; index < this.#pages.length; index++) {
       const page = this.#pages[index];
+      if (this.#isJSX(page.element as JSX.Element)) continue;
       const c = page.element as FunctionComponent;
       this.#createHydrateFile(c.name);
       console.log(`${c.name.toLowerCase()}.hydrate.tsx: created!`);
