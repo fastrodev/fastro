@@ -58,7 +58,7 @@ import fastro from "https://deno.land/x/fastro/mod.ts";
 const f = new fastro();
 
 f.get("/", (_req: Request, info: ConnInfo) => {
-  const addr = connInfo.remoteAddr as Deno.NetAddr;
+  const addr = info.remoteAddr as Deno.NetAddr;
   const ip = addr.hostname;
   return new Response(`Your IP address is <b>${ip}</b>`, {
     headers: { "content-type": "text/html" },
