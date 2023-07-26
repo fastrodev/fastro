@@ -130,14 +130,14 @@ const t = table.map((v) => {
 });
 
 let markdown = `---
-title: "Internal benchmarks"
+title: "Benchmarks"
 description: This is the final output of an internal benchmark run on github action
 image: https://fastro.dev/static/image.png
 ---
 
 This is the final output of an internal benchmark run on [github action](https://github.com/fastrodev/fastro/actions). It consists of several simple applications for [specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json). Each is then accessed by the [OHA](https://github.com/hatoo/oha) within 5 seconds. The results are then sorted by the fastest.
 
-You can find the benchmarks script on this script: [run.ts](https://github.com/fastrodev/fastro/blob/main/bench/run.ts)
+You can find the benchmark script in this code: [run.ts](https://github.com/fastrodev/fastro/blob/main/bench/run.ts)
 
 ## Benchmark results
 
