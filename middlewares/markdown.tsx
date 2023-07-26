@@ -218,8 +218,7 @@ class Markdown {
         meta: m.attrs,
         content,
       };
-    } catch (err) {
-      // console.log(err);
+    } catch {
       return this.#nest[nestID] = null;
     }
   };
@@ -257,8 +256,7 @@ class Markdown {
     return (
       <>
         <Header path={path} />
-        <hr />
-        <main className="markdown" style={{ marginBottom: 20 }}>
+        <main className="markdown" style={{ marginBottom: 20, marginTop: 20 }}>
           <div className="text-center">
             <h1 className="display-5 fw-bold">{meta.title}</h1>
             <p className="text-white-50 h5">{meta.description}</p>
