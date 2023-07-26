@@ -129,22 +129,11 @@ const t = table.map((v) => {
   ];
 });
 
-const date = new Date();
-const formattedDate = date.toLocaleDateString("en-US", {
-  month: "short",
-  day: "numeric",
-  year: "numeric",
-});
-
 let markdown = `---
 title: "Internal benchmarks"
 description: This is the final output of an internal benchmark run on github action
 image: https://fastro.dev/static/image.png
-author: Fastro
-date: ${formattedDate}
 ---
-
-![bench](/static/bench.png)
 
 This is the final output of an internal benchmark run on [github action](https://github.com/fastrodev/fastro/actions). It consists of a simple application for [a specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json). Each is then accessed by the [OHA](https://github.com/hatoo/oha) within 5 seconds. The results are then sorted by the fastest.
 

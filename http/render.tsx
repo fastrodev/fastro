@@ -213,9 +213,10 @@ es.onmessage = function(e) {
     if (isJSX(component as JSX.Element)) {
       compID = `default${this.#reqUrl}`;
       if (cached && this.#nest[compID]) return this.#nest[compID];
-      const html = ReactDOMServer.renderToString(this.#initHtml(component));
-      const h = await this.#processHtml(html);
-      return this.#nest[compID] = `<!DOCTYPE html>${h}`;
+      let html = ReactDOMServer.renderToString(this.#initHtml(component));
+      html = this.#setHTMLEnv(html);
+      html = await this.#processHtml(html);
+      return this.#nest[compID] = `<!DOCTYPE html>${html}`;
     }
 
     const c = component as FunctionComponent;
@@ -225,6 +226,7 @@ es.onmessage = function(e) {
     await this.#handleComponent(c);
     const layout = this.#initHtml(this.#element, this.#options.props);
     let html = ReactDOMServer.renderToString(layout);
+    html = this.#setHTMLEnv(html);
     return this.#nest[compID] = `<!DOCTYPE html>${this.#setInitialProps(html)}`;
   };
 
@@ -236,6 +238,16 @@ es.onmessage = function(e) {
     });
   };
 
+  #setHTMLEnv = (l: string) => {
+    console.log(typeof l);
+    // inject env
+    const env = Deno.run === undefined
+      ? ""
+      : `<script>window.__ENV__ = "DEVELOPMENT"</script>`;
+    l = l.replace(`<script type="env"></script>`, env);
+    return l;
+  };
+
   #setInitialProps = (layout: string) => {
     // inject props
     let l = layout.replace(
@@ -244,12 +256,6 @@ es.onmessage = function(e) {
         JSON.stringify(this.#options.props)
       }</script>`,
     );
-
-    // inject env
-    const env = Deno.run === undefined
-      ? ""
-      : `<script>window.__ENV__ = "DEVELOPMENT"</script>`;
-    l = l.replace(`<script type="env"></script>`, env);
 
     return l;
   };
