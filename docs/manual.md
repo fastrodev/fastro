@@ -71,7 +71,7 @@ Fastro extends `Request` and `ConnInfo` to add functionality.
 - `ConnInfo` become [`Context`](https://deno.land/x/fastro/mod.ts?s=Context).
 
 
-## Text
+## Text response
 
 This code will send response `Hello world` text with the http status.
 
@@ -93,7 +93,7 @@ await f.serve();
 
 > You can also send several types of document: `JSON`, `Array`, `Number`, `Boolean`, and `JSX` (Server Side Rendering).
 
-## URL Params and Query
+## URL params and query
 
 This code will get url params and query from url `http://localhost:8000/agus?title=lead` and then send JSON response with http status.
 
@@ -340,9 +340,14 @@ f.page(
 
 ```
 
-## Deployment
+## Default SSR template
 
-You can use the template created on [getting-started page](/start).
+To generate default SSR app folders and files, execute this command:
+
+```zsh
+deno run -A -r https://fastro.deno.dev
+```
+You will see several scripts:
 
 ```zsh
 .
@@ -362,8 +367,25 @@ You can use the template created on [getting-started page](/start).
     └── app.css
 ```
 
+|File|Use for|
+|--|--|
+|`main.ts`| Deno cli entry point. This is the first script executed when you run `deno task start` |
+|`app.tsx`| Application page. This is the initial react SSR for your app |
+|`layout.ts`| App layout. Defines initial data, meta, css, class, and script|
+|`app.css`| CSS file. Describes how HTML elements should be displayed. See: [CSS tutorial](https://www.w3schools.com/css/)|
+|`deno.json`| App configuration. See: [deno config](https://deno.land/manual/getting_started/configuration_file) |
+|`settings.json`| User and Workspace Settings for VSCode. See: [vs-code settings](https://code.visualstudio.com/docs/getstarted/settings)|
+|`build.yml`| Automate, customize, and execute your software development workflows right in your repository. See [Github action](https://docs.github.com/en/actions) |
+|`.gitignore`| Specifies intentionally untracked files that Git should ignore. See: [gitignore](https://git-scm.com/docs/gitignore) |
+|`readme.md`| Step by step instructions |
+
+
+## Deployment
+
+You can deploy to production using [deno deploy](https://deno.com/deploy).
+
 - Push your project to [github repo](https://github.com).
-- [Create a project](https://dash.deno.com/new).
+- Create [a deno deploy project](https://dash.deno.com/new).
 - Link the project to the `main.ts` file.
 
 And `your-project` will be deployed to a public `your-project`.deno.dev subdomain.

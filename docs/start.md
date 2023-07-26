@@ -22,24 +22,6 @@ deno run -A -r https://fastro.deno.dev
 
 Please note, the `-A` argument allows deno to access all permissions, and `-r` argument is to reload source code cache (recompile TypeScript).
 
-```zsh
-.
-├── .github
-│   └── workflows
-│       └── build.yml
-├── .gitignore
-├── .vscode
-│   └── settings.json
-├── deno.json
-├── layout.ts
-├── main.ts
-├── pages
-│   └── app.tsx
-├── readme.md
-└── static
-    └── app.css
-```
-
 Now let's run the application
 
 ```zsh
@@ -57,3 +39,5 @@ Open that link on [your browser](http://localhost:8000) or hit them via `curl`
 ```zsh
 curl http://localhost:8000
 ```
+
+You can find more detailed instructions in [the manual page](/manual#default-ssr-template).
