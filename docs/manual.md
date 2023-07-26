@@ -379,6 +379,10 @@ You will see several scripts:
 |`.gitignore`| Specifies intentionally untracked files that Git should ignore. See: [gitignore](https://git-scm.com/docs/gitignore) |
 |`readme.md`| Step by step instructions |
 
+To run locally, execute this command:
+```zsh
+deno task start
+```
 
 ## Deployment
 
