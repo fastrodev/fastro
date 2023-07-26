@@ -83,10 +83,9 @@ export default class Instance {
               name: "description",
               content: md.meta?.description,
             },
-
             {
-              property: "article:published_time",
-              content: getYearMonthDay(),
+              name: "author",
+              content: "Fastro Software",
             },
             {
               property: "og:image",
