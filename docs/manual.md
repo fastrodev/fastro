@@ -45,6 +45,10 @@ deno run -A main.ts
 
 Fastro use [Deno standard library](https://deno.land/std), so you can also add [`Request`](https://deno.com/deploy/docs/runtime-request) and [ConnInfo](https://deno.land/std/http/mod.ts?s=ConnInfo) params for the handler. 
 
+```ts
+type Handler = (request: Request, connInfo: ConnInfo) => Response | Promise<Response>
+```
+
 This code is used to get client IP address:
 
 ```ts
@@ -68,6 +72,10 @@ await f.serve();
 ## Fastro handler signature
 
 Fastro extends `Request` and `ConnInfo` to add functionality.
+
+```ts
+type RequestHandler = (request: HttpRequest, ctx: Context) => Response | Promise<Response>
+```
 
 - `Request` become [`HttpRequest`](https://deno.land/x/fastro/mod.ts?s=HttpRequest).
 - `ConnInfo` become [`Context`](https://deno.land/x/fastro/mod.ts?s=Context).
