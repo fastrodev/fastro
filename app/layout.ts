@@ -1,4 +1,5 @@
 import { RenderOptions } from "../http/server.ts";
+import { getYearMonthDay } from "./function.ts";
 
 const html = (
   props: unknown,
@@ -25,6 +26,10 @@ const html = (
           {
             name: "author",
             content: "Fastro Software",
+          },
+          {
+            property: "article:published_time",
+            content: getYearMonthDay(),
           },
           {
             property: "og:image",

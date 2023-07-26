@@ -1,5 +1,15 @@
 import { HttpRequest } from "../http/server.ts";
 
+export function getYearMonthDay(dateStr?: string) {
+  const date = dateStr ? new Date(dateStr) : new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  const formattedDate = `${year}-${month}-${day}`;
+  return formattedDate;
+}
+
 export function denoRunCheck(req: HttpRequest) {
   const regex = /^Deno\/(\d+\.\d+\.\d+)$/;
   const string = req.headers.get("user-agent");

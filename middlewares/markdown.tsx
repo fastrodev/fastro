@@ -19,6 +19,16 @@ import {
   SyntaxHighlighter,
 } from "./deps.ts";
 
+function getYearMonthDay(dateStr?: string) {
+  const date = dateStr ? new Date(dateStr) : new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  const formattedDate = `${year}-${month}-${day}`;
+  return formattedDate;
+}
+
 type Meta = {
   title?: string;
   author?: string;
@@ -73,9 +83,10 @@ export default class Instance {
               name: "description",
               content: md.meta?.description,
             },
+
             {
-              name: "author",
-              content: "Fastro Software",
+              property: "article:published_time",
+              content: getYearMonthDay(),
             },
             {
               property: "og:image",
