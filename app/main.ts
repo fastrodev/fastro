@@ -7,8 +7,7 @@ import { denoRunCheck, getExamples, getVersion, init } from "./function.ts";
 import { html } from "./layout.ts";
 
 const title = "The Web Framework for Fullstack Development";
-const description =
-  "Handle React SSR and thousands of requests per second with a simple API";
+const description = "Handle React SSR and thousands of RPS with a simple API";
 const f = new fastro();
 const m = new markdown({ folder: "docs" });
 
