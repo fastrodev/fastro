@@ -1,9 +1,30 @@
 import { HttpRequest } from "../http/server.ts";
 
+function addLeadingZero(num: number) {
+  return num < 10 ? "0" + num : num;
+}
+
 export function getPublishDate(dateStr?: string) {
   const currentDate = dateStr ? new Date(dateStr) : new Date();
-  const formattedDate = currentDate.toISOString();
-  return formattedDate;
+
+  const year = currentDate.getFullYear();
+  const month = addLeadingZero(currentDate.getMonth() + 1);
+  const day = addLeadingZero(currentDate.getDate());
+  const hours = addLeadingZero(currentDate.getHours());
+  const minutes = addLeadingZero(currentDate.getMinutes());
+  const seconds = addLeadingZero(currentDate.getSeconds());
+  const timezoneOffsetHours = Math.floor(currentDate.getTimezoneOffset() / 60);
+  const timezoneOffsetMinutes = Math.abs(currentDate.getTimezoneOffset() % 60);
+  const timezoneOffsetSign = currentDate.getTimezoneOffset() > 0 ? "-" : "+";
+
+  const dateTimeString =
+    `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${timezoneOffsetSign}${
+      addLeadingZero(
+        timezoneOffsetHours,
+      )
+    }:${addLeadingZero(timezoneOffsetMinutes)}`;
+
+  return dateTimeString;
 }
 
 export function denoRunCheck(req: HttpRequest) {
