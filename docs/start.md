@@ -14,11 +14,13 @@ Then, create a folder for your project and enter to it.
 mkdir my-project && cd my-project
 ```
 
-Generate default project from command line. This will generate default folders and files that you can use for the initial project.
+Generate default project from command line.
 
 ```zsh
 deno run -A -r https://fastro.deno.dev
 ```
+
+The above command will generate default folders and files that you can use for the initial project.
 
 Now let's run the application
 
