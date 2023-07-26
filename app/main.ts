@@ -11,7 +11,7 @@ const description =
   "Handle React SSR and thousands of RPS with a minimalistic API";
 const f = new fastro();
 const m = new markdown({ folder: "docs" });
-
+f.record["examples"] = await getExamples();
 f.use(m.middleware);
 
 f.use((req: HttpRequest, _ctx: Context, next: Next) => {
@@ -59,8 +59,8 @@ f.page(
   },
 );
 
-f.page("/examples", Example, async (_req: HttpRequest, ctx: Context) => {
-  const examples = await getExamples();
+f.page("/examples", Example, async (req: HttpRequest, ctx: Context) => {
+  const examples = req.record["examples"];
   const git = await getVersion();
   const options = html(
     { version: git["name"], path: "examples", title, description, examples },
