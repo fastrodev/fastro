@@ -6,7 +6,7 @@ import index from "../pages/index.tsx";
 import { denoRunCheck, getExamples, getVersion, init } from "./function.ts";
 import { html } from "./layout.ts";
 
-const title: "The Ultimate Web Framework for Full Stack Developers"
+const title = "The Ultimate Web Framework for Full Stack Developers"
 const description = "Handle React SSR and thousands of RPS with a minimalistic API";
 const f = new fastro();
 const m = new markdown({ folder: "docs" });
