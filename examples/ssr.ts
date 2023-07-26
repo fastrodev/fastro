@@ -1,4 +1,4 @@
-import fastro, { Context, HttpRequest } from "../http/server.ts";
+import fastro, { Context, HttpRequest } from "../mod.ts";
 import user from "../pages/user.tsx";
 
 const f = new fastro();
