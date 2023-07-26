@@ -20,12 +20,13 @@ can:
   [URLPattern](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API)
 - Access the request, the context, and the next callback before execute the
   route handler with
-  [route and app middleware](https://github.com/fastrodev/fastro/blob/main/examples/middleware.ts)
+  [route and app middleware](https://github.com/fastrodev/fastro/blob/main/examples/middleware.ts). 
+- You can add multiple middleware at once in one route.
 - Get url param with URLPattern
 - Set the react component props from the server side 
 - Attach your API and React-SSR-SEO-ready pages [in a single file](https://github.com/fastrodev/fastro/blob/main/examples/ssr.ts)
 
-## Getting started
+## Create your first end point
 
 Create a `main.ts` file for deno-cli entry point.
 
@@ -44,11 +45,12 @@ Run the app
 ```
 deno run -A main.ts
 ```
-
 ## Examples
 
-Find one that fits your use case
-[here](https://github.com/fastrodev/fastro/tree/main/examples)
+To create your first React SSR page, you can open [the start page](https://fastro.deno.dev/start).
+
+And to find one that fits your use case, you can explore [the examples page](https://fastro.deno.dev/examples).
+
 
 [Build Status - Cirrus]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg?branch=main&event=push
 [Build status]: https://github.com/fastrodev/fastro/actions
