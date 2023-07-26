@@ -52,6 +52,7 @@ table {
   width: max-content;
   max-width: 100%;
   overflow: auto;
+  margin-bottom: 20px;
 }
 
 .markdown img {
