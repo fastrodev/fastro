@@ -272,10 +272,14 @@ await f.serve();
 
 You can create SSR endpoint by using `f.page`.
 
+```ts
+Fastro.page(path: string, element: Component, ...handler: Array<MiddlewareArgument>): Fastro
+```
+
 It has 3 arguments:
 - `path`: `string`
 - `Component`: `JSX.Element` or `FunctionComponent`
-- `Handler`: `HandlerArgument`
+- `Handler`: `MiddlewareArgument`
 
 This is the simple SSR entry-point:
 
