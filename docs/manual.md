@@ -227,9 +227,18 @@ f.get(
 
 You can setup static file with `static` function.
 
+```ts
+Fastro.static(path: string, options?: {
+    maxAge?: number;
+    folder?: string;
+}): Fastro
+```
+
 It has two arguments:
-- `path` for example: `/static`
-- `options` for example: `{ folder: "static", maxAge: 90 }`
+- `path`: `string`
+- `options`: `{ maxAge?: number; folder?: string; }`
+
+This code will serve static files from a `static` folder with `maxAge: 90` and a complete url for a png image: `https://localhost:8000/static/image.png`
 
 ```ts
 import fastro from "https://deno.land/x/fastro/mod.ts";
