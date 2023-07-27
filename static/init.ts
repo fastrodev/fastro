@@ -80,35 +80,36 @@ await f.serve();
     await Deno.writeTextFile(
       ".github/workflows/build.yml",
       `name: build
-  on:
-    push:
-        branches:
-        - main
-  jobs:
-    build:
-      runs-on: ubuntu-latest
-  
-      permissions:
-        id-token: write
-        contents: write
-        packages: write
-  
-      steps:
-        - name: Clone repository
-          uses: actions/checkout@v3
-  
-        - uses: denoland/setup-deno@v1
-          with:
-            deno-version: vx.x.x
+on:
+  push:
+      branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-        - name: Run hydrate
-          run: deno task hydrate
-  
-        - name: Deploy to Deno Deploy
-          uses: denoland/deployctl@v1
-          with:
-            project: ${projectName}
-            entrypoint: main.ts    
+    permissions:
+      id-token: write
+      contents: write
+      packages: write
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
+
+      - name: Run hydrate
+        run: deno task hydrate
+
+      - name: Deploy to Deno Deploy
+        uses: denoland/deployctl@v1
+        with:
+          project: my-project
+          entrypoint: main.ts    
+      
 `,
     );
     // deno.json
