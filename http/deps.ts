@@ -12,20 +12,20 @@ const h = React.createElement;
 
 export { h, React, ReactDOMServer };
 
-export { toHashString } from "https://deno.land/std@0.195.0/crypto/to_hash_string.ts";
+export { toHashString } from "https://deno.land/std@0.196.0/crypto/to_hash_string.ts";
 export {
   Status,
   STATUS_TEXT,
-} from "https://deno.land/std@0.195.0/http/http_status.ts";
-export * from "https://deno.land/std@0.195.0/media_types/mod.ts";
-export * from "https://deno.land/std@0.195.0/path/mod.ts";
+} from "https://deno.land/std@0.196.0/http/http_status.ts";
+export * from "https://deno.land/std@0.196.0/media_types/mod.ts";
+export * from "https://deno.land/std@0.196.0/path/mod.ts";
 
-export { serve, Server } from "https://deno.land/std@0.195.0/http/server.ts";
+export { serve, Server } from "https://deno.land/std@0.196.0/http/server.ts";
 export type {
   ConnInfo,
   Handler,
-} from "https://deno.land/std@0.195.0/http/server.ts";
+} from "https://deno.land/std@0.196.0/http/server.ts";
 export {
   assertEquals,
   assertExists,
-} from "https://deno.land/std@0.195.0/testing/asserts.ts";
+} from "https://deno.land/std@0.196.0/testing/asserts.ts";
