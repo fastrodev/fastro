@@ -72,6 +72,7 @@ export type RenderOptions = {
   html?: {
     lang?: string;
     class?: string;
+    style?: React.CSSProperties;
     head?: {
       title?: string;
       descriptions?: string;
