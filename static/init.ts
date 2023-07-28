@@ -1,4 +1,4 @@
-const version = "v0.77.2";
+const version = "v0.77.3";
 export { version };
 
 const init = async (name?: string, ver?: string) => {
@@ -107,7 +107,7 @@ jobs:
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: my-project
+          project: ${projectName}
           entrypoint: main.ts    
       
 `,
