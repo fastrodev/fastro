@@ -97,6 +97,7 @@ export class Render {
       <html
         lang={this.#options.html?.lang}
         className={this.#options.html?.class}
+        style={this.#options.html?.style}
       >
         <head>
           <title>{this.#options.html?.head?.title}</title>
