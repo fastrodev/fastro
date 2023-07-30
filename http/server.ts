@@ -62,6 +62,8 @@ type Link = {
   crossorigin?: "anonymous" | "use-credentials" | "" | undefined;
 };
 
+type ModuleFunction = (f: Fastro) => Fastro;
+
 export type RenderOptions = {
   build?: boolean;
   cache?: boolean;
@@ -251,6 +253,7 @@ export interface Fastro {
     element: Component,
     ...handler: Array<MiddlewareArgument>
   ): Fastro;
+  register(mf: ModuleFunction): Fastro;
   getStaticFolder(): string;
   getStaticPath(): string;
   getDevelopmentStatus(): boolean;
@@ -954,6 +957,10 @@ hydrateRoot(document.getElementById("root") as Element, el);
   finished = () => {
     if (this.#server instanceof Server) return;
     return this.#server?.finished;
+  };
+
+  register = (mf: ModuleFunction) => {
+    return mf(this);
   };
 
   close() {
