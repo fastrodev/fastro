@@ -25,6 +25,7 @@ can:
 - Get url param with URLPattern
 - Set the react component props from the server side 
 - Attach your API and React-SSR-SEO-ready pages [in a single file](https://github.com/fastrodev/fastro/blob/main/examples/ssr.ts)
+- Special purpose group handlers with [ModuleFunction](https://github.com/fastrodev/fastro/blob/main/examples/register.ts). 
 
 ## Create your first end point
 
@@ -45,11 +46,14 @@ Run the app
 ```
 deno run -A main.ts
 ```
-## Examples
 
-To create your first React SSR page, you can open [the start page](https://fastro.deno.dev/start).
+## Simple Examples
 
-And to find one that fits your use case, you can explore [the examples page](https://fastro.deno.dev/examples).
+To find one that fits your use case, you can explore [the examples page](https://fastro.deno.dev/examples).
+
+## SSR Example
+
+And to create your first React SSR page, you can follow [the start page step by step](https://fastro.deno.dev/start).
 
 
 [Build Status - Cirrus]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg?branch=main&event=push
