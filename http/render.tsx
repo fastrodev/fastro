@@ -38,7 +38,9 @@ export class Render {
     this.#nest = nest;
     this.#development = server.getDevelopmentStatus();
     this.#server = server;
-    this.#staticPath = `${this.#server.getStaticPath()}/js`;
+    this.#staticPath = `${this.#server.getStaticPath()}/${
+      crypto.randomUUID().replace(/-/g, "").slice(0, 15)
+    }`;
     this.#reqUrl = request?.url;
   }
 
@@ -178,7 +180,8 @@ es.onmessage = function(e) {
       if (this.#nest[this.#getRenderId(elementName)]) return;
       const es = new Esbuild(elementName);
       const bundle = await es.build();
-      const componentPath = `/static/js/${elementName.toLocaleLowerCase()}.js`;
+      const componentPath =
+        `${this.#staticPath}/${elementName.toLocaleLowerCase()}.js`;
       for (const file of bundle.outputFiles) {
         const str = new TextDecoder().decode(file.contents);
         this.#server.push("GET", componentPath, () =>
