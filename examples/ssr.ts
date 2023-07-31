@@ -26,7 +26,4 @@ f.page(
   },
 );
 
-// define static path, home for the built JS file
-f.static("/static", { folder: "static", maxAge: 90 });
-
 await f.serve();
