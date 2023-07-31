@@ -427,7 +427,8 @@ export default class HttpServer implements Fastro {
     const [s] = Deno.args.filter((v) => v === "--development");
     const dev = s === "--development" ? "?dev" : "";
 
-    return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client";
+    return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client${dev}";
+import React from "https://esm.sh/react@18.2.0${dev}";
 import ${comp} from "../pages/${comp.toLowerCase()}.tsx";
 declare global {
   interface Window {
