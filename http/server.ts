@@ -424,19 +424,20 @@ export default class HttpServer implements Fastro {
   };
 
   #createHydrate(comp: string) {
-    const component = comp.toLowerCase();
     const [s] = Deno.args.filter((v) => v === "--development");
     const dev = s === "--development" ? "?dev" : "";
 
-    return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client${dev}";
-import { createElement } from "https://esm.sh/react@18.2.0${dev}";
-import ${component} from "../pages/${component}.tsx";
-// deno-lint-ignore no-explicit-any
-declare global { interface Window { __INITIAL_DATA__: any; } } 
+    return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client";
+import ${comp} from "../pages/${comp.toLowerCase()}.tsx";
+declare global {
+  interface Window {
+    // deno-lint-ignore no-explicit-any
+    __INITIAL_DATA__: any;
+  }
+}
 const props = window.__INITIAL_DATA__ || {};
-delete window.__INITIAL_DATA__ ;
-const el = createElement(${component}, props);
-hydrateRoot(document.getElementById("root") as Element, el);
+delete window.__INITIAL_DATA__;
+hydrateRoot(document.getElementById("root") as Element, <${comp} {...props} />);
 `;
   }
 
