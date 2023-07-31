@@ -11,10 +11,7 @@ async function oha(url?: string) {
     u,
   ];
   const oh = `oha ${args.join().replaceAll(",", " ")}`;
-  console.log(oh);
-  const command = new Deno.Command("oha", {
-    args,
-  });
+  const command = new Deno.Command("oha", { args });
   const { code, stdout, stderr } = await command.output();
   const err = new TextDecoder().decode(stderr);
   if (!err && code === 0) {

@@ -336,10 +336,13 @@ export default class HttpServer implements Fastro {
     this.#staticFolder = "";
     this.#maxAge = 0;
     this.#development = this.#getDevelopment();
-    const status = this.#development
-      ? { development: true }
-      : { production: true };
-    console.info(status);
+    if (this.#development) this.#handleDevelopment();
+    const status = this.#development ? "Development" : "Production";
+    console.log(
+      `%cStatus %c${status}`,
+      "color: blue",
+      "color: white",
+    );
   }
 
   getNest(): Nest {
@@ -403,7 +406,11 @@ export default class HttpServer implements Fastro {
       if (this.#isJSX(page.element as JSX.Element)) continue;
       const c = page.element as FunctionComponent;
       this.#createHydrateFile(c.name);
-      console.log(`${c.name.toLowerCase()}.hydrate.tsx: created!`);
+      console.log(
+        `%c${c.name.toLowerCase()}.hydrate.tsx %cCreated!`,
+        "color: blue",
+        "color: white",
+      );
     }
 
     if (Deno.run == undefined) return [];
@@ -456,7 +463,6 @@ hydrateRoot(document.getElementById("root") as Element, <${comp} {...props} />);
         pathname: path,
       });
 
-      if (this.#development) this.#handleDevelopment();
       if (handler.length === 1) {
         return this.#pushHandler(method, path, handler[0]);
       }
