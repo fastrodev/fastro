@@ -398,26 +398,33 @@ You will see several scripts:
 ```zsh
 .
 ├── .github
-│   └── workflows
-│       └── build.yml
+│   └── workflows
+│       └── build.yml
 ├── .gitignore
 ├── .vscode
-│   └── settings.json
+│   └── settings.json
 ├── deno.json
-├── layout.ts
 ├── main.ts
 ├── pages
-│   └── app.tsx
+│   ├── app.tsx
+│   ├── layout.ts
+│   └── mod.ts
 ├── readme.md
-└── static
-    └── app.css
+├── static
+│   └── app.css
+└── uuid
+    └── mod.ts
+
+6 directories, 11 files
 ```
 
 |File|Use for|
 |--|--|
 |`main.ts`| Deno cli entry point. This is the first script executed when you run `deno task start` |
-|`app.tsx`| Application page. This is the initial react SSR for your app |
-|`layout.ts`| App layout. Defines initial data, meta, css, class, and script|
+|`uuid/mod.tsx`| UUID module function. This is the API for UUID feature. Create a new folder and a module function file if you want to add a new feature |
+|`pages/mod.tsx`| Page module function. This is the module for all SSR pages |
+|`pages/app.tsx`| Application page. This is the initial react SSR for your app |
+|`pages/layout.ts`| App layout. Defines initial data, meta, css, class, and script|
 |`app.css`| CSS file. Describes how HTML elements should be displayed. See: [CSS tutorial](https://www.w3schools.com/css/)|
 |`deno.json`| App configuration. See: [deno config](https://deno.land/manual/getting_started/configuration_file) |
 |`settings.json`| User and Workspace Settings for VSCode. See: [vs-code settings](https://code.visualstudio.com/docs/getstarted/settings)|
