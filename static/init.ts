@@ -40,7 +40,7 @@ const init = async (name?: string, ver?: string) => {
     // main entry point
     await Deno.writeTextFile(
       "main.ts",
-      `import Server from "https://deno.land/x/fastro@${v}/mod.ts";
+      `import { Server } from "./deps.ts";
 import { pageModule } from "./pages/mod.ts";
 import { uuidModule } from "./uuid/mod.ts";
 
@@ -59,6 +59,15 @@ s.register(pageModule);
 // serves HTTP requests
 await s.serve();
 
+`,
+    );
+
+    // deps
+    await Deno.writeTextFile(
+      "deps.ts",
+      `import Server from "https://deno.land/x/fastro@${v}/mod.ts";
+export * from "https://deno.land/x/fastro@${v}/mod.ts";
+export { Server };
 `,
     );
     // github action
@@ -221,7 +230,7 @@ export default function App(props: { data: string }) {
     // layout
     await Deno.writeTextFile(
       "pages/layout.ts",
-      `import { RenderOptions } from "https://deno.land/x/fastro@${v}/mod.ts";
+      `import { RenderOptions } from "../deps.ts";
 
 export default function (
   props: { data: string; title: string; description: string },
@@ -276,11 +285,7 @@ export default function (
     // page mod
     await Deno.writeTextFile(
       "pages/mod.ts",
-      `import {
-  Context,
-  Fastro,
-  HttpRequest,
-} from "https://deno.land/x/fastro@${v}/mod.ts";
+      `import { Context, Fastro, HttpRequest } from "../deps.ts";
 import app from "./app.tsx";
 import layout from "./layout.ts";
 
@@ -306,7 +311,7 @@ export function pageModule(f: Fastro) {
     await Deno.mkdir("uuid");
     await Deno.writeTextFile(
       "uuid/mod.ts",
-      `import { Fastro } from "https://deno.land/x/fastro@${v}/mod.ts";
+      `import { Fastro } from "../deps.ts";
 
 export function uuidModule(f: Fastro) {
   return f.get("/api", () => Response.json({ uuid: crypto.randomUUID() }));
