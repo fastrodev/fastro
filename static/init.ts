@@ -134,6 +134,45 @@ deno task start
 \`\`\`
 It will reload your browser automatically if changes occur.
 
+## Application structure
+
+\`\`\`
+.
+├── .github
+│   └── workflows
+│       └── build.yml
+├── .gitignore
+├── .vscode
+│   └── settings.json
+├── deno.json
+├── main.ts
+├── pages
+│   ├── app.tsx
+│   ├── layout.ts
+│   └── mod.ts
+├── readme.md
+├── static
+│   └── app.css
+└── uuid
+    └── mod.ts
+
+6 directories, 11 files
+\`\`\`
+
+|File|Use for|
+|--|--|
+|\`main.ts\`| Deno cli entry point. This is the first script executed when you run \`deno task start\` |
+|\`uuid/mod.tsx\`| UUID module function. This is the API for UUID feature. Create a new folder and a module function file if you want to add a new feature |
+|\`pages/mod.tsx\`| Page module function. This is the module for all SSR pages |
+|\`pages/app.tsx\`| Application page. This is the initial react SSR for your app |
+|\`pages/layout.ts\`| App layout. Defines initial data, meta, css, class, and script|
+|\`app.css\`| CSS file. Describes how HTML elements should be displayed. See: [CSS tutorial](https://www.w3schools.com/css/)|
+|\`deno.json\`| App configuration. See: [deno config](https://deno.land/manual/getting_started/configuration_file) |
+|\`settings.json\`| User and Workspace Settings for VSCode. See: [vs-code settings](https://code.visualstudio.com/docs/getstarted/settings)|
+|\`build.yml\`| Automate, customize, and execute your software development workflows right in your repository. See [Github action](https://docs.github.com/en/actions) |
+|\`.gitignore\`| Specifies intentionally untracked files that Git should ignore. See: [gitignore](https://git-scm.com/docs/gitignore) |
+|\`readme.md\`| Step by step instructions |
+
 `,
     );
     // page ssr
@@ -412,6 +451,13 @@ body {
 
 `,
     );
+
+    console.log(
+      `%cProject created! %cTo start the application, run:`,
+      "color: blue",
+      "color: white",
+    );
+    console.log(`%cdeno task start`, "color: green");
   } catch (error) {
     throw error;
   }
