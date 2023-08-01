@@ -382,6 +382,56 @@ f.page(
 
 ```
 
+## Route grouping
+
+To group routes for a specific feature, you can use `f.register`.
+
+```ts
+Fastro.register(mf: ModuleFunction): Fastro
+```
+
+`ModuleFunction` is the only parameter for this function.
+
+```ts
+type ModuleFunction = (f: Fastro) => Fastro;
+```
+
+This code groups the `productModule` and `userModule` routes.
+
+
+```ts
+import fastro, { Fastro } from "https://deno.land/x/fastro/mod.ts";
+
+const f = new fastro();
+
+const helloModule = (f: Fastro) => {
+  return f.get("/", () => "Hello World");
+};
+
+const userModule = (f: Fastro) => {
+  const path = `/api/user`;
+  return f.get(path, () => "Get user")
+    .post(path, () => "Add user")
+    .put(path, () => "Update user")
+    .delete(path, () => "Delete user");
+};
+
+const productModule = (f: Fastro) => {
+  const path = `/api/product`;
+  return f.get(path, () => "Get product")
+    .post(path, () => "Add product")
+    .put(path, () => "Update product")
+    .delete(path, () => "Delete product");
+};
+
+f.register(helloModule);
+f.register(userModule);
+f.register(productModule);
+
+await f.serve();
+
+```
+
 ## Default SSR template
 
 To generate default SSR app folders and files, execute this command:
@@ -435,56 +485,6 @@ You will see several scripts:
 To run locally, execute this command:
 ```zsh
 deno task start
-```
-
-## Route Grouping
-
-To group routes for a specific feature, you can use `f.register`.
-
-```ts
-Fastro.register(mf: ModuleFunction): Fastro
-```
-
-`ModuleFunction` is the only parameter for this function.
-
-```ts
-type ModuleFunction = (f: Fastro) => Fastro;
-```
-
-This code groups the `productModule` and `userModule` routes.
-
-
-```ts
-import fastro, { Fastro } from "https://deno.land/x/fastro/mod.ts";
-
-const f = new fastro();
-
-const helloModule = (f: Fastro) => {
-  return f.get("/", () => "Hello World");
-};
-
-const userModule = (f: Fastro) => {
-  const path = `/api/user`;
-  return f.get(path, () => "Get user")
-    .post(path, () => "Add user")
-    .put(path, () => "Update user")
-    .delete(path, () => "Delete user");
-};
-
-const productModule = (f: Fastro) => {
-  const path = `/api/product`;
-  return f.get(path, () => "Get product")
-    .post(path, () => "Add product")
-    .put(path, () => "Update product")
-    .delete(path, () => "Delete product");
-};
-
-f.register(helloModule);
-f.register(userModule);
-f.register(productModule);
-
-await f.serve();
-
 ```
 
 ## Environment
