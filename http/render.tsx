@@ -273,7 +273,7 @@ es.onmessage = function(e) {
       "GET",
       refreshPath,
       () =>
-        new Response(this.#refreshJs(`/${BUILD_ID}`, BUILD_ID), {
+        new Response(this.#refreshJs(`/___refresh___`, BUILD_ID), {
           headers: {
             "Content-Type": "application/javascript",
           },
