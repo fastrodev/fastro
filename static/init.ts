@@ -40,40 +40,26 @@ const init = async (name?: string, ver?: string) => {
     // main entry point
     await Deno.writeTextFile(
       "main.ts",
-      `import fastro, {
-  Context,
-  HttpRequest,
-} from "https://deno.land/x/fastro@${v}/mod.ts";
-import layout from "./layout.ts";
-import app from "./pages/app.tsx";
+      `import Server from "https://deno.land/x/fastro@${v}/mod.ts";
+import { pageModule } from "./pages/mod.ts";
+import { uuidModule } from "./uuid/mod.ts";
 
 // initiate the application
-const f = new fastro();
-
-// define API end point
-f.get("/api", () => Response.json({ uuid: crypto.randomUUID() }));
+const s = new Server();
 
 // setup static folder with maxAge 90
-f.static("/static", { folder: "static", maxAge: 90 });
+s.static("/static", { folder: "static", maxAge: 90 });
 
-// setup the page endpoint with the \`app\` component
-f.page(
-  "/",
-  app,
-  (_req: HttpRequest, ctx: Context) => {
-    const options = layout({
-      data: "World",
-      title: "Hello World",
-      description: "This is simple react component",
-    });
-    return ctx.render(options);
-  },
-);
+// setup API for UUID Module
+s.register(uuidModule);
+
+// setup page module
+s.register(pageModule);
 
 // serves HTTP requests
-await f.serve();   
+await s.serve();
 
-  `,
+`,
     );
     // github action
     await Deno.mkdir(".github/workflows", { recursive: true });
@@ -150,7 +136,7 @@ It will reload your browser automatically if changes occur.
 
 `,
     );
-    // page
+    // page ssr
     await Deno.mkdir("pages");
     await Deno.writeTextFile(
       "pages/app.tsx",
@@ -191,6 +177,109 @@ export default function App(props: { data: string }) {
   );
 }
 
+`,
+    );
+    // layout
+    await Deno.writeTextFile(
+      "pages/layout.ts",
+      `import { RenderOptions } from "https://deno.land/x/fastro@${v}/mod.ts";
+
+export default function (
+  props: { data: string; title: string; description: string },
+): RenderOptions {
+  return {
+    props: { data: props.data },
+    cache: false,
+    html: {
+      class: "h-100",
+      head: {
+        title: props.title,
+        descriptions: props.description,
+        meta: [
+          { charset: "utf-8" },
+          {
+            name: "viewport",
+            content: "width=device-width, initial-scale=1.0",
+          },
+          {
+            name: "description",
+            content: "Fast & Simple Web Application Framework",
+          },
+          {
+            property: "og:image",
+            content: "https://fastro.dev/static/image.png",
+          },
+        ],
+        link: [{
+          href:
+            "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css",
+          rel: "stylesheet",
+          integrity:
+            "sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD",
+          crossorigin: "anonymous",
+        }, {
+          href: "/static/app.css",
+          rel: "stylesheet",
+        }],
+        script: [{
+          src:
+            "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js",
+          integrity:
+            "sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN",
+          crossorigin: "anonymous",
+        }],
+      },
+      body: {
+        class: "h-100 text-bg-dark",
+        script: [],
+        root: {
+          class: "cover-container d-flex w-100 h-100 p-3 mx-auto flex-column",
+        },
+      },
+    },
+  };
+}
+`,
+    );
+    // page mod
+    await Deno.writeTextFile(
+      "pages/mod.ts",
+      `import {
+  Context,
+  Fastro,
+  HttpRequest,
+} from "https://deno.land/x/fastro@${v}/mod.ts";
+import app from "./app.tsx";
+import layout from "./layout.ts";
+
+export function pageModule(f: Fastro) {
+  return f.page(
+    "/",
+    app,
+    (_req: HttpRequest, ctx: Context) => {
+      const options = layout({
+        data: "World",
+        title: "Hello World",
+        description: "This is simple react component",
+      });
+      return ctx.render(options);
+    },
+  );
+}
+
+`,
+    );
+
+    // UUID
+    await Deno.mkdir("uuid");
+    await Deno.writeTextFile(
+      "uuid/mod.ts",
+      `import { Fastro } from "https://deno.land/x/fastro@${v}/mod.ts";
+
+export function uuidModule(f: Fastro) {
+  return f.get("/api", () => Response.json({ uuid: crypto.randomUUID() }));
+}
+      
 `,
     );
 
@@ -328,69 +417,6 @@ body {
     z-index: 1500;
 }
 
-`,
-    );
-
-    // layout
-    await Deno.writeTextFile(
-      "layout.ts",
-      `import { RenderOptions } from "https://deno.land/x/fastro@${v}/mod.ts";
-
-export default function (
-  props: { data: string; title: string; description: string },
-): RenderOptions {
-  return {
-    props: { data: props.data },
-    cache: false,
-    html: {
-      class: "h-100",
-      head: {
-        title: props.title,
-        descriptions: props.description,
-        meta: [
-          { charset: "utf-8" },
-          {
-            name: "viewport",
-            content: "width=device-width, initial-scale=1.0",
-          },
-          {
-            name: "description",
-            content: "Fast & Simple Web Application Framework",
-          },
-          {
-            property: "og:image",
-            content: "https://fastro.dev/static/image.png",
-          },
-        ],
-        link: [{
-          href:
-            "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css",
-          rel: "stylesheet",
-          integrity:
-            "sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD",
-          crossorigin: "anonymous",
-        }, {
-          href: "/static/app.css",
-          rel: "stylesheet",
-        }],
-        script: [{
-          src:
-            "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js",
-          integrity:
-            "sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN",
-          crossorigin: "anonymous",
-        }],
-      },
-      body: {
-        class: "h-100 text-bg-dark",
-        script: [],
-        root: {
-          class: "cover-container d-flex w-100 h-100 p-3 mx-auto flex-column",
-        },
-      },
-    },
-  };
-}
 `,
     );
   } catch (error) {
