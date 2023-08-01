@@ -430,6 +430,16 @@ To run locally, execute this command:
 deno task start
 ```
 
+## Environment
+
+The default environment is `production`. But if you want to run with `DEVELOPMENT` environment, execute `deno` command with `--development`.
+
+```zsh
+deno run -A --watch main.ts --development
+```
+
+This will refresh your page if the typescript file changes.
+
 ## Deployment
 
 You can deploy to production using [deno deploy](https://deno.com/deploy).
