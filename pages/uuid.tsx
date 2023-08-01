@@ -1,6 +1,6 @@
 import React, { useState } from "https://esm.sh/react@18.2.0?dev";
 
-export default function pp(props: { data: string }) {
+export default function UUID(props: { data: string }) {
   const [data, setD] = useState({
     uuid: "e90d45df-4132-41ad-aec8-e0e19f7647a9",
   });

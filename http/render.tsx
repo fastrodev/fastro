@@ -38,9 +38,7 @@ export class Render {
     this.#nest = nest;
     this.#development = server.getDevelopmentStatus();
     this.#server = server;
-    this.#staticPath = `${this.#server.getStaticPath()}/${
-      crypto.randomUUID().replace(/-/g, "").slice(0, 15)
-    }`;
+    this.#staticPath = `${this.#server.getStaticPath()}/${BUILD_ID}`;
     this.#reqUrl = request?.url;
   }
 
