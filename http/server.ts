@@ -560,7 +560,7 @@ hydrateRoot(document.getElementById("root") as Element, <${comp} {...props} />);
   }
 
   #handleDevelopment = () => {
-    const refreshPath = "/refresh";
+    const refreshPath = `/${BUILD_ID}`;
     this.#patterns[refreshPath] = new URLPattern({
       pathname: refreshPath,
     });
