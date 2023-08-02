@@ -29,6 +29,8 @@ export class Esbuild {
       const esbuildRes = await esbuild.build({
         plugins: [...denoPlugins()],
         entryPoints: [hydrateTarget],
+        platform: "browser",
+        target: ["chrome99", "firefox99", "safari15"],
         format: "esm",
         jsxImportSource: "react",
         absWorkingDir: cwd,
