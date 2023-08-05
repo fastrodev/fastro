@@ -77,21 +77,12 @@ export class Render {
   };
 
   #initHtml = (element: Component, props?: any) => {
-    let el:
-      | React.DetailedReactHTMLElement<
-        React.InputHTMLAttributes<HTMLInputElement>,
-        HTMLInputElement
-      >
-      | JSX.Element;
-
-    if (isJSX(element as JSX.Element)) {
-      el = element as JSX.Element;
-    } else {
-      el = React.createElement(
+    let el = isJSX(element as JSX.Element)
+      ? element as JSX.Element
+      : React.createElement(
         element as FunctionComponent,
         this.#options.props,
       );
-    }
 
     return (
       <html
