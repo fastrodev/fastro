@@ -36,6 +36,7 @@
     "static_file_image": "deno run -A examples/static_file_image.ts",
     "markdown_hook": "deno run -A examples/markdown_hook.ts",
     "markdown_middleware": "deno run -A examples/markdown_middleware.ts",
-    "register": "deno run -A examples/register.ts"
+    "register": "deno run -A examples/register.ts",
+    "record": "deno run -A examples/record.ts"
   }
 }
