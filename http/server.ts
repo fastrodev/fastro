@@ -272,6 +272,7 @@ export interface Fastro {
   onListen(handler: ListenHandler): void;
   finished(): Promise<void> | undefined;
   getNest(): Nest;
+  record: Record<string, any>;
   /**
    * Serves HTTP requests
    *
