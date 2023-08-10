@@ -39,18 +39,6 @@ export default function (props: { path: string }) {
             Manual
           </a>
           <a
-            className={`nav-link fw-bold py-1 px-0`}
-            href="#"
-          >
-            Blog
-          </a>
-          <a
-            className={`nav-link fw-bold py-1 px-0`}
-            href="#"
-          >
-            Showcase
-          </a>
-          <a
             className="nav-link py-1 px-0"
             href="https://github.com/fastrodev/fastro"
           >
