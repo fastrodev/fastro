@@ -1,6 +1,12 @@
 // deno-lint-ignore-file
 // import { generateKeys } from "../crypto/key.ts";
-import { exportCryptoKey, keyPromise } from "../crypto/key.ts";
+import {
+  addSalt,
+  exportCryptoKey,
+  keyPromise,
+  reverseString,
+  SALT,
+} from "../crypto/key.ts";
 import {
   ConnInfo,
   contentType,
@@ -364,7 +370,10 @@ export default class HttpServer implements Fastro {
 
   serve = async (options?: { port: number }) => {
     const key = await keyPromise;
-    const exportedKeyString = await exportCryptoKey(key);
+    let exportedKeyString = await exportCryptoKey(key);
+    exportedKeyString = addSalt(exportedKeyString, SALT);
+    exportedKeyString = reverseString(exportedKeyString);
+    exportedKeyString = "{" + exportedKeyString + "}";
     this.record["exportedKeyString"] = exportedKeyString;
 
     const port = options?.port ?? this.#port;
@@ -434,17 +443,25 @@ export default class HttpServer implements Fastro {
         `${Deno.cwd()}/${hydrateFolder}/${elementName.toLowerCase()}.hydrate.tsx`;
       await Deno.writeTextFile(
         target,
-        this.#createHydrate(elementName),
+        this.#createHydrate(elementName, SALT),
       );
     } catch (error) {
       return;
     }
   };
 
-  #createHydrate(comp: string) {
+  #createHydrate(comp: string, salt?: string) {
     return `import { h, hydrate } from "https://esm.sh/preact@10.16.0";
 import ${comp} from "../pages/${comp.toLowerCase()}.tsx";
-import { importCryptoKey, keyType, keyUsages } from "../crypto/key.ts";
+import { 
+  clean,
+  closeMe,
+  extractOriginalString,
+  importCryptoKey,
+  keyType,
+  keyUsages,
+  reverseString,
+} from "../crypto/key.ts";
 import { decryptData } from "../crypto/decrypt.ts";
 declare global {
   interface Window {
@@ -456,8 +473,13 @@ declare global {
 fetch("/__INITIAL_DATA__")
   .then((response) => response.json())
   .then((v) => {
+    // deno-lint-ignore no-explicit-any
+    let r = clean(v.data) as any
+    r = reverseString(r);
+    r = extractOriginalString(r, "${salt}")
+    r = closeMe(r);
     importCryptoKey(
-      v.data,
+      r,
       keyType,
       keyUsages,
     ).then((importedKey) => {
@@ -468,15 +490,9 @@ fetch("/__INITIAL_DATA__")
           const props = v as any;
           const root = document.getElementById("root");
           if (root) hydrate(h(${comp}, JSON.parse(props)), root);
-        }).catch((error) => {
-          console.error(error);
-        });
-    }).catch((error) => {
-      console.error(error);
-    });
-  }).catch((error) => {
-    console.error(error);
-  });
+        }).catch((error) => console.error(error));
+    }).catch((error) => console.error(error));
+  }).catch((error) => console.error(error));
 `;
   }
 

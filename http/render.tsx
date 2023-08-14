@@ -13,7 +13,16 @@ import {
   FunctionComponent,
   RenderOptions,
 } from "./server.ts";
-import { importCryptoKey } from "../crypto/key.ts";
+import {
+  clean,
+  closeMe,
+  extractOriginalString,
+  importCryptoKey,
+  keyType,
+  keyUsages,
+  reverseString,
+  SALT,
+} from "../crypto/key.ts";
 import { encryptData } from "../crypto/encrypt.ts";
 
 function isJSX(res: preact.JSX.Element) {
@@ -263,9 +272,15 @@ es.onmessage = function(e) {
   };
 
   #setInitialProps = async (layout: string) => {
-    const exportedKeyString = this.#server.record["exportedKeyString"];
-    const keyType = "AES-GCM";
-    const keyUsages: KeyUsage[] = ["encrypt", "decrypt"];
+    let exportedKeyString = this.#server.record["exportedKeyString"] as string;
+    exportedKeyString = clean(exportedKeyString);
+    exportedKeyString = reverseString(exportedKeyString);
+    exportedKeyString = extractOriginalString(
+      exportedKeyString,
+      SALT,
+    ) as string;
+
+    exportedKeyString = closeMe(exportedKeyString);
     const importedKey = await importCryptoKey(
       exportedKeyString,
       keyType,
