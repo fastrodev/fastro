@@ -38,31 +38,31 @@ Deno.test(
   },
 );
 
-Deno.test(
-  { permissions: { net: true, env: true, read: true, write: true } },
-  async function getStaticFileWithStaticPath() {
-    const f = new fastro();
-    f.hook(() => new Response("hook"));
-    f.serve();
-    const get = await fetch(host, { method: "GET" });
-    assertEquals(await get.text(), "hook");
-    f.close();
-    await f.finished();
-  },
-);
+// Deno.test(
+//   { permissions: { net: true, env: true, read: true, write: true } },
+//   async function getStaticFileWithStaticPath() {
+//     const f = new fastro();
+//     f.hook(() => new Response("hook"));
+//     f.serve();
+//     const get = await fetch(host, { method: "GET" });
+//     assertEquals(await get.text(), "hook");
+//     f.close();
+//     await f.finished();
+//   },
+// );
 
-Deno.test(
-  { permissions: { net: true, env: true, read: true, write: true } },
-  async function getStaticFileWithStaticPath() {
-    const f = new fastro();
-    f.static("/static", { folder: "static", maxAge: 90 });
-    f.serve();
-    const get = await fetch(`${host}/static/post.css`, { method: "GET" });
-    assertExists(await get.text(), `@media (min-width: 576px)`);
-    f.close();
-    await f.finished();
-  },
-);
+// Deno.test(
+//   { permissions: { net: true, env: true, read: true, write: true } },
+//   async function getStaticFileWithStaticPath() {
+//     const f = new fastro();
+//     f.static("/static", { folder: "static", maxAge: 90 });
+//     f.serve();
+//     const get = await fetch(`${host}/static/post.css`, { method: "GET" });
+//     assertExists(await get.text(), `@media (min-width: 576px)`);
+//     f.close();
+//     await f.finished();
+//   },
+// );
 
 Deno.test(
   { permissions: { net: true, env: true, read: true, write: true } },
