@@ -46,7 +46,8 @@ jobs:
 
       - name: Generate internal benchmarks
         run: deno task bench
-        branch: main
+        with:
+          branch: main
 
       - name: Push changes
         uses: actions-js/push@v1
