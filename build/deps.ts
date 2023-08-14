@@ -1,6 +1,6 @@
-// @deno-types="https://deno.land/x/esbuild@v0.19.0/mod.d.ts"
-import * as esbuildNative from "https://deno.land/x/esbuild@v0.19.1/mod.js";
-import * as esbuildWasm from "https://deno.land/x/esbuild@v0.19.1/wasm.js";
+// @deno-types="https://deno.land/x/esbuild@v0.18.11/mod.d.ts"
+import * as esbuildNative from "https://deno.land/x/esbuild@v0.18.11/mod.js";
+import * as esbuildWasm from "https://deno.land/x/esbuild@v0.18.11/wasm.js";
 
 // deno-lint-ignore no-deprecated-deno-api
 const esbuild: typeof esbuildWasm = Deno.run === undefined

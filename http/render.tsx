@@ -227,7 +227,7 @@ es.onmessage = function(e) {
   #renderToString = async (component: Component, cached?: boolean) => {
     let compID = "";
     this.#handleDevelopment();
-    if (isJSX(component as JSX.Element)) {
+    if (isJSX(component as preact.JSX.Element)) {
       return this.#handleJSXElement(compID, component, cached);
     }
 
