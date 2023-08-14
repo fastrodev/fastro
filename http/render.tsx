@@ -5,7 +5,7 @@ import rehypeStringify from "https://esm.sh/rehype-stringify@9.0.3";
 import { unified } from "https://esm.sh/unified@10.1.2";
 import { Esbuild } from "../build/esbuild.ts";
 
-import { h, renderToString } from "./deps.ts";
+import { h, renderToString, Status, STATUS_TEXT } from "./deps.ts";
 import {
   BUILD_ID,
   Component,
@@ -207,12 +207,24 @@ es.onmessage = function(e) {
         `${this.#staticPath}/${elementName.toLocaleLowerCase()}.js`;
       for (const file of bundle.outputFiles) {
         const str = new TextDecoder().decode(file.contents);
-        this.#server.push("GET", componentPath, () =>
-          new Response(str, {
-            headers: {
-              "Content-Type": "application/javascript",
-            },
-          }));
+        this.#server.push(
+          "GET",
+          componentPath,
+          (req: Request) => {
+            const referer = req.headers.get("referer");
+            const host = req.headers.get("host") as string;
+            if (!referer || !referer?.includes(host)) {
+              return new Response(STATUS_TEXT[Status.NotFound], {
+                status: Status.NotFound,
+              });
+            }
+            return new Response(str, {
+              headers: {
+                "Content-Type": "application/javascript",
+              },
+            });
+          },
+        );
       }
       this.#nest[this.#getRenderId(elementName)] = true;
     } catch {
