@@ -17,7 +17,3 @@ export type {
   ConnInfo,
   Handler,
 } from "https://deno.land/std@0.198.0/http/server.ts";
-export {
-  assertEquals,
-  assertExists,
-} from "https://deno.land/std@0.198.0/testing/asserts.ts";
