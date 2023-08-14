@@ -1,7 +1,7 @@
 const format = "jwk";
 export const keyType = "AES-GCM";
 export const keyUsages: KeyUsage[] = ["encrypt", "decrypt"];
-export const SALT = `o5cf9eb92`;
+export const SALT = crypto.randomUUID().replace(/-/g, "");
 export function reverseString(str: string) {
   return str.split("").reverse().join("").replace("}", "").replace("{", "");
 }
