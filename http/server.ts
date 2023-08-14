@@ -147,9 +147,9 @@ type Middleware = {
   handler: MiddlewareArgument;
 };
 
-export type Component = FunctionComponent | JSX.Element;
+export type Component = FunctionComponent | preact.JSX.Element;
 
-export type FunctionComponent = (props?: any) => JSX.Element;
+export type FunctionComponent = (props?: any) => preact.JSX.Element;
 type Page = {
   path: string;
   element: Component;
@@ -413,7 +413,7 @@ export default class HttpServer implements Fastro {
     }
     for (let index = 0; index < this.#pages.length; index++) {
       const page = this.#pages[index];
-      if (this.#isJSX(page.element as JSX.Element)) continue;
+      if (this.#isJSX(page.element as preact.JSX.Element)) continue;
       const c = page.element as FunctionComponent;
       this.#createHydrateFile(c.name);
       console.log(
@@ -969,7 +969,7 @@ fetch("/__INITIAL_DATA__")
     return req;
   }
 
-  #renderToString(element: JSX.Element, status?: number) {
+  #renderToString(element: preact.JSX.Element, status?: number) {
     const component = render(element);
     return new Response(component, {
       status,
@@ -989,7 +989,7 @@ fetch("/__INITIAL_DATA__")
     return r.render();
   }
 
-  #isJSX(res: JSX.Element) {
+  #isJSX(res: preact.JSX.Element) {
     return res && res.props != undefined && res.type != undefined;
   }
 
