@@ -2,6 +2,10 @@ export const keyType = "AES-GCM";
 export const keyUsages: KeyUsage[] = ["encrypt", "decrypt"];
 const format = "jwk";
 
+export function reverseString(str: string) {
+  return str.split("").reverse().join("");
+}
+
 export const keyPromise = crypto.subtle.generateKey(
   { name: keyType, length: 256 },
   true,
