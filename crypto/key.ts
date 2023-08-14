@@ -1,5 +1,4 @@
 const format = "jwk";
-
 export const keyType = "AES-GCM";
 export const keyUsages: KeyUsage[] = ["encrypt", "decrypt"];
 export const SALT = `o5cf9eb92`;
@@ -14,6 +13,9 @@ export function clean(v: string) {
 }
 export function closeMe(v: string) {
   return "{" + v + "}";
+}
+export function atobMe(r: string) {
+  return atob(r);
 }
 export function extractOriginalString(saltedString: string, salt: string) {
   if (saltedString.startsWith(salt) && saltedString.endsWith(salt)) {

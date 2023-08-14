@@ -274,13 +274,11 @@ es.onmessage = function(e) {
     let exportedKeyString = this.#server.record["exportedKeyString"] as string;
     exportedKeyString = clean(exportedKeyString);
     exportedKeyString = reverseString(exportedKeyString);
-    console.log(this.#server.record["salt"]);
     exportedKeyString = extractOriginalString(
       exportedKeyString,
       this.#server.record["salt"],
     ) as string;
-
-    exportedKeyString = closeMe(exportedKeyString);
+    exportedKeyString = atob(exportedKeyString);
     const importedKey = await importCryptoKey(
       exportedKeyString,
       keyType,

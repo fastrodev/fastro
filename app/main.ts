@@ -14,7 +14,7 @@ f.record["examples"] = await getExamples();
 f.use(m.middleware);
 
 f.use((req: HttpRequest, _ctx: Context, next: Next) => {
-  console.log(`%c${req.method} %c${req.url}`, "color: green", "color: white");
+  console.log(`%c${req.method} %c${req.url}`, "color: green", "color: blue");
   return next();
 });
 
@@ -73,7 +73,7 @@ f.onListen(({ port, hostname }) => {
   console.log(
     `%cListening on %chttp://${hostname}:${port}`,
     "color: green",
-    "color: white",
+    "color: blue",
   );
 });
 
