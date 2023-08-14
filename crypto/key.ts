@@ -16,6 +16,7 @@ export function closeMe(v: string) {
   return "{" + v + "}";
 }
 export function extractOriginalString(saltedString: string, salt: string) {
+  console.log("saltedString", saltedString);
   if (saltedString.startsWith(salt) && saltedString.endsWith(salt)) {
     const withoutSalt = saltedString.slice(salt.length, -salt.length);
     return withoutSalt;
