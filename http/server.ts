@@ -626,13 +626,17 @@ fetch("/__INITIAL_DATA__")
     });
 
     this.#pushHandler("GET", initPath, (req: HttpRequest) => {
-      const host = req.headers.get("host");
-      console.log(host);
-      console.log(req.headers);
+      const referer = req.headers.get("referer");
+      const host = req.headers.get("host") as string;
+      if (!referer || !referer?.includes(host)) {
+        return new Response(STATUS_TEXT[Status.NotFound], {
+          status: Status.NotFound,
+        });
+      }
 
       return Response.json({ data: req.record["exportedKeyString"] }, {
         headers: new Headers({
-          "Access-Control-Allow-Origin": `https://${host}` || "null",
+          "Access-Control-Allow-Origin": "null",
           "Access-Control-Allow-Methods": "GET",
           "Access-Control-Allow-Headers": "Content-Type",
         }),

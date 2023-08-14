@@ -238,7 +238,6 @@ es.onmessage = function(e) {
     await this.#handleComponent(c);
     const layout = this.#initHtml(this.#element, this.#options.props);
     let html = renderToString(layout);
-    // html = this.#setHTMLEnv(html);
     html = await this.#setInitialProps(html);
     return this.#nest[compID] = `<!DOCTYPE html>${html}`;
   };
@@ -251,7 +250,6 @@ es.onmessage = function(e) {
     compID = `default${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
     let html = renderToString(this.#initHtml(component));
-    // html = this.#setHTMLEnv(html);
     html = await this.#processHtml(html);
     return this.#nest[compID] = `<!DOCTYPE html>${html}`;
   };
@@ -262,13 +260,6 @@ es.onmessage = function(e) {
     this.#options.html?.body.script?.push({
       src: `${this.#staticPath}/${c.name.toLocaleLowerCase()}.js`,
     });
-  };
-
-  #setHTMLEnv = (l: string) => {
-    const env = Deno.run === undefined
-      ? ""
-      : `<script>window.__ENV__ = "DEVELOPMENT"</script>`;
-    return l.replace(`<script type="env"></script>`, env);
   };
 
   #setInitialProps = async (layout: string) => {
@@ -283,14 +274,11 @@ es.onmessage = function(e) {
 
     const plaintext = JSON.stringify(this.#options.props);
     const encryptedData = await encryptData(importedKey, plaintext);
-    const env = Deno.run === undefined ? "" : `window.__ENV__ = "DEVELOPMENT"`;
+    const env = Deno.run === undefined ? "" : `window.__ENV__ = "DEVELOPMENT";`;
 
     let l = layout.replace(
       `<script></script>`,
-      `<script>
-      ${env}
-      window.__INITIAL_DATA__ = "${encryptedData}"
-      </script>`,
+      `<script>${env}window.__INITIAL_DATA__ = "${encryptedData}";</script>`,
     );
 
     return l;
