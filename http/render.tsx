@@ -277,7 +277,7 @@ es.onmessage = function(e) {
     exportedKeyString = reverseString(exportedKeyString);
     exportedKeyString = extractOriginalString(
       exportedKeyString,
-      SALT,
+      this.#server.record["salt"],
     ) as string;
 
     exportedKeyString = closeMe(exportedKeyString);

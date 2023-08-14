@@ -375,6 +375,7 @@ export default class HttpServer implements Fastro {
     exportedKeyString = reverseString(exportedKeyString);
     exportedKeyString = "{" + exportedKeyString + "}";
     this.record["exportedKeyString"] = exportedKeyString;
+    this.record["salt"] = SALT;
 
     const port = options?.port ?? this.#port;
     if (Deno.env.get("DENO_DEPLOYMENT_ID")) {
