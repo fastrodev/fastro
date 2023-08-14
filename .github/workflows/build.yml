@@ -2,7 +2,7 @@ name: build
 on:
   push:
      branches:
-      - main
+      - '*'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -42,21 +42,24 @@ jobs:
         with:
           crate: oha
           version: 0.6.0
+        if: ${{ github.ref != 'refs/heads/main' }}
 
       - name: Generate internal benchmarks
         run: deno task bench
+        if: ${{ github.ref != 'refs/heads/main' }}
 
       - name: Push changes
         uses: actions-js/push@v1
         with:
           github_token: '${{ secrets.GITHUB_TOKEN }}'
-          branch: main
+        if: ${{ github.ref != 'refs/heads/main' }}
           
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: fastro
           entrypoint: app/main.ts
+        if: ${{ github.ref != 'refs/heads/main' }}
 
 
       
