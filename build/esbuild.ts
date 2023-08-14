@@ -33,6 +33,8 @@ export class Esbuild {
         target: ["chrome99", "firefox99", "safari15"],
         format: "esm",
         jsxImportSource: "react",
+        jsxFactory: "h",
+        jsxFragment: "Fragment",
         absWorkingDir: cwd,
         bundle: true,
         treeShaking: true,

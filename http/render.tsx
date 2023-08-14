@@ -4,7 +4,8 @@ import rehypeSlug from "https://esm.sh/rehype-slug@5.1.0";
 import rehypeStringify from "https://esm.sh/rehype-stringify@9.0.3";
 import { unified } from "https://esm.sh/unified@10.1.2";
 import { Esbuild } from "../build/esbuild.ts";
-import { React, ReactDOMServer } from "./deps.ts";
+
+import { h, renderToString } from "./deps.ts";
 import {
   BUILD_ID,
   Component,
@@ -12,8 +13,10 @@ import {
   FunctionComponent,
   RenderOptions,
 } from "./server.ts";
+import { importCryptoKey } from "../crypto/key.ts";
+import { encryptData } from "../crypto/encrypt.ts";
 
-function isJSX(res: JSX.Element) {
+function isJSX(res: preact.JSX.Element) {
   return res && res.props != undefined && res.type != undefined;
 }
 
@@ -77,9 +80,9 @@ export class Render {
   };
 
   #initHtml = (element: Component, props?: any) => {
-    let el = isJSX(element as JSX.Element)
-      ? element as JSX.Element
-      : React.createElement(
+    let el = isJSX(element as preact.JSX.Element)
+      ? element as preact.JSX.Element
+      : h(
         element as FunctionComponent,
         this.#options.props,
       );
@@ -91,7 +94,9 @@ export class Render {
         style={this.#options.html?.style}
       >
         <head>
-          <title>{this.#options.html?.head?.title}</title>
+          {this.#options.html?.head?.title
+            ? <title>{this.#options.html?.head?.title}</title>
+            : ""}
           {this.#options.html?.head?.meta
             ? this.#options.html?.head?.meta.map((m) => (
               <meta
@@ -126,6 +131,22 @@ export class Render {
               />
             ))
             : ""}
+
+          {this.#options.html?.head?.headStyle
+            ? (
+              <style>
+                {this.#options.html?.head?.headStyle}
+              </style>
+            )
+            : ""}
+
+          {this.#options.html?.head?.headScript
+            ? (
+              <script>
+                {this.#options.html?.head?.headScript}
+              </script>
+            )
+            : ""}
         </head>
         <body
           className={this.#options.html?.body?.class}
@@ -135,10 +156,12 @@ export class Render {
             id="root"
             className={this.#options.html?.body?.root.class}
             style={this.#options.html?.body?.root.style}
+            data-color-mode="auto"
+            data-light-theme="light"
+            data-dark-theme="dark"
           >
             {el}
           </div>
-          <script type="env"></script>
           {props ? <script></script> : ""}
           {this.#options.html?.body?.script
             ? this.#options.html?.body?.script.map((s) => (
@@ -157,6 +180,9 @@ export class Render {
 
   #refreshJs = (refreshUrl: string, buildId: string) => {
     return `const es = new EventSource('${refreshUrl}');
+window.addEventListener("beforeunload", (event) => {
+  es.close();
+});
 es.onmessage = function(e) {
   if (e.data !== "${buildId}") {
     location.reload();
@@ -211,9 +237,10 @@ es.onmessage = function(e) {
 
     await this.#handleComponent(c);
     const layout = this.#initHtml(this.#element, this.#options.props);
-    let html = ReactDOMServer.renderToString(layout);
-    html = this.#setHTMLEnv(html);
-    return this.#nest[compID] = `<!DOCTYPE html>${this.#setInitialProps(html)}`;
+    let html = renderToString(layout);
+    // html = this.#setHTMLEnv(html);
+    html = await this.#setInitialProps(html);
+    return this.#nest[compID] = `<!DOCTYPE html>${html}`;
   };
 
   #handleJSXElement = async (
@@ -223,8 +250,8 @@ es.onmessage = function(e) {
   ) => {
     compID = `default${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
-    let html = ReactDOMServer.renderToString(this.#initHtml(component));
-    html = this.#setHTMLEnv(html);
+    let html = renderToString(this.#initHtml(component));
+    // html = this.#setHTMLEnv(html);
     html = await this.#processHtml(html);
     return this.#nest[compID] = `<!DOCTYPE html>${html}`;
   };
@@ -244,12 +271,26 @@ es.onmessage = function(e) {
     return l.replace(`<script type="env"></script>`, env);
   };
 
-  #setInitialProps = (layout: string) => {
+  #setInitialProps = async (layout: string) => {
+    const exportedKeyString = this.#server.record["exportedKeyString"];
+    const keyType = "AES-GCM";
+    const keyUsages: KeyUsage[] = ["encrypt", "decrypt"];
+    const importedKey = await importCryptoKey(
+      exportedKeyString,
+      keyType,
+      keyUsages,
+    );
+
+    const plaintext = JSON.stringify(this.#options.props);
+    const encryptedData = await encryptData(importedKey, plaintext);
+    const env = Deno.run === undefined ? "" : `window.__ENV__ = "DEVELOPMENT"`;
+
     let l = layout.replace(
       `<script></script>`,
-      `<script>window.__INITIAL_DATA__ = ${
-        JSON.stringify(this.#options.props)
-      }</script>`,
+      `<script>
+      ${env}
+      window.__INITIAL_DATA__ = "${encryptedData}"
+      </script>`,
     );
 
     return l;

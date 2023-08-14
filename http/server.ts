@@ -1,15 +1,18 @@
 // deno-lint-ignore-file
+// import { generateKeys } from "../crypto/key.ts";
+import { exportCryptoKey, keyPromise } from "../crypto/key.ts";
 import {
   ConnInfo,
   contentType,
   extname,
   Handler,
-  ReactDOMServer,
+  render,
   Server,
   Status,
   STATUS_TEXT,
   toHashString,
 } from "./deps.ts";
+
 import { Render } from "./render.tsx";
 
 type ServerHandler = Deno.ServeHandler | Handler;
@@ -69,26 +72,28 @@ export type RenderOptions = {
   cache?: boolean;
   pageFolder?: string;
   status?: number;
-  props?: unknown;
+  props?: any;
   development?: boolean;
   html?: {
     lang?: string;
     class?: string;
-    style?: React.CSSProperties;
+    style?: preact.JSX.CSSProperties;
     head?: {
       title?: string;
       descriptions?: string;
       meta?: Meta[];
       script?: Script[];
       link?: Link[];
+      headStyle?: string;
+      headScript?: string;
     };
     body?: {
       class?: string;
-      style?: React.CSSProperties;
+      style?: preact.JSX.CSSProperties;
       script?: Script[];
       root: {
         class?: string;
-        style?: React.CSSProperties;
+        style?: preact.JSX.CSSProperties;
       };
     };
   };
@@ -337,6 +342,7 @@ export default class HttpServer implements Fastro {
     this.#staticFolder = "";
     this.#maxAge = 0;
     this.#development = this.#getDevelopment();
+    this.#handleInit();
     if (this.#development) this.#handleDevelopment();
     const status = this.#development ? "Development" : "Production";
     console.log(
@@ -357,6 +363,9 @@ export default class HttpServer implements Fastro {
   };
 
   serve = async (options?: { port: number }) => {
+    const exportedKeyString = await exportCryptoKey(await keyPromise);
+    this.record["exportedKeyString"] = exportedKeyString;
+
     const port = options?.port ?? this.#port;
     if (Deno.env.get("DENO_DEPLOYMENT_ID")) {
       this.#server = new Server({
@@ -432,21 +441,41 @@ export default class HttpServer implements Fastro {
   };
 
   #createHydrate(comp: string) {
-    const [s] = Deno.args.filter((v) => v === "--development");
-    const dev = s === "--development" ? "?dev" : "";
-
-    return `import { hydrateRoot } from "https://esm.sh/react-dom@18.2.0/client${dev}";
-import React from "https://esm.sh/react@18.2.0${dev}";
+    return `import { h, hydrate } from "https://esm.sh/preact@10.16.0";
 import ${comp} from "../pages/${comp.toLowerCase()}.tsx";
+import { importCryptoKey, keyType, keyUsages } from "../crypto/key.ts";
+import { decryptData } from "../crypto/decrypt.ts";
 declare global {
   interface Window {
     // deno-lint-ignore no-explicit-any
     __INITIAL_DATA__: any;
   }
 }
-const props = window.__INITIAL_DATA__ || {};
-delete window.__INITIAL_DATA__;
-hydrateRoot(document.getElementById("root") as Element, <${comp} {...props} />);
+
+fetch("/__INITIAL_DATA__")
+  .then((response) => response.json())
+  .then((v) => {
+    importCryptoKey(
+      v.data,
+      keyType,
+      keyUsages,
+    ).then((importedKey) => {
+      decryptData(importedKey, window.__INITIAL_DATA__)
+        .then((v) => {
+          delete window.__INITIAL_DATA__;
+          // deno-lint-ignore no-explicit-any
+          const props = v as any;
+          const root = document.getElementById("root");
+          if (root) hydrate(h(${comp}, JSON.parse(props)), root);
+        }).catch((error) => {
+          console.error(error);
+        });
+    }).catch((error) => {
+      console.error(error);
+    });
+  }).catch((error) => {
+    console.error(error);
+  });
 `;
   }
 
@@ -587,6 +616,25 @@ hydrateRoot(document.getElementById("root") as Element, <${comp} {...props} />);
       });
     };
     this.#pushHandler("GET", refreshPath, refreshStream);
+  };
+
+  #handleInit = () => {
+    const initPath = `/__INITIAL_DATA__`;
+    this.#patterns[initPath] = new URLPattern({
+      pathname: initPath,
+    });
+
+    this.#pushHandler("GET", initPath, (req: HttpRequest) => {
+      const origin = req.headers.get("Origin");
+
+      return Response.json({ data: req.record["exportedKeyString"] }, {
+        headers: new Headers({
+          "Access-Control-Allow-Origin": origin || "null",
+          "Access-Control-Allow-Methods": "GET",
+          "Access-Control-Allow-Headers": "Content-Type",
+        }),
+      });
+    });
   };
 
   #handleError = (error: unknown) => {
@@ -922,7 +970,7 @@ hydrateRoot(document.getElementById("root") as Element, <${comp} {...props} />);
   }
 
   #renderToString(element: JSX.Element, status?: number) {
-    const component = ReactDOMServer.renderToString(element);
+    const component = render(element);
     return new Response(component, {
       status,
       headers: {

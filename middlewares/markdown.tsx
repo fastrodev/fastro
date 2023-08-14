@@ -1,4 +1,6 @@
-// deno-lint-ignore-file no-explicit-any
+import { CSS, render } from "https://deno.land/x/gfm@0.2.5/mod.ts";
+import { h } from "https://esm.sh/preact@10.16.0";
+
 import { getPublishDate } from "../app/function.ts";
 import DefaultFooter from "../components/footer.tsx";
 import DefaultHeader from "../components/header.tsx";
@@ -10,25 +12,8 @@ import {
   Next,
   RenderOptions,
 } from "../http/server.ts";
-import {
-  extract,
-  prism,
-  ReactMarkdown,
-  remark,
-  remarkGfm,
-  remarkToc,
-  SyntaxHighlighter,
-} from "./deps.ts";
 
-function getYearMonthDay(dateStr?: string) {
-  const date = dateStr ? new Date(dateStr) : new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-
-  const formattedDate = `${year}-${month}-${day}`;
-  return formattedDate;
-}
+import { extract, remark, remarkToc } from "./deps.ts";
 
 type Meta = {
   title?: string;
@@ -42,7 +27,7 @@ type Meta = {
 
 type Post = {
   meta?: Meta;
-  content: JSX.Element;
+  content: preact.JSX.Element;
 };
 
 export default class Instance {
@@ -128,11 +113,13 @@ export default class Instance {
             href: "/static/cover.css",
             rel: "stylesheet",
           }],
+          headStyle: CSS + "#root {background-color:red}",
         },
         body: {
           class: "d-flex h-100 text-bg-dark",
           root: {
-            class: "cover-container d-flex w-100 p-3 mx-auto flex-column",
+            class:
+              "cover-container d-flex w-100 p-3 mx-auto flex-column markdown-body",
           },
         },
       },
@@ -164,6 +151,7 @@ export default class Instance {
 
 class Markdown {
   #post: Record<string, Post>;
+  // deno-lint-ignore no-explicit-any
   #nest: Record<string, any>;
   #path: string;
   #header: FunctionComponent;
@@ -171,6 +159,7 @@ class Markdown {
   #folder: string | undefined;
 
   constructor(
+    // deno-lint-ignore no-explicit-any
     nest: Record<string, any>,
     req: Request,
     header: FunctionComponent,
@@ -231,6 +220,7 @@ class Markdown {
       const git = JSON.parse(await data.text());
       return git;
     } catch (error) {
+      // deno-lint-ignore no-explicit-any
       const git: any = {};
       git["name"] = "local";
       return git;
@@ -238,18 +228,12 @@ class Markdown {
   };
 
   #contentContainer = (
-    child: JSX.Element,
+    // deno-lint-ignore no-explicit-any
+    child: any,
     meta: Meta,
     props: string,
     path?: string,
   ) => {
-    const date = meta.date ? new Date(meta.date as string) : undefined;
-    const formattedDate = date
-      ? date.toLocaleString("en-US", {
-        dateStyle: "medium",
-      })
-      : undefined;
-
     const Header = this.#header;
     const Footer = this.#footer;
 
@@ -263,34 +247,6 @@ class Markdown {
           </div>
           <hr />
           {child}
-          {meta.next || meta.prev
-            ? (
-              <div style={{ marginTop: 30 }}>
-                <hr />
-                <div className="row">
-                  <div className="col-sm text-start">
-                    {meta.prev
-                      ? (
-                        <a href={meta.prev}>
-                          Previous
-                        </a>
-                      )
-                      : ""}
-                  </div>
-                  <div className="col-sm text-end">
-                    {meta.next
-                      ? (
-                        <a href={meta.next}>
-                          Next
-                        </a>
-                      )
-                      : ""}
-                  </div>
-                </div>
-                <hr />
-              </div>
-            )
-            : ""}
         </main>
         <Footer version={props} />
       </>
@@ -298,29 +254,16 @@ class Markdown {
   };
 
   #markdownToHtml(content: string) {
-    return (
-      <ReactMarkdown
-        components={{
-          code({ node, inline, className, children, ...props }: any) {
-            const match = /language-(\w+)/.exec(className || "");
-            return !inline && match
-              ? (
-                <SyntaxHighlighter
-                  {...props}
-                  children={String(children).replace(/\n$/, "")}
-                  style={prism["dracula"]}
-                  language={match[1]}
-                  PreTag="div"
-                />
-              )
-              : <code {...props} className={className}>{children}</code>;
-          },
-        }}
-        remarkPlugins={[remarkGfm]}
-      >
-        {content}
-      </ReactMarkdown>
-    );
+    const jsxElement = h("div", {
+      dangerouslySetInnerHTML: {
+        // TODO Sanitize
+        __html: render(content, {
+          allowIframes: true,
+          allowMath: true,
+        }),
+      },
+    });
+    return jsxElement;
   }
 
   getPost = async () => {

@@ -1,4 +1,5 @@
-import React, { useState } from "https://esm.sh/react@18.2.0?dev";
+import { useState } from "https://esm.sh/preact@10.16.0/hooks";
+import { h } from "https://esm.sh/preact@10.16.0";
 
 export default function UUID(props: { data: string }) {
   const [data, setD] = useState({
