@@ -1,4 +1,5 @@
-import React from "https://esm.sh/react@18.2.0";
+import { useState } from "https://esm.sh/preact@10.16.0/hooks";
+import { h } from "https://esm.sh/preact@10.16.0";
 import Footer from "../components/footer.tsx";
 import Header from "../components/header.tsx";
 

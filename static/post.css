@@ -74,3 +74,12 @@ blockquote {
   padding: 1em 10px 0.1em 20px;
   quotes: "\201C" "\201D" "\2018" "\2019";
 }
+
+.markdown-body>header>h3 {
+  font-size: calc(1.3rem + .6vw);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--bs-heading-color, inherit);
+}

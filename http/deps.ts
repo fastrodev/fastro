@@ -1,16 +1,8 @@
-const dev = Deno.env.get("DENO_DEPLOYMENT_ID") === undefined;
-
-const ReactDOMServer = dev
-  ? await import("https://esm.sh/react-dom@18.2.0/server?dev")
-  : await import("https://esm.sh/react-dom@18.2.0/server");
-
-const React = dev
-  ? await import("https://esm.sh/react@18.2.0?dev")
-  : await import("https://esm.sh/react@18.2.0");
-
-const h = React.createElement;
-
-export { h, React, ReactDOMServer };
+export { h } from "https://esm.sh/preact@10.16.0";
+export { default as render } from "https://esm.sh/preact-render-to-string@6.2.1";
+export {
+  default as renderToString,
+} from "https://esm.sh/preact-render-to-string@6.2.1";
 
 export { toHashString } from "https://deno.land/std@0.198.0/crypto/to_hash_string.ts";
 export {
