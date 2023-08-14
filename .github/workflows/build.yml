@@ -46,8 +46,7 @@ jobs:
 
       - name: Generate internal benchmarks
         run: deno task bench
-        with:
-          branch: main
+        if: ${{ github.ref != 'refs/heads/main' }}
 
       - name: Push changes
         uses: actions-js/push@v1
