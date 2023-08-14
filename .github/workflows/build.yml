@@ -42,9 +42,11 @@ jobs:
         with:
           crate: oha
           version: 0.6.0
+          branch: main
 
       - name: Generate internal benchmarks
         run: deno task bench
+        branch: main
 
       - name: Push changes
         uses: actions-js/push@v1
@@ -57,6 +59,7 @@ jobs:
         with:
           project: fastro
           entrypoint: app/main.ts
+          branch: main
 
 
       
