@@ -2,7 +2,7 @@ const format = "jwk";
 
 export const keyType = "AES-GCM";
 export const keyUsages: KeyUsage[] = ["encrypt", "decrypt"];
-export const SALT = `o${crypto.randomUUID().replace(/-/g, "").slice(24)}`;
+export const SALT = `o5cf9eb92`;
 export function reverseString(str: string) {
   return str.split("").reverse().join("").replace("}", "").replace("{", "");
 }
@@ -16,7 +16,6 @@ export function closeMe(v: string) {
   return "{" + v + "}";
 }
 export function extractOriginalString(saltedString: string, salt: string) {
-  console.log("saltedString", saltedString);
   if (saltedString.startsWith(salt) && saltedString.endsWith(salt)) {
     const withoutSalt = saltedString.slice(salt.length, -salt.length);
     return withoutSalt;
