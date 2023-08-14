@@ -21,7 +21,6 @@ import {
   keyType,
   keyUsages,
   reverseString,
-  SALT,
 } from "../crypto/key.ts";
 import { encryptData } from "../crypto/encrypt.ts";
 
@@ -275,6 +274,7 @@ es.onmessage = function(e) {
     let exportedKeyString = this.#server.record["exportedKeyString"] as string;
     exportedKeyString = clean(exportedKeyString);
     exportedKeyString = reverseString(exportedKeyString);
+    console.log(this.#server.record["salt"]);
     exportedKeyString = extractOriginalString(
       exportedKeyString,
       this.#server.record["salt"],

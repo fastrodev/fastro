@@ -477,6 +477,7 @@ fetch("/__INITIAL_DATA__")
     // deno-lint-ignore no-explicit-any
     let r = clean(v.data) as any
     r = reverseString(r);
+    console.log("${salt}")
     r = extractOriginalString(r, "${salt}")
     r = closeMe(r);
     importCryptoKey(
