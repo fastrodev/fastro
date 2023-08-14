@@ -363,7 +363,8 @@ export default class HttpServer implements Fastro {
   };
 
   serve = async (options?: { port: number }) => {
-    const exportedKeyString = await exportCryptoKey(await keyPromise);
+    const key = await keyPromise;
+    const exportedKeyString = await exportCryptoKey(key);
     this.record["exportedKeyString"] = exportedKeyString;
 
     const port = options?.port ?? this.#port;
@@ -625,7 +626,9 @@ fetch("/__INITIAL_DATA__")
     });
 
     this.#pushHandler("GET", initPath, (req: HttpRequest) => {
-      const origin = req.headers.get("Origin");
+      const origin = req.headers.get("host");
+      console.log(origin);
+      console.log(req.headers);
 
       return Response.json({ data: req.record["exportedKeyString"] }, {
         headers: new Headers({
