@@ -1,4 +1,4 @@
-import { version } from "https://raw.githubusercontent.com/fastrodev/fastro/main/http/version.ts";
+export const version = "v0.79.1";
 
 const init = async (name?: string, ver?: string) => {
   try {
