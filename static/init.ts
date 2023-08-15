@@ -1,4 +1,4 @@
-import { version } from "../http/version.ts";
+import { version } from "https://raw.githubusercontent.com/fastrodev/fastro/main/http/version.ts";
 
 const init = async (name?: string, ver?: string) => {
   try {
