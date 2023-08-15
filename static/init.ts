@@ -1,5 +1,4 @@
-const version = "v0.79.0";
-export { version };
+import { version } from "../http/version.ts";
 
 const init = async (name?: string, ver?: string) => {
   try {
