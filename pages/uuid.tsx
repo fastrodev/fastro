@@ -12,11 +12,11 @@ export default function UUID(props: { data: string }) {
   };
 
   return (
-    <>
+    <div>
       <h1>Hello {props.data}</h1>
       <button onClick={handleClick}>
         Click me to get the fresh UUID from API: {data.uuid}
       </button>
-    </>
+    </div>
   );
 }

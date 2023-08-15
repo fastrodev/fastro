@@ -1,9 +1,7 @@
-export const version = "v0.79.1";
-
 const init = async (name?: string, ver?: string) => {
   try {
     const projectName = name ?? "my-project";
-    const v = ver ?? version;
+    const v = ver;
     // vscode
     await Deno.mkdir(".vscode");
     await Deno.writeTextFile(
@@ -11,28 +9,24 @@ const init = async (name?: string, ver?: string) => {
       `{
   "deno.enable": true,
   "deno.lint": true,
-  "deno.unstable": true,
+  "deno.importMap": "./.vscode/import_map.json",
   "deno.codeLens.test": true,
+  "editor.formatOnSave": true,
   "editor.defaultFormatter": "denoland.vscode-deno",
-  "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-    }
-  },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "denoland.vscode-deno",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-    }
+    "editor.defaultFormatter": "denoland.vscode-deno"
   },
-  "[yaml]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "[typescript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
   },
-  "[html]": {
-    "editor.defaultFormatter": "vscode.html-language-features"
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
   }
 }`,
     );
@@ -198,25 +192,23 @@ export default function App(props: { data: string }) {
   };
 
   return (
-    <>
-      <main className="d-flex flex-column justify-content-center align-items-center h-100">
-        <h1>Hello {props.data}</h1>
-        <p className="fw-light">
-          Click the button below to get the new UUID from the server
-        </p>
-        <div className="d-flex p-2 bd-highlight">
-          <button
-            onClick={handleClick}
-            className="me-1 p-3 btn btn-light fw-semibold bg-white align-middle"
-          >
-            GET
-          </button>
-          <div className="p-3 bg-black border border-light rounded fw-light align-middle">
-            {data.uuid}
-          </div>
+    <main className="d-flex flex-column justify-content-center align-items-center h-100">
+      <h1>Hello {props.data}</h1>
+      <p className="fw-light">
+        Click the button below to get the new UUID from the server
+      </p>
+      <div className="d-flex p-2 bd-highlight">
+        <button
+          onClick={handleClick}
+          className="me-1 p-3 btn btn-light fw-semibold bg-white align-middle"
+        >
+          GET
+        </button>
+        <div className="p-3 bg-black border border-light rounded fw-light align-middle">
+          {data.uuid}
         </div>
-      </main>
-    </>
+      </div>
+    </main>
   );
 }
 

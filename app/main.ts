@@ -3,6 +3,7 @@ import markdown from "../middlewares/markdown.tsx";
 import app from "../pages/app.tsx";
 import Example from "../pages/example.tsx";
 import index from "../pages/index.tsx";
+import uuid from "../pages/uuid.tsx";
 import { denoRunCheck, getExamples, getVersion, init } from "./function.ts";
 import { html } from "./layout.ts";
 
@@ -34,6 +35,15 @@ Allow: /
 f.static("/static", { folder: "static" });
 
 f.page("/app", app, (_req: HttpRequest, ctx: Context) => {
+  return ctx.render({
+    build: true,
+    cache: false,
+    props: { data: "Guest" },
+    html: { head: { title: "Preact component" } },
+  });
+});
+
+f.page("/uuid", uuid, (_req: HttpRequest, ctx: Context) => {
   return ctx.render({
     build: true,
     cache: false,

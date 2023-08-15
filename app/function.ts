@@ -1,4 +1,5 @@
 import { HttpRequest } from "../http/server.ts";
+import { version } from "../http/version.ts";
 
 export function getPublishDate(dateStr?: string) {
   const currentDate = dateStr ? new Date(dateStr) : new Date();
@@ -37,10 +38,10 @@ export function denoRunCheck(req: HttpRequest) {
 
 export function init() {
   const basePath = Deno.env.get("DENO_DEPLOYMENT_ID")
-    ? `https://raw.githubusercontent.com/fastrodev/fastro/main/static`
+    ? `https://deno.land/x/fastro@${version}/static/init.ts`
     : "http://localhost:8000/static";
   const code =
-    `import init, { version } from "${basePath}/init.ts"; const name = Deno.args[0] ?? 'my-project'; await init(name, version);`;
+    `import init from "${basePath}/init.ts"; const name = Deno.args[0] ?? 'my-project'; await init(name, "${version}");`;
   return new Response(code, {
     headers: {
       "content-type": "application/typescript; charset=utf-8",
