@@ -38,7 +38,7 @@ export function denoRunCheck(req: HttpRequest) {
 
 export function init() {
   const basePath = Deno.env.get("DENO_DEPLOYMENT_ID")
-    ? `https://deno.land/x/fastro@${version}/static/init.ts`
+    ? `https://deno.land/x/fastro@${version}/static`
     : "http://localhost:8000/static";
   const code =
     `import init from "${basePath}/init.ts"; const name = Deno.args[0] ?? 'my-project'; await init(name, "${version}");`;
