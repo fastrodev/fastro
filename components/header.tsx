@@ -2,8 +2,8 @@ export default function (props: { path: string }) {
   return (
     <header className="mb-auto text-center">
       <h3 className="float-md-start mb-0">Fastro</h3>
-      <div className="nav-scroller justify-content-center">
-        <nav className="nav nav-masthead float-md-end overflow-x-auto">
+      <div className="nav-scroller justify-content-end">
+        <nav className="nav nav-masthead justify-content-center justify-content-md-end">
           <a
             className={`${
               props.path === "home" ? "active" : ""
