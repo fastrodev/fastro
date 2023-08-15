@@ -62,7 +62,7 @@ table {
   height: auto;
 }
 
-pre>div {
+pre {
   border-style: solid;
   border-color: var(--bs-border-width);
   border-width: 1px;
