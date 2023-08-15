@@ -9,7 +9,6 @@ const init = async (name?: string, ver?: string) => {
       `{
   "deno.enable": true,
   "deno.lint": true,
-  "deno.importMap": "./.vscode/import_map.json",
   "deno.codeLens.test": true,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "denoland.vscode-deno",
