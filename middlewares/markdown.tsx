@@ -1,6 +1,14 @@
 import { CSS, render } from "https://deno.land/x/gfm@0.2.5/mod.ts";
 import { h } from "https://esm.sh/preact@10.16.0";
 
+import "https://esm.sh/prismjs@1.29.0/components/prism-jsx?no-check&pin=v57";
+import "https://esm.sh/prismjs@1.29.0/components/prism-typescript?no-check&pin=v57";
+import "https://esm.sh/prismjs@1.29.0/components/prism-tsx?no-check&pin=v57";
+import "https://esm.sh/prismjs@1.29.0/components/prism-bash?no-check&pin=v57";
+import "https://esm.sh/prismjs@1.29.0/components/prism-powershell?no-check&pin=v57";
+import "https://esm.sh/prismjs@1.29.0/components/prism-json?no-check&pin=v57";
+import "https://esm.sh/prismjs@1.29.0/components/prism-diff?no-check&pin=v57";
+
 import { getPublishDate } from "../app/function.ts";
 import DefaultFooter from "../components/footer.tsx";
 import DefaultHeader from "../components/header.tsx";
@@ -99,23 +107,42 @@ export default class Instance {
               content: md.meta?.title,
             },
           ],
-          link: [{
-            href:
-              "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css",
-            rel: "stylesheet",
-            integrity:
-              "sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD",
-            crossorigin: "anonymous",
-          }, {
-            href: "/static/post.css",
-            rel: "stylesheet",
-          }, {
-            href: "/static/cover.css",
-            rel: "stylesheet",
-          }],
+          link: [
+            {
+              href:
+                "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css",
+              rel: "stylesheet",
+              integrity:
+                "sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD",
+              crossorigin: "anonymous",
+            },
+            {
+              href:
+                "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css",
+              rel: "stylesheet",
+            },
+            {
+              href: "/static/post.css",
+              rel: "stylesheet",
+            },
+            {
+              href: "/static/cover.css",
+              rel: "stylesheet",
+            },
+          ],
           headStyle: CSS + "#root {background-color:red}",
         },
         body: {
+          script: [
+            {
+              src:
+                "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js",
+            },
+            {
+              src:
+                "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js",
+            },
+          ],
           class: "d-flex h-100 text-bg-dark",
           root: {
             class:

@@ -8,8 +8,9 @@ image: https://fastro.dev/static/image.png
 
 ## Your first end point
 
-Make sure you have Deno installed. See [the deno manual](https://deno.land/manual/getting_started/installation) for details.
-
+Make sure you have Deno installed. See
+[the deno manual](https://deno.land/manual/getting_started/installation) for
+details.
 
 Create a folder for your project and enter to it.
 
@@ -35,18 +36,25 @@ Run the app
 deno run -A main.ts
 ```
 
-> You can change the method with: `f.post`, `f.put`, `f.delete`, `f.options`, and `f.head`.  
-> 
-> You can also return handlers of several types: `JSON`, `Array`, `Number`, `Boolean`, `Response` and `JSX` (Server Side Rendering).
-> 
+> You can change the method with: `f.post`, `f.put`, `f.delete`, `f.options`,
+> and `f.head`.
+>
+> You can also return handlers of several types: `JSON`, `Array`, `Number`,
+> `Boolean`, `Response` and `preact.JSX` (Server Side Rendering).
+>
 > You can find more cases on [the examples page](/examples).
 
 ## Deno standard handler signature
 
-Fastro use [Deno standard library](https://deno.land/std), so you can also add [`Request`](https://deno.com/deploy/docs/runtime-request) and [ConnInfo](https://deno.land/std/http/mod.ts?s=ConnInfo) params for the handler. 
+Fastro use [Deno standard library](https://deno.land/std), so you can also add
+[`Request`](https://deno.com/deploy/docs/runtime-request) and
+[ConnInfo](https://deno.land/std/http/mod.ts?s=ConnInfo) params for the handler.
 
 ```ts
-type Handler = (request: Request, connInfo: ConnInfo) => Response | Promise<Response>
+type Handler = (
+  request: Request,
+  connInfo: ConnInfo,
+) => Response | Promise<Response>;
 ```
 
 This code is used to get client IP address:
@@ -66,7 +74,6 @@ f.get("/", (_req: Request, info: ConnInfo) => {
 });
 
 await f.serve();
-
 ```
 
 ## Fastro handler signature
@@ -74,19 +81,25 @@ await f.serve();
 Fastro extends `Request` and `ConnInfo` to add functionality.
 
 ```ts
-type RequestHandler = (request: HttpRequest, ctx: Context) => Response | Promise<Response>
+type RequestHandler = (
+  request: HttpRequest,
+  ctx: Context,
+) => Response | Promise<Response>;
 ```
 
-- `Request` become [`HttpRequest`](https://deno.land/x/fastro/mod.ts?s=HttpRequest).
+- `Request` become
+  [`HttpRequest`](https://deno.land/x/fastro/mod.ts?s=HttpRequest).
 - `ConnInfo` become [`Context`](https://deno.land/x/fastro/mod.ts?s=Context).
-
 
 ## Text response
 
 This code will send response `Hello world` text with the http status.
 
 ```ts
-import fastro, { Context, HttpRequest } from "https://deno.land/x/fastro/mod.ts";
+import fastro, {
+  Context,
+  HttpRequest,
+} from "https://deno.land/x/fastro/mod.ts";
 
 const f = new fastro();
 
@@ -98,16 +111,18 @@ f.get(
 );
 
 await f.serve();
-
 ```
 
-> You can also send several types of document: `JSON`, `Array`, `Number`, `Boolean`, and `JSX` (Server Side Rendering).
-> 
+> You can also send several types of document: `JSON`, `Array`, `Number`,
+> `Boolean`, and `preact.JSX` (Server Side Rendering).
+>
 > You can find more cases on [the examples page](/examples).
 
 ## URL params and query
 
-This code will get url params and query from url `http://localhost:8000/agus?title=lead` and then send JSON response with http status.
+This code will get url params and query from url
+`http://localhost:8000/agus?title=lead` and then send JSON response with http
+status.
 
 ```ts
 import fastro, { HttpRequest } from "https://deno.land/x/fastro/mod.ts";
@@ -120,18 +135,23 @@ f.get("/:user", (req: HttpRequest, ctx: Context) => {
 });
 
 await f.serve();
-
 ```
 
 ## Middleware
 
-You can access `HttpRequest` and `Context` and process them before the handler you define.
+You can access `HttpRequest` and `Context` and process them before the handler
+you define.
 
 ```ts
-type MiddlewareArgument = (request: HttpRequest, ctx: Context, next: Next) => Promise<unknown> | unknown
+type MiddlewareArgument = (
+  request: HttpRequest,
+  ctx: Context,
+  next: Next,
+) => Promise<unknown> | unknown;
 ```
 
 There are two types middleware:
+
 - App level middleware
 - Route level middleware
 
@@ -139,7 +159,8 @@ There are two types middleware:
 
 This type of middleware will run on all routes.
 
-The code below will: 
+The code below will:
+
 - return `You are not authorized` text if the url is `/admin`.
 - go to the `next` handler (return `Hello world`)
 
@@ -211,7 +232,7 @@ f.get(
     // middleware implementation
     return next();
   },
-   // route middleware #3
+  // route middleware #3
   (_req: HttpRequest, _ctx: Context, next: Next) => {
     // middleware implementation
     return next();
@@ -235,10 +256,12 @@ Fastro.static(path: string, options?: {
 ```
 
 It has two arguments:
+
 - `path`: `string`
 - `options`: `{ maxAge?: number; folder?: string; }`
 
-This code will serve static files from a `static` folder with `maxAge: 90` and a complete url for a png image: `https://localhost:8000/static/image.png`
+This code will serve static files from a `static` folder with `maxAge: 90` and a
+complete url for a png image: `https://localhost:8000/static/image.png`
 
 ```ts
 import fastro from "https://deno.land/x/fastro/mod.ts";
@@ -248,20 +271,22 @@ const f = new fastro();
 f.static("/static", { folder: "static", maxAge: 90 });
 
 await f.serve();
-
 ```
 
 ## Markdown
 
-You can render `markdown` files using [middleware](https://deno.land/x/fastro/middlewares/markdown.tsx).
+You can render `markdown` files using
+[middleware](https://deno.land/x/fastro/middlewares/markdown.tsx).
 
 The constructor has optional `options` consisting of:
+
 - `header`: `FunctionComponent`.
 - `footer`: `FunctionComponent`.
 - `folder`: `string`.
 - `options`: `RenderOptions`.
 
-Just put your markdown to your child of your root project, and access them without file extension.
+Just put your markdown to your child of your root project, and access them
+without file extension.
 
 ```ts
 import fastro from "https://deno.land/x/fastro/mod.ts";
@@ -274,7 +299,6 @@ f.use(m.middleware);
 f.static("/static", { folder: "static", maxAge: 90 });
 
 await f.serve();
-
 ```
 
 ## Server Side Rendering
@@ -286,14 +310,18 @@ Fastro.page(path: string, element: Component, ...handler: Array<MiddlewareArgume
 ```
 
 It has 3 arguments:
+
 - `path`: `string`
-- `Component`: `JSX.Element` or `FunctionComponent`
+- `Component`: `preact.JSX.Element` or `FunctionComponent`
 - `Handler`: `MiddlewareArgument`
 
 This is the simple SSR entry-point:
 
 ```ts
-import fastro, { Context, HttpRequest } from "https://deno.land/x/fastro/mod.ts";
+import fastro, {
+  Context,
+  HttpRequest,
+} from "https://deno.land/x/fastro/mod.ts";
 import user from "../pages/user.tsx";
 
 const f = new fastro();
@@ -302,53 +330,53 @@ f.static("/static", { folder: "static", maxAge: 90 });
 f.page(
   // path
   "/",
-  // react component
+  // preact component
   user,
   // handler
   (_req: HttpRequest, ctx: Context) => {
     const options = {
       props: { data: "Guest" },
       status: 200,
-      html: { head: { title: "React Component" } },
+      html: { head: { title: "Preact Component" } },
     };
     return ctx.render(options);
   },
 );
 
 await f.serve();
-
 ```
 
 For app pages, these are the rules:
 
-> If you use `JSX.Element`, server will only render the element into HTML with no JS file. 
+> If you use `preact.JSX.Element`, server will only render the element into HTML
+> with no JS file.
 >
-> If you use `FunctionComponent`, server will create hydration file and render `FunctionComponent` as HTML together with bundled file from build process.
+> If you use `FunctionComponent`, server will create hydration file and render
+> `FunctionComponent` as HTML together with bundled file from build process.
 
-This is the `user.tsx` page that return `FunctionComponent` with props. So you can pass a dynamic value to it. 
+This is the `user.tsx` page that return `FunctionComponent` with props. So you
+can pass a dynamic value to it.
 
-Look at the simple SSR deno-cli entry point above. There is `props` field in the `ctx.render` options.
+Look at the simple SSR deno-cli entry point above. There is `props` field in the
+`ctx.render` options.
 
 ```tsx
-import React from "https://esm.sh/react@18.2.0";
+import { h } from "https://esm.sh/preact@10.16.0";
 
-const User = (props: { data: string }) => (
-  <h1>Hello {props.data}</h1>
-);
+const User = (props: { data: string }) => <h1>Hello {props.data}</h1>;
 
 export default User;
-
 ```
 
-This is the `user.tsx` page that return `JSX.Element` with no props. So you can not pass anything.
+This is the `user.tsx` page that return `preact.JSX.Element` with no props. So
+you can not pass anything.
 
 ```tsx
-import React from "https://esm.sh/react@18.2.0?dev";
+import { h } from "https://esm.sh/preact@10.16.0";
 
 const User = <h1>Hello Guest</h1>;
 
 export default User;
-
 ```
 
 You can also add route middleware to `f.page` before actual handler.
@@ -364,7 +392,7 @@ f.page(
     // middleware implementation
     return next();
   },
-   // middleware #2
+  // middleware #2
   (_req: HttpRequest, _ctx: Context, next: Next) => {
     // middleware implementation
     return next();
@@ -379,7 +407,6 @@ f.page(
     return ctx.render(options);
   },
 );
-
 ```
 
 ## Route grouping
@@ -397,7 +424,6 @@ type ModuleFunction = (f: Fastro) => Fastro;
 ```
 
 This code groups the `productModule` and `userModule` routes.
-
 
 ```ts
 import fastro, { Fastro } from "https://deno.land/x/fastro/mod.ts";
@@ -429,7 +455,6 @@ f.register(userModule);
 f.register(productModule);
 
 await f.serve();
-
 ```
 
 ## Default SSR template
@@ -440,8 +465,8 @@ To generate default SSR app folders and files, execute this command:
 deno run -A -r https://fastro.deno.dev
 ```
 
-> Please note, the `-A` argument allows deno to access all permissions, and `-r` argument is to reload source code cache (recompile TypeScript).
-
+> Please note, the `-A` argument allows deno to access all permissions, and `-r`
+> argument is to reload source code cache (recompile TypeScript).
 
 You will see several scripts:
 
@@ -468,28 +493,30 @@ You will see several scripts:
 6 directories, 11 files
 ```
 
-|File|Use for|
-|--|--|
-|`main.ts`| Deno cli entry point. This is the first script executed when you run `deno task start` |
-|`uuid/mod.tsx`| UUID module function. This is the API for UUID feature. Create a new folder and a module function file if you want to add a new feature |
-|`pages/mod.tsx`| Page module function. This is the module for all SSR pages |
-|`pages/app.tsx`| Application page. This is the initial react SSR for your app |
-|`pages/layout.ts`| App layout. Defines initial data, meta, css, class, and script|
-|`app.css`| CSS file. Describes how HTML elements should be displayed. See: [CSS tutorial](https://www.w3schools.com/css/)|
-|`deno.json`| App configuration. See: [deno config](https://deno.land/manual/getting_started/configuration_file) |
-|`settings.json`| User and Workspace Settings for VSCode. See: [vs-code settings](https://code.visualstudio.com/docs/getstarted/settings)|
-|`build.yml`| Automate, customize, and execute your software development workflows right in your repository. See [Github action](https://docs.github.com/en/actions) |
-|`.gitignore`| Specifies intentionally untracked files that Git should ignore. See: [gitignore](https://git-scm.com/docs/gitignore) |
-|`readme.md`| Step by step instructions |
+| File              | Use for                                                                                                                                                |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `main.ts`         | Deno cli entry point. This is the first script executed when you run `deno task start`                                                                 |
+| `uuid/mod.tsx`    | UUID module function. This is the API for UUID feature. Create a new folder and a module function file if you want to add a new feature                |
+| `pages/mod.tsx`   | Page module function. This is the module for all SSR pages                                                                                             |
+| `pages/app.tsx`   | Application page. This is the initial react SSR for your app                                                                                           |
+| `pages/layout.ts` | App layout. Defines initial data, meta, css, class, and script                                                                                         |
+| `app.css`         | CSS file. Describes how HTML elements should be displayed. See: [CSS tutorial](https://www.w3schools.com/css/)                                         |
+| `deno.json`       | App configuration. See: [deno config](https://deno.land/manual/getting_started/configuration_file)                                                     |
+| `settings.json`   | User and Workspace Settings for VSCode. See: [vs-code settings](https://code.visualstudio.com/docs/getstarted/settings)                                |
+| `build.yml`       | Automate, customize, and execute your software development workflows right in your repository. See [Github action](https://docs.github.com/en/actions) |
+| `.gitignore`      | Specifies intentionally untracked files that Git should ignore. See: [gitignore](https://git-scm.com/docs/gitignore)                                   |
+| `readme.md`       | Step by step instructions                                                                                                                              |
 
 To run locally, execute this command:
+
 ```zsh
 deno task start
 ```
 
 ## Environment
 
-The default environment is `production`. But if you want to run with `DEVELOPMENT` environment, execute `deno` command with `--development`.
+The default environment is `production`. But if you want to run with
+`DEVELOPMENT` environment, execute `deno` command with `--development`.
 
 ```zsh
 deno run -A --watch main.ts --development
@@ -505,4 +532,5 @@ You can deploy to production using [deno deploy](https://deno.com/deploy).
 - Create [a deno deploy project](https://dash.deno.com/new).
 - Link the project to the `main.ts` file.
 
-And `your-project` will be deployed to a public `your-project`.deno.dev subdomain.
+And `your-project` will be deployed to a public `your-project`.deno.dev
+subdomain.

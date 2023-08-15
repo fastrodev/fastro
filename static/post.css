@@ -82,3 +82,8 @@ blockquote {
   line-height: 1.2;
   color: var(--bs-heading-color, inherit);
 }
+
+.token.operator {
+  color: #fff;
+  background: transparent;
+}
