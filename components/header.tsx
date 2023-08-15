@@ -1,19 +1,16 @@
 export default function (props: { path: string }) {
   return (
     <header className="mb-auto text-center">
-      <h3 className="float-md-start mb-0">Fastro</h3>
+      <h3 className="float-md-start mb-0 fs-3 ">
+        <a href="/" style={{ textDecoration: "none", color: "#fff" }}>
+          <i className="fw-bold">Fastro</i>{" "}
+          <i className="fw-lighter">
+            Framework
+          </i>
+        </a>
+      </h3>
       <div className="nav-scroller justify-content-end">
         <nav className="nav nav-masthead justify-content-center justify-content-md-end">
-          <a
-            className={`${
-              props.path === "home" ? "active" : ""
-            } nav-link fw-bold py-1 px-0 `}
-            aria-current="page"
-            href="/"
-          >
-            Home
-          </a>
-
           <a
             className={`${
               props.path === "benchmarks" ? "active" : ""
@@ -37,6 +34,15 @@ export default function (props: { path: string }) {
             href="/manual"
           >
             Manual
+          </a>
+          <a
+            className={`${
+              props.path === "blog" ? "active" : ""
+            } nav-link fw-bold py-1 px-0 `}
+            aria-current="page"
+            href="#"
+          >
+            Blog
           </a>
           <a
             className="nav-link py-1 px-0"

@@ -112,12 +112,9 @@ jobs:
       "deno.json",
       `{
   "lock": false,
-  "imports": {
-    "react/": "https://esm.sh/react@18.2.0/"
-  },
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "react",
+    "jsxImportSource": "https://esm.sh/preact@10.16.0/",
     "lib": [
       "dom",
       "dom.iterable",
@@ -188,9 +185,8 @@ It will reload your browser automatically if changes occur.
     await Deno.mkdir("pages");
     await Deno.writeTextFile(
       "pages/app.tsx",
-      `// uncomment this line if you want to deploy to production (deno deploy)
-// import React, { useState } from "https://esm.sh/react@18.2.0"
-import React, { useState } from "https://esm.sh/react@18.2.0?dev";
+      `import { useState } from "https://esm.sh/preact@10.16.0/hooks";
+import { h } from "https://esm.sh/preact@10.16.0";
 
 export default function App(props: { data: string }) {
   const [data, setD] = useState({

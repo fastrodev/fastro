@@ -75,8 +75,7 @@ blockquote {
   quotes: "\201C" "\201D" "\2018" "\2019";
 }
 
-.markdown-body>header>h3 {
-  font-size: calc(1.3rem + .6vw);
+.markdown-body header h3 {
   margin-top: 0;
   margin-bottom: 0.5rem;
   font-weight: 500;
