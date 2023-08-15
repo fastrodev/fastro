@@ -3,10 +3,10 @@ export default function (props: { path: string }) {
     <header className="mb-auto text-center">
       <h3 className="float-md-start mb-0 fs-3 ">
         <a href="/" style={{ textDecoration: "none", color: "#fff" }}>
-          <i className="fw-bold">Fastro</i>{" "}
-          <i className="fw-lighter">
+          <span className="fw-bold">Fastro</span>{" "}
+          <span className="fw-lighter">
             Framework
-          </i>
+          </span>
         </a>
       </h3>
       <div className="nav-scroller justify-content-end">
