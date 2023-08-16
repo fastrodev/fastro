@@ -1,6 +1,6 @@
 ---
-title: "Fastro v0.79.3: Preact and Encrypted Props"
-description: Fastro v0.79.3 uses preact and encryption for its props
+title: "Fastro v0.80.0: Preact and Server Side Props Encryption"
+description: Fastro v0.80.0 uses preact and encryption for its props
 image: https://fastro.dev/static/image.png
 author: Fastro
 date: 16/08/2023
@@ -39,9 +39,19 @@ The result makes me very happy.
 
 With JSX which is almost similar to React, all the errors above are gone.
 
-And one more thing, the minimal bundle file is only 6kB!
+And one more thing, the minimal bundle file is only 6.5kB!
 
 > In React, bundle files in production are at least 40 kB. The size will
 > increase if there are additional modules.
 
 ![](/static/preact_result.png)
+
+## Server Side Props Encryption
+
+This version also adds server-side props encryption for JSX using
+[Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API).
+
+This feature makes sensitive data sent from servers difficult to see from the
+browser.
+
+![](/static/preact_encrypt.png)
