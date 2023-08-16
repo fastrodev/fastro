@@ -34,27 +34,6 @@ p>code {
   color: #e6edf3;
 }
 
-table,
-tr,
-td,
-th {
-  border: 1px solid #555;
-}
-
-table th,
-table td {
-  padding: 6px 13px;
-}
-
-table {
-  display: block;
-  width: 100%;
-  width: max-content;
-  max-width: 100%;
-  overflow: auto;
-  margin-bottom: 20px;
-}
-
 .markdown img {
   margin-left: auto;
   margin-right: auto;
@@ -68,19 +47,16 @@ pre {
   border-width: 1px;
 }
 
-
-blockquote {
-  border-left: 10px solid #818080;
-  padding: 1em 10px 0.1em 20px;
-  quotes: "\201C" "\201D" "\2018" "\2019";
-}
-
 .markdown-body header h3 {
   margin-top: 0;
   margin-bottom: 0.5rem;
   font-weight: 500;
   line-height: 1.2;
   color: var(--bs-heading-color, inherit);
+}
+
+.markdown-body .markdown>div>h1 {
+  margin-top: 20px;
 }
 
 .token.operator {

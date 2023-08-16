@@ -1,7 +1,6 @@
 import { RenderOptions } from "../http/server.ts";
-import { getPublishDate } from "./function.ts";
 
-const html = (
+const createHTML = (
   props: unknown,
   title: string,
   description: string,
@@ -11,7 +10,7 @@ const html = (
     html: {
       class: "h-100",
       head: {
-        title: `${title} | Fastro`,
+        title: `${title} | Fastro Framework`,
         descriptions: description,
         meta: [
           { charset: "utf-8" },
@@ -26,11 +25,6 @@ const html = (
           {
             name: "author",
             content: "Fastro Software",
-          },
-          {
-            name: "publish_date",
-            property: "og:publish_date",
-            content: getPublishDate(),
           },
           {
             property: "og:image",
@@ -60,4 +54,4 @@ const html = (
   };
 };
 
-export { html };
+export { createHTML };

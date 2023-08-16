@@ -1,3 +1,5 @@
+import { h } from "https://esm.sh/preact@10.16.0";
+
 export default function (props: { path: string }) {
   return (
     <header className="mb-auto text-center">

@@ -1,4 +1,4 @@
-import React from "https://esm.sh/react@18.2.0?dev";
+import { h } from "https://esm.sh/preact@10.16.0";
 
 export default function (props: { version: string }) {
   return (
