@@ -43,12 +43,14 @@ export default class Instance {
   #footer: FunctionComponent;
   #options: RenderOptions | undefined;
   #folder: string | undefined;
+  #prefix: string | undefined;
 
   constructor(
     options?: {
       header?: FunctionComponent;
       footer?: FunctionComponent;
       folder?: string;
+      prefix?: string;
       options?: RenderOptions;
     },
   ) {
@@ -56,6 +58,7 @@ export default class Instance {
     this.#header = opts?.header ?? DefaultHeader;
     this.#footer = opts?.footer ?? DefaultFooter;
     this.#folder = opts?.folder ?? "posts";
+    this.#prefix = opts?.prefix ?? "";
     this.#options = opts?.options;
   }
 
@@ -65,7 +68,7 @@ export default class Instance {
       html: {
         lang: "en",
         head: {
-          title: `${md.meta?.title} | Fastro`,
+          title: `${md.meta?.title} | Fastro Framework`,
           descriptions: md.meta?.description,
           meta: [
             { charset: "utf-8" },
@@ -146,7 +149,7 @@ export default class Instance {
           class: "d-flex h-100 text-bg-dark",
           root: {
             class:
-              "cover-container d-flex w-100 p-3 mx-auto flex-column markdown-body",
+              "cover-container d-flex w-100 h-100 p-3 mx-auto flex-column markdown-body",
           },
         },
       },
@@ -160,7 +163,7 @@ export default class Instance {
       this.#header,
       this.#footer,
       this.#folder,
-    ).getPost() as Post;
+    ).getPost(this.#prefix) as Post;
 
     if (md) {
       const opt = this.#options ?? this.#getDefaultOptions(md);
@@ -201,12 +204,12 @@ class Markdown {
     this.#folder = folder ?? "posts";
   }
 
-  #readFile = async (path: string) => {
-    const pathname = `/*`;
-    const nestID = `markdown${pathname}${path}`;
+  #readFile = async (path: string, prefix?: string) => {
+    const rootPathname = prefix ? `/${prefix}/*` : `/*`;
+    const nestID = `markdown${rootPathname}${path}`;
     if (this.#nest[nestID]) return this.#nest[nestID];
 
-    const pattern = new URLPattern({ pathname });
+    const pattern = new URLPattern({ pathname: rootPathname });
     const match = pattern.exec(path);
     if (!match) return this.#nest[nestID] = null;
 
@@ -265,10 +268,10 @@ class Markdown {
     const Footer = this.#footer;
 
     return (
-      <>
+      <div className="d-flex flex-column h-100">
         <Header path={path} />
-        <main className="markdown" style={{ marginBottom: 20, marginTop: 20 }}>
-          <div className="text-center">
+        <main className="markdown flex-grow-1" style={{ marginBottom: 20 }}>
+          <div className="text-start">
             <h1 className="display-5 fw-bold">{meta.title}</h1>
             <p className="text-white-50 h5">{meta.description}</p>
           </div>
@@ -276,7 +279,7 @@ class Markdown {
           {child}
         </main>
         <Footer version={props} />
-      </>
+      </div>
     );
   };
 
@@ -293,10 +296,10 @@ class Markdown {
     return jsxElement;
   }
 
-  getPost = async () => {
+  getPost = async (prefix?: string) => {
     const nestID = `markdown${this.#path}`;
     if (this.#nest[nestID]) return this.#nest[nestID];
-    const res = await this.#readFile(this.#path);
+    const res = await this.#readFile(this.#path, prefix);
     return this.#nest[nestID] = res;
   };
 }

@@ -1,18 +1,30 @@
+import { h } from "https://esm.sh/preact@10.16.0";
 import fastro, { Context, HttpRequest, Next } from "../http/server.ts";
 import markdown from "../middlewares/markdown.tsx";
 import app from "../pages/app.tsx";
+import blog from "../pages/blog.tsx";
 import Example from "../pages/example.tsx";
 import index from "../pages/index.tsx";
 import uuid from "../pages/uuid.tsx";
-import { denoRunCheck, getExamples, getVersion, init } from "./function.ts";
-import { html } from "./layout.ts";
+import {
+  denoRunCheck,
+  getExamples,
+  getPosts,
+  getVersion,
+  init,
+} from "./function.ts";
+import { createHTML } from "./layout.ts";
 
 const title = "The Web Framework for Full Stack Apps";
 const description = "Handle SSR and thousands of RPS with a minimalistic API";
 const f = new fastro();
 const m = new markdown({ folder: "docs" });
-f.record["examples"] = await getExamples();
+const b = new markdown({ folder: "posts", prefix: "blog" });
 f.use(m.middleware);
+f.use(b.middleware);
+
+f.record["examples"] = await getExamples();
+f.record["posts"] = await getPosts();
 
 f.use((req: HttpRequest, _ctx: Context, next: Next) => {
   console.log(`%c${req.method} %c${req.url}`, "color: green", "color: blue");
@@ -53,13 +65,36 @@ f.page("/uuid", uuid, (_req: HttpRequest, ctx: Context) => {
 });
 
 f.page(
+  "/blog/:post([a-zA-Z0-9]+)?",
+  blog,
+  async (req: HttpRequest, ctx: Context) => {
+    const git = await getVersion();
+    const post = req.params?.post;
+    const opt = createHTML(
+      {
+        version: git["name"],
+        path: "blog",
+        title: "Blog",
+        description: "Blog",
+        post: post,
+        posts: req.record["posts"],
+      },
+      "Blog",
+      "Blog of Fastro Framework",
+    );
+
+    return ctx.render(opt);
+  },
+);
+
+f.page(
   "/",
   index,
   async (req: HttpRequest, ctx: Context) => {
     const res = denoRunCheck(req);
     if (res) return init();
     const git = await getVersion();
-    const opt = html(
+    const opt = createHTML(
       { version: git["name"], path: "home", title, description },
       title,
       description,
@@ -71,7 +106,7 @@ f.page(
 f.page("/examples", Example, async (req: HttpRequest, ctx: Context) => {
   const examples = req.record["examples"];
   const git = await getVersion();
-  const options = html(
+  const options = createHTML(
     { version: git["name"], path: "examples", title, description, examples },
     title,
     description,

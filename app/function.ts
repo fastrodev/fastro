@@ -1,5 +1,6 @@
 import { HttpRequest } from "../http/server.ts";
 import { version } from "../http/version.ts";
+import { extract } from "https://deno.land/std@0.196.0/front_matter/any.ts";
 
 export function getPublishDate(dateStr?: string) {
   const currentDate = dateStr ? new Date(dateStr) : new Date();
@@ -71,4 +72,31 @@ export async function getExamples() {
     examples.push({ name: name.split("_").join(" "), ext, file: f.name });
   }
   return examples;
+}
+
+async function readContent(filePath: string) {
+  try {
+    const md = `./posts/${filePath}`;
+    const txt = await Deno.readTextFile(md);
+    const m = extract(txt);
+    return m.attrs;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getPosts() {
+  const p = [];
+  for await (const f of Deno.readDir("./posts")) {
+    const [name] = f.name.split(".");
+    const r = await readContent(f.name);
+    if (!r) continue;
+    p.push({
+      title: r.title,
+      description: r.description,
+      date: r.date,
+      path: `/blog/${name}`,
+    });
+  }
+  return p;
 }
