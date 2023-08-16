@@ -21,7 +21,7 @@ annoying issues in development and production mode.
 In development mode: when I put my cursor to an input and leave from the input,
 it always produce error like this.
 
-![](/static//react_input_error.png)
+![](/static/react_input_error.png)
 
 In production mode: `useContext` and `useState` always produce errors like this.
 
