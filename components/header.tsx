@@ -42,7 +42,7 @@ export default function (props: { path: string }) {
               props.path === "blog" ? "active" : ""
             } nav-link fw-bold py-1 px-0 `}
             aria-current="page"
-            href="#"
+            href="/blog"
           >
             Blog
           </a>

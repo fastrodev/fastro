@@ -227,11 +227,13 @@ class Markdown {
       const markdownHtml = this.#markdownToHtml(String(file));
 
       const git = await this.#getVersion();
+      // const path = prefix ? prefix : filePath
+      const p = prefix ? prefix : filePath;
       const content = this.#contentContainer(
         markdownHtml,
         m.attrs,
         git["name"],
-        filePath,
+        p,
       );
       return this.#post[path] = {
         meta: m.attrs,
@@ -266,6 +268,7 @@ class Markdown {
   ) => {
     const Header = this.#header;
     const Footer = this.#footer;
+    console.log("path", path);
 
     return (
       <div className="d-flex flex-column h-100">
