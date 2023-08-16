@@ -1,6 +1,6 @@
 ---
 title: "Fastro v0.80.0: Preact and Server Side Props Encryption"
-description: Fastro v0.80.0 uses preact and encryption for its props
+description: Fastro v0.80.0 uses preact and server side encryption for its props
 image: https://fastro.dev/static/image.png
 author: Fastro
 date: 16/08/2023
