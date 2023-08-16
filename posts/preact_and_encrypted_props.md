@@ -18,7 +18,7 @@ and directly generate HTML syntax to the browser without waiting.
 Until the time I started building a fullstack apps, there were some really
 annoying issues in development and production mode.
 
-In development mode: when I put my cursor to an input and leave from the cursor,
+In development mode: when I put my cursor to an input and leave from the input,
 it always produce error like this.
 
 ![](/static//react_input_error.png)

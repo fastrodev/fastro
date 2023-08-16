@@ -32,7 +32,7 @@ export default function Blog(
                       {post.date}
                     </div>
                     <div className="d-flex flex-column">
-                      <h3 className="fw-boold">{post.title}</h3>
+                      <h3 className="fw-bold">{post.title}</h3>
                       <div className="fw-light text-white-50">
                         {post.description}
                       </div>
