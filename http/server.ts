@@ -12,7 +12,7 @@ import {
   contentType,
   extname,
   Handler,
-  render,
+  renderToString,
   Server,
   Status,
   STATUS_TEXT,
@@ -967,7 +967,7 @@ import { h, hydrate } from "https://esm.sh/preact@10.16.0";import ${comp} from "
   }
 
   #renderToString(element: preact.JSX.Element, status?: number) {
-    const component = render(element);
+    const component = renderToString(element);
     return new Response(component, {
       status,
       headers: {
