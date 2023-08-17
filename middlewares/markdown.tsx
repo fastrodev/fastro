@@ -276,7 +276,7 @@ class Markdown {
         <main className="markdown flex-grow-1" style={{ marginBottom: 20 }}>
           <div className="text-start">
             <h1 className="display-5 fw-bold">{meta.title}</h1>
-            <p className="text-white-50 h5">{meta.description}</p>
+            <p className="text-white-50 h5 fw-light">{meta.description}</p>
           </div>
           <hr />
           {child}

@@ -26,7 +26,7 @@ f.record["posts"] = await getPosts();
 
 f.use((req: HttpRequest, ctx: Context, next: Next) => {
   const data = {
-    remoteAddr: JSON.stringify(ctx.info.remoteAddr),
+    remoteAddr: ctx.info.remoteAddr,
     userAgent: req.headers.get("user-agent"),
     host: req.headers.get("host"),
     ua: req.headers.get("sec-ch-ua"),
@@ -35,7 +35,7 @@ f.use((req: HttpRequest, ctx: Context, next: Next) => {
     url: req.url,
     method: req.method,
   };
-  console.info(data);
+  console.info(JSON.stringify(data));
   return next();
 });
 
