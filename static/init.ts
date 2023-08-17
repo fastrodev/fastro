@@ -222,7 +222,7 @@ export default function (
   props: { data: string; title: string; description: string },
 ): RenderOptions {
   return {
-    props: { data: props.data },
+    props,
     cache: false,
     html: {
       class: "h-100",

@@ -8,6 +8,7 @@ const createHTML = (
   return {
     props,
     html: {
+      lang: "EN",
       class: "h-100",
       head: {
         title: `${title} | Fastro Framework`,
