@@ -1,11 +1,9 @@
-import { h } from "https://esm.sh/preact@10.16.0";
 import fastro, { Context, HttpRequest, Next } from "../http/server.ts";
 import markdown from "../middlewares/markdown.tsx";
 import app from "../pages/app.tsx";
 import blog from "../pages/blog.tsx";
 import Example from "../pages/example.tsx";
 import index from "../pages/index.tsx";
-import uuid from "../pages/uuid.tsx";
 import {
   denoRunCheck,
   getExamples,
