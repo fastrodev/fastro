@@ -39,6 +39,7 @@ p>code {
   margin-right: auto;
   width: 100%;
   height: auto;
+  size: "(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 800px";
 }
 
 pre {
