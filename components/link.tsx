@@ -25,8 +25,8 @@ export function LinkHeader(
   return (
     <a
       className={`${
-        props.path === props.activePath ? "active" : ""
-      } nav-link fw-bold py-1 px-0`}
+        props.path === props.activePath ? "active text-white" : ""
+      } nav-link fw-bold py-1 px-0 text-decoration-none`}
       href={props.link}
     >
       {props.children}
