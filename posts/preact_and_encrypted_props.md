@@ -1,6 +1,6 @@
 ---
 title: "Fastro v0.80.0: Preact and Server Side Props Encryption"
-description: "Elevating Security and Performance with Preact and Server Side Props Encryption. Explore the latest release of Fastro, where advanced Preact integration and robust encryption of Server Side Props enhance both the security and performance aspects of your web applications"
+description: "Explore the latest release of Fastro, where advanced Preact integration and robust encryption of Server Side Props enhance both the security and performance aspects of your web applications"
 image: https://fastro.dev/static/image.png
 author: Fastro
 date: Aug 16th, 2023 1:54 PM
@@ -30,7 +30,7 @@ In production mode: `useContext` and `useState` always produce errors like this.
 I've been looking for a solution, but haven't found satisfactory answers yet.
 Existing solutions are usually related to Node.js and Next.js.
 
-## Try Preact
+## First try with Preact
 
 Instead of waiting for a long time, I finally tried another alternative:
 `Preact`.

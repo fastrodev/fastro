@@ -130,11 +130,17 @@ body {
   z-index: 1500;
 }
 
+.markdown-body a,
 a {
   color: #fff;
   text-decoration: none;
 }
 
+.markdown-body a:hover,
 a:hover {
   color: #2f81f7;
+}
+
+li a:hover {
+  text-decoration: underline;
 }
