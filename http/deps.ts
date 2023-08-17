@@ -1,4 +1,6 @@
 export { h } from "https://esm.sh/preact@10.16.0";
+export type { JSX } from "https://esm.sh/preact@10.16.0";
+
 export {
   default as renderToString,
 } from "https://esm.sh/preact-render-to-string@6.2.1?deps=preact@10.16.0";

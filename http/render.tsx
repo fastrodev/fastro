@@ -4,6 +4,7 @@ import rehypeSlug from "https://esm.sh/rehype-slug@5.1.0";
 import rehypeStringify from "https://esm.sh/rehype-stringify@9.0.3";
 import { unified } from "https://esm.sh/unified@10.1.2";
 import { Esbuild } from "../build/esbuild.ts";
+import { JSX } from "./deps.ts";
 
 import { h, renderToString, Status, STATUS_TEXT } from "./deps.ts";
 import {
@@ -15,7 +16,6 @@ import {
 } from "./server.ts";
 import {
   clean,
-  closeMe,
   extractOriginalString,
   importCryptoKey,
   keyType,
@@ -24,7 +24,7 @@ import {
 } from "../crypto/key.ts";
 import { encryptData } from "../crypto/encrypt.ts";
 
-function isJSX(res: preact.JSX.Element) {
+function isJSX(res: JSX.Element) {
   return res && res.props != undefined && res.type != undefined;
 }
 
@@ -88,12 +88,10 @@ export class Render {
   };
 
   #initHtml = (element: Component, props?: any) => {
-    let el = isJSX(element as preact.JSX.Element)
-      ? element as preact.JSX.Element
-      : h(
-        element as FunctionComponent,
-        this.#options.props,
-      );
+    let el = isJSX(element as JSX.Element) ? element as JSX.Element : h(
+      element as FunctionComponent,
+      this.#options.props,
+    );
 
     return (
       <html
@@ -247,7 +245,7 @@ es.onmessage = function(e) {
   #renderToString = async (component: Component, cached?: boolean) => {
     let compID = "";
     this.#handleDevelopment();
-    if (isJSX(component as preact.JSX.Element)) {
+    if (isJSX(component as JSX.Element)) {
       return this.#handleJSXElement(compID, component, cached);
     }
 
