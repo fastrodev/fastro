@@ -4,7 +4,7 @@ import { LinkHeader } from "./link.tsx";
 export default function (props: { path: string }) {
   return (
     <header className="mb-auto text-center">
-      <h3 className="float-md-start mb-0 fs-3 ">
+      <h3 className="float-md-start mb-2 fs-3 ">
         <a href="/" style={{ textDecoration: "none", color: "#fff" }}>
           <span className="fw-bold">Fastro</span>{" "}
           <span className="fw-lighter">
@@ -13,7 +13,7 @@ export default function (props: { path: string }) {
         </a>
       </h3>
       <div className="nav-scroller justify-content-end">
-        <nav className="nav nav-masthead justify-content-center justify-content-md-end">
+        <nav className="nav nav-masthead justify-content-evenly justify-content-md-end">
           <LinkHeader activePath="manual" link="/manual" path={props.path}>
             Manual
           </LinkHeader>
