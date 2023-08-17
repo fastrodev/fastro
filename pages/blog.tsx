@@ -28,7 +28,10 @@ export default function Blog(
               return (
                 <a href={post.path} className="text-white pb-3">
                   <div className="d-flex">
-                    <div className="fw-light text-white-50 me-3">
+                    <div
+                      className="fw-light text-white-50 me-3"
+                      style={{ minWidth: 110 }}
+                    >
                       {post.date}
                     </div>
                     <div className="d-flex flex-column">
@@ -44,7 +47,7 @@ export default function Blog(
             : ""}
         </div>
       </main>
-      <Footer version={props.version} />
+      <Footer version={props.version} path="" />
     </div>
   );
 }

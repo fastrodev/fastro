@@ -40,7 +40,7 @@ deno run -A main.ts
 > and `f.head`.
 >
 > You can also return handlers of several types: `JSON`, `Array`, `Number`,
-> `Boolean`, `Response` and `preact.JSX` (Server Side Rendering).
+> `Boolean`, `Response` and `JSX` (Server Side Rendering).
 >
 > You can find more cases on [the examples page](/examples).
 
@@ -114,7 +114,7 @@ await f.serve();
 ```
 
 > You can also send several types of document: `JSON`, `Array`, `Number`,
-> `Boolean`, and `preact.JSX` (Server Side Rendering).
+> `Boolean`, and `JSX` (Server Side Rendering).
 >
 > You can find more cases on [the examples page](/examples).
 
@@ -312,7 +312,7 @@ Fastro.page(path: string, element: Component, ...handler: Array<MiddlewareArgume
 It has 3 arguments:
 
 - `path`: `string`
-- `Component`: `preact.JSX.Element` or `FunctionComponent`
+- `Component`: `JSX.Element` or `FunctionComponent`
 - `Handler`: `MiddlewareArgument`
 
 This is the simple SSR entry-point:
@@ -348,8 +348,8 @@ await f.serve();
 
 For app pages, these are the rules:
 
-> If you use `preact.JSX.Element`, server will only render the element into HTML
-> with no JS file.
+> If you use `JSX.Element`, server will only render the element into HTML with
+> no JS file.
 >
 > If you use `FunctionComponent`, server will create hydration file and render
 > `FunctionComponent` as HTML together with bundled file from build process.
@@ -368,8 +368,8 @@ const User = (props: { data: string }) => <h1>Hello {props.data}</h1>;
 export default User;
 ```
 
-This is the `user.tsx` page that return `preact.JSX.Element` with no props. So
-you can not pass anything.
+This is the `user.tsx` page that return `JSX.Element` with no props. So you can
+not pass anything.
 
 ```tsx
 import { h } from "https://esm.sh/preact@10.16.0";
