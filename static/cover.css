@@ -136,8 +136,7 @@ a {
   text-decoration: none;
 }
 
-.markdown-body a:hover,
-a:hover {
+.markdown-body .markdown a:hover {
   color: #2f81f7;
 }
 
