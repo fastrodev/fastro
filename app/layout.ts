@@ -41,8 +41,11 @@ const createHTML = (
           crossorigin: "anonymous",
         }, {
           href: "/static/cover.css",
-          rel: "stylesheet",
+          rel: "preload",
+          as: "style",
+          onload: `this.onload=null;this.rel='stylesheet'`,
         }],
+        noScriptLink: { href: "/static/cover.css", rel: "stylesheet" },
         script: [],
       },
       body: {

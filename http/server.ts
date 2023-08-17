@@ -67,10 +67,17 @@ type Script = {
 
 type Link = {
   href?: string;
+  as?: string;
+  onload?: any;
   rel?: string;
   integrity?: string;
   media?: string;
   crossorigin?: "anonymous" | "use-credentials" | "" | undefined;
+};
+
+type NoScriptLink = {
+  rel?: string;
+  href?: string;
 };
 
 type ModuleFunction = (f: Fastro) => Fastro;
@@ -94,6 +101,7 @@ export type RenderOptions = {
       link?: Link[];
       headStyle?: string;
       headScript?: string;
+      noScriptLink?: NoScriptLink;
     };
     body?: {
       class?: string;

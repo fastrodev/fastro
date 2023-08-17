@@ -120,11 +120,33 @@ export class Render {
                 href={l.href}
                 integrity={l.integrity}
                 rel={l.rel}
+                as={l.as}
+                onLoad={l.onload}
                 media={l.media}
                 crossOrigin={l.crossorigin}
               >
               </link>
             ))
+            : ""}
+
+          {this.#options.html?.head?.noScriptLink
+            ? (
+              <noscript>
+                <link
+                  rel={this.#options.html?.head?.noScriptLink.rel}
+                  href={this.#options.html?.head?.noScriptLink.href}
+                >
+                </link>
+              </noscript>
+            )
+            : ""}
+
+          {this.#options.html?.head?.headStyle
+            ? (
+              <style>
+                {this.#options.html?.head?.headStyle}
+              </style>
+            )
             : ""}
           {this.#options.html?.head?.script
             ? this.#options.html?.head?.script.map((s) => (
@@ -136,14 +158,6 @@ export class Render {
                 integrity={s.integrity}
               />
             ))
-            : ""}
-
-          {this.#options.html?.head?.headStyle
-            ? (
-              <style>
-                {this.#options.html?.head?.headStyle}
-              </style>
-            )
             : ""}
 
           {this.#options.html?.head?.headScript
