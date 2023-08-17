@@ -24,8 +24,18 @@ f.use(b.middleware);
 f.record["examples"] = await getExamples();
 f.record["posts"] = await getPosts();
 
-f.use((req: HttpRequest, _ctx: Context, next: Next) => {
-  console.log(req);
+f.use((req: HttpRequest, ctx: Context, next: Next) => {
+  const data = {
+    remoteAddr: JSON.stringify(ctx.info.remoteAddr),
+    userAgent: req.headers.get("user-agent"),
+    host: req.headers.get("host"),
+    ua: req.headers.get("sec-ch-ua"),
+    uaPlatform: req.headers.get("sec-ch-ua-platform"),
+    fetchSite: req.headers.get("sec-fetch-site"),
+    url: req.url,
+    method: req.method,
+  };
+  console.info(data);
   return next();
 });
 
