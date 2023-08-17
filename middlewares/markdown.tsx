@@ -148,8 +148,8 @@ export default class Instance {
           ],
           class: "d-flex h-100 text-bg-dark",
           root: {
-            class:
-              "cover-container d-flex w-100 h-100 p-3 mx-auto flex-column markdown-body",
+            class: "d-flex w-100 h-100 p-3 mx-auto flex-column markdown-body",
+            style: { maxWidth: "42em" },
           },
         },
       },
