@@ -1,21 +1,18 @@
 import { h } from "https://esm.sh/preact@10.16.0";
+import { LinkFooter } from "./link.tsx";
 
-export default function (props: { version: string }) {
+export default function (props: { version: string; path: string }) {
   return (
-    <footer className="mt-auto text-center fw-lighter text-white-50">
-      {
-        /* <nav className="nav nav-mastfoot justify-content-center">
-      </nav> */
-      }
-      <span className="fw-lighter">
-        Made with{"  "}
-        <a
-          href="https://deno.land/x/fastro"
-          className="fw-lighter text-decoration-none text-white "
-        >
-          Fastro {props.version}
-        </a>
-      </span>
+    <footer className="mt-auto">
+      <nav className="nav nav-mastfoot justify-content-center">
+        <LinkFooter link="/benchmarks">Benchmarks</LinkFooter>
+        <LinkFooter link="https://github.com/fastrodev/fastro">
+          Github
+        </LinkFooter>
+        <LinkFooter link="https://deno.land/x/fastro">
+          Fastro{"  "}{props.version}
+        </LinkFooter>
+      </nav>
     </footer>
   );
 }
