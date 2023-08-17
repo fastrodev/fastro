@@ -1,5 +1,5 @@
 import { CSS, render } from "https://deno.land/x/gfm@0.2.5/mod.ts";
-import { h } from "https://esm.sh/preact@10.16.0";
+import { h, JSX } from "https://esm.sh/preact@10.16.0";
 
 import "https://esm.sh/prismjs@1.29.0/components/prism-jsx?no-check&pin=v57";
 import "https://esm.sh/prismjs@1.29.0/components/prism-typescript?no-check&pin=v57";
@@ -35,7 +35,7 @@ type Meta = {
 
 type Post = {
   meta?: Meta;
-  content: preact.JSX.Element;
+  content: JSX.Element;
 };
 
 export default class Instance {
