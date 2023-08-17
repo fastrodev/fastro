@@ -27,7 +27,7 @@ f.record["examples"] = await getExamples();
 f.record["posts"] = await getPosts();
 
 f.use((req: HttpRequest, _ctx: Context, next: Next) => {
-  console.log(`%c${req.method} %c${req.url}`, "color: green", "color: blue");
+  console.log(req);
   return next();
 });
 
@@ -47,15 +47,6 @@ Allow: /
 f.static("/static", { folder: "static" });
 
 f.page("/app", app, (_req: HttpRequest, ctx: Context) => {
-  return ctx.render({
-    build: true,
-    cache: false,
-    props: { data: "Guest" },
-    html: { head: { title: "Preact component" } },
-  });
-});
-
-f.page("/uuid", uuid, (_req: HttpRequest, ctx: Context) => {
   return ctx.render({
     build: true,
     cache: false,
