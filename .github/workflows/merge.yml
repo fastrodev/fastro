@@ -1,8 +1,8 @@
 name: merge
 on:
   pull_request:
-    types:
-      - synchronize
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
