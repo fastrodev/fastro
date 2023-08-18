@@ -1,5 +1,11 @@
+// deno-lint-ignore-file no-explicit-any
 import { CSS, render } from "https://deno.land/x/gfm@0.2.5/mod.ts";
 import { h, JSX } from "https://esm.sh/preact@10.16.0";
+
+import rehypeParse from "https://esm.sh/rehype-parse@8.0.4";
+import rehypeSlug from "https://esm.sh/rehype-slug@5.1.0";
+import rehypeStringify from "https://esm.sh/rehype-stringify@9.0.3";
+import { unified } from "https://esm.sh/unified@10.1.2";
 
 import "https://esm.sh/prismjs@1.29.0/components/prism-jsx?no-check&pin=v57";
 import "https://esm.sh/prismjs@1.29.0/components/prism-typescript?no-check&pin=v57";
@@ -181,7 +187,6 @@ export default class Instance {
 
 class Markdown {
   #post: Record<string, Post>;
-  // deno-lint-ignore no-explicit-any
   #nest: Record<string, any>;
   #path: string;
   #header: FunctionComponent;
@@ -189,7 +194,6 @@ class Markdown {
   #folder: string | undefined;
 
   constructor(
-    // deno-lint-ignore no-explicit-any
     nest: Record<string, any>,
     req: Request,
     header: FunctionComponent,
@@ -252,7 +256,6 @@ class Markdown {
       const git = JSON.parse(await data.text());
       return git;
     } catch (error) {
-      // deno-lint-ignore no-explicit-any
       const git: any = {};
       git["name"] = "local";
       return git;
@@ -260,7 +263,6 @@ class Markdown {
   };
 
   #contentContainer = (
-    // deno-lint-ignore no-explicit-any
     child: any,
     meta: Meta,
     props: string,
@@ -268,7 +270,6 @@ class Markdown {
   ) => {
     const Header = this.#header;
     const Footer = this.#footer;
-    console.log("path", path);
 
     return (
       <div className="d-flex flex-column h-100">

@@ -1,8 +1,11 @@
 ---
 title: "Manual"
-description: This is documentation on how to use, build, and deploy the app.
+description: Your essential guide to mastering web frameworks - from fundamentals to advanced techniques. Unlock the full potential of web development.
 image: https://fastro.dev/static/image.png
 ---
+
+This is documentation on how to use, build, and deploy the app. Let's start from
+the very beginning. Don't worry, it's very easy.
 
 ## Table of contents
 
@@ -12,10 +15,16 @@ Make sure you have Deno installed. See
 [the deno manual](https://deno.land/manual/getting_started/installation) for
 details.
 
-Create a folder for your project and enter to it.
+Create a folder for your project.
 
-```zsh
-mkdir my-project && cd my-project
+```
+mkdir my-project
+```
+
+And enter to it.
+
+```
+cd my-project
 ```
 
 Create a `main.ts` file for deno-cli entry point.
