@@ -13,7 +13,7 @@ export default function (props: { path: string }) {
         </a>
       </h3>
       <div className="nav-scroller justify-content-end">
-        <nav className="nav nav-masthead justify-content-evenly justify-content-md-end">
+        <nav className="nav nav-masthead justify-content-center justify-content-md-end">
           <LinkHeader activePath="manual" link="/manual" path={props.path}>
             Manual
           </LinkHeader>

@@ -26,10 +26,10 @@ const Index = (
         </div>
 
         <div className="text-center mb-3">
-          <h1 className="d-sm-block display-5 fw-bold">
+          <h1 className="d-sm-block fs-2 fw-bold">
             {props.title}
           </h1>
-          <p className="lead text-white-50">
+          <p className="fs-5 fw-light text-white-50">
             {props.description}
           </p>
           <div className="d-none d-sm-flex p-2 bd-highlight justify-content-center">

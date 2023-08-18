@@ -34,7 +34,7 @@ export default function Example(
           {list}
         </div>
       </main>
-      <Footer version={props.version} />
+      <Footer version={props.version} path="" />
     </>
   );
 }
