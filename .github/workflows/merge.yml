@@ -2,7 +2,7 @@ name: merge
 on:
   pull_request:
     types:
-      - closed
+      - synchronize
 jobs:
   build:
     runs-on: ubuntu-latest
