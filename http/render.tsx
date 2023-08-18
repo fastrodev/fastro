@@ -1,8 +1,4 @@
 // deno-lint-ignore-file
-import rehypeParse from "https://esm.sh/rehype-parse@8.0.4";
-import rehypeSlug from "https://esm.sh/rehype-slug@5.1.0";
-import rehypeStringify from "https://esm.sh/rehype-stringify@9.0.3";
-import { unified } from "https://esm.sh/unified@10.1.2";
 import { Esbuild } from "../build/esbuild.ts";
 import { JSX } from "./deps.ts";
 
@@ -248,13 +244,13 @@ es.onmessage = function(e) {
     return `render${el}`;
   };
 
-  #processHtml = async (html: string) => {
-    const processor = unified()
-      .use(rehypeParse as any)
-      .use(rehypeSlug)
-      .use(rehypeStringify as any);
-    return String(await processor.process(html));
-  };
+  // #processHtml = async (html: string) => {
+  //   const processor = unified()
+  //     .use(rehypeParse as any)
+  //     .use(rehypeSlug)
+  //     .use(rehypeStringify as any);
+  //   return String(await processor.process(html));
+  // };
 
   #renderToString = async (component: Component, cached?: boolean) => {
     let compID = "";
@@ -282,7 +278,6 @@ es.onmessage = function(e) {
     compID = `default${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
     let html = renderToString(this.#initHtml(component));
-    html = await this.#processHtml(html);
     return this.#nest[compID] = `<!DOCTYPE html>${html}`;
   };
 
