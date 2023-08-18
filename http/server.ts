@@ -442,8 +442,8 @@ export default class HttpServer implements Fastro {
       const page = this.#pages[index];
       if (this.#isJSX(page.element as JSX.Element)) continue;
       const c = page.element as FunctionComponent;
-      this.#createHydrateFile(c.name);
-      this.#buildComponent(c.name);
+      await this.#createHydrateFile(c.name);
+      await this.#buildComponent(c.name);
       console.log(
         `%c${c.name.toLowerCase()}.js %cCreated!`,
         "color: blue",
