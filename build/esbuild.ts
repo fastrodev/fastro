@@ -45,7 +45,11 @@ export class Esbuild {
       });
       return esbuildRes;
     } finally {
-      esbuild.stop();
+      // esbuild.stop();
     }
+  };
+
+  stop = () => {
+    esbuild.stop();
   };
 }
