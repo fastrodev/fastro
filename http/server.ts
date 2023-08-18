@@ -442,7 +442,10 @@ export default class HttpServer implements Fastro {
       const page = this.#pages[index];
       if (this.#isJSX(page.element as JSX.Element)) continue;
       const c = page.element as FunctionComponent;
-      await this.#createHydrateFile(c.name);
+      // deno-lint-ignore no-deprecated-deno-api
+      if (Deno.run != undefined) {
+        await this.#createHydrateFile(c.name);
+      }
       await this.#buildComponent(c.name);
       console.log(
         `%c${c.name.toLowerCase()}.js %cCreated!`,
