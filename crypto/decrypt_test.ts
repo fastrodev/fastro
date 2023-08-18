@@ -16,10 +16,15 @@ Deno.test(
         keyUsages,
       );
       const plaintext = "Hello, encryption!";
-      const encryptedData = await encryptData(importedKey, plaintext);
-      decryptData(importedKey, encryptedData).then((decryptedText) => {
-        assert(decryptedText, "get");
-      });
+      encryptData(importedKey, plaintext)
+        .then(
+          (encryptedData) => {
+            decryptData(importedKey, encryptedData)
+              .then((decryptedText) => {
+                assert(decryptedText, "get");
+              });
+          },
+        );
     });
   },
 );
