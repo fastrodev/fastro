@@ -1,8 +1,8 @@
-name: merge
+name: build
 on:
   push:
      branches:
-      - '*'
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,9 +27,13 @@ jobs:
       
       - name: Run tests
         run: deno task test
-      
+         
+      - name: Generate report
+        run: deno coverage cov --lcov > cov.lcov
+
       - name: Coveralls
         uses: coverallsapp/github-action@v1
         with:
           path-to-lcov: ./cov.lcov
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          
