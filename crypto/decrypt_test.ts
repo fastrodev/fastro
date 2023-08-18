@@ -4,21 +4,22 @@ import { encryptData } from "./encrypt.ts";
 import { exportCryptoKey, importCryptoKey, keyPromise } from "./key.ts";
 
 Deno.test(
-  async function Decrypt() {
+  function Decrypt() {
     const keyType = "AES-GCM";
     const keyUsages: KeyUsage[] = ["encrypt", "decrypt"];
-    const key = await keyPromise;
-    const exportedKeyString = await exportCryptoKey(key);
+    keyPromise.then(async (key) => {
+      const exportedKeyString = await exportCryptoKey(key);
 
-    const importedKey = await importCryptoKey(
-      exportedKeyString,
-      keyType,
-      keyUsages,
-    );
-    const plaintext = "Hello, encryption!";
-    const encryptedData = await encryptData(importedKey, plaintext);
-    decryptData(importedKey, encryptedData).then((decryptedText) => {
-      assert(decryptedText, "get");
+      const importedKey = await importCryptoKey(
+        exportedKeyString,
+        keyType,
+        keyUsages,
+      );
+      const plaintext = "Hello, encryption!";
+      const encryptedData = await encryptData(importedKey, plaintext);
+      decryptData(importedKey, encryptedData).then((decryptedText) => {
+        assert(decryptedText, "get");
+      });
     });
   },
 );
