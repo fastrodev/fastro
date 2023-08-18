@@ -2,11 +2,6 @@
 import { CSS, render } from "https://deno.land/x/gfm@0.2.5/mod.ts";
 import { h, JSX } from "https://esm.sh/preact@10.16.0";
 
-import rehypeParse from "https://esm.sh/rehype-parse@8.0.4";
-import rehypeSlug from "https://esm.sh/rehype-slug@5.1.0";
-import rehypeStringify from "https://esm.sh/rehype-stringify@9.0.3";
-import { unified } from "https://esm.sh/unified@10.1.2";
-
 import "https://esm.sh/prismjs@1.29.0/components/prism-jsx?no-check&pin=v57";
 import "https://esm.sh/prismjs@1.29.0/components/prism-typescript?no-check&pin=v57";
 import "https://esm.sh/prismjs@1.29.0/components/prism-tsx?no-check&pin=v57";
