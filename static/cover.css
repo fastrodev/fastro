@@ -124,7 +124,7 @@ body {
 
 .markdown-body a,
 a {
-  color: #fff;
+  color: var(--fgColor-accent, var(--color-accent-fg));
   text-decoration: none;
 }
 
@@ -132,6 +132,7 @@ a {
   color: #2f81f7;
 }
 
-li a:hover {
+li a:hover,
+.markdown-body a:hover {
   text-decoration: underline;
 }
