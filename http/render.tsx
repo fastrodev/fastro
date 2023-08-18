@@ -1,5 +1,4 @@
 // deno-lint-ignore-file
-import { Esbuild } from "../build/esbuild.ts";
 import { JSX } from "./deps.ts";
 
 import { h, renderToString, Status, STATUS_TEXT } from "./deps.ts";
@@ -206,52 +205,6 @@ es.onmessage = function(e) {
 };`;
   };
 
-  #createBundle = async (elementName: string) => {
-    try {
-      if (this.#nest[this.#getRenderId(elementName)]) return;
-      const es = new Esbuild(elementName);
-      const bundle = await es.build();
-      const componentPath =
-        `${this.#staticPath}/${elementName.toLocaleLowerCase()}.js`;
-      for (const file of bundle.outputFiles) {
-        const str = new TextDecoder().decode(file.contents);
-        this.#server.push(
-          "GET",
-          componentPath,
-          (req: Request) => {
-            const referer = req.headers.get("referer");
-            const host = req.headers.get("host") as string;
-            if (!referer || !referer?.includes(host)) {
-              return new Response(STATUS_TEXT[Status.NotFound], {
-                status: Status.NotFound,
-              });
-            }
-            return new Response(str, {
-              headers: {
-                "Content-Type": "application/javascript",
-              },
-            });
-          },
-        );
-      }
-      this.#nest[this.#getRenderId(elementName)] = true;
-    } catch {
-      return;
-    }
-  };
-
-  #getRenderId = (el: string) => {
-    return `render${el}`;
-  };
-
-  // #processHtml = async (html: string) => {
-  //   const processor = unified()
-  //     .use(rehypeParse as any)
-  //     .use(rehypeSlug)
-  //     .use(rehypeStringify as any);
-  //   return String(await processor.process(html));
-  // };
-
   #renderToString = async (component: Component, cached?: boolean) => {
     let compID = "";
     this.#handleDevelopment();
@@ -282,7 +235,6 @@ es.onmessage = function(e) {
   };
 
   #handleComponent = async (c: FunctionComponent) => {
-    await this.#createBundle(c.name);
     if (!this.#options.html?.body) return;
     this.#options.html?.body.script?.push({
       src: `${this.#staticPath}/${c.name.toLocaleLowerCase()}.js`,

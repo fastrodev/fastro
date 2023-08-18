@@ -1,4 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
+import { Esbuild } from "../build/esbuild.ts";
 import {
   addSalt,
   exportCryptoKey,
@@ -342,6 +343,7 @@ export default class HttpServer implements Fastro {
   #body: ReadableStream<any> | undefined;
   #listenHandler: ListenHandler | undefined;
   #hook: Hook | undefined;
+  #staticPath: string | undefined;
 
   constructor(options?: { port?: number }) {
     this.#port = options?.port ?? 8000;
@@ -359,7 +361,6 @@ export default class HttpServer implements Fastro {
     this.#maxAge = 0;
     this.#development = this.#getDevelopment();
     this.#handleInit();
-    // this.#handleKey();
     if (this.#development) this.#handleDevelopment();
     const status = this.#development ? "Development" : "Production";
     console.log(
@@ -392,8 +393,10 @@ export default class HttpServer implements Fastro {
   serve = async (options?: { port: number }) => {
     this.record["exportedKeyString"] = await this.#handleInitialData();
     this.record["salt"] = SALT;
-
     const port = options?.port ?? this.#port;
+    const [s] = await this.#build();
+    if (s) return;
+
     if (Deno.env.get("DENO_DEPLOYMENT_ID")) {
       this.#server = new Server({
         port,
@@ -408,9 +411,6 @@ export default class HttpServer implements Fastro {
       }
       return this.#server.listenAndServe();
     }
-
-    const [s] = await this.#build();
-    if (s) return;
 
     this.#server = Deno.serve({
       port,
@@ -443,10 +443,11 @@ export default class HttpServer implements Fastro {
       if (this.#isJSX(page.element as JSX.Element)) continue;
       const c = page.element as FunctionComponent;
       this.#createHydrateFile(c.name);
+      this.#buildComponent(c.name);
       console.log(
-        `%c${c.name.toLowerCase()}.hydrate.tsx %cCreated!`,
+        `%c${c.name.toLowerCase()}.js %cCreated!`,
         "color: blue",
-        "color: white",
+        "color: green",
       );
     }
 
@@ -468,6 +469,39 @@ export default class HttpServer implements Fastro {
       return;
     }
   };
+
+  async #buildComponent(elementName: string) {
+    try {
+      this.#staticPath = `${this.getStaticPath()}/${BUILD_ID}`;
+      const es = new Esbuild(elementName);
+      const bundle = await es.build();
+      const componentPath =
+        `${this.#staticPath}/${elementName.toLocaleLowerCase()}.js`;
+      for (const file of bundle.outputFiles) {
+        const str = new TextDecoder().decode(file.contents);
+        this.push(
+          "GET",
+          componentPath,
+          (req: Request) => {
+            const referer = req.headers.get("referer");
+            const host = req.headers.get("host") as string;
+            if (!referer || !referer?.includes(host)) {
+              return new Response(STATUS_TEXT[Status.NotFound], {
+                status: Status.NotFound,
+              });
+            }
+            return new Response(str, {
+              headers: {
+                "Content-Type": "application/javascript",
+              },
+            });
+          },
+        );
+      }
+    } catch {
+      return;
+    }
+  }
 
   #createHydrate(comp: string) {
     return `/** == ${
