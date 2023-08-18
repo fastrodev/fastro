@@ -471,36 +471,33 @@ export default class HttpServer implements Fastro {
   };
 
   async #buildComponent(elementName: string) {
-    try {
-      this.#staticPath = `${this.getStaticPath()}/${BUILD_ID}`;
-      const es = new Esbuild(elementName);
-      const bundle = await es.build();
-      const componentPath =
-        `${this.#staticPath}/${elementName.toLocaleLowerCase()}.js`;
-      for (const file of bundle.outputFiles) {
-        const str = new TextDecoder().decode(file.contents);
-        this.push(
-          "GET",
-          componentPath,
-          (req: Request) => {
-            const referer = req.headers.get("referer");
-            const host = req.headers.get("host") as string;
-            if (!referer || !referer?.includes(host)) {
-              return new Response(STATUS_TEXT[Status.NotFound], {
-                status: Status.NotFound,
-              });
-            }
-            return new Response(str, {
-              headers: {
-                "Content-Type": "application/javascript",
-              },
+    this.#staticPath = `${this.getStaticPath()}/${BUILD_ID}`;
+    const es = new Esbuild(elementName);
+    const bundle = await es.build();
+    const componentPath =
+      `${this.#staticPath}/${elementName.toLocaleLowerCase()}.js`;
+    for (const file of bundle.outputFiles) {
+      const str = new TextDecoder().decode(file.contents);
+      this.push(
+        "GET",
+        componentPath,
+        (req: Request) => {
+          const referer = req.headers.get("referer");
+          const host = req.headers.get("host") as string;
+          if (!referer || !referer?.includes(host)) {
+            return new Response(STATUS_TEXT[Status.NotFound], {
+              status: Status.NotFound,
             });
-          },
-        );
-      }
-    } catch {
-      return;
+          }
+          return new Response(str, {
+            headers: {
+              "Content-Type": "application/javascript",
+            },
+          });
+        },
+      );
     }
+    es.stop();
   }
 
   #createHydrate(comp: string) {
