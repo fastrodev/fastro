@@ -13,20 +13,20 @@ You can find the benchmark script in this code: [run.ts](https://github.com/fast
 
 | module                                                                                               |   rps |    % | oha cmd                                                        |
 | :--------------------------------------------------------------------------------------------------- | ----: | ---: | :------------------------------------------------------------- |
-| [raw_string](https://github.com/fastrodev/fastro/blob/main/examples/raw_string.ts)                   | 34132 | 100% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
-| [string_response](https://github.com/fastrodev/fastro/blob/main/examples/string_response.ts)         | 34013 | 100% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
-| [register](https://github.com/fastrodev/fastro/blob/main/examples/register.ts)                       | 33044 |  97% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
-| [raw_jsx](https://github.com/fastrodev/fastro/blob/main/examples/raw_jsx.tsx)                        | 32294 |  95% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
-| [ctx_string](https://github.com/fastrodev/fastro/blob/main/examples/ctx_string.ts)                   | 32013 |  94% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
-| [record](https://github.com/fastrodev/fastro/blob/main/examples/record.ts)                           | 31578 |  93% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
-| [params_query](https://github.com/fastrodev/fastro/blob/main/examples/params_query.ts)               | 31461 |  92% | `oha -j --no-tui -z 5s http://localhost:8000/agus?title=lead`  |
-| [raw_json](https://github.com/fastrodev/fastro/blob/main/examples/raw_json.ts)                       | 31448 |  92% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
-| [ctx_jsx](https://github.com/fastrodev/fastro/blob/main/examples/ctx_jsx.tsx)                        | 29877 |  88% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
-| [deno](https://github.com/fastrodev/fastro/blob/main/examples/deno.ts)                               | 29445 |  86% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
-| [ctx_json](https://github.com/fastrodev/fastro/blob/main/examples/ctx_json.ts)                       | 29322 |  86% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
-| [static_file_string](https://github.com/fastrodev/fastro/blob/main/examples/static_file_string.ts)   | 15526 |  45% | `oha -j --no-tui -z 5s http://localhost:8000/static/post.css`  |
-| [ssr](https://github.com/fastrodev/fastro/blob/main/examples/ssr.ts)                                 | 13778 |  40% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
-| [deno_kv](https://github.com/fastrodev/fastro/blob/main/examples/deno_kv.ts)                         | 10204 |  30% | `oha -j --no-tui -z 5s http://localhost:8000/user?name=john`   |
-| [markdown_middleware](https://github.com/fastrodev/fastro/blob/main/examples/markdown_middleware.ts) |  8250 |  24% | `oha -j --no-tui -z 5s http://localhost:8000/hello`            |
-| [hook](https://github.com/fastrodev/fastro/blob/main/examples/hook.ts)                               |  2650 |   8% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
-| [static_file_image](https://github.com/fastrodev/fastro/blob/main/examples/static_file_image.ts)     |  1747 |   5% | `oha -j --no-tui -z 5s http://localhost:8000/static/image.png` |
+| [deno](https://github.com/fastrodev/fastro/blob/main/examples/deno.ts)                               | 71091 | 100% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
+| [register](https://github.com/fastrodev/fastro/blob/main/examples/register.ts)                       | 60877 |  86% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
+| [raw_string](https://github.com/fastrodev/fastro/blob/main/examples/raw_string.ts)                   | 59277 |  83% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
+| [string_response](https://github.com/fastrodev/fastro/blob/main/examples/string_response.ts)         | 59207 |  83% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
+| [params_query](https://github.com/fastrodev/fastro/blob/main/examples/params_query.ts)               | 56698 |  80% | `oha -j --no-tui -z 5s http://localhost:8000/agus?title=lead`  |
+| [raw_json](https://github.com/fastrodev/fastro/blob/main/examples/raw_json.ts)                       | 56012 |  79% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
+| [record](https://github.com/fastrodev/fastro/blob/main/examples/record.ts)                           | 55377 |  78% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
+| [ctx_jsx](https://github.com/fastrodev/fastro/blob/main/examples/ctx_jsx.tsx)                        | 55183 |  78% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
+| [raw_jsx](https://github.com/fastrodev/fastro/blob/main/examples/raw_jsx.tsx)                        | 54923 |  77% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
+| [ctx_string](https://github.com/fastrodev/fastro/blob/main/examples/ctx_string.ts)                   | 52181 |  73% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
+| [ctx_json](https://github.com/fastrodev/fastro/blob/main/examples/ctx_json.ts)                       | 26641 |  37% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
+| [static_file_string](https://github.com/fastrodev/fastro/blob/main/examples/static_file_string.ts)   | 26446 |  37% | `oha -j --no-tui -z 5s http://localhost:8000/static/post.css`  |
+| [ssr](https://github.com/fastrodev/fastro/blob/main/examples/ssr.ts)                                 | 23382 |  33% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
+| [deno_kv](https://github.com/fastrodev/fastro/blob/main/examples/deno_kv.ts)                         | 16281 |  23% | `oha -j --no-tui -z 5s http://localhost:8000/user?name=john`   |
+| [markdown_middleware](https://github.com/fastrodev/fastro/blob/main/examples/markdown_middleware.ts) | 11452 |  16% | `oha -j --no-tui -z 5s http://localhost:8000/hello`            |
+| [hook](https://github.com/fastrodev/fastro/blob/main/examples/hook.ts)                               |  5367 |   8% | `oha -j --no-tui -z 5s http://localhost:8000`                  |
+| [static_file_image](https://github.com/fastrodev/fastro/blob/main/examples/static_file_image.ts)     |  3068 |   4% | `oha -j --no-tui -z 5s http://localhost:8000/static/image.png` |
