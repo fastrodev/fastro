@@ -270,7 +270,7 @@ class Markdown {
       <div className="d-flex flex-column h-100">
         <Header path={path} />
         <main className="markdown flex-grow-1" style={{ marginBottom: 20 }}>
-          <div className="text-start">
+          <div className="text-center">
             <h1 className="display-5 fw-bold">{meta.title}</h1>
             <p className="text-white-50 h5 fw-light">{meta.description}</p>
           </div>
