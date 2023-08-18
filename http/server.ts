@@ -443,7 +443,7 @@ export default class HttpServer implements Fastro {
       if (this.#isJSX(page.element as JSX.Element)) continue;
       const c = page.element as FunctionComponent;
       // deno-lint-ignore no-deprecated-deno-api
-      if (Deno.run === undefined) {
+      if (Deno.run != undefined) {
         await this.#createHydrateFile(c.name);
       }
       await this.#buildComponent(c.name);
