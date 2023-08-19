@@ -1,7 +1,5 @@
 // deno-lint-ignore-file
-import { JSX } from "./deps.ts";
-
-import { h, renderToString, Status, STATUS_TEXT } from "./deps.ts";
+import { h, JSX, renderToString } from "./deps.ts";
 import {
   BUILD_ID,
   Component,
@@ -260,12 +258,10 @@ es.onmessage = function(e) {
     const encryptedData = await encryptData(importedKey, plaintext);
     const env = Deno.run === undefined ? "" : `window.__ENV__ = "DEVELOPMENT";`;
 
-    let l = layout.replace(
+    return layout.replace(
       `<script></script>`,
       `<script>${env}window.__INITIAL_DATA__ = "${encryptedData}";</script>`,
     );
-
-    return l;
   };
 
   #handleDevelopment = () => {
