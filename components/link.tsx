@@ -1,13 +1,12 @@
 import { h } from "https://esm.sh/preact@10.16.0";
-import { VNode } from "https://esm.sh/preact@10.16.0";
 
 export function LinkFooter(
-  props: { children: VNode | string | string[]; link: string },
+  props: { children: string | string[]; link: string },
 ) {
   return (
     <a
       href={props.link}
-      className="fw-light text-decoration-none text-white-50 me-2"
+      className="fw-lighter text-decoration-none text-white-50 me-2"
     >
       {props.children}
     </a>
@@ -16,7 +15,7 @@ export function LinkFooter(
 
 export function LinkHeader(
   props: {
-    children: VNode | string | string[];
+    children: string | string[];
     link: string;
     path: string;
     activePath: string;

@@ -9,11 +9,14 @@ const Index = (
     <>
       <Header path={props.path} />
       <main className="px-3 d-flex flex-column h-100">
-        <div className="mx-auto flex-grow-1 d-flex align-items-center">
+        <div
+          className="mx-auto flex-grow-1 d-flex align-items-center"
+          style={{ maxWidth: 135 }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="110"
-            height="110"
+            width="100%"
+            height="100%"
             fill="currentColor"
             className="bi bi-hexagon-fill"
             viewBox="0 0 16 16"
@@ -25,13 +28,16 @@ const Index = (
           </svg>
         </div>
 
-        <div className="text-center mb-3">
-          <h1 className="d-sm-block fs-2 fw-bold">
+        <div
+          className="text-center mb-3 d-flex flex-column align-items-center"
+          style={{ minHeight: 100 }}
+        >
+          <h1 className="d-sm-block fs-2 fw-bold mt-3">
             {props.title}
           </h1>
-          <p className="fs-5 fw-light text-white-50">
+          <div className="fs-5 fw-lighter text-white-50 mb-2">
             {props.description}
-          </p>
+          </div>
           <div className="d-none d-sm-flex p-2 bd-highlight justify-content-center">
             <div className="me-2">
               <a
