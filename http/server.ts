@@ -366,7 +366,7 @@ export default class HttpServer implements Fastro {
     console.log(
       `%cStatus %c${status}`,
       "color: blue",
-      "color: white",
+      "color: yellow",
     );
   }
 
