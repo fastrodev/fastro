@@ -50,21 +50,6 @@ export function init() {
   });
 }
 
-export async function getVersion() {
-  let git: Record<string, string>;
-  try {
-    const data = await fetch(
-      "https://api.github.com/repos/fastrodev/fastro/releases/latest",
-    );
-    git = JSON.parse(await data.text());
-  } catch {
-    git = {};
-    git["name"] = "local";
-  }
-
-  return git;
-}
-
 export async function getExamples() {
   const examples = [];
   for await (const f of Deno.readDir("./examples")) {

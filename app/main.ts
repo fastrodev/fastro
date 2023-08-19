@@ -1,16 +1,11 @@
 import fastro, { Context, HttpRequest, Next } from "../http/server.ts";
+import { version } from "../http/version.ts";
 import markdown from "../middlewares/markdown.tsx";
 import app from "../pages/app.tsx";
 import blog from "../pages/blog.tsx";
 import Example from "../pages/example.tsx";
 import index from "../pages/index.tsx";
-import {
-  denoRunCheck,
-  getExamples,
-  getPosts,
-  getVersion,
-  init,
-} from "./function.ts";
+import { denoRunCheck, getExamples, getPosts, init } from "./function.ts";
 import { createHTML } from "./layout.ts";
 
 const title = "The Web Framework for Full Stack Apps";
@@ -66,11 +61,10 @@ f.page("/app", app, (_req: HttpRequest, ctx: Context) => {
 f.page(
   "/blog/:post([a-zA-Z0-9]+)?",
   blog,
-  async (req: HttpRequest, ctx: Context) => {
-    const git = await getVersion();
+  (req: HttpRequest, ctx: Context) => {
     const opt = createHTML(
       {
-        version: git["name"],
+        version: version,
         path: "blog",
         title: "Blog",
         description: "Blog",
@@ -88,13 +82,12 @@ f.page(
 f.page(
   "/",
   index,
-  async (req: HttpRequest, ctx: Context) => {
+  (req: HttpRequest, ctx: Context) => {
     const res = denoRunCheck(req);
     if (res) return init();
-    const git = await getVersion();
     const opt = createHTML(
       {
-        version: git["name"],
+        version,
         path: "home",
         title,
         description,
@@ -107,12 +100,11 @@ f.page(
   },
 );
 
-f.page("/examples", Example, async (req: HttpRequest, ctx: Context) => {
+f.page("/examples", Example, (req: HttpRequest, ctx: Context) => {
   const examples = req.record["examples"];
-  const git = await getVersion();
   const options = createHTML(
     {
-      version: git["name"],
+      version,
       path: "examples",
       title,
       description,
