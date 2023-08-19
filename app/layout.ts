@@ -5,11 +5,13 @@ const createHTML = (
   title: string,
   description: string,
 ): RenderOptions => {
+  // deno-lint-ignore no-explicit-any
+  const p = props as any;
   return {
     props,
     html: {
       lang: "EN",
-      class: "h-100",
+      class: p.htmlClass,
       head: {
         title: `${title} | Fastro Framework`,
         descriptions: description,

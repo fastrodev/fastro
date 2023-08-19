@@ -68,15 +68,14 @@ f.page(
   blog,
   async (req: HttpRequest, ctx: Context) => {
     const git = await getVersion();
-    const post = req.params?.post;
     const opt = createHTML(
       {
         version: git["name"],
         path: "blog",
         title: "Blog",
         description: "Blog",
-        post: post,
         posts: req.record["posts"],
+        htmlClass: "h-100",
       },
       "Blog",
       "Blog of Fastro Framework",
@@ -94,7 +93,13 @@ f.page(
     if (res) return init();
     const git = await getVersion();
     const opt = createHTML(
-      { version: git["name"], path: "home", title, description },
+      {
+        version: git["name"],
+        path: "home",
+        title,
+        description,
+        htmlClass: "h-100",
+      },
       title,
       description,
     );
@@ -106,7 +111,14 @@ f.page("/examples", Example, async (req: HttpRequest, ctx: Context) => {
   const examples = req.record["examples"];
   const git = await getVersion();
   const options = createHTML(
-    { version: git["name"], path: "examples", title, description, examples },
+    {
+      version: git["name"],
+      path: "examples",
+      title,
+      description,
+      examples,
+      htmlClass: "h-100",
+    },
     title,
     description,
   );
