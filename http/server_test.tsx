@@ -84,6 +84,10 @@ Deno.test(
         return next();
       });
 
+      f.register((f: Fastro) => {
+        return f.get("/register", () => "register");
+      });
+
       await f.serve();
 
       const get = await fetch(host, { method: "GET" });
@@ -109,6 +113,9 @@ Deno.test(
 
       const hook = await fetch(host + "/hook", { method: "GET" });
       assertEquals(await hook.text(), "hook");
+
+      const register = await fetch(host + "/register", { method: "GET" });
+      assertEquals(await register.text(), "register");
 
       const tsx = await fetch(host + "/tsx", { method: "GET" });
       assertEquals(await tsx.text(), "TSX");
@@ -145,6 +152,12 @@ Deno.test(
         `"GETundefinedundefinedhttp://localhost:8000/"`,
       );
 
+      const notFound = await fetch(host + "/not_found", { method: "GET" });
+      assertExists(
+        await notFound.text(),
+        `Not Found`,
+      );
+
       f.close();
       await f.finished();
     },
@@ -156,14 +169,25 @@ Deno.test(
     permissions: { net: true, env: true, read: true, write: true },
     name: "getStaticFileWithStaticPath",
     async fn() {
-      const f = new fastro();
+      const f = new fastro({ port: 8000 });
+      f.onListen(() => {});
       f.static("/static", { folder: "static", maxAge: 90 });
-      await f.serve();
+      await f.serve({ port: 8000 });
+
       const get = await fetch(`${host}/static/post.css`, { method: "GET" });
       assertExists(await get.text(), `@media (min-width: 576px)`);
+
+      const bin = await fetch(`${host}/static/bench.png`, { method: "GET" });
+      assertEquals(bin.headers.get("content-type"), `image/png`);
+
+      assertEquals(f.getStaticFolder(), "static");
+
       f.close();
       await f.finished();
     },
+    sanitizeResources: false,
+    sanitizeOps: false,
+    sanitizeExit: false,
   },
 );
 
@@ -176,8 +200,16 @@ Deno.test(
 
       const f = new fastro();
 
-      f.page("/ssr", User, (_req: HttpRequest, ctx: Context) => {
-        return ctx.render();
+      f.page("/ssr", User, (_req: HttpRequest, ctx: Context, next: Next) => {
+        ctx.server.record["hello"] = "hello";
+        return next();
+      }, (req: HttpRequest, ctx: Context) => {
+        return ctx.render({
+          props: {
+            contentType: req.headers.get("content-type"),
+            data: ctx.server.record["hello"],
+          },
+        });
       });
 
       f.page("/props", User, (_req: HttpRequest, ctx: Context) => {
@@ -229,7 +261,7 @@ Deno.test(
       const page1 = await fetch(host + "/ssr", { method: "GET" });
       assertExists(
         await page1.text(),
-        `<h1>Hello </h1>`,
+        `<h1>Hello hello</h1>`,
       );
 
       const props = await fetch(host + "/props", { method: "GET" });
@@ -310,6 +342,14 @@ Deno.test(
       assertEquals(
         stream.headers.get("content-type"),
         `text/event-stream`,
+      );
+
+      const init = await fetch(host + `/__INITIAL_DATA__`, {
+        method: "GET",
+      });
+      assertEquals(
+        init.headers.get("content-type"),
+        `text/plain;charset=UTF-8`,
       );
 
       f.close();
