@@ -152,6 +152,12 @@ Deno.test(
         `"GETundefinedundefinedhttp://localhost:8000/"`,
       );
 
+      const notFound = await fetch(host + "/not_found", { method: "GET" });
+      assertExists(
+        await notFound.text(),
+        `Not Found`,
+      );
+
       f.close();
       await f.finished();
     },
