@@ -525,10 +525,10 @@ deno task start
 ## Environment
 
 The default environment is `production`. But if you want to run with
-`DEVELOPMENT` environment, execute `deno` command with `--development`.
+`DEVELOPMENT` environment, execute `deno` command with `ENV=DEVELOPMENT`.
 
 ```zsh
-deno run -A --watch main.ts --development
+ENV=DEVELOPMENT deno run -A --watch main.ts
 ```
 
 This will refresh your page if the typescript file changes.
