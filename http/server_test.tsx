@@ -192,6 +192,14 @@ Deno.test(
         });
       });
 
+      f.page("/no-script", User, (req: HttpRequest, ctx: Context) => {
+        return ctx.render({
+          html: {
+            head: { noScriptLink: { rel: "stylesheet", href: "app.jss" } },
+          },
+        });
+      });
+
       await f.serve();
 
       const page1 = await fetch(host + "/ssr", { method: "GET" });
@@ -240,6 +248,12 @@ Deno.test(
       assertExists(
         await headScript.text(),
         `<script>console.log('script')</script>`,
+      );
+
+      const noScriptLink = await fetch(host + "/no-script", { method: "GET" });
+      assertExists(
+        await noScriptLink.text(),
+        `<noscript><link rel="stylesheet" href="app.jss"/></noscript>`,
       );
 
       f.close();
