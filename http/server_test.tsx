@@ -321,6 +321,14 @@ Deno.test(
         `text/event-stream`,
       );
 
+      const init = await fetch(host + `/__INITIAL_DATA__`, {
+        method: "GET",
+      });
+      assertEquals(
+        init.headers.get("content-type"),
+        `text/plain;charset=UTF-8`,
+      );
+
       f.close();
       await f.finished();
     },
