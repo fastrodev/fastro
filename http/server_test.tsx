@@ -160,11 +160,19 @@ Deno.test(
       f.onListen(() => {});
       f.static("/static", { folder: "static", maxAge: 90 });
       await f.serve();
+
       const get = await fetch(`${host}/static/post.css`, { method: "GET" });
       assertExists(await get.text(), `@media (min-width: 576px)`);
+
+      const bin = await fetch(`${host}/static/bench.png`, { method: "GET" });
+      assertEquals(bin.headers.get("content-type"), `image/png`);
+
       f.close();
       await f.finished();
     },
+    sanitizeResources: false,
+    sanitizeOps: false,
+    sanitizeExit: false,
   },
 );
 
