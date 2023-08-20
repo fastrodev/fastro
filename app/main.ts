@@ -8,7 +8,7 @@ import index from "../pages/index.tsx";
 import { denoRunCheck, getExamples, getPosts, init } from "./function.ts";
 import { createHTML } from "./layout.ts";
 
-const title = "Fast and Straightforward";
+const title = "Fast, Simple and Flexible";
 const description = "Handle thousands of RPS with a minimalistic API";
 const f = new fastro();
 const m = new markdown({ folder: "docs" });
