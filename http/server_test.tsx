@@ -200,8 +200,16 @@ Deno.test(
 
       const f = new fastro();
 
-      f.page("/ssr", User, (_req: HttpRequest, ctx: Context) => {
-        return ctx.render();
+      f.page("/ssr", User, (_req: HttpRequest, ctx: Context, next: Next) => {
+        ctx.server.record["hello"] = "hello";
+        return next();
+      }, (req: HttpRequest, ctx: Context) => {
+        return ctx.render({
+          props: {
+            contentType: req.headers.get("content-type"),
+            data: ctx.server.record["hello"],
+          },
+        });
       });
 
       f.page("/props", User, (_req: HttpRequest, ctx: Context) => {
@@ -253,7 +261,7 @@ Deno.test(
       const page1 = await fetch(host + "/ssr", { method: "GET" });
       assertExists(
         await page1.text(),
-        `<h1>Hello </h1>`,
+        `<h1>Hello hello</h1>`,
       );
 
       const props = await fetch(host + "/props", { method: "GET" });
