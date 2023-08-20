@@ -292,6 +292,14 @@ Deno.test(
         `<script src=/${BUILD_ID}/refresh.js">`,
       );
 
+      const stream = await fetch(host + `/___refresh___`, {
+        method: "GET",
+      });
+      assertEquals(
+        stream.headers.get("content-type"),
+        `text/event-stream`,
+      );
+
       f.close();
       await f.finished();
     },
