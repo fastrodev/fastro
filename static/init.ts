@@ -116,7 +116,7 @@ jobs:
     ]
   },
   "tasks": {
-    "start": "deno run -A --watch main.ts --development",
+    "start": "ENV=DEVELOPMENT deno run -A --watch main.ts",
     "hydrate": "deno run -A main.ts --hydrate"
   }
 }`,
