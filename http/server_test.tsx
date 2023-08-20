@@ -72,6 +72,10 @@ Deno.test(
         () => "txt",
       );
 
+      f.get("/nest", (_req: HttpRequest, ctx: Context) => {
+        return ctx.send({ nest: ctx.server.getNest() });
+      });
+
       f.use((req: HttpRequest, ctx: Context, next: Next) => {
         if (req.url === "http://localhost:8000/middleware2") {
           return new Response("middleware2");
@@ -131,6 +135,12 @@ Deno.test(
         `<!DOCTYPE html><html><head></head><body><div id="root" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">Page</div></body></html>`,
       );
 
+      const nest = await fetch(host + "/nest", { method: "GET" });
+      assertExists(
+        await nest.text(),
+        `"GETundefinedundefinedhttp://localhost:8000/"`,
+      );
+
       f.close();
       await f.finished();
     },
@@ -160,47 +170,47 @@ Deno.test(
     async fn() {
       const f = new fastro();
 
-      f.page("/ssr", User, (req: HttpRequest, ctx: Context) => {
+      f.page("/ssr", User, (_req: HttpRequest, ctx: Context) => {
         return ctx.render();
       });
 
-      f.page("/props", User, (req: HttpRequest, ctx: Context) => {
+      f.page("/props", User, (_req: HttpRequest, ctx: Context) => {
         return ctx.render({ props: { data: "user" } });
       });
 
-      f.page("/title", User, (req: HttpRequest, ctx: Context) => {
+      f.page("/title", User, (_req: HttpRequest, ctx: Context) => {
         return ctx.render({ html: { head: { title: "SSR Title" } } });
       });
 
-      f.page("/desc", User, (req: HttpRequest, ctx: Context) => {
+      f.page("/desc", User, (_req: HttpRequest, ctx: Context) => {
         return ctx.render({ html: { head: { descriptions: "SSR Desc" } } });
       });
 
-      f.page("/script", User, (req: HttpRequest, ctx: Context) => {
+      f.page("/script", User, (_req: HttpRequest, ctx: Context) => {
         return ctx.render({
           html: { head: { script: [{ src: "script.js" }] } },
         });
       });
 
-      f.page("/link", User, (req: HttpRequest, ctx: Context) => {
+      f.page("/link", User, (_req: HttpRequest, ctx: Context) => {
         return ctx.render({
           html: { head: { link: [{ href: "app.css" }] } },
         });
       });
 
-      f.page("/head-style", User, (req: HttpRequest, ctx: Context) => {
+      f.page("/head-style", User, (_req: HttpRequest, ctx: Context) => {
         return ctx.render({
           html: { head: { headStyle: `body { color: #fff }` } },
         });
       });
 
-      f.page("/head-script", User, (req: HttpRequest, ctx: Context) => {
+      f.page("/head-script", User, (_req: HttpRequest, ctx: Context) => {
         return ctx.render({
           html: { head: { headScript: `console.log('script')` } },
         });
       });
 
-      f.page("/no-script", User, (req: HttpRequest, ctx: Context) => {
+      f.page("/no-script", User, (_req: HttpRequest, ctx: Context) => {
         return ctx.render({
           html: {
             head: { noScriptLink: { rel: "stylesheet", href: "app.jss" } },
