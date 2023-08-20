@@ -167,6 +167,8 @@ Deno.test(
       const bin = await fetch(`${host}/static/bench.png`, { method: "GET" });
       assertEquals(bin.headers.get("content-type"), `image/png`);
 
+      assertEquals(f.getStaticFolder(), "static");
+
       f.close();
       await f.finished();
     },
