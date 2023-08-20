@@ -60,6 +60,11 @@ Deno.test(
       f.page("/page", <>Page</>, (req: HttpRequest, ctx: Context) => {
         return ctx.render();
       });
+      f.get("/params/:id", (req: HttpRequest, ctx: Context) => {
+        const id = req.params?.id;
+        const v = req.query?.value;
+        return ctx.send({ params: id, value: v });
+      });
 
       f.get(
         "/middleware",
@@ -106,6 +111,11 @@ Deno.test(
       const txt = await fetch(host + "/txt", { method: "GET" });
       assertEquals(await txt.text(), `txt`);
 
+      const params = await fetch(host + "/params/100?value=hello", {
+        method: "GET",
+      });
+      assertEquals(await params.text(), `{"params":"100","value":"hello"}`);
+
       const mid = await fetch(host + "/middleware", { method: "GET" });
       assertEquals(await mid.text(), `middleware`);
 
@@ -131,8 +141,6 @@ Deno.test(
   {
     permissions: { net: true, env: true, read: true, write: true },
     name: "getStaticFileWithStaticPath",
-    sanitizeResources: false,
-    sanitizeOps: false,
     async fn() {
       const f = new fastro();
       f.static("/static", { folder: "static", maxAge: 90 });
