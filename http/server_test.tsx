@@ -2,7 +2,7 @@ import { assertEquals } from "https://deno.land/std@0.198.0/assert/assert_equals
 import { assertExists } from "https://deno.land/std@0.198.0/assert/assert_exists.ts";
 import fastro, { Fastro, Info } from "../mod.ts";
 import { assert } from "https://deno.land/std@0.198.0/assert/assert.ts";
-import { Context, HttpRequest, Next } from "./server.ts";
+import { BUILD_ID, Context, HttpRequest, Next } from "./server.ts";
 import User from "../pages/user.tsx";
 
 interface Deferred<T> extends Promise<T> {
@@ -272,6 +272,14 @@ Deno.test(
       assertExists(
         await noScriptLink.text(),
         `<noscript><link rel="stylesheet" href="app.jss"/></noscript>`,
+      );
+
+      const js = await fetch(host + `/${BUILD_ID}/user.js`, {
+        method: "GET",
+      });
+      assertEquals(
+        await js.text(),
+        `Not Found`,
       );
 
       f.close();
