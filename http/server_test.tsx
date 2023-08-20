@@ -156,12 +156,22 @@ Deno.test(
         return ctx.render();
       });
 
+      f.page("/props", User, (req: HttpRequest, ctx: Context) => {
+        return ctx.render({ props: { data: "user" } });
+      });
+
       await f.serve();
 
-      const page2 = await fetch(host + "/ssr", { method: "GET" });
+      const page1 = await fetch(host + "/ssr", { method: "GET" });
       assertExists(
-        await page2.text(),
+        await page1.text(),
         `<h1>Hello </h1>`,
+      );
+
+      const props = await fetch(host + "/props", { method: "GET" });
+      assertExists(
+        await props.text(),
+        `<h1>Hello user</h1><`,
       );
 
       f.close();
