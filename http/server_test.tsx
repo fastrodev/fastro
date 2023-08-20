@@ -3,6 +3,35 @@ import { assertExists } from "https://deno.land/std@0.198.0/assert/assert_exists
 import fastro, { Fastro, Info } from "../mod.ts";
 import { assert } from "https://deno.land/std@0.198.0/assert/assert.ts";
 import { Context, HttpRequest, Next } from "./server.ts";
+import User from "../pages/user.tsx";
+
+interface Deferred<T> extends Promise<T> {
+  readonly state: "pending" | "fulfilled" | "rejected";
+  resolve(value?: T | PromiseLike<T>): void;
+  // deno-lint-ignore no-explicit-any
+  reject(reason?: any): void;
+}
+
+function deferred<T>(): Deferred<T> {
+  let methods;
+  let state = "pending";
+  const promise = new Promise<T>((resolve, reject) => {
+    methods = {
+      async resolve(value: T | PromiseLike<T>) {
+        await value;
+        state = "fulfilled";
+        resolve(value);
+      },
+      // deno-lint-ignore no-explicit-any
+      reject(reason?: any) {
+        state = "rejected";
+        reject(reason);
+      },
+    };
+  });
+  Object.defineProperty(promise, "state", { get: () => state });
+  return Object.assign(promise, methods) as Deferred<T>;
+}
 
 const host = "http://localhost:8000";
 
@@ -12,6 +41,7 @@ Deno.test(
     name: "getResponses",
     async fn() {
       const f = new fastro();
+
       f.hook((_f: Fastro, r: Request, _i: Info) => {
         if (r.url === "hook") return new Response("hook");
         return new Response();
@@ -44,7 +74,7 @@ Deno.test(
         return next();
       });
 
-      f.serve();
+      await f.serve();
 
       const get = await fetch(host, { method: "GET" });
       assert(await get.text(), "get");
@@ -106,11 +136,39 @@ Deno.test(
     async fn() {
       const f = new fastro();
       f.static("/static", { folder: "static", maxAge: 90 });
-      f.serve();
+      await f.serve();
       const get = await fetch(`${host}/static/post.css`, { method: "GET" });
       assertExists(await get.text(), `@media (min-width: 576px)`);
       f.close();
       await f.finished();
     },
+  },
+);
+
+Deno.test(
+  {
+    permissions: { net: true, env: true, read: true, write: true, run: true },
+    name: "SSR",
+    async fn() {
+      const f = new fastro();
+
+      f.page("/ssr", User, (req: HttpRequest, ctx: Context) => {
+        return ctx.render();
+      });
+
+      await f.serve();
+
+      const page2 = await fetch(host + "/ssr", { method: "GET" });
+      assertExists(
+        await page2.text(),
+        `<h1>Hello </h1>`,
+      );
+
+      f.close();
+      await f.finished();
+    },
+    sanitizeResources: false,
+    sanitizeOps: false,
+    sanitizeExit: false,
   },
 );
