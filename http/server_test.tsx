@@ -27,6 +27,9 @@ Deno.test(
       f.get("/tsx", () => <>TSX</>);
       f.get("/json", () => ({ value: "foo" }));
       f.get("/txt", () => "txt");
+      f.page("/page", <>Page</>, (req: HttpRequest, ctx: Context) => {
+        return ctx.render();
+      });
 
       f.get(
         "/middleware",
@@ -81,6 +84,12 @@ Deno.test(
 
       const statik = await fetch(`${host}/static/post.css`, { method: "GET" });
       assertExists(await statik.text(), `@media (min-width: 576px)`);
+
+      const page = await fetch(host + "/page", { method: "GET" });
+      assertEquals(
+        await page.text(),
+        `<!DOCTYPE html><html><head></head><body><div id="root" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">Page</div></body></html>`,
+      );
 
       f.close();
       await f.finished();
