@@ -157,6 +157,7 @@ Deno.test(
     name: "getStaticFileWithStaticPath",
     async fn() {
       const f = new fastro();
+      f.onListen(() => {});
       f.static("/static", { folder: "static", maxAge: 90 });
       await f.serve();
       const get = await fetch(`${host}/static/post.css`, { method: "GET" });
