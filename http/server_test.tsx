@@ -168,6 +168,18 @@ Deno.test(
         return ctx.render({ html: { head: { descriptions: "SSR Desc" } } });
       });
 
+      f.page("/script", User, (req: HttpRequest, ctx: Context) => {
+        return ctx.render({
+          html: { head: { script: [{ src: "script.js" }] } },
+        });
+      });
+
+      f.page("/link", User, (req: HttpRequest, ctx: Context) => {
+        return ctx.render({
+          html: { head: { link: [{ href: "app.css" }] } },
+        });
+      });
+
       await f.serve();
 
       const page1 = await fetch(host + "/ssr", { method: "GET" });
@@ -192,6 +204,18 @@ Deno.test(
       assertExists(
         await desc.text(),
         `<meta name="description" content="SSR Desc"/>`,
+      );
+
+      const script = await fetch(host + "/script", { method: "GET" });
+      assertExists(
+        await script.text(),
+        `<script src="script.js"></script>`,
+      );
+
+      const link = await fetch(host + "/link", { method: "GET" });
+      assertExists(
+        await link.text(),
+        `<link href="app.css"/>`,
       );
 
       f.close();
