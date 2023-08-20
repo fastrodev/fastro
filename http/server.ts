@@ -375,9 +375,7 @@ export default class HttpServer implements Fastro {
   }
 
   #getDevelopment = () => {
-    return Deno.env.get("DEVELOPMENT") === "false"
-      ? false
-      : Deno.args[0] === "--development";
+    return Deno.env.get("ENV") === "DEVELOPMENT";
   };
 
   #handleInitialData = async () => {

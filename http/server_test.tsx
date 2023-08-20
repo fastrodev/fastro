@@ -168,6 +168,8 @@ Deno.test(
     permissions: { net: true, env: true, read: true, write: true, run: true },
     name: "SSR",
     async fn() {
+      Deno.env.set("ENV", "DEVELOPMENT");
+
       const f = new fastro();
 
       f.page("/ssr", User, (_req: HttpRequest, ctx: Context) => {
@@ -280,6 +282,14 @@ Deno.test(
       assertEquals(
         await js.text(),
         `Not Found`,
+      );
+
+      const refresh = await fetch(host + `/ssr`, {
+        method: "GET",
+      });
+      assertExists(
+        await refresh.text(),
+        `<script src=/${BUILD_ID}/refresh.js">`,
       );
 
       f.close();
