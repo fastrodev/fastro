@@ -84,6 +84,10 @@ Deno.test(
         return next();
       });
 
+      f.register((f: Fastro) => {
+        return f.get("/register", () => "register");
+      });
+
       await f.serve();
 
       const get = await fetch(host, { method: "GET" });
@@ -109,6 +113,9 @@ Deno.test(
 
       const hook = await fetch(host + "/hook", { method: "GET" });
       assertEquals(await hook.text(), "hook");
+
+      const register = await fetch(host + "/register", { method: "GET" });
+      assertEquals(await register.text(), "register");
 
       const tsx = await fetch(host + "/tsx", { method: "GET" });
       assertEquals(await tsx.text(), "TSX");
