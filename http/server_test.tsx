@@ -156,12 +156,42 @@ Deno.test(
         return ctx.render();
       });
 
+      f.page("/props", User, (req: HttpRequest, ctx: Context) => {
+        return ctx.render({ props: { data: "user" } });
+      });
+
+      f.page("/title", User, (req: HttpRequest, ctx: Context) => {
+        return ctx.render({ html: { head: { title: "SSR Title" } } });
+      });
+
+      f.page("/desc", User, (req: HttpRequest, ctx: Context) => {
+        return ctx.render({ html: { head: { descriptions: "SSR Desc" } } });
+      });
+
       await f.serve();
 
-      const page2 = await fetch(host + "/ssr", { method: "GET" });
+      const page1 = await fetch(host + "/ssr", { method: "GET" });
       assertExists(
-        await page2.text(),
+        await page1.text(),
         `<h1>Hello </h1>`,
+      );
+
+      const props = await fetch(host + "/props", { method: "GET" });
+      assertExists(
+        await props.text(),
+        `<h1>Hello user</h1>`,
+      );
+
+      const title = await fetch(host + "/title", { method: "GET" });
+      assertExists(
+        await title.text(),
+        `<title>SSR Title</title>`,
+      );
+
+      const desc = await fetch(host + "/desc", { method: "GET" });
+      assertExists(
+        await desc.text(),
+        `<meta name="description" content="SSR Desc"/>`,
       );
 
       f.close();
