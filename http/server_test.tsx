@@ -156,7 +156,7 @@ Deno.test(
     permissions: { net: true, env: true, read: true, write: true },
     name: "getStaticFileWithStaticPath",
     async fn() {
-      const f = new fastro();
+      const f = new fastro({ port: 8000 });
       f.onListen(() => {});
       f.static("/static", { folder: "static", maxAge: 90 });
       await f.serve();
