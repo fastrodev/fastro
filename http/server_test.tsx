@@ -180,6 +180,18 @@ Deno.test(
         });
       });
 
+      f.page("/head-style", User, (req: HttpRequest, ctx: Context) => {
+        return ctx.render({
+          html: { head: { headStyle: `body { color: #fff }` } },
+        });
+      });
+
+      f.page("/head-script", User, (req: HttpRequest, ctx: Context) => {
+        return ctx.render({
+          html: { head: { headScript: `console.log('script')` } },
+        });
+      });
+
       await f.serve();
 
       const page1 = await fetch(host + "/ssr", { method: "GET" });
@@ -216,6 +228,18 @@ Deno.test(
       assertExists(
         await link.text(),
         `<link href="app.css"/>`,
+      );
+
+      const headStyle = await fetch(host + "/head-style", { method: "GET" });
+      assertExists(
+        await headStyle.text(),
+        `<style>body { color: #fff }</style>`,
+      );
+
+      const headScript = await fetch(host + "/head-script", { method: "GET" });
+      assertExists(
+        await headScript.text(),
+        `<script>console.log('script')</script>`,
       );
 
       f.close();
