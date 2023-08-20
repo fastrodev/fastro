@@ -1,7 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { CSS, render } from "https://deno.land/x/gfm@0.2.5/mod.ts";
 import { h, JSX } from "https://esm.sh/preact@10.16.0";
-
 import "https://esm.sh/prismjs@1.29.0/components/prism-jsx?no-check&pin=v57";
 import "https://esm.sh/prismjs@1.29.0/components/prism-typescript?no-check&pin=v57";
 import "https://esm.sh/prismjs@1.29.0/components/prism-tsx?no-check&pin=v57";
@@ -23,6 +22,7 @@ import {
 } from "../http/server.ts";
 
 import { extract, remark, remarkToc } from "./deps.ts";
+import { version } from "../http/version.ts";
 
 type Meta = {
   title?: string;
@@ -225,13 +225,12 @@ class Markdown {
 
       const markdownHtml = this.#markdownToHtml(String(file));
 
-      const git = await this.#getVersion();
-      // const path = prefix ? prefix : filePath
+      // const git = await this.#getVersion();
       const p = prefix ? prefix : filePath;
       const content = this.#contentContainer(
         markdownHtml,
         m.attrs,
-        git["name"],
+        version,
         p,
       );
       return this.#post[path] = {
@@ -240,20 +239,6 @@ class Markdown {
       };
     } catch {
       return this.#nest[nestID] = null;
-    }
-  };
-
-  #getVersion = async () => {
-    try {
-      const data = await fetch(
-        "https://api.github.com/repos/fastrodev/fastro/releases/latest",
-      );
-      const git = JSON.parse(await data.text());
-      return git;
-    } catch (error) {
-      const git: any = {};
-      git["name"] = "local";
-      return git;
     }
   };
 

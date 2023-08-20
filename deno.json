@@ -2,7 +2,7 @@
   "lock": false,
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "https://esm.sh/preact@10.16.0/",
+    "jsxImportSource": "https://esm.sh/preact@10.16.0",
     "lib": [
       "dom",
       "dom.iterable",
@@ -33,6 +33,8 @@
     "static_file_image": "deno run -A examples/static_file_image.ts",
     "markdown_middleware": "deno run -A examples/markdown_middleware.ts",
     "register": "deno run -A examples/register.ts",
-    "record": "deno run -A examples/record.ts"
+    "record": "deno run -A examples/record.ts",
+    "app_middleware": "deno run -A examples/app_middleware.ts",
+    "route_middleware": "deno run -A examples/route_middleware.ts"
   }
 }

@@ -11,9 +11,6 @@ export function addSalt(inputString: string, salt: string) {
 export function clean(v: string) {
   return v.replace("{", "").replace("}", "");
 }
-export function closeMe(v: string) {
-  return "{" + v + "}";
-}
 export function atobMe(r: string) {
   return atob(r);
 }
