@@ -420,14 +420,10 @@ export default class HttpServer implements Fastro {
   };
 
   #hydrateExist = async () => {
-    try {
-      for await (const dirEntry of Deno.readDir(`${Deno.cwd()}`)) {
-        if (dirEntry.name === hydrateFolder) {
-          return true;
-        }
+    for await (const dirEntry of Deno.readDir(`${Deno.cwd()}`)) {
+      if (dirEntry.name === hydrateFolder) {
+        return true;
       }
-    } catch {
-      return false;
     }
     return false;
   };

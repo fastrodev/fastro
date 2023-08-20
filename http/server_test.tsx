@@ -52,6 +52,7 @@ Deno.test(
       f.put("/", () => new Response("put"));
       f.delete("/", () => new Response("delete"));
       f.options("/", () => new Response("options"));
+      f.patch("/", () => new Response("patch"));
       f.head("/", () => new Response(""));
       f.get("/hook", () => new Response("hook"));
       f.get("/tsx", () => <>TSX</>);
@@ -99,6 +100,9 @@ Deno.test(
 
       const ops = await fetch(host, { method: "OPTIONS" });
       assert(await ops.text(), "options");
+
+      const patch = await fetch(host, { method: "PATCH" });
+      assert(await patch.text(), "patch");
 
       const head = await fetch(host, { method: "HEAD" });
       assertEquals(await head.text(), "");
@@ -290,6 +294,14 @@ Deno.test(
       assertExists(
         await refresh.text(),
         `<script src=/${BUILD_ID}/refresh.js">`,
+      );
+
+      const refreshPath = await fetch(host + `/${BUILD_ID}/refresh.js`, {
+        method: "GET",
+      });
+      assertExists(
+        await refreshPath.text(),
+        `Not Found`,
       );
 
       const stream = await fetch(host + `/___refresh___`, {

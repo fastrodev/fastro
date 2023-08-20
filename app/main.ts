@@ -8,8 +8,8 @@ import index from "../pages/index.tsx";
 import { denoRunCheck, getExamples, getPosts, init } from "./function.ts";
 import { createHTML } from "./layout.ts";
 
-const title = "The Web Framework for Full Stack Apps";
-const description = "Handle SSR and thousands of RPS with a minimalistic API";
+const title = "Fast and Straightforward";
+const description = "Handle thousands of RPS with a minimalistic API";
 const f = new fastro();
 const m = new markdown({ folder: "docs" });
 const b = new markdown({ folder: "posts", prefix: "blog" });
