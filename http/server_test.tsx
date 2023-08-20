@@ -159,7 +159,7 @@ Deno.test(
       const f = new fastro({ port: 8000 });
       f.onListen(() => {});
       f.static("/static", { folder: "static", maxAge: 90 });
-      await f.serve();
+      await f.serve({ port: 8000 });
 
       const get = await fetch(`${host}/static/post.css`, { method: "GET" });
       assertExists(await get.text(), `@media (min-width: 576px)`);
