@@ -2,19 +2,16 @@ name: bench
 on:
   schedule:
     - cron: 0 */6 * * *
-  push:
-    paths:
-      - '**.ts'
-      - '**.js'
-      - '**.tsx'
-      - '**.jsx'
-      - '**.yml'
-      - '**.json'
-      - '!frameworks/*/results/*.json'
+
 jobs:
   hello_bench:
-    name: 'Hello, bench!'
     runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: write
+      packages: write
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
