@@ -1,0 +1,48 @@
+name: bench
+on:
+  schedule:
+    - cron: 0 */6 * * *
+  push:
+    paths:
+      - '**.ts'
+      - '**.js'
+      - '**.tsx'
+      - '**.jsx'
+      - '**.yml'
+      - '**.json'
+      - '!frameworks/*/results/*.json'
+jobs:
+  hello_bench:
+    name: 'Hello, bench!'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
+
+      - name: Install Oha
+        uses: baptiste0928/cargo-install@v1
+        with:
+          crate: oha
+          version: 0.6.0
+
+      - name: Generate internal benchmarks
+        run: deno task bench
+
+      - name: Push changes
+        uses: actions-js/push@v1
+        with:
+          github_token: '${{ secrets.GITHUB_TOKEN }}'
+          branch: main
+          
+      - name: Deploy to Deno Deploy
+        uses: denoland/deployctl@v1
+        with:
+          project: fastro
+          entrypoint: app/main.ts
