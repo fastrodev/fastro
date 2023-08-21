@@ -46,6 +46,9 @@ jobs:
         with:
           github_token: '${{ secrets.GITHUB_TOKEN }}'
           branch: main
+      
+      - name: Run hydrate
+        run: deno task hydrate
           
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
