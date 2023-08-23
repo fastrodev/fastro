@@ -3,14 +3,8 @@ on:
   schedule:
     - cron: 0 */6 * * *
   push:
-    paths:
-      - '**.ts'
-      - '**.js'
-      - '**.tsx'
-      - '**.jsx'
-      - '**.yml'
-      - '**.json'
-      - '!frameworks/*/results/*.json'
+    branches:
+      - main
 jobs:
   hello_bench:
     name: 'Hello, bench!'
