@@ -1,6 +1,6 @@
 import { HttpRequest } from "../http/server.ts";
 import { version } from "../http/version.ts";
-import { extract } from "https://deno.land/std@0.196.0/front_matter/any.ts";
+import { extract } from "https://deno.land/std@0.199.0/front_matter/any.ts";
 
 export function getPublishDate(dateStr?: string) {
   const currentDate = dateStr ? new Date(dateStr) : new Date();
