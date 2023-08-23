@@ -395,20 +395,20 @@ export default class HttpServer implements Fastro {
     const [s] = await this.#build();
     if (s) return;
 
-    if (Deno.env.get("DENO_DEPLOYMENT_ID")) {
-      this.#server = new Server({
-        port,
-        handler: this.#handleRequest,
-        onError: this.#handleError,
-      });
+    // if (Deno.env.get("DENO_DEPLOYMENT_ID")) {
+    //   this.#server = new Server({
+    //     port,
+    //     handler: this.#handleRequest,
+    //     onError: this.#handleError,
+    //   });
 
-      if (this.#listenHandler) {
-        this.#listenHandler({ hostname: "localhost", port: this.#port });
-      } else {
-        console.info(`Listening on http://locahost:${this.#port}`);
-      }
-      return this.#server.listenAndServe();
-    }
+    //   if (this.#listenHandler) {
+    //     this.#listenHandler({ hostname: "localhost", port: this.#port });
+    //   } else {
+    //     console.info(`Listening on http://locahost:${this.#port}`);
+    //   }
+    //   return this.#server.listenAndServe();
+    // }
 
     this.#server = Deno.serve({
       port,
