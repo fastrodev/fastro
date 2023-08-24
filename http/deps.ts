@@ -13,7 +13,6 @@ export {
 export * from "https://deno.land/std@0.199.0/media_types/mod.ts";
 export * from "https://deno.land/std@0.199.0/path/mod.ts";
 
-export { serve, Server } from "https://deno.land/std@0.199.0/http/server.ts";
 export type {
   ConnInfo,
   Handler,

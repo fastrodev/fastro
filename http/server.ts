@@ -15,7 +15,6 @@ import {
   Handler,
   JSX,
   renderToString,
-  Server,
   Status,
   STATUS_TEXT,
   toHashString,
