@@ -20,15 +20,19 @@ f.record["examples"] = await getExamples();
 f.record["posts"] = await getPosts();
 
 f.use((req: HttpRequest, ctx: Context, next: Next) => {
+  // deno-lint-ignore no-explicit-any
+  const remoteAddr = ctx.info.remoteAddr as any;
   const data = {
-    remoteAddr: ctx.info.remoteAddr,
+    url: req.url,
+    method: req.method,
+    transport: ctx.info.remoteAddr.transport,
+    hostname: remoteAddr.hostname,
+    port: remoteAddr.port,
     userAgent: req.headers.get("user-agent"),
     host: req.headers.get("host"),
     ua: req.headers.get("sec-ch-ua"),
     uaPlatform: req.headers.get("sec-ch-ua-platform"),
     fetchSite: req.headers.get("sec-fetch-site"),
-    url: req.url,
-    method: req.method,
   };
   console.info(JSON.stringify(data));
   return next();

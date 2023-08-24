@@ -370,7 +370,7 @@ Look at the simple SSR deno-cli entry point above. There is `props` field in the
 `ctx.render` options.
 
 ```tsx
-import { h } from "https://esm.sh/preact@10.16.0";
+import { h } from "https://esm.sh/preact@10.17.1";
 
 const User = (props: { data: string }) => <h1>Hello {props.data}</h1>;
 
@@ -381,7 +381,7 @@ This is the `user.tsx` page that return `JSX.Element` with no props. So you can
 not pass anything.
 
 ```tsx
-import { h } from "https://esm.sh/preact@10.16.0";
+import { h } from "https://esm.sh/preact@10.17.1";
 
 const User = <h1>Hello Guest</h1>;
 
