@@ -15,7 +15,7 @@
     "start": "ENV=DEVELOPMENT deno run -A --watch app/main.ts",
     "prod": "deno run -A app/main.ts",
     "hydrate": "deno run -A app/main.ts --hydrate",
-    "test": "rm -rf cov && deno test -A --coverage=cov && deno coverage cov",
+    "test": "rm -rf .hydrate && rm -rf cov && deno test -A --coverage=cov && deno coverage cov",
     "coverage": "deno coverage cov --lcov > cov.lcov",
     "bench": "deno run -A bench/run.ts",
     "deno": "deno run -A examples/deno.ts",

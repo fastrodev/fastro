@@ -30,6 +30,9 @@ Deno.test(
       f.get("/tsx", () => <>TSX</>);
       f.get("/json", () => ({ value: "foo" }));
       f.get("/txt", () => "txt");
+      f.get("/error", () => {
+        throw new Error("error");
+      });
       f.page("/page", <>Page</>, (req: HttpRequest, ctx: Context) => {
         return ctx.render();
       });
@@ -98,6 +101,9 @@ Deno.test(
       const txt = await fetch(host + "/txt", { method: "GET" });
       assertEquals(await txt.text(), `txt`);
 
+      const e = await fetch(host + "/error", { method: "GET" });
+      assertExists(await e.text(), `Error: error\n`);
+
       const params = await fetch(host + "/params/100?value=hello", {
         method: "GET",
       });
@@ -130,6 +136,12 @@ Deno.test(
         `Not Found`,
       );
 
+      const notFound2 = await fetch(host + "/not_found", { method: "GET" });
+      assertExists(
+        await notFound2.text(),
+        `Not Found`,
+      );
+
       f.close();
       await f.finished();
     },
@@ -149,10 +161,35 @@ Deno.test(
       const get = await fetch(`${host}/static/post.css`, { method: "GET" });
       assertExists(await get.text(), `@media (min-width: 576px)`);
 
+      const get2 = await fetch(`${host}/static/post.css`, { method: "GET" });
+      assertExists(await get2.text(), `@media (min-width: 576px)`);
+
       const bin = await fetch(`${host}/static/bench.png`, { method: "GET" });
       assertEquals(bin.headers.get("content-type"), `image/png`);
 
       assertEquals(f.getStaticFolder(), "static");
+
+      f.close();
+      await f.finished();
+    },
+    sanitizeResources: false,
+    sanitizeOps: false,
+    sanitizeExit: false,
+  },
+);
+
+Deno.test(
+  {
+    permissions: { net: true, env: true, read: true, write: true },
+    name: "getStaticFileWithReferer",
+    async fn() {
+      const f = new fastro({ port: 8000 });
+      f.onListen(() => {});
+      f.static("/static", { folder: "static", maxAge: 90, referer: true });
+      await f.serve({ port: 8000 });
+
+      const get = await fetch(`${host}/static/post.css`, { method: "GET" });
+      assertExists(await get.text(), `Not Found`);
 
       f.close();
       await f.finished();
@@ -233,6 +270,12 @@ Deno.test(
       const page1 = await fetch(host + "/ssr", { method: "GET" });
       assertExists(
         await page1.text(),
+        `<h1>Hello hello</h1>`,
+      );
+
+      const page2 = await fetch(host + "/ssr", { method: "GET" });
+      assertExists(
+        await page2.text(),
         `<h1>Hello hello</h1>`,
       );
 

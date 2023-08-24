@@ -47,7 +47,7 @@ f.get("/robots.txt", () =>
 Allow: /
 `);
 
-f.static("/static", { folder: "static" });
+f.static("/static", { folder: "static", referer: true });
 
 f.page("/app", app, (_req: HttpRequest, ctx: Context) => {
   return ctx.render({

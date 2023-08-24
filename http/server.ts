@@ -225,7 +225,7 @@ export interface Fastro {
    */
   hook(hook: Hook): Fastro;
   /**
-   * Allow you to access static files with custom `path`, `folder`, and `maxAge`
+   * Allow you to access static files with custom `path`, `folder`, `maxAge`, and `referer` checking.
    *
    * ### Example
    *
@@ -234,14 +234,17 @@ export interface Fastro {
    *
    * const f = new fastro();
    *
-   * f.static("/static", { folder: "static", maxAge: 90 });
+   * f.static("/static", { folder: "static", maxAge: 90, referer: true });
    *
    * await f.serve();
    * ```
    * @param path
    * @param options
    */
-  static(path: string, options?: { maxAge?: number; folder?: string }): Fastro;
+  static(
+    path: string,
+    options?: { maxAge?: number; folder?: string; referer?: boolean },
+  ): Fastro;
   /**
    * Allow you to define SSR page with custom `path`, `element`, and `handler`
    *
@@ -326,7 +329,7 @@ export const BUILD_ID = Deno.env.get("DENO_DEPLOYMENT_ID") || toHashString(
 );
 
 export default class HttpServer implements Fastro {
-  #server: Deno.Server | Server | undefined;
+  #server: Deno.Server | undefined;
   #routes: Route[];
   #middlewares: Middleware[];
   #pages: Page[];
@@ -335,6 +338,7 @@ export default class HttpServer implements Fastro {
   #port;
   #ac;
   #staticUrl: string;
+  #staticReferer: boolean;
   #staticFolder: string;
   #maxAge: number;
   record: Record<string, any>;
@@ -357,6 +361,7 @@ export default class HttpServer implements Fastro {
     this.#root = new URLPattern({ pathname: "/*" });
     this.#ac = new AbortController();
     this.#staticUrl = "";
+    this.#staticReferer = false;
     this.#staticFolder = "";
     this.#maxAge = 0;
     this.#development = this.#getDevelopment();
@@ -439,17 +444,12 @@ export default class HttpServer implements Fastro {
   };
 
   #createHydrateFile = async (elementName: string) => {
-    try {
-      const target =
-        `${Deno.cwd()}/${hydrateFolder}/${elementName.toLowerCase()}.hydrate.tsx`;
-      await Deno.writeTextFile(
-        target,
-        this.#createHydrate(elementName),
-      );
-    } catch (error) {
-      console.error(error);
-      return;
-    }
+    const target =
+      `${Deno.cwd()}/${hydrateFolder}/${elementName.toLowerCase()}.hydrate.tsx`;
+    await Deno.writeTextFile(
+      target,
+      this.#createHydrate(elementName),
+    );
   };
 
   async #buildComponent(elementName: string) {
@@ -464,13 +464,8 @@ export default class HttpServer implements Fastro {
         "GET",
         componentPath,
         (req: Request) => {
-          const referer = req.headers.get("referer");
-          const host = req.headers.get("host") as string;
-          if (!referer || !referer?.includes(host)) {
-            return new Response(STATUS_TEXT[Status.NotFound], {
-              status: Status.NotFound,
-            });
-          }
+          const ref = this.#checkReferer(req);
+          if (ref) return ref;
           return new Response(str, {
             headers: {
               "Content-Type": "application/javascript",
@@ -576,9 +571,13 @@ import { h, hydrate } from "https://esm.sh/preact@10.16.0";import ${comp} from "
     return this.push("PATCH", path, ...handler);
   }
 
-  static(path: string, options?: { maxAge?: number; folder?: string }) {
+  static(
+    path: string,
+    options?: { maxAge?: number; folder?: string; referer?: boolean },
+  ) {
     this.#staticUrl = path;
     if (options?.folder) this.#staticFolder = options?.folder;
+    if (options?.referer) this.#staticReferer = options.referer;
     if (options?.maxAge) this.#maxAge = options.maxAge;
     return this;
   }
@@ -635,13 +634,8 @@ import { h, hydrate } from "https://esm.sh/preact@10.16.0";import ${comp} from "
     });
 
     this.#pushHandler("GET", initPath, (req: HttpRequest) => {
-      const referer = req.headers.get("referer");
-      const host = req.headers.get("host") as string;
-      if (!referer || !referer?.includes(host)) {
-        return new Response(STATUS_TEXT[Status.NotFound], {
-          status: Status.NotFound,
-        });
-      }
+      const ref = this.#checkReferer(req);
+      if (ref) return ref;
 
       let s = btoa(req.record["salt"]);
       s = reverseString(s);
@@ -667,6 +661,16 @@ import { h, hydrate } from "https://esm.sh/preact@10.16.0";import ${comp} from "
   #handleHook = async (h: Hook, r: Request, i: Info) => {
     const x = await h(this, r, i);
     if (this.#isResponse(x)) return x;
+  };
+
+  #checkReferer = (req: Request) => {
+    const referer = req.headers.get("referer");
+    const host = req.headers.get("host") as string;
+    if (!referer || !referer?.includes(host)) {
+      return new Response(STATUS_TEXT[Status.NotFound], {
+        status: Status.NotFound,
+      });
+    }
   };
 
   #handleRequest = async (
@@ -701,6 +705,8 @@ import { h, hydrate } from "https://esm.sh/preact@10.16.0";import ${comp} from "
 
     const s = (await this.#findStaticFiles(this.#staticUrl, req.url)) as Static;
     if (s) {
+      const ref = this.#checkReferer(req);
+      if (ref && this.#staticReferer) return ref;
       return new Response(s.file, {
         headers: {
           "Content-Type": s.contentType,
@@ -710,7 +716,11 @@ import { h, hydrate } from "https://esm.sh/preact@10.16.0";import ${comp} from "
     }
 
     const b = await this.#handleBinary(this.#staticUrl, req.url);
-    if (b) return this.#handleResponse(b);
+    if (b) {
+      const ref = this.#checkReferer(req);
+      if (ref && this.#staticReferer) return ref;
+      return this.#handleResponse(b);
+    }
 
     const h = this.#findHook();
     if (h) {
@@ -1033,7 +1043,6 @@ import { h, hydrate } from "https://esm.sh/preact@10.16.0";import ${comp} from "
   }
 
   finished = () => {
-    if (this.#server instanceof Server) return;
     return this.#server?.finished;
   };
 
@@ -1042,13 +1051,10 @@ import { h, hydrate } from "https://esm.sh/preact@10.16.0";import ${comp} from "
   };
 
   close() {
-    if (!this.#server) return;
-    if (this.#server instanceof Server) {
-      return this.#server.close();
+    if (this.#server) {
+      this.#server.finished.then(() => console.log("Server closed"));
+      console.log("Closing server...");
+      this.#ac.abort();
     }
-
-    this.#server.finished.then(() => console.log("Server closed"));
-    console.log("Closing server...");
-    this.#ac.abort();
   }
 }
