@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { CSS, render } from "https://deno.land/x/gfm@0.2.5/mod.ts";
-import { h, JSX } from "https://esm.sh/preact@10.16.0";
+import { h, JSX } from "https://esm.sh/preact@10.17.1";
 import "https://esm.sh/prismjs@1.29.0/components/prism-jsx?no-check&pin=v57";
 import "https://esm.sh/prismjs@1.29.0/components/prism-typescript?no-check&pin=v57";
 import "https://esm.sh/prismjs@1.29.0/components/prism-tsx?no-check&pin=v57";

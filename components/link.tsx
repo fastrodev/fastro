@@ -1,4 +1,4 @@
-import { h } from "https://esm.sh/preact@10.16.0";
+import { h } from "https://esm.sh/preact@10.17.1";
 
 export function LinkFooter(
   props: { children: string | string[]; link: string },
