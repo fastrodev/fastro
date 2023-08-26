@@ -34,9 +34,3 @@ jobs:
         with:
           path-to-lcov: ./cov.lcov
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Deploy to Deno Deploy
-        uses: denoland/deployctl@v1
-        with:
-          project: fastro
-          entrypoint: app/main.ts
