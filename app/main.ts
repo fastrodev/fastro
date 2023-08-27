@@ -9,7 +9,8 @@ import { denoRunCheck, getExamples, getPosts, init } from "./function.ts";
 import { createHTML } from "./layout.ts";
 
 const title = "Rapid Fullstack Simplicity";
-const description = "Handle thousands of RPS with TypeScript and a minimalistic API";
+const description =
+  "Handle thousands of RPS with TypeScript and a minimalistic API";
 const f = new fastro();
 const m = new markdown({ folder: "docs" });
 const b = new markdown({ folder: "posts", prefix: "blog" });
@@ -51,7 +52,7 @@ f.get("/robots.txt", () =>
 Allow: /
 `);
 
-f.static("/static", { folder: "static", referer: true });
+f.static("/static", { folder: "static" });
 
 f.page("/app", app, (_req: HttpRequest, ctx: Context) => {
   return ctx.render({
