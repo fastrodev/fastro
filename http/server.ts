@@ -428,13 +428,13 @@ export default class HttpServer implements Fastro {
       // deno-lint-ignore no-deprecated-deno-api
       if (Deno.run != undefined) {
         await this.#createHydrateFile(c.name);
+        await this.#buildComponent(c.name);
+        console.log(
+          `%c${c.name.toLowerCase()}.js %cCreated!`,
+          "color: blue",
+          "color: green",
+        );
       }
-      await this.#buildComponent(c.name);
-      console.log(
-        `%c${c.name.toLowerCase()}.js %cCreated!`,
-        "color: blue",
-        "color: green",
-      );
     }
 
     // deno-lint-ignore no-deprecated-deno-api
@@ -454,9 +454,12 @@ export default class HttpServer implements Fastro {
   async #buildComponent(elementName: string) {
     this.#staticPath = `${this.getStaticPath()}/${BUILD_ID}`;
     const es = new Esbuild(elementName);
-    const bundle = await es.build();
-    const componentPath =
-      `${this.#staticPath}/${elementName.toLocaleLowerCase()}.js`;
+    await es.build();
+    // const bundle = await es.build();
+    // console.log(bundle);
+    // const componentPath =
+    // `${this.#staticPath}/${elementName.toLocaleLowerCase()}.js`;
+    /*
     for (const file of bundle.outputFiles) {
       const str = new TextDecoder().decode(file.contents);
       this.push(
@@ -473,6 +476,7 @@ export default class HttpServer implements Fastro {
         },
       );
     }
+    */
     es.stop();
   }
 

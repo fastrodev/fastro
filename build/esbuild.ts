@@ -1,4 +1,4 @@
-import { hydrateFolder } from "../http/server.ts";
+import { BUILD_ID, hydrateFolder } from "../http/server.ts";
 import { denoPlugins, esbuild, esbuildWasmURL } from "./deps.ts";
 
 export class Esbuild {
@@ -28,7 +28,9 @@ export class Esbuild {
         `${cwd}/${hydrateFolder}/${this.#elementName.toLowerCase()}.hydrate.tsx`;
       const esbuildRes = await esbuild.build({
         plugins: [...denoPlugins()],
+        write: true,
         entryPoints: [hydrateTarget],
+        outfile: `static/js/${this.#elementName.toLowerCase()}.js`,
         platform: "browser",
         target: ["chrome99", "firefox99", "safari15"],
         format: "esm",
@@ -38,7 +40,6 @@ export class Esbuild {
         absWorkingDir: cwd,
         bundle: true,
         treeShaking: true,
-        write: false,
         minify: true,
         minifySyntax: true,
         minifyWhitespace: true,

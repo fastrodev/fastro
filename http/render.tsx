@@ -42,7 +42,7 @@ export class Render {
     this.#nest = nest;
     this.#development = server.getDevelopmentStatus();
     this.#server = server;
-    this.#staticPath = `${this.#server.getStaticPath()}/${BUILD_ID}`;
+    this.#staticPath = `${this.#server.getStaticPath()}/js`;
     this.#reqUrl = request?.url;
   }
 

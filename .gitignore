@@ -2,3 +2,5 @@ cov/
 cov.lcov
 .hydrate
 .DS_Store
+.fstr
+static/js
