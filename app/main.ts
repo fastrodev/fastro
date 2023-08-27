@@ -8,7 +8,7 @@ import index from "../pages/index.tsx";
 import { denoRunCheck, getExamples, getPosts, init } from "./function.ts";
 import { createHTML } from "./layout.ts";
 
-const title = "Swift Simplicity, Powerful Speed";
+const title = "Rapid Fullstack Simplicity";
 const description = "Handle thousands of RPS with a minimalistic API";
 const f = new fastro();
 const m = new markdown({ folder: "docs" });

@@ -32,8 +32,8 @@ jobs:
           crate: oha
           version: 0.6.0
 
-      # - name: Generate internal benchmarks
-      #   run: deno task bench
+      - name: Generate internal benchmarks
+        run: deno task bench
 
       - name: Push changes
         uses: actions-js/push@v1
