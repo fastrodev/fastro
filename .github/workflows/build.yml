@@ -30,7 +30,7 @@ jobs:
         run: deno task coverage
 
       - name: Coveralls
-        uses: coverallsapp/github-action@v1
+        uses: coverallsapp/github-action@v2
         with:
           path-to-lcov: ./cov.lcov
           github-token: ${{ secrets.GITHUB_TOKEN }}
