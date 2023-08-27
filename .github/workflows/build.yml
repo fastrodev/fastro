@@ -27,7 +27,7 @@ jobs:
         run: deno task test
          
       - name: Generate report
-        run: deno coverage cov --lcov > cov.lcov
+        run: deno task coverage
 
       - name: Coveralls
         uses: coverallsapp/github-action@v1
