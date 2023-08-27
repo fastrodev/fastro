@@ -1,5 +1,5 @@
-import { BUILD_ID, hydrateFolder } from "../http/server.ts";
-import { denoPlugins, esbuild, esbuildWasmURL } from "./deps.ts";
+import { hydrateFolder } from "../http/server.ts";
+import { denoPlugins, esbuild } from "./deps.ts";
 
 export class Esbuild {
   #elementName: string;
@@ -9,15 +9,7 @@ export class Esbuild {
   }
 
   #initEsbuild = async () => {
-    // deno-lint-ignore no-deprecated-deno-api
-    if (Deno.run === undefined) {
-      await esbuild.initialize({
-        wasmURL: esbuildWasmURL,
-        worker: false,
-      });
-    } else {
-      await esbuild.initialize({});
-    }
+    await esbuild.initialize({});
   };
 
   build = async () => {

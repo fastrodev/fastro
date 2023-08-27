@@ -346,7 +346,7 @@ Deno.test(
       const refreshPath = await fetch(host + `/${BUILD_ID}/refresh.js`, {
         method: "GET",
       });
-      assertExists(
+      assertEquals(
         await refreshPath.text(),
         `Not Found`,
       );
