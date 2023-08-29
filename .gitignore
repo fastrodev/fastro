@@ -4,3 +4,4 @@ cov.lcov
 .DS_Store
 .fstr
 static/js
+*.hydrate.tsx
