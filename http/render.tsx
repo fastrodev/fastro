@@ -5,6 +5,8 @@ import {
   Component,
   Fastro,
   FunctionComponent,
+  isPageComponent,
+  PageComponent,
   RenderOptions,
 } from "./server.ts";
 import {
@@ -210,12 +212,20 @@ es.onmessage = function(e) {
       return this.#handleJSXElement(compID, component, cached);
     }
 
-    const c = component as FunctionComponent;
-    compID = `${c.name}${this.#reqUrl}`;
+    const is = isPageComponent(component as PageComponent);
+    const pc = component as PageComponent;
+    const c = is ? pc.component : component as FunctionComponent;
+    const e = is ? pc.component : this.#element;
+
+    if (isJSX(c as JSX.Element)) {
+      return this.#handleJSXElement(compID, c, cached);
+    }
+    const fc = c as FunctionComponent;
+    compID = `${fc.name}${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
 
-    await this.#handleComponent(c);
-    const layout = this.#initHtml(this.#element, this.#options.props);
+    await this.#handleComponent(fc);
+    const layout = this.#initHtml(e, this.#options.props);
     let html = renderToString(layout);
     html = await this.#setInitialProps(html);
     return this.#nest[compID] = `<!DOCTYPE html>${html}`;
