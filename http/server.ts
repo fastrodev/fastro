@@ -484,7 +484,7 @@ import { h, hydrate } from "https://esm.sh/preact@10.17.1";import ${comp} from "
 
   #createHydratePageComponentFile = async (c: PageComponent) => {
     const fc = c.component as FunctionComponent;
-    const t = `${Deno.cwd()}/${c.folder}/${fc.name}.hydrate.tsx`;
+    const t = `${Deno.cwd()}/${c.folder}/${fc.name.toLowerCase()}.hydrate.tsx`;
     const h = this.#createPageComponentHydrate(fc.name);
     await Deno.writeTextFile(t, h);
   };
