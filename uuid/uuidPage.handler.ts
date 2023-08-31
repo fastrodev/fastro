@@ -2,7 +2,7 @@ import { Context, HttpRequest } from "../mod.ts";
 
 const getUser = (data: string) => Promise.resolve(data);
 
-export async function pageHandler(_req: HttpRequest, ctx: Context) {
+export default async function pageHandler(_req: HttpRequest, ctx: Context) {
   const data = await getUser("Guest");
 
   const options = {

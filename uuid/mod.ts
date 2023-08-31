@@ -1,12 +1,12 @@
 import { Fastro } from "../mod.ts";
-import { apiHandler } from "./uuidApiHandler.ts";
-import uuidPage from "./uuidPage.tsx";
-import uuidPageJsx from "./uuidPageJsx.tsx";
-import { pageHandler } from "./uuidPageHandler.ts";
+import { apiHandler } from "./uuidApi.handler.ts";
+import uuid from "./uuid.page.tsx";
+import jsx from "./uuidJSX.page.tsx";
+import pageHandler from "./uuidPage.handler.ts";
 
 export const uuidModule = (f: Fastro) => {
   f.get("/api", apiHandler);
-  f.page("/uuid", { component: uuidPage, folder: "uuid" }, pageHandler);
-  f.page("/jsx", uuidPageJsx, pageHandler);
+  f.page("/uuid", { component: uuid, folder: "uuid" }, pageHandler);
+  f.page("/jsx", jsx, pageHandler);
   return f;
 };

@@ -1,7 +1,7 @@
 import { useState } from "https://esm.sh/preact@10.17.1/hooks";
 import { h } from "https://esm.sh/preact@10.17.1";
 
-export default function uuidPage(props: { data: string }) {
+export default function UUID(props: { data: string }) {
   const [data, setD] = useState({
     uuid: "e90d45df-4132-41ad-aec8-e0e19f7647a9",
   });
