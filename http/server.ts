@@ -429,7 +429,7 @@ export default class HttpServer implements Fastro {
 
   #createHydrateFile = async (e: string) => {
     const t = `${Deno.cwd()}/${hydrateFolder}/${e.toLowerCase()}.hydrate.tsx`;
-    const js = this.#createHydrate(e);
+    const js = this.#createHydrate(e.toLowerCase());
     await Deno.writeTextFile(t, js);
   };
 
@@ -485,7 +485,7 @@ import { h, hydrate } from "https://esm.sh/preact@10.17.1";import ${comp} from "
   #createHydratePageComponentFile = async (c: PageComponent) => {
     const fc = c.component as FunctionComponent;
     const t = `${Deno.cwd()}/${c.folder}/${fc.name.toLowerCase()}.hydrate.tsx`;
-    const h = this.#createPageComponentHydrate(fc.name);
+    const h = this.#createPageComponentHydrate(fc.name.toLowerCase());
     await Deno.writeTextFile(t, h);
   };
 
