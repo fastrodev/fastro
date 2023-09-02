@@ -3,7 +3,7 @@ import { assertExists } from "https://deno.land/std@0.198.0/assert/assert_exists
 import fastro, { Fastro, Info } from "../mod.ts";
 import { assert } from "https://deno.land/std@0.198.0/assert/assert.ts";
 import { BUILD_ID, Context, HttpRequest, Next } from "./server.ts";
-import User from "../pages/user.tsx";
+import User from "../pages/user.page.tsx";
 
 const host = "http://localhost:8000";
 
