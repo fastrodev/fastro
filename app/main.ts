@@ -1,10 +1,10 @@
 import fastro, { Context, HttpRequest, Next } from "../http/server.ts";
 import { version } from "../http/version.ts";
 import markdown from "../middlewares/markdown.tsx";
-import app from "../pages/app.tsx";
-import blog from "../pages/blog.tsx";
-import Example from "../pages/example.tsx";
-import index from "../pages/index.tsx";
+import app from "../pages/app.page.tsx";
+import blog from "../pages/blog.page.tsx";
+import Example from "../pages/example.page.tsx";
+import index from "../pages/index.page.tsx";
 import { denoRunCheck, getExamples, getPosts, init } from "./function.ts";
 import { createHTML } from "./layout.ts";
 

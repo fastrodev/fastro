@@ -1,4 +1,4 @@
-import { delay } from "https://deno.land/std@0.200.0/async/mod.ts";
+import { delay } from "https://deno.land/std@0.201.0/async/mod.ts";
 import { markdownTable } from "https://esm.sh/markdown-table@3.0.2";
 
 async function oha(url?: string) {

@@ -1,5 +1,5 @@
 import fastro, { Context, HttpRequest } from "../mod.ts";
-import user from "../pages/user.tsx";
+import user from "../pages/user.page.tsx";
 import { uuidModule } from "../uuid/mod.ts";
 
 // simulate async method
