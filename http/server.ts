@@ -81,7 +81,7 @@ type NoScriptLink = {
   href?: string;
 };
 
-type ModuleFunction = (f: Fastro) => Fastro;
+type ModuleFunction = (f: Fastro) => Fastro | Promise<Fastro>;
 
 export type RenderOptions = {
   build?: boolean;
