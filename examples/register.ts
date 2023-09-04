@@ -22,8 +22,8 @@ const productModule = (f: Fastro) => {
     .delete(path, () => "Delete product");
 };
 
-f.register(helloModule);
-f.register(userModule);
-f.register(productModule);
+await f.register(helloModule);
+await f.register(userModule);
+await f.register(productModule);
 
 await f.serve();

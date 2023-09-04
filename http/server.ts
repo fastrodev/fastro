@@ -287,7 +287,7 @@ export interface Fastro {
     element: Component,
     ...handler: Array<MiddlewareArgument>
   ): Fastro;
-  register(mf: ModuleFunction): Fastro;
+  register(mf: ModuleFunction): Promise<Fastro>;
   getStaticFolder(): string;
   getStaticPath(): string;
   getDevelopmentStatus(): boolean;
@@ -1066,7 +1066,7 @@ import { h, hydrate } from "https://esm.sh/preact@10.17.1";import ${comp} from "
   };
 
   register = (mf: ModuleFunction) => {
-    return mf(this);
+    return Promise.resolve(mf(this));
   };
 
   close() {
