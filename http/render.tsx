@@ -266,7 +266,9 @@ es.onmessage = function(e) {
 
     const plaintext = JSON.stringify(this.#options.props);
     const encryptedData = await encryptData(importedKey, plaintext);
-    const env = Deno.run === undefined ? "" : `window.__ENV__ = "DEVELOPMENT";`;
+    const env = Deno.env.get("DEVELOPMENT") === undefined
+      ? ""
+      : `window.__ENV__ = "DEVELOPMENT";`;
 
     return layout.replace(
       `<script></script>`,
