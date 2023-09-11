@@ -6,8 +6,13 @@ export async function build(folder: string, elementName: string) {
     const cwd = Deno.cwd();
     const hydrateTarget =
       `${cwd}/${folder}/${elementName.toLowerCase()}.hydrate.tsx`;
+    const configPath = `${cwd}/deno.json`;
     const esbuildRes = await esbuild.build({
-      plugins: [...denoPlugins()],
+      plugins: [
+        ...denoPlugins({
+          configPath,
+        }),
+      ],
       write: true,
       entryPoints: [hydrateTarget],
       outfile: `static/js/${elementName.toLowerCase()}.js`,
