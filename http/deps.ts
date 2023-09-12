@@ -1,10 +1,4 @@
-export { h } from "https://esm.sh/preact@10.17.1";
-export type { JSX } from "https://esm.sh/preact@10.17.1";
-
-export {
-  default as renderToString,
-} from "https://esm.sh/preact-render-to-string@6.2.1?deps=preact@10.17.1";
-
+export { renderToString } from "react-dom/server";
 export { toHashString } from "https://deno.land/std@0.201.0/crypto/to_hash_string.ts";
 export {
   Status,

@@ -8,7 +8,7 @@ export default async function pageHandler(_req: HttpRequest, ctx: Context) {
   const options = {
     props: { data },
     status: 200,
-    html: { head: { title: "Preact Component" } },
+    html: { head: { title: "React Component" } },
   };
 
   return ctx.render(options);

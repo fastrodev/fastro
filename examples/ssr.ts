@@ -19,7 +19,7 @@ const handler = async (_req: HttpRequest, ctx: Context) => {
     // pass data to component via props
     props: { data },
     status: 200,
-    html: { head: { title: "Preact Component" } },
+    html: { head: { title: "React Component" } },
   };
 
   // render react component from server

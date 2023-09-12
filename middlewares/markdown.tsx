@@ -1,13 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
 import { CSS, render } from "https://deno.land/x/gfm@0.2.5/mod.ts";
-import { h, JSX } from "https://esm.sh/preact@10.17.1";
-import "https://esm.sh/prismjs@1.29.0/components/prism-jsx?no-check&pin=v57";
-import "https://esm.sh/prismjs@1.29.0/components/prism-typescript?no-check&pin=v57";
-import "https://esm.sh/prismjs@1.29.0/components/prism-tsx?no-check&pin=v57";
-import "https://esm.sh/prismjs@1.29.0/components/prism-bash?no-check&pin=v57";
-import "https://esm.sh/prismjs@1.29.0/components/prism-powershell?no-check&pin=v57";
-import "https://esm.sh/prismjs@1.29.0/components/prism-json?no-check&pin=v57";
-import "https://esm.sh/prismjs@1.29.0/components/prism-diff?no-check&pin=v57";
+import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-tsx";
+import "prismjs/components/prism-bash";
+import "prismjs/components/prism-powershell";
+import "prismjs/components/prism-json";
+import "prismjs/components/prism-diff";
 
 import { getPublishDate } from "../app/function.ts";
 import DefaultFooter from "../components/footer.tsx";
@@ -23,6 +22,7 @@ import {
 
 import { extract, remark, remarkToc } from "./deps.ts";
 import { version } from "../http/version.ts";
+import { createElement } from "react";
 
 type Meta = {
   title?: string;
@@ -268,7 +268,7 @@ class Markdown {
   };
 
   #markdownToHtml(content: string) {
-    const jsxElement = h("div", {
+    const jsxElement = createElement("div", {
       dangerouslySetInnerHTML: {
         // TODO Sanitize
         __html: render(content, {

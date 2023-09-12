@@ -1,5 +1,4 @@
-import { useState } from "preact/hooks";
-import { h } from "preact";
+import React, { useState } from "react";
 
 export default function UUID(props: { data: string }) {
   const [data, setD] = useState({

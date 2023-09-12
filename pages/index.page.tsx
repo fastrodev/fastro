@@ -1,4 +1,4 @@
-import { h } from "https://esm.sh/preact@10.17.1";
+import React from "react";
 import Footer from "../components/footer.tsx";
 import Header from "../components/header.tsx";
 
