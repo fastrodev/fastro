@@ -1,5 +1,5 @@
-import { useState } from "https://esm.sh/preact@10.17.1/hooks";
-import { h } from "https://esm.sh/preact@10.17.1";
+import { useState } from "preact/hooks";
+import { h } from "preact";
 
 export default function UUID(props: { data: string }) {
   const [data, setD] = useState({
