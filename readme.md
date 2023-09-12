@@ -1,5 +1,5 @@
 # Fastro
-
+[![build](https://github.com/fastrodev/fastro/actions/workflows/build.yml/badge.svg)](https://github.com/fastrodev/fastro/actions/workflows/build.yml)
 [![bench](https://github.com/fastrodev/fastro/actions/workflows/bench.yml/badge.svg)](https://github.com/fastrodev/fastro/actions/workflows/bench.yml)
 [![deno doc](https://doc.deno.land/badge.svg)](https://deno.land/x/fastro/mod.ts)
 [![Coverage Status](https://coveralls.io/repos/github/fastrodev/fastro/badge.svg?branch=main)](https://coveralls.io/github/fastrodev/fastro?branch=main)
