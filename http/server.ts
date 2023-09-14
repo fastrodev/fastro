@@ -440,7 +440,9 @@ export default class HttpServer implements Fastro {
 
   #createHydrate(comp: string, module?: boolean) {
     const dev = Deno.env.get("ENV") === "DEVELOPMENT";
-    const react = dev ? "reactdev" : "react";
+    const react = dev
+      ? "https://esm.sh/v132/react@18.2.0?dev"
+      : "https://esm.sh/v132/react@18.2.0";
     const hydrateRoot = dev ? "react-dom/client?dev" : "react-dom/client";
     const page = module ? "./" : "../pages/";
     return `// deno-lint-ignore-file no-explicit-any
