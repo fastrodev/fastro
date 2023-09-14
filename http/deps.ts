@@ -1,4 +1,8 @@
-export { renderToString } from "react-dom/server";
+import { renderToString as rtsProd } from "react-dom/server";
+import { renderToString as rtsDev } from "react-dom/server?dev";
+const renderToString = Deno.env.get("ENV") === "DEVELOPMENT" ? rtsDev : rtsProd;
+export { renderToString };
+
 export { toHashString } from "https://deno.land/std@0.201.0/crypto/to_hash_string.ts";
 export {
   Status,
