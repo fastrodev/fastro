@@ -8,7 +8,7 @@ import index from "../pages/index.page.tsx";
 import { denoRunCheck, getExamples, getPosts, init } from "./function.ts";
 import { createHTML } from "./layout.ts";
 
-const title = "Rapid Fullstack Simplicity";
+const title = "Speed Without Complexity";
 const description =
   "Handle thousands of RPS with TypeScript and a minimalistic API";
 const f = new fastro();
