@@ -9,6 +9,7 @@ export default async function pageHandler(_req: HttpRequest, ctx: Context) {
     props: { data },
     status: 200,
     html: { head: { title: "React Component" } },
+    hydrate: false,
   };
 
   return ctx.render(options);

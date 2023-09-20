@@ -89,6 +89,7 @@ export type RenderOptions = {
   status?: number;
   props?: any;
   development?: boolean;
+  hydrate?: boolean;
   html?: {
     lang?: string;
     class?: string;
