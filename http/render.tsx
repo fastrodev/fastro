@@ -241,6 +241,7 @@ es.onmessage = function(e) {
   #handleComponent = async (c: FunctionComponent, hydrate = true) => {
     if (!this.#options.html?.body) return;
     if (hydrate) {
+      console.log('hydrate===>', hydrate)
       this.#options.html?.body.script?.push({
         src: `${this.#staticPath}/${c.name.toLocaleLowerCase()}.js`,
       });
