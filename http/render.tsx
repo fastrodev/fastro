@@ -161,6 +161,7 @@ export class Render {
             )}
         </head>
         <body
+          data-bs-theme={this.#options.html?.body?.theme ?? "dark"}
           className={this.#options.html?.body?.class}
           style={this.#options.html?.body?.style}
         >

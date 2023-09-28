@@ -105,6 +105,7 @@ export type RenderOptions = {
       noScriptLink?: NoScriptLink;
     };
     body?: {
+      theme?: string;
       class?: string;
       style?: React.CSSProperties;
       script?: Script[];
