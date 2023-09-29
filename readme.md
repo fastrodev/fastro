@@ -1,6 +1,6 @@
 # Fastro
-
-[![Build Status - Cirrus][]][Build status]
+[![build](https://github.com/fastrodev/fastro/actions/workflows/build.yml/badge.svg)](https://github.com/fastrodev/fastro/actions/workflows/build.yml)
+[![bench](https://github.com/fastrodev/fastro/actions/workflows/bench.yml/badge.svg)](https://github.com/fastrodev/fastro/actions/workflows/bench.yml)
 [![deno doc](https://doc.deno.land/badge.svg)](https://deno.land/x/fastro/mod.ts)
 [![Coverage Status](https://coveralls.io/repos/github/fastrodev/fastro/badge.svg?branch=main)](https://coveralls.io/github/fastrodev/fastro?branch=main)
 
@@ -56,6 +56,3 @@ To find one that fits your use case, you can explore
 
 And to create your first JSX SSR page, you can follow
 [the start page step by step](https://fastro.deno.dev/start).
-
-[Build Status - Cirrus]: https://github.com/fastrodev/fastro/workflows/ci/badge.svg?branch=main&event=push
-[Build status]: https://github.com/fastrodev/fastro/actions
