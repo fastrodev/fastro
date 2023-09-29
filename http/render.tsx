@@ -1,5 +1,5 @@
 // deno-lint-ignore-file
-import React from "react";
+import React from "https://esm.sh/v132/react@18.2.0";
 import { renderToString } from "./deps.ts";
 import {
   BUILD_ID,
