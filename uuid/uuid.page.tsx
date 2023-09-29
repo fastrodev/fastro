@@ -1,4 +1,4 @@
-import React, { useState } from "reactdev";
+import React, { useState } from "react";
 
 export default function UUID(props: { data: string }) {
   const [data, setD] = useState({
