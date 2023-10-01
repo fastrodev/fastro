@@ -1,14 +1,9 @@
 {
-  "imports": {
-    "react": "https://esm.sh/preact@10.17.1/compat",
-    "react/jsx-runtime": "https://esm.sh/preact@10.17.1/jsx-runtime",
-    "preact": "https://esm.sh/preact@10.17.1",
-    "preact/": "https://esm.sh/preact@10.17.1/"
-  },
+  "importMap": "./import_map.json",
   "lock": false,
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "https://esm.sh/preact@10.16.0",
+    "jsxImportSource": "react",
     "lib": [
       "dom",
       "dom.iterable",

@@ -1,5 +1,6 @@
 // deno-lint-ignore-file
-import { h, JSX, renderToString } from "./deps.ts";
+import React from "react";
+import { renderToString } from "./deps.ts";
 import {
   BUILD_ID,
   Component,
@@ -83,10 +84,12 @@ export class Render {
   };
 
   #initHtml = (element: Component, props?: any) => {
-    let el = isJSX(element as JSX.Element) ? element as JSX.Element : h(
-      element as FunctionComponent,
-      this.#options.props,
-    );
+    let el = isJSX(element as JSX.Element)
+      ? element as JSX.Element
+      : React.createElement(
+        element as FunctionComponent,
+        this.#options.props,
+      );
 
     return (
       <html
@@ -95,11 +98,11 @@ export class Render {
         style={this.#options.html?.style}
       >
         <head>
-          {this.#options.html?.head?.title
-            ? <title>{this.#options.html?.head?.title}</title>
-            : ""}
-          {this.#options.html?.head?.meta
-            ? this.#options.html?.head?.meta.map((m) => (
+          {this.#options.html?.head?.title && (
+            <title>{this.#options.html?.head?.title}</title>
+          )}
+          {this.#options.html?.head?.meta &&
+            this.#options.html?.head?.meta.map((m) => (
               <meta
                 property={m.property}
                 name={m.name}
@@ -107,10 +110,9 @@ export class Render {
                 itemProp={m.itemprop}
                 charSet={m.charset}
               />
-            ))
-            : ""}
-          {this.#options.html?.head?.link
-            ? this.#options.html?.head?.link.map((l) => (
+            ))}
+          {this.#options.html?.head?.link &&
+            this.#options.html?.head?.link.map((l) => (
               <link
                 href={l.href}
                 integrity={l.integrity}
@@ -121,11 +123,10 @@ export class Render {
                 crossOrigin={l.crossorigin}
               >
               </link>
-            ))
-            : ""}
+            ))}
 
-          {this.#options.html?.head?.noScriptLink
-            ? (
+          {this.#options.html?.head?.noScriptLink &&
+            (
               <noscript>
                 <link
                   rel={this.#options.html?.head?.noScriptLink.rel}
@@ -133,18 +134,16 @@ export class Render {
                 >
                 </link>
               </noscript>
-            )
-            : ""}
+            )}
 
-          {this.#options.html?.head?.headStyle
-            ? (
+          {this.#options.html?.head?.headStyle &&
+            (
               <style>
                 {this.#options.html?.head?.headStyle}
               </style>
-            )
-            : ""}
-          {this.#options.html?.head?.script
-            ? this.#options.html?.head?.script.map((s) => (
+            )}
+          {this.#options.html?.head?.script &&
+            this.#options.html?.head?.script.map((s) => (
               <script
                 src={s.src}
                 type={s.type}
@@ -152,18 +151,17 @@ export class Render {
                 nonce={s.nonce}
                 integrity={s.integrity}
               />
-            ))
-            : ""}
+            ))}
 
-          {this.#options.html?.head?.headScript
-            ? (
+          {this.#options.html?.head?.headScript &&
+            (
               <script>
                 {this.#options.html?.head?.headScript}
               </script>
-            )
-            : ""}
+            )}
         </head>
         <body
+          data-bs-theme={this.#options.html?.body?.theme ?? "dark"}
           className={this.#options.html?.body?.class}
           style={this.#options.html?.body?.style}
         >
@@ -177,17 +175,16 @@ export class Render {
           >
             {el}
           </div>
-          {props ? <script></script> : ""}
-          {this.#options.html?.body?.script
-            ? this.#options.html?.body?.script.map((s) => (
+          {props && <script></script>}
+          {this.#options.html?.body?.script &&
+            this.#options.html?.body?.script.map((s) => (
               <script
                 src={s.src}
                 type={s.type}
                 crossOrigin={s.crossorigin}
                 nonce={s.nonce}
               />
-            ))
-            : ""}
+            ))}
         </body>
       </html>
     );
@@ -224,7 +221,7 @@ es.onmessage = function(e) {
     compID = `${fc.name}${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
 
-    await this.#handleComponent(fc);
+    await this.#handleComponent(fc, this.#options.hydrate);
     const layout = this.#initHtml(e, this.#options.props);
     let html = renderToString(layout);
     html = await this.#setInitialProps(html);
@@ -242,11 +239,13 @@ es.onmessage = function(e) {
     return this.#nest[compID] = `<!DOCTYPE html>${html}`;
   };
 
-  #handleComponent = async (c: FunctionComponent) => {
+  #handleComponent = async (c: FunctionComponent, hydrate = true) => {
     if (!this.#options.html?.body) return;
-    this.#options.html?.body.script?.push({
-      src: `${this.#staticPath}/${c.name.toLocaleLowerCase()}.js`,
-    });
+    if (hydrate) {
+      this.#options.html?.body.script?.push({
+        src: `${this.#staticPath}/${c.name.toLocaleLowerCase()}.js`,
+      });
+    }
   };
 
   #setInitialProps = async (layout: string) => {
