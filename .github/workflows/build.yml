@@ -21,7 +21,7 @@ jobs:
           deno-version: vx.x.x
 
       - name: Init import_map
-        run: mv import_map.json.prod import_map.json
+        run: cp import_map.json.prod import_map.json
 
       - name: Run hydrate
         run: deno task hydrate
