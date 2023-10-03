@@ -1,0 +1,8 @@
+{
+  "imports": {
+    "react": "https://esm.sh/v132/react@18.2.0",
+    "react/": "https://esm.sh/v132/react@18.2.0/",
+    "react-dom": "https://esm.sh/v132/react-dom@18.2.0",
+    "react-dom/": "https://esm.sh/v132/react-dom@18.2.0/"
+  }
+}
