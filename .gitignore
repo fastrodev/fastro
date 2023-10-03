@@ -5,3 +5,4 @@ cov.lcov
 .fstr
 static/js
 *.hydrate.tsx
+import_map.json
