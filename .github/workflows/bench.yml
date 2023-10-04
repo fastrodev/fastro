@@ -32,9 +32,6 @@ jobs:
           crate: oha
           version: 0.6.0
       
-      - name: Init import_map
-        run: cp import_map.json.prod import_map.json
-
       - name: Generate internal benchmarks
         run: deno task bench
 
