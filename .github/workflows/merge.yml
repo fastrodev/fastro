@@ -20,11 +20,11 @@ jobs:
         with:
           deno-version: vx.x.x
 
-      - name: Init import_map
-        run: mv import_map.json.prod import_map.json
-
       - run: deno lint --unstable http
       - run: deno lint --unstable examples
+
+      - name: Init import_map
+        run: mv import_map.json.prod import_map.json
 
       - name: Run hydrate
         run: deno task hydrate
