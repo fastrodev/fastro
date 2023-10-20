@@ -1,12 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
 import { CSS, render } from "https://deno.land/x/gfm@0.2.5/mod.ts";
-import "https://esm.sh/v132/prismjs@1.29.0/components/prism-jsx";
-import "https://esm.sh/v132/prismjs@1.29.0/components/prism-typescript";
-import "https://esm.sh/v132/prismjs@1.29.0/components/prism-tsx";
-import "https://esm.sh/v132/prismjs@1.29.0/components/prism-bash";
-import "https://esm.sh/v132/prismjs@1.29.0/components/prism-powershell";
-import "https://esm.sh/v132/prismjs@1.29.0/components/prism-json";
-import "https://esm.sh/v132/prismjs@1.29.0/components/prism-diff";
+import "https://esm.sh/v133/prismjs@1.29.0/components/prism-jsx";
+import "https://esm.sh/v133/prismjs@1.29.0/components/prism-typescript";
+import "https://esm.sh/v133/prismjs@1.29.0/components/prism-tsx";
+import "https://esm.sh/v133/prismjs@1.29.0/components/prism-bash";
+import "https://esm.sh/v133/prismjs@1.29.0/components/prism-powershell";
+import "https://esm.sh/v133/prismjs@1.29.0/components/prism-json";
+import "https://esm.sh/v133/prismjs@1.29.0/components/prism-diff";
 
 import { getPublishDate } from "../app/function.ts";
 import DefaultFooter from "../components/footer.tsx";
