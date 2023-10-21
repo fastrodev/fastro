@@ -122,7 +122,6 @@ export const hydrateFolder = ".hydrate";
 export class Context {
   server!: Fastro;
   info!: Info;
-  [key: string]: any;
   render!: (options?: RenderOptions) => Response | Promise<Response>;
   send!: (data: unknown, status?: number) => Response | Promise<Response>;
 }
