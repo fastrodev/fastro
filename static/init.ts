@@ -106,7 +106,7 @@ jobs:
   "lock": false,
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "https://esm.sh/preact@10.16.0",
+    "jsxImportSource": "https://esm.sh/v133/react@18.2.0",
     "lib": [
       "dom",
       "dom.iterable",
@@ -177,8 +177,7 @@ It will reload your browser automatically if changes occur.
     await Deno.mkdir("pages");
     await Deno.writeTextFile(
       "pages/app.tsx",
-      `import { useState } from "https://esm.sh/preact@10.17.1/hooks";
-import { h } from "https://esm.sh/preact@10.17.1";
+      `import React, { useState } from "https://esm.sh/v133/react@18.2.0";
 
 export default function App(props: { data: string }) {
   const [data, setD] = useState({
