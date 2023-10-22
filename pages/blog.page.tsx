@@ -30,7 +30,7 @@ export default function Blog(
                   <div className="d-flex">
                     <div
                       className="fw-light text-white-50 me-3"
-                      style={{ minWidth: 110 }}
+                      style={{ minWidth: 130, maxWidth: 130 }}
                     >
                       {post.date}
                     </div>

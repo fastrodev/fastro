@@ -1,6 +1,6 @@
 ---
 title: "Manual"
-description: Your essential guide to mastering web frameworks - from fundamentals to advanced techniques. Unlock the full potential of web development.
+description: Your essential guide to mastering fastro web framework - from fundamentals to advanced techniques.
 image: https://fastro.dev/static/image.png
 ---
 
@@ -339,14 +339,14 @@ f.static("/static", { folder: "static", maxAge: 90 });
 f.page(
   // path
   "/",
-  // preact component
+  // react component
   user,
   // handler
   (_req: HttpRequest, ctx: Context) => {
     const options = {
       props: { data: "Guest" },
       status: 200,
-      html: { head: { title: "Preact Component" } },
+      html: { head: { title: "React Component" } },
     };
     return ctx.render(options);
   },
@@ -370,7 +370,7 @@ Look at the simple SSR deno-cli entry point above. There is `props` field in the
 `ctx.render` options.
 
 ```tsx
-import { h } from "https://esm.sh/preact@10.17.1";
+import React from "https://esm.sh/v133/react@18.2.0";
 
 const User = (props: { data: string }) => <h1>Hello {props.data}</h1>;
 
@@ -381,7 +381,7 @@ This is the `user.tsx` page that return `JSX.Element` with no props. So you can
 not pass anything.
 
 ```tsx
-import { h } from "https://esm.sh/preact@10.17.1";
+import React from "https://esm.sh/v133/react@18.2.0";
 
 const User = <h1>Hello Guest</h1>;
 

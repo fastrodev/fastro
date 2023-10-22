@@ -1,12 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
 import { CSS, render } from "https://deno.land/x/gfm@0.2.5/mod.ts";
-import "https://esm.sh/v132/prismjs@1.29.0/components/prism-jsx";
-import "https://esm.sh/v132/prismjs@1.29.0/components/prism-typescript";
-import "https://esm.sh/v132/prismjs@1.29.0/components/prism-tsx";
-import "https://esm.sh/v132/prismjs@1.29.0/components/prism-bash";
-import "https://esm.sh/v132/prismjs@1.29.0/components/prism-powershell";
-import "https://esm.sh/v132/prismjs@1.29.0/components/prism-json";
-import "https://esm.sh/v132/prismjs@1.29.0/components/prism-diff";
+import "https://esm.sh/v133/prismjs@1.29.0/components/prism-jsx";
+import "https://esm.sh/v133/prismjs@1.29.0/components/prism-typescript";
+import "https://esm.sh/v133/prismjs@1.29.0/components/prism-tsx";
+import "https://esm.sh/v133/prismjs@1.29.0/components/prism-bash";
+import "https://esm.sh/v133/prismjs@1.29.0/components/prism-powershell";
+import "https://esm.sh/v133/prismjs@1.29.0/components/prism-json";
+import "https://esm.sh/v133/prismjs@1.29.0/components/prism-diff";
 
 import { getPublishDate } from "../app/function.ts";
 import DefaultFooter from "../components/footer.tsx";
@@ -68,6 +68,7 @@ export default class Instance {
       cache: true,
       html: {
         lang: "en",
+        class: "h-100",
         head: {
           title: `${md.meta?.title} | Fastro Framework`,
           descriptions: md.meta?.description,
@@ -256,7 +257,9 @@ class Markdown {
         <Header path={path} />
         <main className="markdown flex-grow-1" style={{ marginBottom: 20 }}>
           <div className="text-center">
-            <h1 className="display-5 fw-bold">{meta.title}</h1>
+            <h1 className="display-5 fw-bold" style={{ marginBottom: 0 }}>
+              {meta.title}
+            </h1>
             <p className="text-white-50 h5 fw-light">{meta.description}</p>
           </div>
           <hr />

@@ -1,7 +1,7 @@
 const init = async (name?: string, ver?: string) => {
   try {
     const projectName = name ?? "my-project";
-    const v = ver;
+    const _v = ver;
     // vscode
     await Deno.mkdir(".vscode");
     await Deno.writeTextFile(
@@ -32,9 +32,9 @@ const init = async (name?: string, ver?: string) => {
     // main entry point
     await Deno.writeTextFile(
       "main.ts",
-      `import { Server } from "./deps.ts";
-import { pageModule } from "./pages/mod.ts";
-import { uuidModule } from "./uuid/mod.ts";
+      `import { Server } from "$app/deps.ts";
+import { pageModule } from "$app/pages/mod.ts";
+import { uuidModule } from "$app/uuid/mod.ts";
 
 // initiate the application
 const s = new Server();
@@ -57,8 +57,8 @@ await s.serve();
     // deps
     await Deno.writeTextFile(
       "deps.ts",
-      `import Server from "https://deno.land/x/fastro@${v}/mod.ts";
-export * from "https://deno.land/x/fastro@${v}/mod.ts";
+      `import Server from "https://raw.githubusercontent.com/fastrodev/fastro/react/mod.ts";
+export * from "https://raw.githubusercontent.com/fastrodev/fastro/react/mod.ts";
 export { Server };
 `,
     );
@@ -103,10 +103,11 @@ jobs:
     await Deno.writeTextFile(
       "deno.json",
       `{
+  "importMap": "./import_map.json",
   "lock": false,
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "https://esm.sh/preact@10.16.0",
+    "jsxImportSource": "react",
     "lib": [
       "dom",
       "dom.iterable",
@@ -121,6 +122,35 @@ jobs:
   }
 }`,
     );
+
+    // deno.json
+    await Deno.writeTextFile(
+      "import_map.json",
+      `{
+  "imports": {
+    "$app/": "./",
+    "react": "https://esm.sh/v133/react@18.2.0?dev",
+    "react/": "https://esm.sh/v133/react@18.2.0/",
+    "react-dom": "https://esm.sh/v133/react-dom@18.2.0?dev",
+    "react-dom/": "https://esm.sh/v133/react-dom@18.2.0/"
+  }
+}`,
+    );
+
+    // deno.json
+    await Deno.writeTextFile(
+      "import_map.prod.json",
+      `{
+  "imports": {
+    "$app/": "./",
+    "react": "https://esm.sh/v133/react@18.2.0",
+    "react/": "https://esm.sh/v133/react@18.2.0/",
+    "react-dom": "https://esm.sh/v133/react-dom@18.2.0",
+    "react-dom/": "https://esm.sh/v133/react-dom@18.2.0/"
+  }
+}`,
+    );
+
     // readme.md
     await Deno.writeTextFile(
       "readme.md",
@@ -176,9 +206,8 @@ It will reload your browser automatically if changes occur.
     // page ssr
     await Deno.mkdir("pages");
     await Deno.writeTextFile(
-      "pages/app.tsx",
-      `import { useState } from "https://esm.sh/preact@10.17.1/hooks";
-import { h } from "https://esm.sh/preact@10.17.1";
+      "pages/app.page.tsx",
+      `import React, { useState } from "react";
 
 export default function App(props: { data: string }) {
   const [data, setD] = useState({
@@ -216,7 +245,7 @@ export default function App(props: { data: string }) {
     // layout
     await Deno.writeTextFile(
       "pages/layout.ts",
-      `import { RenderOptions } from "../deps.ts";
+      `import { RenderOptions } from "$app/deps.ts";
 
 export default function (
   props: { data: string; title: string; description: string },
@@ -271,9 +300,9 @@ export default function (
     // page mod
     await Deno.writeTextFile(
       "pages/mod.ts",
-      `import { Context, Fastro, HttpRequest } from "../deps.ts";
-import app from "./app.tsx";
-import layout from "./layout.ts";
+      `import { Context, Fastro, HttpRequest } from "$app/deps.ts";
+import app from "$app/pages/app.page.tsx";
+import layout from "$app/pages/layout.ts";
 
 export function pageModule(f: Fastro) {
   return f.page(
@@ -297,7 +326,7 @@ export function pageModule(f: Fastro) {
     await Deno.mkdir("uuid");
     await Deno.writeTextFile(
       "uuid/mod.ts",
-      `import { Fastro } from "../deps.ts";
+      `import { Fastro } from "$app/deps.ts";
 
 export function uuidModule(f: Fastro) {
   return f.get("/api", () => Response.json({ uuid: crypto.randomUUID() }));
@@ -444,8 +473,11 @@ body {
     );
 
     console.log(
-      `%cProject created! %cTo start the application, run:`,
+      `%cProject created!`,
       "color: blue",
+    );
+    console.log(
+      `%cTo start the application, run:`,
       "color: white",
     );
     console.log(`%cdeno task start`, "color: green");

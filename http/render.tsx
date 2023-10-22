@@ -84,7 +84,7 @@ export class Render {
   };
 
   #initHtml = (element: Component, props?: any) => {
-    let el = isJSX(element as JSX.Element)
+    let el: any = isJSX(element as JSX.Element)
       ? element as JSX.Element
       : React.createElement(
         element as FunctionComponent,
@@ -222,7 +222,7 @@ es.onmessage = function(e) {
     if (cached && this.#nest[compID]) return this.#nest[compID];
 
     await this.#handleComponent(fc, this.#options.hydrate);
-    const layout = this.#initHtml(e, this.#options.props);
+    const layout: any = this.#initHtml(e, this.#options.props);
     let html = renderToString(layout);
     html = await this.#setInitialProps(html);
     return this.#nest[compID] = `<!DOCTYPE html>${html}`;
@@ -235,7 +235,7 @@ es.onmessage = function(e) {
   ) => {
     compID = `default${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
-    let html = renderToString(this.#initHtml(component));
+    let html = renderToString(this.#initHtml(component) as any);
     return this.#nest[compID] = `<!DOCTYPE html>${html}`;
   };
 
