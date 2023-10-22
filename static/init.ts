@@ -473,8 +473,11 @@ body {
     );
 
     console.log(
-      `%cProject created! %cTo start the application, run:`,
+      `%cProject created!`,
       "color: blue",
+    );
+    console.log(
+      `%cTo start the application, run:`,
       "color: white",
     );
     console.log(`%cdeno task start`, "color: green");
