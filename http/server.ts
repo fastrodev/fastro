@@ -444,7 +444,9 @@ export default class HttpServer implements Fastro {
     const react = dev
       ? "https://esm.sh/v133/react@18.2.0?dev"
       : "https://esm.sh/v133/react@18.2.0";
-    const hydrateRoot = dev ? "react-dom/client?dev" : "react-dom/client";
+    const hydrateRoot = dev
+      ? "react-dom/client?dev&no-dts"
+      : "react-dom/client?no-dts";
     const page = module ? "./" : "../pages/";
     return `// deno-lint-ignore-file no-explicit-any
 /** == ${
