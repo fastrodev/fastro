@@ -1,4 +1,4 @@
-import React from "https://esm.sh/v133/react@18.2.0";
+import React from "react";
 import { LinkFooter } from "./link.tsx";
 
 export default function (props: { version: string; path: string }) {

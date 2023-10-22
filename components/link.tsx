@@ -1,4 +1,4 @@
-import React from "https://esm.sh/v133/react@18.2.0";
+import React from "react";
 
 export function LinkFooter(
   props: { children: string | string[]; link: string },
