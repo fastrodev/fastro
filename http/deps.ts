@@ -1,5 +1,5 @@
-import { renderToString as rtsProd } from "react-dom/server";
-import { renderToString as rtsDev } from "react-dom/server?dev";
+import { renderToString as rtsProd } from "https://esm.sh/v133/react-dom@18.2.0/server";
+import { renderToString as rtsDev } from "https://esm.sh/v133/react-dom@18.2.0/server?dev";
 const renderToString = Deno.env.get("ENV") === "DEVELOPMENT" ? rtsDev : rtsProd;
 export { renderToString };
 
