@@ -1,6 +1,5 @@
 // deno-lint-ignore-file
-import React from "react";
-import { renderToString } from "./deps.ts";
+import { createElement, renderToString } from "./deps.ts";
 import {
   BUILD_ID,
   Component,
@@ -86,7 +85,7 @@ export class Render {
   #initHtml = (element: Component, props?: any) => {
     let el: any = isJSX(element as JSX.Element)
       ? element as JSX.Element
-      : React.createElement(
+      : createElement(
         element as FunctionComponent,
         this.#options.props,
       );
