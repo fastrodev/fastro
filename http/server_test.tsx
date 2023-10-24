@@ -48,6 +48,27 @@ Deno.test(
         () => "txt",
       );
 
+      f.get(
+        "/m1",
+        (req: HttpRequest, _ctx: Context, next: Next) => {
+          req.m1 = "m1";
+          return next();
+        },
+        (req: HttpRequest) => {
+          return req.m1;
+        },
+      );
+
+      f.post(
+        "/m1",
+        (_req: HttpRequest, _ctx: Context, next: Next) => {
+          return next();
+        },
+        (req: HttpRequest) => {
+          return req.m1;
+        },
+      );
+
       f.get("/nest", (_req: HttpRequest, ctx: Context) => {
         return ctx.send({ nest: ctx.server.getNest() });
       });
@@ -100,6 +121,14 @@ Deno.test(
 
       const txt = await fetch(host + "/txt", { method: "GET" });
       assertEquals(await txt.text(), `txt`);
+
+      const m1 = await fetch(host + "/m1", { method: "POST" });
+      const m1Res = await m1.text();
+      assertEquals(m1Res, "");
+
+      const m2 = await fetch(host + "/m1", { method: "GET" });
+      const m2Res = await m2.text();
+      assertEquals(m2Res, "m1");
 
       const e = await fetch(host + "/error", { method: "GET" });
       assertExists(await e.text(), `Error: error\n`);

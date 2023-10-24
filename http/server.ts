@@ -180,6 +180,7 @@ type Page = {
   path: string;
   element: Component;
   handlers: Array<MiddlewareArgument>;
+  method?: string;
 };
 
 export interface Fastro {
@@ -840,9 +841,9 @@ import React from "react";import { hydrateRoot } from "${hydrateRoot}";import ${
 
     for (let index = 0; index < this.#middlewares.length; index++) {
       const m = this.#middlewares[index];
-      const nestId = `${method}${m.method}${m.path}${url}`;
+      const nestId = method + m.method + m.path + url;
 
-      const match = this.#findMatch(m, nestId, url);
+      const match = this.#findMatch(m, nestId, url, method);
       if (!match) continue;
       const req = this.#transformRequest(
         this.record,
@@ -873,15 +874,16 @@ import React from "react";import { hydrateRoot } from "${hydrateRoot}";import ${
     m: Middleware | Page,
     nestId: string,
     url: string,
+    method: string,
   ) {
     const r = this.#nest[nestId];
     if (r) return r as URLPatternResult;
 
     const pattern = m.path ? this.#patterns[m.path] : this.#root;
     const result = pattern.exec(url);
-    if (result) {
-      return this.#nest[nestId] = result;
-    }
+    if (!result) return undefined;
+    if ((m.path !== undefined) && (m.method !== method)) return undefined;
+    return this.#nest[nestId] = result;
   }
 
   #findRoute(method: string, url: string) {
