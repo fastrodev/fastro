@@ -3,7 +3,7 @@ import { LinkFooter } from "./link.tsx";
 
 export default function (props: { version: string; path: string }) {
   return (
-    <footer className="mt-auto">
+    <footer className="mt-auto pb-3">
       <nav className="nav nav-mastfoot justify-content-center">
         <LinkFooter link="https://github.com/fastrodev/fastro">
           Repository
