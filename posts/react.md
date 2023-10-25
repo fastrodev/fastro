@@ -3,7 +3,7 @@ title: "Fastro v0.82.0: Back to using React"
 image: https://fastro.dev/static/image.png
 description: "The error in the previous version has been resolved"
 author: Fastro
-date: Oct 22nd, 2023
+date: 10/22/2023
 ---
 
 The error in the [previous version](/blog/preact_and_encrypted_props) has been

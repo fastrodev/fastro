@@ -1,5 +1,5 @@
 import fastro, { Context, HttpRequest, Next } from "../http/server.ts";
-import { version } from "../http/version.ts";
+import { version } from "./version.ts";
 import markdown from "../middlewares/markdown.tsx";
 import app from "../pages/app.page.tsx";
 import blog from "../pages/blog.page.tsx";

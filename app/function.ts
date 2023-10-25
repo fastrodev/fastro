@@ -1,5 +1,6 @@
+// deno-lint-ignore-file no-explicit-any
 import { HttpRequest } from "../http/server.ts";
-import { version } from "../http/version.ts";
+import { version } from "./version.ts";
 import { extract } from "https://deno.land/std@0.201.0/front_matter/any.ts";
 
 export function getPublishDate(dateStr?: string) {
@@ -70,18 +71,31 @@ async function readContent(filePath: string) {
   }
 }
 
+type PostType = {
+  title: string;
+  description: string;
+  date: any;
+  path: string;
+};
+
 export async function getPosts() {
-  const p = [];
+  const p: PostType[] = [];
   for await (const f of Deno.readDir("./posts")) {
     const [name] = f.name.split(".");
     const r = await readContent(f.name);
     if (!r) continue;
     p.push({
-      title: r.title,
-      description: r.description,
-      date: r.date,
+      title: r.title as string,
+      description: r.description as string,
+      date: new Date(r.date as string),
       path: `/blog/${name}`,
     });
   }
+  const parsedDates = p.map((item: PostType) => new Date(item.date));
+  const sortedDates = parsedDates.sort((a: any, b: any) => b - a);
+  p.forEach((item: PostType, index: number) => {
+    return item.date = sortedDates[index].toLocaleDateString();
+  });
+
   return p;
 }
