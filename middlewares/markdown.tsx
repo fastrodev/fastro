@@ -21,7 +21,7 @@ import {
 } from "../http/server.ts";
 
 import { extract, remark, remarkToc } from "./deps.ts";
-import { version } from "../http/version.ts";
+import { version } from "../app/version.ts";
 import { createElement } from "react";
 
 type Meta = {
