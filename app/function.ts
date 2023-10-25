@@ -79,7 +79,7 @@ type PostType = {
 };
 
 export async function getPosts() {
-  const p: PostType[] = [];
+  let p: PostType[] = [];
   for await (const f of Deno.readDir("./posts")) {
     const [name] = f.name.split(".");
     const r = await readContent(f.name);
@@ -91,10 +91,10 @@ export async function getPosts() {
       path: `/blog/${name}`,
     });
   }
-  const parsedDates = p.map((item: PostType) => new Date(item.date));
-  const sortedDates = parsedDates.sort((a: any, b: any) => b - a);
+
+  p = p.sort((a, b) => b.date - a.date);
   p.forEach((item: PostType, index: number) => {
-    return item.date = sortedDates[index].toLocaleDateString();
+    return item.date = p[index].date.toLocaleDateString();
   });
 
   return p;
