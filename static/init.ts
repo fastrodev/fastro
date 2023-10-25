@@ -57,8 +57,8 @@ await s.serve();
     // deps
     await Deno.writeTextFile(
       "deps.ts",
-      `import Server from "https://raw.githubusercontent.com/fastrodev/fastro/react/mod.ts";
-export * from "https://raw.githubusercontent.com/fastrodev/fastro/react/mod.ts";
+      `import Server from "https://raw.githubusercontent.com/fastrodev/fastro/main/mod.ts";
+export * from "https://raw.githubusercontent.com/fastrodev/fastro/main/mod.ts";
 export { Server };
 `,
     );
