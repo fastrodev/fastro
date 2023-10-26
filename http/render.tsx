@@ -1,5 +1,5 @@
 // deno-lint-ignore-file
-import { createElement, renderToString } from "./deps.ts";
+import { createElement, renderToReadableStream } from "./deps.ts";
 import {
   BUILD_ID,
   Component,
@@ -82,14 +82,39 @@ export class Render {
     return this.#options = options;
   };
 
-  #initHtml = (element: Component, props?: any) => {
-    let el: any = isJSX(element as JSX.Element)
+  #initScript = async () => {
+    let exportedKeyString = this.#server.record["exportedKeyString"] as string;
+    exportedKeyString = clean(exportedKeyString);
+    exportedKeyString = reverseString(exportedKeyString);
+    exportedKeyString = extractOriginalString(
+      exportedKeyString,
+      this.#server.record["salt"],
+    ) as string;
+    exportedKeyString = atob(exportedKeyString);
+    const importedKey = await importCryptoKey(
+      exportedKeyString,
+      keyType,
+      keyUsages,
+    );
+
+    const env = Deno.env.get("DEVELOPMENT") === undefined
+      ? ""
+      : `window.__ENV__ = "DEVELOPMENT";`;
+
+    const plaintext = JSON.stringify(this.#options.props);
+    const encryptedData = await encryptData(importedKey, plaintext);
+
+    return `<script>${env}window.__INITIAL_DATA__ = "${encryptedData}"</script>`;
+  };
+
+  #initHtml = async (element: Component, props?: any) => {
+    let el = isJSX(element as JSX.Element)
       ? element as JSX.Element
       : createElement(
         element as FunctionComponent,
         this.#options.props,
       );
-
+    const InitScript = await this.#initScript();
     return (
       <html
         lang={this.#options.html?.lang}
@@ -174,7 +199,13 @@ export class Render {
           >
             {el}
           </div>
-          {props && <script></script>}
+          {props && (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: `${InitScript}`,
+              }}
+            />
+          )}
           {this.#options.html?.body?.script &&
             this.#options.html?.body?.script.map((s) => (
               <script
@@ -201,7 +232,7 @@ es.onmessage = function(e) {
 };`;
   };
 
-  #renderToString = async (component: Component, cached?: boolean) => {
+  #createHTML = async (component: Component, cached?: boolean) => {
     let compID = "";
     this.#handleDevelopment();
     if (isJSX(component as JSX.Element)) {
@@ -221,10 +252,8 @@ es.onmessage = function(e) {
     if (cached && this.#nest[compID]) return this.#nest[compID];
 
     await this.#handleComponent(fc, this.#options.hydrate);
-    const layout: any = this.#initHtml(e, this.#options.props);
-    let html = renderToString(layout);
-    html = await this.#setInitialProps(html);
-    return this.#nest[compID] = `<!DOCTYPE html>${html}`;
+    const html = await this.#initHtml(e, this.#options.props);
+    return this.#nest[compID] = html;
   };
 
   #handleJSXElement = async (
@@ -234,8 +263,8 @@ es.onmessage = function(e) {
   ) => {
     compID = `default${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
-    let html = renderToString(this.#initHtml(component) as any);
-    return this.#nest[compID] = `<!DOCTYPE html>${html}`;
+    let html = await this.#initHtml(component);
+    return this.#nest[compID] = html;
   };
 
   #handleComponent = async (c: FunctionComponent, hydrate = true) => {
@@ -245,33 +274,6 @@ es.onmessage = function(e) {
         src: `${this.#staticPath}/${c.name.toLocaleLowerCase()}.js`,
       });
     }
-  };
-
-  #setInitialProps = async (layout: string) => {
-    let exportedKeyString = this.#server.record["exportedKeyString"] as string;
-    exportedKeyString = clean(exportedKeyString);
-    exportedKeyString = reverseString(exportedKeyString);
-    exportedKeyString = extractOriginalString(
-      exportedKeyString,
-      this.#server.record["salt"],
-    ) as string;
-    exportedKeyString = atob(exportedKeyString);
-    const importedKey = await importCryptoKey(
-      exportedKeyString,
-      keyType,
-      keyUsages,
-    );
-
-    const plaintext = JSON.stringify(this.#options.props);
-    const encryptedData = await encryptData(importedKey, plaintext);
-    const env = Deno.env.get("DEVELOPMENT") === undefined
-      ? ""
-      : `window.__ENV__ = "DEVELOPMENT";`;
-
-    return layout.replace(
-      `<script></script>`,
-      `<script>${env}window.__INITIAL_DATA__ = "${encryptedData}";</script>`,
-    );
   };
 
   #handleDevelopment = () => {
@@ -296,11 +298,11 @@ es.onmessage = function(e) {
   };
 
   render = async () => {
-    const html = await this.#renderToString(
+    const html = await this.#createHTML(
       this.#element,
       this.#options.cache,
     );
-    return new Response(html, {
+    return new Response(await renderToReadableStream(html), {
       status: this.#options.status,
       headers: {
         "content-type": "text/html",

@@ -1,11 +1,17 @@
-import { createElement as ceDev } from "https://esm.sh/v133/react@18.2.0?dev&no-dts";
-import { createElement as ceProd } from "https://esm.sh/v133/react@18.2.0?no-dts";
-import { renderToString as rtsProd } from "https://esm.sh/v133/react-dom@18.2.0/server?no-dts";
-import { renderToString as rtsDev } from "https://esm.sh/v133/react-dom@18.2.0/server?dev&no-dts";
-const renderToString = Deno.env.get("ENV") === "DEVELOPMENT" ? rtsDev : rtsProd;
+import { createElement as ceDev } from "https://esm.sh/v133/react@18.2.0?dev";
+import { createElement as ceProd } from "https://esm.sh/v133/react@18.2.0";
+import {
+  renderToReadableStream as rtrsProd,
+} from "https://esm.sh/v133/react-dom@18.2.0/server?no-dts";
+import {
+  renderToReadableStream as rtrsDev,
+} from "https://esm.sh/v133/react-dom@18.2.0/server?dev&no-dts";
 const createElement = Deno.env.get("ENV") === "DEVELOPMENT" ? ceDev : ceProd;
+const renderToReadableStream = Deno.env.get("ENV") === "DEVELOPMENT"
+  ? rtrsDev
+  : rtrsProd;
 
-export { createElement, renderToString };
+export { createElement, renderToReadableStream };
 
 export { toHashString } from "https://deno.land/std@0.204.0/crypto/to_hash_string.ts";
 export {
