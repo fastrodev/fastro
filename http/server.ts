@@ -14,7 +14,7 @@ import {
   contentType,
   extname,
   Handler,
-  renderToString,
+  renderToReadableStream,
   Status,
   STATUS_TEXT,
   toHashString,
@@ -1030,15 +1030,15 @@ import React from "react";import { hydrateRoot } from "${hydrateRoot}";import ${
     return req;
   }
 
-  #renderToString(element: JSX.Element, status?: number) {
-    const component = renderToString(element as any);
+  #renderToString = async (element: JSX.Element, status?: number) => {
+    const component = await renderToReadableStream(element);
     return new Response(component, {
       status,
       headers: {
         "content-type": "text/html",
       },
     });
-  }
+  };
 
   #renderElement(
     element: Component,
