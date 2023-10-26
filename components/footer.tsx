@@ -5,11 +5,8 @@ export default function (props: { version: string; path: string }) {
   return (
     <footer className="mt-auto pb-3">
       <nav className="nav nav-mastfoot justify-content-center">
-        <LinkFooter link="https://github.com/fastrodev/fastro">
-          Repository
-        </LinkFooter>
         <LinkFooter link="https://deno.land/x/fastro">
-          Fastro{"  "}{props.version}
+          Made with Fastro{"  "}{props.version}
         </LinkFooter>
       </nav>
     </footer>

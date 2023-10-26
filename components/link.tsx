@@ -15,7 +15,8 @@ export function LinkFooter(
 
 export function LinkHeader(
   props: {
-    children: string | string[];
+    // deno-lint-ignore no-explicit-any
+    children: any;
     link: string;
     path: string;
     activePath: string;
