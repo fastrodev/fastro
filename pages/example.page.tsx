@@ -11,13 +11,14 @@ type Example = {
 export default function Example(
   props: { version: string; path: string; examples: Example[] },
 ) {
-  const list = props.examples.map((e) => {
+  const list = props.examples.map((e, i) => {
     const path =
       `https://github.com/fastrodev/fastro/blob/main/examples/${e.file}`;
     return (
       <a
         href={path}
         className="me-2 mb-2 border rounded-3"
+        key={i}
       >
         <div style={{ padding: 10 }}>
           {e.name}
