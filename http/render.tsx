@@ -302,11 +302,26 @@ es.onmessage = function(e) {
       this.#element,
       this.#options.cache,
     );
-    return new Response(await renderToReadableStream(html), {
-      status: this.#options.status,
-      headers: {
-        "content-type": "text/html",
-      },
+
+    const defaultOnError = (error: unknown) => {
+      console.error(error);
+    };
+
+    const onError = this.#options.onError ?? defaultOnError;
+    const signal = this.#options.abortController?.signal;
+    const stream: ReadableStream = await renderToReadableStream(html, {
+      signal,
+      onError,
     });
+
+    return new Response(
+      stream,
+      {
+        status: this.#options.status,
+        headers: {
+          "content-type": "text/html",
+        },
+      },
+    );
   };
 }

@@ -14,12 +14,17 @@ f.static("/static", { folder: "static" });
 // setup page handler
 const handler = async (_req: HttpRequest, ctx: Context) => {
   // get data from async method
+  const onError = (error: unknown) => console.error(error);
+  const ac = new AbortController();
+  setTimeout(() => ac.abort(), 10000);
   const data = await getUser("Guest");
   const options = {
     // pass data to component via props
     props: { data },
     status: 200,
     html: { head: { title: "React Component" } },
+    onError,
+    abortController: ac,
   };
 
   // render react component from server

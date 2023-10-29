@@ -81,7 +81,12 @@ type NoScriptLink = {
 
 type ModuleFunction = (f: Fastro) => Fastro | Promise<Fastro>;
 
+type onError = (error: any) => void;
 export type RenderOptions = {
+  // A callback that fires whenever there is a server error, whether recoverable or not. By default, this only calls console.error. If you override it to log crash reports, make sure that you still call console.error. You can also use it to adjust the status code before the shell is emitted.
+  onError?: onError;
+  // An abort signal that lets you abort server rendering and render the rest on the client.
+  abortController?: AbortController;
   build?: boolean;
   cache?: boolean;
   pageFolder?: string;
