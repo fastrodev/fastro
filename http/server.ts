@@ -81,7 +81,12 @@ type NoScriptLink = {
 
 type ModuleFunction = (f: Fastro) => Fastro | Promise<Fastro>;
 
+type onError = (error: any) => void;
 export type RenderOptions = {
+  // A callback that fires whenever there is a server error, whether recoverable or not. By default, this only calls console.error. If you override it to log crash reports, make sure that you still call console.error. You can also use it to adjust the status code before the shell is emitted.
+  onError?: onError;
+  // An abort signal that lets you abort server rendering and render the rest on the client.
+  abortController?: AbortController;
   build?: boolean;
   cache?: boolean;
   pageFolder?: string;
@@ -172,6 +177,16 @@ export type Component = FunctionComponent | JSX.Element | PageComponent;
 
 export function isPageComponent(c: PageComponent) {
   return c.component != undefined && c.folder != undefined;
+}
+
+export function checkReferer(req: Request) {
+  const referer = req.headers.get("referer");
+  const host = req.headers.get("host") as string;
+  if (!referer || !referer?.includes(host)) {
+    return new Response(STATUS_TEXT[Status.NotFound], {
+      status: Status.NotFound,
+    });
+  }
 }
 
 export type FunctionComponent = (props?: any) => JSX.Element;
@@ -659,7 +674,7 @@ import React from "react";import { hydrateRoot } from "${hydrateRoot}";import ${
     });
 
     this.#pushHandler("GET", initPath, (req: HttpRequest) => {
-      const ref = this.#checkReferer(req);
+      const ref = checkReferer(req);
       if (ref) return ref;
 
       let s = btoa(req.record["salt"]);
@@ -688,15 +703,15 @@ import React from "react";import { hydrateRoot } from "${hydrateRoot}";import ${
     if (this.#isResponse(x)) return x;
   };
 
-  #checkReferer = (req: Request) => {
-    const referer = req.headers.get("referer");
-    const host = req.headers.get("host") as string;
-    if (!referer || !referer?.includes(host)) {
-      return new Response(STATUS_TEXT[Status.NotFound], {
-        status: Status.NotFound,
-      });
-    }
-  };
+  // #checkReferer = (req: Request) => {
+  //   const referer = req.headers.get("referer");
+  //   const host = req.headers.get("host") as string;
+  //   if (!referer || !referer?.includes(host)) {
+  //     return new Response(STATUS_TEXT[Status.NotFound], {
+  //       status: Status.NotFound,
+  //     });
+  //   }
+  // };
 
   #handleRequest = async (
     req: Request,
@@ -730,7 +745,7 @@ import React from "react";import { hydrateRoot } from "${hydrateRoot}";import ${
 
     const s = (await this.#findStaticFiles(this.#staticUrl, req.url)) as Static;
     if (s) {
-      const ref = this.#checkReferer(req);
+      const ref = checkReferer(req);
       if (ref && this.#staticReferer) return ref;
       return new Response(s.file, {
         headers: {
@@ -742,7 +757,7 @@ import React from "react";import { hydrateRoot } from "${hydrateRoot}";import ${
 
     const b = await this.#handleBinary(this.#staticUrl, req.url);
     if (b) {
-      const ref = this.#checkReferer(req);
+      const ref = checkReferer(req);
       if (ref && this.#staticReferer) return ref;
       return this.#handleResponse(b);
     }

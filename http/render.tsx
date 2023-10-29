@@ -2,6 +2,7 @@
 import { createElement, renderToReadableStream } from "./deps.ts";
 import {
   BUILD_ID,
+  checkReferer,
   Component,
   Fastro,
   FunctionComponent,
@@ -82,7 +83,7 @@ export class Render {
     return this.#options = options;
   };
 
-  #initScript = async () => {
+  #createInitScript = async (props?: any) => {
     let exportedKeyString = this.#server.record["exportedKeyString"] as string;
     exportedKeyString = clean(exportedKeyString);
     exportedKeyString = reverseString(exportedKeyString);
@@ -97,24 +98,23 @@ export class Render {
       keyUsages,
     );
 
-    const env = Deno.env.get("DEVELOPMENT") === undefined
+    const env = Deno.env.get("ENV") === undefined
       ? ""
       : `window.__ENV__ = "DEVELOPMENT";`;
 
     const plaintext = JSON.stringify(this.#options.props);
     const encryptedData = await encryptData(importedKey, plaintext);
-
-    return `<script>${env}window.__INITIAL_DATA__ = "${encryptedData}"</script>`;
+    return `${env}window.__INITIAL_DATA__ = "${encryptedData}";`;
   };
 
-  #initHtml = async (element: Component, props?: any) => {
+  #initHtml = async (element: Component, html?: any) => {
     let el = isJSX(element as JSX.Element)
       ? element as JSX.Element
       : createElement(
         element as FunctionComponent,
         this.#options.props,
       );
-    const InitScript = await this.#initScript();
+    if (!html) return el;
     return (
       <html
         lang={this.#options.html?.lang}
@@ -199,13 +199,6 @@ export class Render {
           >
             {el}
           </div>
-          {props && (
-            <div
-              dangerouslySetInnerHTML={{
-                __html: `${InitScript}`,
-              }}
-            />
-          )}
           {this.#options.html?.body?.script &&
             this.#options.html?.body?.script.map((s) => (
               <script
@@ -252,7 +245,8 @@ es.onmessage = function(e) {
     if (cached && this.#nest[compID]) return this.#nest[compID];
 
     await this.#handleComponent(fc, this.#options.hydrate);
-    const html = await this.#initHtml(e, this.#options.props);
+    this.#injectInitScript();
+    const html = await this.#initHtml(e, this.#options.html);
     return this.#nest[compID] = html;
   };
 
@@ -263,7 +257,7 @@ es.onmessage = function(e) {
   ) => {
     compID = `default${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
-    let html = await this.#initHtml(component);
+    let html = await this.#initHtml(component, this.#options.html);
     return this.#nest[compID] = html;
   };
 
@@ -272,6 +266,30 @@ es.onmessage = function(e) {
     if (hydrate) {
       this.#options.html?.body.script?.push({
         src: `${this.#staticPath}/${c.name.toLocaleLowerCase()}.js`,
+      });
+    }
+  };
+
+  #injectInitScript = () => {
+    const initPath = `${this.#staticPath}/init.js`;
+    this.#server.push(
+      "GET",
+      initPath,
+      async (req: Request) => {
+        const ref = checkReferer(req);
+        if (ref) return ref;
+
+        return new Response(await this.#createInitScript(this.#options.props), {
+          headers: {
+            "Content-Type": "application/javascript",
+          },
+        });
+      },
+    );
+
+    if (this.#options.html?.body?.script) {
+      this.#options.html?.body.script?.push({
+        src: initPath,
       });
     }
   };
@@ -302,11 +320,26 @@ es.onmessage = function(e) {
       this.#element,
       this.#options.cache,
     );
-    return new Response(await renderToReadableStream(html), {
-      status: this.#options.status,
-      headers: {
-        "content-type": "text/html",
-      },
+
+    const defaultOnError = (error: unknown) => {
+      console.error(error);
+    };
+
+    const onError = this.#options.onError ?? defaultOnError;
+    const signal = this.#options.abortController?.signal;
+    const stream: ReadableStream = await renderToReadableStream(html, {
+      signal,
+      onError,
     });
+
+    return new Response(
+      stream,
+      {
+        status: this.#options.status,
+        headers: {
+          "content-type": "text/html",
+        },
+      },
+    );
   };
 }
