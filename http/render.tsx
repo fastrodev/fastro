@@ -257,7 +257,7 @@ es.onmessage = function(e) {
   ) => {
     compID = `default${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
-    let html = await this.#initHtml(component);
+    let html = await this.#initHtml(component, this.#options.html);
     return this.#nest[compID] = html;
   };
 
