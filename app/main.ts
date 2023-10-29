@@ -35,7 +35,7 @@ f.use((req: HttpRequest, ctx: Context, next: Next) => {
     uaPlatform: req.headers.get("sec-ch-ua-platform"),
     fetchSite: req.headers.get("sec-fetch-site"),
   };
-  console.info(JSON.stringify(data));
+  // console.info(JSON.stringify(data));
   return next();
 });
 
