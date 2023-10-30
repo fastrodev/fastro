@@ -271,6 +271,7 @@ es.onmessage = function(e) {
   };
 
   #injectInitScript = () => {
+    if (!this.#options.html) return;
     const initPath = `${this.#staticPath}/init.js`;
     this.#server.push(
       "GET",

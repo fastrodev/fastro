@@ -32,10 +32,10 @@ const Index = (
           className="text-center mb-3 d-flex flex-column align-items-center"
           style={{ minHeight: 100 }}
         >
-          <h1 className="d-sm-block fs-2 fw-bold mt-3">
+          <h1 className="d-sm-block fs-2 fw-bold mt-2">
             {props.title}
           </h1>
-          <div className="fs-5 fw-lighter text-white-50 mb-2">
+          <div className="fs-5 fw-lighter text-white mt-0 mb-3">
             {props.description}
           </div>
           <div className="d-none d-sm-flex p-2 bd-highlight justify-content-center">
@@ -48,7 +48,7 @@ const Index = (
               </a>
             </div>
             <div className="p-3 bg-black border border-light rounded fw-light align-middle">
-              deno run -A -r https://fastro.deno.dev
+              deno run -A -r https://fastro.dev
             </div>
           </div>
 
@@ -64,7 +64,7 @@ const Index = (
                   </a>
                 </div>
                 <div className="p-3 bg-black border border-light rounded fw-light w-100">
-                  deno run -A -r https://fastro.deno.dev
+                  deno run -A -r https://fastro.dev
                 </div>
               </div>
             </div>
