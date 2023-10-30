@@ -10,7 +10,7 @@ import { createHTML } from "./layout.ts";
 
 const title = "Speed without complexity";
 const description =
-  "Handle thousands of RPS with TypeScript and a minimalistic API";
+  "Handle thousands of requests per second with a minimalistic API";
 const f = new fastro();
 const m = new markdown({ folder: "docs" });
 const b = new markdown({ folder: "posts", prefix: "blog" });
@@ -35,7 +35,7 @@ f.use((req: HttpRequest, ctx: Context, next: Next) => {
     uaPlatform: req.headers.get("sec-ch-ua-platform"),
     fetchSite: req.headers.get("sec-fetch-site"),
   };
-  // console.info(JSON.stringify(data));
+  console.info(JSON.stringify(data));
   return next();
 });
 

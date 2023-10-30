@@ -6,7 +6,9 @@ author: Fastro
 date: 07/06/2023
 ---
 
-First, make sure you have Deno installed. See [the deno manual](https://deno.land/manual/getting_started/installation) for details.
+First, make sure you have Deno installed. See
+[the deno manual](https://deno.land/manual/getting_started/installation) for
+details.
 
 Then, create a folder for your project and enter to it.
 
@@ -17,10 +19,11 @@ mkdir my-project && cd my-project
 Generate default project from command line.
 
 ```zsh
-deno run -A -r https://fastro.deno.dev
+deno run -A -r https://fastro.dev
 ```
 
-The above command will generate default folders and files that you can use for the initial project.
+The above command will generate default folders and files that you can use for
+the initial project.
 
 Now let's run the application
 
@@ -40,4 +43,5 @@ Open that link on [your browser](http://localhost:8000) or hit them via `curl`
 curl http://localhost:8000
 ```
 
-You can find more detailed instructions in [the manual page](/manual#server-side-rendering).
+You can find more detailed instructions in
+[the manual page](/manual#server-side-rendering).
