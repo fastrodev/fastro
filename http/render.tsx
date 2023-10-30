@@ -104,7 +104,7 @@ export class Render {
 
     const plaintext = JSON.stringify(this.#options.props);
     const encryptedData = await encryptData(importedKey, plaintext);
-    return `${env}window.__INITIAL_DATA__ = "${encryptedData}";`;
+    return `<script>${env}window.__INITIAL_DATA__ = "${encryptedData}";</script>`;
   };
 
   #initHtml = async (element: Component, html?: any) => {
@@ -199,6 +199,9 @@ export class Render {
           >
             {el}
           </div>
+          <div
+            dangerouslySetInnerHTML={{ __html: await this.#createInitScript() }}
+          />
           {this.#options.html?.body?.script &&
             this.#options.html?.body?.script.map((s) => (
               <script
@@ -244,7 +247,6 @@ es.onmessage = function(e) {
     compID = `${fc.name}${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
 
-    this.#injectInitScript();
     await this.#handleComponent(fc, this.#options.hydrate);
     const html = await this.#initHtml(e, this.#options.html);
     return this.#nest[compID] = html;
@@ -266,31 +268,6 @@ es.onmessage = function(e) {
     if (hydrate) {
       this.#options.html?.body.script?.push({
         src: `${this.#staticPath}/${c.name.toLocaleLowerCase()}.js`,
-      });
-    }
-  };
-
-  #injectInitScript = () => {
-    if (!this.#options.html) return;
-    const initPath = `${this.#staticPath}/init.js`;
-    this.#server.push(
-      "GET",
-      initPath,
-      async (req: Request) => {
-        const ref = checkReferer(req);
-        if (ref) return ref;
-
-        return new Response(await this.#createInitScript(this.#options.props), {
-          headers: {
-            "Content-Type": "application/javascript",
-          },
-        });
-      },
-    );
-
-    if (this.#options.html?.body?.script) {
-      this.#options.html?.body.script?.push({
-        src: initPath,
       });
     }
   };
