@@ -244,8 +244,8 @@ es.onmessage = function(e) {
     compID = `${fc.name}${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
 
-    await this.#handleComponent(fc, this.#options.hydrate);
     this.#injectInitScript();
+    await this.#handleComponent(fc, this.#options.hydrate);
     const html = await this.#initHtml(e, this.#options.html);
     return this.#nest[compID] = html;
   };
