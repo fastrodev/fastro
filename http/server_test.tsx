@@ -150,7 +150,7 @@ Deno.test(
       const page = await fetch(host + "/page", { method: "GET" });
       assertEquals(
         await page.text(),
-        `<!DOCTYPE html><html><head></head><body data-bs-theme="dark"><div id="root" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">Page</div></body></html>`,
+        `<!DOCTYPE html><html><head></head><body><div id="root">Page</div></body></html>`,
       );
 
       const nest = await fetch(host + "/nest", { method: "GET" });
