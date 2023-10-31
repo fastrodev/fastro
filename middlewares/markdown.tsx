@@ -67,6 +67,7 @@ export default class Instance {
     return {
       cache: true,
       theme: true,
+      themeColor: "auto",
       html: {
         lang: "en",
         class: "h-100",
