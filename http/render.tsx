@@ -115,6 +115,60 @@ export class Render {
         this.#options.props,
       );
     if (!html) return el;
+
+    const RootElement = () => {
+      if (this.#options.theme && this.#options.themeColor === "auto") {
+        return (
+          <div
+            id="root"
+            className={this.#options.html?.body?.root.class}
+            style={this.#options.html?.body?.root.style}
+            data-color-mode="auto"
+            data-light-theme="light"
+            data-dark-theme="dark"
+          >
+            {el}
+          </div>
+        );
+      }
+
+      if (this.#options.theme && this.#options.themeColor === "dark") {
+        return (
+          <div
+            id="root"
+            className={this.#options.html?.body?.root.class}
+            style={this.#options.html?.body?.root.style}
+            data-dark-theme="dark"
+          >
+            {el}
+          </div>
+        );
+      }
+
+      if (this.#options.theme && this.#options.themeColor === "light") {
+        return (
+          <div
+            id="root"
+            className={this.#options.html?.body?.root.class}
+            style={this.#options.html?.body?.root.style}
+            data-dark-theme="light"
+          >
+            {el}
+          </div>
+        );
+      }
+
+      return (
+        <div
+          id="root"
+          className={this.#options.html?.body?.root.class}
+          style={this.#options.html?.body?.root.style}
+        >
+          {el}
+        </div>
+      );
+    };
+
     return (
       <html
         lang={this.#options.html?.lang}
@@ -184,38 +238,56 @@ export class Render {
               </script>
             )}
         </head>
-        <body
-          data-bs-theme={this.#options.html?.body?.theme ?? "dark"}
-          className={this.#options.html?.body?.class}
-          style={this.#options.html?.body?.style}
-        >
-          <div
-            id="root"
-            className={this.#options.html?.body?.root.class}
-            style={this.#options.html?.body?.root.style}
-            data-color-mode="auto"
-            data-light-theme="light"
-            data-dark-theme="dark"
-          >
-            {el}
-          </div>
-          {this.#options.props && (
-            <div
-              dangerouslySetInnerHTML={{
-                __html: await this.#createInitScript(),
-              }}
-            />
+        {this.#options.theme
+          ? (
+            <body
+              data-bs-theme={this.#options.html?.body?.theme ?? "dark"}
+              className={this.#options.html?.body?.class}
+              style={this.#options.html?.body?.style}
+            >
+              <RootElement />
+              {this.#options.props && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: await this.#createInitScript(),
+                  }}
+                />
+              )}
+              {this.#options.html?.body?.script &&
+                this.#options.html?.body?.script.map((s) => (
+                  <script
+                    src={s.src}
+                    type={s.type}
+                    crossOrigin={s.crossorigin}
+                    nonce={s.nonce}
+                  />
+                ))}
+            </body>
+          )
+          : (
+            <body
+              className={this.#options.html?.body?.class}
+              style={this.#options.html?.body?.style}
+            >
+              <RootElement />
+              {this.#options.props && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: await this.#createInitScript(),
+                  }}
+                />
+              )}
+              {this.#options.html?.body?.script &&
+                this.#options.html?.body?.script.map((s) => (
+                  <script
+                    src={s.src}
+                    type={s.type}
+                    crossOrigin={s.crossorigin}
+                    nonce={s.nonce}
+                  />
+                ))}
+            </body>
           )}
-          {this.#options.html?.body?.script &&
-            this.#options.html?.body?.script.map((s) => (
-              <script
-                src={s.src}
-                type={s.type}
-                crossOrigin={s.crossorigin}
-                nonce={s.nonce}
-              />
-            ))}
-        </body>
       </html>
     );
   };

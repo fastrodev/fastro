@@ -94,6 +94,8 @@ export type RenderOptions = {
   props?: any;
   development?: boolean;
   hydrate?: boolean;
+  theme?: boolean;
+  themeColor?: string;
   html?: {
     lang?: string;
     class?: string;
