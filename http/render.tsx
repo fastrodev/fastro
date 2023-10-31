@@ -199,9 +199,13 @@ export class Render {
           >
             {el}
           </div>
-          <div
-            dangerouslySetInnerHTML={{ __html: await this.#createInitScript() }}
-          />
+          {this.#options.props && (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: await this.#createInitScript(),
+              }}
+            />
+          )}
           {this.#options.html?.body?.script &&
             this.#options.html?.body?.script.map((s) => (
               <script
