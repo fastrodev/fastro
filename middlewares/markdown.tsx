@@ -66,6 +66,8 @@ export default class Instance {
   #getDefaultOptions = (md: Post) => {
     return {
       cache: true,
+      theme: true,
+      themeColor: "auto",
       html: {
         lang: "en",
         class: "h-100",
