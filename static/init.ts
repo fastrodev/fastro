@@ -43,10 +43,10 @@ const s = new Server();
 s.static("/static", { folder: "static", maxAge: 90 });
 
 // setup API for UUID Module
-s.register(uuidModule);
+await s.register(uuidModule);
 
 // setup page module
-s.register(pageModule);
+await s.register(pageModule);
 
 // serves HTTP requests
 await s.serve();
