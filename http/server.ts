@@ -96,6 +96,7 @@ export type RenderOptions = {
   hydrate?: boolean;
   theme?: boolean;
   themeColor?: string;
+  layout?: Layout;
   html?: {
     lang?: string;
     class?: string;
@@ -175,7 +176,11 @@ export type PageComponent = {
   folder: string;
 };
 
-export type Component = FunctionComponent | JSX.Element | PageComponent;
+export type Component =
+  | FunctionComponent
+  | JSX.Element
+  | PageComponent
+  | React.ReactNode;
 
 export function isPageComponent(c: PageComponent) {
   return c.component != undefined && c.folder != undefined;
@@ -192,6 +197,11 @@ export function checkReferer(req: Request) {
 }
 
 export type FunctionComponent = (props?: any) => JSX.Element;
+
+export type Layout = ({ children }: {
+  children: React.ReactNode;
+}) => JSX.Element;
+
 type Page = {
   path: string;
   element: Component;
