@@ -1,4 +1,5 @@
 // deno-lint-ignore-file
+import react from "react";
 import { createElement, renderToReadableStream } from "./deps.ts";
 import {
   BUILD_ID,
@@ -22,6 +23,30 @@ import { encryptData } from "../crypto/encrypt.ts";
 
 function isJSX(res: JSX.Element) {
   return res && res.props != undefined && res.type != undefined;
+}
+
+export async function createInitScript(server: Fastro, props?: any) {
+  let exportedKeyString = server.record["exportedKeyString"] as string;
+  exportedKeyString = clean(exportedKeyString);
+  exportedKeyString = reverseString(exportedKeyString);
+  exportedKeyString = extractOriginalString(
+    exportedKeyString,
+    server.record["salt"],
+  ) as string;
+  exportedKeyString = atob(exportedKeyString);
+  const importedKey = await importCryptoKey(
+    exportedKeyString,
+    keyType,
+    keyUsages,
+  );
+
+  const env = Deno.env.get("ENV") === undefined
+    ? ""
+    : `window.__ENV__ = "DEVELOPMENT";`;
+
+  const plaintext = JSON.stringify(props);
+  const encryptedData = await encryptData(importedKey, plaintext);
+  return `${env}window.__INITIAL_DATA__ = "${encryptedData}";`;
 }
 
 export class Render {
@@ -83,32 +108,8 @@ export class Render {
     return this.#options = options;
   };
 
-  #createInitScript = async (props?: any) => {
-    let exportedKeyString = this.#server.record["exportedKeyString"] as string;
-    exportedKeyString = clean(exportedKeyString);
-    exportedKeyString = reverseString(exportedKeyString);
-    exportedKeyString = extractOriginalString(
-      exportedKeyString,
-      this.#server.record["salt"],
-    ) as string;
-    exportedKeyString = atob(exportedKeyString);
-    const importedKey = await importCryptoKey(
-      exportedKeyString,
-      keyType,
-      keyUsages,
-    );
-
-    const env = Deno.env.get("ENV") === undefined
-      ? ""
-      : `window.__ENV__ = "DEVELOPMENT";`;
-
-    const plaintext = JSON.stringify(this.#options.props);
-    const encryptedData = await encryptData(importedKey, plaintext);
-    return `<script>${env}window.__INITIAL_DATA__ = "${encryptedData}";</script>`;
-  };
-
   #initHtml = async (element: Component, html?: any) => {
-    let el = isJSX(element as JSX.Element)
+    const el = isJSX(element as JSX.Element)
       ? element as JSX.Element
       : createElement(
         element as FunctionComponent,
@@ -247,9 +248,12 @@ export class Render {
             >
               <RootElement />
               {this.#options.props && (
-                <div
+                <script
                   dangerouslySetInnerHTML={{
-                    __html: await this.#createInitScript(),
+                    __html: await createInitScript(
+                      this.#server,
+                      this.#options.props,
+                    ),
                   }}
                 />
               )}
@@ -271,9 +275,12 @@ export class Render {
             >
               <RootElement />
               {this.#options.props && (
-                <div
+                <script
                   dangerouslySetInnerHTML={{
-                    __html: await this.#createInitScript(),
+                    __html: await createInitScript(
+                      this.#server,
+                      this.#options.props,
+                    ),
                   }}
                 />
               )}
@@ -304,6 +311,52 @@ es.onmessage = function(e) {
 };`;
   };
 
+  #handleComponentLayout = async (c: FunctionComponent, hydrate = true) => {
+    const init = await createInitScript(this.#server, this.#options.props);
+    const refreshPath = `${this.#staticPath}/refresh.js`;
+
+    if (!hydrate) return <></>;
+    return (
+      <>
+        {this.#development ? <script src={refreshPath} /> : ""}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: init,
+          }}
+        />
+        <script src={`${this.#staticPath}/${c.name.toLocaleLowerCase()}.js`} />
+      </>
+    );
+  };
+
+  async #handleLayout(element: Component) {
+    if (this.#options.layout) {
+      const el = isJSX(element as JSX.Element)
+        ? element as JSX.Element
+        : createElement(
+          element as FunctionComponent,
+          this.#options.props,
+        );
+
+      const hydrateScript = await this.#handleComponentLayout(
+        element as FunctionComponent,
+        this.#options.hydrate,
+      );
+
+      const root = (
+        <>
+          <div id="root">
+            {el}
+          </div>
+          {hydrateScript}
+        </>
+      );
+
+      const props = { children: root };
+      return this.#options.layout(props);
+    }
+  }
+
   #createHTML = async (component: Component, cached?: boolean) => {
     let compID = "";
     this.#handleDevelopment();
@@ -322,6 +375,10 @@ es.onmessage = function(e) {
     const fc = c as FunctionComponent;
     compID = `${fc.name}${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
+    if (this.#options.layout) {
+      const htmlLayout = this.#handleLayout(component);
+      return this.#nest[compID] = htmlLayout;
+    }
 
     await this.#handleComponent(fc, this.#options.hydrate);
     const html = await this.#initHtml(e, this.#options.html);
