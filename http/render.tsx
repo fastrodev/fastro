@@ -1,5 +1,4 @@
 // deno-lint-ignore-file
-import react from "react";
 import { createElement, renderToReadableStream } from "./deps.ts";
 import {
   BUILD_ID,
@@ -352,7 +351,7 @@ es.onmessage = function(e) {
         </>
       );
 
-      const props = { children: root };
+      const props = { children: root, data: this.#options.props };
       return this.#options.layout(props);
     }
   }

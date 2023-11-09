@@ -4,19 +4,27 @@ import user from "../pages/user.page.tsx";
 const f = new fastro();
 f.static("/static", { folder: "static" });
 
-const htmlLayout = ({ children }: { children: React.ReactNode }) => {
+function htmlLayout(
+  { children, data: { title } }: {
+    children: React.ReactNode;
+    data: { title: string };
+  },
+) {
   return (
     <html lang="en">
+      <head>
+        <title>{title}</title>
+      </head>
       <body>
         {children}
       </body>
     </html>
   );
-};
+}
 
 const handler = (_req: HttpRequest, ctx: Context) => {
   const options: RenderOptions = {
-    props: { data: "Guest" },
+    props: { data: "Guest", title: "React Component" },
     layout: htmlLayout,
   };
 
