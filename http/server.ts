@@ -198,8 +198,9 @@ export function checkReferer(req: Request) {
 
 export type FunctionComponent = (props?: any) => JSX.Element;
 
-export type Layout = ({ children }: {
+export type Layout = ({ children, data }: {
   children: React.ReactNode;
+  data: any;
 }) => JSX.Element;
 
 type Page = {
