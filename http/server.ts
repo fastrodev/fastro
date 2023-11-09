@@ -10,10 +10,8 @@ import {
 } from "../crypto/key.ts";
 
 import {
-  ConnInfo,
   contentType,
   extname,
-  Handler,
   renderToReadableStream,
   Status,
   STATUS_TEXT,
@@ -22,7 +20,7 @@ import {
 
 import { Render } from "./render.tsx";
 
-type ServerHandler = Deno.ServeHandler | Handler;
+type ServerHandler = Deno.ServeHandler;
 
 type HandlerArgument =
   | ServerHandler
@@ -46,7 +44,7 @@ export class HttpRequest extends Request {
   [key: string]: any;
 }
 
-export type Info = Deno.ServeHandlerInfo | ConnInfo;
+export type Info = Deno.ServeHandlerInfo;
 
 type Meta = {
   name?: string;
@@ -97,31 +95,7 @@ export type RenderOptions = {
   theme?: boolean;
   themeColor?: string;
   layout?: Layout;
-  html?: {
-    lang?: string;
-    class?: string;
-    style?: React.CSSProperties;
-    head?: {
-      title?: string;
-      descriptions?: string;
-      meta?: Meta[];
-      script?: Script[];
-      link?: Link[];
-      headStyle?: string;
-      headScript?: string;
-      noScriptLink?: NoScriptLink;
-    };
-    body?: {
-      theme?: string;
-      class?: string;
-      style?: React.CSSProperties;
-      script?: Script[];
-      root: {
-        class?: string;
-        style?: React.CSSProperties;
-      };
-    };
-  };
+  customRoot?: any;
 };
 
 export const hydrateFolder = ".hydrate";
@@ -1073,7 +1047,7 @@ import React from "react";import { hydrateRoot } from "${hydrateRoot}";import ${
     options?: RenderOptions,
     req?: Request,
   ) {
-    const opt = options ?? { html: {} };
+    const opt = options ?? {};
     const r = new Render(element, opt, this.#nest, this, req);
     return r.render();
   }

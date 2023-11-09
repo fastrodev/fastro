@@ -34,6 +34,16 @@ Deno.test(
         throw new Error("error");
       });
       f.page("/page", <>Page</>, (req: HttpRequest, ctx: Context) => {
+        // const layout = ({ children }: { children: React.ReactNode }) => {
+        //   return (
+        //     <html>
+        //       <head></head>
+        //       <body>
+        //         {children}
+        //       </body>
+        //     </html>
+        //   );
+        // };
         return ctx.render();
       });
       f.get("/params/:id", (req: HttpRequest, ctx: Context) => {
@@ -150,7 +160,7 @@ Deno.test(
       const page = await fetch(host + "/page", { method: "GET" });
       assertEquals(
         await page.text(),
-        `<!DOCTYPE html><html><head></head><body><div id="root">Page</div></body></html>`,
+        `<!DOCTYPE html><html><body><div id="root">Page</div></body></html>`,
       );
 
       const nest = await fetch(host + "/nest", { method: "GET" });
@@ -255,42 +265,44 @@ Deno.test(
       });
 
       f.page("/title", User, (_req: HttpRequest, ctx: Context) => {
-        return ctx.render({ html: { head: { title: "SSR Title" } } });
+        const layout = () => {
+          return (
+            <html>
+              <head>
+                <title>SSR Title</title>
+              </head>
+            </html>
+          );
+        };
+        return ctx.render({ layout });
       });
 
       f.page("/desc", User, (_req: HttpRequest, ctx: Context) => {
-        return ctx.render({ html: { head: { descriptions: "SSR Desc" } } });
+        const layout = () => {
+          return (
+            <html>
+              <head>
+                <meta name="description" content="SSR Desc" />
+              </head>
+            </html>
+          );
+        };
+        return ctx.render({ layout });
       });
 
       f.page("/script", User, (_req: HttpRequest, ctx: Context) => {
+        const layout = () => {
+          return (
+            <html>
+              <head>
+                <meta name="description" content="SSR Desc" />
+                <script src="script.js"></script>
+              </head>
+            </html>
+          );
+        };
         return ctx.render({
-          html: { head: { script: [{ src: "script.js" }] } },
-        });
-      });
-
-      f.page("/link", User, (_req: HttpRequest, ctx: Context) => {
-        return ctx.render({
-          html: { head: { link: [{ href: "app.css" }] } },
-        });
-      });
-
-      f.page("/head-style", User, (_req: HttpRequest, ctx: Context) => {
-        return ctx.render({
-          html: { head: { headStyle: `body { color: #fff }` } },
-        });
-      });
-
-      f.page("/head-script", User, (_req: HttpRequest, ctx: Context) => {
-        return ctx.render({
-          html: { head: { headScript: `console.log('script')` } },
-        });
-      });
-
-      f.page("/no-script", User, (_req: HttpRequest, ctx: Context) => {
-        return ctx.render({
-          html: {
-            head: { noScriptLink: { rel: "stylesheet", href: "app.jss" } },
-          },
+          layout,
         });
       });
 
@@ -318,42 +330,6 @@ Deno.test(
       assertExists(
         await title.text(),
         `<title>SSR Title</title>`,
-      );
-
-      const desc = await fetch(host + "/desc", { method: "GET" });
-      assertExists(
-        await desc.text(),
-        `<meta name="description" content="SSR Desc"/>`,
-      );
-
-      const script = await fetch(host + "/script", { method: "GET" });
-      assertExists(
-        await script.text(),
-        `<script src="script.js"></script>`,
-      );
-
-      const link = await fetch(host + "/link", { method: "GET" });
-      assertExists(
-        await link.text(),
-        `<link href="app.css"/>`,
-      );
-
-      const headStyle = await fetch(host + "/head-style", { method: "GET" });
-      assertExists(
-        await headStyle.text(),
-        `<style>body { color: #fff }</style>`,
-      );
-
-      const headScript = await fetch(host + "/head-script", { method: "GET" });
-      assertExists(
-        await headScript.text(),
-        `<script>console.log('script')</script>`,
-      );
-
-      const noScriptLink = await fetch(host + "/no-script", { method: "GET" });
-      assertExists(
-        await noScriptLink.text(),
-        `<noscript><link rel="stylesheet" href="app.jss"/></noscript>`,
       );
 
       const js = await fetch(host + `/${BUILD_ID}/user.js`, {

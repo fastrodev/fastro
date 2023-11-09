@@ -78,224 +78,9 @@ export class Render {
     opt.pageFolder = opt.pageFolder ?? "pages";
     opt.cache = opt.cache ?? true;
     opt.development = opt.development ?? true;
-    opt.html = opt.html ?? {};
-    opt.html.head = opt.html.head ?? {
-      meta: [],
-      script: [],
-      link: [],
-    };
-
-    const meta = [{ charset: "utf-8" }, {
-      name: "viewport",
-      content: "width=device-width, initial-scale=1.0",
-    }];
-    if (opt.html.head.descriptions) {
-      meta.push({
-        name: "description",
-        content: opt.html.head.descriptions,
-      });
-    }
-    opt.html.head.meta = opt.html.head.meta ?? meta;
-    opt.html.head.script = opt.html.head.script ?? [];
-
-    opt.html.body = opt.html.body ?? {
-      script: [],
-      root: {},
-    };
 
     const options = { ...opt };
     return this.#options = options;
-  };
-
-  #initHtml = async (element: Component, html?: any) => {
-    const el = isJSX(element as JSX.Element)
-      ? element as JSX.Element
-      : createElement(
-        element as FunctionComponent,
-        this.#options.props,
-      );
-    if (!html) return el;
-
-    const RootElement = () => {
-      if (this.#options.theme && this.#options.themeColor === "auto") {
-        return (
-          <div
-            id="root"
-            className={this.#options.html?.body?.root.class}
-            style={this.#options.html?.body?.root.style}
-            data-color-mode="auto"
-            data-light-theme="light"
-            data-dark-theme="dark"
-          >
-            {el}
-          </div>
-        );
-      }
-
-      if (this.#options.theme && this.#options.themeColor === "dark") {
-        return (
-          <div
-            id="root"
-            className={this.#options.html?.body?.root.class}
-            style={this.#options.html?.body?.root.style}
-            data-dark-theme="dark"
-          >
-            {el}
-          </div>
-        );
-      }
-
-      if (this.#options.theme && this.#options.themeColor === "light") {
-        return (
-          <div
-            id="root"
-            className={this.#options.html?.body?.root.class}
-            style={this.#options.html?.body?.root.style}
-            data-dark-theme="light"
-          >
-            {el}
-          </div>
-        );
-      }
-
-      return (
-        <div
-          id="root"
-          className={this.#options.html?.body?.root.class}
-          style={this.#options.html?.body?.root.style}
-        >
-          {el}
-        </div>
-      );
-    };
-
-    return (
-      <html
-        lang={this.#options.html?.lang}
-        className={this.#options.html?.class}
-        style={this.#options.html?.style}
-      >
-        <head>
-          {this.#options.html?.head?.title && (
-            <title>{this.#options.html?.head?.title}</title>
-          )}
-          {this.#options.html?.head?.meta &&
-            this.#options.html?.head?.meta.map((m) => (
-              <meta
-                property={m.property}
-                name={m.name}
-                content={m.content}
-                itemProp={m.itemprop}
-                charSet={m.charset}
-              />
-            ))}
-          {this.#options.html?.head?.link &&
-            this.#options.html?.head?.link.map((l) => (
-              <link
-                href={l.href}
-                integrity={l.integrity}
-                rel={l.rel}
-                as={l.as}
-                onLoad={l.onload}
-                media={l.media}
-                crossOrigin={l.crossorigin}
-              >
-              </link>
-            ))}
-
-          {this.#options.html?.head?.noScriptLink &&
-            (
-              <noscript>
-                <link
-                  rel={this.#options.html?.head?.noScriptLink.rel}
-                  href={this.#options.html?.head?.noScriptLink.href}
-                >
-                </link>
-              </noscript>
-            )}
-
-          {this.#options.html?.head?.headStyle &&
-            (
-              <style>
-                {this.#options.html?.head?.headStyle}
-              </style>
-            )}
-          {this.#options.html?.head?.script &&
-            this.#options.html?.head?.script.map((s) => (
-              <script
-                src={s.src}
-                type={s.type}
-                crossOrigin={s.crossorigin}
-                nonce={s.nonce}
-                integrity={s.integrity}
-              />
-            ))}
-
-          {this.#options.html?.head?.headScript &&
-            (
-              <script>
-                {this.#options.html?.head?.headScript}
-              </script>
-            )}
-        </head>
-        {this.#options.theme
-          ? (
-            <body
-              data-bs-theme={this.#options.html?.body?.theme ?? "dark"}
-              className={this.#options.html?.body?.class}
-              style={this.#options.html?.body?.style}
-            >
-              <RootElement />
-              {this.#options.props && (
-                <script
-                  dangerouslySetInnerHTML={{
-                    __html: await createInitScript(
-                      this.#server,
-                      this.#options.props,
-                    ),
-                  }}
-                />
-              )}
-              {this.#options.html?.body?.script &&
-                this.#options.html?.body?.script.map((s) => (
-                  <script
-                    src={s.src}
-                    type={s.type}
-                    crossOrigin={s.crossorigin}
-                    nonce={s.nonce}
-                  />
-                ))}
-            </body>
-          )
-          : (
-            <body
-              className={this.#options.html?.body?.class}
-              style={this.#options.html?.body?.style}
-            >
-              <RootElement />
-              {this.#options.props && (
-                <script
-                  dangerouslySetInnerHTML={{
-                    __html: await createInitScript(
-                      this.#server,
-                      this.#options.props,
-                    ),
-                  }}
-                />
-              )}
-              {this.#options.html?.body?.script &&
-                this.#options.html?.body?.script.map((s) => (
-                  <script
-                    src={s.src}
-                    type={s.type}
-                    crossOrigin={s.crossorigin}
-                    nonce={s.nonce}
-                  />
-                ))}
-            </body>
-          )}
-      </html>
-    );
   };
 
   #refreshJs = (refreshUrl: string, buildId: string) => {
@@ -310,11 +95,9 @@ es.onmessage = function(e) {
 };`;
   };
 
-  #handleComponentLayout = async (c: FunctionComponent, hydrate = true) => {
+  #handleComponentLayout = async (c: FunctionComponent) => {
     const init = await createInitScript(this.#server, this.#options.props);
     const refreshPath = `${this.#staticPath}/refresh.js`;
-
-    if (!hydrate) return <></>;
     return (
       <>
         {this.#development ? <script src={refreshPath} /> : ""}
@@ -329,31 +112,50 @@ es.onmessage = function(e) {
   };
 
   async #handleLayout(element: Component) {
-    if (this.#options.layout) {
-      const el = isJSX(element as JSX.Element)
-        ? element as JSX.Element
-        : createElement(
-          element as FunctionComponent,
-          this.#options.props,
+    const jsx = isJSX(element as JSX.Element);
+    const el = jsx ? element as JSX.Element : createElement(
+      element as FunctionComponent,
+      this.#options.props,
+    );
+
+    if (!this.#options.layout) {
+      const defaultLayout = ({ children }: { children: React.ReactNode }) => {
+        return (
+          <html>
+            <body>{children}</body>
+          </html>
         );
+      };
 
-      const hydrateScript = await this.#handleComponentLayout(
-        element as FunctionComponent,
-        this.#options.hydrate,
+      const defaultRoot = (
+        <div id="root">
+          {el}
+        </div>
       );
-
-      const root = (
-        <>
-          <div id="root">
-            {el}
-          </div>
-          {hydrateScript}
-        </>
-      );
-
-      const props = { children: root, data: this.#options.props };
-      return this.#options.layout(props);
+      return defaultLayout({ children: defaultRoot });
     }
+
+    const hydrateScript = jsx ? "" : await this.#handleComponentLayout(
+      element as FunctionComponent,
+    );
+
+    const root = this.#options.customRoot
+      ? this.#options.customRoot(el)
+      : (
+        <div id="root">
+          {el}
+        </div>
+      );
+
+    const rootContainer = (
+      <>
+        {root}
+        {hydrateScript}
+      </>
+    );
+
+    const props = { children: rootContainer, data: this.#options.props };
+    return this.#options.layout(props);
   }
 
   #createHTML = async (component: Component, cached?: boolean) => {
@@ -375,13 +177,9 @@ es.onmessage = function(e) {
     compID = `${fc.name}${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
     if (this.#options.layout) {
-      const htmlLayout = this.#handleLayout(component);
+      const htmlLayout = this.#handleLayout(e);
       return this.#nest[compID] = htmlLayout;
     }
-
-    await this.#handleComponent(fc, this.#options.hydrate);
-    const html = await this.#initHtml(e, this.#options.html);
-    return this.#nest[compID] = html;
   };
 
   #handleJSXElement = async (
@@ -391,17 +189,8 @@ es.onmessage = function(e) {
   ) => {
     compID = `default${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
-    let html = await this.#initHtml(component, this.#options.html);
+    let html = await this.#handleLayout(component);
     return this.#nest[compID] = html;
-  };
-
-  #handleComponent = async (c: FunctionComponent, hydrate = true) => {
-    if (!this.#options.html?.body) return;
-    if (hydrate) {
-      this.#options.html?.body.script?.push({
-        src: `${this.#staticPath}/${c.name.toLocaleLowerCase()}.js`,
-      });
-    }
   };
 
   #handleDevelopment = () => {
@@ -417,12 +206,6 @@ es.onmessage = function(e) {
           },
         }),
     );
-
-    if (this.#options.html?.head?.script) {
-      this.#options.html?.head.script?.push({
-        src: refreshPath,
-      });
-    }
   };
 
   render = async () => {

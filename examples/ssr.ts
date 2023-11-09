@@ -1,40 +1,21 @@
 import fastro, { Context, HttpRequest } from "../mod.ts";
 import user from "../pages/user.page.tsx";
 import { uuidModule } from "../uuid/mod.ts";
+import { layout } from "../pages/layout.tsx";
 
-// simulate async method
 const getUser = (data: string) => Promise.resolve(data);
-
-// init server
-const f = new fastro();
-
-// setup static folder for JS file
-f.static("/static", { folder: "static" });
-
-// setup page handler
 const handler = async (_req: HttpRequest, ctx: Context) => {
-  // get data from async method
-  const onError = (error: unknown) => console.error(error);
-  const ac = new AbortController();
-  setTimeout(() => ac.abort(), 10000);
   const data = await getUser("Guest");
-  const options = {
-    // pass data to component via props
-    props: { data },
+  return ctx.render({
+    layout,
+    props: { data, title: "React Component" },
     status: 200,
-    html: { head: { title: "React Component" } },
-    onError,
-    abortController: ac,
-  };
-
-  // render react component from server
-  return ctx.render(options);
+  });
 };
 
-// init default page folder with path and handler
+const f = new fastro();
+f.static("/static", { folder: "static" });
 f.page("/", user, handler);
-
-// init ssr with page module
 f.register(uuidModule);
 
 await f.serve();
