@@ -6,7 +6,7 @@ import blog from "../pages/blog.page.tsx";
 import Example from "../pages/example.page.tsx";
 import index from "../pages/index.page.tsx";
 import { denoRunCheck, getExamples, getPosts, init } from "./function.ts";
-import { createHTML } from "./layout.ts";
+import { createHTML } from "./layout.tsx";
 
 const title = "Speed without complexity";
 const description =
@@ -59,7 +59,6 @@ f.page("/app", app, (_req: HttpRequest, ctx: Context) => {
     build: true,
     cache: false,
     props: { data: "Guest" },
-    html: { head: { title: "Preact component" } },
   });
 });
 
@@ -76,8 +75,6 @@ f.page(
         posts: req.record["posts"],
         htmlClass: "h-100",
       },
-      "Blog",
-      "Blog of Fastro Framework",
     );
 
     return ctx.render(opt);
@@ -96,10 +93,7 @@ f.page(
         path: "home",
         title,
         description,
-        htmlClass: "h-100",
       },
-      title,
-      description,
     );
     return ctx.render(opt);
   },
@@ -116,8 +110,6 @@ f.page("/examples", Example, (req: HttpRequest, ctx: Context) => {
       examples,
       htmlClass: "h-100",
     },
-    title,
-    description,
   );
   return ctx.render(options);
 });

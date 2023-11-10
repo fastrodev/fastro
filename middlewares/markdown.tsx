@@ -8,7 +8,6 @@ import "https://esm.sh/v133/prismjs@1.29.0/components/prism-powershell";
 import "https://esm.sh/v133/prismjs@1.29.0/components/prism-json";
 import "https://esm.sh/v133/prismjs@1.29.0/components/prism-diff";
 
-import { getPublishDate } from "../app/function.ts";
 import DefaultFooter from "../components/footer.tsx";
 import DefaultHeader from "../components/header.tsx";
 import { Render } from "../http/render.tsx";
@@ -22,7 +21,7 @@ import {
 
 import { extract, remark, remarkToc } from "./deps.ts";
 import { version } from "../app/version.ts";
-import { createElement } from "react";
+import React, { createElement } from "react";
 
 type Meta = {
   title?: string;
@@ -68,95 +67,89 @@ export default class Instance {
       cache: true,
       theme: true,
       themeColor: "auto",
-      html: {
-        lang: "en",
-        class: "h-100",
-        head: {
-          title: `${md.meta?.title} | Fastro Framework`,
-          descriptions: md.meta?.description,
-          meta: [
-            { charset: "utf-8" },
-            {
-              name: "viewport",
-              content: "width=device-width, initial-scale=1.0",
-            },
-            {
-              name: "description",
-              content: md.meta?.description,
-            },
-            {
-              name: "author",
-              content: "Fastro Software",
-            },
-            {
-              name: "publish_date",
-              property: "og:publish_date",
-              content: getPublishDate(),
-            },
-            {
-              property: "og:image",
-              content: md.meta?.image,
-            },
-            {
-              name: "twitter:image:src",
-              content: md.meta?.image,
-            },
-            {
-              name: "twitter:description",
-              content: md.meta?.description,
-            },
-            {
-              name: "og-description",
-              content: md.meta?.description,
-            },
-            {
-              property: "og:title",
-              content: md.meta?.title,
-            },
-          ],
-          link: [
-            {
-              href:
-                "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css",
-              rel: "stylesheet",
-              integrity:
-                "sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD",
-              crossorigin: "anonymous",
-            },
-            {
-              href:
-                "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css",
-              rel: "stylesheet",
-            },
-            {
-              href: "/static/post.css",
-              rel: "stylesheet",
-            },
-            {
-              href: "/static/cover.css",
-              rel: "stylesheet",
-            },
-          ],
-          headStyle: CSS + "#root {background-color:red}",
-        },
-        body: {
-          script: [
-            {
-              src:
-                "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js",
-            },
-            {
-              src:
-                "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js",
-            },
-          ],
-          class: "d-flex h-100 text-bg-dark",
-          root: {
-            class:
-              "d-flex w-100 h-100 pt-3 ps-3 pe-3 mx-auto flex-column markdown-body",
-            style: { maxWidth: "42em" },
-          },
-        },
+      props: {
+        title: "Title",
+      },
+      customRoot: (el: React.ReactNode) => {
+        return (
+          <div
+            id="root"
+            className="d-flex w-100 h-100 pt-3 ps-3 pe-3 mx-auto flex-column markdown-body"
+            style={{ maxWidth: "42em" }}
+            data-color-mode="auto"
+            data-light-theme="light"
+            data-dark-theme="dark"
+          >
+            {el}
+          </div>
+        );
+      },
+      layout: (
+        { children, data }: { children: React.ReactNode; data: any },
+      ) => {
+        return (
+          <html className="h-100" lang="EN">
+            <head>
+              <title>{md.meta?.title}</title>
+              <meta charSet="utf-8" />
+              <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1.0"
+              />
+              <meta
+                name="description"
+                content={md.meta?.description}
+              />
+              <meta
+                name="author"
+                content={data.author}
+              />
+              <meta
+                property="og:image"
+                content={md.meta?.image}
+              />
+              <meta
+                property="og:title"
+                content={md.meta?.title}
+              />
+              <meta
+                name="twitter:image:src"
+                content={md.meta?.image}
+              />
+              <meta
+                name="og-description"
+                content={md.meta?.description}
+              />
+              <link
+                href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+                rel="stylesheet"
+                integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+                crossOrigin="anonymous"
+              />
+
+              <link
+                href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"
+                rel="stylesheet"
+              />
+              <link
+                href="/static/post.css"
+                rel="stylesheet"
+              />
+              <link
+                href="/static/cover.css"
+                rel="stylesheet"
+              />
+              <style>
+                {CSS + `#root {background-color:red}`}
+              </style>
+            </head>
+            <body className="d-flex h-100 text-bg-dark">
+              {children}
+              <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js" />
+              <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js" />
+            </body>
+          </html>
+        );
       },
     } as RenderOptions;
   };
