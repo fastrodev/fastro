@@ -1,9 +1,8 @@
-import { ConnInfo } from "../http/deps.ts";
 import fastro from "../mod.ts";
 
 const f = new fastro();
 
-f.get("/", (_req: Request, _info: ConnInfo) => {
+f.get("/", (_req: Request, _info: Deno.ServeHandlerInfo) => {
   return new Response("Hello, World!");
 });
 
