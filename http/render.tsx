@@ -117,6 +117,22 @@ es.onmessage = function(e) {
       element as FunctionComponent,
       this.#options.props,
     );
+    const hydrateScript = jsx ? "" : await this.#handleComponentLayout(
+      element as FunctionComponent,
+    );
+
+    const defaultRoot = (
+      <div id="root">
+        {el}
+      </div>
+    );
+
+    const defaultContainer = (
+      <>
+        {defaultRoot}
+        {hydrateScript}
+      </>
+    );
 
     if (!this.#options.layout) {
       const defaultLayout = ({ children }: { children: React.ReactNode }) => {
@@ -126,26 +142,12 @@ es.onmessage = function(e) {
           </html>
         );
       };
-
-      const defaultRoot = (
-        <div id="root">
-          {el}
-        </div>
-      );
-      return defaultLayout({ children: defaultRoot });
+      return defaultLayout({ children: defaultContainer });
     }
-
-    const hydrateScript = jsx ? "" : await this.#handleComponentLayout(
-      element as FunctionComponent,
-    );
 
     const root = this.#options.customRoot
       ? this.#options.customRoot(el)
-      : (
-        <div id="root">
-          {el}
-        </div>
-      );
+      : defaultRoot;
 
     const rootContainer = (
       <>
@@ -165,6 +167,7 @@ es.onmessage = function(e) {
       return this.#handleJSXElement(compID, component, cached);
     }
 
+    // handle a modular page
     const is = isPageComponent(component as PageComponent);
     const pc = component as PageComponent;
     const c = is ? pc.component : component as FunctionComponent;
@@ -176,10 +179,8 @@ es.onmessage = function(e) {
     const fc = c as FunctionComponent;
     compID = `${fc.name}${this.#reqUrl}`;
     if (cached && this.#nest[compID]) return this.#nest[compID];
-    if (this.#options.layout) {
-      const htmlLayout = this.#handleLayout(e);
-      return this.#nest[compID] = htmlLayout;
-    }
+    const htmlLayout = this.#handleLayout(e);
+    return this.#nest[compID] = htmlLayout;
   };
 
   #handleJSXElement = async (

@@ -7,6 +7,7 @@ import Example from "../pages/example.page.tsx";
 import index from "../pages/index.page.tsx";
 import { denoRunCheck, getExamples, getPosts, init } from "./function.ts";
 import { createHTML } from "./layout.tsx";
+import { layout } from "../pages/layout.tsx";
 
 const title = "Speed without complexity";
 const description =
@@ -56,6 +57,7 @@ f.static("/static", { folder: "static" });
 
 f.page("/app", app, (_req: HttpRequest, ctx: Context) => {
   return ctx.render({
+    layout,
     build: true,
     cache: false,
     props: { data: "Guest" },
