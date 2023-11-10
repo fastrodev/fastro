@@ -31,6 +31,7 @@
     "deno_kv": "deno run -A --unstable examples/deno_kv.ts",
     "params_query": "deno run -A examples/params_query.ts",
     "ssr": "deno run -A examples/ssr.ts",
+    "ssr_with_layout": "deno run -A examples/ssr_with_layout.ts",
     "ssr_with_error": "deno run -A examples/ssr_with_error.ts",
     "ssr_with_custom_root": "deno run -A --watch examples/ssr_with_custom_root.ts",
     "static_file_string": "deno run -A examples/static_file_string.ts",
