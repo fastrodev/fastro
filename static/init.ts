@@ -118,7 +118,7 @@ jobs:
   },
   "tasks": {
     "start": "ENV=DEVELOPMENT deno run -A --watch main.ts",
-    "hydrate": "deno run -A main.ts --hydrate"
+    "hydrate": "deno run -A -r main.ts --hydrate"
   }
 }`,
     );
@@ -176,7 +176,7 @@ It will reload your browser automatically if changes occur.
 ├── main.ts
 ├── pages
 │   ├── app.tsx
-│   ├── layout.ts
+│   ├── layout.tsx
 │   └── mod.ts
 ├── readme.md
 ├── static
@@ -244,8 +244,9 @@ export default function App(props: { data: string }) {
     );
     // layout
     await Deno.writeTextFile(
-      "pages/layout.ts",
-      `import { RenderOptions } from "$app/deps.ts";
+      "pages/layout.tsx",
+      `// deno-lint-ignore-file no-explicit-any
+import { RenderOptions } from "$app/deps.ts";
 
 export default function (
   props: { data: string; title: string; description: string },
@@ -253,45 +254,63 @@ export default function (
   return {
     props,
     cache: false,
-    html: {
-      class: "h-100",
-      head: {
-        title: props.title,
-        descriptions: props.description,
-        meta: [
-          { charset: "utf-8" },
-          {
-            name: "viewport",
-            content: "width=device-width, initial-scale=1.0",
-          },
-          {
-            name: "description",
-            content: "Fast & Simple Web Application Framework",
-          },
-          {
-            property: "og:image",
-            content: "https://fastro.dev/static/image.png",
-          },
-        ],
-        link: [{
-          href:
-            "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css",
-          rel: "stylesheet",
-          integrity:
-            "sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD",
-          crossorigin: "anonymous",
-        }, {
-          href: "/static/app.css",
-          rel: "stylesheet",
-        }],
-      },
-      body: {
-        class: "h-100 text-bg-dark",
-        script: [],
-        root: {
-          class: "cover-container d-flex w-100 h-100 p-3 mx-auto flex-column",
-        },
-      },
+    customRoot: (el: React.ReactNode) => {
+      return (
+        <div
+          id="root"
+          className="d-flex w-100 pt-3 ps-3 pe-3 mx-auto flex-column"
+          style={{ maxWidth: "42em" }}
+          data-color-mode="auto"
+          data-light-theme="light"
+          data-dark-theme="dark"
+        >
+          {el}
+        </div>
+      );
+    },
+    layout: (
+      { children, data }: { children: React.ReactNode; data: any },
+    ) => {
+      return (
+        <html className="h-100" lang="EN">
+          <head>
+            <title>{data.title}</title>
+            <meta charSet="utf-8" />
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1.0"
+            />
+            <meta
+              name="description"
+              content={data.description}
+            />
+            <link
+              href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+              crossOrigin="anonymous"
+            />
+
+            <link
+              href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"
+              rel="stylesheet"
+            />
+            <link
+              href="/static/post.css"
+              rel="stylesheet"
+            />
+            <link
+              href="/static/cover.css"
+              rel="stylesheet"
+            />
+          </head>
+          <body className="d-flex h-100 text-bg-dark">
+            {children}
+            <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js" />
+            <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js" />
+          </body>
+        </html>
+      );
     },
   };
 }
@@ -302,7 +321,7 @@ export default function (
       "pages/mod.ts",
       `import { Context, Fastro, HttpRequest } from "$app/deps.ts";
 import app from "$app/pages/app.page.tsx";
-import layout from "$app/pages/layout.ts";
+import layout from "$app/pages/layout.tsx";
 
 export function pageModule(f: Fastro) {
   return f.page(
