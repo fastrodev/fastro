@@ -1,7 +1,6 @@
-const init = async (name?: string, ver?: string) => {
+const init = async (name?: string) => {
   try {
     const projectName = name ?? "my-project";
-    const _v = ver;
     // vscode
     await Deno.mkdir(".vscode");
     await Deno.writeTextFile(
