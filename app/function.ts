@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { HttpRequest } from "../http/server.ts";
-import { version } from "./version.ts";
+// import { version } from "./version.ts";
 import { extract } from "https://deno.land/std@0.201.0/front_matter/any.ts";
 
 export function getPublishDate(dateStr?: string) {
@@ -40,10 +40,10 @@ export function denoRunCheck(req: HttpRequest) {
 
 export function init() {
   const basePath = Deno.env.get("DENO_DEPLOYMENT_ID")
-    ? `https://deno.land/x/fastro@${version}/static`
+    ? `https://raw.githubusercontent.com/fastrodev/fastro/main/static`
     : "http://localhost:8000/static";
   const code =
-    `import init from "${basePath}/init.ts"; const name = Deno.args[0] ?? 'my-project'; await init(name, "${version}");`;
+    `import init from "${basePath}/init.ts"; const name = Deno.args[0] ?? 'my-project'; await init(name);`;
   return new Response(code, {
     headers: {
       "content-type": "application/typescript; charset=utf-8",
