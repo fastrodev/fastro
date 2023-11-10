@@ -5,12 +5,19 @@ import { layout } from "../pages/layout.tsx";
 
 const getUser = (data: string) => Promise.resolve(data);
 const handler = async (_req: HttpRequest, ctx: Context) => {
+  const onError = (error: unknown) => console.error(error);
+  const ac = new AbortController();
+  setTimeout(() => ac.abort(), 10000);
   const data = await getUser("Guest");
-  return ctx.render({
-    layout,
-    props: { data, title: "React Component" },
+  const options = {
+    props: { data },
     status: 200,
-  });
+    layout,
+    onError,
+    abortController: ac,
+  };
+
+  return ctx.render(options);
 };
 
 const f = new fastro();
