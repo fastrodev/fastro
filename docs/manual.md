@@ -60,21 +60,20 @@ Fastro use [Deno standard library](https://deno.land/std), so you can also add
 [ConnInfo](https://deno.land/std/http/mod.ts?s=ConnInfo) params for the handler.
 
 ```ts
-type Handler = (
+type ServeHandler = (
   request: Request,
-  connInfo: ConnInfo,
+  info: Deno.ServeHandlerInfo,
 ) => Response | Promise<Response>;
 ```
 
 This code is used to get client IP address:
 
 ```ts
-import { ConnInfo } from "https://deno.land/std/http/server.ts";
 import fastro from "https://deno.land/x/fastro/mod.ts";
 
 const f = new fastro();
 
-f.get("/", (_req: Request, info: ConnInfo) => {
+f.get("/", (_req: Request, info: Deno.ServeHandlerInfo) => {
   const addr = info.remoteAddr as Deno.NetAddr;
   const ip = addr.hostname;
   return new Response(`Your IP address is <b>${ip}</b>`, {
