@@ -289,16 +289,9 @@ export default function (
               integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
               crossOrigin="anonymous"
             />
-
-            <link
-              href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"
-              rel="stylesheet"
-            />
           </head>
           <body className="d-flex h-100 text-bg-dark">
             {children}
-            <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js" />
-            <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js" />
           </body>
         </html>
       );
