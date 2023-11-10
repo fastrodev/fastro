@@ -57,12 +57,13 @@ deno run -A main.ts
 
 Fastro use [Deno standard library](https://deno.land/std), so you can also add
 [`Request`](https://deno.com/deploy/docs/runtime-request) and
-[ConnInfo](https://deno.land/std/http/mod.ts?s=ConnInfo) params for the handler.
+[ServeHandlerInfo](https://deno.land/api?s=Deno.ServeHandlerInfo) params for the
+handler.
 
 ```ts
 type ServeHandler = (
   request: Request,
-  info: Deno.ServeHandlerInfo,
+  info: ServeHandlerInfo,
 ) => Response | Promise<Response>;
 ```
 
@@ -86,7 +87,7 @@ await f.serve();
 
 ## Fastro handler signature
 
-Fastro extends `Request` and `ConnInfo` to add functionality.
+Fastro extends `Request` and `ServeHandlerInfo` to add functionality.
 
 ```ts
 type RequestHandler = (
@@ -97,7 +98,8 @@ type RequestHandler = (
 
 - `Request` become
   [`HttpRequest`](https://deno.land/x/fastro/mod.ts?s=HttpRequest).
-- `ConnInfo` become [`Context`](https://deno.land/x/fastro/mod.ts?s=Context).
+- `ServeHandlerInfo` become
+  [`Context`](https://deno.land/x/fastro/mod.ts?s=Context).
 
 ## Text response
 
