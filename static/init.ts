@@ -294,14 +294,6 @@ export default function (
               href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"
               rel="stylesheet"
             />
-            <link
-              href="/static/post.css"
-              rel="stylesheet"
-            />
-            <link
-              href="/static/cover.css"
-              rel="stylesheet"
-            />
           </head>
           <body className="d-flex h-100 text-bg-dark">
             {children}
