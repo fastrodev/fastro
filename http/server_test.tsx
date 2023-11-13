@@ -4,6 +4,7 @@ import fastro, { Fastro, Info } from "../mod.ts";
 import { assert } from "https://deno.land/std@0.206.0/assert/assert.ts";
 import { BUILD_ID, Context, HttpRequest, Next } from "./server.ts";
 import User from "../pages/user.page.tsx";
+import uuid from "../uuid/uuid.page.tsx";
 
 const host = "http://localhost:8000";
 
@@ -34,16 +35,6 @@ Deno.test(
         throw new Error("error");
       });
       f.page("/page", <>Page</>, (req: HttpRequest, ctx: Context) => {
-        // const layout = ({ children }: { children: React.ReactNode }) => {
-        //   return (
-        //     <html>
-        //       <head></head>
-        //       <body>
-        //         {children}
-        //       </body>
-        //     </html>
-        //   );
-        // };
         return ctx.render();
       });
       f.get("/params/:id", (req: HttpRequest, ctx: Context) => {
@@ -370,6 +361,47 @@ Deno.test(
       assertEquals(
         init.headers.get("content-type"),
         `text/plain;charset=UTF-8`,
+      );
+
+      f.close();
+      await f.finished();
+    },
+    sanitizeResources: false,
+    sanitizeOps: false,
+    sanitizeExit: false,
+  },
+);
+
+Deno.test(
+  {
+    permissions: { net: true, env: true, read: true, write: true, run: true },
+    name: "SSR",
+    async fn() {
+      Deno.env.set("ENV", "DEVELOPMENT");
+      const f = new fastro();
+      f.page(
+        "/ssr",
+        { component: uuid, folder: "uuid" },
+        (_req: HttpRequest, ctx: Context, next: Next) => {
+          ctx.server.record["hello"] = "hello";
+          return next();
+        },
+        (req: HttpRequest, ctx: Context) => {
+          return ctx.render({
+            props: {
+              contentType: req.headers.get("content-type"),
+              data: ctx.server.record["hello"],
+            },
+          });
+        },
+      );
+
+      await f.serve();
+
+      const page1 = await fetch(host + "/ssr", { method: "GET" });
+      assertExists(
+        await page1.text(),
+        `<h1>Hello hello</h1>`,
       );
 
       f.close();

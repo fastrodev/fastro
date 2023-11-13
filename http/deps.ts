@@ -13,7 +13,8 @@ const renderToReadableStream = Deno.env.get("ENV") === "DEVELOPMENT"
 
 export { createElement, renderToReadableStream };
 
-export { toHashString } from "https://deno.land/std@0.206.0/crypto/to_hash_string.ts";
+export { encodeHex } from "https://deno.land/std@0.206.0/encoding/hex.ts";
+
 export {
   Status,
   STATUS_TEXT,
