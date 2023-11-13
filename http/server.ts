@@ -11,11 +11,11 @@ import {
 
 import {
   contentType,
+  encodeHex,
   extname,
   renderToReadableStream,
   Status,
   STATUS_TEXT,
-  toHashString,
 } from "./deps.ts";
 
 import { Render } from "./render.tsx";
@@ -329,14 +329,13 @@ type Nest = Record<
   any
 >;
 
-export const BUILD_ID = Deno.env.get("DENO_DEPLOYMENT_ID") || toHashString(
+export const BUILD_ID = Deno.env.get("DENO_DEPLOYMENT_ID") || encodeHex(
   new Uint8Array(
     await crypto.subtle.digest(
       "sha-1",
       new TextEncoder().encode(crypto.randomUUID()),
     ),
   ),
-  "hex",
 );
 
 export default class HttpServer implements Fastro {
@@ -358,7 +357,6 @@ export default class HttpServer implements Fastro {
   #body: ReadableStream<any> | undefined;
   #listenHandler: ListenHandler | undefined;
   #hook: Hook | undefined;
-  #staticPath: string | undefined;
 
   constructor(options?: { port?: number }) {
     this.#port = options?.port ?? 8000;
