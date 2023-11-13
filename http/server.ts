@@ -688,16 +688,6 @@ import React from "react";import { hydrateRoot } from "${hydrateRoot}";import ${
     if (this.#isResponse(x)) return x;
   };
 
-  // #checkReferer = (req: Request) => {
-  //   const referer = req.headers.get("referer");
-  //   const host = req.headers.get("host") as string;
-  //   if (!referer || !referer?.includes(host)) {
-  //     return new Response(STATUS_TEXT[Status.NotFound], {
-  //       status: Status.NotFound,
-  //     });
-  //   }
-  // };
-
   #handleRequest = async (
     req: Request,
     i: Info,
