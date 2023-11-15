@@ -11,10 +11,10 @@ const Index = (
       <main className="px-3 d-flex flex-column h-100">
         <div
           className="mx-auto flex-grow-1 d-flex align-items-center"
-          style={{ maxWidth: 135 }}
+          style={{ maxWidth: 300 }}
         >
           <svg
-            viewBox="0 0 1194 1194"
+            viewBox="0 0 1000 1000"
             width="100%"
             height="100%"
             xmlns="http://www.w3.org/2000/svg"
