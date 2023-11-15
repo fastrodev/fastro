@@ -36,7 +36,7 @@ export async function indexHandler(req: HttpRequest, ctx: Context) {
         <a href="/signout">Sign out</a>
       </p>
       <p>
-        <a href="https://github.com/fastrodev/fastro/modules/auth.tsx">
+        <a href="https://github.com/fastrodev/fastro/blob/main/modules/auth.tsx">
           Source code
         </a>
       </p>
