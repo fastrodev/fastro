@@ -16,7 +16,7 @@ const redirectUri = Deno.env.get("REDIRECT_URI")
   : "http://localhost:8000/callback";
 
 const oauthConfig = createGitHubOAuthConfig(
-  { redirectUri },
+  { redirectUri, scope: ["user"] },
 );
 
 export async function indexHandler(req: HttpRequest, ctx: Context) {
@@ -29,12 +29,18 @@ export async function indexHandler(req: HttpRequest, ctx: Context) {
       <p>Token URI: {oauthConfig.tokenUri}</p>
       <p>Scope: {oauthConfig.defaults?.scope}</p>
       <p>Signed in: {JSON.stringify(hasSessionIdCookie)}</p>
-      <p>
-        <a href="/signin">Sign in</a>
-      </p>
-      <p>
-        <a href="/signout">Sign out</a>
-      </p>
+      {hasSessionIdCookie
+        ? (
+          <p>
+            <a href="/signout">Sign out</a>
+          </p>
+        )
+        : (
+          <p>
+            <a href="/signin">Sign in</a>
+          </p>
+        )}
+
       <p>
         <a href="https://github.com/fastrodev/fastro/blob/main/modules/auth.tsx">
           Source code
