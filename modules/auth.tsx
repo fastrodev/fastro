@@ -70,7 +70,7 @@ export const signoutHandler = async (req: Request) => {
  * @returns Fastro
  */
 export const authModule = (f: Fastro) => {
-  return f.get("/", indexHandler)
+  return f.get("/auth", indexHandler)
     .get("/signin", signinHandler)
     .get("/callback", callbackHandler)
     .get("/signout", signoutHandler);
