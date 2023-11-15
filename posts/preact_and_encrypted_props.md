@@ -1,6 +1,6 @@
 ---
 title: "Fastro v0.80.0: Preact and Server Side Props Encryption"
-description: "Explore the latest release of Fastro, where advanced Preact integration and robust encryption of Server Side Props enhance both the security and performance aspects of your web applications"
+description: "Preact integration and robust encryption of Server Side Props"
 image: https://fastro.dev/static/image.png
 author: Fastro
 date: 08/16/2023
