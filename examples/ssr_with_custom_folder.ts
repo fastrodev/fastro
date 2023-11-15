@@ -1,6 +1,6 @@
-import fastro, { Context, HttpRequest } from "../mod.ts";
-import uuid from "../uuid/uuid.page.tsx";
-import { uuidService } from "../uuid/uuid.service.ts";
+import fastro, { Context, HttpRequest } from "$fastro/mod.ts";
+import uuid from "$fastro/uuid/uuid.page.tsx";
+import { uuidService } from "$fastro/uuid/uuid.service.ts";
 
 export function apiHandler(_req: Request) {
   return uuidService();

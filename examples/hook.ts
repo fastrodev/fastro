@@ -1,4 +1,4 @@
-import fastro, { Fastro, Info } from "../mod.ts";
+import fastro, { Fastro, Info } from "$fastro/mod.ts";
 
 const f = new fastro();
 

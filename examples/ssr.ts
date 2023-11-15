@@ -1,6 +1,6 @@
-import fastro, { Context, HttpRequest } from "../mod.ts";
-import user from "../pages/user.page.tsx";
-import { uuidModule } from "../uuid/mod.ts";
+import fastro, { Context, HttpRequest } from "$fastro/mod.ts";
+import user from "$fastro/pages/user.page.tsx";
+import { uuidModule } from "$fastro/uuid/mod.ts";
 
 const getUser = (data: string) => Promise.resolve(data);
 const handler = async (_req: HttpRequest, ctx: Context) => {

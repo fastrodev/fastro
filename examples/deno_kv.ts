@@ -1,4 +1,4 @@
-import fastro, { Context, HttpRequest } from "../mod.ts";
+import fastro, { Context, HttpRequest } from "$fastro/mod.ts";
 
 const uuid = crypto.randomUUID();
 const f = new fastro();
