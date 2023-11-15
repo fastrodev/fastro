@@ -65,7 +65,7 @@ export const signoutHandler = async (req: Request) => {
 
 /**
  * To use this module,
- * see the example: https://github.com/fastrodev/fastro/blob/main/examples/register.ts
+ * see the example: https://github.com/fastrodev/fastro/blob/main/examples/oauth.ts
  * @param f: Fastro
  * @returns Fastro
  */
