@@ -8,6 +8,7 @@ import index from "../pages/index.page.tsx";
 import { denoRunCheck, getExamples, getPosts, init } from "./function.ts";
 import { createHTML } from "./layout.tsx";
 import { layout } from "../pages/layout.tsx";
+import { authModule } from "../modules/auth.tsx";
 
 const title = "Speed without complexity";
 const description =
@@ -115,6 +116,8 @@ f.page("/examples", Example, (req: HttpRequest, ctx: Context) => {
   );
   return ctx.render(options);
 });
+
+f.register(authModule);
 
 f.onListen(({ port, hostname }) => {
   console.log(
