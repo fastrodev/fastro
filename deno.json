@@ -15,7 +15,7 @@
   "tasks": {
     "start": "deno run -A --unstable --watch app/main.ts",
     "prod": "deno run -A app/main.ts",
-    "hydrate": "deno run -A -r app/main.ts --hydrate",
+    "hydrate": "deno run -A -r  --unstable app/main.ts --hydrate",
     "test": "rm -rf .hydrate && rm -rf cov && deno test -A --coverage=cov && deno coverage cov",
     "coverage": "deno coverage cov --lcov > cov.lcov",
     "bench": "deno run -A bench/run.ts",
