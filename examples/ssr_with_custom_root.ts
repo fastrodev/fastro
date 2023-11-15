@@ -1,6 +1,6 @@
-import fastro, { Context, HttpRequest } from "../mod.ts";
-import user from "../pages/user.page.tsx";
-import { customRoot, layout } from "../pages/layout.tsx";
+import fastro, { Context, HttpRequest } from "$fastro/mod.ts";
+import user from "$fastro/pages/user.page.tsx";
+import { customRoot, layout } from "$fastro/pages/layout.tsx";
 
 const props = { data: "Guest", title: "React Component" };
 
