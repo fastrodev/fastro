@@ -19,7 +19,7 @@
     "test": "rm -rf .hydrate && rm -rf cov && deno test -A --coverage=cov && deno coverage cov",
     "coverage": "deno coverage cov --lcov > cov.lcov",
     "bench": "deno run -A bench/run.ts",
-    "oauth": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee deno run -A --unstable examples/auth.tsx",
+    "oauth": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee deno run -A --unstable examples/oauth.ts",
     "deno": "deno run -A examples/deno.ts",
     "hook": "deno run -A examples/hook.ts",
     "raw_json": "deno run -A examples/raw_json.ts",
