@@ -29,17 +29,11 @@ export async function indexHandler(req: HttpRequest, ctx: Context) {
       <p>Token URI: {oauthConfig.tokenUri}</p>
       <p>Scope: {oauthConfig.defaults?.scope}</p>
       <p>Signed in: {JSON.stringify(hasSessionIdCookie)}</p>
-      {hasSessionIdCookie
-        ? (
-          <p>
-            <a href="/signout">Sign out</a>
-          </p>
-        )
-        : (
-          <p>
-            <a href="/signin">Sign in</a>
-          </p>
-        )}
+      <p>
+        {hasSessionIdCookie
+          ? <a href="/signout">Sign out</a>
+          : <a href="/signin">Sign in</a>}
+      </p>
 
       <p>
         <a href="https://github.com/fastrodev/fastro/blob/main/modules/auth.tsx">
