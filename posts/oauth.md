@@ -31,8 +31,7 @@ In this step, we will create `oauthConfig` with custom `redirectUri` and
 ```tsx
 import { createGitHubOAuthConfig } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
 
-const redirectUri = Deno.env.get("REDIRECT_URI")
-  ? "https://fastro.dev/callback"
+const redirectUri = Deno.env.get("REDIRECT_URI") ??
   : "http://localhost:8000/callback";
 
 const oauthConfig = createGitHubOAuthConfig(
