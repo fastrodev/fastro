@@ -11,8 +11,8 @@ import {
 import { Status } from "$fastro/http/deps.ts";
 import { Context, HttpRequest } from "$fastro/mod.ts";
 
-const uri = Deno.env.get("REDIRECT_URI");
-const redirectUri = uri ?? "http://localhost:8000/callback";
+const redirectUri = Deno.env.get("REDIRECT_URI") ??
+  "http://localhost:8000/callback";
 
 const oauthConfig = createGitHubOAuthConfig(
   { redirectUri, scope: ["user"] },
