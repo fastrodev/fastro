@@ -76,7 +76,7 @@ export class Render {
   #initOptions = (opt: RenderOptions) => {
     opt.status = opt.status ?? 200;
     opt.pageFolder = opt.pageFolder ?? "pages";
-    opt.cache = opt.props.cache;
+    opt.cache = opt.props ? opt.props.cache : true;
     opt.development = opt.development ?? true;
 
     const options = { ...opt };
