@@ -16,13 +16,6 @@ export default function (
       </h3>
       <div className="nav-scroller justify-content-end">
         <nav className="nav nav-masthead justify-content-center justify-content-md-end">
-          <LinkHeader
-            activePath="benchmarks"
-            link="/benchmarks"
-            path={props.path}
-          >
-            Benchmarks
-          </LinkHeader>
           <LinkHeader activePath="manual" link="/manual" path={props.path}>
             Manual
           </LinkHeader>
@@ -33,7 +26,7 @@ export default function (
             Blog
           </LinkHeader>
           <LinkHeader activePath="store" link="/store" path={props.path}>
-            Shop
+            Store
           </LinkHeader>
           {props.avatar === ""
             ? (
