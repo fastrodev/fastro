@@ -22,6 +22,7 @@ import {
 import { extract, remark, remarkToc } from "$fastro/middlewares/deps.ts";
 import { version } from "$fastro/app/version.ts";
 import React, { createElement } from "react";
+import { getAvatar } from "$fastro/app/main.ts";
 
 type Meta = {
   title?: string;
@@ -156,12 +157,14 @@ export default class Instance {
   };
 
   middleware = async (req: HttpRequest, ctx: Context, _next: Next) => {
+    const avatar = await getAvatar(req);
     const md = await new Markdown(
       ctx.server.getNest(),
       req,
       this.#header,
       this.#footer,
       this.#folder,
+      avatar,
     ).getPost(this.#prefix) as Post;
 
     if (md) {
@@ -185,6 +188,7 @@ class Markdown {
   #header: FunctionComponent;
   #footer: FunctionComponent;
   #folder: string | undefined;
+  #avatar: string | undefined;
 
   constructor(
     nest: Record<string, any>,
@@ -192,6 +196,7 @@ class Markdown {
     header: FunctionComponent,
     footer: FunctionComponent,
     folder?: string,
+    avatar?: string,
   ) {
     this.#post = {};
     this.#nest = nest;
@@ -199,6 +204,7 @@ class Markdown {
     this.#header = header;
     this.#footer = footer;
     this.#folder = folder ?? "posts";
+    this.#avatar = avatar;
   }
 
   #readFile = async (path: string, prefix?: string) => {
@@ -230,6 +236,7 @@ class Markdown {
         m.attrs,
         version,
         p,
+        this.#avatar,
       );
       return this.#post[path] = {
         meta: m.attrs,
@@ -245,13 +252,14 @@ class Markdown {
     meta: Meta,
     props: string,
     path?: string,
+    avatar?: string,
   ) => {
     const Header = this.#header;
     const Footer = this.#footer;
 
     return (
       <div className="d-flex flex-column h-100">
-        <Header path={path} version={props} />
+        <Header path={path} version={props} avatar={avatar} />
         <main className="markdown flex-grow-1" style={{ marginBottom: 20 }}>
           <div className="text-left">
             <h1 className="display-5 fw-bold" style={{ marginBottom: 0 }}>

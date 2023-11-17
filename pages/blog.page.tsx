@@ -51,11 +51,12 @@ export default function Blog(
     title: string;
     description: string;
     posts: Post[];
+    avatar: string;
   },
 ) {
   return (
     <div className="d-flex flex-column h-100">
-      <Header path={props.path} version={props.version} />
+      <Header path={props.path} version={props.version} avatar={props.avatar} />
       <main className="flex-grow-1">
         <div className="d-flex flex-column pt-3">
           {props.posts

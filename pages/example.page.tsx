@@ -9,7 +9,12 @@ type Example = {
 };
 
 export default function Example(
-  props: { version: string; path: string; examples: Example[] },
+  props: {
+    version: string;
+    path: string;
+    examples: Example[];
+    avatar?: string;
+  },
 ) {
   const list = props.examples.map((e, i) => {
     const path =
@@ -28,7 +33,7 @@ export default function Example(
   });
   return (
     <>
-      <Header path={props.path} version={props.version} />
+      <Header path={props.path} version={props.version} avatar={props.avatar} />
       <main>
         <div className="d-flex flex-wrap justify-content-center">
           {list}

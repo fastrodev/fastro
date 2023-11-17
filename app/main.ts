@@ -79,9 +79,12 @@ f.page("/app", app, (_req: HttpRequest, ctx: Context) => {
 f.page(
   "/blog/:post([a-zA-Z0-9]+)?",
   blog,
-  (req: HttpRequest, ctx: Context) => {
+  async (req: HttpRequest, ctx: Context) => {
+    const avatar = await getAvatar(req);
+    console.log("avatar blog", avatar);
     const opt = createHTML(
       {
+        avatar,
         version: version,
         path: "blog",
         title: "Blog",
@@ -95,18 +98,30 @@ f.page(
   },
 );
 
+export async function getAvatar(req: HttpRequest) {
+  const kv = req.record["kv"] as Deno.Kv;
+  let data, avatar = "";
+  if (req.sessionId) {
+    data = await kv.get([req.sessionId]) as any;
+    avatar = data ? data.value.avatar_url : "";
+  }
+
+  return avatar;
+}
+
 f.page(
   "/",
   index,
   async (req: HttpRequest, ctx: Context) => {
     const res = denoRunCheck(req);
     if (res) return init();
-    const kv = req.record["kv"] as Deno.Kv;
-    let data, avatar = "";
-    if (req.sessionId) {
-      data = await kv.get([req.sessionId]) as any;
-      avatar = data ? data.value.avatar_url : "";
-    }
+    const avatar = await getAvatar(req);
+    // const kv = req.record["kv"] as Deno.Kv;
+    // let data, avatar = "";
+    // if (req.sessionId) {
+    //   data = await kv.get([req.sessionId]) as any;
+    //   avatar = data ? data.value.avatar_url : "";
+    // }
 
     const opt = createHTML(
       {
@@ -122,16 +137,19 @@ f.page(
   },
 );
 
-f.page("/examples", Example, (req: HttpRequest, ctx: Context) => {
+f.page("/examples", Example, async (req: HttpRequest, ctx: Context) => {
   const examples = req.record["examples"];
+  const avatar = await getAvatar(req);
   const options = createHTML(
     {
       version,
+      avatar,
       path: "examples",
       title,
       description,
       examples,
       htmlClass: "h-100",
+      cache: false,
     },
   );
   return ctx.render(options);
