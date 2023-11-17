@@ -23,23 +23,36 @@ export async function indexHandler(req: HttpRequest, ctx: Context) {
   const hasSessionIdCookie = sessionId !== undefined;
 
   const jsx = (
-    <>
-      <p>Authorization endpoint URI: {oauthConfig.authorizationEndpointUri}</p>
-      <p>Token URI: {oauthConfig.tokenUri}</p>
-      <p>Scope: {oauthConfig.defaults?.scope}</p>
-      <p>Signed in: {JSON.stringify(hasSessionIdCookie)}</p>
-      <p>
-        {hasSessionIdCookie
-          ? <a href="/signout">Sign out</a>
-          : <a href="/signin">Sign in</a>}
-      </p>
+    <html>
+      <head>
+        <title>Deno Kv OAuth Demo</title>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        />
+      </head>
+      <body>
+        <div>
+          <p>
+            Authorization endpoint URI: {oauthConfig.authorizationEndpointUri}
+          </p>
+          <p>Token URI: {oauthConfig.tokenUri}</p>
+          <p>Scope: {oauthConfig.defaults?.scope}</p>
+          <p>Signed in: {JSON.stringify(hasSessionIdCookie)}</p>
+          <p>
+            {hasSessionIdCookie
+              ? <a href="/signout">Sign out</a>
+              : <a href="/signin">Sign in</a>}
+          </p>
 
-      <p>
-        <a href="https://github.com/fastrodev/fastro/blob/main/modules/auth.tsx">
-          Source code
-        </a>
-      </p>
-    </>
+          <p>
+            <a href="https://github.com/fastrodev/fastro/blob/main/modules/auth.tsx">
+              Source code
+            </a>
+          </p>
+        </div>
+      </body>
+    </html>
   );
 
   return ctx.send(jsx, 200);
