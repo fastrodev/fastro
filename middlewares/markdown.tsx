@@ -87,10 +87,11 @@ export default class Instance {
       layout: (
         { children, data }: { children: React.ReactNode; data: any },
       ) => {
+        const title = md.meta?.title + " | Fastro";
         return (
           <html className="h-100" lang="EN">
             <head>
-              <title>{md.meta?.title}</title>
+              <title>{title}</title>
               <meta charSet="utf-8" />
               <meta
                 name="viewport"
@@ -252,7 +253,7 @@ class Markdown {
       <div className="d-flex flex-column h-100">
         <Header path={path} version={props} />
         <main className="markdown flex-grow-1" style={{ marginBottom: 20 }}>
-          <div className="text-center">
+          <div className="text-left">
             <h1 className="display-5 fw-bold" style={{ marginBottom: 0 }}>
               {meta.title}
             </h1>

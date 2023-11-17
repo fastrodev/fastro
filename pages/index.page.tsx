@@ -7,7 +7,7 @@ const Index = (
 ) => {
   return (
     <>
-      <Header path={props.path} />
+      <Header path={props.path} version={props.version} />
       <main className="px-3 d-flex flex-column h-100">
         <div
           className="mx-auto flex-grow-1 d-flex align-items-center"

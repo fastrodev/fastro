@@ -53,15 +53,7 @@ f.get("/docs", () => {
   return Response.redirect("https://fastro.dev/manual", 307);
 });
 
-f.get("/modules", () => {
-  return Response.json({ message: "Comming soon" });
-});
-
-f.get("/templates", () => {
-  return Response.json({ message: "Comming soon" });
-});
-
-f.get("/middlewares", () => {
+f.get("/store", () => {
   return Response.json({ message: "Comming soon" });
 });
 

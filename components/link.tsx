@@ -7,7 +7,7 @@ export function LinkFooter(
   return (
     <a
       href={props.link}
-      className="fw-lighter text-decoration-none text-white-50 me-2"
+      className="fw-lighter text-decoration-none text-white me-2"
     >
       {props.children}
     </a>

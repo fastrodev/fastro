@@ -23,10 +23,11 @@ const createHTML = (
     layout: (
       { children, data }: { children: React.ReactNode; data: any },
     ) => {
+      const title = data.title + " | Fastro";
       return (
         <html className="h-100" lang="EN">
           <head>
-            <title>{data.title}</title>
+            <title>{title}</title>
             <meta charSet="utf-8" />
             <meta
               name="viewport"
