@@ -67,14 +67,16 @@ export const callbackHandler = async (req: HttpRequest) => {
     );
     const user = await getUser(tokens.accessToken);
     const kv = req.record["kv"] as Deno.Kv;
-    kv.set([sessionId], user, { expireIn: 5 * 60 * 1000 });
+    kv.set([sessionId], user, { expireIn: 60 * 60 * 1000 });
     return response;
   } catch {
     return new Response(null, { status: Status.InternalServerError });
   }
 };
 
-export const signoutHandler = async (req: Request) => {
+export const signoutHandler = async (req: HttpRequest) => {
+  const kv = req.record["kv"] as Deno.Kv;
+  await kv.delete([req.sessionId]);
   return await signOut(req);
 };
 
