@@ -1,6 +1,6 @@
 ---
 title: "Manual"
-description: Your essential guide to mastering fastro web framework - from fundamentals to advanced techniques.
+description: Your essential guide to mastering fastro web framework
 image: https://fastro.dev/static/image.png
 ---
 

@@ -1,18 +1,23 @@
-import fastro, { Context, HttpRequest, Next } from "../http/server.ts";
-import { version } from "./version.ts";
-import markdown from "../middlewares/markdown.tsx";
-import app from "../pages/app.page.tsx";
-import blog from "../pages/blog.page.tsx";
-import Example from "../pages/example.page.tsx";
-import index from "../pages/index.page.tsx";
-import { denoRunCheck, getExamples, getPosts, init } from "./function.ts";
-import { createHTML } from "./layout.tsx";
-import { layout } from "../pages/layout.tsx";
-import { authModule } from "../modules/auth.tsx";
+// deno-lint-ignore-file no-explicit-any
+import fastro, { Context, HttpRequest, Next } from "$fastro/http/server.ts";
+import { version } from "$fastro/app/version.ts";
+import markdown from "$fastro/middlewares/markdown.tsx";
+import app from "$fastro/pages/app.page.tsx";
+import blog from "$fastro/pages/blog.page.tsx";
+import Example from "$fastro/pages/example.page.tsx";
+import index from "$fastro/pages/index.page.tsx";
+import {
+  denoRunCheck,
+  getExamples,
+  getPosts,
+  init,
+} from "$fastro/app/function.ts";
+import { createHTML } from "$fastro/app/layout.tsx";
+import { layout } from "$fastro/pages/layout.tsx";
+import { authModule } from "$fastro/modules/auth.tsx";
 
 const title = "Speed without complexity";
-const description =
-  "Handle thousands of requests per second with a minimalistic API";
+const description = "Handle thousands of RPS with a minimalistic API";
 const f = new fastro();
 const m = new markdown({ folder: "docs" });
 const b = new markdown({ folder: "posts", prefix: "blog" });
@@ -23,7 +28,6 @@ f.record["examples"] = await getExamples();
 f.record["posts"] = await getPosts();
 
 f.use((req: HttpRequest, ctx: Context, next: Next) => {
-  // deno-lint-ignore no-explicit-any
   const remoteAddr = ctx.info.remoteAddr as any;
   const data = {
     url: req.url,
@@ -47,6 +51,18 @@ f.get("/api", () => {
 
 f.get("/docs", () => {
   return Response.redirect("https://fastro.dev/manual", 307);
+});
+
+f.get("/modules", () => {
+  return Response.json({ message: "Comming soon" });
+});
+
+f.get("/templates", () => {
+  return Response.json({ message: "Comming soon" });
+});
+
+f.get("/middlewares", () => {
+  return Response.json({ message: "Comming soon" });
 });
 
 f.get("/robots.txt", () =>

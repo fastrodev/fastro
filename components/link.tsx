@@ -1,7 +1,8 @@
+// deno-lint-ignore-file no-explicit-any
 import React from "react";
 
 export function LinkFooter(
-  props: { children: string | string[]; link: string },
+  props: { children: any; link: string },
 ) {
   return (
     <a
@@ -15,7 +16,6 @@ export function LinkFooter(
 
 export function LinkHeader(
   props: {
-    // deno-lint-ignore no-explicit-any
     children: any;
     link: string;
     path: string;

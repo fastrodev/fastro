@@ -1,6 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { HttpRequest } from "../http/server.ts";
-// import { version } from "./version.ts";
+import { HttpRequest } from "$fastro/http/server.ts";
 import { extract } from "https://deno.land/std@0.201.0/front_matter/any.ts";
 
 export function getPublishDate(dateStr?: string) {

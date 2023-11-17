@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { RenderOptions } from "../http/server.ts";
+import { RenderOptions } from "$fastro/http/server.ts";
 
 const createHTML = (
   props: unknown,

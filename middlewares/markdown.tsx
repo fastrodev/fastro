@@ -8,19 +8,19 @@ import "https://esm.sh/v133/prismjs@1.29.0/components/prism-powershell";
 import "https://esm.sh/v133/prismjs@1.29.0/components/prism-json";
 import "https://esm.sh/v133/prismjs@1.29.0/components/prism-diff";
 
-import DefaultFooter from "../components/footer.tsx";
-import DefaultHeader from "../components/header.tsx";
-import { Render } from "../http/render.tsx";
+import DefaultFooter from "$fastro/components/footer.tsx";
+import DefaultHeader from "$fastro/components/header.tsx";
+import { Render } from "$fastro/http/render.tsx";
 import {
   Context,
   FunctionComponent,
   HttpRequest,
   Next,
   RenderOptions,
-} from "../http/server.ts";
+} from "$fastro/http/server.ts";
 
-import { extract, remark, remarkToc } from "./deps.ts";
-import { version } from "../app/version.ts";
+import { extract, remark, remarkToc } from "$fastro/middlewares/deps.ts";
+import { version } from "$fastro/app/version.ts";
 import React, { createElement } from "react";
 
 type Meta = {
@@ -250,7 +250,7 @@ class Markdown {
 
     return (
       <div className="d-flex flex-column h-100">
-        <Header path={path} />
+        <Header path={path} version={props} />
         <main className="markdown flex-grow-1" style={{ marginBottom: 20 }}>
           <div className="text-center">
             <h1 className="display-5 fw-bold" style={{ marginBottom: 0 }}>

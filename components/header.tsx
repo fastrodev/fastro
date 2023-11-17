@@ -1,5 +1,5 @@
 import React from "react";
-import { LinkHeader } from "./link.tsx";
+import { LinkHeader } from "$fastro/components/link.tsx";
 
 export default function (props: { path: string }) {
   return (
