@@ -28,7 +28,7 @@ export default function Example(
   });
   return (
     <>
-      <Header path={props.path} />
+      <Header path={props.path} version={props.version} />
       <main>
         <div className="d-flex flex-wrap justify-content-center">
           {list}
