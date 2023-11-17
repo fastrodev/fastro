@@ -7,9 +7,12 @@ import "https://esm.sh/v133/prismjs@1.29.0/components/prism-bash";
 import "https://esm.sh/v133/prismjs@1.29.0/components/prism-powershell";
 import "https://esm.sh/v133/prismjs@1.29.0/components/prism-json";
 import "https://esm.sh/v133/prismjs@1.29.0/components/prism-diff";
-
 import DefaultFooter from "$fastro/components/footer.tsx";
 import DefaultHeader from "$fastro/components/header.tsx";
+import { extract, remark, remarkToc } from "$fastro/middlewares/deps.ts";
+import { version } from "$fastro/app/version.ts";
+import React, { createElement } from "react";
+import { getAvatar } from "$fastro/app/main.ts";
 import { Render } from "$fastro/http/render.tsx";
 import {
   Context,
@@ -18,11 +21,6 @@ import {
   Next,
   RenderOptions,
 } from "$fastro/http/server.ts";
-
-import { extract, remark, remarkToc } from "$fastro/middlewares/deps.ts";
-import { version } from "$fastro/app/version.ts";
-import React, { createElement } from "react";
-import { getAvatar } from "$fastro/app/main.ts";
 
 type Meta = {
   title?: string;

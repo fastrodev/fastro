@@ -1,6 +1,6 @@
 import React from "react";
-import Footer from "../components/footer.tsx";
-import Header from "../components/header.tsx";
+import Footer from "$fastro/components/footer.tsx";
+import Header from "$fastro/components/header.tsx";
 
 type Example = {
   name: string;

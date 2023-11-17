@@ -19,11 +19,8 @@ import { getSessionId } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
 
 const title = "Speed without complexity";
 const description = "Handle thousands of RPS with a minimalistic API";
+
 const f = new fastro();
-const m = new markdown({ folder: "docs" });
-const b = new markdown({ folder: "posts", prefix: "blog" });
-f.use(m.middleware);
-f.use(b.middleware);
 
 f.record["examples"] = await getExamples();
 f.record["posts"] = await getPosts();
@@ -47,6 +44,11 @@ f.use(async (req: HttpRequest, ctx: Context, next: Next) => {
   console.info(JSON.stringify(data));
   return next();
 });
+
+const m = new markdown({ folder: "docs" });
+const b = new markdown({ folder: "posts", prefix: "blog" });
+f.use(m.middleware);
+f.use(b.middleware);
 
 f.get("/api", () => {
   return Response.json({ time: new Date().getTime() });
@@ -103,7 +105,7 @@ export async function getAvatar(req: HttpRequest) {
   let data, avatar = "";
   if (req.sessionId) {
     data = await kv.get([req.sessionId]) as any;
-    avatar = data ? data.value.avatar_url : "";
+    avatar = data.value ? data.value.avatar_url : "";
   }
 
   return avatar;
@@ -116,13 +118,6 @@ f.page(
     const res = denoRunCheck(req);
     if (res) return init();
     const avatar = await getAvatar(req);
-    // const kv = req.record["kv"] as Deno.Kv;
-    // let data, avatar = "";
-    // if (req.sessionId) {
-    //   data = await kv.get([req.sessionId]) as any;
-    //   avatar = data ? data.value.avatar_url : "";
-    // }
-
     const opt = createHTML(
       {
         version,

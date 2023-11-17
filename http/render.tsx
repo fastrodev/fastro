@@ -210,7 +210,7 @@ es.onmessage = function(e) {
   };
 
   render = async () => {
-    console.log("this.#options.cache", this.#options.cache);
+    // console.log("this.#options.cache", this.#options.cache);
     const html = await this.#createHTML(
       this.#element,
       this.#options.cache,
