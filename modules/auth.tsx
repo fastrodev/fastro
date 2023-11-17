@@ -49,9 +49,25 @@ export const signinHandler = async (req: Request) => {
   return await signIn(req, oauthConfig);
 };
 
-export const callbackHandler = async (req: Request) => {
+async function getUser(accessToken: string) {
+  const response = await fetch("https://api.github.com/user", {
+    headers: {
+      Authorization: `token ${accessToken}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+}
+
+export const callbackHandler = async (req: HttpRequest) => {
   try {
-    const { response } = await handleCallback(req, oauthConfig);
+    const { response, sessionId, tokens } = await handleCallback(
+      req,
+      oauthConfig,
+    );
+    const user = await getUser(tokens.accessToken);
+    const kv = req.record["kv"] as Deno.Kv;
+    kv.set([sessionId], user, { expireIn: 5 * 60 * 1000 });
     return response;
   } catch {
     return new Response(null, { status: Status.InternalServerError });

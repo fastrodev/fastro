@@ -3,11 +3,17 @@ import Footer from "../components/footer.tsx";
 import Header from "../components/header.tsx";
 
 const Index = (
-  props: { version: string; path: string; title: string; description: string },
+  props: {
+    version: string;
+    path: string;
+    title: string;
+    description: string;
+    avatar: string;
+  },
 ) => {
   return (
     <>
-      <Header path={props.path} version={props.version} />
+      <Header path={props.path} version={props.version} avatar={props.avatar} />
       <main className="px-3 d-flex flex-column h-100">
         <div
           className="mx-auto flex-grow-1 d-flex align-items-center"

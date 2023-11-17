@@ -15,6 +15,7 @@ import {
 import { createHTML } from "$fastro/app/layout.tsx";
 import { layout } from "$fastro/pages/layout.tsx";
 import { authModule } from "$fastro/modules/auth.tsx";
+import { getSessionId } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
 
 const title = "Speed without complexity";
 const description = "Handle thousands of RPS with a minimalistic API";
@@ -26,8 +27,10 @@ f.use(b.middleware);
 
 f.record["examples"] = await getExamples();
 f.record["posts"] = await getPosts();
+f.record["kv"] = await Deno.openKv();
 
-f.use((req: HttpRequest, ctx: Context, next: Next) => {
+f.use(async (req: HttpRequest, ctx: Context, next: Next) => {
+  req.sessionId = await getSessionId(req);
   const remoteAddr = ctx.info.remoteAddr as any;
   const data = {
     url: req.url,
@@ -95,15 +98,24 @@ f.page(
 f.page(
   "/",
   index,
-  (req: HttpRequest, ctx: Context) => {
+  async (req: HttpRequest, ctx: Context) => {
     const res = denoRunCheck(req);
     if (res) return init();
+    const kv = req.record["kv"] as Deno.Kv;
+    let data, avatar = "";
+    if (req.sessionId) {
+      data = await kv.get([req.sessionId]) as any;
+      avatar = data ? data.value.avatar_url : "";
+    }
+
     const opt = createHTML(
       {
         version,
+        avatar,
         path: "home",
         title,
         description,
+        cache: false,
       },
     );
     return ctx.render(opt);

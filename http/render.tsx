@@ -76,7 +76,7 @@ export class Render {
   #initOptions = (opt: RenderOptions) => {
     opt.status = opt.status ?? 200;
     opt.pageFolder = opt.pageFolder ?? "pages";
-    opt.cache = opt.cache ?? true;
+    opt.cache = opt.props.cache;
     opt.development = opt.development ?? true;
 
     const options = { ...opt };
@@ -210,6 +210,7 @@ es.onmessage = function(e) {
   };
 
   render = async () => {
+    console.log("this.#options.cache", this.#options.cache);
     const html = await this.#createHTML(
       this.#element,
       this.#options.cache,
