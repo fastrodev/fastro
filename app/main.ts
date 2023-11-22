@@ -1,7 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import fastro, { Context, HttpRequest, Next } from "$fastro/http/server.ts";
 import { version } from "$fastro/app/version.ts";
-import markdown from "$fastro/middlewares/markdown.tsx";
+import markdown, { getAvatar } from "$fastro/middlewares/markdown.tsx";
 import app from "$fastro/pages/app.page.tsx";
 import blog from "$fastro/pages/blog.page.tsx";
 import Example from "$fastro/pages/example.page.tsx";
@@ -99,17 +99,6 @@ f.page(
     return ctx.render(opt);
   },
 );
-
-export async function getAvatar(req: HttpRequest) {
-  const kv = req.record["kv"] as Deno.Kv;
-  let data, avatar = "";
-  if (req.sessionId) {
-    data = await kv.get([req.sessionId]) as any;
-    avatar = data.value ? data.value.avatar_url : "";
-  }
-
-  return avatar;
-}
 
 f.page(
   "/",

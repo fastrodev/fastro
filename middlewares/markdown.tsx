@@ -12,7 +12,6 @@ import DefaultHeader from "$fastro/components/header.tsx";
 import { extract, remark, remarkToc } from "$fastro/middlewares/deps.ts";
 import { version } from "$fastro/app/version.ts";
 import React, { createElement } from "react";
-import { getAvatar } from "$fastro/app/main.ts";
 import { Render } from "$fastro/http/render.tsx";
 import {
   Context,
@@ -21,6 +20,17 @@ import {
   Next,
   RenderOptions,
 } from "$fastro/http/server.ts";
+
+export async function getAvatar(req: HttpRequest) {
+  const kv = req.record["kv"] as Deno.Kv;
+  let data, avatar = "";
+  if (req.sessionId) {
+    data = await kv.get([req.sessionId]) as any;
+    avatar = data.value ? data.value.avatar_url : "";
+  }
+
+  return avatar;
+}
 
 type Meta = {
   title?: string;
