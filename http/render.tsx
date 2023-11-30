@@ -1,5 +1,5 @@
 // deno-lint-ignore-file
-import { createElement, renderToReadableStream } from "./deps.ts";
+import { createElement, renderToReadableStream } from "$fastro/http/deps.ts";
 import {
   BUILD_ID,
   checkReferer,
@@ -9,7 +9,7 @@ import {
   isPageComponent,
   PageComponent,
   RenderOptions,
-} from "./server.ts";
+} from "$fastro/http/server.ts";
 import {
   clean,
   extractOriginalString,
@@ -17,8 +17,8 @@ import {
   keyType,
   keyUsages,
   reverseString,
-} from "../crypto/key.ts";
-import { encryptData } from "../crypto/encrypt.ts";
+} from "$fastro/crypto/key.ts";
+import { encryptData } from "$fastro/crypto/encrypt.ts";
 
 function isJSX(res: JSX.Element) {
   return res && res.props != undefined && res.type != undefined;

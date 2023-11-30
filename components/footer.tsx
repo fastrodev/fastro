@@ -6,10 +6,7 @@ export default function (props: { version: string; path: string }) {
     <footer className="mt-auto pb-3">
       <nav className="nav nav-mastfoot justify-content-center">
         <LinkFooter link="/benchmarks">
-          Benchmarks
-        </LinkFooter>
-        <LinkFooter link="/blog">
-          Blog
+          Internal Benchmarks
         </LinkFooter>
       </nav>
     </footer>

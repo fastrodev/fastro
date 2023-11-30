@@ -7,12 +7,12 @@ const renderToReadableStream = Deno.env.get("ENV") === "DEVELOPMENT"
 
 export { createElement, renderToReadableStream };
 
-export { encodeHex } from "https://deno.land/std@0.206.0/encoding/hex.ts";
+export { encodeHex } from "https://deno.land/std@0.208.0/encoding/hex.ts";
 
 export {
-  Status,
+  STATUS_CODE,
   STATUS_TEXT,
-} from "https://deno.land/std@0.206.0/http/status.ts";
+} from "https://deno.land/std@0.208.0/http/status.ts";
 
-export * from "https://deno.land/std@0.206.0/media_types/mod.ts";
-export * from "https://deno.land/std@0.206.0/path/mod.ts";
+export * from "https://deno.land/std@0.208.0/media_types/mod.ts";
+export * from "https://deno.land/std@0.208.0/path/mod.ts";

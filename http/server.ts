@@ -1,22 +1,22 @@
 // deno-lint-ignore-file no-explicit-any
-import { Esbuild } from "../build/esbuild.ts";
-import { EsbuildMod } from "../build/esbuildMod.ts";
+import { Esbuild } from "$fastro/build/esbuild.ts";
+import { EsbuildMod } from "$fastro/build/esbuildMod.ts";
 import {
   addSalt,
   exportCryptoKey,
   keyPromise,
   reverseString,
   SALT,
-} from "../crypto/key.ts";
+} from "$fastro/crypto/key.ts";
 
 import {
   contentType,
   encodeHex,
   extname,
   renderToReadableStream,
-  Status,
+  STATUS_CODE,
   STATUS_TEXT,
-} from "./deps.ts";
+} from "$fastro/http/deps.ts";
 
 import { Render } from "./render.tsx";
 
@@ -164,8 +164,8 @@ export function checkReferer(req: Request) {
   const referer = req.headers.get("referer");
   const host = req.headers.get("host") as string;
   if (!referer || !referer?.includes(host)) {
-    return new Response(STATUS_TEXT[Status.NotFound], {
-      status: Status.NotFound,
+    return new Response(STATUS_TEXT[STATUS_CODE.NotFound], {
+      status: STATUS_CODE.NotFound,
     });
   }
 }
@@ -743,8 +743,8 @@ import React from "react";import { hydrateRoot } from "${hydrateRoot}";import ${
       if (res) return this.#handleResponse(res);
     }
 
-    return new Response(STATUS_TEXT[Status.NotFound], {
-      status: Status.NotFound,
+    return new Response(STATUS_TEXT[STATUS_CODE.NotFound], {
+      status: STATUS_CODE.NotFound,
     });
   };
 
