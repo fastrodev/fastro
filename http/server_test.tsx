@@ -1,10 +1,10 @@
-import { assertEquals } from "https://deno.land/std@0.206.0/assert/assert_equals.ts";
-import { assertExists } from "https://deno.land/std@0.206.0/assert/assert_exists.ts";
-import fastro, { Fastro, Info } from "../mod.ts";
-import { assert } from "https://deno.land/std@0.206.0/assert/assert.ts";
+import { assertEquals } from "https://deno.land/std@0.208.0/assert/assert_equals.ts";
+import { assertExists } from "https://deno.land/std@0.208.0/assert/assert_exists.ts";
+import fastro, { Fastro, Info } from "$fastro/mod.ts";
+import { assert } from "https://deno.land/std@0.208.0/assert/assert.ts";
 import { BUILD_ID, Context, HttpRequest, Next } from "./server.ts";
-import User from "../pages/user.page.tsx";
-import uuid from "../uuid/uuid.page.tsx";
+import User from "$fastro/pages/user.page.tsx";
+import uuid from "$fastro/uuid/uuid.page.tsx";
 
 const host = "http://localhost:8000";
 

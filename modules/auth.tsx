@@ -8,7 +8,7 @@ import {
   signOut,
 } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
 
-import { Status } from "$fastro/http/deps.ts";
+import { STATUS_CODE } from "$fastro/http/deps.ts";
 import { Context, HttpRequest } from "$fastro/mod.ts";
 
 const redirectUri = Deno.env.get("REDIRECT_URI") ??
@@ -83,7 +83,7 @@ export const callbackHandler = async (req: HttpRequest) => {
     kv.set([sessionId], user, { expireIn: 60 * 60 * 1000 });
     return response;
   } catch {
-    return new Response(null, { status: Status.InternalServerError });
+    return new Response(null, { status: STATUS_CODE.InternalServerError });
   }
 };
 

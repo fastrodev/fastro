@@ -1,9 +1,8 @@
 {
   "deno.enable": true,
   "deno.lint": true,
-  "deno.codeLens.test": true,
+  "deno.codeLens.test": false,
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "denoland.vscode-deno",
   "[typescriptreact]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },

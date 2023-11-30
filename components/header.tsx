@@ -22,6 +22,9 @@ export default function (
           <LinkHeader activePath="examples" link="/examples" path={props.path}>
             Examples
           </LinkHeader>
+          <LinkHeader activePath="blog" link="/blog" path={props.path}>
+            Blog
+          </LinkHeader>
           <LinkHeader activePath="store" link="/store" path={props.path}>
             Store
           </LinkHeader>

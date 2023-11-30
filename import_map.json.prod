@@ -1,8 +1,8 @@
 {
   "imports": {
     "$fastro/": "./",
-    "react": "https://esm.sh/v134/react@18.2.0",
-    "react/": "https://esm.sh/v134/react@18.2.0/",
-    "react-dom/": "https://esm.sh/v134/react-dom@18.2.0/"
+    "react": "https://esm.sh/v135/react@18.2.0",
+    "react/": "https://esm.sh/v135/react@18.2.0/",
+    "react-dom/": "https://esm.sh/v135/react-dom@18.2.0/"
   }
 }

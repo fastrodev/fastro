@@ -1,6 +1,6 @@
 import { assert } from "https://deno.land/std@0.206.0/assert/assert.ts";
-import { decryptData } from "./decrypt.ts";
-import { encryptData } from "./encrypt.ts";
+import { decryptData } from "$fastro/crypto/decrypt.ts";
+import { encryptData } from "$fastro/crypto/encrypt.ts";
 import { exportCryptoKey, importCryptoKey, keyPromise } from "./key.ts";
 
 Deno.test(
