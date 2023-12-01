@@ -1,5 +1,5 @@
 // deno-lint-ignore-file
-import { createElement, renderToReadableStream } from "$fastro/http/deps.ts";
+import { createElement, renderToReadableStream } from "./deps.ts";
 import {
   BUILD_ID,
   checkReferer,
@@ -9,7 +9,7 @@ import {
   isPageComponent,
   PageComponent,
   RenderOptions,
-} from "$fastro/http/server.ts";
+} from "./server.ts";
 import {
   clean,
   extractOriginalString,

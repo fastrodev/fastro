@@ -1,13 +1,13 @@
 // deno-lint-ignore-file no-explicit-any
-import { Esbuild } from "$fastro/build/esbuild.ts";
-import { EsbuildMod } from "$fastro/build/esbuildMod.ts";
+import { Esbuild } from "../build/esbuild.ts";
+import { EsbuildMod } from "../build/esbuildMod.ts";
 import {
   addSalt,
   exportCryptoKey,
   keyPromise,
   reverseString,
   SALT,
-} from "$fastro/crypto/key.ts";
+} from "../crypto/key.ts";
 
 import {
   contentType,
@@ -16,7 +16,7 @@ import {
   renderToReadableStream,
   STATUS_CODE,
   STATUS_TEXT,
-} from "$fastro/http/deps.ts";
+} from "./deps.ts";
 
 import { Render } from "./render.tsx";
 
