@@ -9,7 +9,7 @@ import {
   isPageComponent,
   PageComponent,
   RenderOptions,
-} from "$fastro/http/server.ts";
+} from "./server.ts";
 import {
   clean,
   extractOriginalString,
