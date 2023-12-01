@@ -18,7 +18,7 @@ import {
   keyUsages,
   reverseString,
 } from "$fastro/crypto/key.ts";
-import { encryptData } from "$fastro/crypto/encrypt.ts";
+import { encryptData } from "../crypto/encrypt.ts";
 
 function isJSX(res: JSX.Element) {
   return res && res.props != undefined && res.type != undefined;
