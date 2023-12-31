@@ -8,7 +8,7 @@ export type ListenHandler = (info: {
 
 export type Handler<T = any> = (
   req: Request,
-  ctx: Context<any>,
+  ctx: Context<T>,
 ) => Response | Promise<Response>;
 
 export type Static = {
