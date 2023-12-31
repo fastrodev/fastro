@@ -100,7 +100,7 @@ if (root) {
     .then((response) => response.json())
     .then((data) => {
       hydrate(
-        h(app, { ...data }),
+        h(app, { data }),
         root,
       );
     })
@@ -184,7 +184,7 @@ if (root) {
 
     const r = new Render(this);
     return page.handler(req, {
-      render: <T>(data?: T) => r.render(key, page, data),
+      render: (data: any) => r.render(key, page, data),
       info: info,
       params,
     });

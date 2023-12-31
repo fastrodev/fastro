@@ -42,11 +42,11 @@ export class Render {
     return app;
   };
 
-  render = <T,>(key: string, p: Page<T>, data: T) => {
+  render = (key: string, p: Page, data: any) => {
     try {
       this.#addPropsEndpoint(key, data);
       const children = typeof p.component == "function"
-        ? p.component(data)
+        ? p.component({ data })
         : p.component;
 
       let app = p.layout({ children, data });

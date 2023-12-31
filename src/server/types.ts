@@ -6,9 +6,9 @@ export type ListenHandler = (info: {
   port: number;
 }) => void;
 
-export type Handler = (
+export type Handler<T = any> = (
   req: Request,
-  ctx: Context,
+  ctx: Context<any>,
 ) => Response | Promise<Response>;
 
 export type Static = {
@@ -16,7 +16,7 @@ export type Static = {
   contentType: string;
 };
 
-export type Context = {
+export type Context<T> = {
   /**
    * Render a JSX Component or a Page with data
    * - If you call it from a standart handler (GET, POST, PUT, DELETE), it will render a JSX component.
@@ -24,7 +24,7 @@ export type Context = {
    * @param data
    * @returns
    */
-  render: <T = any>(data?: T) => Response | Promise<Response>;
+  render: (data?: T) => Response | Promise<Response>;
   /**
    * Information for a HTTP request.
    */
@@ -36,17 +36,17 @@ export type Context = {
 export type Page<T = any> = {
   component: FunctionComponent | JSX.Element;
   layout: Layout<T>;
-  handler: Handler;
+  handler: Handler<T>;
   folder?: string;
 };
 
 export type LayoutProps<T = any> = {
   children: ComponentChildren;
-  data?: T;
+  data: T;
 };
 
 export type PageProps<T = any> = {
-  data?: T;
+  data: T;
 };
 
 export type Layout<T = any> = (

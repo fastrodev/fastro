@@ -1,9 +1,11 @@
 import { PageProps } from "./src/server/types.ts";
 
-export default function Dear(props: PageProps<string>) {
+export default function Dear(
+  { data }: PageProps<{ data: string; user: string; title: string }>,
+) {
   return (
     <>
-      <p>DEAR {props.data}</p>
+      <p>DEAR {data.data} {data.user} {data.title}</p>
     </>
   );
 }

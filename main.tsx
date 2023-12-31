@@ -18,6 +18,7 @@ s.get("/hello/:user", (_req, ctx) => {
 s.get("/", (_req, _info) => {
   return new Response("hello");
 });
+
 s.page("/page", {
   component: hello,
   layout,
@@ -35,11 +36,15 @@ s.page("/dear", {
   },
 });
 
-s.page("/profile/:id", {
+s.page("/profile/:user", {
   component: dear,
   layout,
   handler: (req, ctx) => {
-    return ctx.render({ title: "halaman profile", data: "profilemu" });
+    return ctx.render({
+      title: "halaman profile",
+      data: "profilemu",
+      user: ctx.params?.user,
+    });
   },
 });
 
