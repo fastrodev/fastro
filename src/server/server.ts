@@ -1,6 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
 import { VNode } from "preact";
-import { contentType, extname, STATUS_CODE, STATUS_TEXT } from "./deps.ts";
+import {
+  contentType,
+  encodeHex,
+  extname,
+  STATUS_CODE,
+  STATUS_TEXT,
+} from "./deps.ts";
 import { Render } from "./render.tsx";
 import { Fastro, Handler, ListenHandler, Page, Static } from "./types.ts";
 import { EsbuildMod } from "../build/esbuildMod.ts";
@@ -14,6 +20,19 @@ export function checkReferer(req: Request) {
     });
   }
 }
+
+export const BUILD_ID = Deno.env.get("DENO_DEPLOYMENT_ID") || encodeHex(
+  new Uint8Array(
+    await crypto.subtle.digest(
+      "sha-1",
+      new TextEncoder().encode(crypto.randomUUID()),
+    ),
+  ),
+);
+
+export const getDevelopment = () => {
+  return Deno.env.get("ENV") === "DEVELOPMENT";
+};
 
 export default class Server implements Fastro {
   constructor() {
@@ -49,8 +68,8 @@ export default class Server implements Fastro {
   ) {
     this.#staticUrl = path;
     if (options?.folder) this.#staticFolder = options?.folder;
-    // if (options?.referer) this.#staticReferer = options.referer;
-    // if (options?.maxAge) this.#maxAge = options.maxAge;
+    if (options?.referer) this.#staticReferer = options.referer;
+    if (options?.maxAge) this.#maxAge = options.maxAge;
     return this;
   }
 
@@ -64,14 +83,6 @@ export default class Server implements Fastro {
     const key = method + "-" + path;
     this.#routeHandler[key] = handler;
     return this;
-  };
-
-  #getPath = (key: string) => {
-    if (key.includes(":")) {
-      const [path] = key.split(":");
-      return path;
-    }
-    return key;
   };
 
   #build = async () => {
@@ -154,8 +165,8 @@ if (root) {
   #handleStaticFile = async (req: Request) => {
     const s = (await this.#findStaticFiles(this.#staticUrl, req.url)) as Static;
     if (s) {
-      // const ref = checkReferer(req);
-      // if (ref && this.#staticReferer) return ref;
+      const ref = checkReferer(req);
+      if (ref && this.#staticReferer) return ref;
       return new Response(s.file, {
         headers: {
           "Content-Type": s.contentType,
@@ -298,7 +309,8 @@ if (root) {
   #routeHandler: Record<string, Handler> = {};
   #routePage: Record<string, Page> = {};
   #record: Record<string, any> = {};
-  #staticFolder = "";
-  #staticUrl = "";
+  #staticFolder = "static";
+  #staticUrl = "/static";
+  #staticReferer = false;
   #maxAge = 0;
 }

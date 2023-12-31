@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { ComponentChildren, JSX, VNode } from "preact";
+import { ComponentChildren, JSX } from "preact";
 
 export type ListenHandler = (info: {
   hostname: string;
@@ -56,7 +56,7 @@ export type Layout<T = any> = (
 export type FunctionComponent = (props: any) => JSX.Element;
 
 export interface Fastro {
-  serve: (port: number, onListen: ListenHandler) => void;
+  serve: (port: number, onListen: ListenHandler) => Promise<void>;
   shutdown: () => void;
   get(path: string, handler: Handler): Fastro;
   post(path: string, handler: Handler): Fastro;
