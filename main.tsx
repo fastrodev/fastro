@@ -18,15 +18,17 @@ s.page("/page", {
   layout,
   folder: "app",
   handler: (_req, ctx) => {
-    return ctx.render("siappp");
+    return ctx.render({ title: "halaman page", data: "okeee page" });
   },
 });
+
 s.page("/dear", {
   component: dear,
   layout,
-  handler: (_req, ctx) => {
-    return ctx.render("dear");
+  handler: (req, ctx) => {
+    return ctx.render({ title: "halaman dear", data: "okeee ya" });
   },
 });
+
 s.static("/static", { folder: "static" });
 s.serve();

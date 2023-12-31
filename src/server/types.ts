@@ -39,13 +39,17 @@ export type Page<T = any> = {
   folder?: string;
 };
 
+export type LayoutProps<T = any> = {
+  children: ComponentChildren;
+  data?: T;
+};
+
 export type PageProps<T = any> = {
-  children?: ComponentChildren;
   data?: T;
 };
 
 export type Layout<T = any> = (
-  props: PageProps<T>,
+  props: LayoutProps<T>,
 ) => VNode;
 
 export type FunctionComponent = (props: any) => JSX.Element;
@@ -61,4 +65,5 @@ export interface Fastro {
   options(path: string, handler: Handler): Fastro;
   head(path: string, handler: Handler): Fastro;
   page<T = any>(path: string, page: Page<T>): Fastro;
+  add(method: string, path: string, handler: Handler): Fastro;
 }

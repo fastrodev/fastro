@@ -5,30 +5,40 @@ import { Render } from "./render.tsx";
 import { Fastro, Handler, ListenHandler, Page, Static } from "./types.ts";
 import { EsbuildMod } from "../build/esbuildMod.ts";
 
+export function checkReferer(req: Request) {
+  const referer = req.headers.get("referer");
+  const host = req.headers.get("host") as string;
+  if (!referer || !referer?.includes(host)) {
+    return new Response(STATUS_TEXT[STATUS_CODE.NotFound], {
+      status: STATUS_CODE.NotFound,
+    });
+  }
+}
+
 export default class Server implements Fastro {
   constructor() {
     this.#handler = this.#createHandler();
   }
   get(path: string, handler: Handler): Fastro {
-    return this.#add("GET", path, handler);
+    return this.add("GET", path, handler);
   }
   post(path: string, handler: Handler): Fastro {
-    return this.#add("POST", path, handler);
+    return this.add("POST", path, handler);
   }
   put(path: string, handler: Handler): Fastro {
-    return this.#add("PUT", path, handler);
+    return this.add("PUT", path, handler);
   }
   patch(path: string, handler: Handler): Fastro {
-    return this.#add("PATCH", path, handler);
+    return this.add("PATCH", path, handler);
   }
   delete(path: string, handler: Handler): Fastro {
-    return this.#add("DELETE", path, handler);
+    return this.add("DELETE", path, handler);
   }
   options(path: string, handler: Handler): Fastro {
-    return this.#add("OPTIONS", path, handler);
+    return this.add("OPTIONS", path, handler);
   }
   head(path: string, handler: Handler): Fastro {
-    return this.#add("HEAD", path, handler);
+    return this.add("HEAD", path, handler);
   }
   page<T>(path: string, page: Page<T>): Fastro {
     return this.#addPage(path, page);
@@ -50,14 +60,23 @@ export default class Server implements Fastro {
     return this;
   };
 
-  #add = (method: string, path: string, handler: Handler) => {
+  add = (method: string, path: string, handler: Handler) => {
     const key = method + "-" + path;
     this.#routeHandler[key] = handler;
     return this;
   };
 
+  #getPath = (key: string) => {
+    if (key.includes(":")) {
+      const [path] = key.split(":");
+      return path;
+    }
+    return key;
+  };
+
   #build = async () => {
-    if (Deno.Command == undefined) return [];
+    // deno-lint-ignore no-deprecated-deno-api
+    if (Deno.run === undefined) return [];
     for (const [_key, page] of Object.entries(this.#routePage)) {
       await this.#createHydrate(page);
       await this.#buildPageComponent(page);
@@ -68,23 +87,28 @@ export default class Server implements Fastro {
   #createHydrate = async (c: Page) => {
     if (typeof c.component != "function") return;
     const name = c.component.name.toLocaleLowerCase();
-
-    const [d] = Deno.args.filter((v) => v === "--debug");
-    const debug = d
-      ? `import "preact/debug";
-`
-      : "";
     const folder = c.folder ? c.folder + "/" : "";
+    const [d] = Deno.args.filter((v) => v === "--debug");
+    const debug = !d ? "" : `import "preact/debug";
+`;
     const str = `${debug}import { h, hydrate } from "preact";
 import app from "../${folder}${name}.page.tsx";
 const root = document.getElementById("root");
-const props = { data: "hello" };
 if (root) {
-  hydrate(
-    h(app, { ...props }),
-    root,
-  );
-}`;
+  const parsedUrl = new URL(window.location.href);
+  fetch("/__" + parsedUrl.pathname + "/props")
+    .then((response) => response.json())
+    .then((data) => {
+      hydrate(
+        h(app, { ...data }),
+        root,
+      );
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+}
+`;
 
     const path = `${Deno.cwd()}/.fastro/${name}.hydrate.tsx`;
     await Deno.writeTextFile(path, str);
@@ -141,11 +165,9 @@ if (root) {
       });
     }
 
-    throw Error(
-      STATUS_CODE.NotFound + " " +
-        STATUS_TEXT[STATUS_CODE.NotFound] +
-        " (" + req.url + ")",
-    );
+    return new Response(STATUS_TEXT[STATUS_CODE.NotFound], {
+      status: STATUS_CODE.NotFound,
+    });
   };
 
   #handlePage = (req: Request, info: Deno.ServeHandlerInfo) => {
@@ -155,17 +177,15 @@ if (root) {
     let params: Record<string, string | undefined> | undefined = "" as any;
     if (!page) {
       const res = this.#getParamsPage(req, this.#routePage);
-      if (!res) {
-        return this.#handleStaticFile(req);
-      }
+      if (!res) return this.#handleStaticFile(req);
       const [pg, prm] = res;
       page = pg;
       params = prm;
     }
 
-    const r = new Render();
+    const r = new Render(this);
     return page.handler(req, {
-      render: <T>(data?: T) => r.render(page, data),
+      render: <T>(data?: T) => r.render(key, page, data),
       info: info,
       params,
     });
@@ -175,7 +195,7 @@ if (root) {
     return (req: Request, info: Deno.ServeHandlerInfo) => {
       try {
         const id = req.method + req.url;
-        const r = new Render();
+        const r = new Render(this);
         const ctx = {
           params: undefined as Record<string, string | undefined> | undefined,
           info,
