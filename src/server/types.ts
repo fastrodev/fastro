@@ -20,7 +20,7 @@ export type Context = {
   /**
    * Render a JSX Component or a Page with data
    * - If you call it from a standart handler (GET, POST, PUT, DELETE), it will render a JSX component.
-   * - If you call it from a page handler, it will render the page with a pre-defined layout and data.
+   * - If you call it from a page handler, it will render the data using the predefined JSX layout.
    * @param data
    * @returns
    */
@@ -29,6 +29,7 @@ export type Context = {
    * Information for a HTTP request.
    */
   info: Deno.ServeHandlerInfo;
+  params?: Record<string, string | undefined>;
   [key: string]: any;
 };
 

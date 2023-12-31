@@ -130,7 +130,7 @@ if (root) {
       const [, path] = key.split("-");
       const pattern = new URLPattern({ pathname: path });
       if (key.includes(":") && pattern.test(req.url)) {
-        const exec = pattern.exec(path);
+        const exec = pattern.exec(req.url);
         const params = exec?.pathname.groups;
         return [handler, params];
       }
@@ -141,12 +141,11 @@ if (root) {
     req: Request,
     data: T,
   ): [Page, Record<string, string | undefined> | undefined] | undefined {
-    for (const [key, page] of Object.entries(data)) {
-      const [, path] = key.split("-");
+    for (const [path, page] of Object.entries(data)) {
       const pattern = new URLPattern({ pathname: path });
-      if (key.includes(":") && pattern.test(req.url)) {
-        const exec = pattern.exec(path);
-        const params = exec?.pathname.groups;
+      if (path.includes(":") && pattern.test(req.url)) {
+        const match = pattern.exec(req.url);
+        const params = match?.pathname.groups;
         return [page, params];
       }
     }
@@ -174,7 +173,7 @@ if (root) {
     const url = new URL(req.url);
     const key = url.pathname;
     let page = this.#routePage[key];
-    let params: Record<string, string | undefined> | undefined = "" as any;
+    let params: Record<string, string | undefined> | undefined = undefined;
     if (!page) {
       const res = this.#getParamsPage(req, this.#routePage);
       if (!res) return this.#handleStaticFile(req);
@@ -195,6 +194,10 @@ if (root) {
     return (req: Request, info: Deno.ServeHandlerInfo) => {
       try {
         const id = req.method + req.url;
+        if (this.#record[id]) {
+          const [handler, ctx] = this.#record[id];
+          return handler(req, ctx);
+        }
         const r = new Render(this);
         const ctx = {
           params: undefined as Record<string, string | undefined> | undefined,
@@ -203,7 +206,6 @@ if (root) {
             return r.renderJsx(jsx as VNode);
           },
         };
-        if (this.#record[id]) return this.#record[id](req, ctx);
 
         const url = new URL(req.url);
         const key = req.method + "-" + url.pathname;
@@ -218,7 +220,8 @@ if (root) {
         }
 
         ctx.params = params;
-        this.#record[id] = handler;
+        ctx.info = info;
+        this.#record[id] = [handler, ctx];
         return handler(req, ctx);
       } catch (error) {
         const msg = error.message as string;

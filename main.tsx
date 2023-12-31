@@ -10,6 +10,11 @@ const y = <p>JSX</p>;
 s.get("/hello", (_req, ctx) => {
   return ctx.render(<h1>Hello</h1>);
 });
+
+s.get("/hello/:user", (_req, ctx) => {
+  return ctx.render(<h1>Hello {ctx.params?.user}</h1>);
+});
+
 s.get("/", (_req, _info) => {
   return new Response("hello");
 });
@@ -27,6 +32,14 @@ s.page("/dear", {
   layout,
   handler: (req, ctx) => {
     return ctx.render({ title: "halaman dear", data: "okeee ya" });
+  },
+});
+
+s.page("/profile/:id", {
+  component: dear,
+  layout,
+  handler: (req, ctx) => {
+    return ctx.render({ title: "halaman profile", data: "profilemu" });
   },
 });
 
