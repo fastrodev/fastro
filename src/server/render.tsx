@@ -2,7 +2,7 @@
 import { ComponentChild, ComponentType, h, toChildArray, VNode } from "preact";
 import { renderToString } from "./deps.ts";
 import { Fastro, FunctionComponent, Page } from "./types.ts";
-import { BUILD_ID, checkReferer, getDevelopment } from "./server.ts";
+import { BUILD_ID, checkReferer, getDevelopment } from "./mod.ts";
 
 export class Render {
   #server: Fastro;
