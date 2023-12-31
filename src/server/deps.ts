@@ -1,9 +1,4 @@
-export {
-  STATUS_CODE,
-  STATUS_TEXT,
-} from "https://deno.land/std@0.208.0/http/status.ts";
-
-export { renderToString } from "https://esm.sh/*preact-render-to-string@6.3.1";
-
-export * from "https://deno.land/std@0.208.0/media_types/mod.ts";
-export * from "https://deno.land/std@0.208.0/path/mod.ts";
+export { STATUS_CODE, STATUS_TEXT } from "std/http/status.ts";
+export { renderToString } from "preact-render-to-string";
+export * from "std/media_types/mod.ts";
+export * from "std/path/mod.ts";

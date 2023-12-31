@@ -51,7 +51,7 @@ export type PageProps<T = any> = {
 
 export type Layout<T = any> = (
   props: LayoutProps<T>,
-) => VNode;
+) => JSX.Element;
 
 export type FunctionComponent = (props: any) => JSX.Element;
 

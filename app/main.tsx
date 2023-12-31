@@ -1,7 +1,7 @@
-import Server from "./server.ts";
-import hello from "./app/hello.page.tsx";
+import Server from "../mod.ts";
+import hello from "./hello.page.tsx";
 import dear from "./dear.page.tsx";
-import { layout } from "./app/layout.tsx";
+import { layout } from "./layout.tsx";
 
 const s = new Server();
 
@@ -31,6 +31,7 @@ s.page("/page", {
 s.page("/dear", {
   component: dear,
   layout,
+  folder: "app",
   handler: (req, ctx) => {
     return ctx.render({ title: "halaman dear", data: "okeee ya" });
   },
@@ -39,6 +40,7 @@ s.page("/dear", {
 s.page("/profile/:user", {
   component: dear,
   layout,
+  folder: "app",
   handler: (req, ctx) => {
     return ctx.render({
       title: "halaman profile",
