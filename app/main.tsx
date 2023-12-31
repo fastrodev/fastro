@@ -50,5 +50,4 @@ s.page("/profile/:user", {
   },
 });
 
-s.static("/static", { folder: "static" });
 s.serve();
