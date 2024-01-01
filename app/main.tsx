@@ -5,8 +5,6 @@ import { layout } from "./layout.tsx";
 
 const s = new Server();
 
-const y = <p>JSX</p>;
-
 s.use((req, ctx) => {
   req.oke = "oke";
   return ctx.next();

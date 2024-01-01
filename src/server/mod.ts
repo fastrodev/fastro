@@ -15,6 +15,7 @@ import {
   HttpRequest,
   ListenHandler,
   Middleware,
+  ModuleFunction,
   Page,
   Static,
 } from "./types.ts";
@@ -54,23 +55,47 @@ export default class Server implements Fastro {
   ): Fastro {
     return this.add<T>("GET", path, handler, ...middleware);
   }
-  post<T = any>(path: string, handler: Handler<T>): Fastro {
-    return this.add("POST", path, handler);
+  post<T = any>(
+    path: string,
+    handler: Handler<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro {
+    return this.add("POST", path, handler, ...middleware);
   }
-  put<T = any>(path: string, handler: Handler<T>): Fastro {
-    return this.add("PUT", path, handler);
+  put<T = any>(
+    path: string,
+    handler: Handler<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro {
+    return this.add("PUT", path, handler, ...middleware);
   }
-  patch<T = any>(path: string, handler: Handler<T>): Fastro {
-    return this.add("PATCH", path, handler);
+  patch<T = any>(
+    path: string,
+    handler: Handler<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro {
+    return this.add("PATCH", path, handler, ...middleware);
   }
-  delete<T = any>(path: string, handler: Handler<T>): Fastro {
-    return this.add("DELETE", path, handler);
+  delete<T = any>(
+    path: string,
+    handler: Handler<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro {
+    return this.add("DELETE", path, handler, ...middleware);
   }
-  options<T = any>(path: string, handler: Handler<T>): Fastro {
-    return this.add("OPTIONS", path, handler);
+  options<T = any>(
+    path: string,
+    handler: Handler<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro {
+    return this.add("OPTIONS", path, handler, ...middleware);
   }
-  head<T = any>(path: string, handler: Handler<T>): Fastro {
-    return this.add("HEAD", path, handler);
+  head<T = any>(
+    path: string,
+    handler: Handler<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro {
+    return this.add("HEAD", path, handler, ...middleware);
   }
   page<T = any>(path: string, page: Page<T>): Fastro {
     return this.#addPage(path, page);
@@ -405,6 +430,10 @@ if (root) {
     } catch {
       return this.#record[id] = null;
     }
+  };
+
+  group = (mf: ModuleFunction) => {
+    return Promise.resolve(mf(this));
   };
 
   serve = async (port?: number, onListen?: ListenHandler) => {

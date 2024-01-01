@@ -69,6 +69,8 @@ export type Layout<T = any> = (
 
 export type FunctionComponent = (props: any) => JSX.Element;
 
+export type ModuleFunction = (f: Fastro) => Fastro | Promise<Fastro>;
+
 export interface Fastro {
   serve: (port: number, onListen: ListenHandler) => Promise<void>;
   shutdown: () => void;
@@ -114,4 +116,5 @@ export interface Fastro {
   ): Fastro;
   add<T = any>(method: string, path: string, handler: Handler<T>): Fastro;
   use<T = any>(...handler: Array<Handler<T>>): Fastro;
+  group(mf: ModuleFunction): Promise<Fastro>;
 }
