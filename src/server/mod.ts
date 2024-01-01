@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { VNode } from "preact";
+import { JSX, VNode } from "preact";
 import {
   contentType,
   encodeHex,
@@ -8,7 +8,15 @@ import {
   STATUS_TEXT,
 } from "./deps.ts";
 import { Render } from "./render.tsx";
-import { Fastro, Handler, ListenHandler, Page, Static } from "./types.ts";
+import {
+  Context,
+  Fastro,
+  Handler,
+  ListenHandler,
+  Middleware,
+  Page,
+  Static,
+} from "./types.ts";
 import { EsbuildMod } from "../build/esbuildMod.ts";
 
 export function checkReferer(req: Request) {
@@ -38,30 +46,47 @@ export default class Server implements Fastro {
   constructor() {
     this.#handler = this.#createHandler();
   }
-  get(path: string, handler: Handler): Fastro {
-    return this.add("GET", path, handler);
+  get<T = any>(
+    path: string,
+    handler: Handler<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro {
+    return this.add<T>("GET", path, handler, ...middleware);
   }
-  post(path: string, handler: Handler): Fastro {
+  post<T = any>(path: string, handler: Handler<T>): Fastro {
     return this.add("POST", path, handler);
   }
-  put(path: string, handler: Handler): Fastro {
+  put<T = any>(path: string, handler: Handler<T>): Fastro {
     return this.add("PUT", path, handler);
   }
-  patch(path: string, handler: Handler): Fastro {
+  patch<T = any>(path: string, handler: Handler<T>): Fastro {
     return this.add("PATCH", path, handler);
   }
-  delete(path: string, handler: Handler): Fastro {
+  delete<T = any>(path: string, handler: Handler<T>): Fastro {
     return this.add("DELETE", path, handler);
   }
-  options(path: string, handler: Handler): Fastro {
+  options<T = any>(path: string, handler: Handler<T>): Fastro {
     return this.add("OPTIONS", path, handler);
   }
-  head(path: string, handler: Handler): Fastro {
+  head<T = any>(path: string, handler: Handler<T>): Fastro {
     return this.add("HEAD", path, handler);
   }
-  page<T>(path: string, page: Page<T>): Fastro {
+  page<T = any>(path: string, page: Page<T>): Fastro {
     return this.#addPage(path, page);
   }
+  use<T = any>(...handlers: Handler<T>[]): Fastro {
+    for (let index = 0; index < handlers.length; index++) {
+      const element = handlers[index];
+      const middleware: Middleware = {
+        path: undefined,
+        method: undefined,
+        handler: element,
+      };
+      this.#middleware.push(middleware);
+    }
+    return this;
+  }
+
   static(
     path: string,
     options?: { maxAge?: number; folder?: string; referer?: boolean },
@@ -79,10 +104,33 @@ export default class Server implements Fastro {
     return this;
   };
 
-  add = (method: string, path: string, handler: Handler) => {
+  add = <T>(
+    method: string,
+    path: string,
+    handler: Handler<T>,
+    ...middlewares: Handler<T>[]
+  ) => {
     const key = method + "-" + path;
     this.#routeHandler[key] = handler;
+    if (middlewares.length > 0) {
+      this.#push<T>(method, path, ...middlewares);
+    }
     return this;
+  };
+
+  #push = <T = any>(
+    method: any,
+    path: any,
+    ...middlewares: Array<Handler<T>>
+  ) => {
+    for (let index = 0; index < middlewares.length; index++) {
+      const handler = middlewares[index];
+      this.#middleware.push({
+        method,
+        path,
+        handler,
+      });
+    }
   };
 
   #build = async () => {
@@ -175,76 +223,149 @@ if (root) {
       });
     }
 
+    const b = this.#handleBinary(this.#staticUrl, req.url);
+    if (b) return b;
+
     return new Response(STATUS_TEXT[STATUS_CODE.NotFound], {
       status: STATUS_CODE.NotFound,
     });
   };
 
-  #handlePage = (req: Request, info: Deno.ServeHandlerInfo) => {
+  #handlePage = (
+    req: Request,
+    info: Deno.ServeHandlerInfo,
+  ): [Page, Context<any>] => {
     const url = new URL(req.url);
     const key = url.pathname;
     let page = this.#routePage[key];
     let params: Record<string, string | undefined> | undefined = undefined;
     if (!page) {
       const res = this.#getParamsPage(req, this.#routePage);
-      if (!res) return this.#handleStaticFile(req);
-      const [pg, prm] = res;
-      page = pg;
-      params = prm;
+      if (res) {
+        const [pg, prm] = res;
+        page = pg;
+        params = prm;
+      }
     }
 
     const r = new Render(this);
-    return page.handler(req, {
+    const ctx = {
       render: (data: any) => r.render(key, page, data),
       info: info,
+      next: () => {},
       params,
-    });
+    };
+    return [page, ctx];
   };
 
-  #createHandler = () => {
-    return (req: Request, info: Deno.ServeHandlerInfo) => {
-      try {
-        const id = req.method + req.url;
-        if (this.#record[id]) {
-          const [handler, ctx] = this.#record[id];
-          return handler(req, ctx);
-        }
-        const r = new Render(this);
-        const ctx = {
-          params: undefined as Record<string, string | undefined> | undefined,
-          info,
-          render: <T>(jsx: T) => {
-            return r.renderJsx(jsx as VNode);
-          },
-        };
+  #findMatch(
+    m: Middleware,
+    id: string,
+    url: string,
+    method: string,
+  ) {
+    const r = this.#record[id];
+    if (r) return r as URLPatternResult;
 
-        const url = new URL(req.url);
-        const key = req.method + "-" + url.pathname;
-        let handler = this.#routeHandler[key];
-        let params: Record<string, string | undefined> | undefined;
-        if (!handler) {
-          const res = this.#getParamsHandler(req, this.#routeHandler);
-          if (!res) return this.#handlePage(req, info);
+    const pattern = m.path
+      ? new URLPattern({ pathname: m.path })
+      : new URLPattern({ pathname: "/*" });
+
+    const result = pattern.exec(url);
+    if (!result) return undefined;
+    if ((m.path !== undefined) && (m.method !== method)) return undefined;
+    return this.#record[id] = result;
+  }
+
+  #handleMiddleware = (req: Request, info: Deno.ServeHandlerInfo) => {
+    if (this.#middleware.length === 0) return undefined;
+    const method: string = req.method, url: string = req.url;
+    let result: unknown;
+    const r = new Render(this);
+    const ctx = {
+      render: (jsx: JSX.Element) => {
+        return r.renderJsx(jsx);
+      },
+      info: info,
+      next: () => {},
+      params: undefined as Record<string, string | undefined> | undefined,
+    };
+
+    for (let index = 0; index < this.#middleware.length; index++) {
+      const m = this.#middleware[index];
+      const id = method + m.method + m.path + url;
+      const match = this.#findMatch(m, id, url, method);
+      if (!match) continue;
+
+      const x = m.handler(
+        req,
+        ctx,
+      );
+
+      if (x instanceof Response) {
+        result = x;
+        break;
+      }
+    }
+
+    return result;
+  };
+
+  #handleRequest = (req: Request, info: Deno.ServeHandlerInfo) => {
+    try {
+      const id = req.method + req.url;
+      if (this.#record[id]) return this.#record[id];
+      const r = new Render(this);
+      const ctx = {
+        params: undefined as Record<string, string | undefined> | undefined,
+        info,
+        next: () => {},
+        render: (jsx: JSX.Element) => {
+          return r.renderJsx(jsx);
+        },
+      };
+
+      const url = new URL(req.url);
+      const key = req.method + "-" + url.pathname;
+      let handler = this.#routeHandler[key];
+      let params: Record<string, string | undefined> | undefined;
+      if (!handler) {
+        const res = this.#getParamsHandler(req, this.#routeHandler);
+        if (res) {
           const [h, p] = res;
           handler = h;
           params = p;
         }
+      }
 
-        ctx.params = params;
-        ctx.info = info;
-        this.#record[id] = [handler, ctx];
-        return handler(req, ctx);
-      } catch (error) {
-        const msg = error.message as string;
-        if (msg.includes(STATUS_TEXT[STATUS_CODE.NotFound])) {
-          return new Response(STATUS_TEXT[STATUS_CODE.NotFound], {
-            status: STATUS_CODE.NotFound,
-          });
-        }
-        return new Response(STATUS_TEXT[STATUS_CODE.InternalServerError], {
-          status: STATUS_CODE.InternalServerError,
+      ctx.params = params;
+      ctx.info = info;
+      return this.#record[id] = [handler, ctx];
+    } catch (error) {
+      const msg = error.message as string;
+      if (msg.includes(STATUS_TEXT[STATUS_CODE.NotFound])) {
+        return new Response(STATUS_TEXT[STATUS_CODE.NotFound], {
+          status: STATUS_CODE.NotFound,
         });
       }
+      return new Response(STATUS_TEXT[STATUS_CODE.InternalServerError], {
+        status: STATUS_CODE.InternalServerError,
+      });
+    }
+  };
+
+  #createHandler = () => {
+    return (req: Request, info: Deno.ServeHandlerInfo) => {
+      const m = this.#handleMiddleware(req, info);
+      if (m) return m as Response;
+
+      const [handler, ctx] = this.#handleRequest(req, info);
+      if (handler) return handler(req, ctx);
+
+      const [page, pageCtx] = this.#handlePage(req, info);
+      if (page) return page.handler(req, pageCtx);
+
+      return this.#handleStaticFile(req);
     };
   };
 
@@ -281,6 +402,26 @@ if (root) {
     return this.#record[id] = { contentType: ct, file };
   };
 
+  #handleBinary = async (url: string, reqUrl: string) => {
+    const [id, pathname] = this.#normalizeStaticUrl(url, reqUrl);
+    try {
+      const match = new URLPattern({ pathname }).exec(reqUrl);
+      const filePath = `${this.#staticFolder}/${match?.pathname.groups["0"]}`;
+      const ct = contentType(extname(filePath)) || "application/octet-stream";
+
+      if (filePath === "/") return this.#record[id] = null;
+      const file = await Deno.open(`./${filePath}`, { read: true });
+      return new Response(file.readable, {
+        headers: {
+          "Content-Type": ct,
+          "Cache-Control": `max-age=${this.#maxAge}`,
+        },
+      });
+    } catch {
+      return this.#record[id] = null;
+    }
+  };
+
   serve = async (port?: number, onListen?: ListenHandler) => {
     const [s] = await this.#build();
     if (s) return;
@@ -309,8 +450,9 @@ if (root) {
   #routeHandler: Record<string, Handler> = {};
   #routePage: Record<string, Page> = {};
   #record: Record<string, any> = {};
+  #middleware: Middleware[] = [];
   #staticFolder = "static";
-  #staticUrl = "/static";
+  #staticUrl = "/";
   #staticReferer = false;
   #maxAge = 0;
 }

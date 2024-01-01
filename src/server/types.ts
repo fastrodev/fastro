@@ -11,6 +11,16 @@ export type Handler<T = any> = (
   ctx: Context<T>,
 ) => Response | Promise<Response>;
 
+export interface Next {
+  (error?: Error, data?: unknown): unknown;
+}
+
+export type Middleware<T = any> = {
+  method?: string;
+  path?: string;
+  handler: Handler<T>;
+};
+
 export type Static = {
   file: string;
   contentType: string;
@@ -30,6 +40,7 @@ export type Context<T> = {
    */
   info: Deno.ServeHandlerInfo;
   params?: Record<string, string | undefined>;
+  next: Next | any;
   [key: string]: any;
 };
 
@@ -58,13 +69,46 @@ export type FunctionComponent = (props: any) => JSX.Element;
 export interface Fastro {
   serve: (port: number, onListen: ListenHandler) => Promise<void>;
   shutdown: () => void;
-  get(path: string, handler: Handler): Fastro;
-  post(path: string, handler: Handler): Fastro;
-  put(path: string, handler: Handler): Fastro;
-  patch(path: string, handler: Handler): Fastro;
-  delete(path: string, handler: Handler): Fastro;
-  options(path: string, handler: Handler): Fastro;
-  head(path: string, handler: Handler): Fastro;
-  page<T = any>(path: string, page: Page<T>): Fastro;
-  add(method: string, path: string, handler: Handler): Fastro;
+  get<T = any>(
+    path: string,
+    handler: Handler<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro;
+  post<T = any>(
+    path: string,
+    handler: Handler<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro;
+  put<T = any>(
+    path: string,
+    handler: Handler<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro;
+  patch<T = any>(
+    path: string,
+    handler: Handler<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro;
+  delete<T = any>(
+    path: string,
+    handler: Handler<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro;
+  options<T = any>(
+    path: string,
+    handler: Handler<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro;
+  head<T = any>(
+    path: string,
+    handler: Handler<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro;
+  page<T = any>(
+    path: string,
+    page: Page<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro;
+  add<T = any>(method: string, path: string, handler: Handler<T>): Fastro;
+  use<T = any>(...handler: Array<Handler<T>>): Fastro;
 }

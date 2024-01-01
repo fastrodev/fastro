@@ -7,16 +7,22 @@ const s = new Server();
 
 const y = <p>JSX</p>;
 
+s.get("/", (_req, _ctx) => {
+  return new Response("hello");
+}, (req, ctx) => {
+  console.log("middleware 1");
+  return ctx.next();
+}, (req, ctx) => {
+  console.log("middleware 2");
+  return ctx.next();
+});
+
 s.get("/hello", (_req, ctx) => {
   return ctx.render(<h1>Hello</h1>);
 });
 
 s.get("/hello/:user", (_req, ctx) => {
   return ctx.render(<h1>Hello {ctx.params?.user}</h1>);
-});
-
-s.get("/", (_req, _info) => {
-  return new Response("hello");
 });
 
 s.page("/page", {

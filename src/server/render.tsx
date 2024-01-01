@@ -1,5 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
-import { ComponentChild, ComponentType, h, toChildArray, VNode } from "preact";
+import {
+  ComponentChild,
+  ComponentType,
+  h,
+  JSX,
+  toChildArray,
+  VNode,
+} from "preact";
 import { renderToString } from "./deps.ts";
 import { Fastro, FunctionComponent, Page } from "./types.ts";
 import { BUILD_ID, checkReferer, getDevelopment } from "./mod.ts";
@@ -14,7 +21,7 @@ export class Render {
     }
   }
 
-  renderJsx = (jsx: VNode) => {
+  renderJsx = (jsx: JSX.Element) => {
     const html = renderToString(jsx);
     return new Response(html, {
       headers: { "content-type": "text/html" },
@@ -90,7 +97,7 @@ es.onmessage = function(e) {
   #mutate = (app: VNode, component: FunctionComponent) => {
     (app.props.children as ComponentChild[]).push(
       h("script", {
-        src: `/static/js/${component.name.toLocaleLowerCase()}.js`,
+        src: `/js/${component.name.toLocaleLowerCase()}.js`,
         async: true,
       }),
     );
