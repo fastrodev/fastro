@@ -43,7 +43,7 @@ es.onmessage = function(e) {
   #handleDevelopment = () => {
     this.#server.add(
       "GET",
-      "/static/js/refresh.js",
+      "/js/refresh.js",
       () =>
         new Response(this.#refreshJs(`/___refresh___`, BUILD_ID), {
           headers: {
@@ -101,12 +101,14 @@ es.onmessage = function(e) {
         async: true,
       }),
     );
-    (app.props.children as ComponentChild[]).push(
-      h("script", {
-        src: `/static/js/refresh.js`,
-        async: true,
-      }),
-    );
+    if (getDevelopment()) {
+      (app.props.children as ComponentChild[]).push(
+        h("script", {
+          src: `/js/refresh.js`,
+          async: true,
+        }),
+      );
+    }
     return app;
   };
 

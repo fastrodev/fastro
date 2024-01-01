@@ -6,8 +6,12 @@ export type ListenHandler = (info: {
   port: number;
 }) => void;
 
+export class HttpRequest extends Request {
+  [key: string]: any;
+}
+
 export type Handler<T = any> = (
-  req: Request,
+  req: HttpRequest,
   ctx: Context<T>,
 ) => Response | Promise<Response>;
 
@@ -41,7 +45,6 @@ export type Context<T> = {
   info: Deno.ServeHandlerInfo;
   params?: Record<string, string | undefined>;
   next: Next | any;
-  [key: string]: any;
 };
 
 export type Page<T = any> = {

@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { JSX, VNode } from "preact";
+import { JSX } from "preact";
 import {
   contentType,
   encodeHex,
@@ -12,6 +12,7 @@ import {
   Context,
   Fastro,
   Handler,
+  HttpRequest,
   ListenHandler,
   Middleware,
   Page,
@@ -223,8 +224,8 @@ if (root) {
       });
     }
 
-    const b = this.#handleBinary(this.#staticUrl, req.url);
-    if (b) return b;
+    const b = await this.#handleBinary(this.#staticUrl, req.url);
+    if (b) return b as Response;
 
     return new Response(STATUS_TEXT[STATUS_CODE.NotFound], {
       status: STATUS_CODE.NotFound,
@@ -281,25 +282,14 @@ if (root) {
     if (this.#middleware.length === 0) return undefined;
     const method: string = req.method, url: string = req.url;
     let result: unknown;
-    const r = new Render(this);
-    const ctx = {
-      render: (jsx: JSX.Element) => {
-        return r.renderJsx(jsx);
-      },
-      info: info,
-      next: () => {},
-      params: undefined as Record<string, string | undefined> | undefined,
-    };
-
     for (let index = 0; index < this.#middleware.length; index++) {
       const m = this.#middleware[index];
       const id = method + m.method + m.path + url;
       const match = this.#findMatch(m, id, url, method);
       if (!match) continue;
-
       const x = m.handler(
-        req,
-        ctx,
+        this.#transformRequest(req),
+        this.#transformCtx(info, match?.pathname.groups),
       );
 
       if (x instanceof Response) {
@@ -311,47 +301,42 @@ if (root) {
     return result;
   };
 
+  #transformRequest = (req: Request) => {
+    return req as HttpRequest;
+  };
+
+  #transformCtx = (
+    info: Deno.ServeHandlerInfo,
+    params?: Record<string, string | undefined>,
+  ) => {
+    const r = new Render(this);
+    return {
+      info,
+      params,
+      render: (jsx: JSX.Element) => {
+        return r.renderJsx(jsx);
+      },
+      next: () => {},
+    };
+  };
+
   #handleRequest = (req: Request, info: Deno.ServeHandlerInfo) => {
-    try {
-      const id = req.method + req.url;
-      if (this.#record[id]) return this.#record[id];
-      const r = new Render(this);
-      const ctx = {
-        params: undefined as Record<string, string | undefined> | undefined,
-        info,
-        next: () => {},
-        render: (jsx: JSX.Element) => {
-          return r.renderJsx(jsx);
-        },
-      };
-
-      const url = new URL(req.url);
-      const key = req.method + "-" + url.pathname;
-      let handler = this.#routeHandler[key];
-      let params: Record<string, string | undefined> | undefined;
-      if (!handler) {
-        const res = this.#getParamsHandler(req, this.#routeHandler);
-        if (res) {
-          const [h, p] = res;
-          handler = h;
-          params = p;
-        }
+    const id = req.method + req.url;
+    if (this.#record[id]) return this.#record[id];
+    const url = new URL(req.url);
+    const key = req.method + "-" + url.pathname;
+    let handler = this.#routeHandler[key];
+    let params: Record<string, string | undefined> | undefined;
+    if (!handler) {
+      const res = this.#getParamsHandler(req, this.#routeHandler);
+      if (res) {
+        const [h, p] = res;
+        handler = h;
+        params = p;
       }
-
-      ctx.params = params;
-      ctx.info = info;
-      return this.#record[id] = [handler, ctx];
-    } catch (error) {
-      const msg = error.message as string;
-      if (msg.includes(STATUS_TEXT[STATUS_CODE.NotFound])) {
-        return new Response(STATUS_TEXT[STATUS_CODE.NotFound], {
-          status: STATUS_CODE.NotFound,
-        });
-      }
-      return new Response(STATUS_TEXT[STATUS_CODE.InternalServerError], {
-        status: STATUS_CODE.InternalServerError,
-      });
     }
+
+    return this.#record[id] = [handler, this.#transformCtx(info, params)];
   };
 
   #createHandler = () => {
@@ -360,7 +345,7 @@ if (root) {
       if (m) return m as Response;
 
       const [handler, ctx] = this.#handleRequest(req, info);
-      if (handler) return handler(req, ctx);
+      if (handler) return handler(req, ctx) as Response;
 
       const [page, pageCtx] = this.#handlePage(req, info);
       if (page) return page.handler(req, pageCtx);
