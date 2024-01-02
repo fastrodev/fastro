@@ -1,5 +1,6 @@
 import { TailwindPluginOptions } from "./types.ts";
 import { Context, HttpRequest } from "../../src/server/types.ts";
+import { getDevelopment } from "../../src/server/mod.ts";
 
 async function initTailwind(
   config: { staticDir: string; dev: boolean },
@@ -21,8 +22,32 @@ function render(content: string) {
   });
 }
 
+async function build(staticDir: string) {
+  const processor = await initTailwind({
+    staticDir,
+    dev: false,
+  }, {});
+
+  const path = Deno.cwd() + "/static/tailwind.css";
+  const content = await Deno.readTextFile(path);
+  const result = await processor.process(content, {
+    from: undefined,
+  });
+
+  return result;
+}
+
 export function tailwind(pathname = "/styles.css", staticDir = "/") {
   const cache = new Map<string, string>();
+  const [s] = Deno.args.filter((v) => v === "--hydrate");
+  if (s) {
+    build(staticDir).then((result) => {
+      const outPath = Deno.cwd() + "/static/styles.css";
+      Deno.writeTextFile(outPath, result.content);
+    });
+    return;
+  }
+
   async function m(_req: HttpRequest, ctx: Context) {
     if (ctx.url.pathname !== pathname) {
       return ctx.next();
@@ -33,17 +58,16 @@ export function tailwind(pathname = "/styles.css", staticDir = "/") {
       return render(cached);
     }
 
-    const processor = await initTailwind({
-      staticDir,
-      dev: false,
-    }, {});
-    const content = await Deno.readTextFile(Deno.cwd() + "/static/styles.css");
-    const result = await processor.process(content, {
-      from: undefined,
-    });
+    if (getDevelopment()) {
+      const result = await build(staticDir);
+      cache.set(pathname, result.content);
+      return render(result.content);
+    }
 
-    cache.set(pathname, result.content);
-    return render(result.content);
+    const path = Deno.cwd() + "/static/styles.css";
+    const content = await Deno.readTextFile(path);
+    cache.set(pathname, content);
+    return render(content);
   }
 
   return m;
