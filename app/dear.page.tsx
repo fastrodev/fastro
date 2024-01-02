@@ -5,7 +5,7 @@ export default function Dear(
 ) {
   return (
     <>
-      <p>DEAR {data.data} {data.user} {data.title}</p>
+      <p class="top-0">DEAR {data.data} {data.user} {data.title}</p>
     </>
   );
 }

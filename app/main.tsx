@@ -2,6 +2,7 @@ import Server from "../mod.ts";
 import hello from "./hello.page.tsx";
 import dear from "./dear.page.tsx";
 import { layout } from "./layout.tsx";
+import { tailwind } from "../middleware/tailwind/mod.ts";
 
 const s = new Server();
 
@@ -9,6 +10,8 @@ s.use((req, ctx) => {
   req.oke = "oke";
   return ctx.next();
 });
+
+s.use(tailwind());
 
 s.get("/", (req) => {
   console.log("req.no", req.no);

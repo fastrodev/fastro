@@ -279,6 +279,7 @@ if (root) {
       render: <T>(data: T) => r.render(key, page, data),
       info: info,
       next: () => {},
+      url: new URL(req.url),
     };
     return [page, ctx, params];
   };
@@ -302,21 +303,27 @@ if (root) {
     return this.#record[id] = result;
   }
 
-  #handleMiddleware = (req: Request, info: Deno.ServeHandlerInfo) => {
+  #handleMiddleware = async (req: Request, info: Deno.ServeHandlerInfo) => {
     if (this.#middleware.length === 0) return undefined;
     const method: string = req.method, url: string = req.url;
+    let result;
     for (let index = 0; index < this.#middleware.length; index++) {
       const m = this.#middleware[index];
       const id = method + m.method + m.path + url;
       const match = this.#findMatch(m, id, url, method);
       if (!match) continue;
-      const x = m.handler(
+      const x = await m.handler(
         this.#transformRequest(req, match?.pathname.groups),
-        this.#transformCtx(info),
+        this.#transformCtx(req, info),
       ) as any;
 
-      if (x instanceof Response) return x;
+      if (x instanceof Response) {
+        result = x;
+        break;
+      }
     }
+
+    return result;
   };
 
   #transformRequest = (
@@ -329,6 +336,7 @@ if (root) {
   };
 
   #transformCtx = (
+    req: Request,
     info: Deno.ServeHandlerInfo,
   ) => {
     const r = new Render(this);
@@ -338,6 +346,7 @@ if (root) {
         return r.renderJsx(jsx as JSX.Element);
       },
       next: () => {},
+      url: new URL(req.url),
     };
   };
 
@@ -357,13 +366,13 @@ if (root) {
       }
     }
 
-    return this.#record[id] = [handler, this.#transformCtx(info), params];
+    return this.#record[id] = [handler, this.#transformCtx(req, info), params];
   };
 
   #createHandler = () => {
-    return (req: Request, info: Deno.ServeHandlerInfo) => {
-      const m = this.#handleMiddleware(req, info);
-      if (m) return m as Response;
+    return async (req: Request, info: Deno.ServeHandlerInfo) => {
+      const m = await this.#handleMiddleware(req, info);
+      if (m) return m;
 
       const [handler, ctx, params] = this.#handleRequest(req, info);
       if (handler) {

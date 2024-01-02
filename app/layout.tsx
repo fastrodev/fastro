@@ -13,6 +13,7 @@ export function layout(
         <title>
           {data.title}
         </title>
+        <link href="/styles.css" rel="stylesheet" />
       </head>
       <body id="root">
         {children}
