@@ -14,10 +14,10 @@ export class HttpRequest extends Request {
 export type Handler<T = any> = (
   req: HttpRequest,
   ctx: Context<T>,
-) => Response | Promise<Response>;
+) => Response | Promise<Response> | void | Promise<void>;
 
 export interface Next {
-  (error?: Error, data?: unknown): unknown;
+  (): void;
 }
 
 export type Middleware<T = any> = {
@@ -44,7 +44,7 @@ export type Context<T = any> = {
    * Information for a HTTP request.
    */
   info: Deno.ServeHandlerInfo;
-  next: Next | any;
+  next: Next;
 };
 
 export type Page<T = any> = {
