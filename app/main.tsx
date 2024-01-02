@@ -31,7 +31,7 @@ s.get("/hello", (req, ctx) => {
 
 s.get("/hello/:user", (req, ctx) => {
   console.log(req.oke);
-  return ctx.render(<h1>Hello {ctx.params?.user}</h1>);
+  return ctx.render(<h1>Hello {req.params?.user}</h1>);
 });
 
 s.page("/page", {
@@ -63,7 +63,7 @@ s.page("/profile/:user", {
     return ctx.render({
       title: "halaman profile",
       data: "profilemu",
-      user: ctx.params?.user,
+      user: req.params?.user,
     });
   },
 });

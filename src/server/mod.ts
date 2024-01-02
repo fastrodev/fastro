@@ -260,7 +260,7 @@ if (root) {
   #handlePage = (
     req: Request,
     info: Deno.ServeHandlerInfo,
-  ): [Page, Context<any>] => {
+  ): [Page, Context<any>, Record<string, string | undefined> | undefined] => {
     const url = new URL(req.url);
     const key = url.pathname;
     let page = this.#routePage[key];
@@ -276,12 +276,11 @@ if (root) {
 
     const r = new Render(this);
     const ctx = {
-      render: (data: any) => r.render(key, page, data),
+      render: <T>(data: T) => r.render(key, page, data),
       info: info,
       next: () => {},
-      params,
     };
-    return [page, ctx];
+    return [page, ctx, params];
   };
 
   #findMatch(
@@ -306,40 +305,37 @@ if (root) {
   #handleMiddleware = (req: Request, info: Deno.ServeHandlerInfo) => {
     if (this.#middleware.length === 0) return undefined;
     const method: string = req.method, url: string = req.url;
-    let result: unknown;
     for (let index = 0; index < this.#middleware.length; index++) {
       const m = this.#middleware[index];
       const id = method + m.method + m.path + url;
       const match = this.#findMatch(m, id, url, method);
       if (!match) continue;
       const x = m.handler(
-        this.#transformRequest(req),
-        this.#transformCtx(info, match?.pathname.groups),
-      );
+        this.#transformRequest(req, match?.pathname.groups),
+        this.#transformCtx(info),
+      ) as any;
 
-      if (x instanceof Response) {
-        result = x;
-        break;
-      }
+      if (x instanceof Response) return x;
     }
-
-    return result;
   };
 
-  #transformRequest = (req: Request) => {
-    return req as HttpRequest;
+  #transformRequest = (
+    req: Request,
+    params?: Record<string, string | undefined>,
+  ) => {
+    const r = req as HttpRequest;
+    r.params = params;
+    return r;
   };
 
   #transformCtx = (
     info: Deno.ServeHandlerInfo,
-    params?: Record<string, string | undefined>,
   ) => {
     const r = new Render(this);
     return {
       info,
-      params,
-      render: (jsx: JSX.Element) => {
-        return r.renderJsx(jsx);
+      render: <T>(jsx: T) => {
+        return r.renderJsx(jsx as JSX.Element);
       },
       next: () => {},
     };
@@ -361,7 +357,7 @@ if (root) {
       }
     }
 
-    return this.#record[id] = [handler, this.#transformCtx(info, params)];
+    return this.#record[id] = [handler, this.#transformCtx(info), params];
   };
 
   #createHandler = () => {
@@ -369,11 +365,15 @@ if (root) {
       const m = this.#handleMiddleware(req, info);
       if (m) return m as Response;
 
-      const [handler, ctx] = this.#handleRequest(req, info);
-      if (handler) return handler(req, ctx) as Response;
+      const [handler, ctx, params] = this.#handleRequest(req, info);
+      if (handler) {
+        return handler(this.#transformRequest(req, params), ctx) as Response;
+      }
 
-      const [page, pageCtx] = this.#handlePage(req, info);
-      if (page) return page.handler(req, pageCtx);
+      const [page, pageCtx, pageParams] = this.#handlePage(req, info);
+      if (page) {
+        return page.handler(this.#transformRequest(req, pageParams), pageCtx);
+      }
 
       return this.#handleStaticFile(req);
     };

@@ -8,6 +8,7 @@ export type ListenHandler = (info: {
 
 export class HttpRequest extends Request {
   [key: string]: any;
+  params?: Record<string, string | undefined>;
 }
 
 export type Handler<T = any> = (
@@ -30,7 +31,7 @@ export type Static = {
   contentType: string;
 };
 
-export type Context<T> = {
+export type Context<T = any> = {
   /**
    * Render a JSX Component or a Page with data
    * - If you call it from a standart handler (GET, POST, PUT, DELETE), it will render a JSX component.
@@ -43,7 +44,6 @@ export type Context<T> = {
    * Information for a HTTP request.
    */
   info: Deno.ServeHandlerInfo;
-  params?: Record<string, string | undefined>;
   next: Next | any;
 };
 
