@@ -53,6 +53,7 @@ es.onmessage = function(e) {
       if (ref) return ref;
       return new Response(JSON.stringify(data), {
         headers: new Headers({
+          "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "null",
           "Access-Control-Allow-Methods": "GET",
           "Access-Control-Allow-Headers": "Content-Type",
