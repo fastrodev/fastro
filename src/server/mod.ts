@@ -367,12 +367,17 @@ if (root) {
 
       const [handler, ctx, params] = this.#handleRequest(req, info);
       if (handler) {
-        return handler(this.#transformRequest(req, params), ctx) as Response;
+        return handler(this.#transformRequest(req, params), ctx) as Promise<
+          Response
+        >;
       }
 
       const [page, pageCtx, pageParams] = this.#handlePage(req, info);
       if (page) {
-        return page.handler(this.#transformRequest(req, pageParams), pageCtx);
+        return page.handler(
+          this.#transformRequest(req, pageParams),
+          pageCtx,
+        ) as Promise<Response>;
       }
 
       return this.#handleStaticFile(req);
