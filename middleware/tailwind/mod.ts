@@ -1,16 +1,13 @@
+// deno-lint-ignore-file no-explicit-any
+import tailwindCss, { Config } from "tailwindcss";
+import postcss from "https://deno.land/x/postcss@8.4.16/mod.js";
+import cssnano from "npm:cssnano@6.0.1";
+import autoprefixer from "npm:autoprefixer@10.4.16";
+import * as path from "https://deno.land/std@0.207.0/path/mod.ts";
 import { TailwindPluginOptions } from "./types.ts";
 import { Context, HttpRequest } from "../../src/server/types.ts";
 import { getDevelopment } from "../../src/server/mod.ts";
-
-async function initTailwind(
-  config: { staticDir: string; dev: boolean },
-  options: TailwindPluginOptions,
-) {
-  return await (await import("./compiler.ts")).initTailwind(
-    config,
-    options,
-  );
-}
+import { STATUS_CODE, STATUS_TEXT } from "../../src/server/deps.ts";
 
 function render(content: string) {
   return new Response(content, {
@@ -22,8 +19,53 @@ function render(content: string) {
   });
 }
 
-async function build(staticDir: string) {
-  const processor = await initTailwind({
+/**
+ * Inspired and modified from the tailwind fresh plugin: https://github.com/denoland/fresh/blob/main/plugins/tailwind.ts
+ *
+ * @param config
+ * @param options
+ * @returns
+ */
+async function createProcessor(
+  config: {
+    staticDir: string;
+    dev: boolean;
+  },
+  options: TailwindPluginOptions,
+) {
+  const configPath = Deno.cwd() + "/tailwind.config.ts";
+  const url = path.toFileUrl(configPath).href;
+  const tailwindConfig = (await import(url)).default as Config;
+
+  if (!Array.isArray(tailwindConfig.content)) {
+    throw new Error(`Expected tailwind "content" option to be an array`);
+  }
+
+  tailwindConfig.content = tailwindConfig.content.map((pattern) => {
+    if (typeof pattern === "string") {
+      const relative = path.relative(Deno.cwd(), path.dirname(configPath));
+
+      if (!relative.startsWith("..")) {
+        return path.join(relative, pattern);
+      }
+    }
+    return pattern;
+  });
+
+  const plugins = [
+    tailwindCss(tailwindConfig) as any,
+    autoprefixer(options.autoprefixer) as any,
+  ];
+
+  if (!config.dev) {
+    plugins.push(cssnano());
+  }
+
+  return postcss(plugins);
+}
+
+async function processCss(staticDir: string) {
+  const processor = await createProcessor({
     staticDir,
     dev: false,
   }, {});
@@ -39,13 +81,19 @@ async function build(staticDir: string) {
 
 export function tailwind(pathname = "/styles.css", staticDir = "/") {
   const cache = new Map<string, string>();
-  const [s] = Deno.args.filter((v) => v === "--hydrate");
+  const [s] = Deno.args.filter((v) => v === "--build");
   if (s) {
-    build(staticDir).then((result) => {
+    console.log(
+      `%cBuild: %cstyles.css`,
+      "color: blue",
+      "color: white",
+    );
+
+    processCss(staticDir).then((result) => {
       const outPath = Deno.cwd() + "/static/styles.css";
       Deno.writeTextFile(outPath, result.content);
     });
-    return;
+    return () => {};
   }
 
   async function m(_req: HttpRequest, ctx: Context) {
@@ -59,15 +107,21 @@ export function tailwind(pathname = "/styles.css", staticDir = "/") {
     }
 
     if (getDevelopment()) {
-      const result = await build(staticDir);
+      const result = await processCss(staticDir);
       cache.set(pathname, result.content);
       return render(result.content);
     }
 
-    const path = Deno.cwd() + "/static/styles.css";
-    const content = await Deno.readTextFile(path);
-    cache.set(pathname, content);
-    return render(content);
+    try {
+      const path = Deno.cwd() + "/static/styles.css";
+      const content = await Deno.readTextFile(path);
+      cache.set(pathname, content);
+      return render(content);
+    } catch {
+      return new Response(STATUS_TEXT[STATUS_CODE.NotFound], {
+        status: STATUS_CODE.NotFound,
+      });
+    }
   }
 
   return m;

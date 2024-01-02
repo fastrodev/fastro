@@ -166,7 +166,7 @@ export default class Server implements Fastro {
       await this.#createHydrate(page);
       await this.#buildPageComponent(page);
     }
-    return Deno.args.filter((v) => v === "--hydrate");
+    return Deno.args.filter((v) => v === "--build");
   };
 
   #createHydrate = async (c: Page) => {
@@ -201,6 +201,14 @@ if (root) {
 
   async #buildPageComponent(c: Page) {
     if (typeof c.component == "function") {
+      const str = c.component.name.toLocaleLowerCase() +
+        ".page.tsx";
+      console.log(
+        `%cBuild: %c${str}`,
+        "color: blue",
+        "color: white",
+      );
+
       const es = new EsbuildMod(c);
       await es.build();
       es.stop();

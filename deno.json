@@ -2,7 +2,7 @@
   "lock": false,
   "tasks": {
     "start": "deno run -A --unstable --watch app/main.tsx",
-    "hydrate": "deno run -A --unstable app/main.tsx --hydrate "
+    "build": "deno run -A --unstable app/main.tsx --build "
   },
   "lint": {
     "rules": {

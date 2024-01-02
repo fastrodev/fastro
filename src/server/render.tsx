@@ -69,7 +69,7 @@ es.onmessage = function(e) {
           controller.enqueue(`data: ${BUILD_ID}\nretry: 100\n\n`);
           timerId = setInterval(() => {
             controller.enqueue(`data: ${BUILD_ID}\n\n`);
-          }, 300);
+          }, 500);
         },
         cancel() {
           if (timerId !== undefined) {
