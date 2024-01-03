@@ -97,8 +97,12 @@ export default class Server implements Fastro {
   ): Fastro {
     return this.add("HEAD", path, handler, ...middleware);
   }
-  page<T = any>(path: string, page: Page<T>): Fastro {
-    return this.#addPage(path, page);
+  page<T = any>(
+    path: string,
+    page: Page<T>,
+    ...middleware: Array<Handler<T>>
+  ): Fastro {
+    return this.#addPage(path, page, ...middleware);
   }
   use<T = any>(...handlers: Handler<T>[]): Fastro {
     for (let index = 0; index < handlers.length; index++) {
@@ -124,10 +128,27 @@ export default class Server implements Fastro {
     return this;
   }
 
-  #addPage = <T>(path: string, page: Page<T>) => {
+  #addPage = <T>(path: string, page: Page<T>, ...middlewares: Handler<T>[]) => {
     const key = path;
     this.#routePage[key] = page;
+    if (middlewares.length > 0) {
+      this.#pushPageMiddleware<T>(path, ...middlewares);
+    }
     return this;
+  };
+
+  #pushPageMiddleware = <T>(
+    path: string,
+    ...middlewares: Array<Handler<T>>
+  ) => {
+    for (let index = 0; index < middlewares.length; index++) {
+      const handler = middlewares[index];
+      this.#pageMiddleware.push({
+        method: undefined,
+        path,
+        handler,
+      });
+    }
   };
 
   add = <T>(
@@ -297,6 +318,7 @@ if (root) {
     id: string,
     url: string,
     method: string,
+    page?: boolean,
   ) {
     const r = this.#record[id];
     if (r) return r as URLPatternResult;
@@ -307,18 +329,37 @@ if (root) {
 
     const result = pattern.exec(url);
     if (!result) return undefined;
-    if ((m.path !== undefined) && (m.method !== method)) return undefined;
+    if (!page && (m.path !== undefined) && (m.method !== method)) {
+      return undefined;
+    }
+
     return this.#record[id] = result;
   }
 
-  #handleMiddleware = async (req: Request, info: Deno.ServeHandlerInfo) => {
-    if (this.#middleware.length === 0) return undefined;
+  #handlePageMiddleware = (
+    req: Request,
+    info: Deno.ServeHandlerInfo,
+  ) => {
+    const page = true;
+    return this.#handleMiddleware(req, info, page);
+  };
+
+  #handleMiddleware = async (
+    req: Request,
+    info: Deno.ServeHandlerInfo,
+    page?: boolean,
+  ) => {
+    const mid = !page ? this.#middleware : this.#pageMiddleware;
+    if (mid.length === 0) return undefined;
     const method: string = req.method, url: string = req.url;
     let result;
-    for (let index = 0; index < this.#middleware.length; index++) {
-      const m = this.#middleware[index];
+    for (let index = 0; index < mid.length; index++) {
+      const m = mid[index];
       const id = method + m.method + m.path + url;
-      const match = this.#findMatch(m, id, url, method);
+      const match = !page
+        ? this.#findMatch(m, id, url, method)
+        : this.#findMatch(m, id, url, method, true);
+
       if (!match) continue;
       const x = await m.handler(
         this.#transformRequest(req, match?.pathname.groups),
@@ -388,6 +429,9 @@ if (root) {
           Response
         >;
       }
+
+      const pm = await this.#handlePageMiddleware(req, info);
+      if (pm) return pm;
 
       const [page, pageCtx, pageParams] = this.#handlePage(req, info);
       if (page) {
@@ -487,6 +531,7 @@ if (root) {
   #routePage: Record<string, Page> = {};
   #record: Record<string, any> = {};
   #middleware: Middleware[] = [];
+  #pageMiddleware: Middleware[] = [];
   #staticFolder = "static";
   #staticUrl = "/";
   #staticReferer = false;

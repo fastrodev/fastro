@@ -43,8 +43,12 @@ s.page("/page", {
   folder: "app",
   handler: (req, ctx) => {
     console.log(req.oke);
+    console.log(req.page);
     return ctx.render({ title: "halaman page", data: "okeee page" });
   },
+}, (req, ctx) => {
+  req.page = "page";
+  return ctx.next();
 });
 
 s.page("/dear", {
@@ -69,6 +73,9 @@ s.page("/profile/:user", {
       user: req.params?.user,
     });
   },
+}, (req, ctx) => {
+  console.log("params", req.params?.user);
+  return ctx.next();
 });
 
 s.serve();
