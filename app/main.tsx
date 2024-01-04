@@ -4,11 +4,11 @@ import dear from "./dear.page.tsx";
 import { layout } from "./app.layout.tsx";
 import { tailwind } from "../middleware/tailwind/mod.ts";
 import markdown from "../middleware/markdown/mod.tsx";
-import ml from "./blog.layout.tsx";
+import blogLayout from "./blog.layout.tsx";
 
 const s = new Server();
 
-s.use(markdown(ml));
+s.use(markdown(blogLayout));
 
 s.use((req, ctx) => {
   req.oke = "oke";
