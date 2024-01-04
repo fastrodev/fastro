@@ -279,7 +279,7 @@ if (root) {
     }
 
     const b = await this.#handleBinary(this.#staticUrl, req.url);
-    if (b) return b as Response;
+    if (b) return b;
 
     return new Response(STATUS_TEXT[STATUS_CODE.NotFound], {
       status: STATUS_CODE.NotFound,
