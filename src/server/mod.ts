@@ -309,6 +309,7 @@ if (root) {
       info: info,
       next: () => {},
       url: new URL(req.url),
+      server: this,
     };
     return [page, ctx, params];
   };
@@ -396,6 +397,7 @@ if (root) {
       },
       next: () => {},
       url: new URL(req.url),
+      server: this,
     };
   };
 

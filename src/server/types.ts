@@ -50,6 +50,7 @@ export type Context<T = any> = {
    */
   info: Deno.ServeHandlerInfo;
   next: Next;
+  server: Fastro;
   url: URL;
 };
 
