@@ -23,26 +23,37 @@ function stringToJSXElement(content: string) {
 
 async function readMarkdownFile(folder: string, file: string) {
   try {
-    const md = await Deno.readTextFile(folder + "/" + file + ".md");
+    const path = folder + "/" + file + ".md";
+    const md = await Deno.readTextFile(path);
     return md;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
 
-const record: Record<string, string> = {};
+// deno-lint-ignore no-explicit-any
+const record: Record<string, any> = {};
 async function getMarkdownBody(
+  req: Request,
   layout: FunctionComponent,
   folder: string,
   file: string,
+  prefix: string,
 ) {
   const id = folder + file;
   if (record[id]) {
     return record[id];
   }
 
-  const md = await readMarkdownFile(folder, file);
-  if (!md) return null;
+  const filePath = prefix ? file.replace(`/${prefix}/`, "") : file;
+  const pathname = prefix ? `/${prefix}/${filePath}` : `/${file}`;
+
+  const pattern = new URLPattern({ pathname });
+  const passed = pattern.test(req.url);
+  if (!passed) return record[id] = null;
+
+  const md = await readMarkdownFile(folder, filePath);
+  if (!md) return record[id] = null;
 
   const m = extract(md);
   const f = await remark()
@@ -89,9 +100,25 @@ const defaultLayout = (props: {
   );
 };
 
-export default function (layout = defaultLayout, folder = "post") {
-  return async function middleware(_req: HttpRequest, ctx: Context) {
-    const body = await getMarkdownBody(layout, folder, ctx.url.pathname);
+/**
+ * @param layout
+ * @param folder default : "post"
+ * @param prefix default : "blog"
+ * @returns
+ */
+export default function (
+  layout = defaultLayout,
+  folder = "post",
+  prefix = "blog",
+) {
+  return async function middleware(req: HttpRequest, ctx: Context) {
+    const body = await getMarkdownBody(
+      req,
+      layout,
+      folder,
+      ctx.url.pathname,
+      prefix,
+    );
     if (!body) return ctx.next();
     return new Response(body, {
       headers: { "content-type": "text/html" },
