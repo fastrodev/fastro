@@ -7,7 +7,7 @@ import {
   STATUS_CODE,
   STATUS_TEXT,
 } from "./deps.ts";
-import { Render } from "./render.tsx";
+import { Render } from "./render.ts";
 import {
   Context,
   Fastro,
@@ -50,61 +50,61 @@ export default class Server implements Fastro {
   }
   get<T = any>(
     path: string,
-    handler: Handler<T>,
-    ...middleware: Array<Handler<T>>
+    handler: Handler,
+    ...middleware: Array<Handler>
   ): Fastro {
     return this.add<T>("GET", path, handler, ...middleware);
   }
   post<T = any>(
     path: string,
-    handler: Handler<T>,
-    ...middleware: Array<Handler<T>>
+    handler: Handler,
+    ...middleware: Array<Handler>
   ): Fastro {
     return this.add("POST", path, handler, ...middleware);
   }
   put<T = any>(
     path: string,
-    handler: Handler<T>,
-    ...middleware: Array<Handler<T>>
+    handler: Handler,
+    ...middleware: Array<Handler>
   ): Fastro {
     return this.add("PUT", path, handler, ...middleware);
   }
   patch<T = any>(
     path: string,
-    handler: Handler<T>,
-    ...middleware: Array<Handler<T>>
+    handler: Handler,
+    ...middleware: Array<Handler>
   ): Fastro {
     return this.add("PATCH", path, handler, ...middleware);
   }
   delete<T = any>(
     path: string,
-    handler: Handler<T>,
-    ...middleware: Array<Handler<T>>
+    handler: Handler,
+    ...middleware: Array<Handler>
   ): Fastro {
     return this.add("DELETE", path, handler, ...middleware);
   }
   options<T = any>(
     path: string,
-    handler: Handler<T>,
-    ...middleware: Array<Handler<T>>
+    handler: Handler,
+    ...middleware: Array<Handler>
   ): Fastro {
     return this.add("OPTIONS", path, handler, ...middleware);
   }
   head<T = any>(
     path: string,
-    handler: Handler<T>,
-    ...middleware: Array<Handler<T>>
+    handler: Handler,
+    ...middleware: Array<Handler>
   ): Fastro {
     return this.add("HEAD", path, handler, ...middleware);
   }
   page<T = any>(
     path: string,
     page: Page<T>,
-    ...middleware: Array<Handler<T>>
+    ...middleware: Array<Handler>
   ): Fastro {
     return this.#addPage(path, page, ...middleware);
   }
-  use<T = any>(...handlers: Handler<T>[]): Fastro {
+  use<T = any>(...handlers: Handler[]): Fastro {
     for (let index = 0; index < handlers.length; index++) {
       const element = handlers[index];
       const middleware: Middleware = {
@@ -128,7 +128,7 @@ export default class Server implements Fastro {
     return this;
   }
 
-  #addPage = <T>(path: string, page: Page<T>, ...middlewares: Handler<T>[]) => {
+  #addPage = <T>(path: string, page: Page<T>, ...middlewares: Handler[]) => {
     const key = path;
     this.#routePage[key] = page;
     if (middlewares.length > 0) {
@@ -139,7 +139,7 @@ export default class Server implements Fastro {
 
   #pushPageMiddleware = <T>(
     path: string,
-    ...middlewares: Array<Handler<T>>
+    ...middlewares: Array<Handler>
   ) => {
     for (let index = 0; index < middlewares.length; index++) {
       const handler = middlewares[index];
@@ -154,8 +154,8 @@ export default class Server implements Fastro {
   add = <T>(
     method: string,
     path: string,
-    handler: Handler<T>,
-    ...middlewares: Handler<T>[]
+    handler: Handler,
+    ...middlewares: Handler[]
   ) => {
     const key = method + "-" + path;
     this.#routeHandler[key] = handler;
@@ -168,7 +168,7 @@ export default class Server implements Fastro {
   #push = <T = any>(
     method: any,
     path: any,
-    ...middlewares: Array<Handler<T>>
+    ...middlewares: Array<Handler>
   ) => {
     for (let index = 0; index < middlewares.length; index++) {
       const handler = middlewares[index];
@@ -289,7 +289,7 @@ if (root) {
   #handlePage = (
     req: Request,
     info: Deno.ServeHandlerInfo,
-  ): [Page, Context<any>, Record<string, string | undefined> | undefined] => {
+  ): [Page, Context, Record<string, string | undefined> | undefined] => {
     const url = new URL(req.url);
     const key = url.pathname;
     let page = this.#routePage[key];
@@ -310,6 +310,9 @@ if (root) {
       next: () => {},
       url: new URL(req.url),
       server: this,
+      send: <T>(data: T, status = 200) => {
+        return this.#handleResponse(data, status);
+      },
     };
     return [page, ctx, params];
   };
@@ -396,10 +399,31 @@ if (root) {
         return r.renderJsx(jsx as JSX.Element);
       },
       next: () => {},
+      send: <T>(data: T, status = 200) => {
+        return this.#handleResponse(data, status);
+      },
       url: new URL(req.url),
       server: this,
     };
   };
+
+  #isJSON(val: unknown) {
+    try {
+      const s = JSON.stringify(val);
+      JSON.parse(s);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  #handleResponse(res: any, status = 200) {
+    if (typeof res === "string") return new Response(res, { status });
+    if (this.#isJSON(res) || Array.isArray(res)) {
+      return Response.json(res, { status });
+    }
+    return new Response(res, { status });
+  }
 
   #handleRequest = (req: Request, info: Deno.ServeHandlerInfo) => {
     const id = req.method + req.url;
@@ -515,11 +539,12 @@ if (root) {
     });
   };
 
-  shutdown = () => {
+  shutdown = async () => {
     if (this.#server) {
       this.#server.finished.then(() => console.log("Server closed"));
       console.log("Closing server...");
       this.#ac.abort();
+      await this.#server.shutdown();
     }
   };
 

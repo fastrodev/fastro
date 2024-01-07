@@ -11,9 +11,9 @@ export class HttpRequest extends Request {
   params?: Record<string, string | undefined>;
 }
 
-export type Handler<T = any> = (
+export type Handler = (
   req: HttpRequest,
-  ctx: Context<T>,
+  ctx: Context,
 ) =>
   | Response
   | Promise<Response>
@@ -28,7 +28,7 @@ export interface Next {
 export type Middleware<T = any> = {
   method?: string;
   path?: string;
-  handler: Handler<T>;
+  handler: Handler;
 };
 
 export type Static = {
@@ -36,7 +36,7 @@ export type Static = {
   contentType: string;
 };
 
-export type Context<T = any> = {
+export type Context = {
   /**
    * Render a JSX Component or a Page with data
    * - If you call it from a standart handler (GET, POST, PUT, DELETE), it will render a JSX component.
@@ -44,11 +44,12 @@ export type Context<T = any> = {
    * @param data
    * @returns
    */
-  render: (data?: T) => Response | Promise<Response>;
+  render: <T>(data?: T) => Response | Promise<Response>;
   /**
    * Information for a HTTP request.
    */
   info: Deno.ServeHandlerInfo;
+  send: <T>(data?: T, status?: number) => Response | Promise<Response>;
   next: Next;
   server: Fastro;
   url: URL;
@@ -57,7 +58,7 @@ export type Context<T = any> = {
 export type Page<T = any> = {
   component: FunctionComponent | JSX.Element;
   layout: Layout<T>;
-  handler: Handler<T>;
+  handler: Handler;
   folder?: string;
 };
 
@@ -81,47 +82,47 @@ export type ModuleFunction = (f: Fastro) => Fastro | Promise<Fastro>;
 export interface Fastro {
   serve: (port: number, onListen: ListenHandler) => Promise<void>;
   shutdown: () => void;
-  get<T = any>(
+  get(
     path: string,
-    handler: Handler<T>,
-    ...middleware: Array<Handler<T>>
+    handler: Handler,
+    ...middleware: Array<Handler>
   ): Fastro;
-  post<T = any>(
+  post(
     path: string,
-    handler: Handler<T>,
-    ...middleware: Array<Handler<T>>
+    handler: Handler,
+    ...middleware: Array<Handler>
   ): Fastro;
-  put<T = any>(
+  put(
     path: string,
-    handler: Handler<T>,
-    ...middleware: Array<Handler<T>>
+    handler: Handler,
+    ...middleware: Array<Handler>
   ): Fastro;
-  patch<T = any>(
+  patch(
     path: string,
-    handler: Handler<T>,
-    ...middleware: Array<Handler<T>>
+    handler: Handler,
+    ...middleware: Array<Handler>
   ): Fastro;
-  delete<T = any>(
+  delete(
     path: string,
-    handler: Handler<T>,
-    ...middleware: Array<Handler<T>>
+    handler: Handler,
+    ...middleware: Array<Handler>
   ): Fastro;
-  options<T = any>(
+  options(
     path: string,
-    handler: Handler<T>,
-    ...middleware: Array<Handler<T>>
+    handler: Handler,
+    ...middleware: Array<Handler>
   ): Fastro;
-  head<T = any>(
+  head(
     path: string,
-    handler: Handler<T>,
-    ...middleware: Array<Handler<T>>
+    handler: Handler,
+    ...middleware: Array<Handler>
   ): Fastro;
   page<T = any>(
     path: string,
     page: Page<T>,
-    ...middleware: Array<Handler<T>>
+    ...middleware: Array<Handler>
   ): Fastro;
-  add<T = any>(method: string, path: string, handler: Handler<T>): Fastro;
-  use<T = any>(...handler: Array<Handler<T>>): Fastro;
+  add(method: string, path: string, handler: Handler): Fastro;
+  use(...handler: Array<Handler>): Fastro;
   group(mf: ModuleFunction): Promise<Fastro>;
 }

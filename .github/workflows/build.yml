@@ -20,9 +20,6 @@ jobs:
         with:
           deno-version: vx.x.x
 
-      - name: Init import_map
-        run: cp import_map.json.prod import_map.json
-
       - name: Run build
         run: deno task build
 

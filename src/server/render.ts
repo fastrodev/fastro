@@ -50,7 +50,9 @@ es.onmessage = function(e) {
     const path = "/__" + key + "/props";
     this.#server.add("GET", path, (req, _ctx) => {
       const ref = checkReferer(req);
-      if (ref) return ref;
+      if (!getDevelopment() && ref) {
+        return ref;
+      }
       return new Response(JSON.stringify(data), {
         headers: new Headers({
           "Content-Type": "application/json",
@@ -106,7 +108,7 @@ es.onmessage = function(e) {
     return app;
   };
 
-  render = (key: string, p: Page, data: any) => {
+  render = <T = any>(key: string, p: Page, data: T) => {
     try {
       this.#addPropsEndpoint(key, data);
       const children = typeof p.component == "function"
