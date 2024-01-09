@@ -216,7 +216,14 @@ if (root) {
 }
 `;
 
-    const path = `${Deno.cwd()}/.fastro/${name}.hydrate.tsx`;
+    const dir = Deno.cwd() + "/.fastro";
+    try {
+      Deno.readDirSync(dir);
+    } catch {
+      Deno.mkdirSync(dir);
+    }
+
+    const path = dir + "/" + name + ".hydrate.tsx";
     await Deno.writeTextFile(path, str);
   };
 

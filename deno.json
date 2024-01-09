@@ -1,8 +1,9 @@
 {
   "lock": false,
   "tasks": {
-    "start": "deno run -A --unstable --watch app/main.tsx",
+    "dev": "ENV=DEVELOPMENT deno run -A --unstable --watch app/main.tsx",
     "build": "deno run -A --unstable app/main.tsx --build ",
+    "start": "deno run -A --unstable --watch app/main.tsx",
     "test": "rm -rf .hydrate && rm -rf cov && deno test -A --coverage=cov && deno coverage cov",
     "coverage": "deno coverage cov --lcov > cov.lcov"
   },

@@ -1,10 +1,6 @@
 import { assertEquals } from "std/assert/assert_equals.ts";
 import { assertExists } from "std/assert/assert_exists.ts";
 import fastro from "../../mod.ts";
-import { assert } from "std/assert/assert.ts";
-import hello from "../../app/hello.page.tsx";
-import dear from "../../app/dear.page.tsx";
-import { layout } from "../../app/app.layout.tsx";
 import { Fastro } from "./types.ts";
 
 const host = "http://localhost:8000";
