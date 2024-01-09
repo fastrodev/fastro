@@ -48,49 +48,49 @@ export default class Server implements Fastro {
   constructor() {
     this.#handler = this.#createHandler();
   }
-  get<T = any>(
+  get(
     path: string,
     handler: Handler,
     ...middleware: Array<Handler>
   ): Fastro {
-    return this.add<T>("GET", path, handler, ...middleware);
+    return this.add("GET", path, handler, ...middleware);
   }
-  post<T = any>(
+  post(
     path: string,
     handler: Handler,
     ...middleware: Array<Handler>
   ): Fastro {
     return this.add("POST", path, handler, ...middleware);
   }
-  put<T = any>(
+  put(
     path: string,
     handler: Handler,
     ...middleware: Array<Handler>
   ): Fastro {
     return this.add("PUT", path, handler, ...middleware);
   }
-  patch<T = any>(
+  patch(
     path: string,
     handler: Handler,
     ...middleware: Array<Handler>
   ): Fastro {
     return this.add("PATCH", path, handler, ...middleware);
   }
-  delete<T = any>(
+  delete(
     path: string,
     handler: Handler,
     ...middleware: Array<Handler>
   ): Fastro {
     return this.add("DELETE", path, handler, ...middleware);
   }
-  options<T = any>(
+  options(
     path: string,
     handler: Handler,
     ...middleware: Array<Handler>
   ): Fastro {
     return this.add("OPTIONS", path, handler, ...middleware);
   }
-  head<T = any>(
+  head(
     path: string,
     handler: Handler,
     ...middleware: Array<Handler>
@@ -104,7 +104,7 @@ export default class Server implements Fastro {
   ): Fastro {
     return this.#addPage(path, page, ...middleware);
   }
-  use<T = any>(...handlers: Handler[]): Fastro {
+  use(...handlers: Handler[]): Fastro {
     for (let index = 0; index < handlers.length; index++) {
       const element = handlers[index];
       const middleware: Middleware = {
