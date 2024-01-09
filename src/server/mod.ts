@@ -128,16 +128,16 @@ export default class Server implements Fastro {
     return this;
   }
 
-  #addPage = <T>(path: string, page: Page<T>, ...middlewares: Handler[]) => {
+  #addPage = (path: string, page: Page, ...middlewares: Handler[]) => {
     const key = path;
     this.#routePage[key] = page;
     if (middlewares.length > 0) {
-      this.#pushPageMiddleware<T>(path, ...middlewares);
+      this.#pushPageMiddleware(path, ...middlewares);
     }
     return this;
   };
 
-  #pushPageMiddleware = <T>(
+  #pushPageMiddleware = (
     path: string,
     ...middlewares: Array<Handler>
   ) => {
@@ -151,7 +151,7 @@ export default class Server implements Fastro {
     }
   };
 
-  add = <T>(
+  add = (
     method: string,
     path: string,
     handler: Handler,
@@ -159,13 +159,11 @@ export default class Server implements Fastro {
   ) => {
     const key = method + "-" + path;
     this.#routeHandler[key] = handler;
-    if (middlewares.length > 0) {
-      this.#push<T>(method, path, ...middlewares);
-    }
+    if (middlewares.length > 0) this.#push(method, path, ...middlewares);
     return this;
   };
 
-  #push = <T = any>(
+  #push = (
     method: any,
     path: any,
     ...middlewares: Array<Handler>
