@@ -495,7 +495,7 @@ if (root) {
     const filePath = `${this.#staticFolder}/${input}`;
     const ct = contentType(extname(filePath)) || "application/octet-stream";
 
-    const binary = ["png", "jpeg", "jpg", "gif", "pdf", "aac"];
+    const binary = ["png", "jpeg", "jpg", "gif", "pdf", "aac", "ico"];
     const b = binary.filter((v) => ct.includes(v));
     if (b.length > 0) return this.#record[id] = null;
 
@@ -524,7 +524,8 @@ if (root) {
           "Cache-Control": `max-age=${this.#maxAge}`,
         },
       });
-    } catch {
+    } catch (error) {
+      console.log(error);
       return this.#record[id] = null;
     }
   };

@@ -1,7 +1,9 @@
 import Server from "../mod.ts";
 import hello from "./hello.page.tsx";
 import dear from "./dear.page.tsx";
+import indexApp from "./index.page.tsx";
 import { layout } from "./app.layout.tsx";
+import { index } from "./index.layout.tsx";
 import { tailwind } from "../middleware/tailwind/mod.ts";
 import markdown from "../middleware/markdown/mod.tsx";
 import blogLayout from "./blog.layout.tsx";
@@ -17,7 +19,21 @@ s.use((req, ctx) => {
 
 s.use(tailwind());
 
-s.get("/", (req) => {
+s.page("/", {
+  component: indexApp,
+  layout: index,
+  folder: "app",
+  handler: (req, ctx) => {
+    return ctx.render({
+      title: "Fullstack Webapp Framework | Fastro",
+      description:
+        "Fullstack web application framework for Deno, TypeScript, and Preact",
+      image: "profilemu.png",
+    });
+  },
+});
+
+s.get("/m", (req) => {
   console.log("req.no", req.no);
   console.log("req.ng", req.ng);
   return new Response("hello");
