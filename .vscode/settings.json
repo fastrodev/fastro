@@ -20,5 +20,10 @@
   "[markdown]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
-  "css.customData": [".vscode/tailwind.json"]
+  "css.customData": [
+    ".vscode/tailwind.json"
+  ],
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  }
 }

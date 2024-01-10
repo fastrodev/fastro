@@ -1,3 +1,25 @@
 @tailwind base;
+
+@layer base {
+    h1 {
+        @apply text-5xl font-extrabold;
+    }
+
+    h2 {
+        @apply text-xl;
+    }
+}
+
 @tailwind components;
 @tailwind utilities;
+
+.token.operator {
+    color: #fff;
+    background: transparent;
+}
+
+pre {
+    border-style: solid;
+    border-color: var(--bs-border-width);
+    border-width: 1px;
+}

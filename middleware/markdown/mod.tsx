@@ -83,6 +83,10 @@ const defaultLayout = (props: {
         <style>
           {props.CSS}
         </style>
+        <link
+          href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"
+          rel="stylesheet"
+        />
       </head>
       <body>
         <main
