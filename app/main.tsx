@@ -7,17 +7,27 @@ import { index } from "./index.layout.tsx";
 import { tailwind } from "../middleware/tailwind/mod.ts";
 import markdown from "../middleware/markdown/mod.tsx";
 import blogLayout from "./blog.layout.tsx";
+import docsLayout from "./docs.layout.tsx";
 
 const s = new Server();
 
+/** markdown with default folder and prefix */
 s.use(markdown(blogLayout));
+
+/** markdown with 'docs' folder and prefix */
+s.use(markdown(docsLayout, "docs", "docs"));
+
+/** setup tailwind */
+s.use(tailwind());
 
 s.use((req, ctx) => {
   req.oke = "oke";
   return ctx.next();
 });
 
-s.use(tailwind());
+s.get("/docs", (req, ctx) => {
+  return Response.redirect("http://localhost:8000/docs/start", 307);
+});
 
 s.page("/", {
   component: indexApp,
@@ -25,9 +35,9 @@ s.page("/", {
   folder: "app",
   handler: (req, ctx) => {
     return ctx.render({
-      title: "Fullstack Webapp Framework | Fastro",
+      title: "Full Stack Framework for BFF, SSR, Preact & Deno",
       description:
-        "Fullstack web application framework for Deno, TypeScript, and Preact",
+        "Speed without complexity. Handle thousands of RPS with a minimalistic API. Small-sized JavaScript bundle.",
       image: "profilemu.png",
     });
   },
