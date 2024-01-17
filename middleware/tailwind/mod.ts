@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import tailwindCss, { Config } from "tailwindcss";
+import tailwindCss, { Config } from "npm:tailwindcss@3.3.5";
 import postcss from "https://deno.land/x/postcss@8.4.16/mod.js";
 import cssnano from "npm:cssnano@6.0.1";
 import autoprefixer from "npm:autoprefixer@10.4.16";

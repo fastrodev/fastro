@@ -8,6 +8,29 @@ import { tailwind } from "../middleware/tailwind/mod.ts";
 import markdown from "../middleware/markdown/mod.tsx";
 import blogLayout from "./blog.layout.tsx";
 import docsLayout from "./docs.layout.tsx";
+import { HttpRequest } from "../src/server/types.ts";
+
+function denoRunCheck(req: HttpRequest) {
+  const regex = /^Deno\/(\d+\.\d+\.\d+)$/;
+  const string = req.headers.get("user-agent");
+  if (!string) return false;
+  const match = regex.exec(string);
+  if (!match) return false;
+  return true;
+}
+
+function init() {
+  const basePath = Deno.env.get("DENO_DEPLOYMENT_ID")
+    ? `https://raw.githubusercontent.com/fastrodev/fastro/preact/static`
+    : "http://localhost:8000/";
+  const code =
+    `import init from "${basePath}/init.ts"; const name = Deno.args[0] ?? 'my-project'; await init(name);`;
+  return new Response(code, {
+    headers: {
+      "content-type": "application/typescript; charset=utf-8",
+    },
+  });
+}
 
 const s = new Server();
 
@@ -34,6 +57,9 @@ s.page("/", {
   layout: index,
   folder: "app",
   handler: (req, ctx) => {
+    denoRunCheck(req);
+    const res = denoRunCheck(req);
+    if (res) return init();
     return ctx.render({
       title: "Full Stack Framework for BFF, SSR, Preact & Deno",
       description:

@@ -1,9 +1,8 @@
 {
   "lock": false,
   "tasks": {
-    "dev": "ENV=DEVELOPMENT deno run -A --unstable --watch app/main.tsx",
+    "start": "ENV=DEVELOPMENT deno run -A --unstable --watch app/main.tsx",
     "build": "deno run -A --unstable app/main.tsx --build ",
-    "start": "deno run -A --unstable --watch app/main.tsx",
     "test": "rm -rf .hydrate && rm -rf cov && deno test -A --coverage=cov && deno coverage cov",
     "coverage": "deno coverage cov --lcov > cov.lcov"
   },
@@ -20,7 +19,6 @@
     "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1",
     "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.3.1",
-    "tailwindcss": "npm:tailwindcss@3.3.5",
     "tailwindcss/": "npm:/tailwindcss@3.3.5/",
     "tailwindcss/plugin": "npm:/tailwindcss@3.3.5/plugin.js",
     "std/": "https://deno.land/std@0.210.0/"
