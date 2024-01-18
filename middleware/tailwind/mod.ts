@@ -65,18 +65,23 @@ async function createProcessor(
 }
 
 async function processCss(staticDir: string) {
-  const processor = await createProcessor({
-    staticDir,
-    dev: false,
-  }, {});
+  try {
+    const processor = await createProcessor({
+      staticDir,
+      dev: false,
+    }, {});
 
-  const path = Deno.cwd() + "/static/tailwind.css";
-  const content = await Deno.readTextFile(path);
-  const result = await processor.process(content, {
-    from: undefined,
-  });
+    const path = Deno.cwd() + "/static/tailwind.css";
+    const content = await Deno.readTextFile(path);
+    const result = await processor.process(content, {
+      from: undefined,
+    });
 
-  return result;
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 export function tailwind(pathname = "/styles.css", staticDir = "/") {
@@ -91,7 +96,7 @@ export function tailwind(pathname = "/styles.css", staticDir = "/") {
 
     processCss(staticDir).then((result) => {
       const outPath = Deno.cwd() + "/static/styles.css";
-      Deno.writeTextFile(outPath, result.content);
+      if (result) Deno.writeTextFile(outPath, result.content);
     });
     return () => {};
   }
@@ -108,8 +113,10 @@ export function tailwind(pathname = "/styles.css", staticDir = "/") {
 
     if (getDevelopment()) {
       const result = await processCss(staticDir);
-      cache.set(pathname, result.content);
-      return render(result.content);
+      if (result) {
+        cache.set(pathname, result.content);
+        return render(result.content);
+      }
     }
 
     try {
