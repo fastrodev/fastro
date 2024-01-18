@@ -41,6 +41,7 @@ export const BUILD_ID = Deno.env.get("DENO_DEPLOYMENT_ID") || encodeHex(
 );
 
 export const getDevelopment = () => {
+  console.log(`Deno.env.get("ENV")`, Deno.env.get("ENV"));
   return Deno.env.get("ENV") === "DEVELOPMENT";
 };
 
