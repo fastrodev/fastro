@@ -7,7 +7,7 @@ import {
   FunctionComponent,
   HttpRequest,
 } from "../../src/server/types.ts";
-import { renderToString } from "preact-render-to-string";
+import { renderToString } from "npm:preact-render-to-string@6.3.1";
 
 import "https://esm.sh/v135/prismjs@1.29.0/components/prism-jsx";
 import "https://esm.sh/v135/prismjs@1.29.0/components/prism-typescript";

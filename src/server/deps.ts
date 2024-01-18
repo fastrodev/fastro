@@ -1,5 +1,8 @@
-export { STATUS_CODE, STATUS_TEXT } from "std/http/status.ts";
-export { renderToString } from "preact-render-to-string";
-export * from "std/media_types/mod.ts";
-export * from "std/path/mod.ts";
-export { encodeHex } from "std/encoding/hex.ts";
+export {
+  STATUS_CODE,
+  STATUS_TEXT,
+} from "https://deno.land/std@0.210.0/http/status.ts";
+export { renderToString } from "npm:preact-render-to-string@6.3.1";
+export * from "https://deno.land/std@0.210.0/media_types/mod.ts";
+export * from "https://deno.land/std@0.210.0/path/mod.ts";
+export { encodeHex } from "https://deno.land/std@0.210.0/encoding/hex.ts";
