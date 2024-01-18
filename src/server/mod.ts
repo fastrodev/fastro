@@ -1,9 +1,9 @@
 // deno-lint-ignore-file no-explicit-any
-import { JSX } from "preact";
 import {
   contentType,
   encodeHex,
   extname,
+  JSX,
   STATUS_CODE,
   STATUS_TEXT,
 } from "./deps.ts";

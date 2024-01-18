@@ -1,5 +1,4 @@
-import { assertEquals } from "std/assert/assert_equals.ts";
-import { assertExists } from "std/assert/assert_exists.ts";
+import { assertEquals, assertExists } from "./deps.ts";
 import fastro from "../../mod.ts";
 import { Fastro } from "./types.ts";
 
