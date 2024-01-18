@@ -22,9 +22,9 @@ function denoRunCheck(req: HttpRequest) {
 function init() {
   const basePath = Deno.env.get("DENO_DEPLOYMENT_ID")
     ? `https://raw.githubusercontent.com/fastrodev/fastro/preact/static`
-    : "http://localhost:8000/";
+    : "http://localhost:8000";
   const code =
-    `import init from "${basePath}/init.ts"; const name = Deno.args[0] ?? 'my-project'; await init(name);`;
+    `import init from "${basePath}/init.ts"; const name = Deno.args[0] ?? 'project'; await init(name);`;
   return new Response(code, {
     headers: {
       "content-type": "application/typescript; charset=utf-8",
