@@ -46,7 +46,7 @@ async function getMarkdownBody(
   }
 
   const filePath = prefix ? file.replace(`/${prefix}/`, "") : file;
-  const pathname = prefix ? `/${prefix}/${filePath}` : `/${file}`;
+  const pathname = prefix ? `/${prefix}/${filePath}` : file;
 
   const pattern = new URLPattern({ pathname });
   const passed = pattern.test(req.url);
