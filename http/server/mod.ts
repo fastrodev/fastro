@@ -51,6 +51,20 @@ const parseBody = (req: HttpRequest) => {
   };
 };
 
+const createResponse = (res: any): Promise<Response> => {
+  if (typeof res === "string") return Promise.resolve(new Response(res));
+  if (
+    typeof res === "number" || typeof res === "bigint" ||
+    typeof res === "boolean" || typeof res === "undefined"
+  ) return Promise.resolve(new Response(JSON.stringify(res)));
+  if (res instanceof Response) return Promise.resolve(res);
+  try {
+    return Promise.resolve(Response.json(res));
+  } catch (error) {
+    throw error;
+  }
+};
+
 export default class Server implements Fastro {
   constructor() {
     this.#handler = this.#createHandler();
@@ -469,9 +483,8 @@ if (root) {
 
       const [handler, ctx, params] = this.#handleRequest(req, info);
       if (handler) {
-        return handler(this.#transformRequest(req, params), ctx) as Promise<
-          Response
-        >;
+        const res = handler(this.#transformRequest(req, params), ctx);
+        return createResponse(res);
       }
 
       const pm = await this.#handlePageMiddleware(req, info);

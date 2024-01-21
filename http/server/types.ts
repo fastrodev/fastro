@@ -15,6 +15,18 @@ export type Handler = (
   req: HttpRequest,
   ctx: Context,
 ) =>
+  | string
+  | Promise<string>
+  | object
+  | Promise<object>
+  | bigint
+  | Promise<bigint>
+  | number
+  | Promise<number>
+  | boolean
+  | Promise<boolean>
+  | undefined
+  | Promise<undefined>
   | Response
   | Promise<Response>
   | void
