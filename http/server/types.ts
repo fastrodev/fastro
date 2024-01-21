@@ -53,6 +53,7 @@ export type Context = {
   next: Next;
   server: Fastro;
   url: URL;
+  body: <T>() => Promise<T>;
 };
 
 export type Page<T = any> = {

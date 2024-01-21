@@ -8,7 +8,7 @@ import { tailwind } from "../middleware/tailwind/mod.ts";
 import markdown from "../middleware/markdown/mod.tsx";
 import blogLayout from "./blog.layout.tsx";
 import docsLayout from "./docs.layout.tsx";
-import { HttpRequest } from "../src/server/types.ts";
+import { HttpRequest } from "../http/server/types.ts";
 
 function denoRunCheck(req: HttpRequest) {
   const regex = /^Deno\/(\d+\.\d+\.\d+)$/;
@@ -132,6 +132,17 @@ s.page("/profile/:user", {
 }, (req, ctx) => {
   console.log("params", req.params?.user);
   return ctx.next();
+});
+
+type User = {
+  userName: string;
+  firstName: string;
+  email: string;
+};
+
+s.post("/post", async (req, ctx) => {
+  const b = await ctx.body<User>();
+  return ctx.send(b);
 });
 
 s.serve();

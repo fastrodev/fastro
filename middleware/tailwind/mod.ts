@@ -5,9 +5,9 @@ import cssnano from "npm:cssnano@6.0.1";
 import autoprefixer from "npm:autoprefixer@10.4.16";
 import * as path from "https://deno.land/std@0.207.0/path/mod.ts";
 import { TailwindPluginOptions } from "./types.ts";
-import { Context, HttpRequest } from "../../src/server/types.ts";
-import { getDevelopment } from "../../src/server/mod.ts";
-import { STATUS_CODE, STATUS_TEXT } from "../../src/server/deps.ts";
+import { Context, HttpRequest } from "../../http/server/types.ts";
+import { getDevelopment } from "../../http/server/mod.ts";
+import { STATUS_CODE, STATUS_TEXT } from "../../http/server/deps.ts";
 
 function render(content: string) {
   return new Response(content, {

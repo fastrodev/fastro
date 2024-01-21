@@ -44,6 +44,13 @@ export const getDevelopment = () => {
   return Deno.env.get("ENV") === "DEVELOPMENT";
 };
 
+const parseBody = (req: HttpRequest) => {
+  return async <T>() => {
+    const text = await req.text();
+    return JSON.parse(text) as T;
+  };
+};
+
 export default class Server implements Fastro {
   constructor() {
     this.#handler = this.#createHandler();
@@ -318,6 +325,7 @@ if (root) {
       send: <T>(data: T, status = 200) => {
         return this.#handleResponse(data, status);
       },
+      body: parseBody(req),
     };
     return [page, ctx, params];
   };
@@ -409,6 +417,7 @@ if (root) {
       },
       url: new URL(req.url),
       server: this,
+      body: parseBody(req),
     };
   };
 
@@ -432,7 +441,11 @@ if (root) {
 
   #handleRequest = (req: Request, info: Deno.ServeHandlerInfo) => {
     const id = req.method + req.url;
-    if (this.#record[id]) return this.#record[id];
+    if (this.#record[id]) {
+      const res = this.#record[id];
+      res[1].body = parseBody(req);
+      return res;
+    }
     const url = new URL(req.url);
     const key = req.method + "-" + url.pathname;
     let handler = this.#routeHandler[key];

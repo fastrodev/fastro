@@ -1,2 +1,2 @@
-import Server from "./src/server/mod.ts";
+import Server from "./http/server/mod.ts";
 export default Server;

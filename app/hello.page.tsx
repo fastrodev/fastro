@@ -1,4 +1,4 @@
-import { PageProps } from "../src/server/types.ts";
+import { PageProps } from "../http/server/types.ts";
 
 export default function Hello(
   { data }: PageProps<{ data: string; user: string; title: string }>,
