@@ -97,38 +97,31 @@ export interface Fastro {
   shutdown: () => void;
   get(
     path: string,
-    handler: Handler,
-    ...middleware: Array<Handler>
+    ...handler: Array<Handler>
   ): Fastro;
   post(
     path: string,
-    handler: Handler,
-    ...middleware: Array<Handler>
+    ...handler: Array<Handler>
   ): Fastro;
   put(
     path: string,
-    handler: Handler,
-    ...middleware: Array<Handler>
+    ...handler: Array<Handler>
   ): Fastro;
   patch(
     path: string,
-    handler: Handler,
-    ...middleware: Array<Handler>
+    ...handler: Array<Handler>
   ): Fastro;
   delete(
     path: string,
-    handler: Handler,
-    ...middleware: Array<Handler>
+    ...handler: Array<Handler>
   ): Fastro;
   options(
     path: string,
-    handler: Handler,
-    ...middleware: Array<Handler>
+    ...handler: Array<Handler>
   ): Fastro;
   head(
     path: string,
-    handler: Handler,
-    ...middleware: Array<Handler>
+    ...handler: Array<Handler>
   ): Fastro;
   page<T = any>(
     path: string,

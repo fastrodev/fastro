@@ -40,12 +40,14 @@ Deno.test(
       f.get("/num", (req, ctx) => {
         return ctx.send(1);
       });
+
       f.get("/m", (req, ctx) => {
+        req.hello = "hello";
+        console.log("HELLLLLLLLOOO");
+        return ctx.next();
+      }, (req, ctx) => {
         console.log("oke", req.oke);
         return ctx.send({ data: req.oke, message: req.hello });
-      }, (req, ctx) => {
-        req.hello = "hello";
-        return ctx.next();
       });
 
       f.get("/m2", (req, ctx) => {

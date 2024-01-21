@@ -71,45 +71,39 @@ export default class Server implements Fastro {
   }
   get(
     path: string,
-    handler: Handler,
-    ...middleware: Array<Handler>
+    ...handler: Array<Handler>
   ): Fastro {
-    return this.add("GET", path, handler, ...middleware);
+    return this.add("GET", path, ...handler);
   }
   post(
     path: string,
-    handler: Handler,
-    ...middleware: Array<Handler>
+    ...handler: Array<Handler>
   ): Fastro {
-    return this.add("POST", path, handler, ...middleware);
+    return this.add("POST", path, ...handler);
   }
   put(
     path: string,
-    handler: Handler,
-    ...middleware: Array<Handler>
+    ...handler: Array<Handler>
   ): Fastro {
-    return this.add("PUT", path, handler, ...middleware);
+    return this.add("PUT", path, ...handler);
   }
   patch(
     path: string,
-    handler: Handler,
-    ...middleware: Array<Handler>
+    ...handler: Array<Handler>
   ): Fastro {
-    return this.add("PATCH", path, handler, ...middleware);
+    return this.add("PATCH", path, ...handler);
   }
   delete(
     path: string,
-    handler: Handler,
-    ...middleware: Array<Handler>
+    ...handler: Array<Handler>
   ): Fastro {
-    return this.add("DELETE", path, handler, ...middleware);
+    return this.add("DELETE", path, ...handler);
   }
   options(
     path: string,
-    handler: Handler,
-    ...middleware: Array<Handler>
+    ...handler: Array<Handler>
   ): Fastro {
-    return this.add("OPTIONS", path, handler, ...middleware);
+    return this.add("OPTIONS", path, ...handler);
   }
   head(
     path: string,
@@ -175,28 +169,33 @@ export default class Server implements Fastro {
   add = (
     method: string,
     path: string,
-    handler: Handler,
-    ...middlewares: Handler[]
+    ...handler: Handler[]
   ) => {
     const key = method + "-" + path;
-    this.#routeHandler[key] = handler;
-    if (middlewares.length > 0) this.#push(method, path, ...middlewares);
+    if (handler.length === 1) {
+      this.#routeHandler[key] = handler[0];
+      return this;
+    }
+
+    this.#push(method, path, ...handler);
     return this;
   };
 
   #push = (
     method: any,
     path: any,
-    ...middlewares: Array<Handler>
+    ...handlers: Array<Handler>
   ) => {
-    for (let index = 0; index < middlewares.length; index++) {
-      const handler = middlewares[index];
+    for (let index = 0; index < handlers.length - 1; index++) {
+      const handler = handlers[index];
       this.#middleware.push({
         method,
         path,
         handler,
       });
     }
+    const key = method + "-" + path;
+    this.#routeHandler[key] = handlers[handlers.length - 1];
   };
 
   #build = async () => {
