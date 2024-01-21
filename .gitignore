@@ -6,5 +6,5 @@ cov.lcov
 static/js
 *.hydrate.tsx
 import_map.json
-node_modules
+node_modules/
 styles.css
