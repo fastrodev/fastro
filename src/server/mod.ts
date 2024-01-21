@@ -318,10 +318,6 @@ if (root) {
       send: <T>(data: T, status = 200) => {
         return this.#handleResponse(data, status);
       },
-      body: async <T>() => {
-        const text = await req.text();
-        return JSON.parse(text) as T;
-      },
     };
     return [page, ctx, params];
   };
@@ -410,10 +406,6 @@ if (root) {
       next: () => {},
       send: <T>(data: T, status = 200) => {
         return this.#handleResponse(data, status);
-      },
-      body: async <T>() => {
-        const text = await req.text();
-        return JSON.parse(text) as T;
       },
       url: new URL(req.url),
       server: this,
