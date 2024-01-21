@@ -25,7 +25,7 @@ export interface Next {
   (): void;
 }
 
-export type Middleware<T = any> = {
+export type Middleware = {
   method?: string;
   path?: string;
   handler: Handler;
@@ -51,6 +51,7 @@ export type Context = {
   info: Deno.ServeHandlerInfo;
   send: <T>(data?: T, status?: number) => Response | Promise<Response>;
   next: Next;
+  body: <T>() => Promise<T>;
   server: Fastro;
   url: URL;
 };

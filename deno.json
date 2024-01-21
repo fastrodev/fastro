@@ -15,7 +15,8 @@
   },
   "imports": {
     "preact": "npm:preact@10.19.2",
-    "preact/": "npm:/preact@10.19.2/"
+    "preact/": "https://esm.sh/preact@10.19.2/",
+    "std/": "https://deno.land/std@0.212.0/"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
