@@ -44,11 +44,15 @@ export const getDevelopment = () => {
   return Deno.env.get("ENV") === "DEVELOPMENT";
 };
 
-const parseBody = (req: HttpRequest) => {
+const parseBody = (req: Request) => {
   return async <T>() => {
     const text = await req.text();
     return JSON.parse(text) as T;
   };
+};
+
+const searchParams = (req: Request) => {
+  return () => new URL(req.url).searchParams;
 };
 
 const createResponse = (res: any): Promise<Response> => {
@@ -338,7 +342,6 @@ if (root) {
       send: <T>(data: T, status = 200) => {
         return this.#handleResponse(data, status);
       },
-      body: parseBody(req),
     };
     return [page, ctx, params];
   };
@@ -411,6 +414,8 @@ if (root) {
   ) => {
     const r = req as HttpRequest;
     r.params = params;
+    r.parseBody = parseBody(req);
+    r.searchParams = searchParams(req);
     return r;
   };
 
@@ -430,7 +435,6 @@ if (root) {
       },
       url: new URL(req.url),
       server: this,
-      body: parseBody(req),
     };
   };
 
@@ -454,11 +458,7 @@ if (root) {
 
   #handleRequest = (req: Request, info: Deno.ServeHandlerInfo) => {
     const id = req.method + req.url;
-    if (this.#record[id]) {
-      const res = this.#record[id];
-      res[1].body = parseBody(req);
-      return res;
-    }
+    if (this.#record[id]) return this.#record[id];
     const url = new URL(req.url);
     const key = req.method + "-" + url.pathname;
     let handler = this.#routeHandler[key];
@@ -482,7 +482,7 @@ if (root) {
 
       const [handler, ctx, params] = this.#handleRequest(req, info);
       if (handler) {
-        const res = handler(this.#transformRequest(req, params), ctx);
+        const res = await handler(this.#transformRequest(req, params), ctx);
         return createResponse(res);
       }
 

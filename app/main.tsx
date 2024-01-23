@@ -141,7 +141,7 @@ type User = {
 };
 
 s.post("/post", async (req, ctx) => {
-  const b = await ctx.body<User>();
+  const b = await req.parseBody<User>();
   return ctx.send(b);
 });
 

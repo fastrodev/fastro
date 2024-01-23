@@ -9,6 +9,9 @@ export type ListenHandler = (info: {
 export class HttpRequest extends Request {
   [key: string]: any;
   params?: Record<string, string | undefined>;
+  parseBody!: <T>() => Promise<T>;
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/URL/searchParams) */
+  searchParams!: () => URLSearchParams;
 }
 
 export type Handler = (
@@ -65,7 +68,6 @@ export type Context = {
   next: Next;
   server: Fastro;
   url: URL;
-  body: <T>() => Promise<T>;
 };
 
 export type Page<T = any> = {
