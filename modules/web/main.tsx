@@ -7,23 +7,6 @@ import { index } from "./index.layout.tsx";
 import { tailwind } from "../../middleware/tailwind/mod.ts";
 import { HttpRequest } from "../../http/server/types.ts";
 import { authModule } from "../auth/auth.mod.tsx";
-import {
-  contentType,
-  encodeHex,
-  extname,
-  JSX,
-  STATUS_CODE,
-  STATUS_TEXT,
-} from "../../http/server/deps.ts";
-
-function denoRunCheck(req: HttpRequest) {
-  const regex = /^Deno\/(\d+\.\d+\.\d+)$/;
-  const string = req.headers.get("user-agent");
-  if (!string) return false;
-  const match = regex.exec(string);
-  if (!match) return false;
-  return true;
-}
 
 const s = new Server();
 
@@ -37,8 +20,11 @@ s.use(markdown(docsLayout, "docs", "docs"));
 s.use(tailwind());
 
 /** setup docs endpoint */
-s.get("/docs", (req, ctx) => {
-  return Response.redirect("http://localhost:8000/docs/start", 307);
+s.get("/docs", (_req, _ctx) => {
+  const start = Deno.env.get("ENV") === "DEVELOPMENT"
+    ? "http://localhost:8000/docs/start"
+    : "https://fastro.deno.dev/docs/start";
+  return Response.redirect(start, 307);
 });
 
 s.get("/:version/:file", async (req, _ctx) => {
@@ -81,6 +67,15 @@ s.page("/", {
 s.group(authModule);
 
 s.serve();
+
+function denoRunCheck(req: HttpRequest) {
+  const regex = /^Deno\/(\d+\.\d+\.\d+)$/;
+  const string = req.headers.get("user-agent");
+  if (!string) return false;
+  const match = regex.exec(string);
+  if (!match) return false;
+  return true;
+}
 
 function init() {
   const basePath = Deno.env.get("DENO_DEPLOYMENT_ID")

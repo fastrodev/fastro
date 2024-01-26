@@ -14,7 +14,7 @@ Deno.test(
       f.page("/", {
         component: hello,
         layout,
-        folder: "app",
+        folder: "modules/web",
         handler: (req, ctx) => {
           return ctx.render({ title: "halaman page", data: "okeee page" });
         },
@@ -86,7 +86,7 @@ Deno.test(
       f.page("/profile/:user", {
         component: dear,
         layout,
-        folder: "app",
+        folder: "modules/web",
         handler: (req, ctx) => {
           console.log(req.oke);
           return ctx.render({

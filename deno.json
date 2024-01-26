@@ -5,7 +5,26 @@
     "build": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee  deno run -A --unstable-kv  modules/web/main.tsx --build ",
     "prod": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee deno run --unstable-kv -A modules/web/main.tsx",
     "test": "rm -rf .hydrate && rm -rf cov && deno test -A --coverage=cov && deno coverage cov",
-    "coverage": "deno coverage cov --lcov > cov.lcov"
+    "coverage": "deno coverage cov --lcov > cov.lcov",
+    "bench": "deno run -A bench/run.ts",
+    "oauth": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee deno run -A --unstable-kv examples/oauth.ts",
+    "deno": "deno run -A examples/deno.ts",
+    "hook": "deno run -A examples/hook.ts",
+    "raw_json": "deno run -A examples/raw_json.ts",
+    "raw_jsx": "deno run -A examples/raw_jsx.tsx",
+    "raw_string": "deno run -A examples/raw_string.ts",
+    "ctx_json": "deno run -A examples/ctx_json.ts",
+    "ctx_jsx": "deno run -A examples/ctx_jsx.tsx",
+    "ctx_string": "deno run -A examples/ctx_string.ts",
+    "string_response": "deno run -A examples/string_response.ts",
+    "deno_kv": "deno run -A --unstable-kv examples/deno_kv.ts",
+    "params_query": "deno run -A examples/params_query.ts",
+    "static_file_string": "deno run -A examples/static_file_string.ts",
+    "static_file_image": "deno run -A examples/static_file_image.ts",
+    "markdown_middleware": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee deno run -A --unstable-kv examples/markdown_middleware.ts",
+    "group": "deno run -A examples/group.ts",
+    "app_middleware": "deno run -A examples/app_middleware.ts",
+    "route_middleware": "deno run -A examples/route_middleware.ts"
   },
   "lint": {
     "rules": {
