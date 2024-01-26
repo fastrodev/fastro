@@ -42,7 +42,7 @@ jobs:
           branch: main
       
       - name: Run hydrate
-        run: deno task hydrate
+        run: deno task build
           
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
