@@ -37,6 +37,16 @@ s.get("/:version/:file", async (req, _ctx) => {
   return new Response(content);
 });
 
+s.get("/:file", async (req, _ctx) => {
+  const version = req.params?.version;
+  const file = req.params?.file;
+  const res = await fetch(
+    `https://raw.githubusercontent.com/fastrodev/fastro/main/${file}`,
+  );
+  const content = await res.text();
+  return new Response(content);
+});
+
 /** setup SSR */
 s.page("/", {
   component: indexApp,
