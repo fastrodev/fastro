@@ -1,10 +1,10 @@
-import fastro, { Context, HttpRequest, Next } from "$fastro/mod.ts";
+import fastro, { Context, HttpRequest } from "$fastro/mod.ts";
 
 const f = new fastro();
 
-const m = (req: HttpRequest, _ctx: Context, next: Next) => {
+const m = (req: HttpRequest, ctx: Context) => {
   req.ok = true;
-  return next();
+  return ctx.next();
 };
 
 f.use(m);

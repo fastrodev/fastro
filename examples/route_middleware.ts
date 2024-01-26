@@ -1,26 +1,26 @@
-import fastro, { Context, HttpRequest, Next } from "$fastro/mod.ts";
+import fastro, { Context, HttpRequest } from "$fastro/mod.ts";
 
 const f = new fastro();
 
-const m1 = (req: HttpRequest, _ctx: Context, next: Next) => {
+const m1 = (req: HttpRequest, ctx: Context) => {
   console.log("middleware 1");
   req.m1 = "middleware1";
-  return next();
+  return ctx.next();
 };
 
-const m2 = (_req: HttpRequest, _ctx: Context, next: Next) => {
+const m2 = (_req: HttpRequest, ctx: Context) => {
   console.log("middleware 2");
-  return next();
+  return ctx.next();
 };
 
-const m3 = (_req: HttpRequest, _ctx: Context, next: Next) => {
+const m3 = (_req: HttpRequest, ctx: Context) => {
   console.log("middleware 3");
-  return next();
+  return ctx.next();
 };
 
-const m4 = (_req: HttpRequest, _ctx: Context, next: Next) => {
+const m4 = (_req: HttpRequest, ctx: Context) => {
   console.log("middleware 4");
-  return next();
+  return ctx.next();
 };
 
 const handler = (req: HttpRequest) => {

@@ -1,9 +1,10 @@
-import markdown from "$fastro/middlewares/markdown.tsx";
+import markdown from "$fastro/middleware/markdown/mod.tsx";
 import fastro from "$fastro/mod.ts";
 
 const f = new fastro();
-f.static("/static", { folder: "static", maxAge: 90 });
-const m = new markdown({ folder: "static" });
-f.use(m.middleware);
+
+// default page:
+// http://localhost:8000/blog/hello
+f.use(markdown());
 
 await f.serve();

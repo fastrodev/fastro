@@ -2,7 +2,9 @@ cov/
 cov.lcov
 .hydrate
 .DS_Store
-.fstr
+.fastro
 static/js
 *.hydrate.tsx
 import_map.json
+node_modules/
+styles.css

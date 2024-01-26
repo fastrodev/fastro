@@ -1,4 +1,4 @@
-import { delay } from "https://deno.land/std@0.201.0/async/mod.ts";
+import { delay } from "https://deno.land/std@0.210.0/async/mod.ts";
 import { markdownTable } from "https://esm.sh/markdown-table@3.0.2";
 
 async function oha(url?: string) {
@@ -7,7 +7,7 @@ async function oha(url?: string) {
     "-j",
     "--no-tui",
     "-z",
-    "5s",
+    "10s",
     u,
   ];
   const oh = `oha ${args.join().replaceAll(",", " ")}`;
@@ -54,7 +54,7 @@ async function killServer() {
 }
 
 async function bench(server: string, ext: string) {
-  await delay(500);
+  await delay(100);
 
   const d = new Deno.Command("deno", {
     args: [
@@ -76,10 +76,10 @@ async function bench(server: string, ext: string) {
     const url = "http://localhost:8000/user\?name\=john";
     res = await oha(url);
   } else if (server === "static_file_string") {
-    const url = "http://localhost:8000/static/post.css";
+    const url = "http://localhost:8000/static/tailwind.css";
     res = await oha(url);
   } else if (server === "static_file_image") {
-    const url = "http://localhost:8000/static/image.png";
+    const url = "http://localhost:8000/static/favicon.ico";
     res = await oha(url);
   } else if (server === "params_query") {
     const url = "http://localhost:8000/agus\?title\=lead";
@@ -132,7 +132,7 @@ description: This is the final output of an internal benchmark run in github act
 image: https://fastro.dev/static/image.png
 ---
 
-This is the final output of an internal benchmark run in [github action](https://github.com/fastrodev/fastro/actions) on \`${
+This is the final output of an internal benchmark run on [github action](https://github.com/fastrodev/fastro/actions) on \`${
   new Date().toLocaleString()
 }\`. It consists of several simple applications for [specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json). Each is then accessed by the [OHA](https://github.com/hatoo/oha) within 5 seconds. The results are then sorted by the fastest.
 

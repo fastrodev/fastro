@@ -30,10 +30,7 @@ jobs:
         uses: baptiste0928/cargo-install@v1
         with:
           crate: oha
-          version: 0.6.0
-
-      - name: Init import_map
-        run: cp import_map.json.prod import_map.json
+          version: 1.1.0
       
       - name: Generate internal benchmarks
         run: deno task bench
@@ -45,10 +42,10 @@ jobs:
           branch: main
       
       - name: Run hydrate
-        run: deno task hydrate
+        run: deno task build
           
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: fastro
-          entrypoint: app/main.ts
+          entrypoint: modules/web/main.tsx

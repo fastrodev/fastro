@@ -1,3 +1,3 @@
-import fastro from "./http/server.ts";
-export * from "./http/server.ts";
-export default fastro;
+export * from "./http/server/types.ts";
+import Server from "./http/server/mod.ts";
+export default Server;

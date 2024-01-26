@@ -1,8 +1,10 @@
 {
   "deno.enable": true,
   "deno.lint": true,
-  "deno.codeLens.test": false,
+  "deno.codeLens.test": true,
+  "deno.documentPreloadLimit": 2000,
   "editor.formatOnSave": true,
+  "editor.defaultFormatter": "denoland.vscode-deno",
   "[typescriptreact]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
@@ -15,6 +17,12 @@
   "[javascript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
+  "[markdown]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "css.customData": [
+    ".vscode/tailwind.json"
+  ],
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features"
   }

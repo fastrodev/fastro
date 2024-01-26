@@ -1,0 +1,33 @@
+ul,
+ol {
+    margin: 1em 0;
+    padding: 0;
+}
+
+ul {
+    list-style: disc outside none;
+}
+
+ol {
+    list-style: decimal outside none;
+}
+
+li {
+    display: list-item;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+a:active {
+    color: #004085;
+}
