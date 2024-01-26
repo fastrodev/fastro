@@ -51,10 +51,6 @@ const parseBody = (req: Request) => {
   };
 };
 
-const searchParams = (req: Request) => {
-  return () => new URL(req.url).searchParams;
-};
-
 const createResponse = (res: any): Promise<Response> => {
   if (typeof res === "string") return Promise.resolve(new Response(res));
   if (
@@ -408,6 +404,14 @@ if (root) {
     return result;
   };
 
+  #iterableToRecord(
+    params: URLSearchParams,
+  ) {
+    const record: Record<string, string> = {};
+    params.forEach((v, k) => (record[k] = v));
+    return record;
+  }
+
   #transformRequest = (
     req: Request,
     params?: Record<string, string | undefined>,
@@ -415,7 +419,7 @@ if (root) {
     const r = req as HttpRequest;
     r.params = params;
     r.parseBody = parseBody(req);
-    r.searchParams = searchParams(req);
+    r.query = this.#iterableToRecord(new URL(req.url).searchParams);
     return r;
   };
 
@@ -540,8 +544,9 @@ if (root) {
       const match = new URLPattern({ pathname }).exec(reqUrl);
       const filePath = `${this.#staticFolder}/${match?.pathname.groups["0"]}`;
       const ct = contentType(extname(filePath)) || "application/octet-stream";
-
-      if (filePath === "/") return this.#record[id] = null;
+      if (filePath.endsWith("/")) {
+        return this.#record[id] = null;
+      }
       const file = await Deno.open(`./${filePath}`, { read: true });
       return new Response(file.readable, {
         headers: {

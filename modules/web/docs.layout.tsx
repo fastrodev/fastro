@@ -1,34 +1,4 @@
-function convert(dateString: string) {
-  const date = new Date(dateString);
-
-  const monthName = date.toLocaleString("en-US", { month: "long" });
-  const dateNumber = date.getDate();
-  const year = date.getFullYear();
-
-  const formattedString = `${monthName} ${dateNumber}, ${year}`;
-  return formattedString;
-}
-
-function generateTags(tags: string[]) {
-  if (!tags) {
-    return <></>;
-  }
-
-  return (
-    <div class={"flex space-x-1 mb-5"}>
-      {tags &&
-        tags.map((tag) => (
-          <a href={`tag/${tag}`}>
-            <span
-              class={"rounded border dark:bg-gray-800 border-slate-700 px-2 py-1 font-light"}
-            >
-              {tag}
-            </span>
-          </a>
-        ))}
-    </div>
-  );
-}
+import { InlineNav } from "../../components/inline-nav.tsx";
 
 export default function (
   props: {
@@ -40,11 +10,6 @@ export default function (
   const title = props.attrs.title as string;
   const description = props.attrs.description as string;
   const image = props.attrs.image as string;
-  const author = props.attrs.author as string;
-  const date = convert(props.attrs.date as string);
-  const avatar = (props.attrs.avatar as string) ??
-    "https://avatars.githubusercontent.com/u/10122431?v=4";
-  const tags = props.attrs.tags as string[];
 
   return (
     <html lang="en">
@@ -54,7 +19,6 @@ export default function (
         <meta name="description" content={description} />
         <meta property="og:image" content={image} />
         <title>{`${title} | Fastro`}</title>
-
         <link
           href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"
           rel="stylesheet"
@@ -63,20 +27,13 @@ export default function (
           {props.CSS}
         </style>
         <link href="/styles.css" rel="stylesheet" />
+        <link href="/markdown.css" rel="stylesheet" />
       </head>
       <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
         <main class={"container max-w-4xl px-6 py-10 mx-auto"}>
           <div>
+            <InlineNav title="Fastro" />
             <h1 class="mb-3">{title}</h1>
-            <p class={"mb-3 font-light"}>{date}</p>
-            <p class={"inline-flex items-baseline space-x-1 mb-4"}>
-              <img
-                src={avatar}
-                class="self-center w-5 h-5 rounded-full"
-              />
-              <span class={"font-light"}>{author}</span>
-            </p>
-            {generateTags(tags)}
           </div>
           <hr class="h-px mb-4 bg-gray-200 border-0 dark:bg-gray-800" />
           <div

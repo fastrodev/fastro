@@ -9,9 +9,8 @@ export type ListenHandler = (info: {
 export class HttpRequest extends Request {
   [key: string]: any;
   params?: Record<string, string | undefined>;
+  query?: Record<string, string>;
   parseBody!: <T>() => Promise<T>;
-  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/URL/searchParams) */
-  searchParams!: () => URLSearchParams;
 }
 
 export type Handler = (

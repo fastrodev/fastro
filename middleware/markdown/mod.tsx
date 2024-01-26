@@ -2,13 +2,10 @@ import { CSS, render } from "https://deno.land/x/gfm@0.3.0/mod.ts";
 import { extract } from "https://deno.land/std@0.208.0/front_matter/any.ts";
 import remarkToc from "https://esm.sh/v135/remark-toc@8.0.1";
 import { remark } from "https://esm.sh/v135/remark@14.0.3";
-import {
-  Context,
-  FunctionComponent,
-  HttpRequest,
-} from "../../http/server/types.ts";
+import { Context, FunctionComponent, HttpRequest } from "../../mod.ts";
 import { renderToString } from "npm:preact-render-to-string@6.3.1";
 
+import "https://esm.sh/v135/prismjs@1.29.0/components/prism-css";
 import "https://esm.sh/v135/prismjs@1.29.0/components/prism-jsx";
 import "https://esm.sh/v135/prismjs@1.29.0/components/prism-typescript";
 import "https://esm.sh/v135/prismjs@1.29.0/components/prism-tsx";
