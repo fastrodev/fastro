@@ -199,7 +199,8 @@ export default class Server implements Fastro {
   };
 
   #build = async () => {
-    if (Deno.env.get("ENV") === "") return [];
+    // deno-lint-ignore no-deprecated-deno-api
+    if (Deno.run === undefined) return [];
     for (const [_key, page] of Object.entries(this.#routePage)) {
       await this.#createHydrate(page);
       await this.#buildPageComponent(page);
