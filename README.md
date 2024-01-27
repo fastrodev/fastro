@@ -16,9 +16,8 @@ With [deno near native performance](https://fastro.dev/docs/benchmarks), you can
   [Request](https://deno.land/api?s=Request),
   [Headers](https://deno.land/api?s=Headers),
   [URLPattern](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API)
-- Access the request, the context, and the next callback before execute the
-  route handler with
-  [app middleware](https://github.com/fastrodev/fastro/blob/main/examples/app_middleware.ts).
+- Access the request, the context, and the next callback before execute the handler with
+  [app middleware](https://github.com/fastrodev/fastro/blob/main/examples/app_middleware.ts) and [route middleware](https://github.com/fastrodev/fastro/blob/main/examples/route_middleware.ts).
 - You can add multiple middleware at once in one route.
 - Get url param with URLPattern
 - Set the preact component props from the server side
