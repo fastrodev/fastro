@@ -70,7 +70,7 @@ async function bench(server: string, ext: string) {
     const url = "http://localhost:8000/hello";
     res = await oha(url);
   } else if (server === "markdown_middleware") {
-    const url = "http://localhost:8000/hello";
+    const url = "http://localhost:8000/blog/hello";
     res = await oha(url);
   } else if (server === "deno_kv") {
     const url = "http://localhost:8000/user\?name\=john";
