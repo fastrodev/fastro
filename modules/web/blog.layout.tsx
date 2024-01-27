@@ -70,7 +70,7 @@ export default function (
       <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
         <main class={"container max-w-4xl px-6 py-10 mx-auto"}>
           <div>
-            <InlineNav title="Fastro" />
+            <InlineNav title="Fastro" description="Blog" />
             <h1 class="mb-3">{title}</h1>
             <p class={"mb-3 font-light"}>{date}</p>
             <p class={"inline-flex items-baseline space-x-1 mb-4"}>
