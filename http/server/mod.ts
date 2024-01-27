@@ -199,8 +199,7 @@ export default class Server implements Fastro {
   };
 
   #build = async () => {
-    // deno-lint-ignore no-deprecated-deno-api
-    if (Deno.run === undefined) return [];
+    if (Deno.env.get("ENV") !== "DEVELOPMENT") return [];
     for (const [_key, page] of Object.entries(this.#routePage)) {
       await this.#createHydrate(page);
       await this.#buildPageComponent(page);
@@ -314,7 +313,7 @@ if (root) {
   #handlePage = (
     req: Request,
     info: Deno.ServeHandlerInfo,
-  ): [Page, Context, Record<string, string | undefined> | undefined] => {
+  ): [Page, Context, Record<string, string | undefined> | undefined, URL] => {
     const url = new URL(req.url);
     const key = url.pathname;
     let page = this.#routePage[key];
@@ -339,7 +338,7 @@ if (root) {
         return this.#handleResponse(data, status);
       },
     };
-    return [page, ctx, params];
+    return [page, ctx, params, url];
   };
 
   #findMatch(
@@ -381,7 +380,7 @@ if (root) {
     const mid = !page ? this.#middleware : this.#pageMiddleware;
     if (mid.length === 0) return undefined;
     const method: string = req.method, url: string = req.url;
-    let result;
+    const u = new URL(url);
     for (let index = 0; index < mid.length; index++) {
       const m = mid[index];
       const id = method + m.method + m.path + url;
@@ -391,17 +390,14 @@ if (root) {
 
       if (!match) continue;
       const x = await m.handler(
-        this.#transformRequest(req, match?.pathname.groups),
-        this.#transformCtx(req, info),
+        this.#transformRequest(req, match?.pathname.groups, u),
+        this.#transformCtx(info, u),
       ) as any;
 
       if (x instanceof Response) {
-        result = x;
-        break;
+        return x;
       }
     }
-
-    return result;
   };
 
   #iterableToRecord(
@@ -415,17 +411,19 @@ if (root) {
   #transformRequest = (
     req: Request,
     params?: Record<string, string | undefined>,
+    url?: URL,
   ) => {
+    const u = url ?? new URL(req.url);
     const r = req as HttpRequest;
     r.params = params;
     r.parseBody = parseBody(req);
-    r.query = this.#iterableToRecord(new URL(req.url).searchParams);
+    r.query = this.#iterableToRecord(u.searchParams);
     return r;
   };
 
   #transformCtx = (
-    req: Request,
     info: Deno.ServeHandlerInfo,
+    url: URL,
   ) => {
     const r = new Render(this);
     return {
@@ -437,7 +435,7 @@ if (root) {
       send: <T>(data: T, status = 200) => {
         return this.#handleResponse(data, status);
       },
-      url: new URL(req.url),
+      url,
       server: this,
     };
   };
@@ -476,7 +474,12 @@ if (root) {
       }
     }
 
-    return this.#record[id] = [handler, this.#transformCtx(req, info), params];
+    return this.#record[id] = [
+      handler,
+      this.#transformCtx(info, url),
+      params,
+      url,
+    ];
   };
 
   #createHandler = () => {
@@ -484,19 +487,22 @@ if (root) {
       const m = await this.#handleMiddleware(req, info);
       if (m) return m;
 
-      const [handler, ctx, params] = this.#handleRequest(req, info);
+      const [handler, ctx, params, url] = this.#handleRequest(req, info);
       if (handler) {
-        const res = await handler(this.#transformRequest(req, params), ctx);
+        const res = await handler(
+          this.#transformRequest(req, params, url),
+          ctx,
+        );
         return createResponse(res);
       }
 
       const pm = await this.#handlePageMiddleware(req, info);
       if (pm) return pm;
 
-      const [page, pageCtx, pageParams] = this.#handlePage(req, info);
+      const [page, pageCtx, pageParams, pageUrl] = this.#handlePage(req, info);
       if (page) {
         return page.handler(
-          this.#transformRequest(req, pageParams),
+          this.#transformRequest(req, pageParams, pageUrl),
           pageCtx,
         ) as Promise<Response>;
       }
