@@ -1,4 +1,4 @@
-import { InlineNav } from "../../components/inline-nav.tsx";
+import { InlineNav } from "$fastro/components/inline-nav.tsx";
 
 function convert(dateString: string) {
   const date = new Date(dateString);
