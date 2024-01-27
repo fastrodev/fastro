@@ -94,7 +94,10 @@ export type FunctionComponent = (props: any) => JSX.Element;
 export type ModuleFunction = (f: Fastro) => Fastro | Promise<Fastro>;
 
 export interface Fastro {
-  serve: (port: number, onListen: ListenHandler) => Promise<void>;
+  serve: (options?: {
+    port?: number;
+    onListen?: ListenHandler;
+  }) => Promise<void>;
   shutdown: () => void;
   get(
     path: string,
