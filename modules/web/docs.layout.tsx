@@ -33,7 +33,9 @@ export default function (
         <main class={"container max-w-4xl px-6 py-10 mx-auto"}>
           <div>
             <InlineNav title="Fastro" description="Docs" />
-            <h1 class="mb-3">{title}</h1>
+            <h1 class="mb-3 mx-auto text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+              {title}
+            </h1>
           </div>
           <hr class="h-px mb-4 bg-gray-200 border-0 dark:bg-gray-800" />
           <div
