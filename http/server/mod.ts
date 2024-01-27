@@ -563,14 +563,14 @@ if (root) {
     return Promise.resolve(mf(this));
   };
 
-  serve = async (port?: number, onListen?: ListenHandler) => {
+  serve = async (options?: { port?: number; onListen?: ListenHandler }) => {
     const [s] = await this.#build();
     if (s) return;
     this.#server = Deno.serve({
-      port,
+      port: options && options.port ? options.port : 8000,
       handler: this.#handler,
       signal: this.#ac.signal,
-      onListen,
+      onListen: options && options.onListen ? options.onListen : undefined,
     });
   };
 
