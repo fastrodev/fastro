@@ -27,24 +27,18 @@ s.get("/docs", (_req, _ctx) => {
   return Response.redirect(start, 307);
 });
 
-s.get("/:version/:file", async (req, _ctx) => {
-  const version = req.params?.version;
-  const file = req.params?.file;
-  const res = await fetch(
-    `https://raw.githubusercontent.com/fastrodev/fastro/${version}/${file}`,
-  );
-  const content = await res.text();
-  return new Response(content);
-});
-
-s.get("/:file", async (req, _ctx) => {
-  const version = req.params?.version;
-  const file = req.params?.file;
-  const res = await fetch(
-    `https://raw.githubusercontent.com/fastrodev/fastro/main/${file}`,
-  );
-  const content = await res.text();
-  return new Response(content);
+s.use(async (_req, ctx) => {
+  if (
+    ctx.url.pathname.endsWith(".ts") || ctx.url.pathname.endsWith(".tsx")
+  ) {
+    const version = ctx.url.pathname.startsWith("/v") ? "" : "/main";
+    const path =
+      `https://raw.githubusercontent.com/fastrodev/fastro${version}${ctx.url.pathname}`;
+    const res = await fetch(path);
+    const content = await res.text();
+    return new Response(content);
+  }
+  return ctx.next();
 });
 
 /** setup SSR */

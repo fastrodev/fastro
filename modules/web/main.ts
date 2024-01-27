@@ -1,4 +1,4 @@
-import Server from "../../http/server/mod.ts";
+import Server from "http://localhost:8000/mod.ts";
 
 const s = new Server();
 
