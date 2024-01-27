@@ -7,7 +7,7 @@ async function oha(url?: string) {
     "-j",
     "--no-tui",
     "-z",
-    "10s",
+    "60s",
     u,
   ];
   const oh = `oha ${args.join().replaceAll(",", " ")}`;
@@ -46,7 +46,7 @@ async function killServer() {
       });
 
       await c.output();
-      await delay(2000);
+      await delay(50);
     }
   } catch (error) {
     console.log(error);
@@ -54,7 +54,7 @@ async function killServer() {
 }
 
 async function bench(server: string, ext: string) {
-  await delay(100);
+  await delay(50);
 
   const d = new Deno.Command("deno", {
     args: [
@@ -132,9 +132,9 @@ description: This is the final output of an internal benchmark run in github act
 image: https://fastro.dev/static/image.png
 ---
 
-This is the final output of an internal benchmark run on [github action](https://github.com/fastrodev/fastro/actions) on \`${
+This is the final output of an internal benchmark run in [github action](https://github.com/fastrodev/fastro/actions) on \`${
   new Date().toLocaleString()
-}\`. It consists of several simple applications for [specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json). Each is then accessed by the [OHA](https://github.com/hatoo/oha) within 5 seconds. The results are then sorted by the fastest.
+}\`. It consists of several simple applications for [specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json). Each is then accessed by the [OHA](https://github.com/hatoo/oha) within 30 seconds. The results are then sorted by the fastest.
 
 You can find the benchmark script in this code: [run.ts](https://github.com/fastrodev/fastro/blob/main/bench/run.ts)
 
