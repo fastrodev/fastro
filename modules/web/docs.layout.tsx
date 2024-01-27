@@ -32,7 +32,7 @@ export default function (
       <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
         <main class={"container max-w-4xl px-6 py-10 mx-auto"}>
           <div>
-            <InlineNav title="Fastro" description="docs" />
+            <InlineNav title="Fastro" description="Docs" />
             <h1 class="mb-3">{title}</h1>
           </div>
           <hr class="h-px mb-4 bg-gray-200 border-0 dark:bg-gray-800" />
