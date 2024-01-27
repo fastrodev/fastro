@@ -1,9 +1,7 @@
 import fastro, { Context, HttpRequest } from "$fastro/mod.ts";
-import { denoKv } from "../middleware/kv/mod.ts";
-const f = new fastro();
-
-// Attach denoKv middleware
-f.use(denoKv);
+const f = new fastro(
+  { "kv": await Deno.openKv() },
+);
 
 async function createUser(kv: Deno.Kv) {
   const uuid = crypto.randomUUID();

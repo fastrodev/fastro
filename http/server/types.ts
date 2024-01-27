@@ -50,7 +50,7 @@ export type Static = {
   contentType: string;
 };
 
-export type Context = {
+export interface Context {
   /**
    * Render a JSX Component or a Page with data
    * - If you call it from a standart handler (GET, POST, PUT, DELETE), it will render a JSX component.
@@ -68,8 +68,8 @@ export type Context = {
   server: Fastro;
   url: URL;
   kv: Deno.Kv;
-  [key: string]: any;
-};
+  options: Record<string, any>;
+}
 
 export type Page<T = any> = {
   component: FunctionComponent | JSX.Element;
@@ -137,5 +137,5 @@ export interface Fastro {
   add(method: string, path: string, handler: Handler): Fastro;
   use(...handler: Array<Handler>): Fastro;
   group(mf: ModuleFunction): Promise<Fastro>;
-  [key: string]: any;
+  serverOptions: Record<string, any>;
 }

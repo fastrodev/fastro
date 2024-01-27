@@ -66,7 +66,8 @@ const createResponse = (res: any): Promise<Response> => {
 };
 
 export default class Server implements Fastro {
-  constructor() {
+  constructor(options?: Record<string, any>) {
+    this.serverOptions = options ?? {};
     this.#handler = this.#createHandler();
   }
   get(
@@ -338,7 +339,8 @@ if (root) {
       send: <T>(data: T, status = 200) => {
         return this.#handleResponse(data, status);
       },
-      kv: this.kv,
+      kv: this.serverOptions["kv"],
+      options: this.serverOptions,
     };
     return [page, ctx, params, url];
   };
@@ -439,7 +441,8 @@ if (root) {
       },
       url,
       server: this,
-      kv: this.kv,
+      kv: this.serverOptions["kv"],
+      options: this.serverOptions,
     };
   };
 
@@ -607,5 +610,5 @@ if (root) {
   #staticUrl = "/";
   #staticReferer = false;
   #maxAge = 0;
-  [x: string]: any;
+  serverOptions: Record<string, any> = {};
 }

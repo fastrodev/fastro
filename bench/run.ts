@@ -1,5 +1,6 @@
 import { delay } from "https://deno.land/std@0.210.0/async/mod.ts";
 import { markdownTable } from "https://esm.sh/markdown-table@3.0.2";
+const time = 10;
 
 async function oha(url?: string) {
   const u = url ?? "http://localhost:8000";
@@ -7,7 +8,7 @@ async function oha(url?: string) {
     "-j",
     "--no-tui",
     "-z",
-    "5s",
+    `${time}s`,
     u,
   ];
   const oh = `oha ${args.join().replaceAll(",", " ")}`;
@@ -134,7 +135,7 @@ image: https://fastro.dev/static/image.png
 
 This is the final output of an internal benchmark run in [github action](https://github.com/fastrodev/fastro/actions) on \`${
   new Date().toLocaleString()
-}\`. It consists of several simple applications for [specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json). Each is then accessed by the [OHA](https://github.com/hatoo/oha) within 60 seconds. The results are then sorted by the fastest.
+}\`. It consists of several simple applications for [specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json). Each is then accessed by the [OHA](https://github.com/hatoo/oha) within ${time}s. The results are then sorted by the fastest.
 
 You can find the benchmark script in this code: [run.ts](https://github.com/fastrodev/fastro/blob/main/bench/run.ts)
 
