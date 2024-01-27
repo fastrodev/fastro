@@ -11,5 +11,11 @@ export { assertEquals } from "https://deno.land/std@0.213.0/assert/assert_equals
 export { assertExists } from "https://deno.land/std@0.213.0/assert/assert_exists.ts";
 export { assert } from "https://deno.land/std@0.213.0/assert/assert.ts";
 
-export type { JSX } from "npm:preact@10.19.3";
+export { h } from "npm:preact@10.19.3";
+export type {
+  ComponentChild,
+  ComponentChildren,
+  JSX,
+  VNode,
+} from "npm:preact@10.19.3";
 export { renderToString } from "npm:preact-render-to-string@6.3.1";

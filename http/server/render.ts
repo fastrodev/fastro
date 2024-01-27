@@ -1,6 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { ComponentChild, h, JSX, VNode } from "preact";
-import { renderToString } from "./deps.ts";
+import { ComponentChild, h, JSX, renderToString, VNode } from "./deps.ts";
 import { Fastro, FunctionComponent, Page } from "./types.ts";
 import { BUILD_ID, checkReferer, getDevelopment } from "./mod.ts";
 
