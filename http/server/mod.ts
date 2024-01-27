@@ -199,7 +199,7 @@ export default class Server implements Fastro {
   };
 
   #build = async () => {
-    if (Deno.env.get("ENV") !== "DEVELOPMENT") return [];
+    if (Deno.env.get("ENV") === "") return [];
     for (const [_key, page] of Object.entries(this.#routePage)) {
       await this.#createHydrate(page);
       await this.#buildPageComponent(page);
