@@ -67,6 +67,8 @@ export type Context = {
   next: Next;
   server: Fastro;
   url: URL;
+  kv: Deno.Kv;
+  [key: string]: any;
 };
 
 export type Page<T = any> = {
@@ -135,4 +137,5 @@ export interface Fastro {
   add(method: string, path: string, handler: Handler): Fastro;
   use(...handler: Array<Handler>): Fastro;
   group(mf: ModuleFunction): Promise<Fastro>;
+  [key: string]: any;
 }

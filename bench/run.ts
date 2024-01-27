@@ -7,7 +7,7 @@ async function oha(url?: string) {
     "-j",
     "--no-tui",
     "-z",
-    "60s",
+    "5s",
     u,
   ];
   const oh = `oha ${args.join().replaceAll(",", " ")}`;
@@ -66,8 +66,8 @@ async function bench(server: string, ext: string) {
   d.spawn();
 
   let res;
-  if (server === "markdown_hook") {
-    const url = "http://localhost:8000/hello";
+  if (server === "group") {
+    const url = "http://localhost:8000/api/user";
     res = await oha(url);
   } else if (server === "markdown_middleware") {
     const url = "http://localhost:8000/blog/hello";

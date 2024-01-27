@@ -1,19 +1,23 @@
 import fastro, { Context, HttpRequest } from "$fastro/mod.ts";
-
-const uuid = crypto.randomUUID();
+import { denoKv } from "../middleware/kv/mod.ts";
 const f = new fastro();
 
-// run deno with --unstable
-const kv = await Deno.openKv();
-// add initial data to deno kv
-await kv.set(["users", "john"], { name: "john", id: uuid });
+// Attach denoKv middleware
+f.use(denoKv);
 
-// add parameterized endpoint with route level middleware
-// http://localhost:8000/user?name=john
-f.get("/user", async (req: HttpRequest, _ctx: Context) => {
-  // get the initialized kv data
+async function createUser(kv: Deno.Kv) {
+  const uuid = crypto.randomUUID();
+  await kv.set(["users", "john"], { name: "john", id: uuid });
+}
+
+// Get user
+f.get("/user", async (req: HttpRequest, ctx: Context) => {
+  const kv = ctx.kv;
   const key: string = req.query?.name ?? "";
   const u = await kv.get(["users", key]);
+  if (!u) {
+    await createUser(kv);
+  }
   return Response.json(u.value);
 });
 

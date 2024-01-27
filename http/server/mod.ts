@@ -338,6 +338,7 @@ if (root) {
       send: <T>(data: T, status = 200) => {
         return this.#handleResponse(data, status);
       },
+      kv: this.kv,
     };
     return [page, ctx, params, url];
   };
@@ -438,6 +439,7 @@ if (root) {
       },
       url,
       server: this,
+      kv: this.kv,
     };
   };
 
@@ -605,4 +607,5 @@ if (root) {
   #staticUrl = "/";
   #staticReferer = false;
   #maxAge = 0;
+  [x: string]: any;
 }

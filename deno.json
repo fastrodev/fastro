@@ -24,7 +24,8 @@
     "markdown_middleware": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee deno run -A --unstable-kv examples/markdown_middleware.ts",
     "group": "deno run -A examples/group.ts",
     "app_middleware": "deno run -A examples/app_middleware.ts",
-    "route_middleware": "deno run -A examples/route_middleware.ts"
+    "route_middleware": "deno run -A examples/route_middleware.ts",
+    "server_rendering": "deno run -A examples/server_rendering.tsx"
   },
   "lint": {
     "rules": {
