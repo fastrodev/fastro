@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { ComponentChildren, JSX } from "preact";
+import { ComponentChildren, JSX } from "npm:/preact@10.19.3/";
 
 export type ListenHandler = (info: {
   hostname: string;

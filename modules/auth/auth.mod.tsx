@@ -6,7 +6,7 @@ import {
   signOut,
 } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
 import { Context, Fastro, HttpRequest } from "../../http/server/types.ts";
-import { STATUS_CODE } from "std/http/status.ts";
+import { STATUS_CODE } from "../../http/server/deps.ts";
 
 const redirectUri = Deno.env.get("REDIRECT_URI") ??
   "http://localhost:8000/callback";

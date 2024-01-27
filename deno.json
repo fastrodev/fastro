@@ -35,9 +35,8 @@
   },
   "imports": {
     "$fastro/": "./",
-    "std/": "https://deno.land/std@0.213.0/",
-    "preact": "npm:preact@10.19.2",
-    "preact/": "npm:/preact@10.19.2/"
+    "preact": "npm:preact@10.19.3",
+    "preact/": "npm:/preact@10.19.3/"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
