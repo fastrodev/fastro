@@ -16,7 +16,7 @@ export function InlineNav(
       <span class="text-xs bg-primary-600 rounded-full text-white px-4 py-1.5 mr-3">
         {title}
       </span>{" "}
-      <span class="text-xs font-light">
+      <span class="text-xs font-light truncate ...">
         {desc}
       </span>
       <svg

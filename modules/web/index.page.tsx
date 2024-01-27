@@ -21,10 +21,10 @@ export default function Index({ data }: PageProps<
             destination={`${data.baseUrl}/blog/tailwind`}
           />
 
-          <h1 class="mb-4 mx-auto max-w-3xl text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+          <h1 class="mb-4 mx-auto max-w-3xl text-start text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-center lg:text-6xl dark:text-white">
             {data.title}
           </h1>
-          <p class="mb-8 mx-auto max-w-3xl text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+          <p class="mb-8 mx-auto max-w-3xl text-start text-lg  font-normal text-gray-500 lg:text-center lg:text-xl dark:text-gray-400">
             {data.description}
           </p>
           <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
