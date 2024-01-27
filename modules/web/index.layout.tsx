@@ -17,7 +17,10 @@ export function index(
         <meta property="og:image" content={data.image} />
         <link href="/styles.css" rel="stylesheet" />
       </head>
-      <body id="root">
+      <body
+        id="root"
+        class={`grow bg-white dark:bg-gray-900 text-slate-900 dark:text-white`}
+      >
         {children}
       </body>
     </html>
