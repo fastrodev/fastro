@@ -1,3 +1,4 @@
+import { Footer } from "$fastro/components/footer.tsx";
 import { InlineNav } from "../../components/inline-nav.tsx";
 
 export default function (
@@ -30,7 +31,7 @@ export default function (
         <link href="/markdown.css" rel="stylesheet" />
       </head>
       <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
-        <main class={"container max-w-4xl px-6 py-10 mx-auto"}>
+        <main class={"container grow max-w-4xl px-6 py-10 mx-auto"}>
           <div>
             <InlineNav
               title="Fastro"
@@ -51,6 +52,7 @@ export default function (
             {props.markdown}
           </div>
         </main>
+        <Footer />
         <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js" />
         <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js" />
       </body>

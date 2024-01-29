@@ -1,5 +1,6 @@
 import { PageProps } from "../../http/server/types.ts";
 import { InlineNav } from "../../components/inline-nav.tsx";
+import { Footer } from "$fastro/components/footer.tsx";
 
 export default function Index({ data }: PageProps<
   {
@@ -65,6 +66,7 @@ export default function Index({ data }: PageProps<
           </iframe>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }
