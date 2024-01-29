@@ -1,4 +1,5 @@
 import { InlineNav } from "$fastro/components/inline-nav.tsx";
+import { Footer } from "$fastro/components/footer.tsx";
 
 function convert(dateString: string) {
   const date = new Date(dateString);
@@ -68,7 +69,7 @@ export default function (
         <link href="/markdown.css" rel="stylesheet" />
       </head>
       <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
-        <main class={"container max-w-4xl px-6 py-10 mx-auto"}>
+        <main class={"container grow max-w-4xl px-6 py-10 mx-auto"}>
           <div>
             <InlineNav title="Fastro" description="Blog" destination="/blog" />
             <h1 class="mb-3 mx-auto text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
@@ -94,6 +95,7 @@ export default function (
             {props.markdown}
           </div>
         </main>
+        <Footer />
         <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js" />
         <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js" />
       </body>
