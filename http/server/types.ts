@@ -69,6 +69,7 @@ export interface Context {
   url: URL;
   kv: Deno.Kv;
   options: Record<string, any>;
+  [key: string]: any;
 }
 
 export type Page<T = any> = {

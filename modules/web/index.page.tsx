@@ -13,8 +13,8 @@ export default function Index({ data }: PageProps<
 >) {
   return (
     <main>
-      <section class="py-8 px-4 mx-auto max-w-8xl text-center lg:py-16 lg:px-12">
-        <div class={`mt-2`}>
+      <section class="container max-w-4xl px-6 py-10 mx-auto text-center lg:py-16 lg:px-12">
+        <div class={`text-start lg:text-center`}>
           <InlineNav
             title="New"
             description="Integrating Tailwind CSS into a Deno Project"

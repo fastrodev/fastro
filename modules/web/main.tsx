@@ -27,11 +27,17 @@ s.get("/docs", (_req, _ctx) => {
   return Response.redirect(start, 307);
 });
 
+/** proxy for github repo */
 s.use(async (_req, ctx) => {
   if (
     ctx.url.pathname.endsWith(".ts") || ctx.url.pathname.endsWith(".tsx")
   ) {
-    const version = ctx.url.pathname.startsWith("/v") ? "" : "/main";
+    const version = ctx.url.pathname.startsWith("/v")
+      ? ""
+      : ctx.url.pathname.startsWith("/canary")
+      ? "/canary"
+      : "/main";
+
     const path =
       `https://raw.githubusercontent.com/fastrodev/fastro${version}${ctx.url.pathname}`;
     const res = await fetch(path);
