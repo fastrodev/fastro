@@ -22,12 +22,3 @@ a {
     cursor: pointer;
     transition: color 0.2s ease-in-out;
 }
-
-a:hover {
-    color: #0056b3;
-    text-decoration: underline;
-}
-
-a:active {
-    color: #004085;
-}
