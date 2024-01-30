@@ -10,6 +10,11 @@ jobs:
     name: 'Hello, bench!'
     runs-on: ubuntu-latest
 
+    env:
+      DB_DATABASE: homestead
+      DB_USER: root
+      DB_PASSWORD: admin
+
     permissions:
       id-token: write
       contents: write
@@ -37,6 +42,11 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+      
+      - name: Start MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;" -u$DB_USER -p$DB_PASSWORD
 
       - uses: denoland/setup-deno@v1
         with:

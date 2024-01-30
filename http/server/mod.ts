@@ -53,11 +53,11 @@ const parseBody = (req: Request) => {
 
 const createResponse = (res: any): Response => {
   if (typeof res === "string") return new Response(res);
+  if (res instanceof Response) return res;
   if (
     typeof res === "number" || typeof res === "bigint" ||
     typeof res === "boolean" || typeof res === "undefined"
   ) return new Response(JSON.stringify(res));
-  if (res instanceof Response) return res;
   try {
     return Response.json(res);
   } catch (error) {
