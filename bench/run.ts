@@ -47,7 +47,7 @@ async function killServer() {
       });
 
       await c.output();
-      await delay(50);
+      await delay(1000);
     }
   } catch (error) {
     console.log(error);
@@ -55,7 +55,7 @@ async function killServer() {
 }
 
 async function bench(server: string, ext: string) {
-  await delay(50);
+  await delay(1000);
 
   const d = new Deno.Command("deno", {
     args: [

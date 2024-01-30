@@ -51,15 +51,15 @@ const parseBody = (req: Request) => {
   };
 };
 
-const createResponse = (res: any): Promise<Response> => {
-  if (typeof res === "string") return Promise.resolve(new Response(res));
+const createResponse = (res: any): Response => {
+  if (typeof res === "string") return new Response(res);
   if (
     typeof res === "number" || typeof res === "bigint" ||
     typeof res === "boolean" || typeof res === "undefined"
-  ) return Promise.resolve(new Response(JSON.stringify(res)));
-  if (res instanceof Response) return Promise.resolve(res);
+  ) return new Response(JSON.stringify(res));
+  if (res instanceof Response) return res;
   try {
-    return Promise.resolve(Response.json(res));
+    return Response.json(res);
   } catch (error) {
     throw error;
   }
