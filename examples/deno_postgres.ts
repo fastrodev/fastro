@@ -30,10 +30,7 @@ f.get(
   },
 );
 
-// waiting 2s for DB connection
-setTimeout(async () => {
-  await f.serve();
-}, 3000);
+await f.serve();
 
 async function createTable() {
   if (!client) throw new Error();

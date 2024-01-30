@@ -50,7 +50,7 @@ export type Static = {
   contentType: string;
 };
 
-export interface Context {
+export class Context {
   /**
    * Render a JSX Component or a Page with data
    * - If you call it from a standart handler (GET, POST, PUT, DELETE), it will render a JSX component.
@@ -58,17 +58,20 @@ export interface Context {
    * @param data
    * @returns
    */
-  render: <T>(data?: T) => Response | Promise<Response>;
+  render!: <T>(data?: T | undefined) => Response | Promise<Response>;
   /**
    * Information for a HTTP request.
    */
-  info: Deno.ServeHandlerInfo;
-  send: <T>(data?: T, status?: number) => Response | Promise<Response>;
-  next: Next;
-  server: Fastro;
-  url: URL;
-  kv: Deno.Kv;
-  options: Record<string, any>;
+  info!: Deno.ServeHandlerInfo;
+  send!: <T>(
+    data?: T | undefined,
+    status?: number | undefined,
+  ) => Response | Promise<Response>;
+  next!: Next;
+  server!: Fastro;
+  url!: URL;
+  kv!: Deno.Kv;
+  options!: Record<string, any>;
   [key: string]: any;
 }
 
