@@ -5,7 +5,7 @@ const client = await new Client().connect({
   hostname: "127.0.0.1",
   username: "root",
   db: "homestead",
-  password: "admin",
+  password: "root",
 });
 
 // init table and data
