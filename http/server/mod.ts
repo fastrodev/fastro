@@ -395,7 +395,7 @@ if (root) {
       if (!match) continue;
       const x = await m.handler(
         this.#transformRequest(req, match?.pathname.groups, u),
-        this.#transformCtx(info, u),
+        this.#transformCtx(info, u, this.serverOptions),
       ) as any;
 
       if (x instanceof Response) {
@@ -428,22 +428,22 @@ if (root) {
   #transformCtx = (
     info: Deno.ServeHandlerInfo,
     url: URL,
+    options: Record<string, any>,
   ) => {
+    const ctx = options as Context;
     const r = new Render(this);
-    return {
-      info,
-      render: <T>(jsx: T) => {
-        return r.renderJsx(jsx as JSX.Element);
-      },
-      next: () => {},
-      send: <T>(data: T, status = 200) => {
-        return this.#handleResponse(data, status);
-      },
-      url,
-      server: this,
-      kv: this.serverOptions["kv"],
-      options: this.serverOptions,
+    ctx.render = <T>(jsx: T) => {
+      return r.renderJsx(jsx as JSX.Element);
     };
+    ctx.send = <T>(data: T, status = 200) => {
+      return this.#handleResponse(data, status);
+    };
+    ctx.info = info;
+    ctx.next = () => {};
+    ctx.url = url;
+    ctx.server = this;
+    ctx.kv = this.serverOptions["kv"];
+    return ctx;
   };
 
   #isJSON(val: unknown) {
@@ -482,7 +482,7 @@ if (root) {
 
     return this.#record[id] = [
       handler,
-      this.#transformCtx(info, url),
+      this.#transformCtx(info, url, this.serverOptions),
       params,
       url,
     ];
