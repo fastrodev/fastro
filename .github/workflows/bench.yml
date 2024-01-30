@@ -13,7 +13,7 @@ jobs:
     env:
       DB_DATABASE: homestead
       DB_USER: root
-      DB_PASSWORD: admin
+      DB_PASSWORD: root
 
     permissions:
       id-token: write
