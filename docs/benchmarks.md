@@ -32,3 +32,4 @@ You can find the benchmark script in this code: [run.ts](https://github.com/fast
 | [oauth](https://github.com/fastrodev/fastro/blob/main/examples/oauth.ts)                             |  2786 |   7% | `oha -j --no-tui -z 10s http://localhost:8000`                     |
 | [route_middleware](https://github.com/fastrodev/fastro/blob/main/examples/route_middleware.ts)       |  2371 |   6% | `oha -j --no-tui -z 10s http://localhost:8000`                     |
 | [static_file_image](https://github.com/fastrodev/fastro/blob/main/examples/static_file_image.ts)     |  2315 |   6% | `oha -j --no-tui -z 10s http://localhost:8000/static/favicon.ico`  |
+
