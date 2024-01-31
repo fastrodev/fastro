@@ -17,7 +17,8 @@ export function Footer() {
       >
         Github Repository.
       </a>{" "}
-      We measure the performance of certain key metrics of use case in{"  "}
+      Key metrics of the use case, request per seconds (RPS), have been assessed
+      in{"  "}
       <a
         href={`/docs/benchmarks`}
         class={`text-blue-600 dark:text-blue-500 hover:underline`}
