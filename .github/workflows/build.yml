@@ -22,9 +22,3 @@ jobs:
 
       - name: Run build
         run: deno task build
-    
-      - name: Deploy to Deno Deploy
-        uses: denoland/deployctl@v1
-        with:
-          project: fastro
-          entrypoint: modules/web/main.tsx
