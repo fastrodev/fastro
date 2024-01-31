@@ -85,7 +85,9 @@ export const callbackHandler = async (req: HttpRequest) => {
 };
 
 export const signoutHandler = async (req: HttpRequest) => {
-  await kv.delete([req.sessionId]);
+  const sessionId = await getSessionId(req);
+  if (!sessionId) throw new Error("session ID is undefined");
+  await kv.delete([sessionId]);
   return await signOut(req);
 };
 
