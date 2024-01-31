@@ -5,8 +5,9 @@ import {
   signIn,
   signOut,
 } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
-import { Context, Fastro, HttpRequest } from "../../http/server/types.ts";
-import { STATUS_CODE } from "../../http/server/deps.ts";
+import { Context, Fastro, HttpRequest } from "$fastro/http/server/types.ts";
+import { STATUS_CODE } from "$fastro/http/server/deps.ts";
+import { kv } from "$fastro/utils/db.ts";
 
 const redirectUri = Deno.env.get("REDIRECT_URI") ??
   "http://localhost:8000/callback";
@@ -76,7 +77,6 @@ export const callbackHandler = async (req: HttpRequest) => {
       oauthConfig,
     );
     const user = await getUser(tokens.accessToken);
-    const kv = req.record["kv"] as Deno.Kv;
     kv.set([sessionId], user, { expireIn: 60 * 60 * 1000 });
     return response;
   } catch {
@@ -85,7 +85,6 @@ export const callbackHandler = async (req: HttpRequest) => {
 };
 
 export const signoutHandler = async (req: HttpRequest) => {
-  const kv = req.record["kv"] as Deno.Kv;
   await kv.delete([req.sessionId]);
   return await signOut(req);
 };
