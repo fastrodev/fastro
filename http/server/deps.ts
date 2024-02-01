@@ -1,15 +1,15 @@
 export {
   STATUS_CODE,
   STATUS_TEXT,
-} from "https://deno.land/std@0.213.0/http/status.ts";
+} from "https://deno.land/std@0.214.0/http/status.ts";
 
-export * from "https://deno.land/std@0.213.0/media_types/mod.ts";
-export * from "https://deno.land/std@0.213.0/path/mod.ts";
+export * from "https://deno.land/std@0.214.0/media_types/mod.ts";
+export * from "https://deno.land/std@0.214.0/path/mod.ts";
 
-export { encodeHex } from "https://deno.land/std@0.213.0/encoding/hex.ts";
-export { assertEquals } from "https://deno.land/std@0.213.0/assert/assert_equals.ts";
-export { assertExists } from "https://deno.land/std@0.213.0/assert/assert_exists.ts";
-export { assert } from "https://deno.land/std@0.213.0/assert/assert.ts";
+export { encodeHex } from "https://deno.land/std@0.214.0/encoding/hex.ts";
+export { assertEquals } from "https://deno.land/std@0.214.0/assert/assert_equals.ts";
+export { assertExists } from "https://deno.land/std@0.214.0/assert/assert_exists.ts";
+export { assert } from "https://deno.land/std@0.214.0/assert/assert.ts";
 
 export { h } from "npm:preact@10.19.3";
 export type {

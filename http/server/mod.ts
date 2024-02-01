@@ -51,15 +51,15 @@ const parseBody = (req: Request) => {
   };
 };
 
-const createResponse = (res: any): Response => {
-  if (typeof res === "string") return new Response(res);
+const createResponse = (res: any, status = 200): Response => {
+  if (typeof res === "string") return new Response(res, { status });
   if (res instanceof Response) return res;
   if (
     typeof res === "number" || typeof res === "bigint" ||
     typeof res === "boolean" || typeof res === "undefined"
-  ) return new Response(JSON.stringify(res));
+  ) return new Response(JSON.stringify(res), { status });
   try {
-    return Response.json(res);
+    return Response.json(res, { status });
   } catch (error) {
     throw error;
   }
@@ -337,7 +337,7 @@ if (root) {
       url: new URL(req.url),
       server: this,
       send: <T>(data: T, status = 200) => {
-        return this.#handleResponse(data, status);
+        return createResponse(data, status);
       },
       kv: this.serverOptions["kv"],
       options: this.serverOptions,
@@ -436,7 +436,7 @@ if (root) {
       return r.renderJsx(jsx as JSX.Element);
     };
     ctx.send = <T>(data: T, status = 200) => {
-      return this.#handleResponse(data, status);
+      return createResponse(data, status);
     };
     ctx.info = info;
     ctx.next = () => {};
@@ -445,24 +445,6 @@ if (root) {
     ctx.kv = this.serverOptions["kv"];
     return ctx;
   };
-
-  #isJSON(val: unknown) {
-    try {
-      const s = JSON.stringify(val);
-      JSON.parse(s);
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  #handleResponse(res: any, status = 200) {
-    if (typeof res === "string") return new Response(res, { status });
-    if (this.#isJSON(res) || Array.isArray(res)) {
-      return Response.json(res, { status });
-    }
-    return new Response(res, { status });
-  }
 
   #handleRequest = (req: Request, info: Deno.ServeHandlerInfo) => {
     const id = req.method + req.url;

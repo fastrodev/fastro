@@ -21,6 +21,7 @@
     "deno_postgres": "deno run -A examples/deno_postgres.ts",
     "deno_mysql": "deno run -A examples/deno_mysql.ts",
     "deno_redis": "deno run -A examples/deno_redis.ts",
+    "deno_mongo": "deno run -A examples/deno_mongo.ts",
     "params_query": "deno run -A examples/params_query.ts",
     "static_file_string": "deno run -A examples/static_file_string.ts",
     "static_file_image": "deno run -A examples/static_file_image.ts",
