@@ -18,6 +18,7 @@
     "ctx_string": "deno run -A examples/ctx_string.ts",
     "string_response": "deno run -A examples/string_response.ts",
     "deno_kv": "deno run -A --unstable-kv examples/deno_kv.ts",
+    "deno_sqlite": "deno run -A --unstable-ffi examples/deno_sqlite.ts",
     "deno_postgres": "deno run -A examples/deno_postgres.ts",
     "deno_mysql": "deno run -A examples/deno_mysql.ts",
     "deno_redis": "deno run -A examples/deno_redis.ts",

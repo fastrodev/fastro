@@ -8,3 +8,4 @@ static/js
 import_map.json
 node_modules/
 styles.css
+*.db
