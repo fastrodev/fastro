@@ -31,3 +31,12 @@ jobs:
         with:
           path-to-lcov: ./cov.lcov
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Run Build
+        run: deno task build
+          
+      - name: Deploy to Deno Deploy
+        uses: denoland/deployctl@v1
+        with:
+          project: fastro
+          entrypoint: modules/web/main.ts
