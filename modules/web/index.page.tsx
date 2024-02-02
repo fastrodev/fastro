@@ -1,5 +1,5 @@
-import { PageProps } from "../../http/server/types.ts";
-import { InlineNav } from "../../components/inline-nav.tsx";
+import { PageProps } from "$fastro/http/server/types.ts";
+import { InlineNav } from "$fastro/components/inline-nav.tsx";
 import { Footer } from "$fastro/components/footer.tsx";
 
 export default function Index({ data }: PageProps<
@@ -8,7 +8,6 @@ export default function Index({ data }: PageProps<
     title: string;
     description: string;
     youtube: string;
-    start: string;
     baseUrl: string;
   }
 >) {
@@ -31,7 +30,7 @@ export default function Index({ data }: PageProps<
         </p>
         <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
           <a
-            href={data.start}
+            href="/docs/start"
             class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
           >
             Get started

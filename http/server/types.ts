@@ -1,11 +1,17 @@
 // deno-lint-ignore-file no-explicit-any
 import { ComponentChildren, JSX } from "./deps.ts";
 
-export type ListenHandler = (info: {
+/**
+ * The callback which is called when the server starts listening.
+ */
+export type ListenHandler = (params: {
   hostname: string;
   port: number;
 }) => void;
 
+/**
+ * Extends the native Http `Request` with `params`, `query`, and `parseBody`
+ */
 export class HttpRequest extends Request {
   [key: string]: any;
   params?: Record<string, string | undefined>;
@@ -13,6 +19,17 @@ export class HttpRequest extends Request {
   parseBody!: <T>() => Promise<T>;
 }
 
+/**
+ * Handle http request
+ *
+ * Example:
+ * ```ts
+ * const handler = (req: Request, ctx: Context) => {
+ *   return ctx.send("Hello")
+ * }
+ *
+ * ```
+ */
 export type Handler = (
   req: HttpRequest,
   ctx: Context,
@@ -35,21 +52,33 @@ export type Handler = (
   | Promise<void>
   | Promise<Response | void>;
 
-export interface Next {
+/**
+ * The callback for middleware
+ */
+export type Next = {
   (): void;
-}
+};
 
+/**
+ * Middleware type used by server
+ */
 export type Middleware = {
   method?: string;
   path?: string;
   handler: Handler;
 };
 
+/**
+ * Static type used by server
+ */
 export type Static = {
   file: string;
   contentType: string;
 };
 
+/**
+ * Define the information for a HTTP request, render, send & options
+ */
 export class Context {
   /**
    * Render a JSX Component or a Page with data
@@ -63,18 +92,39 @@ export class Context {
    * Information for a HTTP request.
    */
   info!: Deno.ServeHandlerInfo;
+  /**
+   * Send data to client
+   */
   send!: <T>(
     data?: T | undefined,
     status?: number | undefined,
   ) => Response | Promise<Response>;
+  /**
+   * Middleware callback
+   */
   next!: Next;
+  /**
+   * Instance of server
+   */
   server!: Fastro;
+  /**
+   * The URL interface represents an object providing static methods used for creating object URLs.
+   */
   url!: URL;
+  /**
+   * Deno KV Instance defined in Fastro Constructor
+   */
   kv!: Deno.Kv;
+  /**
+   * Server options defined in Fastro Constuctor
+   */
   options!: Record<string, any>;
   [key: string]: any;
 }
 
+/**
+ * Define the page component, layout, handler and its folder
+ */
 export type Page<T = any> = {
   component: FunctionComponent | JSX.Element;
   layout: Layout<T>;
@@ -82,23 +132,72 @@ export type Page<T = any> = {
   folder?: string;
 };
 
+/**
+ * Defines the props of the page layout
+ */
 export type LayoutProps<T = any> = {
   children: ComponentChildren;
   data: T;
 };
 
+/**
+ * Define the props of the page
+ */
 export type PageProps<T = any> = {
   data: T;
 };
 
+/**
+ * Define the layout type
+ */
 export type Layout<T = any> = (
   props: LayoutProps<T>,
 ) => JSX.Element;
 
+/**
+ * Define the function component
+ *
+ * Example:
+ * ```
+ * const c = () => <div>Hello<div>
+ * ```
+ */
 export type FunctionComponent = (props: any) => JSX.Element;
 
+/**
+ * Groups the handler, service, page, and layout
+ *
+ * Example:
+ * ```ts
+ * import fastro from "https://fastro.deno.dev/mod.ts";
+ *
+ * const f = new fastro();
+ *
+ * const helloModule = (f: Fastro) => {
+ *   return f.get("/", () => "Hello World");
+ * };
+ *
+ * await f.group(helloModule);
+ *
+ * await f.serve();
+ * ```
+ */
 export type ModuleFunction = (f: Fastro) => Fastro | Promise<Fastro>;
 
+/**
+ * Defines the application endpoint, middleware, group, and serve
+ *
+ * Example:
+ * ```ts
+ * import fastro from "https://fastro.deno.dev/mod.ts";
+ *
+ * const f = new fastro();
+ *
+ * f.get("/", () => "Hello, World!");
+ *
+ * await f.serve();
+ * ```
+ */
 export interface Fastro {
   serve: (options?: {
     port?: number;
