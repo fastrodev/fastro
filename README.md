@@ -1,4 +1,5 @@
 # Fastro
+
 [![build](https://github.com/fastrodev/fastro/actions/workflows/build.yml/badge.svg)](https://github.com/fastrodev/fastro/actions/workflows/build.yml)
 [![bench](https://github.com/fastrodev/fastro/actions/workflows/bench.yml/badge.svg)](https://github.com/fastrodev/fastro/actions/workflows/bench.yml)
 [![deno doc](https://doc.deno.land/badge.svg)](https://deno.land/x/fastro/mod.ts)
@@ -8,7 +9,8 @@
 
 Fast and simple web application framework for deno.
 
-With [deno near native performance](https://fastro.dev/docs/benchmarks), you can:
+With [deno near native performance](https://fastro.dev/docs/benchmarks), you
+can:
 
 - Manage your app and routing cleanly with
   [builder pattern](https://en.wikipedia.org/wiki/Builder_pattern)
@@ -16,8 +18,11 @@ With [deno near native performance](https://fastro.dev/docs/benchmarks), you can
   [Request](https://deno.land/api?s=Request),
   [Headers](https://deno.land/api?s=Headers),
   [URLPattern](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API)
-- Access the request, the context, and the next callback before execute the handler with
-  [app middleware](https://github.com/fastrodev/fastro/blob/main/examples/app_middleware.ts) and [route middleware](https://github.com/fastrodev/fastro/blob/main/examples/route_middleware.ts).
+- Access the request, the context, and the next callback before execute the
+  handler with
+  [app middleware](https://github.com/fastrodev/fastro/blob/main/examples/app_middleware.ts)
+  and
+  [route middleware](https://github.com/fastrodev/fastro/blob/main/examples/route_middleware.ts).
 - You can add multiple middleware at once in one route.
 - Get url param with URLPattern
 - Set the preact component props from the server side
@@ -57,10 +62,11 @@ And to create your first JSX SSR page, you can follow
 Feel free to help us!
 
 Here are some issues to improving.
+
 - Logo
-- Landing page
-- Improve speed
-- Unit tests
-- Middlewares
-- Use case examples
-- App Templates
+- [Landing page](https://github.com/fastrodev/fastro/tree/main/modules/web)
+- [Improve speed](https://github.com/fastrodev/fastro/blob/main/docs/benchmarks.md)
+- [Unit tests](https://github.com/fastrodev/fastro/tree/main/http)
+- [Middlewares](https://github.com/fastrodev/fastro/tree/main/middleware)
+- [Use case examples](https://github.com/fastrodev/fastro/tree/main/examples)
+- [App Templates](https://github.com/fastrodev/template)
