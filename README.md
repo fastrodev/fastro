@@ -51,3 +51,16 @@ To find one that fits your use case, you can explore
 
 And to create your first JSX SSR page, you can follow
 [the start page step by step](https://fastro.deno.dev/docs/start).
+
+## Contribution
+
+Feel free to help us!
+
+Here are some issues to improving.
+- Logo
+- Landing page
+- Improve speed
+- Unit tests
+- Middlewares
+- Use case examples
+- App Templates
