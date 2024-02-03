@@ -30,7 +30,8 @@ s.get("/docs", (_req, _ctx) => {
 /** proxy for github repo */
 s.use(async (_req, ctx) => {
   if (
-    ctx.url.pathname.endsWith(".ts") || ctx.url.pathname.endsWith(".tsx")
+    ctx.url.pathname.endsWith(".ts") ||
+    ctx.url.pathname.endsWith(".tsx")
   ) {
     const version = ctx.url.pathname.startsWith("/v")
       ? ""
@@ -53,7 +54,6 @@ s.page("/", {
   layout: index,
   folder: "modules/web",
   handler: (req, ctx) => {
-    denoRunCheck(req);
     const res = denoRunCheck(req);
     if (res) return init();
     return ctx.render({
@@ -90,7 +90,7 @@ function denoRunCheck(req: HttpRequest) {
 function init() {
   const basePath = Deno.env.get("DENO_DEPLOYMENT_ID")
     ? `https://raw.githubusercontent.com/fastrodev/fastro/main/static`
-    : "http://localhost:8000";
+    : "http://localhost:8000/static";
   const code =
     `import init from "${basePath}/init.ts"; const name = Deno.args[0] ?? 'project'; await init(name);`;
   return new Response(code, {
