@@ -1,4 +1,4 @@
-import { LayoutProps } from "../../http/server/types.ts";
+import { LayoutProps } from "$fastro/http/server/types.ts";
 
 export function index(
   { data, children }: LayoutProps<
@@ -11,7 +11,7 @@ export function index(
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>
-          {`Fastro - TypeScript Full Stack Framework with Preact JS and Tailwind CSS for Deno`}
+          {`Fastro - Full Stack Framework with Preact JS and Tailwind CSS`}
         </title>
         <meta name="description" content={data.description} />
         <meta property="og:image" content={data.image} />

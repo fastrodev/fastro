@@ -1,7 +1,7 @@
 {
   "lock": false,
   "tasks": {
-    "start": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee ENV=DEVELOPMENT deno run --unstable-kv -A --watch modules/web/main.tsx",
+    "start": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee ENV=DEVELOPMENT deno run --unstable-kv -A --watch modules/web/main.ts",
     "build": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee  deno run -A --unstable-kv  modules/web/main.tsx --build ",
     "prod": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee deno run --unstable-kv -A modules/web/main.tsx",
     "test": "rm -rf .hydrate && rm -rf cov && deno test -A --coverage=cov && deno coverage cov",
