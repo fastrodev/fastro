@@ -63,7 +63,7 @@ Feel free to help us!
 
 Here are some issues to improving.
 
-- Logo
+- [Logo](https://avatars.githubusercontent.com/u/84224795)
 - [Landing page](https://github.com/fastrodev/fastro/tree/main/modules/web)
 - [Improve speed](https://github.com/fastrodev/fastro/blob/main/docs/benchmarks.md)
 - [Unit tests](https://github.com/fastrodev/fastro/tree/main/http)
