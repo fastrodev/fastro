@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { ComponentChild, h, JSX, renderToString, VNode } from "./deps.ts";
+import { ComponentChild, h, JSX, renderToString } from "./deps.ts";
 import { Fastro, FunctionComponent, Page } from "./types.ts";
 import { BUILD_ID, checkReferer, getDevelopment } from "./mod.ts";
 
@@ -89,7 +89,7 @@ es.onmessage = function(e) {
     this.#server.add("GET", refreshPath, refreshStream);
   };
 
-  #mutate = (app: VNode, component: FunctionComponent) => {
+  #mutate = (app: any, component: FunctionComponent) => {
     (app.props.children as ComponentChild[]).push(
       h("script", {
         src: `/js/${component.name.toLocaleLowerCase()}.js`,
@@ -111,12 +111,12 @@ es.onmessage = function(e) {
     try {
       this.#addPropsEndpoint(key, data);
       const children = typeof p.component == "function"
-        ? p.component({ data })
+        ? h(p.component as FunctionComponent, { data })
         : p.component;
 
-      let app = p.layout({ children, data });
+      let app = h(p.layout as FunctionComponent, { children, data }) as any;
       if (app.props.children && typeof p.component == "function") {
-        app = this.#mutate(app, p.component);
+        app = this.#mutate(p.layout({ children, data }), p.component);
       }
 
       const html = "<!DOCTYPE html>" + renderToString(app);
