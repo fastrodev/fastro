@@ -41,7 +41,7 @@
   },
   "imports": {
     "$fastro/": "./",
-    "preact": "npm:preact@10.19.3",
+    "preact": "https://esm.sh/preact@10.19.3",
     "preact/": "https://esm.sh/preact@10.19.3/"
   },
   "compilerOptions": {
