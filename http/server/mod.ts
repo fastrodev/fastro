@@ -221,7 +221,9 @@ import app from "../${folder}${name}.page.tsx";
 const root = document.getElementById("root");
 if (root) {
   const parsedUrl = new URL(window.location.href);
-  fetch("/__" + parsedUrl.pathname + "/props")
+  const url = "/__" + parsedUrl.pathname + "props";
+  const signal = AbortSignal.timeout(8000);
+  fetch(url, { signal })
     .then((response) => response.json())
     .then((data) => {
       hydrate(
