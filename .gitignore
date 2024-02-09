@@ -9,3 +9,5 @@ import_map.json
 node_modules/
 styles.css
 *.db
+m1/
+m2/
