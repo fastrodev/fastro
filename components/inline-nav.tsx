@@ -17,7 +17,7 @@ export function InlineNav(
       </a>
       <a
         href={dest}
-        class={`text-white`}
+        class={`text-gray-700 dark:text-white`}
         style={{ textDecoration: "none" }}
       >
         <span class="text-xs font-light">
