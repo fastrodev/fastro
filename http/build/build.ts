@@ -1,5 +1,4 @@
 import { denoPlugins, esbuild } from "./deps.ts";
-// await esbuild.initialize({});
 export async function build(elementName: string) {
   try {
     const cwd = Deno.cwd();

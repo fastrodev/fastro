@@ -46,7 +46,8 @@ es.onmessage = function(e) {
   };
 
   #addPropsEndpoint = (key: string, data: any) => {
-    const path = "/__" + key + "/props";
+    const k = key === "/" ? "" : key;
+    const path = "/__" + k + "/props";
     this.#server.add("GET", path, (req, _ctx) => {
       const ref = checkReferer(req);
       if (!getDevelopment() && ref) {
