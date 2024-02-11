@@ -221,22 +221,22 @@ export default class Server implements Fastro {
     const str = `${debug}import { h, hydrate } from "preact";
 import app from "../${folder}${name}.page.tsx";
 const root = document.getElementById("root");
-if (root) {
+async function fetchProps(root: HTMLElement) {
   const parsedUrl = new URL(window.location.href);
   const key = parsedUrl.pathname === "/" ? "" : parsedUrl.pathname;
   const url = "/__" + key + "/props";
   const signal = AbortSignal.timeout(8000);
-  fetch(url, { signal })
-    .then((response) => response.json())
-    .then((data) => {
-      hydrate(
-        h(app, { data }),
-        root,
-      );
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-    });
+  const response = await fetch(url, { signal });
+  const data = await response.json();
+  try {
+    hydrate(h(app, { data }), root);
+  } catch (error) {
+    fetchProps(root);
+  }
+}
+
+if (root) {
+  fetchProps(root);
 }
 `;
 

@@ -96,6 +96,7 @@ es.onmessage = function(e) {
       h("script", {
         src: `/js/${component.name.toLocaleLowerCase()}.js`,
         async: true,
+        type: "module",
       }),
     );
     if (getDevelopment()) {
