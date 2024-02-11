@@ -221,6 +221,7 @@ export default class Server implements Fastro {
     const str = `${debug}import { h, hydrate } from "preact";
 import app from "../${folder}${name}.page.tsx";
 async function fetchProps(root: HTMLElement) {
+  await fetch(window.location.href);
   try {
     const parsedUrl = new URL(window.location.href);
     const key = parsedUrl.pathname === "/" ? "" : parsedUrl.pathname;
@@ -231,7 +232,9 @@ async function fetchProps(root: HTMLElement) {
     if (!data) throw new Error("undefined");
     hydrate(h(app, { data }), root);
   } catch (error) {
-    fetchProps(root);
+    setTimeout(() => {
+      fetchProps(root);
+    }, 200);
   }
 }
 const root = document.getElementById("root");
