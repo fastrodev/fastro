@@ -220,24 +220,22 @@ export default class Server implements Fastro {
 `;
     const str = `${debug}import { h, hydrate } from "preact";
 import app from "../${folder}${name}.page.tsx";
-const root = document.getElementById("root");
 async function fetchProps(root: HTMLElement) {
-  const parsedUrl = new URL(window.location.href);
-  const key = parsedUrl.pathname === "/" ? "" : parsedUrl.pathname;
-  const url = "/__" + key + "/props";
-  const signal = AbortSignal.timeout(8000);
-  const response = await fetch(url, { signal });
-  const data = await response.json();
   try {
+    const parsedUrl = new URL(window.location.href);
+    const key = parsedUrl.pathname === "/" ? "" : parsedUrl.pathname;
+    const url = "/__" + key + "/props";  
+    const signal = AbortSignal.timeout(8000);
+    const response = await fetch(url, { signal });
+    const data = await response.json();
+    if (!data) throw new Error("undefined");
     hydrate(h(app, { data }), root);
   } catch (error) {
     fetchProps(root);
   }
 }
-
-if (root) {
-  fetchProps(root);
-}
+const root = document.getElementById("root");
+if (root) fetchProps(root);
 `;
 
     const dir = Deno.cwd() + "/.fastro";
