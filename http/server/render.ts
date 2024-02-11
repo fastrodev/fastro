@@ -45,10 +45,10 @@ es.onmessage = function(e) {
     );
   };
 
-  #addPropsEndpoint = (key: string, data: any) => {
+  #addPropsEndpoint = (key: string, data: any): Promise<Fastro> => {
     const k = key === "/" ? "" : key;
     const path = "/__" + k + "/props";
-    this.#server.add("GET", path, (req, _ctx) => {
+    const f = this.#server.add("GET", path, (req, _ctx) => {
       const ref = checkReferer(req);
       if (!getDevelopment() && ref) {
         return ref;
@@ -62,6 +62,7 @@ es.onmessage = function(e) {
         }),
       });
     });
+    return Promise.resolve(f);
   };
 
   #addRefreshEndPoint = () => {
@@ -108,18 +109,16 @@ es.onmessage = function(e) {
     return app;
   };
 
-  render = <T = any>(key: string, p: Page, data: T) => {
+  render = async <T = any>(key: string, p: Page, data: T) => {
     try {
-      this.#addPropsEndpoint(key, data);
+      await this.#addPropsEndpoint(key, data);
       const children = typeof p.component == "function"
         ? h(p.component as FunctionComponent, { data })
         : p.component;
-
       let app = h(p.layout as FunctionComponent, { children, data }) as any;
       if (app.props.children && typeof p.component == "function") {
         app = this.#mutate(p.layout({ children, data }), p.component);
       }
-
       const html = "<!DOCTYPE html>" + renderToString(app);
       return new Response(html, {
         headers: { "content-type": "text/html" },
