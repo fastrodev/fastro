@@ -335,18 +335,17 @@ if (root) fetchProps(root);
     }
 
     const r = new Render(this);
-    const ctx = {
-      render: <T>(data: T) => r.render(key, page, data),
-      info: info,
-      next: () => {},
-      url: new URL(req.url),
-      server: this,
-      send: <T>(data: T, status = 200) => {
-        return createResponse(data, status);
-      },
-      kv: this.serverOptions["kv"],
-      options: this.serverOptions,
+    const ctx = this.serverOptions as Context;
+    ctx.render = <T>(data: T) => r.render(key, page, data);
+    ctx.info = info;
+    ctx.next = () => {};
+    ctx.url = new URL(req.url);
+    ctx.server = this;
+    ctx.send = <T>(data: T, status = 200) => {
+      return createResponse(data, status);
     };
+    ctx.kv = this.serverOptions["kv"];
+    ctx.options = this.serverOptions;
     return [page, ctx, params, url];
   };
 
