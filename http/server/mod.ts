@@ -317,10 +317,33 @@ if (root) fetchProps(root);
     });
   };
 
-  #handlePage = (
+  #addPropsEndpoint = (key: string): Promise<Fastro> => {
+    const k = key === "/" ? "" : key;
+    const path = "/__" + k + "/props";
+    const f = this.add("GET", path, (req, _ctx) => {
+      const ref = checkReferer(req);
+      if (!getDevelopment() && ref) {
+        return ref;
+      }
+      const data = this.serverOptions[path];
+      return new Response(JSON.stringify(data), {
+        headers: new Headers({
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "null",
+          "Access-Control-Allow-Methods": "GET",
+          "Access-Control-Allow-Headers": "Content-Type",
+        }),
+      });
+    });
+    return Promise.resolve(f);
+  };
+
+  #handlePage = async (
     req: Request,
     info: Deno.ServeHandlerInfo,
-  ): [Page, Context, Record<string, string | undefined> | undefined, URL] => {
+  ): Promise<
+    [Page, Context, Record<string, string | undefined> | undefined, URL]
+  > => {
     const url = new URL(req.url);
     const key = url.pathname;
     let page = this.#routePage[key];
@@ -334,19 +357,19 @@ if (root) fetchProps(root);
       }
     }
 
+    await this.#addPropsEndpoint(key);
     const r = new Render(this);
-    const ctx = {
-      render: <T>(data: T) => r.render(key, page, data),
-      info: info,
-      next: () => {},
-      url: new URL(req.url),
-      server: this,
-      send: <T>(data: T, status = 200) => {
-        return createResponse(data, status);
-      },
-      kv: this.serverOptions["kv"],
-      options: this.serverOptions,
+    const ctx = this.serverOptions as Context;
+    ctx.render = <T>(data: T) => r.render(key, page, data);
+    ctx.info = info;
+    ctx.next = () => {};
+    ctx.url = new URL(req.url);
+    ctx.server = this;
+    ctx.send = <T>(data: T, status = 200) => {
+      return createResponse(data, status);
     };
+    ctx.kv = this.serverOptions["kv"];
+    ctx.options = this.serverOptions;
     return [page, ctx, params, url];
   };
 
@@ -492,7 +515,10 @@ if (root) fetchProps(root);
       const pm = await this.#handlePageMiddleware(req, info);
       if (pm) return pm;
 
-      const [page, pageCtx, pageParams, pageUrl] = this.#handlePage(req, info);
+      const [page, pageCtx, pageParams, pageUrl] = await this.#handlePage(
+        req,
+        info,
+      );
       if (page) {
         return page.handler(
           this.#transformRequest(req, pageParams, pageUrl),
