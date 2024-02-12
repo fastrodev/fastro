@@ -1,7 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import { ComponentChild, h, JSX, renderToString } from "./deps.ts";
 import { Fastro, FunctionComponent, Page } from "./types.ts";
-import { BUILD_ID, checkReferer, getDevelopment } from "./mod.ts";
+import { BUILD_ID, getDevelopment } from "./mod.ts";
 
 export class Render {
   #server: Fastro;
@@ -45,24 +45,11 @@ es.onmessage = function(e) {
     );
   };
 
-  #addPropsEndpoint = (key: string, data: any): Promise<Fastro> => {
+  #addPropData = (key: string, data: any): Promise<void> => {
     const k = key === "/" ? "" : key;
     const path = "/__" + k + "/props";
-    const f = this.#server.add("GET", path, (req, _ctx) => {
-      const ref = checkReferer(req);
-      if (!getDevelopment() && ref) {
-        return ref;
-      }
-      return new Response(JSON.stringify(data), {
-        headers: new Headers({
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "null",
-          "Access-Control-Allow-Methods": "GET",
-          "Access-Control-Allow-Headers": "Content-Type",
-        }),
-      });
-    });
-    return Promise.resolve(f);
+    this.#server.serverOptions[path] = data;
+    return Promise.resolve();
   };
 
   #addRefreshEndPoint = () => {
@@ -112,7 +99,8 @@ es.onmessage = function(e) {
 
   render = async <T = any>(key: string, p: Page, data: T) => {
     try {
-      await this.#addPropsEndpoint(key, data);
+      await this.#addPropData(key, data);
+      console.info("render:", JSON.stringify(data));
       const children = typeof p.component == "function"
         ? h(p.component as FunctionComponent, { data })
         : p.component;
