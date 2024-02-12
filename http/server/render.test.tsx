@@ -45,7 +45,7 @@ Deno.test(
       const html = await get.text();
       assertEquals(
         html,
-        `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>halaman page</title><link href="/styles.css" rel="stylesheet"/></head><body id="root"><div><p>Count: 0</p><button>Increment</button><button>Decrement</button></div></body><script src="/js/hello.js" async></script></html>`,
+        `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>halaman page</title><link href="/styles.css" rel="stylesheet"/></head><body id="root"><div><p>Count: 0</p><button>Increment</button><button>Decrement</button></div></body><script src="/js/hello.js" async type="module"></script></html>`,
       );
 
       const helloFetch = await fetch(host + "/hello", { method: "GET" });
@@ -126,7 +126,7 @@ Deno.test(
       const dearFetchHtml = await dearFetch.text();
       assertEquals(
         dearFetchHtml,
-        `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>halaman profile</title><link href="/styles.css" rel="stylesheet"/></head><body id="root"><p class="font-extralight">Dear profilemu agus halaman profile</p></body><script src="/js/dear.js" async></script><script src="/js/refresh.js" async></script></html>`,
+        `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>halaman profile</title><link href="/styles.css" rel="stylesheet"/></head><body id="root"><p class="font-extralight">Dear profilemu agus halaman profile</p></body><script src="/js/dear.js" async type="module"></script><script src="/js/refresh.js" async></script></html>`,
       );
 
       const jsFetch = await fetch(host + "/js/refresh.js", {
