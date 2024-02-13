@@ -70,6 +70,12 @@ export default class Server implements Fastro {
     this.serverOptions = options ?? {};
     this.#handler = this.#createHandler();
   }
+  getNonce(): string {
+    if (this.#nonce === "") {
+      this.#nonce = crypto.randomUUID().replace(/-/g, "");
+    }
+    return this.#nonce;
+  }
   get(
     path: string,
     ...handler: Array<Handler>
@@ -297,7 +303,11 @@ if (root) fetchProps(root);
   }
 
   #handleStaticFile = async (req: Request) => {
-    const s = (await this.#findStaticFiles(this.#staticUrl, req.url)) as Static;
+    const s = (await this.#findStaticFiles(
+      this.#staticUrl,
+      req.url,
+      this.getNonce(),
+    )) as Static;
     if (s) {
       const ref = checkReferer(req);
       if (ref && this.#staticReferer) return ref;
@@ -537,7 +547,12 @@ if (root) fetchProps(root);
     return [id, pathname];
   };
 
-  #findStaticFiles = async (url: string, reqUrl: string) => {
+  #findStaticFiles = async (url: string, initReqUrl: string, nonce: string) => {
+    let reqUrl = "";
+    if (initReqUrl.endsWith(`${nonce}.js`)) {
+      const [script] = initReqUrl.split(nonce);
+      reqUrl = script + "js";
+    }
     const [id, pathname] = this.#normalizeStaticUrl(url, reqUrl);
     if (this.#record[id]) return this.#record[id];
 
@@ -623,5 +638,6 @@ if (root) fetchProps(root);
   #staticUrl = "/";
   #staticReferer = false;
   #maxAge = 0;
+  #nonce = "";
   serverOptions: Record<string, any> = {};
 }

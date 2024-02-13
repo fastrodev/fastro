@@ -241,4 +241,5 @@ export interface Fastro {
   use(...handler: Array<Handler>): Fastro;
   group(mf: ModuleFunction): Promise<Fastro>;
   serverOptions: Record<string, any>;
+  getNonce(): string;
 }
