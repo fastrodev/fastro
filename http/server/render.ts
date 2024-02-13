@@ -81,7 +81,8 @@ es.onmessage = function(e) {
   #mutate = (app: any, component: FunctionComponent) => {
     (app.props.children as ComponentChild[]).push(
       h("script", {
-        src: `/js/${component.name.toLocaleLowerCase()}.js`,
+        src:
+          `/js/${component.name.toLocaleLowerCase()}.${this.#server.getNonce()}.js`,
         async: true,
         type: "module",
       }),
@@ -100,7 +101,6 @@ es.onmessage = function(e) {
   render = async <T = any>(key: string, p: Page, data: T) => {
     try {
       await this.#addPropData(key, data);
-      console.info("render:", JSON.stringify(data));
       const children = typeof p.component == "function"
         ? h(p.component as FunctionComponent, { data })
         : p.component;
