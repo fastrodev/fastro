@@ -232,15 +232,14 @@ async function fetchProps(root: HTMLElement) {
     const parsedUrl = new URL(window.location.href);
     const key = parsedUrl.pathname === "/" ? "" : parsedUrl.pathname;
     const url = "/__" + key + "/props";  
-    const signal = AbortSignal.timeout(8000);
-    const response = await fetch(url, { signal });
+    const response = await fetch(url);
     const data = await response.json();
     if (!data) throw new Error("undefined");
     hydrate(h(app, { data }), root);
   } catch (error) {
     setTimeout(() => {
       fetchProps(root);
-    }, 200);
+    }, 500);
   }
 }
 const root = document.getElementById("root");
@@ -348,12 +347,10 @@ if (root) fetchProps(root);
     return Promise.resolve(f);
   };
 
-  #handlePage = async (
+  #handlePage = (
     req: Request,
     info: Deno.ServeHandlerInfo,
-  ): Promise<
-    [Page, Context, Record<string, string | undefined> | undefined, URL]
-  > => {
+  ): [Page, Context, Record<string, string | undefined> | undefined, URL] => {
     const url = new URL(req.url);
     const key = url.pathname;
     let page = this.#routePage[key];
@@ -367,10 +364,12 @@ if (root) fetchProps(root);
       }
     }
 
-    await this.#addPropsEndpoint(key);
-    const r = new Render(this);
     const ctx = this.serverOptions as Context;
-    ctx.render = <T>(data: T) => r.render(key, page, data);
+    ctx.render = async <T>(data: T) => {
+      const r = new Render(this);
+      await this.#addPropsEndpoint(key);
+      return await r.render(key, page, data);
+    };
     ctx.info = info;
     ctx.next = () => {};
     ctx.url = new URL(req.url);
