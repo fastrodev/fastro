@@ -365,10 +365,10 @@ if (root) fetchProps(root);
     }
 
     const ctx = this.serverOptions as Context;
-    ctx.render = <T>(data: T) => {
+    ctx.render = async <T>(data: T) => {
       const r = new Render(this);
-      this.#addPropsEndpoint(key);
-      return r.render(key, page, data);
+      await this.#addPropsEndpoint(key);
+      return await r.render(key, page, data);
     };
     ctx.info = info;
     ctx.next = () => {};
