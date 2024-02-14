@@ -31,34 +31,8 @@ es.onmessage = function(e) {
   };
 };`;
   };
-
   #loadJs = (name: string) => {
-    return `async function fetchWithRetry(url, maxRetries = 10, delay = 500) {
-  let attempts = 0;
-  while (attempts < maxRetries) {
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        if (response.status === 404) {
-          attempts++;
-          await new Promise((resolve) => setTimeout(resolve, delay));
-        } else {
-          throw new Error("Fetch failed");
-        }
-      } else {
-        return response;
-      }
-    } catch {
-      attempts++;
-      await new Promise((resolve) => setTimeout(resolve, delay));
-    }
-  }
-  throw new Error("Not found");
-}
-
-const origin = new URL(window.location.origin);
-const url = origin + "js/${name}.${this.#server.getNonce()}.js";
-fetchWithRetry(url);`;
+    return `async function fetchWithRetry(t,e=3,i=500){let o=0;for(;o<e;)try{const e=await fetch(t);if(e.ok)return e;if(404!==e.status)throw new Error("Fetch failed");o++,await new Promise(t=>setTimeout(t,i))}catch(t){o++,await new Promise(t=>setTimeout(t,i))}location.reload()};const origin=new URL(window.location.origin),url=origin+"js/${name}.${this.#server.getNonce()}.js";fetchWithRetry(url);`;
   };
 
   #handleDevelopment = () => {
@@ -74,25 +48,10 @@ fetchWithRetry(url);`;
     );
   };
 
-  #addPropData = (
-    key: string,
-    data: any,
-    fn: FunctionComponent,
-  ): Promise<void> => {
+  #addPropData = (key: string, data: any): Promise<void> => {
     const k = key === "/" ? "" : key;
     const path = "/__" + k + "/props";
     this.#server.serverOptions[path] = data;
-    this.#server.add(
-      "GET",
-      `/js/load.${this.#server.getNonce()}.js`,
-      () =>
-        new Response(this.#loadJs(fn.name.toLowerCase()), {
-          headers: {
-            "Content-Type": "application/javascript",
-          },
-        }),
-    );
-    console.log("masuk sini");
     return Promise.resolve();
   };
 
@@ -125,11 +84,9 @@ fetchWithRetry(url);`;
   #mutate = (app: any, component: FunctionComponent) => {
     (app.props.children as ComponentChild[]).push(
       h("script", {
-        src: `/js/load.${this.#server.getNonce()}.js`,
-        async: true,
-        type: "module",
-        blocking: "render",
-        nonce: this.#server.getNonce(),
+        dangerouslySetInnerHTML: {
+          __html: this.#loadJs(component.name.toLowerCase()),
+        },
       }),
     );
     (app.props.children as ComponentChild[]).push(
@@ -155,7 +112,7 @@ fetchWithRetry(url);`;
 
   render = async <T = any>(key: string, p: Page, data: T, nonce: string) => {
     try {
-      await this.#addPropData(key, data, p.component as FunctionComponent);
+      await this.#addPropData(key, data);
       const children = typeof p.component == "function"
         ? h(p.component as FunctionComponent, { data, nonce })
         : p.component;

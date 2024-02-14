@@ -1,4 +1,4 @@
-async function fetchWithRetry(url, maxRetries = 3, delay = 1000) {
+async function fetchWithRetry(url, maxRetries = 3, delay = 500) {
   let attempts = 0;
   while (attempts < maxRetries) {
     try {
@@ -8,17 +8,15 @@ async function fetchWithRetry(url, maxRetries = 3, delay = 1000) {
           attempts++;
           await new Promise((resolve) => setTimeout(resolve, delay));
         } else {
-          throw new Error("error");
+          throw new Error("Fetch failed");
         }
       } else {
         return response;
       }
-    } catch {
+    } catch (error) {
       attempts++;
       await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
-  throw new Error("Not found");
+  location.reload();
 }
-
-const origin = new URL(window.location.origin);
