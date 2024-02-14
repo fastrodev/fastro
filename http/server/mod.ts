@@ -368,7 +368,7 @@ if (root) fetchProps(root);
     ctx.render = async <T>(data: T) => {
       const r = new Render(this);
       await this.#addPropsEndpoint(key);
-      return await r.render(key, page, data);
+      return await r.render(key, page, data, this.getNonce());
     };
     ctx.info = info;
     ctx.next = () => {};
