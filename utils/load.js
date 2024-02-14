@@ -11,7 +11,7 @@ async function fetchWithRetry(url, maxRetries = 3, delay = 500) {
           throw new Error("Fetch failed");
         }
       } else {
-        return response;
+        return true;
       }
     } catch (error) {
       attempts++;
@@ -20,3 +20,6 @@ async function fetchWithRetry(url, maxRetries = 3, delay = 500) {
   }
   location.reload();
 }
+
+const origin = new URL(window.location.origin),
+  url = origin + "js/${name}.${this.#server.getNonce()}.js";
