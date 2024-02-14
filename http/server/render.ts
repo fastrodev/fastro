@@ -32,7 +32,7 @@ es.onmessage = function(e) {
 };`;
   };
   #loadJs = (name: string) => {
-    return `async function fetchWithRetry(t,e=3,i=500){let o=0;for(;o<e;)try{const e=await fetch(t);if(e.ok)return true;if(404!==e.status)throw new Error("Fetch failed");o++,await new Promise(t=>setTimeout(t,i))}catch(t){o++,await new Promise(t=>setTimeout(t,i))}location.reload()};const origin=new URL(window.location.origin),url=origin+"js/${name}.${this.#server.getNonce()}.js";await fetchWithRetry(url);`;
+    return `async function fetchWithRetry(t){try{await fetch(t)}catch(t){location.reload()}};const origin=new URL(window.location.origin),url=origin+"js/${name}.${this.#server.getNonce()}.js";await fetchWithRetry(url);`;
   };
 
   #handleDevelopment = () => {
@@ -84,6 +84,8 @@ es.onmessage = function(e) {
   #mutate = (app: any, component: FunctionComponent) => {
     (app.props.children as ComponentChild[]).push(
       h("script", {
+        type: "module",
+        blocking: "render",
         dangerouslySetInnerHTML: {
           __html: this.#loadJs(component.name.toLowerCase()),
         },
