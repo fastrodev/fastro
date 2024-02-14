@@ -85,6 +85,7 @@ es.onmessage = function(e) {
           `/js/${component.name.toLocaleLowerCase()}.${this.#server.getNonce()}.js`,
         async: true,
         type: "module",
+        blocking: "render",
       }),
     );
     if (getDevelopment()) {
@@ -98,15 +99,19 @@ es.onmessage = function(e) {
     return app;
   };
 
-  render = async <T = any>(key: string, p: Page, data: T) => {
+  render = async <T = any>(key: string, p: Page, data: T, nonce: string) => {
     try {
       await this.#addPropData(key, data);
       const children = typeof p.component == "function"
-        ? h(p.component as FunctionComponent, { data })
+        ? h(p.component as FunctionComponent, { data, nonce })
         : p.component;
-      let app = h(p.layout as FunctionComponent, { children, data }) as any;
+      let app = h(p.layout as FunctionComponent, {
+        children,
+        data,
+        nonce,
+      }) as any;
       if (app.props.children && typeof p.component == "function") {
-        app = this.#mutate(p.layout({ children, data }), p.component);
+        app = this.#mutate(p.layout({ children, data, nonce }), p.component);
       }
       const html = "<!DOCTYPE html>" + renderToString(app);
       return new Response(html, {

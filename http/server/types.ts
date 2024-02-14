@@ -138,6 +138,7 @@ export type Page<T = any> = {
 export type LayoutProps<T = any> = {
   children: ComponentChildren;
   data: T;
+  nonce: string;
 };
 
 /**
