@@ -32,6 +32,35 @@ es.onmessage = function(e) {
 };`;
   };
 
+  #loadJs = (name: string) => {
+    return `async function fetchWithRetry(url, maxRetries = 10, delay = 500) {
+  let attempts = 0;
+  while (attempts < maxRetries) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        if (response.status === 404) {
+          attempts++;
+          await new Promise((resolve) => setTimeout(resolve, delay));
+        } else {
+          throw new Error("Fetch failed");
+        }
+      } else {
+        return response;
+      }
+    } catch {
+      attempts++;
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+  throw new Error("Not found");
+}
+
+const origin = new URL(window.location.origin);
+const url = origin + "js/${name}.${this.#server.getNonce()}.js";
+fetchWithRetry(url);`;
+  };
+
   #handleDevelopment = () => {
     this.#server.add(
       "GET",
@@ -45,10 +74,25 @@ es.onmessage = function(e) {
     );
   };
 
-  #addPropData = (key: string, data: any): Promise<void> => {
+  #addPropData = (
+    key: string,
+    data: any,
+    fn: FunctionComponent,
+  ): Promise<void> => {
     const k = key === "/" ? "" : key;
     const path = "/__" + k + "/props";
     this.#server.serverOptions[path] = data;
+    this.#server.add(
+      "GET",
+      `/js/load.${this.#server.getNonce()}.js`,
+      () =>
+        new Response(this.#loadJs(fn.name.toLowerCase()), {
+          headers: {
+            "Content-Type": "application/javascript",
+          },
+        }),
+    );
+    console.log("masuk sini");
     return Promise.resolve();
   };
 
@@ -81,11 +125,21 @@ es.onmessage = function(e) {
   #mutate = (app: any, component: FunctionComponent) => {
     (app.props.children as ComponentChild[]).push(
       h("script", {
+        src: `/js/load.${this.#server.getNonce()}.js`,
+        async: true,
+        type: "module",
+        blocking: "render",
+        nonce: this.#server.getNonce(),
+      }),
+    );
+    (app.props.children as ComponentChild[]).push(
+      h("script", {
         src:
           `/js/${component.name.toLocaleLowerCase()}.${this.#server.getNonce()}.js`,
         async: true,
         type: "module",
         blocking: "render",
+        nonce: this.#server.getNonce(),
       }),
     );
     if (getDevelopment()) {
@@ -101,7 +155,7 @@ es.onmessage = function(e) {
 
   render = async <T = any>(key: string, p: Page, data: T, nonce: string) => {
     try {
-      await this.#addPropData(key, data);
+      await this.#addPropData(key, data, p.component as FunctionComponent);
       const children = typeof p.component == "function"
         ? h(p.component as FunctionComponent, { data, nonce })
         : p.component;
