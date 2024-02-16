@@ -1,10 +1,13 @@
-async function fetchWithRetry(url) {
-  try {
-    await fetch(url);
-  } catch (error) {
-    location.reload();
-  }
+function fetchWithRetry(url) {
+  fetch(url)
+    .then((response) => response.text())
+    .then((scriptText) => {
+      const script = document.createElement("script");
+      script.textContent = scriptText;
+      document.body.appendChild(script);
+    });
 }
 
 const origin = new URL(window.location.origin),
-  _url = origin + "js/${name}.${this.#server.getNonce()}.js";
+  url = origin + "js/${name}.${this.#server.getNonce()}.js";
+fetchWithRetry(url);
