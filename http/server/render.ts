@@ -81,13 +81,14 @@ es.onmessage = function(e) {
     this.#server.add("GET", refreshPath, refreshStream);
   };
 
-  #mutate = (app: any, component: FunctionComponent) => {
+  #mutate = (app: any, component: FunctionComponent, script?: string) => {
+    const customScript = this.#loadJs(component.name.toLowerCase()) + script;
     (app.props.children as ComponentChild[]).push(
       h("script", {
         defer: true,
         type: "module",
         dangerouslySetInnerHTML: {
-          __html: this.#loadJs(component.name.toLowerCase()),
+          __html: customScript,
         },
       }),
     );
@@ -114,7 +115,11 @@ es.onmessage = function(e) {
         nonce,
       }) as any;
       if (app.props.children && typeof p.component == "function") {
-        app = this.#mutate(p.layout({ children, data, nonce }), p.component);
+        app = this.#mutate(
+          p.layout({ children, data, nonce }),
+          p.component,
+          p.script,
+        );
       }
       const html = "<!DOCTYPE html>" + renderToString(app);
       return new Response(html, {
