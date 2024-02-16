@@ -32,7 +32,7 @@ es.onmessage = function(e) {
 };`;
   };
   #loadJs = (name: string) => {
-    return `async function fetchWithRetry(t){try{await fetch(t)}catch(t){location.reload()}};const origin=new URL(window.location.origin),url=origin+"js/${name}.${this.#server.getNonce()}.js";await fetchWithRetry(url);`;
+    return `function fetchWithRetry(t){fetch(t).then(t=>t.text()).then(t=>{const e=document.createElement("script");e.textContent=t,document.body.appendChild(e)})};const origin=new URL(window.location.origin),url=origin+"js/${name}.${this.#server.getNonce()}.js";fetchWithRetry(url);`;
   };
 
   #handleDevelopment = () => {
@@ -84,21 +84,11 @@ es.onmessage = function(e) {
   #mutate = (app: any, component: FunctionComponent) => {
     (app.props.children as ComponentChild[]).push(
       h("script", {
+        defer: true,
         type: "module",
-        blocking: "render",
         dangerouslySetInnerHTML: {
           __html: this.#loadJs(component.name.toLowerCase()),
         },
-      }),
-    );
-    (app.props.children as ComponentChild[]).push(
-      h("script", {
-        src:
-          `/js/${component.name.toLocaleLowerCase()}.${this.#server.getNonce()}.js`,
-        async: true,
-        type: "module",
-        blocking: "render",
-        nonce: this.#server.getNonce(),
       }),
     );
     if (getDevelopment()) {
