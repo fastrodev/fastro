@@ -129,6 +129,7 @@ export type Page<T = any> = {
   component: FunctionComponent | JSX.Element;
   layout: Layout<T>;
   handler: Handler;
+  script?: string;
   folder?: string;
 };
 
