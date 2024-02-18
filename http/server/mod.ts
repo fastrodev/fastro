@@ -350,10 +350,10 @@ if (root) fetchProps(root);
   #handlePage = (
     req: Request,
     info: Deno.ServeHandlerInfo,
-  ): [Page, Context, Record<string, string | undefined> | undefined, URL] => {
+  ) => {
     const url = new URL(req.url);
     const key = url.pathname;
-    let page = this.#routePage[key];
+    let page: Page = this.#routePage[key];
     let params: Record<string, string | undefined> | undefined = undefined;
     if (!page) {
       const res = this.#getParamsPage(req, this.#routePage);
@@ -363,12 +363,12 @@ if (root) fetchProps(root);
         params = prm;
       }
     }
-
+    if (!page) return [];
     const ctx = this.serverOptions as Context;
     ctx.render = async <T>(data: T) => {
       const r = new Render(this);
       await this.#addPropsEndpoint(key);
-      return await r.render(key, page, data, this.getNonce());
+      return r.render(key, page, data, this.getNonce());
     };
     ctx.info = info;
     ctx.next = () => {};
@@ -524,10 +524,10 @@ if (root) fetchProps(root);
       const pm = await this.#handlePageMiddleware(req, info);
       if (pm) return pm;
 
-      const [page, pageCtx, pageParams, pageUrl] = await this.#handlePage(
+      const [page, pageCtx, pageParams, pageUrl] = this.#handlePage(
         req,
         info,
-      );
+      ) as any;
       if (page) {
         return page.handler(
           this.#transformRequest(req, pageParams, pageUrl),
