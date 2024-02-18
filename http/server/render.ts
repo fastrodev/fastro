@@ -81,7 +81,7 @@ es.onmessage = function(e) {
     this.#server.add("GET", refreshPath, refreshStream);
   };
 
-  #mutate = (app: any, component: FunctionComponent, script?: string) => {
+  #mutate = (app: any, component: FunctionComponent, script = "") => {
     const customScript = this.#loadJs(component.name.toLowerCase()) + script;
     (app.props.children as ComponentChild[]).push(
       h("script", {
@@ -104,30 +104,25 @@ es.onmessage = function(e) {
   };
 
   render = async <T = any>(key: string, p: Page, data: T, nonce: string) => {
-    try {
-      await this.#addPropData(key, data);
-      const children = typeof p.component == "function"
-        ? h(p.component as FunctionComponent, { data, nonce })
-        : p.component;
-      let app = h(p.layout as FunctionComponent, {
-        children,
-        data,
-        nonce,
-      }) as any;
-      if (app.props.children && typeof p.component == "function") {
-        app = this.#mutate(
-          p.layout({ children, data, nonce }),
-          p.component,
-          p.script,
-        );
-      }
-      const html = "<!DOCTYPE html>" + renderToString(app);
-      return new Response(html, {
-        headers: { "content-type": "text/html" },
-      });
-    } catch (error) {
-      console.log(error);
-      throw error;
+    await this.#addPropData(key, data);
+    const children = typeof p.component == "function"
+      ? h(p.component as FunctionComponent, { data, nonce })
+      : p.component;
+    let app = h(p.layout as FunctionComponent, {
+      children,
+      data,
+      nonce,
+    }) as any;
+    if (app.props.children && typeof p.component == "function") {
+      app = this.#mutate(
+        p.layout({ children, data, nonce }),
+        p.component,
+        p.script,
+      );
     }
+    const html = "<!DOCTYPE html>" + renderToString(app);
+    return new Response(html, {
+      headers: { "content-type": "text/html" },
+    });
   };
 }
