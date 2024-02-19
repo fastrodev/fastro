@@ -49,9 +49,7 @@ es.onmessage = function(e) {
   };
 
   #addPropData = (key: string, data: any): Promise<void> => {
-    const k = key === "/" ? "" : key;
-    const path = "/__" + k + "/props";
-    this.#server.serverOptions[path] = data;
+    this.#server.serverOptions[key] = data;
     return Promise.resolve();
   };
 
