@@ -230,8 +230,7 @@ async function fetchProps(root: HTMLElement) {
   await fetch(window.location.href);
   try {
     const parsedUrl = new URL(window.location.href);
-    const key = parsedUrl.pathname === "/" ? "" : parsedUrl.pathname;
-    const url = "/__" + key + "/props";  
+    const url = "/__/props";  
     const response = await fetch(url);
     const data = await response.json();
     if (!data) throw new Error("undefined");
@@ -327,14 +326,13 @@ if (root) fetchProps(root);
   };
 
   #addPropsEndpoint = (key: string): Promise<Fastro> => {
-    const k = key === "/" ? "" : key;
-    const path = "/__" + k + "/props";
+    const path = "/__/props";
     const f = this.add("GET", path, (req, _ctx) => {
       const ref = checkReferer(req);
       if (!getDevelopment() && ref) {
         return ref;
       }
-      const data = this.serverOptions[path];
+      const data = this.serverOptions[key];
       return new Response(JSON.stringify(data), {
         headers: new Headers({
           "Content-Type": "application/json",
@@ -367,8 +365,9 @@ if (root) fetchProps(root);
     const ctx = this.serverOptions as Context;
     ctx.render = async <T>(data: T) => {
       const r = new Render(this);
-      await this.#addPropsEndpoint(key);
-      return r.render(key, page, data, this.getNonce());
+      const id = crypto.randomUUID();
+      await this.#addPropsEndpoint(id);
+      return r.render(id, page, data, this.getNonce());
     };
     ctx.info = info;
     ctx.next = () => {};
