@@ -48,11 +48,6 @@ es.onmessage = function(e) {
     );
   };
 
-  #addPropData = (key: string, data: any): Promise<void> => {
-    this.#server.serverOptions[key] = data;
-    return Promise.resolve();
-  };
-
   #addRefreshEndPoint = () => {
     const refreshStream = (_req: Request) => {
       let timerId: number | undefined = undefined;
@@ -101,8 +96,8 @@ es.onmessage = function(e) {
     return app;
   };
 
-  render = async <T = any>(key: string, p: Page, data: T, nonce: string) => {
-    await this.#addPropData(key, data);
+  render = <T = any>(key: string, p: Page, data: T, nonce: string) => {
+    this.#server.serverOptions[key] = data;
     const children = typeof p.component == "function"
       ? h(p.component as FunctionComponent, { data, nonce })
       : p.component;

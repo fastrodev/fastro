@@ -69,6 +69,7 @@ export default class Server implements Fastro {
   constructor(options?: Record<string, any>) {
     this.serverOptions = options ?? {};
     this.#handler = this.#createHandler();
+    this.#addPropsEndpoint();
   }
   getNonce(): string {
     if (this.#nonce === "") {
@@ -227,10 +228,10 @@ export default class Server implements Fastro {
     const str = `${debug}import { h, hydrate } from "preact";
 import app from "../${folder}${name}.page.tsx";
 async function fetchProps(root: HTMLElement) {
-  await fetch(window.location.href);
   try {
     const parsedUrl = new URL(window.location.href);
-    const url = "/__/props";  
+    const key = parsedUrl.pathname === "/" ? "" : parsedUrl.pathname;
+    const url = "/__/props" + key; 
     const response = await fetch(url);
     const data = await response.json();
     if (!data) throw new Error("undefined");
@@ -325,14 +326,12 @@ if (root) fetchProps(root);
     });
   };
 
-  #addPropsEndpoint = (key: string): Promise<Fastro> => {
-    const path = "/__/props";
-    const f = this.add("GET", path, (req, _ctx) => {
+  #addPropsEndpoint = () => {
+    const path = "/__/props/:key*";
+    this.add("GET", path, (req, _ctx) => {
       const ref = checkReferer(req);
-      if (!getDevelopment() && ref) {
-        return ref;
-      }
-      const data = this.serverOptions[key];
+      if (!getDevelopment() && ref) return ref;
+      const data = this.serverOptions[req.url];
       return new Response(JSON.stringify(data), {
         headers: new Headers({
           "Content-Type": "application/json",
@@ -342,7 +341,6 @@ if (root) fetchProps(root);
         }),
       });
     });
-    return Promise.resolve(f);
   };
 
   #handlePage = (
@@ -350,7 +348,7 @@ if (root) fetchProps(root);
     info: Deno.ServeHandlerInfo,
   ) => {
     const url = new URL(req.url);
-    const key = url.pathname;
+    let key = url.pathname;
     let page: Page = this.#routePage[key];
     let params: Record<string, string | undefined> | undefined = undefined;
     if (!page) {
@@ -363,11 +361,11 @@ if (root) fetchProps(root);
     }
     if (!page) return [];
     const ctx = this.serverOptions as Context;
-    ctx.render = async <T>(data: T) => {
+    ctx.render = <T>(data: T) => {
       const r = new Render(this);
-      const id = crypto.randomUUID();
-      await this.#addPropsEndpoint(id);
-      return r.render(id, page, data, this.getNonce());
+      key = key === "/" ? "" : key;
+      key = url.origin + "/__/props" + key;
+      return r.render(key, page, data, this.getNonce());
     };
     ctx.info = info;
     ctx.next = () => {};

@@ -43,7 +43,6 @@ Deno.test(
 
       f.get("/m", (req, ctx) => {
         req.hello = "hello";
-        console.log("HELLLLLLLLOOO");
         return ctx.next();
       }, (req, ctx) => {
         console.log("oke", req.oke);
