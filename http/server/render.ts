@@ -32,7 +32,7 @@ es.onmessage = function(e) {
 };`;
   };
   #loadJs = (name: string) => {
-    return `function fetchWithRetry(t){fetch(t).then(t=>t.text()).then(e=>{if("Not Found"===e)return setTimeout(()=>{fetchWithRetry(t)},500);const n=document.createElement("script");n.textContent=e,document.body.appendChild(n)})};const origin=new URL(window.location.origin),url=origin+"js/${name}.${this.#server.getNonce()}.js";fetchWithRetry(url);`;
+    return `function fetchWithRetry(t){fetch(t).then(t=>t.text()).then(t=>{if("Not Found"===t)return setTimeout(()=>{location.reload()},500);const e=document.createElement("script");e.textContent=t,document.body.appendChild(e)})};const origin=new URL(window.location.origin),url=origin+"js/${name}.${this.#server.getNonce()}.js";fetchWithRetry(url);`;
   };
 
   #handleDevelopment = () => {
