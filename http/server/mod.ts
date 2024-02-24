@@ -277,9 +277,9 @@ if (root) fetchProps(root);
     data: T,
   ): [Handler, Record<string, string | undefined> | undefined] | undefined {
     for (const [key, handler] of Object.entries(data)) {
-      const [, path] = key.split("-");
+      const [method, path] = key.split("-");
       const pattern = new URLPattern({ pathname: path });
-      if (key.includes(":") && pattern.test(req.url)) {
+      if (key.includes(":") && pattern.test(req.url) && req.method === method) {
         const exec = pattern.exec(req.url);
         const params = exec?.pathname.groups;
         return [handler, params];
