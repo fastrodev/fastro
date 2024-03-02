@@ -41,8 +41,8 @@
   },
   "imports": {
     "$fastro/": "./",
-    "preact": "https://esm.sh/preact@10.19.3",
-    "preact/": "https://esm.sh/preact@10.19.3/"
+    "preact": "https://esm.sh/preact@10.19.6",
+    "preact/": "https://esm.sh/preact@10.19.6/"
   },
   "compilerOptions": {
     "jsx": "react-jsx",

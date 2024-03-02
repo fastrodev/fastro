@@ -237,11 +237,12 @@ export interface Fastro {
   page<T = any>(
     path: string,
     page: Page<T>,
-    ...middleware: Array<Handler>
   ): Fastro;
   add(method: string, path: string, handler: Handler): Fastro;
   use(...handler: Array<Handler>): Fastro;
   group(mf: ModuleFunction): Promise<Fastro>;
   serverOptions: Record<string, any>;
   getNonce(): string;
+  getPages(): Record<string, Page>;
+  getRoutes(): Record<string, Handler>;
 }
