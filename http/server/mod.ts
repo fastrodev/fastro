@@ -619,6 +619,14 @@ if (root) fetchProps(root);
     }
   };
 
+  getPages(): Record<string, Page> {
+    return this.#routePage;
+  }
+
+  getRoutes(): Record<string, Handler> {
+    return this.#routeHandler;
+  }
+
   #server: Deno.HttpServer | undefined;
   #ac: AbortController = new AbortController();
   #handler: (
