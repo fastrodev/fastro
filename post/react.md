@@ -1,6 +1,6 @@
 ---
 title: "Fastro v0.82.0: Back to using React"
-image: https://fastro.dev/static/image.png
+image: https://fastro.deno.dev/fastro.png
 description: "The error in the previous version has been resolved"
 author: Yanu Widodo
 date: 10/22/2023

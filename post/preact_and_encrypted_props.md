@@ -1,7 +1,7 @@
 ---
 title: "Fastro v0.80.0: Preact and Server Side Props Encryption"
 description: "Preact integration and robust encryption of Server Side Props"
-image: https://fastro.dev/static/image.png
+image: https://fastro.deno.dev/fastro.png
 author: Yanu Widodo
 date: 08/16/2023
 ---

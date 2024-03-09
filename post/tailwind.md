@@ -1,7 +1,7 @@
 ---
 title: "Integrating Tailwind CSS into a Deno Project"
 description: "Integrating Tailwind CSS into a Deno Project"
-image: https://fastro.dev/static/image.png
+image: https://fastro.deno.dev/fastro.png
 author: Yanu Widodo
 date: 01/26/2024
 ---

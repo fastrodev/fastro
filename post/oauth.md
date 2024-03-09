@@ -1,7 +1,7 @@
 ---
 title: "Deno KV OAuth Implementation"
 description: "Implementing a modular codebase for Deno KV OAuth in Fastro"
-image: https://fastro.dev/static/image.png
+image: https://fastro.deno.dev/fastro.png
 author: Yanu Widodo
 date: 11/15/2023
 ---
