@@ -1,6 +1,7 @@
 ---
 title: "Getting started"
 description: We will create a SSR web application with one page and returning very simple react component.
+image: https://fastro.deno.dev/fastro.png
 page: 1
 ---
 

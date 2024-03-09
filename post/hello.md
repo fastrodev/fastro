@@ -1,7 +1,7 @@
 ---
 title: "Hello"
 description: "Hello markdown"
-image: https://fastro.dev/static/image.png
+image: https://fastro.deno.dev/fastro.png
 author: Fastro
 date: 11/15/2023
 tags: ["hello", "hi"]
