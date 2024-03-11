@@ -65,6 +65,9 @@ const createResponse = (res: any, status = 200): Response => {
   }
 };
 
+type FastroPath = string | RegExp;
+const fastroRegexpPrefix = "REGEXP_";
+
 export default class Server implements Fastro {
   constructor(options?: Record<string, any>) {
     this.serverOptions = options ?? {};
@@ -78,43 +81,43 @@ export default class Server implements Fastro {
     return this.#nonce;
   }
   get(
-    path: string,
+    path: FastroPath,
     ...handler: Array<Handler>
   ): Fastro {
     return this.add("GET", path, ...handler);
   }
   post(
-    path: string,
+    path: FastroPath,
     ...handler: Array<Handler>
   ): Fastro {
     return this.add("POST", path, ...handler);
   }
   put(
-    path: string,
+    path: FastroPath,
     ...handler: Array<Handler>
   ): Fastro {
     return this.add("PUT", path, ...handler);
   }
   patch(
-    path: string,
+    path: FastroPath,
     ...handler: Array<Handler>
   ): Fastro {
     return this.add("PATCH", path, ...handler);
   }
   delete(
-    path: string,
+    path: FastroPath,
     ...handler: Array<Handler>
   ): Fastro {
     return this.add("DELETE", path, ...handler);
   }
   options(
-    path: string,
+    path: FastroPath,
     ...handler: Array<Handler>
   ): Fastro {
     return this.add("OPTIONS", path, ...handler);
   }
   head(
-    path: string,
+    path: FastroPath,
     handler: Handler,
     ...middleware: Array<Handler>
   ): Fastro {
@@ -176,10 +179,11 @@ export default class Server implements Fastro {
 
   add = (
     method: string,
-    path: string,
+    path: FastroPath,
     ...handler: Handler[]
   ) => {
-    const key = method + "-" + path;
+    const prefix = typeof path == "string" ? "" : fastroRegexpPrefix;
+    const key = prefix + method + "-" + path.toString();
     if (handler.length === 1) {
       this.#routeHandler[key] = handler[0];
       return this;
@@ -279,6 +283,18 @@ if (root) fetchProps(root);
     for (const [key, handler] of Object.entries(data)) {
       const [method, path] = key.split("-");
       const pattern = new URLPattern({ pathname: path });
+      if (method.startsWith(fastroRegexpPrefix)) {
+        const reqMethod = method.replace(fastroRegexpPrefix, "");
+        const rawPath = new URL(req.url).pathname.slice(1);
+        const matches = path.match(/\/(.*)\/(.*)/);
+        const expression = new RegExp(matches![1], matches![2]);
+
+        if (expression.test(rawPath) && req.method === reqMethod) {
+          const exec = pattern.exec(req.url);
+          const params = exec?.pathname.groups;
+          return [handler, params];
+        }
+      }
       if (key.includes(":") && pattern.test(req.url) && req.method === method) {
         const exec = pattern.exec(req.url);
         const params = exec?.pathname.groups;

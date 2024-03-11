@@ -12,12 +12,22 @@ Deno.test(
       const f = new fastro();
       f.static("/static", { folder: "static", maxAge: 90 });
       f.get("/", () => new Response("get"));
+      f.get(new RegExp("fastro@(.*?)+", "i"), () => new Response("get"));
       f.post("/", () => new Response("post"));
+      f.post(new RegExp("fastro@(.*?)+", "i"), () => new Response("post"));
       f.put("/", () => new Response("put"));
+      f.put(new RegExp("fastro@(.*?)+", "i"), () => new Response("put"));
       f.delete("/", () => new Response("delete"));
+      f.delete(new RegExp("fastro@(.*?)+", "i"), () => new Response("delete"));
       f.options("/", () => new Response("options"));
+      f.options(
+        new RegExp("fastro@(.*?)+", "i"),
+        () => new Response("options"),
+      );
       f.patch("/", () => new Response("patch"));
+      f.patch(new RegExp("fastro@(.*?)+", "i"), () => new Response("patch"));
       f.head("/", () => new Response(""));
+      f.head(new RegExp("fastro@(.*?)+", "i"), () => new Response(""));
       f.use((req, ctx) => {
         req.oke = "oke";
         return ctx.next();
@@ -89,23 +99,54 @@ Deno.test(
       const get = await fetch(host, { method: "GET" });
       assertEquals(await get.text(), "get");
 
+      const get_regexp = await fetch(host + "/fastro@1234", { method: "GET" });
+      assertEquals(await get_regexp.text(), "get");
+
       const post = await fetch(host, { method: "POST" });
       assertEquals(await post.text(), "post");
+
+      const post_regexp = await fetch(host + "/fastro@1234", {
+        method: "POST",
+      });
+      assertEquals(await post_regexp.text(), "post");
 
       const put = await fetch(host, { method: "PUT" });
       assertEquals(await put.text(), "put");
 
+      const put_regexp = await fetch(host + "/fastro@1234", { method: "PUT" });
+      assertEquals(await put_regexp.text(), "put");
+
       const del = await fetch(host, { method: "DELETE" });
       assertEquals(await del.text(), "delete");
+
+      const del_regexp = await fetch(host + "/fastro@1234", {
+        method: "DELETE",
+      });
+      assertEquals(await del_regexp.text(), "delete");
 
       const ops = await fetch(host, { method: "OPTIONS" });
       assertEquals(await ops.text(), "options");
 
+      const ops_regexp = await fetch(host + "/fastro@1234", {
+        method: "OPTIONS",
+      });
+      assertEquals(await ops_regexp.text(), "options");
+
       const patch = await fetch(host, { method: "PATCH" });
       assertEquals(await patch.text(), "patch");
 
+      const patch_regexp = await fetch(host + "/fastro@1234", {
+        method: "PATCH",
+      });
+      assertEquals(await patch_regexp.text(), "patch");
+
       const head = await fetch(host, { method: "HEAD" });
       assertEquals(await head.text(), "");
+
+      const head_regexp = await fetch(host + "/fastro@1234", {
+        method: "HEAD",
+      });
+      assertEquals(await head_regexp.text(), "");
 
       const e = await fetch(host + "/error", { method: "GET" });
       assertExists(await e.text(), `Error: error\n`);
