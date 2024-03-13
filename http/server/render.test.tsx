@@ -15,7 +15,7 @@ Deno.test(
         component: hello,
         layout,
         folder: "modules/web",
-        handler: (req, ctx) => {
+        handler: (_, ctx) => {
           return ctx.render({ title: "halaman page", data: "okeee page" });
         },
       }, (req, ctx) => {
@@ -27,7 +27,7 @@ Deno.test(
         component: <h1>Hello</h1>,
         layout,
         folder: "app",
-        handler: (req, ctx) => {
+        handler: (_, ctx) => {
           return ctx.render({ title: "halaman page", data: "okeee page" });
         },
       }, (req, ctx) => {
@@ -35,7 +35,7 @@ Deno.test(
         return ctx.next();
       });
 
-      f.get("/hello", (req, ctx) => {
+      f.get("/hello", (_, ctx) => {
         return ctx.render(<h1>Hello</h1>);
       });
 
@@ -79,7 +79,7 @@ Deno.test(
 
       const f = new fastro();
 
-      f.get("/user/:id", (req, ctx) => {
+      f.get("/user/:id", (req, _) => {
         return Response.json({ data: req.params?.id });
       });
 

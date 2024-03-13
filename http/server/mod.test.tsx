@@ -12,12 +12,22 @@ Deno.test(
       const f = new fastro();
       f.static("/static", { folder: "static", maxAge: 90 });
       f.get("/", () => new Response("get"));
+      f.get("/user/:id", () => new Response("get"));
       f.post("/", () => new Response("post"));
+      f.post("/user/:id", () => new Response("post"));
       f.put("/", () => new Response("put"));
+      f.put("/user/:id", () => new Response("put"));
       f.delete("/", () => new Response("delete"));
+      f.delete("/user/:id", () => new Response("delete"));
       f.options("/", () => new Response("options"));
+      f.options(
+        "/user/:id",
+        () => new Response("options"),
+      );
       f.patch("/", () => new Response("patch"));
+      f.patch("/user/:id", () => new Response("patch"));
       f.head("/", () => new Response(""));
+      f.head("/user/:id", () => new Response(""));
       f.use((req, ctx) => {
         req.oke = "oke";
         return ctx.next();
