@@ -14,7 +14,7 @@ Deno.test(
       f.get("/", () => new Response("get"));
       f.get("/user/:id", () => new Response("get"));
       f.post("/", () => new Response("post"));
-      f.post("/user/:id", () => new Response("post"));
+      f.post("/user_:id", () => new Response("post"));
       f.put("/", () => new Response("put"));
       f.put("/user/:id", () => new Response("put"));
       f.delete("/", () => new Response("delete"));
@@ -33,21 +33,21 @@ Deno.test(
         return ctx.next();
       });
       f.group((f: Fastro) => {
-        return f.get("/group", (req, ctx) => {
+        return f.get("/group", (_, ctx) => {
           return ctx.send("group");
         });
       });
-      f.get("/string", (req, ctx) => {
+      f.get("/string", (_, ctx) => {
         return ctx.send("string");
       });
-      f.get("/json", (req, ctx) => {
+      f.get("/json", (_, ctx) => {
         return ctx.send({ ok: true });
       });
-      f.get("/array", (req, ctx) => {
+      f.get("/array", (_, ctx) => {
         return ctx.send([{ ok: true }]);
       });
 
-      f.get("/num", (req, ctx) => {
+      f.get("/num", (_, ctx) => {
         return ctx.send(1);
       });
 
@@ -99,23 +99,54 @@ Deno.test(
       const get = await fetch(host, { method: "GET" });
       assertEquals(await get.text(), "get");
 
+      const get_regexp = await fetch(host + "/user/23232", { method: "GET" });
+      assertEquals(await get_regexp.text(), "get");
+
       const post = await fetch(host, { method: "POST" });
       assertEquals(await post.text(), "post");
+
+      const post_regexp = await fetch(host + "/user_23232", {
+        method: "POST",
+      });
+      assertEquals(await post_regexp.text(), "post");
 
       const put = await fetch(host, { method: "PUT" });
       assertEquals(await put.text(), "put");
 
+      const put_regexp = await fetch(host + "/user/23232", { method: "PUT" });
+      assertEquals(await put_regexp.text(), "put");
+
       const del = await fetch(host, { method: "DELETE" });
       assertEquals(await del.text(), "delete");
+
+      const del_regexp = await fetch(host + "/user/23232", {
+        method: "DELETE",
+      });
+      assertEquals(await del_regexp.text(), "delete");
 
       const ops = await fetch(host, { method: "OPTIONS" });
       assertEquals(await ops.text(), "options");
 
+      const ops_regexp = await fetch(host + "/user/23232", {
+        method: "OPTIONS",
+      });
+      assertEquals(await ops_regexp.text(), "options");
+
       const patch = await fetch(host, { method: "PATCH" });
       assertEquals(await patch.text(), "patch");
 
+      const patch_regexp = await fetch(host + "/user/23232", {
+        method: "PATCH",
+      });
+      assertEquals(await patch_regexp.text(), "patch");
+
       const head = await fetch(host, { method: "HEAD" });
       assertEquals(await head.text(), "");
+
+      const head_regexp = await fetch(host + "/user/23232", {
+        method: "HEAD",
+      });
+      assertEquals(await head_regexp.text(), "");
 
       const e = await fetch(host + "/error", { method: "GET" });
       assertExists(await e.text(), `Error: error\n`);
