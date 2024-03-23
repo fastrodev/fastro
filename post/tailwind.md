@@ -69,8 +69,8 @@ And of course, you must adjust the `deno.json` file too.
     "std/": "https://deno.land/std@0.212.0/",
     "fastro/": "https://fastro.deno.dev/v0.84.4/",
     "$app/": "./",
-    "preact": "npm:preact@10.19.2",
-    "preact/": "npm:/preact@10.19.2/"
+    "preact": "npm:preact@10.20.0",
+    "preact/": "npm:/preact@10.20.0/"
   },
   "compilerOptions": {
     "jsx": "react-jsx",

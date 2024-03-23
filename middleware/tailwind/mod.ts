@@ -3,7 +3,7 @@ import tailwindCss, { Config } from "npm:tailwindcss@3.4.1";
 import postcss from "https://deno.land/x/postcss@8.4.16/mod.js";
 import cssnano from "npm:cssnano@6.0.1";
 import autoprefixer from "npm:autoprefixer@10.4.16";
-import * as path from "https://deno.land/std@0.219.0/path/mod.ts";
+import * as path from "https://deno.land/std@0.220.1/path/mod.ts";
 import { TailwindPluginOptions } from "./types.ts";
 import { Context, HttpRequest } from "../../http/server/types.ts";
 import { getDevelopment } from "../../http/server/mod.ts";
