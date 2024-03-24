@@ -1,7 +1,8 @@
 // deno-lint-ignore-file no-explicit-any
-import { ComponentChild, h, JSX, renderToString } from "./deps.ts";
+import { ComponentChild, h, JSX, renderToString, VNode } from "./deps.ts";
 import { Fastro, FunctionComponent, Page } from "./types.ts";
 import { BUILD_ID, getDevelopment } from "./mod.ts";
+import { Component } from "preact";
 
 export class Render {
   #server: Fastro;
@@ -74,9 +75,10 @@ es.onmessage = function(e) {
     this.#server.add("GET", refreshPath, refreshStream);
   };
 
-  #mutate = (app: any, component: FunctionComponent, script = "") => {
+  #mutate = (layout: VNode, component: FunctionComponent, script = "") => {
     const customScript = this.#loadJs(component.name.toLowerCase()) + script;
-    (app.props.children as ComponentChild[]).push(
+    const children = layout.props.children as ComponentChild[];
+    children.push(
       h("script", {
         defer: true,
         type: "module",
@@ -86,14 +88,14 @@ es.onmessage = function(e) {
       }),
     );
     if (getDevelopment()) {
-      (app.props.children as ComponentChild[]).push(
+      children.push(
         h("script", {
           src: `/js/refresh.js`,
           async: true,
         }),
       );
     }
-    return app;
+    return layout;
   };
 
   render = <T = any>(key: string, p: Page, data: T, nonce: string) => {
