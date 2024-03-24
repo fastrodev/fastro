@@ -2,7 +2,6 @@
 import { ComponentChild, h, JSX, renderToString, VNode } from "./deps.ts";
 import { Fastro, FunctionComponent, Page } from "./types.ts";
 import { BUILD_ID, getDevelopment } from "./mod.ts";
-import { Component } from "preact";
 
 export class Render {
   #server: Fastro;
