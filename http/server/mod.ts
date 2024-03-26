@@ -496,12 +496,8 @@ if (root) fetchProps(root);
       }
     }
 
-    return this.#record[id] = [
-      handler,
-      this.#transformCtx(info, url, this.serverOptions),
-      params,
-      url,
-    ];
+    const ctx = this.#transformCtx(info, url, this.serverOptions);
+    return this.#record[id] = { handler, ctx, params, url };
   };
 
   #createHandler = () => {
@@ -509,12 +505,10 @@ if (root) fetchProps(root);
       const m = await this.#handleMiddleware(req, info);
       if (m) return m;
 
-      const [handler, ctx, params, url] = this.#handleRequest(req, info);
-      if (handler) {
-        const res = await handler(
-          this.#transformRequest(req, params, url),
-          ctx,
-        );
+      const r = this.#handleRequest(req, info);
+      if (r.handler) {
+        const tr = this.#transformRequest(req, r.params, r.url);
+        const res = await r.handler(tr, r.ctx);
         return createResponse(res);
       }
 
