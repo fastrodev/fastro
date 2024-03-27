@@ -66,11 +66,11 @@ And of course, you must adjust the `deno.json` file too.
     "start": "ENV=DEVELOPMENT deno run -A --watch main.ts"
   },
   "imports": {
-    "std/": "https://deno.land/std@0.212.0/",
-    "fastro/": "https://fastro.deno.dev/v0.84.4/",
+    "std/": "https://deno.land/std@0.220.1/",
+    "fastro/": "https://fastro.deno.dev/v0.87.2/",
     "$app/": "./",
-    "preact": "npm:preact@10.20.0",
-    "preact/": "npm:/preact@10.20.0/"
+    "preact": "npm:preact@10.20.1",
+    "preact/": "npm:/preact@10.20.1/"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
