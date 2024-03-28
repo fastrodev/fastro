@@ -66,7 +66,7 @@ And of course, you must adjust the `deno.json` file too.
     "start": "ENV=DEVELOPMENT deno run -A --watch main.ts"
   },
   "imports": {
-    "std/": "https://deno.land/std@0.220.1/",
+    "std/": "https://deno.land/std@0.221.0/",
     "fastro/": "https://fastro.deno.dev/v0.87.2/",
     "$app/": "./",
     "preact": "npm:preact@10.20.1",
