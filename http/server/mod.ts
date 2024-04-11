@@ -595,7 +595,8 @@ if (root) fetchProps(root);
 
   serve = async (options?: { port?: number; onListen?: ListenHandler }) => {
     const [s] = await this.#build();
-    if (s) return;
+    if (s) return Deno.exit(5);
+
     this.#server = Deno.serve({
       port: options && options.port ? options.port : 8000,
       handler: this.#handler,
