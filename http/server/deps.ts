@@ -1,21 +1,19 @@
-export {
-  STATUS_CODE,
-  STATUS_TEXT,
-} from "https://deno.land/std@0.224.0/http/status.ts";
+export { STATUS_CODE, STATUS_TEXT } from "jsr:@std/http@0.224.1/status";
 
-export * from "https://deno.land/std@0.224.0/media_types/mod.ts";
-export * from "https://deno.land/std@0.224.0/path/mod.ts";
+export * from "jsr:@std/media-types@0.224.1";
+export * from "jsr:@std/path@0.225.1";
 
-export { encodeHex } from "https://deno.land/std@0.224.0/encoding/hex.ts";
-export { assertEquals } from "https://deno.land/std@0.224.0/assert/assert_equals.ts";
-export { assertExists } from "https://deno.land/std@0.224.0/assert/assert_exists.ts";
-export { assert } from "https://deno.land/std@0.224.0/assert/assert.ts";
+export { encodeHex } from "jsr:@std/encoding@0.224.2/hex";
 
-export { h } from "https://esm.sh/preact@10.21.0";
+export { assertEquals } from "jsr:@std/assert@0.225.3/assert-equals";
+export { assertExists } from "jsr:@std/assert@0.225.3/assert-exists";
+export { assert } from "jsr:@std/assert@0.225.3/assert";
+
+export { h } from "https://esm.sh/preact@10.22.0";
 export type {
   ComponentChild,
   ComponentChildren,
   JSX,
   VNode,
-} from "https://esm.sh/preact@10.21.0";
-export { renderToString } from "https://esm.sh/preact-render-to-string@6.4.2?deps=preact@10.21.0";
+} from "https://esm.sh/preact@10.22.0";
+export { renderToString } from "https://esm.sh/preact-render-to-string@6.5.1?deps=preact@10.22.0";

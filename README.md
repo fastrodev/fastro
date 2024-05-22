@@ -2,21 +2,20 @@
 
 [![build](https://github.com/fastrodev/fastro/actions/workflows/build.yml/badge.svg)](https://github.com/fastrodev/fastro/actions/workflows/build.yml)
 [![bench](https://github.com/fastrodev/fastro/actions/workflows/bench.yml/badge.svg)](https://github.com/fastrodev/fastro/actions/workflows/bench.yml)
-[![deno doc](https://doc.deno.land/badge.svg)](https://deno.land/x/fastro/mod.ts)
+[![deno doc](https://doc.deno.land/badge.svg)](jsr:x/fastro/mod.ts)
 [![Coverage Status](https://coveralls.io/repos/github/fastrodev/fastro/badge.svg?branch=main)](https://coveralls.io/github/fastrodev/fastro?branch=main)
 
 <img align="right" src="https://avatars.githubusercontent.com/u/84224795" height="70px">
 
 Fast and simple web application framework for deno.
 
-With [deno near native performance](https://fastro.deno.dev/docs/benchmarks), you
-can:
+With [deno near native performance](https://fastro.deno.dev/docs/benchmarks),
+you can:
 
 - Manage your app and routing cleanly with
   [builder pattern](https://en.wikipedia.org/wiki/Builder_pattern)
 - Leverage existing Deno objects and methods such as
-  [Request](https://deno.land/api?s=Request),
-  [Headers](https://deno.land/api?s=Headers),
+  [Request](jsr:api?s=Request), [Headers](jsr:api?s=Headers),
   [URLPattern](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API)
 - Access the request, the context, and the next callback before execute the
   handler with

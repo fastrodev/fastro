@@ -1,4 +1,4 @@
-import { delay } from "https://deno.land/std@0.210.0/async/mod.ts";
+import { delay } from "jsr:@std/async@0.210.0";
 import { markdownTable } from "https://esm.sh/markdown-table@3.0.2";
 const time = 10;
 
