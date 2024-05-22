@@ -1,8 +1,5 @@
 import fastro, { Context, HttpRequest } from "$fastro/mod.ts";
-import {
-  MongoClient,
-  ObjectId,
-} from "https://deno.land/x/mongo@v0.32.0/mod.ts";
+import { MongoClient, ObjectId } from "jsr:x/mongo@v0.32.0/mod.ts";
 
 const client = new MongoClient();
 await client.connect("mongodb://root:example@localhost:27017");
