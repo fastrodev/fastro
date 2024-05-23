@@ -1,5 +1,5 @@
 import fastro, { Context, HttpRequest } from "$fastro/mod.ts";
-import { Client } from "jsr:x/mysql@v2.12.1/mod.ts";
+import { Client } from "https://deno.land/x/mysql@v2.12.1/mod.ts";
 
 const client = await new Client().connect({
   hostname: "127.0.0.1",

@@ -1,5 +1,5 @@
 import fastro, { Context, HttpRequest } from "$fastro/mod.ts";
-import { Client } from "jsr:x/postgres@v0.17.0/mod.ts";
+import { Client } from "https://deno.land/x/postgres@v0.17.0/mod.ts";
 
 const client = new Client({
   user: "postgres",

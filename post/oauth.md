@@ -29,7 +29,7 @@ In this step, we will create `oauthConfig` with custom `redirectUri` and
 `scope`.
 
 ```tsx
-import { createGitHubOAuthConfig } from "jsr:x/deno_kv_oauth@v0.10.0/mod.ts";
+import { createGitHubOAuthConfig } from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
 
 const redirectUri = Deno.env.get("REDIRECT_URI") ??
   : "http://localhost:8000/callback";
