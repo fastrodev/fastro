@@ -1,5 +1,5 @@
+import { assertEquals } from "jsr:@std/assert@^0.225.3/assert-equals";
 import { build } from "./build.ts";
-import { assertEquals } from "https://deno.land/std@0.210.0/assert/assert_equals.ts";
 
 Deno.test(
   {

@@ -4,7 +4,7 @@ import {
   handleCallback,
   signIn,
   signOut,
-} from "https://deno.land/x/deno_kv_oauth@v0.10.0/mod.ts";
+} from "jsr:@deno/kv-oauth@0.11.0";
 import { Context, Fastro, HttpRequest } from "$fastro/http/server/types.ts";
 import { STATUS_CODE } from "$fastro/http/server/deps.ts";
 import { kv } from "$fastro/utils/db.ts";

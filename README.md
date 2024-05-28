@@ -9,14 +9,13 @@
 
 Fast and simple web application framework for deno.
 
-With [deno near native performance](https://fastro.deno.dev/docs/benchmarks), you
-can:
+With [deno near native performance](https://fastro.deno.dev/docs/benchmarks),
+you can:
 
 - Manage your app and routing cleanly with
   [builder pattern](https://en.wikipedia.org/wiki/Builder_pattern)
 - Leverage existing Deno objects and methods such as
-  [Request](https://deno.land/api?s=Request),
-  [Headers](https://deno.land/api?s=Headers),
+  [Request](jsr:api?s=Request), [Headers](jsr:api?s=Headers),
   [URLPattern](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API)
 - Access the request, the context, and the next callback before execute the
   handler with
