@@ -50,9 +50,7 @@ async function getMarkdownBody(
   if (!md) return record[id] = null;
 
   const m = extract(md);
-  const f = await remark()
-    .use(remarkToc)
-    .processSync(m.body);
+  const f = await remark().process(m.body);
 
   const markdown = render(String(f));
   const html = layout({
