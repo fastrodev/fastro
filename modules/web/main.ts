@@ -58,9 +58,9 @@ s.page("/", {
     if (res) return init();
     return ctx.render({
       title:
-        "Don't settle for the status quo. Embrace the future of web development",
+        "Full Stack Web Framework for TypeScript, Deno, Preact, and Tailwind",
       description:
-        "With the power of Deno and TypeScript, Fastro packages Preact JS and Tailwind CSS, providing a unified experience.",
+        "Build high-performance web applications with ease. This full-stack framework leverages TypeScript, Deno, Preact and Tailwind for a smooth development experience.",
       youtube: "https://www.youtube.com/embed/cZc4Jn5nK3k",
       image:
         "https://avatars.githubusercontent.com/u/84224795?s=400&u=a53076f3dac46609e2837bef9980ae22ecd86e62&v=4",

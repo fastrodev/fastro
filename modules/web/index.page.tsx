@@ -12,7 +12,7 @@ export default function Index({ data }: PageProps<
   }
 >) {
   return (
-    <main>
+    <>
       <section class="container max-w-4xl px-6 py-10 mx-auto text-center lg:py-16 lg:px-12">
         <div class={`text-start lg:text-center`}>
           <InlineNav
@@ -25,9 +25,9 @@ export default function Index({ data }: PageProps<
         <h1 class="mb-4 mx-auto max-w-4xl text-start text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-center lg:text-6xl dark:text-white">
           {data.title}
         </h1>
-        <p class="mb-8 mx-auto max-w-4xl text-start text-lg font-normal text-gray-500 lg:text-center lg:text-xl dark:text-gray-400">
+        <h2 class="mb-8 mx-auto max-w-4xl text-start text-lg font-normal text-gray-500 lg:text-center lg:text-xl dark:text-gray-400">
           {data.description}
-        </p>
+        </h2>
         <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
           <a
             href="/docs/start"
@@ -48,7 +48,7 @@ export default function Index({ data }: PageProps<
               </path>
             </svg>
           </a>
-          <div class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+          <div class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800 bg-black">
             deno run -A -r https://fastro.deno.dev
           </div>
         </div>
@@ -66,6 +66,6 @@ export default function Index({ data }: PageProps<
         </div>
       </section>
       <Footer />
-    </main>
+    </>
   );
 }
