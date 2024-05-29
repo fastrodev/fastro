@@ -4,6 +4,7 @@ import { type Config } from "npm:tailwindcss@3.3.5";
  * see: https://tailwindcss.com/docs/content-configuration
  */
 export default {
+  darkMode: "class",
   content: [
     "./components/**/*.tsx",
     "./modules/**/**/*.tsx",

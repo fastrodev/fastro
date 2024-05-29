@@ -8,8 +8,9 @@ export function Footer() {
         href={`https://github.com/fastrodev/fastro`}
         class={`text-blue-600 dark:text-blue-500 hover:underline`}
       >
-        free and open source.
-      </a>{" "}
+        free and open source
+      </a>
+      {" full stack web framework. "}
       Powered by{" "}
       <a
         href={`https://deno.com/deploy`}
