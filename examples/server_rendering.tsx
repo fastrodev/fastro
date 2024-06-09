@@ -7,7 +7,7 @@ const s = new Server();
 s.page("/", {
   component: hello,
   layout,
-  handler: (req, ctx) => ctx.render({ title: "Hello world" }),
+  handler: (_req, ctx) => ctx.render({ title: "Hello world" }),
   folder: "modules/web",
 });
 
