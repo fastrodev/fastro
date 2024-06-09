@@ -59,7 +59,7 @@ Deno.test(
         return ctx.send({ data: req.oke, message: req.hello });
       });
 
-      f.get("/m2", (req, ctx) => {
+      f.get("/m2", (_req, ctx) => {
         if (ctx.url.pathname === "/m2") {
           return new Response("m2");
         }
