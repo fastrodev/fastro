@@ -60,7 +60,7 @@ s.page("/", {
       title:
         "Full Stack Web Framework for TypeScript, Deno, Preact, and Tailwind",
       description:
-        "Build high-performance web applications with ease. This full-stack framework leverages TypeScript, Deno, Preact and Tailwind for a smooth development experience.",
+        "Build high-performance web apps with ease and a smooth development experience",
       youtube: "https://www.youtube.com/embed/cZc4Jn5nK3k",
       image:
         "https://avatars.githubusercontent.com/u/84224795?s=400&u=a53076f3dac46609e2837bef9980ae22ecd86e62&v=4",
