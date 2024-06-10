@@ -7,7 +7,7 @@
 
 <img align="right" src="https://avatars.githubusercontent.com/u/84224795" height="70px">
 
-Fast and simple web application framework for deno.
+Full Stack Framework for Deno, TypeScript, Preact JS and Tailwind CSS
 
 With [deno near native performance](https://fastro.deno.dev/docs/benchmarks),
 you can:
