@@ -34,11 +34,11 @@ function createProcessor(
 ) {
   // const configPath = await Deno.realPath("./tailwind.config.ts");
   // const url = path.toFileUrl(configPath).href;
-  const tailwindConfig = c as unknown as Config;
+  const tailwindConfig = c.default as Config;
 
-  if (!Array.isArray(tailwindConfig.content)) {
-    throw new Error(`Expected tailwind "content" option to be an array`);
-  }
+  // if (!Array.isArray(tailwindConfig.content)) {
+  //   throw new Error(`Expected tailwind "content" option to be an array`);
+  // }
 
   // tailwindConfig.content = tailwindConfig.content.map((pattern) => {
   //   if (typeof pattern === "string") {
