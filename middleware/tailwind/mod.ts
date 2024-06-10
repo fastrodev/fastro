@@ -32,6 +32,7 @@ async function createProcessor(
   options: TailwindPluginOptions,
 ) {
   const configPath = Deno.cwd() + "/tailwind.config.ts";
+  console.log("configPath===>", configPath);
   const url = path.toFileUrl(configPath).href;
   const tailwindConfig = (await import(url)).default as Config;
 
