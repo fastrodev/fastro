@@ -40,7 +40,7 @@ function createProcessor(
 
 async function processCss(staticDir: string) {
   try {
-    const processor = await createProcessor({
+    const processor = createProcessor({
       staticDir,
       dev: false,
     }, {});
