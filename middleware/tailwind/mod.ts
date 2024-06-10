@@ -1,11 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
-import tailwindCss, { Config } from "npm:tailwindcss@3.4.1";
+import tailwindCss, { Config } from "npm:tailwindcss@3.4.4";
 import postcss from "npm:postcss@8.4.35";
 import cssnano from "npm:cssnano@6.0.1";
 import autoprefixer from "npm:autoprefixer@10.4.16";
 import * as path from "jsr:@std/path@0.225.1";
 import { TailwindPluginOptions } from "./types.ts";
 import { Context, HttpRequest } from "../../http/server/types.ts";
+// import * as x from "../../tailwind.config.ts"
 
 function render(content: string) {
   return new Response(content, {
@@ -31,8 +32,7 @@ async function createProcessor(
   },
   options: TailwindPluginOptions,
 ) {
-  const configPath = Deno.cwd() + "/tailwind.config.ts";
-  console.log("configPath===>", configPath);
+  const configPath = await Deno.realPath("./tailwind.config.ts");
   const url = path.toFileUrl(configPath).href;
   const tailwindConfig = (await import(url)).default as Config;
 
