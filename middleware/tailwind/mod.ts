@@ -6,8 +6,6 @@ import autoprefixer from "npm:autoprefixer@10.4.16";
 import * as path from "jsr:@std/path@0.225.1";
 import { TailwindPluginOptions } from "./types.ts";
 import { Context, HttpRequest } from "../../http/server/types.ts";
-import { getDevelopment } from "../../http/server/mod.ts";
-import { STATUS_CODE, STATUS_TEXT } from "../../http/server/deps.ts";
 
 function render(content: string) {
   return new Response(content, {
@@ -72,11 +70,10 @@ async function processCss(staticDir: string) {
     }, {});
 
     const path = Deno.cwd() + "/static/tailwind.css";
-    const content = await Deno.readTextFile(path);
+    const content = Deno.readTextFileSync(path);
     const result = await processor.process(content, {
       from: undefined,
     });
-
     return result;
   } catch (error) {
     console.error(error);
@@ -86,20 +83,6 @@ async function processCss(staticDir: string) {
 
 export function tailwind(pathname = "/styles.css", staticDir = "/") {
   const cache = new Map<string, string>();
-  const [s] = Deno.args.filter((v) => v === "--build");
-  if (s) {
-    console.log(
-      `%cBuild: %cstyles.css`,
-      "color: blue",
-      "color: white",
-    );
-
-    processCss(staticDir).then((result) => {
-      const outPath = Deno.cwd() + "/static/styles.css";
-      if (result) Deno.writeTextFile(outPath, result.content);
-    });
-    return () => {};
-  }
 
   async function m(_req: HttpRequest, ctx: Context) {
     if (ctx.url.pathname !== pathname) {
@@ -107,27 +90,12 @@ export function tailwind(pathname = "/styles.css", staticDir = "/") {
     }
 
     const cached = cache.get(pathname);
-    if (cached) {
-      return render(cached);
-    }
+    if (cached) return render(cached);
 
-    if (getDevelopment()) {
-      const result = await processCss(staticDir);
-      if (result) {
-        cache.set(pathname, result.content);
-        return render(result.content);
-      }
-    }
-
-    try {
-      const path = Deno.cwd() + "/static/styles.css";
-      const content = await Deno.readTextFile(path);
-      cache.set(pathname, content);
-      return render(content);
-    } catch {
-      return new Response(STATUS_TEXT[STATUS_CODE.NotFound], {
-        status: STATUS_CODE.NotFound,
-      });
+    const result = await processCss(staticDir);
+    if (result) {
+      cache.set(pathname, result.content);
+      return render(result.content);
     }
   }
 
