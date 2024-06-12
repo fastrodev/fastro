@@ -118,7 +118,7 @@ export default function Index({ data }: PageProps<
         <h2 class="mx-auto max-w-4xl text-lg font-normal text-gray-500 lg:text-center lg:text-xl dark:text-gray-400">
           {data.description}
         </h2>
-        <div class={`flex justify-between gap-x-6 my-2 md:my-12`}>
+        <div class={`flex justify-between gap-x-6 mb-6 mt-4 sm:mb-10 sm:mt-8`}>
           <div class={`text-white h-[100px]`}>
             <DenoSvg />
           </div>
