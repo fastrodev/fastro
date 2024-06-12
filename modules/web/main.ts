@@ -57,8 +57,7 @@ s.page("/", {
     const res = denoRunCheck(req);
     if (res) return init();
     return ctx.render({
-      title:
-        "Full Stack Web Framework for TypeScript, Deno, Preact, and Tailwind",
+      title: "Fast & Simple Web Framework",
       description:
         "Build high-performance web apps with ease and a smooth development experience",
       youtube: "https://www.youtube.com/embed/cZc4Jn5nK3k",

@@ -10,7 +10,7 @@ export function Footer() {
       >
         free and open source
       </a>
-      {" full stack web framework. "}
+      {" full stack web framework for Deno, TypeScript, Preact, and Tailwind. "}
       Powered by{" "}
       <a
         href={`https://deno.com/deploy`}
