@@ -97,8 +97,8 @@ function SocialSvg() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width="36"
+      height="36"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -123,8 +123,8 @@ function StoreSvg() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width="36"
+      height="36"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -147,8 +147,8 @@ function LoyalSvg() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width="36"
+      height="36"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -168,8 +168,8 @@ function AttendanceSvg() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width="36"
+      height="36"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -194,8 +194,8 @@ function PurchaseSvg() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width="36"
+      height="36"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -218,8 +218,8 @@ function WareHouseSvg() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width="36"
+      height="36"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -245,8 +245,8 @@ function SalesSvg() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width="36"
+      height="36"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -267,8 +267,8 @@ function AdsSvg() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width="36"
+      height="36"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -290,8 +290,8 @@ function BlogSvg() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width="36"
+      height="36"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -318,7 +318,7 @@ function ProjectBox(props: { children: VNode[] }) {
     <div
       class={`p-10 border border-white rounded-xl bg-green-700 flex justify-center`}
     >
-      <div class={`flex items-center gap-1`}>
+      <div class={`flex flex-col items-center gap-1`}>
         {props.children}
       </div>
     </div>
@@ -348,7 +348,7 @@ export default function Index({ data }: PageProps<
         <h1 class="mb-4 mx-auto max-w-4xl text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-center text-white">
           {data.title}
         </h1>
-        <h2 class="mx-auto max-w-4xl text-gray-500">
+        <h2 class="mx-auto max-w-4xl text-gray-500 text-2xl">
           {data.description}
         </h2>
         <div class={`flex justify-between gap-x-6 mb-6 mt-4 sm:mb-10 sm:mt-8`}>
@@ -365,11 +365,37 @@ export default function Index({ data }: PageProps<
             <TailwindSvg />
           </div>
         </div>
-        <h2 class={`mb-8 text-gray-500`}>
+        <h2 class={`mb-8 text-gray-500 text-2xl`}>
           With the power of Deno, TypeScript, Preact, and Tailwind ~ what apps
           can you make with Fastro Framework?
         </h2>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 mb-9">
+          <div class={`hidden md:block`}>
+            <ProjectBox>
+              <AdsSvg />
+              <span>Advertising</span>
+            </ProjectBox>
+          </div>
+          <ProjectBox>
+            <AttendanceSvg />
+            <span>Attendance</span>
+          </ProjectBox>
+          <ProjectBox>
+            <BlogSvg />
+            <span>Custom</span>
+          </ProjectBox>
+          <ProjectBox>
+            <LoyalSvg />
+            <span>Loyalty</span>
+          </ProjectBox>
+          <ProjectBox>
+            <PurchaseSvg />
+            <span>Purchasing</span>
+          </ProjectBox>
+          <ProjectBox>
+            <SalesSvg />
+            <span>Sales</span>
+          </ProjectBox>
           <ProjectBox>
             <SocialSvg />
             <span>Socmed</span>
@@ -379,34 +405,8 @@ export default function Index({ data }: PageProps<
             <span>Store</span>
           </ProjectBox>
           <ProjectBox>
-            <PurchaseSvg />
-            <span>Purchasing</span>
-          </ProjectBox>
-          <ProjectBox>
             <WareHouseSvg />
             <span>Warehouse</span>
-          </ProjectBox>
-          <ProjectBox>
-            <SalesSvg />
-            <span>Sales</span>
-          </ProjectBox>
-          <ProjectBox>
-            <LoyalSvg />
-            <span>Loyalti</span>
-          </ProjectBox>
-          <ProjectBox>
-            <AttendanceSvg />
-            <span>Attendance</span>
-          </ProjectBox>
-          <div class={`hidden md:block`}>
-            <ProjectBox>
-              <AdsSvg />
-              <span>Advertising</span>
-            </ProjectBox>
-          </div>
-          <ProjectBox>
-            <BlogSvg />
-            <span>Custom</span>
           </ProjectBox>
         </div>
         <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
