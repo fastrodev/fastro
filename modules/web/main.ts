@@ -59,7 +59,7 @@ s.page("/", {
     return ctx.render({
       title: "Fast and Modular Web Framework",
       description:
-        "Build high-performance server-side rendered (SSR) web applications that leverage a flat modular architecture for improved readability and maintainability.",
+        "Build high-performance server-side rendered (SSR) web applications that leverage a flat modular architecture for improved readability",
       youtube: "https://www.youtube.com/embed/cZc4Jn5nK3k",
       image:
         "https://avatars.githubusercontent.com/u/84224795?s=400&u=a53076f3dac46609e2837bef9980ae22ecd86e62&v=4",

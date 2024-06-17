@@ -409,6 +409,9 @@ export default function Index({ data }: PageProps<
             <span>Warehouse</span>
           </ProjectBox>
         </div>
+        <h2 class={`mb-8 text-gray-500 text-2xl`}>
+          Curious? Give it a try!
+        </h2>
         <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
           <a
             href="/docs/start"
