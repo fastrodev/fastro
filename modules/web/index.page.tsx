@@ -366,7 +366,8 @@ export default function Index({ data }: PageProps<
           </div>
         </div>
         <h2 class={`mb-8`}>
-          What can you make with Fastro?
+          With the power of Deno, TypeScript, Preact, and Tailwind - what apps
+          can you make with Fastro Framework?
         </h2>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 mb-9">
           <ProjectBox>
@@ -397,16 +398,16 @@ export default function Index({ data }: PageProps<
             <AttendanceSvg />
             <span>Attendance</span>
           </ProjectBox>
-          <ProjectBox>
-            <AdsSvg />
-            <span>Advertising</span>
-          </ProjectBox>
           <div class={`hidden md:block`}>
             <ProjectBox>
-              <BlogSvg />
-              <span>Blog</span>
+              <AdsSvg />
+              <span>Advertising</span>
             </ProjectBox>
           </div>
+          <ProjectBox>
+            <BlogSvg />
+            <span>CustomApp</span>
+          </ProjectBox>
         </div>
         <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
           <a
