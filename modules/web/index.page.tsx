@@ -336,7 +336,7 @@ export default function Index({ data }: PageProps<
 >) {
   return (
     <>
-      <section class="container max-w-4xl px-6 pb-10 pt-6 mx-auto text-center lg:py-16 lg:px-12">
+      <section class="container grow h-full max-w-4xl px-6 pb-10 pt-6 mx-auto text-center lg:py-16 lg:px-12">
         <div class={`text-center`}>
           <InlineNav
             title="New"
@@ -406,7 +406,7 @@ export default function Index({ data }: PageProps<
           </div>
           <ProjectBox>
             <BlogSvg />
-            <span>CustomApp</span>
+            <span>Custom</span>
           </ProjectBox>
         </div>
         <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
