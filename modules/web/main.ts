@@ -59,7 +59,7 @@ s.page("/", {
     return ctx.render({
       title: "Fast and Modular Web Framework",
       description:
-        "Build high-performance web applications that combine flat modularity for ease of use and a smooth development experience with Deno, TypeScript, Preact and Tailwind",
+        "Build high-performance server side rendering web applications that combine flat modularity for ease of use and a smooth development experience with Deno, TypeScript, Preact and Tailwind",
       youtube: "https://www.youtube.com/embed/cZc4Jn5nK3k",
       image:
         "https://avatars.githubusercontent.com/u/84224795?s=400&u=a53076f3dac46609e2837bef9980ae22ecd86e62&v=4",

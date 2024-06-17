@@ -92,6 +92,16 @@ function TailwindSvg() {
   );
 }
 
+function ProjectBox(props: { children: string }) {
+  return (
+    <div
+      class={`p-10 border border-white rounded-xl bg-green-700 text-center`}
+    >
+      {props.children}
+    </div>
+  );
+}
+
 export default function Index({ data }: PageProps<
   {
     user: string;
@@ -112,10 +122,10 @@ export default function Index({ data }: PageProps<
           />
         </div>
 
-        <h1 class="mb-4 mx-auto max-w-4xl text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-center dark:text-white">
+        <h1 class="mb-4 mx-auto max-w-4xl text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-center text-white">
           {data.title}
         </h1>
-        <h2 class="mx-auto max-w-4xl text-lg font-normal text-gray-500 lg:text-center lg:text-xl dark:text-gray-400">
+        <h2 class="mx-auto max-w-4xl text-lg font-normal lg:text-center lg:text-xl text-gray-400">
           {data.description}
         </h2>
         <div class={`flex justify-between gap-x-6 mb-6 mt-4 sm:mb-10 sm:mt-8`}>
@@ -132,7 +142,41 @@ export default function Index({ data }: PageProps<
             <TailwindSvg />
           </div>
         </div>
-        <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+        <h2 class={`mb-8`}>
+          What can you make with Fastro?
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 mb-9">
+          <ProjectBox>
+            Social Media
+          </ProjectBox>
+          <ProjectBox>
+            Online Store
+          </ProjectBox>
+          <ProjectBox>
+            Purchasing Apps
+          </ProjectBox>
+          <ProjectBox>
+            Warehouse Apps
+          </ProjectBox>
+          <ProjectBox>
+            Sales Apps
+          </ProjectBox>
+          <ProjectBox>
+            Loyalty Apps
+          </ProjectBox>
+          <ProjectBox>
+            Attendance Apps
+          </ProjectBox>
+          <ProjectBox>
+            Digital Advertising Apps
+          </ProjectBox>
+          <div class={`hidden md:block`}>
+            <ProjectBox>
+              Blog
+            </ProjectBox>
+          </div>
+        </div>
+        <div class="flex flex-col lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
           <a
             href="/docs/start"
             class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
@@ -152,21 +196,9 @@ export default function Index({ data }: PageProps<
               </path>
             </svg>
           </a>
-          <div class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+          <div class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center rounded-lg border text-white border-white bg-black">
             deno run -A -r https://fastro.deno.dev
           </div>
-        </div>
-        <div class="aspect-w-16 aspect-h-9">
-          <iframe
-            width="640"
-            height="360"
-            src={data.youtube}
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen={undefined}
-            class="relative w-full max-w-4xl mx-auto mt-12 border border-gray-300 shadow-2xl rounded-3xl lg:mt-12 dark:border-gray-700 yt-video"
-          >
-          </iframe>
         </div>
       </section>
       <Footer />

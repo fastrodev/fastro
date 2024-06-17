@@ -19,7 +19,7 @@ export function index(
       </head>
       <body
         id="root"
-        class={`grow bg-white dark:bg-gray-900 text-slate-900 dark:text-white`}
+        class={`grow bg-gray-950 text-white`}
       >
         {children}
       </body>
