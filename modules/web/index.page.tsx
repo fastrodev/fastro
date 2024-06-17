@@ -112,7 +112,7 @@ export default function Index({ data }: PageProps<
           />
         </div>
 
-        <h1 class="mb-4 mx-auto max-w-4xl text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-center lg:text-6xl dark:text-white">
+        <h1 class="mb-4 mx-auto max-w-4xl text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-center dark:text-white">
           {data.title}
         </h1>
         <h2 class="mx-auto max-w-4xl text-lg font-normal text-gray-500 lg:text-center lg:text-xl dark:text-gray-400">

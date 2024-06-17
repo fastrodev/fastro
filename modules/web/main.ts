@@ -59,7 +59,7 @@ s.page("/", {
     return ctx.render({
       title: "Fast & Simple Web Framework",
       description:
-        "Build high-performance web apps with ease and a smooth development experience",
+        "Develop high-performance web applications with modularity, ease of use, and a smooth development experience",
       youtube: "https://www.youtube.com/embed/cZc4Jn5nK3k",
       image:
         "https://avatars.githubusercontent.com/u/84224795?s=400&u=a53076f3dac46609e2837bef9980ae22ecd86e62&v=4",
