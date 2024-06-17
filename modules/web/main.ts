@@ -57,9 +57,9 @@ s.page("/", {
     const res = denoRunCheck(req);
     if (res) return init();
     return ctx.render({
-      title: "Fast & Simple Web Framework",
+      title: "Fast and Modular Web Framework",
       description:
-        "Develop high-performance web applications with modularity, ease of use, and a smooth development experience",
+        "Build high-performance web applications that combine flat modularity for ease of use and a smooth development experience with Deno, TypeScript, Preact and Tailwind",
       youtube: "https://www.youtube.com/embed/cZc4Jn5nK3k",
       image:
         "https://avatars.githubusercontent.com/u/84224795?s=400&u=a53076f3dac46609e2837bef9980ae22ecd86e62&v=4",
