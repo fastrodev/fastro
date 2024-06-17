@@ -57,7 +57,7 @@ s.page("/", {
     const res = denoRunCheck(req);
     if (res) return init();
     return ctx.render({
-      title: "Fast and Modular Web Framework",
+      title: "Fast & Modular Web Framework",
       description:
         "Build high-performance server-side rendered (SSR) web applications that leverage a flat modular architecture for improved readability",
       youtube: "https://www.youtube.com/embed/cZc4Jn5nK3k",
