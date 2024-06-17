@@ -1,6 +1,7 @@
 import { PageProps } from "$fastro/http/server/types.ts";
 import { InlineNav } from "$fastro/components/inline-nav.tsx";
 import { Footer } from "$fastro/components/footer.tsx";
+import { VNode } from "https://esm.sh/preact@10.22.0";
 
 function DenoSvg() {
   return (
@@ -92,12 +93,234 @@ function TailwindSvg() {
   );
 }
 
-function ProjectBox(props: { children: string }) {
+function SocialSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-social"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M5 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M19 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M12 14m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+      <path d="M12 7l0 4" />
+      <path d="M6.7 17.8l2.8 -2" />
+      <path d="M17.3 17.8l-2.8 -2" />
+    </svg>
+  );
+}
+
+function StoreSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-building-store"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M3 21l18 0" />
+      <path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4" />
+      <path d="M5 21l0 -10.15" />
+      <path d="M19 21l0 -10.15" />
+      <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
+    </svg>
+  );
+}
+
+function LoyalSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-reload"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M19.933 13.041a8 8 0 1 1 -9.925 -8.788c3.899 -1 7.935 1.007 9.425 4.747" />
+      <path d="M20 4v5h-5" />
+    </svg>
+  );
+}
+
+function AttendanceSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-report"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M8 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h5.697" />
+      <path d="M18 14v4h4" />
+      <path d="M18 11v-4a2 2 0 0 0 -2 -2h-2" />
+      <path d="M8 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+      <path d="M18 18m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+      <path d="M8 11h4" />
+      <path d="M8 15h3" />
+    </svg>
+  );
+}
+
+function PurchaseSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-package"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
+      <path d="M12 12l8 -4.5" />
+      <path d="M12 12l0 9" />
+      <path d="M12 12l-8 -4.5" />
+      <path d="M16 5.25l-8 4.5" />
+    </svg>
+  );
+}
+
+function WareHouseSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-forklift"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M5 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M14 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M7 17l5 0" />
+      <path d="M3 17v-6h13v6" />
+      <path d="M5 11v-4h4" />
+      <path d="M9 11v-6h4l3 6" />
+      <path d="M22 15h-3v-10" />
+      <path d="M16 13l3 0" />
+    </svg>
+  );
+}
+
+function SalesSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-target"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+      <path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" />
+      <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+    </svg>
+  );
+}
+
+function AdsSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-ad"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+      <path d="M7 15v-4a2 2 0 0 1 4 0v4" />
+      <path d="M7 13l4 0" />
+      <path d="M17 9v6h-1.5a1.5 1.5 0 1 1 1.5 -1.5" />
+    </svg>
+  );
+}
+
+function BlogSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-network"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M6 9a6 6 0 1 0 12 0a6 6 0 0 0 -12 0" />
+      <path d="M12 3c1.333 .333 2 2.333 2 6s-.667 5.667 -2 6" />
+      <path d="M12 3c-1.333 .333 -2 2.333 -2 6s.667 5.667 2 6" />
+      <path d="M6 9h12" />
+      <path d="M3 20h7" />
+      <path d="M14 20h7" />
+      <path d="M10 20a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path d="M12 15v3" />
+    </svg>
+  );
+}
+
+function ProjectBox(props: { children: VNode[] }) {
   return (
     <div
-      class={`p-10 border border-white rounded-xl bg-green-700 text-center`}
+      class={`p-10 border border-white rounded-xl bg-green-700 flex justify-center`}
     >
-      {props.children}
+      <div class={`flex items-center gap-1`}>
+        {props.children}
+      </div>
     </div>
   );
 }
@@ -113,7 +336,7 @@ export default function Index({ data }: PageProps<
 >) {
   return (
     <>
-      <section class="container max-w-4xl px-6 py-10 mx-auto text-center lg:py-16 lg:px-12">
+      <section class="container max-w-4xl px-6 pb-10 pt-6 mx-auto text-center lg:py-16 lg:px-12">
         <div class={`text-center`}>
           <InlineNav
             title="New"
@@ -147,39 +370,48 @@ export default function Index({ data }: PageProps<
         </h2>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 mb-9">
           <ProjectBox>
-            Social Media
+            <SocialSvg />
+            <span>Socmed</span>
           </ProjectBox>
           <ProjectBox>
-            Online Store
+            <StoreSvg />
+            <span>Store</span>
           </ProjectBox>
           <ProjectBox>
-            Purchasing Apps
+            <PurchaseSvg />
+            <span>Purchasing</span>
           </ProjectBox>
           <ProjectBox>
-            Warehouse Apps
+            <WareHouseSvg />
+            <span>Warehouse</span>
           </ProjectBox>
           <ProjectBox>
-            Sales Apps
+            <SalesSvg />
+            <span>Sales</span>
           </ProjectBox>
           <ProjectBox>
-            Loyalty Apps
+            <LoyalSvg />
+            <span>Loyalti</span>
           </ProjectBox>
           <ProjectBox>
-            Attendance Apps
+            <AttendanceSvg />
+            <span>Attendance</span>
           </ProjectBox>
           <ProjectBox>
-            Digital Advertising Apps
+            <AdsSvg />
+            <span>Advertising</span>
           </ProjectBox>
           <div class={`hidden md:block`}>
             <ProjectBox>
-              Blog
+              <BlogSvg />
+              <span>Blog</span>
             </ProjectBox>
           </div>
         </div>
-        <div class="flex flex-col lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+        <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
           <a
             href="/docs/start"
-            class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+            class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-900 border border-white"
           >
             Get started
             <svg
