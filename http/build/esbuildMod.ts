@@ -11,7 +11,7 @@ export class EsbuildMod {
   }
 
   build = async () => {
-    await build(this.#elementName);
+    return await build(this.#elementName);
   };
 
   stop = () => {

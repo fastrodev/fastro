@@ -11,7 +11,7 @@ export async function build(elementName: string) {
           configPath,
         }),
       ],
-      write: true,
+      write: Deno.env.get("ENV") !== "DEVELOPMENT",
       entryPoints: [hydrateTarget],
       outfile: `static/js/${elementName.toLowerCase()}.js`,
       platform: "browser",

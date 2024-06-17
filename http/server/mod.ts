@@ -11,6 +11,7 @@ import { Render } from "./render.ts";
 import {
   Context,
   Fastro,
+  FunctionComponent,
   Handler,
   HttpRequest,
   ListenHandler,
@@ -213,7 +214,27 @@ export default class Server implements Fastro {
     }
     for (const [_key, page] of Object.entries(this.#routePage)) {
       await this.#createHydrate(page);
-      await this.#buildPageComponent(page);
+      const result = await this.#buildPageComponent(page);
+      if (
+        Deno.env.get("ENV") === "DEVELOPMENT" && result && result.outputFiles
+      ) {
+        for (const out of result.outputFiles) {
+          const fc = page.component as FunctionComponent;
+          const decoder = new TextDecoder();
+          const str = decoder.decode(out.contents);
+          const path =
+            `/js/${fc.name.toLocaleLowerCase()}.${this.getNonce()}.js`;
+          this.add(
+            "GET",
+            path,
+            () => {
+              return new Response(str, {
+                headers: { "content-type": "application/javascript" },
+              });
+            },
+          );
+        }
+      }
     }
     return Deno.args.filter((v) => v === "--build");
   };
@@ -268,7 +289,7 @@ if (root) fetchProps(root);
       );
 
       const es = new EsbuildMod(c);
-      await es.build();
+      return await es.build();
     }
   }
 

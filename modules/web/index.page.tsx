@@ -348,7 +348,7 @@ export default function Index({ data }: PageProps<
         <h1 class="mb-4 mx-auto max-w-4xl text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-center text-white">
           {data.title}
         </h1>
-        <h2 class="mx-auto max-w-4xl text-lg font-normal lg:text-center lg:text-xl text-gray-400">
+        <h2 class="mx-auto max-w-4xl text-gray-500">
           {data.description}
         </h2>
         <div class={`flex justify-between gap-x-6 mb-6 mt-4 sm:mb-10 sm:mt-8`}>
@@ -365,8 +365,8 @@ export default function Index({ data }: PageProps<
             <TailwindSvg />
           </div>
         </div>
-        <h2 class={`mb-8`}>
-          With the power of Deno, TypeScript, Preact, and Tailwind - what apps
+        <h2 class={`mb-8 text-gray-500`}>
+          With the power of Deno, TypeScript, Preact, and Tailwind ~ what apps
           can you make with Fastro Framework?
         </h2>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 mb-9">
