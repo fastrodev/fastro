@@ -11,7 +11,7 @@ export function index(
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>
-          {`Fastro - Full Stack Web Framework for TypeScript, Deno, Preact, and Tailwind`}
+          {`Fastro - Full Stack Web Framework for Deno, TypeScript, Preact JS, and Tailwind CSS`}
         </title>
         <meta name="description" content={data.description} />
         <meta property="og:image" content={data.image} />

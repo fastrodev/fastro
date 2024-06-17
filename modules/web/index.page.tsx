@@ -316,7 +316,7 @@ function BlogSvg() {
 function ProjectBox(props: { children: VNode[] }) {
   return (
     <div
-      class={`p-10 border border-white rounded-xl bg-green-700 flex justify-center`}
+      class={`p-3 border border-white rounded-xl bg-green-700 flex justify-center`}
     >
       <div class={`flex flex-col items-center gap-1`}>
         {props.children}
@@ -366,8 +366,8 @@ export default function Index({ data }: PageProps<
           </div>
         </div>
         <h2 class={`mb-8 text-gray-500 text-2xl`}>
-          With the power of Deno, TypeScript, Preact, and Tailwind ~ what apps
-          can you make with Fastro Framework?
+          With the power of Deno, TypeScript, Preact JS, and Tailwind CSS ~ what
+          apps can you make with Fastro Framework?
         </h2>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 mb-9">
           <div class={`hidden md:block`}>
