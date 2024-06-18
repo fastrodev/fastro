@@ -32,13 +32,15 @@ export default function (
       </head>
       <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
         <main class={"container grow max-w-4xl px-6 py-10 mx-auto"}>
-          <div>
-            <InlineNav
-              title="Fastro"
-              description="Documentation"
-              destination="/docs"
-            />
-            <h1 class="mb-3 mx-auto text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+          <div class={`flex flex-col gap-y-3`}>
+            <div>
+              <InlineNav
+                title="Fastro"
+                description="Documentation"
+                destination="/docs"
+              />
+            </div>
+            <h1 class="mb-3 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
               {title}
             </h1>
           </div>
