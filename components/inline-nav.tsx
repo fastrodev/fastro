@@ -37,7 +37,7 @@ export function InlineNav(
   const desc = props.description ?? "Home";
   const dest = props.destination ?? "/";
   return (
-    <div class="inline-flex justify-between items-center p-1 pr-4 text-sm text-gray-700 bg-gray-200 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
+    <div class="inline-flex justify-between items-center p-1 pr-4 text-sm text-gray-700 bg-gray-200 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 mb-3">
       <a
         href="/"
         class={`text-white`}
