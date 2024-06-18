@@ -17,10 +17,10 @@ Every profit generated will be divided according to the following percentages.
 
 | Role               | Description                                                   | Sharing Profit |
 | ------------------ | ------------------------------------------------------------- | :------------: |
-| Business Analyst   | Define user requirements & business flow                      |      22 %      |
-| Designer           | Design UI/UX applications.                                    |      22 %      |
-| Backend Developer  | Desain the database, build, test, and deploy the applications |      23 %      |
-| Frontend Developer | Create a user interface and integrate it with APIs            |      23 %      |
+| Business Analyst   | Define user requirements & business flow                      |      23 %      |
+| Designer           | Design UI/UX applications.                                    |      23 %      |
+| Backend Developer  | Desain the database, build, test, and deploy the applications |      22 %      |
+| Frontend Developer | Create a user interface and integrate it with APIs            |      22 %      |
 | Sales              | Attract brands to run ads on the platform                     |      5 %       |
 
 Those schemes can be changed to adapt to different situations and conditions.
