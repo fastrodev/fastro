@@ -1,5 +1,5 @@
 ---
-title: "Programmers, Business Analysts, and Designers Unite, Share Profitable Wins!"
+title: "Collaboration and Profit Sharing"
 description: "Unleash the Power of Collaboration!  Programmers, Business Analysts, and Designers: Discover how to maximize profits and fuel team success with a winning profit-sharing strategy for your app."
 image: https://fastro.deno.dev/fastro.png
 author: Yanu Widodo
@@ -15,13 +15,13 @@ they will need to subscribe monthly.
 
 Every profit generated will be divided according to the following percentages.
 
-| Role               | Description                                                   | Sharing Profit |
-| ------------------ | ------------------------------------------------------------- | :------------: |
-| Business Analyst   | Define user requirements & business flow                      |      23 %      |
-| Designer           | Design UI/UX applications.                                    |      23 %      |
-| Backend Developer  | Desain the database, build, test, and deploy the applications |      22 %      |
-| Frontend Developer | Create a user interface and integrate it with APIs            |      22 %      |
-| Sales              | Attract brands to run ads on the platform                     |      5 %       |
+| Role               | Description                                                   | Output                                                                                                   | Sharing Profit |
+| ------------------ | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | :------------: |
+| Business Analyst   | Define user requirements & business flow                      | [BRD](https://www.indeed.com/career-advice/career-development/business-requirements-document-definition) |      23 %      |
+| Designer           | Design UI/UX applications.                                    | Figma Design                                                                                             |      23 %      |
+| Backend Developer  | Desain the database, build, test, and deploy the applications | APIs                                                                                                     |      22 %      |
+| Frontend Developer | Create a user interface and integrate it with APIs            | Application                                                                                              |      22 %      |
+| Sales              | Attract brands to run ads on the platform                     | Paid Users & Brands Ads                                                                                  |      5 %       |
 
 Those schemes can be changed to adapt to different situations and conditions.
 

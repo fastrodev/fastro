@@ -3,6 +3,8 @@ import indexApp from "$fastro/modules/web/index.page.tsx";
 import markdown from "$fastro/middleware/markdown/mod.tsx";
 import blogLayout from "$fastro/modules/web/blog.layout.tsx";
 import docsLayout from "$fastro/modules/web/docs.layout.tsx";
+import tocLayout from "$fastro/modules/web/toc.layout.tsx";
+import tocApp from "$fastro/modules/web/toc.page.tsx";
 import { index } from "$fastro/modules/web/index.layout.tsx";
 import { tailwind } from "$fastro/middleware/tailwind/mod.ts";
 import { HttpRequest } from "$fastro/http/server/types.ts";
@@ -69,6 +71,27 @@ s.page("/", {
       baseUrl: Deno.env.get("ENV") === "DEVELOPMENT"
         ? "http://localhost:8000"
         : "https://fastro.deno.dev",
+    });
+  },
+});
+
+s.page("/blog", {
+  component: tocApp,
+  layout: tocLayout,
+  folder: "modules/web",
+  handler: (req, ctx) => {
+    const res = denoRunCheck(req);
+    if (res) return init();
+    return ctx.render({
+      posts: [{
+        title: "Collaboration and Profit Sharing",
+        url: "/blog/collaboration",
+        date: "6/18/2024",
+      }, {
+        title: "Set up Tailwind on Deno",
+        url: "/blog/tailwind",
+        date: "1/26/2024",
+      }],
     });
   },
 });
