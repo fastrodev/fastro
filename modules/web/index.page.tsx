@@ -339,7 +339,7 @@ export default function Index({ data }: PageProps<
       <section class="container grow h-full max-w-4xl px-6 pb-10 pt-6 mx-auto text-center lg:py-16 lg:px-12">
         <div class={`text-center`}>
           <InlineNav
-            title="New"
+            title="Fastro"
             description="Integrating Tailwind CSS into a Deno Project"
             destination={`${data.baseUrl}/blog/tailwind`}
           />
@@ -348,10 +348,12 @@ export default function Index({ data }: PageProps<
         <h1 class="mb-4 mx-auto max-w-4xl text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-center text-white">
           {data.title}
         </h1>
-        <h2 class="mx-auto max-w-4xl text-gray-500 text-2xl">
+        <h2 class="mx-auto max-w-4xl text-gray-500 sm:text-2xl text-base">
           {data.description}
         </h2>
-        <div class={`flex justify-between gap-x-6 mb-6 mt-4 sm:mb-10 sm:mt-8`}>
+        <div
+          class={`mx-auto max-w-xl flex justify-between gap-x-6 mb-6 mt-4 sm:mb-10 sm:mt-8`}
+        >
           <div class={`text-white h-[100px]`}>
             <DenoSvg />
           </div>
@@ -365,7 +367,7 @@ export default function Index({ data }: PageProps<
             <TailwindSvg />
           </div>
         </div>
-        <h2 class={`mb-8 text-gray-500 text-2xl`}>
+        <h2 class={`mb-8 text-gray-500 sm:text-2xl text-base`}>
           With the power of Deno, TypeScript, Preact JS, and Tailwind CSS ~ what
           apps can you make with Fastro Framework?
         </h2>
@@ -409,7 +411,7 @@ export default function Index({ data }: PageProps<
             <span>Warehouse</span>
           </ProjectBox>
         </div>
-        <h2 class={`mb-8 text-gray-500 text-2xl`}>
+        <h2 class={`mb-8 text-gray-300 sm:text-2xl text-xl`}>
           Curious? Give it a try!
         </h2>
         <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">

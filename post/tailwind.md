@@ -67,7 +67,7 @@ And of course, you must adjust the `deno.json` file too.
   },
   "imports": {
     "std/": "jsr:@std/",
-    "fastro/": "https://fastro.deno.dev/v0.87.2/",
+    "fastro/": "https://fastro.deno.dev/v0.90.0/",
     "$app/": "./",
     "preact": "npm:preact@10.22.0",
     "preact/": "npm:/preact@10.22.0/"
