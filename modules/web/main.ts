@@ -79,9 +79,7 @@ s.page("/blog", {
   component: tocApp,
   layout: tocLayout,
   folder: "modules/web",
-  handler: (req, ctx) => {
-    const res = denoRunCheck(req);
-    if (res) return init();
+  handler: (_req, ctx) => {
     return ctx.render({
       posts: [{
         title: "Collaboration and Profit Sharing",
