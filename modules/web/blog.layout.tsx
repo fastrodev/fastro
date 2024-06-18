@@ -18,7 +18,7 @@ function generateTags(tags: string[]) {
   }
 
   return (
-    <div class={"flex space-x-1 mb-5"}>
+    <div class={"flex space-x-1 mb-3"}>
       {tags &&
         tags.map((tag) => (
           <a href={`tag/${tag}`}>
@@ -71,23 +71,24 @@ export default function (
       <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
         <main class={"container grow max-w-4xl px-6 py-10 mx-auto"}>
           <div class={`flex flex-col gap-y-3`}>
-            <div>
-              <InlineNav
-                title="Fastro"
-                description="Blog"
-                destination="/blog"
-              />
+            <div class={`flex flex-col gap-y-3`}>
+              <div>
+                <InlineNav
+                  title="Fastro"
+                  description="Blog"
+                  destination="/blog"
+                />
+              </div>
+              <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
+                {title}
+              </h1>
             </div>
-            <h1 class="mb-3 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-              {title}
-            </h1>
-            <p class={"mb-3 font-light"}>{date}</p>
-            <p class={"inline-flex items-baseline space-x-1 mb-4"}>
+            <p class={"inline-flex items-center gap-x-2 mb-3"}>
               <img
                 src={avatar}
                 class="self-center w-5 h-5 rounded-full"
               />
-              <span class={"font-light"}>{author}</span>
+              <span class={"font-light"}>{author} • {date}</span>
             </p>
             {generateTags(tags)}
           </div>

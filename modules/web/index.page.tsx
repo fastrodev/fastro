@@ -341,7 +341,7 @@ export default function Index({ data }: PageProps<
           <div class={`text-center`}>
             <InlineNav
               title="Fastro"
-              description="Integrating Tailwind CSS into a Deno Project"
+              description="Deno & Tailwind CSS Setup"
               destination={`${data.baseUrl}/blog/tailwind`}
             />
           </div>
@@ -442,13 +442,13 @@ export default function Index({ data }: PageProps<
             <span>Warehouse</span>
           </ProjectBox>
         </div>
-        <h2 class={`text-gray-300 sm:text-2xl text-xl`}>
+        <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
           Do you have a design concept or idea?
         </h2>
 
         <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
           <a
-            href="https://github.com/fastrodev/feedback/issues/new"
+            href="/blog/collaboration"
             class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-900 border border-white"
           >
             Submit it for our review and processing
