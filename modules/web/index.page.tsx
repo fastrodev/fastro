@@ -336,23 +336,55 @@ export default function Index({ data }: PageProps<
 >) {
   return (
     <>
-      <section class="container grow h-full max-w-4xl px-6 pb-10 pt-6 mx-auto text-center lg:py-16 lg:px-12">
-        <div class={`text-center`}>
-          <InlineNav
-            title="Fastro"
-            description="Integrating Tailwind CSS into a Deno Project"
-            destination={`${data.baseUrl}/blog/tailwind`}
-          />
+      <section class="container flex flex-col gap-y-6 grow max-w-4xl px-6 pb-10 pt-6 mx-auto text-center lg:py-16 lg:px-12">
+        <div class={`flex flex-col gap-y-3`}>
+          <div class={`text-center`}>
+            <InlineNav
+              title="Fastro"
+              description="Integrating Tailwind CSS into a Deno Project"
+              destination={`${data.baseUrl}/blog/tailwind`}
+            />
+          </div>
+
+          <h1 class="mx-auto max-w-4xl text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-center text-white">
+            {data.title}
+          </h1>
+          <h2 class="mx-auto max-w-4xl text-gray-500 sm:text-2xl text-xl">
+            {data.description}
+          </h2>
         </div>
 
-        <h1 class="mb-4 mx-auto max-w-4xl text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-center text-white">
-          {data.title}
-        </h1>
-        <h2 class="mx-auto max-w-4xl text-gray-500 sm:text-2xl text-base">
-          {data.description}
+        <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+          <a
+            href="/docs/start"
+            class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-900 border border-white"
+          >
+            Get started
+            <svg
+              class="ml-2 -mr-1 w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              >
+              </path>
+            </svg>
+          </a>
+          <div class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center rounded-lg border text-white border-white bg-black">
+            deno run -A -r https://fastro.deno.dev
+          </div>
+        </div>
+
+        <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
+          Powered by Deno, TypeScript, Preact JS, and Tailwind CSS
         </h2>
+
         <div
-          class={`mx-auto max-w-xl flex justify-between gap-x-6 mb-6 mt-4 sm:mb-10 sm:mt-8`}
+          class={`mx-auto max-w-xl flex justify-between gap-x-6`}
         >
           <div class={`text-white h-[100px]`}>
             <DenoSvg />
@@ -367,11 +399,10 @@ export default function Index({ data }: PageProps<
             <TailwindSvg />
           </div>
         </div>
-        <h2 class={`mb-8 text-gray-500 sm:text-2xl text-base`}>
-          With the power of Deno, TypeScript, Preact JS, and Tailwind CSS ~ what
-          apps can you make with Fastro Framework?
+        <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
+          What apps can you make with Fastro Framework?
         </h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 mb-9">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
           <div class={`hidden md:block`}>
             <ProjectBox>
               <AdsSvg />
@@ -411,15 +442,16 @@ export default function Index({ data }: PageProps<
             <span>Warehouse</span>
           </ProjectBox>
         </div>
-        <h2 class={`mb-8 text-gray-300 sm:text-2xl text-xl`}>
-          Curious? Give it a try!
+        <h2 class={`text-gray-300 sm:text-2xl text-xl`}>
+          Do you have a design concept or idea?
         </h2>
+
         <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
           <a
-            href="/docs/start"
+            href="https://github.com/fastrodev/feedback/issues/new"
             class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-900 border border-white"
           >
-            Get started
+            Submit it for our review and processing
             <svg
               class="ml-2 -mr-1 w-5 h-5"
               fill="currentColor"
@@ -434,9 +466,6 @@ export default function Index({ data }: PageProps<
               </path>
             </svg>
           </a>
-          <div class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center rounded-lg border text-white border-white bg-black">
-            deno run -A -r https://fastro.deno.dev
-          </div>
         </div>
       </section>
       <Footer />

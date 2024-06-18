@@ -37,13 +37,13 @@ export function InlineNav(
   const desc = props.description ?? "Home";
   const dest = props.destination ?? "/";
   return (
-    <div class="inline-flex justify-between items-center p-1 pr-4 text-sm text-gray-700 bg-gray-200 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 mb-3">
+    <div class="inline-flex justify-between items-center p-1 pr-4 text-sm text-gray-700 bg-gray-200 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
       <a
         href="/"
         class={`text-white`}
         style={{ textDecoration: "none" }}
       >
-        <div class="flex items-center gap-1 text-xs bg-primary-600 rounded-full text-white px-3 py-1 mr-3">
+        <div class="flex items-center gap-1 text-xs bg-primary-600 rounded-full text-white px-3 py-1 mr-3 ">
           <BoltSvg />
           <span>{title}</span>
         </div>
