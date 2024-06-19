@@ -11,6 +11,14 @@ export default function (
   const title = props.attrs.title as string;
   const description = props.attrs.description as string;
   const image = props.attrs.image as string;
+  const toc = [
+    { title: "Get Started", url: "/docs/start" },
+    { title: "Application Structure", url: "/docs/structure" },
+    {
+      title: "Benchmarks",
+      url: "/docs/benchmarks",
+    },
+  ];
 
   return (
     <html lang="en">
@@ -31,27 +39,38 @@ export default function (
         <link href="/markdown.css" rel="stylesheet" />
       </head>
       <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
-        <main class={"container grow max-w-4xl px-6 py-10 mx-auto"}>
-          <div class={`flex flex-col gap-y-3 mb-3`}>
-            <div>
-              <InlineNav
-                title="Fastro"
-                description="Documentation"
-                destination="/docs"
-              />
-            </div>
-            <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
-              {title}
-            </h1>
-          </div>
-          <hr class="h-px mb-4 bg-gray-200 border-0 dark:bg-gray-800" />
+        <main class={"grow p-6 md:grid md:grid-cols-8"}>
           <div
-            data-color-mode="auto"
-            data-light-theme="light"
-            data-dark-theme="dark"
-            class="markdown-body"
+            class={`hidden md:flex md:flex-col md:grow md:gap-y-2`}
           >
-            {props.markdown}
+            {toc.map((v) => {
+              return <a href={v.url}>{v.title}</a>;
+            })}
+          </div>
+          <div
+            class={`md:col-span-7 md:border-l md:border-l-gray-800 md:pl-10`}
+          >
+            <div class={`flex flex-col gap-y-3 mb-3`}>
+              <div class={`block`}>
+                <InlineNav
+                  title="Fastro"
+                  description="Documentation"
+                  destination="/docs"
+                />
+              </div>
+              <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
+                {title}
+              </h1>
+            </div>
+            <hr class="h-px mb-4 bg-gray-200 border-0 dark:bg-gray-800" />
+            <div
+              data-color-mode="auto"
+              data-light-theme="light"
+              data-dark-theme="dark"
+              class={`markdown-body max-w-4xl`}
+            >
+              {props.markdown}
+            </div>
           </div>
         </main>
         <Footer />

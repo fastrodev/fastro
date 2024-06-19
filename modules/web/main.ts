@@ -25,7 +25,7 @@ s.use(tailwind());
 s.get("/docs", (_req, _ctx) => {
   const start = Deno.env.get("ENV") === "DEVELOPMENT"
     ? "http://localhost:8000/docs/start"
-    : "https://fastro.deno.dev/docs/start";
+    : "https://fastro.dev/docs/start";
   return Response.redirect(start, 307);
 });
 
