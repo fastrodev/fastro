@@ -62,10 +62,10 @@ s.page("/", {
       title: "Fast & Modular Web Framework",
       description:
         "Build high-performance server-side rendered (SSR) web applications that leverage a flat modular architecture for improved readability",
-      image: "https://fastro.deno.dev/fastro.png",
+      image: "https://fastro.dev/fastro.png",
       start: Deno.env.get("ENV") === "DEVELOPMENT"
         ? "http://localhost:8000/docs/start"
-        : "https://fastro.deno.dev/docs/start",
+        : "https://fastro.dev/docs/start",
       baseUrl: Deno.env.get("ENV") === "DEVELOPMENT"
         ? "http://localhost:8000"
         : "https://fastro.dev",
