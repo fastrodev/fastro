@@ -330,7 +330,6 @@ export default function Index({ data }: PageProps<
     user: string;
     title: string;
     description: string;
-    youtube: string;
     baseUrl: string;
   }
 >) {

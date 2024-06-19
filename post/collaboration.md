@@ -1,7 +1,7 @@
 ---
 title: "Collaboration and Profit Sharing"
 description: "Unleash the Power of Collaboration!  Programmers, Business Analysts, and Designers: Discover how to maximize profits and fuel team success with a winning profit-sharing strategy for your app."
-image: https://fastro.deno.dev/fastro.png
+image: https://fastro.deno.dev/collab.png
 author: Yanu Widodo
 date: 06/18/2024
 ---
@@ -15,21 +15,26 @@ they will need to subscribe monthly.
 
 Every profit generated will be divided according to the following percentages.
 
-| Role               | Description                                                   | Output                                                                                                   | Sharing Profit |
-| ------------------ | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | :------------: |
-| Business Analyst   | Define user requirements & business flow                      | [BRD](https://www.indeed.com/career-advice/career-development/business-requirements-document-definition) |      23 %      |
-| Designer           | Design UI/UX applications.                                    | Figma Design                                                                                             |      22 %      |
-| Backend Developer  | Desain the database, build, test, and deploy the applications | APIs                                                                                                     |      23 %      |
-| Frontend Developer | Create a user interface and integrate it with APIs            | Application                                                                                              |      22 %      |
-| Sales              | Attract vendors or brands to run ads on the platform          | Paid Users, Vendors, Brands Ads                                                                          |      5 %       |
+| Role               | Description                                          | Output                                  |                Sharing Profit                 |
+| ------------------ | ---------------------------------------------------- | --------------------------------------- | :-------------------------------------------: |
+| Business Analyst   | Define user requirements & business flow             | Business Requirements Document (BRD)    |                     23 %                      |
+| Designer           | Design UI/UX applications.                           | Clickable Figma Prototype               |                     22 %                      |
+| Frontend Developer | Create a user interface and integrate it with APIs   | Web Application (SSR)                   |                     22 %                      |
+| Backend Developer  | Build, test, and deploy the applications             | Application Programming Interface (API) |                     23 %                      |
+| Sales              | Attract vendors or brands to run ads on the platform | Ads placement                           | 5% commission from every income they bring in |
 
 Those schemes can be changed to adapt to different situations and conditions.
 
 ## Call for collaboration
 
-Do you have a design concept or idea? Please
-[submit here.](https://github.com/fastrodev/feedback/issues/new)
+Do you have a design concept or idea?
+
+Please [submit here.](https://github.com/fastrodev/feedback/issues/new)
 
 Or
 
 Send your message to [hello@fastro.dev](mailto:hello@fastro.dev)
+
+Or
+
+Send to [Whatsapp](https://api.whatsapp.com/send?phone=628121619781)

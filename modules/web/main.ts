@@ -62,15 +62,13 @@ s.page("/", {
       title: "Fast & Modular Web Framework",
       description:
         "Build high-performance server-side rendered (SSR) web applications that leverage a flat modular architecture for improved readability",
-      youtube: "https://www.youtube.com/embed/cZc4Jn5nK3k",
-      image:
-        "https://avatars.githubusercontent.com/u/84224795?s=400&u=a53076f3dac46609e2837bef9980ae22ecd86e62&v=4",
+      image: "https://fastro.deno.dev/fastro.png",
       start: Deno.env.get("ENV") === "DEVELOPMENT"
         ? "http://localhost:8000/docs/start"
         : "https://fastro.deno.dev/docs/start",
       baseUrl: Deno.env.get("ENV") === "DEVELOPMENT"
         ? "http://localhost:8000"
-        : "https://fastro.deno.dev",
+        : "https://fastro.dev",
     });
   },
 });
