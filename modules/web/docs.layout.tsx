@@ -11,8 +11,8 @@ export default function (
   const title = props.attrs.title as string;
   const description = props.attrs.description as string;
   const image = props.attrs.image as string;
-  const previous = props.attrs.previous ? props.attrs.previous as string : "#";
-  const next = props.attrs.next ? props.attrs.next as string : "#";
+  const previous = props.attrs.previous as string;
+  const next = props.attrs.next as string;
 
   const toc = [
     {
@@ -84,12 +84,16 @@ export default function (
             <div
               class={`flex justify-between py-3 border-t-[1px] border-t-gray-800`}
             >
-              <a href={previous}>
-                Previous
-              </a>
-              <a href={next}>
-                Next
-              </a>
+              {previous && (
+                <a href={previous}>
+                  Previous
+                </a>
+              )}
+              {next && (
+                <a href={next}>
+                  Next
+                </a>
+              )}
             </div>
           </div>
         </main>
