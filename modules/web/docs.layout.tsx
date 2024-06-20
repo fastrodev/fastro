@@ -48,18 +48,20 @@ export default function (
         <link href="/markdown.css" rel="stylesheet" />
       </head>
       <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
-        <main class={"grow p-6 md:grid md:grid-cols-10"}>
+        <main
+          class={"grow md:grid md:grid-cols-10 p-6 md:p-0 "}
+        >
           <div
-            class={`hidden md:flex md:flex-col md:grow md:gap-y-3 md:col-span-2 md:items-end md:text-right md:pr-6`}
+            class={`hidden md:flex md:flex-col md:grow md:gap-y-3 md:col-span-2 md:items-end md:text-right md:pr-6 md:pt-6`}
           >
             {toc.map((v) => {
               return <a href={v.url}>{v.title}</a>;
             })}
           </div>
           <div
-            class={`md:col-span-6 md:border-l md:border-l-gray-800 md:pl-5`}
+            class={`md:col-span-6 md:border-l md:border-l-gray-800 md:pl-5 md:pt-6 flex flex-col gap-y-6`}
           >
-            <div class={`flex flex-col gap-y-3 mb-3`}>
+            <div class={`flex flex-col gap-y-3`}>
               <div class={`block`}>
                 <InlineNav
                   title="Fastro"
@@ -71,18 +73,18 @@ export default function (
                 {title}
               </h1>
             </div>
-            <hr class="h-px mb-4 bg-gray-200 border-0 dark:bg-gray-800" />
+            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-800" />
             <div
               data-color-mode="auto"
               data-light-theme="light"
               data-dark-theme="dark"
-              class={`markdown-body pb-6`}
+              class={`markdown-body`}
             >
               {props.markdown}
             </div>
 
             <div
-              class={`flex justify-between py-3 border-t-[1px] border-t-gray-800`}
+              class={`flex justify-between py-3`}
             >
               {previous && (
                 <a href={previous}>
