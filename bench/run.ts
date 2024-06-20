@@ -128,9 +128,11 @@ const t = table.map((v) => {
 });
 
 let markdown = `---
-title: "Benchmarks"
+title: Benchmarks
 description: This is the final output of an internal benchmark run in github action
 image: https://fastro.dev/fastro.png
+previous: structure
+next: ""
 ---
 
 This is the final output of an internal benchmark run in [github action](https://github.com/fastrodev/fastro/actions) on \`${
