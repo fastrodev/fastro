@@ -1,8 +1,9 @@
 ---
-title: "Application Structure"
+title: Application Structure
 description: flat modular architecture for improved readability.
 image: https://fastro.deno.dev/fastro.png
-page: 1
+previous: start
+next: benchmarks
 ---
 
 You can find more detailed instructions in

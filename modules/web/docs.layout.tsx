@@ -11,9 +11,18 @@ export default function (
   const title = props.attrs.title as string;
   const description = props.attrs.description as string;
   const image = props.attrs.image as string;
+  const previous = props.attrs.previous ? props.attrs.previous as string : "#";
+  const next = props.attrs.next ? props.attrs.next as string : "#";
+
   const toc = [
-    { title: "Get Started", url: "/docs/start" },
-    { title: "Application Structure", url: "/docs/structure" },
+    {
+      title: "Get Started",
+      url: "/docs/start",
+    },
+    {
+      title: "Application Structure",
+      url: "/docs/structure",
+    },
     {
       title: "Benchmarks",
       url: "/docs/benchmarks",
@@ -39,16 +48,16 @@ export default function (
         <link href="/markdown.css" rel="stylesheet" />
       </head>
       <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
-        <main class={"grow p-6 md:grid md:grid-cols-8"}>
+        <main class={"grow p-6 md:grid md:grid-cols-10"}>
           <div
-            class={`hidden md:flex md:flex-col md:grow md:gap-y-2 md:col-span-2 md:items-end md:pr-6`}
+            class={`hidden md:flex md:flex-col md:grow md:gap-y-3 md:col-span-2 md:items-end md:text-right md:pr-6`}
           >
             {toc.map((v) => {
               return <a href={v.url}>{v.title}</a>;
             })}
           </div>
           <div
-            class={`md:col-span-6 md:border-l md:border-l-gray-800 md:pl-6 max-w-3xl`}
+            class={`md:col-span-6 md:border-l md:border-l-gray-800 md:pl-5`}
           >
             <div class={`flex flex-col gap-y-3 mb-3`}>
               <div class={`block`}>
@@ -67,9 +76,20 @@ export default function (
               data-color-mode="auto"
               data-light-theme="light"
               data-dark-theme="dark"
-              class={`markdown-body`}
+              class={`markdown-body pb-6`}
             >
               {props.markdown}
+            </div>
+
+            <div
+              class={`flex justify-between py-3 border-t-[1px] border-t-gray-800`}
+            >
+              <a href={previous}>
+                Previous
+              </a>
+              <a href={next}>
+                Next
+              </a>
             </div>
           </div>
         </main>

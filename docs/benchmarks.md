@@ -2,14 +2,21 @@
 title: "Benchmarks"
 description: This is the final output of an internal benchmark run in github action
 image: https://fastro.dev/fastro.png
+previous: structure
+next: ""
 ---
 
-This is the final output of an internal benchmark run in [github action](https://github.com/fastrodev/fastro/actions) on `6/20/2024, 12:57:49 AM`. It consists of several simple applications for [specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json). Each is then accessed by the [OHA](https://github.com/hatoo/oha) within 10s. The results are then sorted by the fastest.
+This is the final output of an internal benchmark run in
+[github action](https://github.com/fastrodev/fastro/actions) on
+`6/20/2024, 12:57:49 AM`. It consists of several simple applications for
+[specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json).
+Each is then accessed by the [OHA](https://github.com/hatoo/oha) within 10s. The
+results are then sorted by the fastest.
 
-You can find the benchmark script in this code: [run.ts](https://github.com/fastrodev/fastro/blob/main/bench/run.ts)
+You can find the benchmark script in this code:
+[run.ts](https://github.com/fastrodev/fastro/blob/main/bench/run.ts)
 
 ## Benchmark results
-
 
 | module                                                                                               |   rps |    % | oha cmd                                                            |
 | :--------------------------------------------------------------------------------------------------- | ----: | ---: | :----------------------------------------------------------------- |
