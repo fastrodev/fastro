@@ -1,7 +1,7 @@
 export function Footer() {
   return (
     <div
-      class={`container max-w-4xl mx-auto text-center text-xs py-3 px-6 dark:text-gray-400 border-t  dark:border-gray-700`}
+      class={`container max-w-4xl mx-auto text-center text-xs py-3 px-6 dark:text-gray-400`}
     >
       Fastro Framework is{" "}
       <a

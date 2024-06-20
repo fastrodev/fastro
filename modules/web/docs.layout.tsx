@@ -41,14 +41,14 @@ export default function (
       <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
         <main class={"grow p-6 md:grid md:grid-cols-8"}>
           <div
-            class={`hidden md:flex md:flex-col md:grow md:gap-y-2`}
+            class={`hidden md:flex md:flex-col md:grow md:gap-y-2 md:col-span-2 md:items-end md:pr-6`}
           >
             {toc.map((v) => {
               return <a href={v.url}>{v.title}</a>;
             })}
           </div>
           <div
-            class={`md:col-span-7 md:border-l md:border-l-gray-800 md:pl-10`}
+            class={`md:col-span-6 md:border-l md:border-l-gray-800 md:pl-6 max-w-3xl`}
           >
             <div class={`flex flex-col gap-y-3 mb-3`}>
               <div class={`block`}>
@@ -67,7 +67,7 @@ export default function (
               data-color-mode="auto"
               data-light-theme="light"
               data-dark-theme="dark"
-              class={`markdown-body max-w-4xl`}
+              class={`markdown-body`}
             >
               {props.markdown}
             </div>

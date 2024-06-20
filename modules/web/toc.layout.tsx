@@ -22,7 +22,7 @@ export default function ({ children }: LayoutProps<
                 <link href="/styles.css" rel="stylesheet" />
             </head>
             <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
-                <main class={"container grow max-w-4xl px-6 py-10 mx-auto"}>
+                <main class={"container grow max-w-4xl px-6 py-6 mx-auto"}>
                     <div class={`flex flex-col gap-y-3 mb-3`}>
                         <div>
                             <InlineNav
