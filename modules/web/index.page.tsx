@@ -340,8 +340,8 @@ export default function Index({ data }: PageProps<
           <div class={`text-center`}>
             <InlineNav
               title="Fastro"
-              description="Blog"
-              destination={`${data.baseUrl}/blog`}
+              description="Collaboration and Profit Sharing"
+              destination={`${data.baseUrl}/blog/collaboration`}
             />
           </div>
 

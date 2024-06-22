@@ -2,7 +2,7 @@ import Server from "$fastro/mod.ts";
 import indexApp from "$fastro/modules/web/index.page.tsx";
 import markdown from "$fastro/middleware/markdown/mod.tsx";
 import blogLayout from "$fastro/modules/web/blog.layout.tsx";
-import docsLayout from "$fastro/modules/web/docs.layout.tsx";
+import docsLayout, { docToc } from "$fastro/modules/web/docs.layout.tsx";
 import tocLayout from "$fastro/modules/web/toc.layout.tsx";
 import tocApp from "$fastro/modules/web/toc.page.tsx";
 import { index } from "$fastro/modules/web/index.layout.tsx";
@@ -22,11 +22,19 @@ s.use(markdown(docsLayout, "docs", "docs"));
 s.use(tailwind());
 
 /** setup docs endpoint */
-s.get("/docs", (_req, _ctx) => {
-  const start = Deno.env.get("ENV") === "DEVELOPMENT"
-    ? "http://localhost:8000/docs/start"
-    : "https://fastro.dev/docs/start";
-  return Response.redirect(start, 307);
+
+s.page("/docs", {
+  component: tocApp,
+  layout: tocLayout,
+  folder: "modules/web",
+  handler: (_req, ctx) => {
+    return ctx.render({
+      title: "Documentation",
+      description: "Documentation of Fastro Framework",
+      destination: "/docs",
+      posts: docToc,
+    });
+  },
 });
 
 /** proxy for github repo */
@@ -79,6 +87,9 @@ s.page("/blog", {
   folder: "modules/web",
   handler: (_req, ctx) => {
     return ctx.render({
+      title: "Blog",
+      description: "Blog of Fastro Framework",
+      destination: "/blog",
       posts: [
         {
           title: "Collaboration and Profit Sharing",
@@ -96,7 +107,7 @@ s.page("/blog", {
           date: "11/15/2023",
         },
         {
-          title: "React: renderToReadableStream",
+          title: "renderToReadableStream",
           url: "/blog/render_to_readable_stream",
           date: "10/26/2023",
         },

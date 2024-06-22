@@ -1,4 +1,4 @@
-import { CSS, extract, remark, remarkToc, render } from "./deps.ts";
+import { CSS, extract, remark, render } from "./deps.ts";
 import { renderToString } from "../../http/server/deps.ts";
 import { Context, FunctionComponent, HttpRequest } from "../../mod.ts";
 

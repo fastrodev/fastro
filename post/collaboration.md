@@ -16,15 +16,16 @@ they will need to subscribe monthly.
 Profits generated will be divided based on the following percentages, according
 to workload assumption.
 
-| Role               | Description                                      | Output                                  |                Sharing Profit                 |
-| ------------------ | ------------------------------------------------ | --------------------------------------- | :-------------------------------------------: |
-| Business Analyst   | Define user requirements & business flow         | Business Requirements Document (BRD)    |                     20 %                      |
-| Designer           | Design UI/UX applications.                       | Clickable Figma Prototype               |                     20 %                      |
-| Frontend Developer | Create a user interface & integrate it with APIs | Web Application (SSR)                   |                     20 %                      |
-| Backend Developer  | Build, test & deploy the applications            | Application Programming Interface (API) |                     20 %                      |
-| Core Framework     | Framework maintenance & app dev coordination     | Fastro Framework & Timeline             |                     10 %                      |
-| Infrastructure     | Maintain the operational of Server & Database    | The Live Application                    |                      5%                       |
-| Freelance Sales    | Attract vendors to run ads on the platform       | Ads placement                           | 5% commission from every income they bring in |
+| Role              | Task                                             | Output                                  |                Sharing Profit                 |
+| ----------------- | ------------------------------------------------ | --------------------------------------- | :-------------------------------------------: |
+| Business Analyst  | Define user requirements & business flow         | Business Requirements Document (BRD)    |                     16 %                      |
+| Designer          | Design UI/UX applications.                       | Clickable Figma Prototype               |                     16 %                      |
+| Frontend          | Create a user interface & integrate it with APIs | Web Application (SSR)                   |                     16 %                      |
+| Backend           | Database desain & create APIs                    | Application Programming Interface (API) |                     16 %                      |
+| Quality Assurance | Test and ensure the application's quality        | Stakeholder satisfaction                |                     16 %                      |
+| Core Framework    | Framework maintenance & app dev coordination     | Fastro Framework & Timeline             |                     10 %                      |
+| Infrastructure    | Maintain the operational of Server & Database    | The Live Application                    |                      5%                       |
+| Freelance Sales   | Attract vendors to run ads on the platform       | Ads placement                           | 5% commission from every income they bring in |
 
 Those schemes can be changed to adapt to different situations and conditions.
 

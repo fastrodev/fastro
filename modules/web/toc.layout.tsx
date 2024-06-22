@@ -2,8 +2,8 @@ import { InlineNav } from "$fastro/components/inline-nav.tsx";
 import { Footer } from "$fastro/components/footer.tsx";
 import { LayoutProps } from "$fastro/http/server/types.ts";
 
-export default function ({ children }: LayoutProps<
-    { title: string; description: string; image: string }
+export default function ({ children, data }: LayoutProps<
+    { title: string; description: string; image: string; destination: string }
 >) {
     return (
         <html lang="en">
@@ -13,12 +13,12 @@ export default function ({ children }: LayoutProps<
                     name="viewport"
                     content="width=device-width, initial-scale=1.0"
                 />
-                <meta name="description" content={"Blog of Fastro Framework"} />
+                <meta name="description" content={data.description} />
                 <meta
                     property="og:image"
                     content={"https://fastro.deno.dev/fastro.png"}
                 />
-                <title>{`Blog | Fastro`}</title>
+                <title>{`${data.title} | Fastro`}</title>
                 <link href="/styles.css" rel="stylesheet" />
             </head>
             <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
@@ -27,12 +27,12 @@ export default function ({ children }: LayoutProps<
                         <div>
                             <InlineNav
                                 title="Fastro"
-                                description="Blog"
-                                destination="/blog"
+                                description={data.title}
+                                destination={data.destination}
                             />
                         </div>
                         <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
-                            Blog of Fastro Framework
+                            {data.description}
                         </h1>
                     </div>
 

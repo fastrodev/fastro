@@ -9,7 +9,7 @@ export default function Toc({ data }: PageProps<{ posts: Post[] }>) {
         {data.posts.map((v) => {
           return (
             <a href={v.url}>
-              <li>{v.date} ~ {v.title}</li>
+              <li>{v.date && `${v.date} ~ `}{v.title}</li>
             </a>
           );
         })}

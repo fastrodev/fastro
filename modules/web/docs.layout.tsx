@@ -1,7 +1,7 @@
 import { Footer } from "$fastro/components/footer.tsx";
 import { InlineNav } from "../../components/inline-nav.tsx";
 
-const toc = [
+export const docToc = [
   {
     title: "Get Started",
     url: "/docs/start",
@@ -146,7 +146,7 @@ export default function (
           <div
             class={`hidden md:flex md:flex-col md:grow md:gap-y-3 md:col-span-2 md:items-end md:text-right md:pr-6 md:pt-6 md:pb-6`}
           >
-            {toc.map((v) => {
+            {docToc.map((v) => {
               return <a href={v.url}>{v.title}</a>;
             })}
           </div>
@@ -176,7 +176,7 @@ export default function (
             </div>
 
             <div
-              class={`flex justify-between py-3`}
+              class={`flex justify-between pb-3`}
             >
               {previous && (
                 <a href={previous}>
