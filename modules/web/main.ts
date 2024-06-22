@@ -30,7 +30,7 @@ s.page("/docs", {
   handler: (_req, ctx) => {
     return ctx.render({
       title: "Documentation",
-      description: "Documentation of Fastro Framework",
+      description: "Documentation",
       destination: "/docs",
       posts: docToc,
     });
