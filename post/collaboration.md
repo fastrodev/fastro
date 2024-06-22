@@ -23,7 +23,7 @@ to workload assumption.
 | Frontend          | Create a user interface & integrate it with APIs | Web Application (SSR)                   |                     14 %                      |
 | Backend           | Database desain & create APIs                    | Application Programming Interface (API) |                     14 %                      |
 | Quality Assurance | Test and ensure the application's quality        | Stakeholder satisfaction                |                     14 %                      |
-| Product Manager |  | Epic, Sprint, User Stories & Timeline | 14 % |
+| Product Manager | Overseeing its entire lifecycle from ideation to launch and beyond | Epic, Sprint, User Stories & Timeline | 14 % |
 | Core Framework    | Framework maintenance    | Framework             |                     6 %                      |
 | Infrastructure    | Maintain the operational of Server & Database    | CI/CD, Deployment                   |                      5 %                       |
 | Sales   | Attract vendors to run ads on the platform       | Ads placement                           | 5% commission from every income they bring in |
