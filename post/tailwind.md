@@ -2,7 +2,7 @@
 title: "Set up Tailwind on Deno"
 description: "Integrating Tailwind CSS into a Deno Project"
 image: https://fastro.deno.dev/tailwind.png
-author: Yanu Widodo
+author: Admin
 date: 01/26/2024
 ---
 

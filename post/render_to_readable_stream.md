@@ -3,7 +3,7 @@ title: "Fastro v0.83.0: renderToReadableStream"
 image: https://fastro.deno.dev/fastro.png
 description: "Use renderToReadableStream to improve the performance of
 the page load "
-author: Yanu Widodo
+author: Admin
 date: 10/26/2023
 ---
 

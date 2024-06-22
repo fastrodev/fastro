@@ -340,8 +340,8 @@ export default function Index({ data }: PageProps<
           <div class={`text-center`}>
             <InlineNav
               title="Fastro"
-              description="Deno & Tailwind CSS Setup"
-              destination={`${data.baseUrl}/blog/tailwind`}
+              description="Blog"
+              destination={`${data.baseUrl}/blog`}
             />
           </div>
 

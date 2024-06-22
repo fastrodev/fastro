@@ -79,15 +79,43 @@ s.page("/blog", {
   folder: "modules/web",
   handler: (_req, ctx) => {
     return ctx.render({
-      posts: [{
-        title: "Collaboration and Profit Sharing",
-        url: "/blog/collaboration",
-        date: "6/18/2024",
-      }, {
-        title: "Set up Tailwind on Deno",
-        url: "/blog/tailwind",
-        date: "1/26/2024",
-      }],
+      posts: [
+        {
+          title: "Collaboration and Profit Sharing",
+          url: "/blog/collaboration",
+          date: "06/18/2024",
+        },
+        {
+          title: "Set up Tailwind on Deno",
+          url: "/blog/tailwind",
+          date: "01/26/2024",
+        },
+        {
+          title: "Deno KV OAuth Implementation",
+          url: "/blog/oauth",
+          date: "11/15/2023",
+        },
+        {
+          title: "React: renderToReadableStream",
+          url: "/blog/render_to_readable_stream",
+          date: "10/26/2023",
+        },
+        {
+          title: "React",
+          url: "/blog/react",
+          date: "10/22/2023",
+        },
+        {
+          title: "Preact",
+          url: "/blog/preact_and_encrypted_props",
+          date: "08/16/2023",
+        },
+        {
+          title: "Hello",
+          url: "/blog/hello",
+          date: "11/15/2023",
+        },
+      ],
     });
   },
 });

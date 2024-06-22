@@ -1,6 +1,113 @@
 import { Footer } from "$fastro/components/footer.tsx";
 import { InlineNav } from "../../components/inline-nav.tsx";
 
+const toc = [
+  {
+    title: "Get Started",
+    url: "/docs/start",
+  },
+  {
+    title: "App Structure",
+    url: "/docs/structure",
+  },
+  {
+    title: "Hello World",
+    url: "/docs/hello",
+  },
+  {
+    title: "Hello World Context",
+    url: "/docs/hello-context",
+  },
+  {
+    title: "Hello JSON",
+    url: "/docs/json",
+  },
+  {
+    title: "Routing",
+    url: "/docs/route",
+  },
+  {
+    title: "URL Params",
+    url: "/docs/url-params",
+  },
+  {
+    title: "Query Params",
+    url: "/docs/query-params",
+  },
+  {
+    title: "App Middleware",
+    url: "/docs/app-middleware",
+  },
+  {
+    title: "Route Middleware",
+    url: "/docs/route-middleware",
+  },
+  {
+    title: "Markdown Middleware",
+    url: "/docs/markdown",
+  },
+  {
+    title: "Tailwind Middleware",
+    url: "/docs/tailwind",
+  },
+  {
+    title: "Static File",
+    url: "/docs/static",
+  },
+  {
+    title: "Hello TSX",
+    url: "/docs/tsx",
+  },
+  {
+    title: "TSX Component",
+    url: "/docs/tsx-component",
+  },
+  {
+    title: "Function Component",
+    url: "/docs/fn-component",
+  },
+  {
+    title: "Server Side Rendering",
+    url: "/docs/ssr",
+  },
+  {
+    title: "OAuth",
+    url: "/docs/oauth",
+  },
+  {
+    title: "MySQL",
+    url: "/docs/mysql",
+  },
+  {
+    title: "Postgres",
+    url: "/docs/postgres",
+  },
+  {
+    title: "Redis",
+    url: "/docs/redis",
+  },
+  {
+    title: "Mongo",
+    url: "/docs/mongo",
+  },
+  {
+    title: "Deno KV",
+    url: "/docs/kv",
+  },
+  {
+    title: "Grouping",
+    url: "/docs/group",
+  },
+  {
+    title: "Deployment",
+    url: "/docs/deploy",
+  },
+  {
+    title: "Benchmarks",
+    url: "/docs/benchmarks",
+  },
+];
+
 export default function (
   props: {
     CSS: string;
@@ -13,21 +120,6 @@ export default function (
   const image = props.attrs.image as string;
   const previous = props.attrs.previous as string;
   const next = props.attrs.next as string;
-
-  const toc = [
-    {
-      title: "Get Started",
-      url: "/docs/start",
-    },
-    {
-      title: "Application Structure",
-      url: "/docs/structure",
-    },
-    {
-      title: "Benchmarks",
-      url: "/docs/benchmarks",
-    },
-  ];
 
   return (
     <html lang="en">
@@ -52,14 +144,14 @@ export default function (
           class={"grow md:grid md:grid-cols-10 p-6 md:p-0 "}
         >
           <div
-            class={`hidden md:flex md:flex-col md:grow md:gap-y-3 md:col-span-2 md:items-end md:text-right md:pr-6 md:pt-6`}
+            class={`hidden md:flex md:flex-col md:grow md:gap-y-3 md:col-span-2 md:items-end md:text-right md:pr-6 md:pt-6 md:pb-6`}
           >
             {toc.map((v) => {
               return <a href={v.url}>{v.title}</a>;
             })}
           </div>
           <div
-            class={`md:col-span-6 md:border-l md:border-l-gray-800 md:pl-5 md:pt-6 flex flex-col gap-y-6`}
+            class={`md:col-span-6 md:border-l md:border-l-gray-800 md:pl-5 md:pt-6 flex flex-col gap-y-6 max-w-4xl`}
           >
             <div class={`flex flex-col gap-y-3`}>
               <div class={`block`}>
