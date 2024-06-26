@@ -286,6 +286,66 @@ function AdsSvg() {
   );
 }
 
+function SeoSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-seo"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M7 8h-3a1 1 0 0 0 -1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-3" />
+      <path d="M14 16h-4v-8h4" />
+      <path d="M11 12h2" />
+      <path d="M17 8m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
+    </svg>
+  );
+}
+
+function BoltSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      width="36"
+      height="36"
+      fill="#e8eaed"
+    >
+      <path d="m320-80 40-280H160l360-520h80l-40 320h240L400-80h-80Z" />
+    </svg>
+  );
+}
+
+function UxSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-ux-circle"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+      <path d="M7 10v2a2 2 0 1 0 4 0v-2" />
+      <path d="M14 10l3 4" />
+      <path d="M14 14l3 -4" />
+    </svg>
+  );
+}
+
 function BlogSvg() {
   return (
     <svg
@@ -313,6 +373,34 @@ function BlogSvg() {
   );
 }
 
+function WwwSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-world-www"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M19.5 7a9 9 0 0 0 -7.5 -4a8.991 8.991 0 0 0 -7.484 4" />
+      <path d="M11.5 3a16.989 16.989 0 0 0 -1.826 4" />
+      <path d="M12.5 3a16.989 16.989 0 0 1 1.828 4" />
+      <path d="M19.5 17a9 9 0 0 1 -7.5 4a8.991 8.991 0 0 1 -7.484 -4" />
+      <path d="M11.5 21a16.989 16.989 0 0 1 -1.826 -4" />
+      <path d="M12.5 21a16.989 16.989 0 0 0 1.828 -4" />
+      <path d="M2 10l1 4l1.5 -4l1.5 4l1 -4" />
+      <path d="M17 10l1 4l1.5 -4l1.5 4l1 -4" />
+      <path d="M9.5 10l1 4l1.5 -4l1.5 4l1 -4" />
+    </svg>
+  );
+}
+
 function ProjectBox(props: { children: VNode[] }) {
   return (
     <div
@@ -335,7 +423,7 @@ export default function Index({ data }: PageProps<
 >) {
   return (
     <>
-      <section class="container flex flex-col gap-y-6 grow max-w-4xl px-6 pb-10 pt-6 mx-auto text-center lg:py-16 lg:px-12">
+      <section class="container flex flex-col gap-y-24 grow max-w-4xl px-6 pb-10 pt-6 mx-auto text-center lg:py-16 lg:px-12">
         <div class={`flex flex-col gap-y-3`}>
           <div class={`text-center`}>
             <InlineNav
@@ -378,93 +466,125 @@ export default function Index({ data }: PageProps<
           </div>
         </div>
 
-        <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
-          Powered by Deno, TypeScript, Preact JS, and Tailwind CSS
-        </h2>
+        <div class={`flex flex-col gap-y-6`}>
+          <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
+            Powered by Deno, TypeScript, Preact JS, and Tailwind CSS
+          </h2>
 
-        <div
-          class={`mx-auto max-w-xl flex justify-between gap-x-6`}
-        >
-          <div class={`text-white h-[100px]`}>
-            <DenoSvg />
-          </div>
-          <div class={`text-white h-[100px]`}>
-            <TypeScriptSvg />
-          </div>
-          <div class={`text-white flex items-center h-[100px]`}>
-            <PreactSvg />
-          </div>
-          <div class={`text-white flex items-center h-[100px]`}>
-            <TailwindSvg />
+          <div
+            class={`mx-auto max-w-xl flex justify-between gap-x-6`}
+          >
+            <div class={`text-white h-[100px]`}>
+              <DenoSvg />
+            </div>
+            <div class={`text-white h-[100px]`}>
+              <TypeScriptSvg />
+            </div>
+            <div class={`text-white flex items-center h-[100px]`}>
+              <PreactSvg />
+            </div>
+            <div class={`text-white flex items-center h-[100px]`}>
+              <TailwindSvg />
+            </div>
           </div>
         </div>
-        <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
-          What apps can you make with Fastro Framework?
-        </h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
-          <div class={`hidden md:block`}>
+
+        <div class={`flex flex-col gap-6`}>
+          <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
+            Why use SSR?
+          </h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+            <ProjectBox>
+              <SeoSvg />
+              <span>Improved SEO</span>
+            </ProjectBox>
+
+            <ProjectBox>
+              <BoltSvg />
+              <span>Faster Initial Load Time</span>
+            </ProjectBox>
+            <ProjectBox>
+              <UxSvg />
+              <span>Enhanced User Experience</span>
+            </ProjectBox>
+            <ProjectBox>
+              <WwwSvg />
+              <span>Supporting Older Browsers</span>
+            </ProjectBox>
+          </div>
+        </div>
+
+        <div class={`flex flex-col gap-y-6`}>
+          <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
+            What apps can you make with Fastro Framework?
+          </h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             <ProjectBox>
               <AdsSvg />
               <span>Advertising</span>
             </ProjectBox>
-          </div>
-          <ProjectBox>
-            <AttendanceSvg />
-            <span>Attendance</span>
-          </ProjectBox>
-          <ProjectBox>
-            <BlogSvg />
-            <span>Custom</span>
-          </ProjectBox>
-          <ProjectBox>
-            <LoyalSvg />
-            <span>Loyalty</span>
-          </ProjectBox>
-          <ProjectBox>
-            <PurchaseSvg />
-            <span>Purchasing</span>
-          </ProjectBox>
-          <ProjectBox>
-            <SalesSvg />
-            <span>Sales</span>
-          </ProjectBox>
-          <ProjectBox>
-            <SocialSvg />
-            <span>Socmed</span>
-          </ProjectBox>
-          <ProjectBox>
-            <StoreSvg />
-            <span>Store</span>
-          </ProjectBox>
-          <ProjectBox>
-            <WareHouseSvg />
-            <span>Warehouse</span>
-          </ProjectBox>
-        </div>
-        <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
-          Do you have a design concept or idea?
-        </h2>
 
-        <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-          <a
-            href="/blog/collaboration"
-            class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-900 border border-white"
-          >
-            Submit it for our review and processing
-            <svg
-              class="ml-2 -mr-1 w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
+            <ProjectBox>
+              <AttendanceSvg />
+              <span>Attendance</span>
+            </ProjectBox>
+            <ProjectBox>
+              <BlogSvg />
+              <span>Custom</span>
+            </ProjectBox>
+            <ProjectBox>
+              <LoyalSvg />
+              <span>Loyalty</span>
+            </ProjectBox>
+            <ProjectBox>
+              <PurchaseSvg />
+              <span>Purchasing</span>
+            </ProjectBox>
+            <ProjectBox>
+              <SalesSvg />
+              <span>Sales</span>
+            </ProjectBox>
+            <ProjectBox>
+              <SocialSvg />
+              <span>Socmed</span>
+            </ProjectBox>
+            <ProjectBox>
+              <StoreSvg />
+              <span>Store</span>
+            </ProjectBox>
+            <ProjectBox>
+              <WareHouseSvg />
+              <span>Warehouse</span>
+            </ProjectBox>
+          </div>
+        </div>
+
+        <div class={`flex flex-col gap-y-6`}>
+          <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
+            Do you have a design concept or idea?
+          </h2>
+
+          <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+            <a
+              href="/blog/collaboration"
+              class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-900 border border-white"
             >
-              <path
-                fill-rule="evenodd"
-                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                clip-rule="evenodd"
+              Submit it for our review and processing
+              <svg
+                class="ml-2 -mr-1 w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
               >
-              </path>
-            </svg>
-          </a>
+                <path
+                  fill-rule="evenodd"
+                  d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                >
+                </path>
+              </svg>
+            </a>
+          </div>
         </div>
       </section>
       <Footer />
