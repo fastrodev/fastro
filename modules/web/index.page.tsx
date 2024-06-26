@@ -423,7 +423,7 @@ export default function Index({ data }: PageProps<
 >) {
   return (
     <>
-      <section class="container flex flex-col gap-y-24 grow max-w-4xl px-6 pb-10 pt-6 mx-auto text-center lg:py-16 lg:px-12">
+      <section class="container flex flex-col gap-y-12 grow max-w-4xl px-6 pb-10 pt-6 mx-auto text-center lg:py-16 lg:px-12">
         <div class={`flex flex-col gap-y-3`}>
           <div class={`text-center`}>
             <InlineNav
