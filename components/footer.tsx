@@ -17,14 +17,6 @@ export function Footer() {
         class={`text-blue-600 dark:text-blue-500 hover:underline`}
       >
         Deno Deploy.
-      </a>{"  "}
-      Requests per second (RPS) for each use case is monitored daily through
-      {"  "}
-      <a
-        href={`/docs/benchmarks`}
-        class={`text-blue-600 dark:text-blue-500 hover:underline`}
-      >
-        internal benchmarks.
       </a>
     </div>
   );
