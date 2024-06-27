@@ -559,7 +559,7 @@ export default function Index({ data }: PageProps<
 
         <div class={`flex flex-col gap-y-6`}>
           <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
-            High-performance web framework
+            High-performance web framework with near native-like RPS
           </h2>
 
           <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
