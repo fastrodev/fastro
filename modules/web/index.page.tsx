@@ -401,6 +401,74 @@ function WwwSvg() {
   );
 }
 
+function RepeatSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-repeat"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3" />
+      <path d="M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3 -3l3 -3" />
+    </svg>
+  );
+}
+
+function ScaleSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-chart-arrows-vertical"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M18 21v-14" />
+      <path d="M9 15l3 -3l3 3" />
+      <path d="M15 10l3 -3l3 3" />
+      <path d="M3 21l18 0" />
+      <path d="M12 21l0 -9" />
+      <path d="M3 6l3 -3l3 3" />
+      <path d="M6 21v-18" />
+    </svg>
+  );
+}
+
+function SettingSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-settings-2"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M19.875 6.27a2.225 2.225 0 0 1 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z" />
+      <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+    </svg>
+  );
+}
+
 function ProjectBox(props: { children: VNode[] }) {
   return (
     <div
@@ -423,7 +491,7 @@ export default function Index({ data }: PageProps<
 >) {
   return (
     <>
-      <section class="container flex flex-col gap-y-12 grow max-w-4xl px-6 pb-10 pt-6 mx-auto text-center lg:py-16 lg:px-12">
+      <section class="container flex flex-col gap-y-16 grow max-w-4xl px-6 pb-10 pt-16 mx-auto text-center lg:py-16 lg:px-12">
         <div class={`flex flex-col gap-y-3`}>
           <div class={`text-center`}>
             <InlineNav
@@ -495,13 +563,12 @@ export default function Index({ data }: PageProps<
           </h2>
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             <ProjectBox>
-              <SeoSvg />
-              <span>Improved SEO</span>
-            </ProjectBox>
-
-            <ProjectBox>
               <BoltSvg />
               <span>Faster Initial Load Time</span>
+            </ProjectBox>
+            <ProjectBox>
+              <SeoSvg />
+              <span>Improved SEO</span>
             </ProjectBox>
             <ProjectBox>
               <UxSvg />
@@ -510,6 +577,30 @@ export default function Index({ data }: PageProps<
             <ProjectBox>
               <WwwSvg />
               <span>Supporting Older Browsers</span>
+            </ProjectBox>
+          </div>
+        </div>
+
+        <div class={`flex flex-col gap-6`}>
+          <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
+            Why use a flat modular architecture?
+          </h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+            <ProjectBox>
+              <BoltSvg />
+              <span>Faster development</span>
+            </ProjectBox>
+            <ProjectBox>
+              <SettingSvg />
+              <span>Increased maintainability</span>
+            </ProjectBox>
+            <ProjectBox>
+              <ScaleSvg />
+              <span>Improved scalability</span>
+            </ProjectBox>
+            <ProjectBox>
+              <RepeatSvg />
+              <span>Reusability</span>
             </ProjectBox>
           </div>
         </div>
