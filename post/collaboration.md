@@ -16,19 +16,39 @@ they will need to subscribe monthly.
 Profits generated will be divided based on the following percentages, according
 to workload assumption.
 
-| Role              | Task                                             | Output                                  |                Sharing Profit                 |
-| ----------------- | ------------------------------------------------ | --------------------------------------- | :-------------------------------------------: |
-| Business Analyst  | Define user requirements & business flow         | Business Requirements Document (BRD)    |                     14 %                      |
-| Designer          | Design UI/UX applications.                       | Clickable Figma Prototype               |                     14 %                      |
-| Frontend          | Create a user interface & integrate it with APIs | Web Application (SSR)                   |                     14 %                      |
-| Backend           | Database desain & create APIs                    | Application Programming Interface (API) |                     14 %                      |
-| Quality Assurance | Test and ensure the application's quality        | Stakeholder satisfaction                |                     14 %                      |
-| Product Manager | Overseeing its entire lifecycle from ideation to launch and beyond | Epic, Sprint, User Stories & Timeline | 14 % |
-| Core Framework    | Framework maintenance    | Framework             |                     6 %                      |
-| Infrastructure    | Maintain the operational of Server & Database    | CI/CD, Deployment                   |                      5 %                       |
-| Sales   | Attract vendors to run ads on the platform       | Ads placement                           | 5% commission from every income they bring in |
+| Role              | Task                                                               | Output                                  |                Sharing Profit                 |
+| ----------------- | ------------------------------------------------------------------ | --------------------------------------- | :-------------------------------------------: |
+| Business Analyst  | Define user requirements & business flow                           | Business Requirements Document (BRD)    |                     14 %                      |
+| Designer          | Design UI/UX applications.                                         | Clickable Figma Prototype               |                     14 %                      |
+| Frontend          | Create a user interface & integrate it with APIs                   | Web Application (SSR)                   |                     14 %                      |
+| Backend           | Database desain & create APIs                                      | Application Programming Interface (API) |                     14 %                      |
+| Quality Assurance | Test and ensure the application's quality                          | Stakeholder satisfaction                |                     14 %                      |
+| Product Manager   | Overseeing its entire lifecycle from ideation to launch and beyond | Epic, Sprint, User Stories & Timeline   |                     14 %                      |
+| Core Framework    | Framework maintenance                                              | Framework                               |                      6 %                      |
+| Infrastructure    | Maintain the operational of Server & Database                      | CI/CD, Deployment                       |                      5 %                      |
+| Sales             | Attract vendors to run ads on the platform                         | Ads placement                           | 5% commission from every income they bring in |
 
 Those schemes can be changed to adapt to different situations and conditions.
+
+## Use case
+
+It is posibble for a contributor to handle multiple task. And each task will be
+calculated as sharing profit ratio.
+
+For example: imam's initial contribution was to design the purchase application
+(as a designer).
+
+However, to ensure a user-friendly experience, he then needed to gather feedback
+from actual users on how the application functioned (acting as a business
+analyst).
+
+Once the application was developed by the development team (including
+developers, QA testers, DevOps engineers, and a product manager), Imam
+successfully attracted brands to place advertisements on the platform.
+
+Therefore, Imam's total contribution would be calculated as 14% + 14% = 28%
+
+He also gets a 5% commission on the deals he secures with brands.
 
 ## Call for collaboration
 
