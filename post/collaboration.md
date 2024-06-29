@@ -20,16 +20,16 @@ they will need to subscribe on a monthly basis.
 Profits generated will be divided based on the following percentages, according
 to assumed workload.
 
-| Role              | Task                                                               | Output                                  | Sharing Profit |
-| ----------------- | ------------------------------------------------------------------ | --------------------------------------- | :------------: |
-| Business Analyst  | Define user requirements & business flow                           | Business Requirements Document (BRD)    |      14 %      |
-| Designer          | Design UI/UX applications.                                         | Clickable Figma Prototype               |      14 %      |
-| Frontend          | Create a user interface & integrate it with APIs                   | Web Application (SSR)                   |      14 %      |
-| Backend           | Database desain & create APIs                                      | Application Programming Interface (API) |      14 %      |
-| Quality Assurance | Test and ensure the application's quality                          | Stakeholder satisfaction                |      14 %      |
-| Product Manager   | Overseeing its entire lifecycle from ideation to launch and beyond | Epic, Sprint, User Stories & Timeline   |      14 %      |
-| Infrastructure    | Maintain the operational of Server & Database                      | CI/CD, Deployment                       |      10 %      |
-| Core Framework    | Framework maintenance                                              | Updated Framework                       |      6 %       |
+| Role              | Task                                                               | Output                                                                                               | Sharing Profit |
+| ----------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- | :------------: |
+| Business Analyst  | Define user requirements & business flow                           | Business Requirements Document (BRD)                                                                 |      14 %      |
+| Designer          | Design UI/UX applications.                                         | Clickable Figma Prototype                                                                            |      14 %      |
+| Frontend          | Create a user interface & integrate it with APIs                   | Web Application (SSR)                                                                                |      14 %      |
+| Backend           | Database desain & create APIs                                      | Application Programming Interface (API)                                                              |      14 %      |
+| Quality Assurance | Test and ensure the application's quality                          | Stakeholder satisfaction                                                                             |      14 %      |
+| Product Manager   | Overseeing its entire lifecycle from ideation to launch and beyond | Features, Epic, Sprint, User Stories, Timeline, Product launches, User metrics, and Business metrics |      14 %      |
+| Infrastructure    | Maintain the operational of Server & Database                      | CI/CD, Deployment                                                                                    |      10 %      |
+| Core Framework    | Framework maintenance                                              | Updated Framework                                                                                    |      6 %       |
 
 ## Comission from every new income
 

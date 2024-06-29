@@ -77,6 +77,8 @@ s.page("/", {
       baseUrl: Deno.env.get("ENV") === "DEVELOPMENT"
         ? "http://localhost:8000"
         : "https://fastro.dev",
+      new: "Collaboration and Profit Sharing",
+      destination: "blog/collaboration",
     });
   },
 });

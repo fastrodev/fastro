@@ -487,6 +487,8 @@ export default function Index({ data }: PageProps<
     title: string;
     description: string;
     baseUrl: string;
+    new: string;
+    destination: string;
   }
 >) {
   return (
@@ -495,9 +497,9 @@ export default function Index({ data }: PageProps<
         <div class={`flex flex-col gap-y-3`}>
           <div class={`text-center`}>
             <InlineNav
-              title="Fastro"
-              description="Collaboration and Profit Sharing"
-              destination={`${data.baseUrl}/blog/collaboration`}
+              title="What's new"
+              description={data.new}
+              destination={`${data.baseUrl}/${data.destination}`}
             />
           </div>
 
