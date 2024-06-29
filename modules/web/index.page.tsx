@@ -539,6 +539,103 @@ function LogisticSvg() {
   );
 }
 
+function NoteSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-notes"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M5 3m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
+      <path d="M9 7l6 0" />
+      <path d="M9 11l6 0" />
+      <path d="M9 15l4 0" />
+    </svg>
+  );
+}
+
+function FormSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-forms"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3a3 3 0 0 0 -3 3v12a3 3 0 0 0 3 3" />
+      <path d="M6 3a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3" />
+      <path d="M13 7h7a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-7" />
+      <path d="M5 7h-1a1 1 0 0 0 -1 1v8a1 1 0 0 0 1 1h1" />
+      <path d="M17 12h.01" />
+      <path d="M13 12h.01" />
+    </svg>
+  );
+}
+
+function HtmlSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-html"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M13 16v-8l2 5l2 -5v8" />
+      <path d="M1 16v-8" />
+      <path d="M5 8v8" />
+      <path d="M1 12h4" />
+      <path d="M7 8h4" />
+      <path d="M9 8v8" />
+      <path d="M20 8v8h3" />
+    </svg>
+  );
+}
+
+function OrderSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-cart"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M17 17h-11v-14h-2" />
+      <path d="M6 5l14 1l-1 7h-13" />
+    </svg>
+  );
+}
+
 function ProjectBox(props: { children: VNode[] }) {
   return (
     <div
@@ -728,6 +825,10 @@ export default function Index({ data }: PageProps<
               <span>Blog</span>
             </ProjectBox>
             <ProjectBox>
+              <HtmlSvg />
+              <span>Landing Page</span>
+            </ProjectBox>
+            <ProjectBox>
               <LogisticSvg />
               <span>Logistic</span>
             </ProjectBox>
@@ -736,8 +837,20 @@ export default function Index({ data }: PageProps<
               <span>Loyalty</span>
             </ProjectBox>
             <ProjectBox>
+              <NoteSvg />
+              <span>Medical Record</span>
+            </ProjectBox>
+            <ProjectBox>
+              <OrderSvg />
+              <span>Online Order</span>
+            </ProjectBox>
+            <ProjectBox>
               <PurchaseSvg />
               <span>Purchasing</span>
+            </ProjectBox>
+            <ProjectBox>
+              <FormSvg />
+              <span>Registration</span>
             </ProjectBox>
             <ProjectBox>
               <SalesSvg />
