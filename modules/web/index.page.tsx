@@ -761,19 +761,19 @@ export default function Index({ data }: PageProps<
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             <ProjectBox>
               <BoltSvg />
-              <span>Faster Initial Load Time</span>
+              <p>Faster Initial Load Time</p>
             </ProjectBox>
             <ProjectBox>
               <SeoSvg />
-              <span>Improved SEO</span>
+              <p>Improved SEO</p>
             </ProjectBox>
             <ProjectBox>
               <UxSvg />
-              <span>Enhanced User Experience</span>
+              <p>Enhanced User Experience</p>
             </ProjectBox>
             <ProjectBox>
               <WwwSvg />
-              <span>Supporting Older Browsers</span>
+              <p>Supporting Older Browsers</p>
             </ProjectBox>
           </div>
         </div>
@@ -785,19 +785,19 @@ export default function Index({ data }: PageProps<
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             <ProjectBox>
               <BoltSvg />
-              <span>Faster development</span>
+              <p>Faster development</p>
             </ProjectBox>
             <ProjectBox>
               <SettingSvg />
-              <span>Increased maintainability</span>
+              <p>Increased maintainability</p>
             </ProjectBox>
             <ProjectBox>
               <ScaleSvg />
-              <span>Improved scalability</span>
+              <p>Improved scalability</p>
             </ProjectBox>
             <ProjectBox>
               <RepeatSvg />
-              <span>Reusability</span>
+              <p>Reusability</p>
             </ProjectBox>
           </div>
         </div>
@@ -809,68 +809,67 @@ export default function Index({ data }: PageProps<
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             <ProjectBox>
               <AdminSvg />
-              <span>Admin</span>
+              <p>Admin</p>
             </ProjectBox>
             <ProjectBox>
               <AdsSvg />
-              <span>Advertising</span>
+              <p>Advertising</p>
             </ProjectBox>
-
             <ProjectBox>
               <AttendanceSvg />
-              <span>Attendance</span>
+              <p>Attendance</p>
             </ProjectBox>
             <ProjectBox>
               <BlogSvg />
-              <span>Blog</span>
+              <p>Blog</p>
             </ProjectBox>
             <ProjectBox>
               <HtmlSvg />
-              <span>Landing Page</span>
+              <p>Landing Page</p>
             </ProjectBox>
             <ProjectBox>
               <LogisticSvg />
-              <span>Logistic</span>
+              <p>Logistic</p>
             </ProjectBox>
             <ProjectBox>
               <LoyalSvg />
-              <span>Loyalty</span>
+              <p>Loyalty</p>
             </ProjectBox>
             <ProjectBox>
               <NoteSvg />
-              <span>Medical Record</span>
+              <p>Medical Record</p>
             </ProjectBox>
             <ProjectBox>
               <OrderSvg />
-              <span>Online Order</span>
+              <p>Online Order</p>
             </ProjectBox>
             <ProjectBox>
               <PurchaseSvg />
-              <span>Purchasing</span>
+              <p>Purchasing</p>
             </ProjectBox>
             <ProjectBox>
               <FormSvg />
-              <span>Registration</span>
+              <p>Registration</p>
             </ProjectBox>
             <ProjectBox>
               <SalesSvg />
-              <span>Sales</span>
+              <p>Sales</p>
             </ProjectBox>
             <ProjectBox>
               <SocialSvg />
-              <span>Socmed</span>
+              <p>Social Media</p>
             </ProjectBox>
             <ProjectBox>
               <StoreSvg />
-              <span>Store</span>
+              <p>Store</p>
             </ProjectBox>
             <ProjectBox>
               <WareHouseSvg />
-              <span>Warehouse</span>
+              <p>Warehouse</p>
             </ProjectBox>
             <ProjectBox>
               <StackSvg />
-              <span>Visitor queue</span>
+              <p>Visitor queue</p>
             </ProjectBox>
           </div>
         </div>
