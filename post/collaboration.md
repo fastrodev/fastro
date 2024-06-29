@@ -9,10 +9,10 @@ date: 06/18/2024
 As the employee, you typically receive a fixed income based on a salary. That's
 perfectly acceptable.
 
-However, I now propose a collaboration between programmers, business analysts,
-quality assurance, project manager, and designers to create several free apps.
-These apps will be continuously maintained and developed to attract a large user
-base.
+However, I now propose a collaboration between business analysts, designers,
+project manager, programmers, and quality assurance -- to create several free
+apps. These apps will be continuously maintained and developed to attract a
+large user base.
 
 We will place relevant ads on these apps. If a user wants to remove the ads,
 they will need to subscribe on a monthly basis.

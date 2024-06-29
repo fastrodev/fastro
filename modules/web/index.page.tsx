@@ -226,17 +226,12 @@ function WareHouseSvg() {
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="icon icon-tabler icons-tabler-outline icon-tabler-forklift"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-building-warehouse"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M5 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-      <path d="M14 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-      <path d="M7 17l5 0" />
-      <path d="M3 17v-6h13v6" />
-      <path d="M5 11v-4h4" />
-      <path d="M9 11v-6h4l3 6" />
-      <path d="M22 15h-3v-10" />
-      <path d="M16 13l3 0" />
+      <path d="M3 21v-13l9 -4l9 4v13" />
+      <path d="M13 13h4v8h-10v-6h6" />
+      <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3" />
     </svg>
   );
 }
@@ -282,6 +277,35 @@ function AdsSvg() {
       <path d="M7 15v-4a2 2 0 0 1 4 0v4" />
       <path d="M7 13l4 0" />
       <path d="M17 9v6h-1.5a1.5 1.5 0 1 1 1.5 -1.5" />
+    </svg>
+  );
+}
+
+function AdminSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-cpu"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M5 5m0 1a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1z" />
+      <path d="M9 9h6v6h-6z" />
+      <path d="M3 10h2" />
+      <path d="M3 14h2" />
+      <path d="M10 3v2" />
+      <path d="M14 3v2" />
+      <path d="M21 10h-2" />
+      <path d="M21 14h-2" />
+      <path d="M14 21v-2" />
+      <path d="M10 21v-2" />
     </svg>
   );
 }
@@ -469,6 +493,52 @@ function SettingSvg() {
   );
 }
 
+function StackSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-stack-front"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 4l-8 4l8 4l8 -4l-8 -4" fill="currentColor" />
+      <path d="M8 14l-4 2l8 4l8 -4l-4 -2" />
+      <path d="M8 10l-4 2l8 4l8 -4l-4 -2" />
+    </svg>
+  );
+}
+
+function LogisticSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-tir"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M5 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M7 18h8m4 0h2v-6a5 7 0 0 0 -5 -7h-1l1.5 7h4.5" />
+      <path d="M12 18v-13h3" />
+      <path d="M3 17l0 -5l9 0" />
+    </svg>
+  );
+}
+
 function ProjectBox(props: { children: VNode[] }) {
   return (
     <div
@@ -641,6 +711,10 @@ export default function Index({ data }: PageProps<
           </h2>
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             <ProjectBox>
+              <AdminSvg />
+              <span>Admin</span>
+            </ProjectBox>
+            <ProjectBox>
               <AdsSvg />
               <span>Advertising</span>
             </ProjectBox>
@@ -651,7 +725,11 @@ export default function Index({ data }: PageProps<
             </ProjectBox>
             <ProjectBox>
               <BlogSvg />
-              <span>Custom</span>
+              <span>Blog</span>
+            </ProjectBox>
+            <ProjectBox>
+              <LogisticSvg />
+              <span>Logistic</span>
             </ProjectBox>
             <ProjectBox>
               <LoyalSvg />
@@ -676,6 +754,10 @@ export default function Index({ data }: PageProps<
             <ProjectBox>
               <WareHouseSvg />
               <span>Warehouse</span>
+            </ProjectBox>
+            <ProjectBox>
+              <StackSvg />
+              <span>Visitor queue</span>
             </ProjectBox>
           </div>
         </div>
