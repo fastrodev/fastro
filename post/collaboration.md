@@ -6,7 +6,7 @@ author: Admin
 date: 06/18/2024
 ---
 
-As the employer, you typically receive a fixed income based on a salary. That's
+As the employee, you typically receive a fixed income based on a salary. That's
 perfectly acceptable.
 
 However, I now propose a collaboration between programmers, business analysts,
