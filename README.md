@@ -61,10 +61,6 @@ And to create your first JSX SSR page, you can follow
 Feel free to help us!
 
 Here are some issues to improving.
-
-- [Logo](https://avatars.githubusercontent.com/u/84224795)
-- [Landing page](https://github.com/fastrodev/fastro/tree/main/modules/web)
-- [Improve speed](https://github.com/fastrodev/fastro/blob/main/docs/benchmarks.md)
 - [Unit tests](https://github.com/fastrodev/fastro/tree/main/http)
 - [Middlewares](https://github.com/fastrodev/fastro/tree/main/middleware)
 - [Use case examples](https://github.com/fastrodev/fastro/tree/main/examples)
