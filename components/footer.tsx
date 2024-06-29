@@ -32,7 +32,7 @@ export function Footer() {
       </a>
       {" full stack web framework for Deno, TypeScript, Preact, and Tailwind. "}
       <div class={`inline-flex gap-1 items-center`}>
-        <span>Made in Tulungagung with</span> <HeartSvg />
+        <p>Made in Tulungagung with</p> <HeartSvg />
       </div>
     </div>
   );

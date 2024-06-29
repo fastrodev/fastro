@@ -29,8 +29,8 @@ s.page("/docs", {
   folder: "modules/web",
   handler: (_req, ctx) => {
     return ctx.render({
-      title: "Documentation",
-      description: "Documentation",
+      title: "Docs",
+      description: "Docs",
       destination: "/docs",
       posts: docToc,
     });
@@ -90,7 +90,7 @@ s.page("/blog", {
   handler: (_req, ctx) => {
     return ctx.render({
       title: "Blog",
-      description: "Blog of Fastro Framework",
+      description: "Blog",
       destination: "/blog",
       posts: [
         {
