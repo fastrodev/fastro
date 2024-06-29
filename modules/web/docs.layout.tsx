@@ -32,7 +32,7 @@ export const docToc = [
   },
   {
     title: "Query Params",
-    url: "/docs/query-params",
+    url: "/docs/url-query",
   },
   {
     title: "App Middleware",
