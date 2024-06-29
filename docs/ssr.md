@@ -9,17 +9,19 @@ next: oauth
 To create SSR (Server-Side Rendering), we have four main steps:
 
 1. Create the TSX or function component.
-2. Build the components with esbuild.
-3. Attach the built component to the HTML layout (hydration).
+2. Create a hydration file for the component and build it with esbuild.
+3. Attach the built component to the HTML layout.
 4. Render the final HTML layout and component from the server.
 
-We've already crafted all these steps seamlessly. All you need to do is prepare
-the component, layout, and entry point.
+We've already streamlined these steps. All you need to prepare are the
+component, layout, and entry point.
 
 Create component `modules/web/hello.tsx`
 
 ```tsx
-export const hello = <h1>Hello</h1>;
+export const hello = () => {
+    return <h1>Hello</h1>;
+};
 ```
 
 Create layout `modules/web/app.layout.tsx`
