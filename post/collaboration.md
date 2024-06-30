@@ -24,12 +24,12 @@ to assumed workload.
 | ----------------- | ------------------------------------------------------------------ | --------------------------------------------------- | :------------: |
 | Business Analyst  | Define user requirements & business flow                           | Business Requirements Document (BRD)                |     12.5 %     |
 | Designer          | Design UI/UX applications.                                         | Clickable Figma Prototype                           |     12.5 %     |
+| Product Manager   | Overseeing its entire lifecycle from ideation to launch and beyond | Scrum Artifacts, User Metrics, and Business Metrics |     12.5 %     |
 | Frontend          | Create a user interface & integrate it with APIs                   | Web Application (SSR)                               |     12.5 %     |
 | Backend           | Database desain & create APIs                                      | Application Programming Interface (API)             |     12.5 %     |
 | Quality Assurance | Test and ensure the application's quality                          | Stakeholder satisfaction                            |     12.5 %     |
-| Product Manager   | Overseeing its entire lifecycle from ideation to launch and beyond | Scrum Artifacts, User Metrics, and Business Metrics |     12.5 %     |
 | Infrastructure    | Maintain the operational of Server & Database                      | CI/CD, Deployment                                   |     12.5 %     |
-| Core Framework    | Framework maintenance                                              | Updated Framework                                   |     12.5 %     |
+| Core Framework    | Framework maintenance                                              | The Latest Synced Framework                         |     12.5 %     |
 
 ## Comission from every new income
 
@@ -37,28 +37,50 @@ to assumed workload.
 | ----- | -------------------------------------------------------------------------- | -------------------------- | :--------: |
 | Sales | Attract vendors and brands to run ads on the platform. Acquire paid users. | Ads placement & paid users |     5%     |
 
-## Use case
+## Use cases
 
 It is posibble for a contributor to handle multiple task. And each task will be
 calculated as sharing profit ratio.
 
-For example:
+#### Business Analyst + Designer + Product Manager
 
 > Imam's initial contribution was to design the purchase application (as a
 > designer).
 >
-> However, to ensure a user-friendly experience, he then needed to gather
-> feedback from actual users on how the application functioned (acting as a
-> business analyst).
+> However, to ensure a user-friendly experience, he gathered feedback from
+> actual users on how the application functioned (acting as a business analyst).
+> He also created user stories, scrum artifacts, set up user and business
+> metrics (as a product manager).
+>
+> Therefore, Imam's total contribution would be calculated as 12.5% + 12.5% +
+> 12.5% = 37.5%
+
+#### Frontend + Quality Assurance
+
+> Firman's task is to create the user interface and experience (as a frontend
+> developer). But he also makes sure all features are working as expected
+> (acting as Quality Assurance).
 >
 > Once the application was developed by the development team (including
-> developers, QA testers, DevOps engineers, and a product manager), Imam
-> successfully attracted brands to place advertisements on the platform.
+> developers, QA testers, DevOps engineers), Firman successfully attracted
+> brands to place advertisements on the platform.
 >
-> Therefore, Imam's total contribution would be calculated as 12.5% + 12.5% =
+> Therefore, Firman's total contribution would be calculated as 12.5% + 12.5% =
 > 25%
 >
 > He also gets a 5% commission on the deals he secures with brands.
+
+#### Founder + Backend + Infrastructure
+
+> Yanu is the Founder of Framework. His tasks include updating and syncing with
+> the upstream dependency (as a Core Framework).
+>
+> In addition, he designs the database, creates APIs for the application (acting
+> as backend), and sets up the CI/CD for application deployment (acting as
+> infrastructure).
+>
+> Therefore, Yanu's total contribution would be calculated as 12.5% + 12.5% +
+> 12.5% = 37.5%
 
 ## Call for collaboration
 
