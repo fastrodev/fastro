@@ -613,7 +613,7 @@ function HtmlSvg() {
   );
 }
 
-function OrderSvg() {
+function SurveySvg() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -625,13 +625,11 @@ function OrderSvg() {
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-cart"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-checkbox"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-      <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-      <path d="M17 17h-11v-14h-2" />
-      <path d="M6 5l14 1l-1 7h-13" />
+      <path d="M9 11l3 3l8 -8" />
+      <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
     </svg>
   );
 }
@@ -840,10 +838,6 @@ export default function Index({ data }: PageProps<
               <p>Medical Record</p>
             </ProjectBox>
             <ProjectBox>
-              <OrderSvg />
-              <p>Online Order</p>
-            </ProjectBox>
-            <ProjectBox>
               <PurchaseSvg />
               <p>Purchasing</p>
             </ProjectBox>
@@ -862,6 +856,10 @@ export default function Index({ data }: PageProps<
             <ProjectBox>
               <StoreSvg />
               <p>Store</p>
+            </ProjectBox>
+            <ProjectBox>
+              <SurveySvg />
+              <p>Survey</p>
             </ProjectBox>
             <ProjectBox>
               <WareHouseSvg />
