@@ -9,27 +9,27 @@ date: 06/18/2024
 As the employee, you typically receive a fixed income based on a salary. That's
 perfectly acceptable.
 
-However, I now propose a collaboration between business analysts, designers,
-project manager, programmers, and quality assurance -- to create several free
-apps. These apps will be continuously maintained and developed to attract a
-large user base.
+However, I now propose a collaboration between business analyst, designer,
+product manager, programmer, and quality assurance -- to create several free
+apps.
 
-We will place relevant ads on these apps. If a user wants to remove the ads,
-they will need to subscribe on a monthly basis.
+These apps will be continuously maintained and developed to attract a large user
+base. We will place relevant ads on these apps. If a user wants to remove the
+ads, they will need to subscribe on a monthly basis.
 
 Profits generated will be divided based on the following percentages, according
 to assumed workload.
 
-| Role              | Task                                                               | Output                                                                                               | Sharing Profit |
-| ----------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- | :------------: |
-| Business Analyst  | Define user requirements & business flow                           | Business Requirements Document (BRD)                                                                 |      14 %      |
-| Designer          | Design UI/UX applications.                                         | Clickable Figma Prototype                                                                            |      14 %      |
-| Frontend          | Create a user interface & integrate it with APIs                   | Web Application (SSR)                                                                                |      14 %      |
-| Backend           | Database desain & create APIs                                      | Application Programming Interface (API)                                                              |      14 %      |
-| Quality Assurance | Test and ensure the application's quality                          | Stakeholder satisfaction                                                                             |      14 %      |
-| Product Manager   | Overseeing its entire lifecycle from ideation to launch and beyond | Features, Epic, Sprint, User Stories, Timeline, Product launches, User metrics, and Business metrics |      14 %      |
-| Infrastructure    | Maintain the operational of Server & Database                      | CI/CD, Deployment                                                                                    |      10 %      |
-| Core Framework    | Framework maintenance                                              | Updated Framework                                                                                    |      6 %       |
+| Role              | Task                                                               | Output                                              | Sharing Profit |
+| ----------------- | ------------------------------------------------------------------ | --------------------------------------------------- | :------------: |
+| Business Analyst  | Define user requirements & business flow                           | Business Requirements Document (BRD)                |     12.5 %     |
+| Designer          | Design UI/UX applications.                                         | Clickable Figma Prototype                           |     12.5 %     |
+| Frontend          | Create a user interface & integrate it with APIs                   | Web Application (SSR)                               |     12.5 %     |
+| Backend           | Database desain & create APIs                                      | Application Programming Interface (API)             |     12.5 %     |
+| Quality Assurance | Test and ensure the application's quality                          | Stakeholder satisfaction                            |     12.5 %     |
+| Product Manager   | Overseeing its entire lifecycle from ideation to launch and beyond | Scrum Artifacts, User Metrics, and Business Metrics |     12.5 %     |
+| Infrastructure    | Maintain the operational of Server & Database                      | CI/CD, Deployment                                   |     12.5 %     |
+| Core Framework    | Framework maintenance                                              | Updated Framework                                   |     12.5 %     |
 
 ## Comission from every new income
 
@@ -55,7 +55,8 @@ For example:
 > developers, QA testers, DevOps engineers, and a product manager), Imam
 > successfully attracted brands to place advertisements on the platform.
 >
-> Therefore, Imam's total contribution would be calculated as 14% + 14% = 28%
+> Therefore, Imam's total contribution would be calculated as 12.5% + 12.5% =
+> 25%
 >
 > He also gets a 5% commission on the deals he secures with brands.
 
