@@ -1,7 +1,7 @@
 import { PageProps } from "$fastro/http/server/types.ts";
 import { InlineNav } from "$fastro/components/inline-nav.tsx";
 import { Footer } from "$fastro/components/footer.tsx";
-import { VNode } from "https://esm.sh/preact@10.22.0";
+import { VNode } from "https://esm.sh/preact@10.22.1";
 
 function DenoSvg() {
   return (

@@ -69,7 +69,7 @@ s.page("/", {
     return ctx.render({
       title: "Fast & Modular Web Framework",
       description:
-        "Build high-performance server-side rendered (SSR) web applications that leverage a flat modular architecture for improved readability",
+        "Build high-performance server-side rendering (SSR) web applications that leverage a flat modular architecture for improved readability",
       image: "https://fastro.dev/fastro.png",
       start: Deno.env.get("ENV") === "DEVELOPMENT"
         ? "http://localhost:8000/docs/start"
