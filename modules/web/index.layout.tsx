@@ -13,6 +13,7 @@ export function index(
         <title>
           {`Fastro - Full Stack Web Framework for Deno, TypeScript, Preact JS, and Tailwind CSS`}
         </title>
+        <meta property="og:site_name" content="Fastro" />
         <meta name="description" content={data.description} />
         <meta property="og:image" content={data.image} />
         <link href="/styles.css" rel="stylesheet" />
