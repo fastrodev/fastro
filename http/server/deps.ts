@@ -8,11 +8,11 @@ export { assertEquals } from "jsr:@std/assert@^0.226.0/assert-equals";
 export { assertExists } from "jsr:@std/assert@^0.226.0/assert-exists";
 export { assert } from "jsr:@std/assert@^0.226.0/assert";
 
-export { h } from "https://esm.sh/preact@10.23.0";
+export { h } from "https://esm.sh/preact@10.23.1";
 export type {
   ComponentChild,
   ComponentChildren,
   JSX,
   VNode,
-} from "https://esm.sh/preact@10.23.0";
-export { renderToString } from "https://esm.sh/preact-render-to-string@6.5.1?deps=preact@10.23.0";
+} from "https://esm.sh/preact@10.23.1";
+export { renderToString } from "https://esm.sh/preact-render-to-string@6.5.1?deps=preact@10.23.1";

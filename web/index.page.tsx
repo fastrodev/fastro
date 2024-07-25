@@ -1,7 +1,7 @@
 import { PageProps } from "@app/http/server/types.ts";
 import { InlineNav } from "@app/components/inline-nav.tsx";
 import { Footer } from "@app/components/footer.tsx";
-import { VNode } from "https://esm.sh/preact@10.23.0";
+import { VNode } from "https://esm.sh/preact@10.23.1";
 
 function DenoSvg() {
   return (
