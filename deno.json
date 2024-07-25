@@ -2,8 +2,8 @@
   "lock": false,
   "tasks": {
     "start": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee ENV=DEVELOPMENT deno run --unstable-kv -A --watch web/mod.ts",
-    "build": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee  deno run -A --unstable-kv  web/main.ts --build ",
-    "prod": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee deno run --unstable-kv -A web/main.ts",
+    "build": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee  deno run -A --unstable-kv  web/mod.ts --build ",
+    "prod": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee deno run --unstable-kv -A web/mod.ts",
     "test": "rm -rf .hydrate && rm -rf cov && deno test -A --coverage=cov && deno coverage cov",
     "coverage": "deno coverage cov --lcov > cov.lcov",
     "bench": "deno run -A bench/run.ts",
