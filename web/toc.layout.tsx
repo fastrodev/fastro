@@ -1,6 +1,6 @@
-import { InlineNav } from "$fastro/components/inline-nav.tsx";
-import { Footer } from "$fastro/components/footer.tsx";
-import { LayoutProps } from "$fastro/http/server/types.ts";
+import { InlineNav } from "@app/components/inline-nav.tsx";
+import { Footer } from "@app/components/footer.tsx";
+import { LayoutProps } from "@app/http/server/types.ts";
 
 export default function ({ children, data }: LayoutProps<
     { title: string; description: string; image: string; destination: string }

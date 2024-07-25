@@ -1,4 +1,4 @@
-import fastro, { Context, HttpRequest } from "$fastro/mod.ts";
+import fastro, { Context, HttpRequest } from "@app/mod.ts";
 import {
   MongoClient,
   ObjectId,

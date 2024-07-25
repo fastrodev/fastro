@@ -1,4 +1,4 @@
-import { LayoutProps } from "$fastro/http/server/types.ts";
+import { LayoutProps } from "@app/http/server/types.ts";
 
 export function index(
   { data, children }: LayoutProps<

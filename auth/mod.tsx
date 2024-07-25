@@ -1,13 +1,10 @@
+import { Context, Fastro, HttpRequest } from "@app/http/server/types.ts";
+import { STATUS_CODE } from "@app/http/server/deps.ts";
+import { kv } from "@app/utils/db.ts";
 import {
   createGitHubOAuthConfig,
-  getSessionId,
-  handleCallback,
-  signIn,
-  signOut,
+  createHelpers,
 } from "jsr:@deno/kv-oauth@0.11.0";
-import { Context, Fastro, HttpRequest } from "$fastro/http/server/types.ts";
-import { STATUS_CODE } from "$fastro/http/server/deps.ts";
-import { kv } from "$fastro/utils/db.ts";
 
 const redirectUri = Deno.env.get("REDIRECT_URI") ??
   "http://localhost:8000/callback";
@@ -15,6 +12,12 @@ const redirectUri = Deno.env.get("REDIRECT_URI") ??
 const oauthConfig = createGitHubOAuthConfig(
   { redirectUri, scope: ["user"] },
 );
+const {
+  signIn,
+  handleCallback,
+  getSessionId,
+  signOut,
+} = createHelpers(oauthConfig);
 
 export async function indexHandler(req: HttpRequest, ctx: Context) {
   const sessionId = await getSessionId(req);
@@ -44,7 +47,7 @@ export async function indexHandler(req: HttpRequest, ctx: Context) {
           </p>
 
           <p>
-            <a href="https://github.com/fastrodev/fastro/blob/main/modules/auth/auth.mod.tsx">
+            <a href="https://github.com/fastrodev/fastro/blob/main/auth/mod.tsx">
               Source code
             </a>
           </p>
@@ -57,7 +60,7 @@ export async function indexHandler(req: HttpRequest, ctx: Context) {
 }
 
 export const signinHandler = async (req: Request) => {
-  return await signIn(req, oauthConfig);
+  return await signIn(req);
 };
 
 async function getUser(accessToken: string) {
@@ -74,7 +77,6 @@ export const callbackHandler = async (req: HttpRequest) => {
   try {
     const { response, sessionId, tokens } = await handleCallback(
       req,
-      oauthConfig,
     );
     const user = await getUser(tokens.accessToken);
     kv.set([sessionId], user, { expireIn: 60 * 60 * 1000 });

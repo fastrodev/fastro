@@ -1,5 +1,5 @@
-import { Footer } from "$fastro/components/footer.tsx";
-import { InlineNav } from "../../components/inline-nav.tsx";
+import { Footer } from "@app/components/footer.tsx";
+import { InlineNav } from "../components/inline-nav.tsx";
 
 export const docToc = [
   {

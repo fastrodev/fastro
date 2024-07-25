@@ -1,4 +1,4 @@
-import fastro, { HttpRequest } from "$fastro/mod.ts";
+import fastro, { HttpRequest } from "@app/mod.ts";
 
 const f = new fastro();
 

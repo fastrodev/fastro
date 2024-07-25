@@ -1,9 +1,9 @@
 {
   "lock": false,
   "tasks": {
-    "start": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee ENV=DEVELOPMENT deno run --unstable-kv -A --watch modules/web/main.ts",
-    "build": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee  deno run -A --unstable-kv  modules/web/main.ts --build ",
-    "prod": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee deno run --unstable-kv -A modules/web/main.ts",
+    "start": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee ENV=DEVELOPMENT deno run --unstable-kv -A --watch web/mod.ts",
+    "build": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee  deno run -A --unstable-kv  web/main.ts --build ",
+    "prod": "GITHUB_CLIENT_ID=abe04d0d76dd2b169380 GITHUB_CLIENT_SECRET=e9a16ec40a87c8a6d1f4eff3ea955248059b67ee deno run --unstable-kv -A web/main.ts",
     "test": "rm -rf .hydrate && rm -rf cov && deno test -A --coverage=cov && deno coverage cov",
     "coverage": "deno coverage cov --lcov > cov.lcov",
     "bench": "deno run -A bench/run.ts",
@@ -39,10 +39,12 @@
       ]
     }
   },
+  "workspace": ["./web"],
   "imports": {
-    "$fastro/": "./",
-    "preact": "https://esm.sh/preact@10.22.1",
-    "preact/": "https://esm.sh/preact@10.22.1/"
+    "@app/": "./",
+    "preact": "https://esm.sh/preact@10.23.0",
+    "preact/": "https://esm.sh/preact@10.23.0/",
+    "chalk": "npm:chalk@5"
   },
   "compilerOptions": {
     "jsx": "react-jsx",

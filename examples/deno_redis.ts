@@ -1,4 +1,4 @@
-import fastro, { Context, HttpRequest } from "$fastro/mod.ts";
+import fastro, { Context, HttpRequest } from "@app/mod.ts";
 import { connect } from "https://deno.land/x/redis@v0.32.1/mod.ts";
 
 const redis = await connect({

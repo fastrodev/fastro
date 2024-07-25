@@ -1,5 +1,5 @@
-import { InlineNav } from "$fastro/components/inline-nav.tsx";
-import { Footer } from "$fastro/components/footer.tsx";
+import { InlineNav } from "@app/components/inline-nav.tsx";
+import { Footer } from "@app/components/footer.tsx";
 
 function convert(dateString: string) {
   const date = new Date(dateString);

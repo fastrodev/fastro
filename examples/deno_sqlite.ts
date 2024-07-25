@@ -1,5 +1,5 @@
 import { Database } from "https://deno.land/x/sqlite3@0.10.0/mod.ts";
-import fastro, { Context, HttpRequest } from "$fastro/mod.ts";
+import fastro, { Context, HttpRequest } from "@app/mod.ts";
 
 const db = new Database("sqlite.db");
 

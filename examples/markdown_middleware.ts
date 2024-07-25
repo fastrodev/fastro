@@ -1,5 +1,5 @@
-import markdown from "$fastro/middleware/markdown/mod.tsx";
-import fastro from "$fastro/mod.ts";
+import markdown from "@app/middleware/markdown/mod.tsx";
+import fastro from "@app/mod.ts";
 
 const f = new fastro();
 

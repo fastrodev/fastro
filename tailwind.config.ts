@@ -6,7 +6,7 @@ import { type Config } from "npm:tailwindcss@3.3.5";
 export default {
   content: [
     "./components/**/*.tsx",
-    "./modules/**/**/*.tsx",
+    "./web/**/**/*.tsx",
     "./middleware/**/**/*.tsx",
   ],
   theme: {

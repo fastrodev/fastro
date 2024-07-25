@@ -1,4 +1,4 @@
-import { PageProps } from "$fastro/http/server/types.ts";
+import { PageProps } from "@app/http/server/types.ts";
 
 type Post = { title: string; url: string; date: string };
 
