@@ -33,7 +33,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Run Build
-        run: deno task build
+        run: GITHUB_CLIENT=${{ env.GH_CLIENT_ID }} GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} deno task build
           
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
