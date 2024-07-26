@@ -1,14 +1,14 @@
 import Server from "@app/mod.ts";
-import indexApp from "./index.page.tsx";
+import indexApp from "@app/web/index.page.tsx";
 import markdown from "@app/middleware/markdown/mod.tsx";
-import blogLayout from "./blog.layout.tsx";
-import docsLayout, { docToc } from "./docs.layout.tsx";
-import tocLayout from "./toc.layout.tsx";
-import tocApp from "./toc.page.tsx";
-import { index } from "./index.layout.tsx";
+import blogLayout from "@app/web/blog.layout.tsx";
+import docsLayout, { docToc } from "@app/web/docs.layout.tsx";
+import tocLayout from "@app/web/toc.layout.tsx";
+import tocApp from "@app/web/toc.page.tsx";
+import { index } from "@app/web/index.layout.tsx";
 import { tailwind } from "@app/middleware/tailwind/mod.ts";
 import { HttpRequest } from "@app/http/server/types.ts";
-import { authModule } from "../auth/mod.tsx";
+import { authModule } from "@app/auth/mod.tsx";
 
 const s = new Server();
 
