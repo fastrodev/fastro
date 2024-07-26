@@ -11,3 +11,4 @@ styles.css
 *.db
 m1/
 m2/
+.env
