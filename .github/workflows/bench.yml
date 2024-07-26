@@ -83,7 +83,7 @@ jobs:
           version: 1.1.0
       
       - name: Generate internal benchmarks
-        run: GITHUB_CLIENT=${{ vars.GH_CLIENT_ID }} GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} deno task bench
+        run: GITHUB_CLIENT_ID=${{ vars.GH_CLIENT_ID }} GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} deno task bench
 
       - name: Commit files
         run: |
@@ -97,7 +97,7 @@ jobs:
           branch: ${{ github.ref }}
       
       - name: Run Build
-        run: GITHUB_CLIENT=${{ vars.GH_CLIENT_ID }} GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} deno task build
+        run: GITHUB_CLIENT_ID=${{ vars.GH_CLIENT_ID }} GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} deno task build
           
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
