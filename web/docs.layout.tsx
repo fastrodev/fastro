@@ -151,7 +151,7 @@ export default function (
             })}
           </div>
           <div
-            class={`md:col-span-6 md:border-l md:border-l-gray-800 md:pl-5 md:pt-6 flex flex-col gap-y-3 md:gap-y-6 max-w-4xl`}
+            class={`md:col-span-6 md:border-l md:border-l-gray-200 dark:border-l-gray-800 md:pl-5 md:pt-6 flex flex-col gap-y-3 md:gap-y-6 max-w-4xl`}
           >
             <div class={`flex flex-col gap-y-3`}>
               <div class={`block`}>

@@ -37,7 +37,7 @@ export function InlineNav(
   const desc = props.description ?? "Home";
   const dest = props.destination ?? "/";
   return (
-    <div class="inline-flex justify-between items-center p-1 pr-4 text-sm text-gray-700 bg-gray-200 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
+    <div class="inline-flex justify-between items-center p-1 pr-4 text-sm rounded-full text-white bg-gray-700">
       <a
         href="/"
         class={`text-white`}
@@ -50,7 +50,7 @@ export function InlineNav(
       </a>
       <a
         href={dest}
-        class={`text-gray-700 dark:text-white text-xs font-light flex items-center`}
+        class={`text-white text-xs font-light flex items-center`}
         style={{ textDecoration: "none" }}
       >
         <span>{desc}</span>
