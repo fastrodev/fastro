@@ -9,6 +9,7 @@ import { index } from "@app/web/index.layout.tsx";
 import { tailwind } from "@app/middleware/tailwind/mod.ts";
 import { HttpRequest } from "@app/http/server/types.ts";
 import { authModule } from "@app/auth/mod.tsx";
+import { adminModule } from "@app/modules/admin/mod.ts";
 
 const s = new Server();
 
@@ -134,6 +135,7 @@ s.page("/blog", {
 });
 
 s.group(authModule);
+s.group(adminModule);
 
 s.serve();
 

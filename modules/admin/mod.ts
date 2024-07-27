@@ -1,15 +1,13 @@
 import { Fastro } from "@app/mod.ts";
-import indexPage from "@app/modules/admin/index.page.tsx";
-import { indexLayout } from "@app/modules/admin/index.layout.tsx";
-import { indexHandler } from "@app/modules/admin/index.handler.tsx";
-import { tailwind } from "@app/middleware/tailwind/mod.ts";
+import adminPage from "./admin.page.tsx";
+import adminLayout from "./admin.layout.tsx";
+import adminHandler from "./admin.handler.tsx";
 
 export function adminModule(s: Fastro) {
-    s.use(tailwind());
-    s.page("/", {
-        component: indexPage,
-        layout: indexLayout,
-        handler: indexHandler,
+    s.page("/admin", {
+        component: adminPage,
+        layout: adminLayout,
+        handler: adminHandler,
         folder: "modules/admin",
     });
     return s;

@@ -1,6 +1,6 @@
 import { LayoutProps } from "@app/mod.ts";
 
-export function indexLayout(
+export default function adminLayout(
     { data, children }: LayoutProps<
         { title: string; description: string; image: string }
     >,
