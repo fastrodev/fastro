@@ -81,6 +81,7 @@ export default function (
                   destination="/blog"
                 />
               </div>
+              {{ image } && <img src={image} class={`rounded-t-2xl mt-2`} />}
               <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
                 {title}
               </h1>
