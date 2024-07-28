@@ -103,4 +103,4 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: fastro
-          entrypoint: web/mod.ts
+          entrypoint: modules/app/main.ts
