@@ -3,7 +3,7 @@ import adminPage from "./admin.page.tsx";
 import adminLayout from "./admin.layout.tsx";
 import adminHandler from "./admin.handler.tsx";
 
-export function adminModule(s: Fastro) {
+export default function adminModule(s: Fastro) {
     s.page("/admin", {
         component: adminPage,
         layout: adminLayout,

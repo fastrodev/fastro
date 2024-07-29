@@ -1,7 +1,7 @@
 import { Fastro } from "@app/mod.ts";
 import tocLayout from "@app/modules/toc/toc.layout.tsx";
-import tocApp from "../toc/toc.page.tsx";
-import { docToc } from "../docs/docs.layout.tsx";
+import tocApp from "@app/modules/toc/toc.page.tsx";
+import { docToc } from "@app/modules/docs/docs.layout.tsx";
 
 export default function (s: Fastro) {
     s.page("/docs", {

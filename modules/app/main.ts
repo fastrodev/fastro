@@ -6,8 +6,9 @@ import blog from "@app/modules/blog/mod.ts";
 import docs from "@app/modules/docs/mod.ts";
 import index from "@app/modules/index/mod.ts";
 import { tailwind } from "@app/middleware/tailwind/mod.ts";
-import { authModule } from "@app/auth/mod.tsx";
-import { adminModule } from "@app/modules/admin/mod.ts";
+import authModule from "@app/modules/auth/mod.tsx";
+import adminModule from "@app/modules/admin/mod.ts";
+import github from "@app/middleware/github/mod.ts";
 
 const s = new Server();
 
@@ -21,25 +22,7 @@ s.use(markdown(docsLayout, "docs", "docs"));
 s.use(tailwind());
 
 /** proxy for github repo */
-s.use(async (_req, ctx) => {
-    if (
-        ctx.url.pathname.endsWith(".ts") ||
-        ctx.url.pathname.endsWith(".tsx")
-    ) {
-        const version = ctx.url.pathname.startsWith("/v")
-            ? ""
-            : ctx.url.pathname.startsWith("/canary")
-            ? "/canary"
-            : "/main";
-
-        const path =
-            `https://raw.githubusercontent.com/fastrodev/fastro${version}${ctx.url.pathname}`;
-        const res = await fetch(path);
-        const content = await res.text();
-        return new Response(content);
-    }
-    return ctx.next();
-});
+s.use(github);
 
 s.group(index);
 s.group(blog);

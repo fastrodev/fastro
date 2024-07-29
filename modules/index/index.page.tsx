@@ -2,6 +2,7 @@ import { PageProps } from "@app/http/server/types.ts";
 import { InlineNav } from "@app/components/inline-nav.tsx";
 import { Footer } from "@app/components/footer.tsx";
 import { VNode } from "preact";
+import Header from "@app/components/header.tsx";
 
 function DenoSvg() {
   return (
@@ -658,6 +659,7 @@ export default function Index({ data }: PageProps<
 >) {
   return (
     <>
+      <Header />
       <section class="container flex flex-col gap-y-16 grow max-w-4xl px-6 pb-10 pt-16 mx-auto text-center lg:py-16 lg:px-12">
         <div class={`flex flex-col gap-y-3`}>
           <div class={`text-center`}>

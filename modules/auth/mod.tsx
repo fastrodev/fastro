@@ -99,9 +99,9 @@ export const signoutHandler = async (req: HttpRequest) => {
  * @param f: Fastro
  * @returns Fastro
  */
-export const authModule = (f: Fastro) => {
+export default function authModule(f: Fastro) {
   return f.get("/auth", indexHandler)
     .get("/signin", signinHandler)
     .get("/callback", callbackHandler)
     .get("/signout", signoutHandler);
-};
+}
