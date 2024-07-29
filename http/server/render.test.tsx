@@ -1,8 +1,8 @@
 import { assert, assertEquals, assertExists } from "@app/http/server/deps.ts";
 import fastro from "@app/mod.ts";
-import hello from "@app/web/hello.page.tsx";
-import dear from "@app/web/dear.page.tsx";
-import { layout } from "@app/web/app.layout.tsx";
+import hello from "@app/modules/web/hello.page.tsx";
+import dear from "@app/modules/web/dear.page.tsx";
+import layout from "@app/modules/web/app.layout.tsx";
 const host = "http://localhost:8000";
 
 Deno.test(

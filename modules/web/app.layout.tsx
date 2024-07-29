@@ -1,6 +1,6 @@
 import { LayoutProps } from "@app/http/server/types.ts";
 
-export function layout(
+export default function layout(
   { data, children }: LayoutProps<
     { title: string; data: string; user?: string }
   >,

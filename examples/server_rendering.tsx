@@ -1,6 +1,6 @@
 import Server from "@app/mod.ts";
-import { layout } from "../web/app.layout.tsx";
-import hello from "../web/hello.page.tsx";
+import layout from "@app/modules/web/app.layout.tsx";
+import hello from "@app/modules/web/hello.page.tsx";
 
 const s = new Server();
 
