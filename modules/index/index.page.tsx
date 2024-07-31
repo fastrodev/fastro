@@ -662,7 +662,7 @@ export default function Index({ data }: PageProps<
       <Header />
       <section class="container flex flex-col gap-y-16 grow max-w-4xl pb-10 mx-auto text-center">
         <div
-          class={`flex flex-col gap-y-6 py-28 bg-gradient-to-r from-gray-800 to-gray-900`}
+          class={`flex flex-col gap-y-6 py-32 bg-gradient-to-r from-gray-800 to-gray-900`}
         >
           <div class={`text-center`}>
             <InlineNav
@@ -679,7 +679,7 @@ export default function Index({ data }: PageProps<
             {data.description}
           </h2>
 
-          <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4 mx-3">
+          <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4 mx-6 md:mx-0">
             <a
               href="/docs/start"
               class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-900 border border-white"
@@ -705,7 +705,7 @@ export default function Index({ data }: PageProps<
           </div>
         </div>
 
-        <div class={`flex flex-col gap-y-6`}>
+        <div class={`flex flex-col gap-y-6 mx-6 md:mx-0`}>
           <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
             Powered by Deno, TypeScript, Preact JS, and Tailwind CSS
           </h2>
@@ -728,7 +728,7 @@ export default function Index({ data }: PageProps<
           </div>
         </div>
 
-        <div class={`flex flex-col gap-y-6`}>
+        <div class={`flex flex-col gap-y-6 mx-6 md:mx-0`}>
           <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
             High-performance web framework with near native-like RPS
           </h2>
@@ -756,7 +756,7 @@ export default function Index({ data }: PageProps<
           </div>
         </div>
 
-        <div class={`flex flex-col gap-6`}>
+        <div class={`flex flex-col gap-6 mx-6 md:mx-0`}>
           <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
             Why use SSR?
           </h2>
@@ -780,7 +780,7 @@ export default function Index({ data }: PageProps<
           </div>
         </div>
 
-        <div class={`flex flex-col gap-6`}>
+        <div class={`flex flex-col gap-6 mx-6 md:mx-0`}>
           <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
             Why use a flat modular architecture?
           </h2>
@@ -804,7 +804,7 @@ export default function Index({ data }: PageProps<
           </div>
         </div>
 
-        <div class={`flex flex-col gap-y-6`}>
+        <div class={`flex flex-col gap-y-6 mx-6 md:mx-0`}>
           <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
             What apps can you make with Fastro Framework?
           </h2>
@@ -876,7 +876,7 @@ export default function Index({ data }: PageProps<
           </div>
         </div>
 
-        <div class={`flex flex-col gap-y-6`}>
+        <div class={`flex flex-col gap-y-6 mx-6 md:mx-0`}>
           <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
             Do you have a design concept or idea?
           </h2>

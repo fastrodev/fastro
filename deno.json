@@ -1,5 +1,26 @@
 {
   "lock": false,
+  "lint": {
+    "rules": {
+      "tags": [
+        "recommended"
+      ]
+    }
+  },
+  "exports": {
+    ".": "./mod.ts"
+  },
+  "imports": {
+    "@app/": "./",
+    "preact": "https://esm.sh/preact@10.23.1",
+    "preact/": "https://esm.sh/preact@10.23.1/",
+    "chalk": "npm:chalk@5"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
+  },
+  "nodeModulesDir": true,
   "tasks": {
     "start": "ENV=DEVELOPMENT deno run --env --unstable-kv -A --watch modules/app/main.ts",
     "build": "deno run -A --unstable-kv  modules/app/main.ts --build ",
@@ -31,23 +52,5 @@
     "app_middleware": "deno run -A examples/app_middleware.ts",
     "route_middleware": "deno run -A examples/route_middleware.ts",
     "server_rendering": "deno run -A examples/server_rendering.tsx"
-  },
-  "lint": {
-    "rules": {
-      "tags": [
-        "recommended"
-      ]
-    }
-  },
-  "imports": {
-    "@app/": "./",
-    "preact": "https://esm.sh/preact@10.23.1",
-    "preact/": "https://esm.sh/preact@10.23.1/",
-    "chalk": "npm:chalk@5"
-  },
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "preact"
-  },
-  "nodeModulesDir": true
+  }
 }
