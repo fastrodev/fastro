@@ -660,8 +660,10 @@ export default function Index({ data }: PageProps<
   return (
     <>
       <Header />
-      <section class="container flex flex-col gap-y-16 grow max-w-4xl px-6 pb-10 pt-16 mx-auto text-center lg:py-16 lg:px-12">
-        <div class={`flex flex-col gap-y-3`}>
+      <section class="container flex flex-col gap-y-16 grow max-w-4xl pb-10 mx-auto text-center">
+        <div
+          class={`flex flex-col gap-y-6 py-28 bg-gradient-to-r from-gray-800 to-gray-900`}
+        >
           <div class={`text-center`}>
             <InlineNav
               title="What's new"
@@ -676,30 +678,30 @@ export default function Index({ data }: PageProps<
           <h2 class="mx-auto max-w-4xl text-gray-500 sm:text-2xl text-xl">
             {data.description}
           </h2>
-        </div>
 
-        <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-          <a
-            href="/docs/start"
-            class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-900 border border-white"
-          >
-            Get started
-            <svg
-              class="ml-2 -mr-1 w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
+          <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4 mx-3">
+            <a
+              href="/docs/start"
+              class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-900 border border-white"
             >
-              <path
-                fill-rule="evenodd"
-                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                clip-rule="evenodd"
+              Get started
+              <svg
+                class="ml-2 -mr-1 w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
               >
-              </path>
-            </svg>
-          </a>
-          <div class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center rounded-lg border text-white border-white bg-black">
-            deno run -A -r https://fastro.deno.dev
+                <path
+                  fill-rule="evenodd"
+                  d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                >
+                </path>
+              </svg>
+            </a>
+            <div class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center rounded-lg border text-white border-white bg-black">
+              deno run -A -r https://fastro.dev
+            </div>
           </div>
         </div>
 

@@ -1,6 +1,6 @@
 import { Fastro, HttpRequest } from "@app/mod.ts";
-import indexApp from "../index/index.page.tsx";
-import { index } from "../index/index.layout.tsx";
+import indexApp from "@app/modules/index/index.page.tsx";
+import index from "@app/modules/index/index.layout.tsx";
 
 function init() {
     const basePath = Deno.env.get("DENO_DEPLOYMENT_ID")
@@ -36,7 +36,7 @@ export default function (s: Fastro) {
             return ctx.render({
                 title: "Fast & Modular Web Framework",
                 description:
-                    "Build SSR web applications with a flat modular architecture",
+                    "Enhance SSR web app maintainability through a flat modular architecture",
                 image: "https://fastro.dev/fastro.png",
                 start: Deno.env.get("ENV") === "DEVELOPMENT"
                     ? "http://localhost:8000/docs/start"

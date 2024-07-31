@@ -23,16 +23,17 @@ function GithubSvg() {
 export default function Header() {
     return (
         <div
-            class={`container flex justify-between max-w-4xl mx-auto text-center text-sm py-3 px-3 dark:text-gray-400 border-b-[1px] border-t-gray-200 dark:border-b-gray-800`}
+            class={`container flex justify-between max-w-4xl mx-auto text-center text-sm py-3 px-3 xl:px-0 md:px-0 sm:px-0 dark:text-gray-400 border-b-[1px] border-t-gray-200 dark:border-b-gray-800 `}
         >
             <div class={`flex space-x-1 items-center`}>
                 <BoltSvg />
-                <span>Fastro Framework</span>
+                <span>Fastro</span>
             </div>
             <div class={`flex items-center space-x-3`}>
                 <a href={"docs"}>Docs</a>
                 <a href={"docs/benchmarks"}>Examples</a>
                 <a href={"blog"}>Blog</a>
+                <a href={"auth"}>Sign in</a>
                 <a href={"https://github.com/fastrodev/fastro"}>
                     <GithubSvg />
                 </a>
