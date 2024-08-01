@@ -851,7 +851,7 @@ function PoweredBy() {
       </h2>
 
       <div
-        class={`mx-auto max-w-xl flex justify-between gap-x-10`}
+        class={`mx-auto max-w-xl flex justify-between gap-x-9`}
       >
         <div class={`text-white h-[100px]`}>
           <DenoSvg />
@@ -892,7 +892,7 @@ export default function Index({ data }: PageProps<
       />
       <section class="container flex flex-col gap-y-16 grow max-w-4xl pb-10 mx-auto text-center">
         <div
-          class={`flex flex-col gap-y-6 py-32 bg-gradient-to-r from-gray-800 to-gray-950 rounded-2xl`}
+          class={`flex flex-col gap-y-6 py-36 bg-gradient-to-r from-gray-800 to-gray-950 rounded-2xl`}
         >
           <div class={`text-center`}>
             <InlineNav
