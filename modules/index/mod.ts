@@ -40,10 +40,13 @@ export default function (s: Fastro) {
             const hasSessionIdCookie = sessionId !== undefined;
             const isLogin = hasSessionIdCookie;
             let avatar_url = "";
+            let html_url = "";
             if (sessionId) {
                 // deno-lint-ignore no-explicit-any
                 const r = await kv.get([sessionId]) as any;
+                console.log("r ==>", r);
                 avatar_url = r.value.avatar_url;
+                html_url = r.value.html_url;
             }
 
             return ctx.render({
@@ -61,6 +64,7 @@ export default function (s: Fastro) {
                 destination: "blog/collaboration",
                 isLogin,
                 avatar_url,
+                html_url,
             });
         },
     });

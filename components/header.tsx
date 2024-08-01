@@ -21,7 +21,7 @@ function GithubSvg() {
 }
 
 export default function Header(
-    props: { isLogin: boolean; avatar_url: string },
+    props: { isLogin: boolean; avatar_url: string; html_url: string },
 ) {
     return (
         <div
@@ -43,8 +43,8 @@ export default function Header(
                         <GithubSvg />
                     </a>
                 )}
-                {props.avatar_url && (
-                    <a href={"https://github.com/fastrodev/fastro"}>
+                {props.html_url && (
+                    <a href={props.html_url}>
                         <img
                             src={props.avatar_url}
                             width={20}

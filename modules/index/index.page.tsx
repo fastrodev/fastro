@@ -880,14 +880,19 @@ export default function Index({ data }: PageProps<
     destination: string;
     isLogin: boolean;
     avatar_url: string;
+    html_url: string;
   }
 >) {
   return (
     <>
-      <Header isLogin={data.isLogin} avatar_url={data.avatar_url} />
+      <Header
+        isLogin={data.isLogin}
+        avatar_url={data.avatar_url}
+        html_url={data.html_url}
+      />
       <section class="container flex flex-col gap-y-16 grow max-w-4xl pb-10 mx-auto text-center">
         <div
-          class={`flex flex-col gap-y-6 py-32 bg-gradient-to-r from-gray-800 to-gray-950 rounded-t-2xl`}
+          class={`flex flex-col gap-y-6 py-64 bg-gradient-to-r from-gray-800 to-gray-950 rounded-2xl`}
         >
           <div class={`text-center`}>
             <InlineNav
@@ -931,7 +936,7 @@ export default function Index({ data }: PageProps<
         </div>
 
         <PoweredBy />
-        <Bench />s
+        <Bench />
         <WhySSR />
         <WhyFlat />
         <WhatApps />
