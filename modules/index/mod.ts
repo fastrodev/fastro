@@ -45,8 +45,10 @@ export default function (s: Fastro) {
                 // deno-lint-ignore no-explicit-any
                 const r = await kv.get([sessionId]) as any;
                 console.log("r ==>", r);
-                avatar_url = r.value.avatar_url;
-                html_url = r.value.html_url;
+                if (r) {
+                    avatar_url = r.value.avatar_url;
+                    html_url = r.value.html_url;
+                }
             }
 
             return ctx.render({
