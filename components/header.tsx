@@ -31,10 +31,30 @@ export default function Header(
                 <BoltSvg />
                 <span>Fastro</span>
             </div>
-            <div class={`flex items-center space-x-3`}>
+            <div class={`hidden md:flex md:items-center md:space-x-3`}>
                 <a href={"docs"}>Docs</a>
                 <a href={"#"}>Components</a>
                 <a href={"#"}>Middleware</a>
+                <a href={"blog"}>Blog</a>
+                {props.isLogin && <a href={"/signout"}>Sign out</a>}
+                {!props.isLogin && <a href={"/signin"}>Sign in</a>}
+                {!props.avatar_url && (
+                    <a href={"https://github.com/fastrodev/fastro"}>
+                        <GithubSvg />
+                    </a>
+                )}
+                {props.avatar_url && (
+                    <a href={"https://github.com/fastrodev/fastro"}>
+                        <img
+                            src={props.avatar_url}
+                            width={20}
+                            class={`rounded-full`}
+                        />
+                    </a>
+                )}
+            </div>
+            <div class={`flex items-center space-x-3 md:hidden`}>
+                <a href={"docs"}>Docs</a>
                 <a href={"blog"}>Blog</a>
                 {props.isLogin && <a href={"/signout"}>Sign out</a>}
                 {!props.isLogin && <a href={"/signin"}>Sign in</a>}
