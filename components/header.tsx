@@ -20,10 +20,12 @@ function GithubSvg() {
     );
 }
 
-export default function Header() {
+export default function Header(
+    props: { isLogin: boolean; avatar_url: string },
+) {
     return (
         <div
-            class={`container flex justify-between max-w-4xl mx-auto text-center text-sm py-3 px-3 xl:px-0 md:px-0 sm:px-0 dark:text-gray-400 border-b-[1px] border-t-gray-200 dark:border-b-gray-800 `}
+            class={`container flex justify-between max-w-4xl mx-auto text-center text-sm py-3 px-3 xl:px-0 md:px-0 sm:px-0 dark:text-gray-400`}
         >
             <div class={`flex space-x-1 items-center`}>
                 <BoltSvg />
@@ -31,12 +33,25 @@ export default function Header() {
             </div>
             <div class={`flex items-center space-x-3`}>
                 <a href={"docs"}>Docs</a>
-                <a href={"docs/benchmarks"}>Examples</a>
+                <a href={"#"}>Components</a>
+                <a href={"#"}>Middleware</a>
                 <a href={"blog"}>Blog</a>
-                <a href={"auth"}>Sign in</a>
-                <a href={"https://github.com/fastrodev/fastro"}>
-                    <GithubSvg />
-                </a>
+                {props.isLogin && <a href={"/signout"}>Sign out</a>}
+                {!props.isLogin && <a href={"/signin"}>Sign in</a>}
+                {!props.avatar_url && (
+                    <a href={"https://github.com/fastrodev/fastro"}>
+                        <GithubSvg />
+                    </a>
+                )}
+                {props.avatar_url && (
+                    <a href={"https://github.com/fastrodev/fastro"}>
+                        <img
+                            src={props.avatar_url}
+                            width={20}
+                            class={`rounded-full`}
+                        />
+                    </a>
+                )}
             </div>
         </div>
     );

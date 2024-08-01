@@ -19,6 +19,8 @@ const {
   signOut,
 } = createHelpers(oauthConfig);
 
+export { getSessionId, handleCallback, signIn, signOut };
+
 export async function indexHandler(req: HttpRequest, ctx: Context) {
   const sessionId = await getSessionId(req);
   const hasSessionIdCookie = sessionId !== undefined;
@@ -70,6 +72,7 @@ async function getUser(accessToken: string) {
     },
   });
   const data = await response.json();
+  kv.set([data.id], data);
   return data;
 }
 

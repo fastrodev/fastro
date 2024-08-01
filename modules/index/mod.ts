@@ -1,6 +1,8 @@
 import { Fastro, HttpRequest } from "@app/mod.ts";
 import indexApp from "@app/modules/index/index.page.tsx";
 import index from "@app/modules/index/index.layout.tsx";
+import { getSessionId } from "@app/modules/auth/mod.tsx";
+import { kv } from "@app/utils/db.ts";
 
 function init() {
     const basePath = Deno.env.get("DENO_DEPLOYMENT_ID")
@@ -30,9 +32,20 @@ export default function (s: Fastro) {
         component: indexApp,
         layout: index,
         folder: "modules/index",
-        handler: (req, ctx) => {
+        handler: async (req, ctx) => {
             const res = denoRunCheck(req);
             if (res) return init();
+
+            const sessionId = await getSessionId(req);
+            const hasSessionIdCookie = sessionId !== undefined;
+            const isLogin = hasSessionIdCookie;
+            let avatar_url = "";
+            if (sessionId) {
+                // deno-lint-ignore no-explicit-any
+                const res = await kv.get([sessionId]) as any;
+                avatar_url = res.value.avatar_url;
+            }
+
             return ctx.render({
                 title: "Fast & Modular Web Framework",
                 description:
@@ -46,6 +59,8 @@ export default function (s: Fastro) {
                     : "https://fastro.dev",
                 new: "Collaboration and Profit Sharing",
                 destination: "blog/collaboration",
+                isLogin,
+                avatar_url,
             });
         },
     });
