@@ -25,7 +25,7 @@ export default function Header(
 ) {
     return (
         <div
-            class={`container flex justify-between max-w-4xl mx-auto text-center text-sm py-3 px-3 xl:px-0 md:px-0 sm:px-0 dark:text-gray-400`}
+            class={`container flex justify-between max-w-4xl mx-auto text-center text-sm py-6 px-3 xl:px-0 md:px-0 sm:px-0 dark:text-gray-400`}
         >
             <div class={`flex space-x-1 items-center`}>
                 <BoltSvg />

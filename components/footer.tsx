@@ -67,7 +67,7 @@ function WA() {
 export function Footer() {
   return (
     <div
-      class={`container flex justify-between items-center max-w-4xl mx-auto text-center text-xs py-3 dark:text-gray-400 border-t-[1px] border-t-gray-200 dark:border-t-gray-800 px-6 xl:px-0 md:px-0 sm:px-0`}
+      class={`container flex justify-between items-center max-w-4xl mx-auto text-center text-xs py-6 dark:text-gray-400 px-6 xl:px-0 md:px-0 sm:px-0`}
     >
       <div class={`flex items-center space-x-2`}>
         <X />

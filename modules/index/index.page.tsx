@@ -649,7 +649,9 @@ function ProjectBox(props: { children: VNode[] }) {
 
 function WhatApps() {
   return (
-    <div class={`flex flex-col`}>
+    <div
+      class={`flex flex-col p-6 bg-gray-800 rounded-2xl`}
+    >
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
         <ProjectBox>
           <AdminSvg />
@@ -722,7 +724,7 @@ function WhatApps() {
 
 function WhyFlat() {
   return (
-    <div class={`flex flex-col gap-6 mx-6 md:mx-0`}>
+    <div class={`flex flex-col gap-6 mx-6`}>
       <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
         Why use a flat modular architecture?
       </h2>
@@ -750,7 +752,7 @@ function WhyFlat() {
 
 function WhySSR() {
   return (
-    <div class={`flex flex-col gap-6 mx-6 md:mx-0`}>
+    <div class={`flex flex-col gap-6 mx-6`}>
       <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
         Why use SSR?
       </h2>
@@ -839,7 +841,7 @@ function PoweredBy() {
 function NonLogin(props: { data: any }) {
   const data = props.data;
   return (
-    <section class="container flex flex-col gap-y-16 grow max-w-4xl pb-10 mx-auto text-center">
+    <section class="container flex flex-col gap-y-16 grow max-w-4xl mx-auto text-center">
       <div
         class={`flex flex-col gap-y-6 py-36 bg-gradient-to-r from-gray-800 to-gray-950 rounded-2xl`}
       >
@@ -886,8 +888,12 @@ function NonLogin(props: { data: any }) {
 
       <PoweredBy />
       <Bench />
-      <WhySSR />
-      <WhyFlat />
+      <div
+        class={`flex flex-col gap-y-6 py-6 bg-gradient-to-r from-gray-800 to-gray-950 rounded-2xl`}
+      >
+        <WhySSR />
+        <WhyFlat />
+      </div>
     </section>
   );
 }
@@ -915,7 +921,7 @@ export default function Index({ data }: PageProps<
 
       {data.isLogin &&
         (
-          <section class="container flex flex-col gap-y-16 grow max-w-4xl py-10 mx-auto text-center">
+          <section class="container flex flex-col gap-y-16 grow max-w-4xl mx-auto text-center">
             <WhatApps />
           </section>
         )}
