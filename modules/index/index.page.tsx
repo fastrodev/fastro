@@ -843,7 +843,7 @@ function NonLogin(props: { data: any }) {
   return (
     <section class="container flex flex-col gap-y-16 grow max-w-4xl mx-auto text-center">
       <div
-        class={`flex flex-col gap-y-6 py-36 bg-gradient-to-r from-gray-800 to-gray-950 rounded-2xl`}
+        class={`flex flex-col gap-y-6 py-28 bg-gradient-to-r from-gray-800 to-gray-950 rounded-2xl`}
       >
         <div class={`text-center`}>
           <InlineNav
@@ -887,9 +887,11 @@ function NonLogin(props: { data: any }) {
       </div>
 
       <PoweredBy />
+
       <Bench />
+
       <div
-        class={`flex flex-col gap-y-20 py-12 bg-gray-800 rounded-2xl`}
+        class={`flex flex-col gap-y-12 py-12 rounded-2xl bg-gradient-to-r from-gray-950 to-gray-800`}
       >
         <WhySSR />
         <WhyFlat />
@@ -921,7 +923,7 @@ export default function Index({ data }: PageProps<
 
       {data.isLogin &&
         (
-          <section class="container flex flex-col gap-y-16 grow max-w-4xl mx-auto text-center">
+          <section class="container flex flex-col gap-y-12 grow max-w-4xl mx-auto text-center">
             <WhatApps />
           </section>
         )}
