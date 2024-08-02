@@ -825,7 +825,7 @@ function NonLogin(props: { data: any }) {
         <h1 class="mx-auto max-w-4xl text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-center text-white">
           {data.title}
         </h1>
-        <h2 class="mx-auto max-w-4xl text-gray-500 sm:text-2xl text-xl">
+        <h2 class="mx-auto max-w-4xl px-3 text-gray-500 sm:text-2xl text-xl">
           {data.description}
         </h2>
 
