@@ -338,9 +338,9 @@ function BoltSvg() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
+      height="24px"
       viewBox="0 -960 960 960"
-      width="36"
-      height="36"
+      width="24px"
       fill="#e8eaed"
     >
       <path d="m320-80 40-280H160l360-520h80l-40 320h240L400-80h-80Z" />
@@ -778,43 +778,12 @@ function WhySSR() {
   );
 }
 
-function Bench() {
-  return (
-    <div class={`flex flex-col gap-y-6 mx-6 md:mx-0`}>
-      <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
-        High-performance web framework with near native-like RPS
-      </h2>
-
-      <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-        <a
-          href="/docs/benchmarks"
-          class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-900 border border-white"
-        >
-          Review the internal benchmarks
-          <svg
-            class="ml-2 -mr-1 w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            >
-            </path>
-          </svg>
-        </a>
-      </div>
-    </div>
-  );
-}
-
 function PoweredBy() {
   return (
-    <div class={`flex flex-col gap-y-6 mx-6 md:mx-0`}>
+    <div class={`flex flex-col gap-y-12 mx-6 md:mx-0`}>
       <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
-        Powered by Deno, TypeScript, Preact JS, and Tailwind CSS
+        High-performance web framework with near native-like RPS. Powered by
+        Deno, TypeScript, Preact JS, and Tailwind CSS
       </h2>
 
       <div
@@ -843,7 +812,7 @@ function NonLogin(props: { data: any }) {
   return (
     <section class="container flex flex-col gap-y-16 grow max-w-4xl mx-auto text-center">
       <div
-        class={`flex flex-col gap-y-6 py-28 bg-gradient-to-r from-gray-800 to-gray-950 rounded-2xl`}
+        class={`flex flex-col gap-y-6 py-16 bg-gradient-to-r from-gray-950 to-gray-800 rounded-2xl`}
       >
         <div class={`text-center`}>
           <InlineNav
@@ -887,8 +856,6 @@ function NonLogin(props: { data: any }) {
       </div>
 
       <PoweredBy />
-
-      <Bench />
 
       <div
         class={`flex flex-col gap-y-12 py-12 rounded-2xl bg-gradient-to-r from-gray-950 to-gray-800`}
