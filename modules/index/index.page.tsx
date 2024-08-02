@@ -889,7 +889,7 @@ function NonLogin(props: { data: any }) {
       <PoweredBy />
       <Bench />
       <div
-        class={`flex flex-col gap-y-6 py-6 bg-gradient-to-r from-gray-800 to-gray-950 rounded-2xl`}
+        class={`flex flex-col gap-y-20 py-12 bg-gray-800 rounded-2xl`}
       >
         <WhySSR />
         <WhyFlat />
