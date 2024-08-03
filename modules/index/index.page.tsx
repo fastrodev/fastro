@@ -650,7 +650,7 @@ function ProjectBox(props: { children: VNode[] }) {
 function WhatApps() {
   return (
     <div
-      class={`flex flex-col p-6 bg-gray-800 rounded-2xl`}
+      class={`flex flex-col p-6 bg-gray-900 rounded-2xl`}
     >
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
         <ProjectBox>
@@ -812,7 +812,7 @@ function NonLogin(props: { data: any }) {
   return (
     <section class="container flex flex-col gap-y-16 grow max-w-4xl mx-auto text-center">
       <div
-        class={`flex flex-col gap-y-6 py-16 bg-gradient-to-r from-gray-950 to-gray-800 rounded-2xl`}
+        class={`flex flex-col gap-y-6 py-16 bg-gradient-to-r from-gray-950 to-gray-900 rounded-2xl`}
       >
         <div class={`text-center`}>
           <InlineNav
@@ -858,7 +858,7 @@ function NonLogin(props: { data: any }) {
       <PoweredBy />
 
       <div
-        class={`flex flex-col gap-y-12 py-12 rounded-2xl bg-gradient-to-r from-gray-950 to-gray-800`}
+        class={`flex flex-col gap-y-12 py-12 rounded-2xl bg-gradient-to-r from-gray-950 to-gray-900`}
       >
         <WhySSR />
         <WhyFlat />

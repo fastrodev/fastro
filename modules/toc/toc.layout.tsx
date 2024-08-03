@@ -1,9 +1,18 @@
-import { InlineNav } from "@app/components/inline-nav.tsx";
+// import { InlineNav } from "@app/components/inline-nav.tsx";
 import { Footer } from "@app/components/footer.tsx";
 import { LayoutProps } from "@app/http/server/types.ts";
+import Header from "@app/components/header.tsx";
 
 export default function ({ children, data }: LayoutProps<
-    { title: string; description: string; image: string; destination: string }
+    {
+        title: string;
+        description: string;
+        image: string;
+        destination: string;
+        isLogin: boolean;
+        avatar_url: string;
+        html_url: string;
+    }
 >) {
     return (
         <html lang="en">
@@ -21,21 +30,15 @@ export default function ({ children, data }: LayoutProps<
                 <title>{`${data.title} | Fastro`}</title>
                 <link href="/styles.css" rel="stylesheet" />
             </head>
-            <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
-                <main class={"container grow max-w-4xl px-6 py-6 mx-auto"}>
-                    <div class={`flex flex-col gap-y-3 mb-3`}>
-                        <div>
-                            <InlineNav
-                                title="Fastro"
-                                description={data.title}
-                                destination={data.destination}
-                            />
-                        </div>
-                        <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
-                            {data.description}
-                        </h1>
-                    </div>
-
+            <body class="bg-white dark:bg-gray-950 text-slate-900 dark:text-white">
+                <Header
+                    isLogin={data.isLogin}
+                    avatar_url={data.avatar_url}
+                    html_url={data.html_url}
+                />
+                <main
+                    class={"container grow max-w-4xl px-6 py-6 mx-auto bg-gray-200  dark:bg-gray-900 rounded-xl"}
+                >
                     {children}
                 </main>
                 <Footer />

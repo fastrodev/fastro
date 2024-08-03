@@ -1,4 +1,4 @@
-function X() {
+function TwitterSvg() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -19,7 +19,7 @@ function X() {
   );
 }
 
-function Li() {
+function LinkedInSvg() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +43,7 @@ function Li() {
   );
 }
 
-function WA() {
+function WhatsAppSvg() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -67,12 +67,12 @@ function WA() {
 export function Footer() {
   return (
     <div
-      class={`container flex justify-between items-center max-w-4xl mx-auto text-center text-xs py-6 dark:text-gray-400 px-6 xl:px-0 md:px-0 sm:px-0`}
+      class={`container flex justify-between items-center max-w-4xl mx-auto text-center text-sm py-6 dark:text-gray-400 px-6 xl:px-0 md:px-0 sm:px-0`}
     >
       <div class={`flex items-center space-x-3`}>
-        <X />
-        <WA />
-        <Li />
+        <TwitterSvg />
+        <WhatsAppSvg />
+        <LinkedInSvg />
       </div>
 
       <span>Made with ♡ in Tulungagung</span>

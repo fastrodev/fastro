@@ -27,10 +27,10 @@ export default function Header(
         <div
             class={`container flex justify-between max-w-4xl mx-auto text-center text-sm py-6 px-3 xl:px-0 md:px-0 sm:px-0 dark:text-gray-400`}
         >
-            <div class={`flex space-x-1 items-center`}>
+            <a href="/" class={`flex space-x-1 items-center`}>
                 <BoltSvg />
                 <span>Fastro</span>
-            </div>
+            </a>
             <div class={`hidden md:flex md:items-center md:space-x-3`}>
                 <a href={"docs"}>Docs</a>
                 <a href={"#"}>Components</a>
