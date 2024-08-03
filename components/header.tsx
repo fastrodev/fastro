@@ -28,7 +28,11 @@ export default function Header(
             class={`container flex justify-between max-w-4xl mx-auto text-center text-sm py-6 px-3 xl:px-0 md:px-0 sm:px-0 dark:text-gray-400`}
         >
             <a href="/" class={`flex space-x-1 items-center`}>
-                <BoltSvg />
+                <div
+                    class={`border-[1px] border-gray-400 rounded-full p-[1px]`}
+                >
+                    <BoltSvg width="18" height="18" />
+                </div>
                 <span>Fastro</span>
             </a>
             <div class={`hidden md:flex md:items-center md:space-x-3`}>

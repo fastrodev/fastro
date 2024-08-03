@@ -1,10 +1,10 @@
-export function BoltSvg() {
+export function BoltSvg(props: { width?: string; height?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 -960 960 960"
-      width="12px"
-      height="12px"
+      width={props.width || "12px"}
+      height={props.height || "12px"}
       fill="#e8eaed"
     >
       <path d="m320-80 40-280H160l360-520h80l-40 320h240L400-80h-80Z" />
