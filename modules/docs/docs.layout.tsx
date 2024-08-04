@@ -162,7 +162,7 @@ export default function (
           </div>
           {/* content */}
           <div
-            class={`md:col-span-8 md:pt-6 flex flex-col gap-y-3 md:gap-y-6 max-w-4xl px-6`}
+            class={`md:col-span-8 md:pt-6 flex flex-col gap-y-3 md:gap-y-6 max-w-4xl px-3 md:px-6`}
           >
             <div class={`flex flex-col gap-y-3`}>
               <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">

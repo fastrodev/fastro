@@ -65,17 +65,27 @@ export default function Header(
                 )}
             </div>
             <div class={`flex items-center space-x-3 md:hidden`}>
-                <a href={"docs"}>Docs</a>
-                <a href={"blog"}>Blog</a>
-                {props.isLogin && <a href={"/signout"}>Sign out</a>}
-                {!props.isLogin && <a href={"/signin"}>Sign in</a>}
+                <a class={`dark:text-white`} href={"/docs"}>Docs</a>
+                <a class={`dark:text-white`} href={"/blog"}>Blog</a>
+                {props.isLogin && (
+                    <a class={`dark:text-white`} href={"/signout"}>Sign out</a>
+                )}
+                {!props.isLogin && (
+                    <a class={`dark:text-white`} href={"/signin"}>Sign in</a>
+                )}
                 {!props.avatar_url && (
-                    <a href={"https://github.com/fastrodev/fastro"}>
+                    <a
+                        class={`dark:text-white`}
+                        href={"https://github.com/fastrodev/fastro"}
+                    >
                         <GithubSvg />
                     </a>
                 )}
                 {props.avatar_url && (
-                    <a href={"https://github.com/fastrodev/fastro"}>
+                    <a
+                        class={`dark:text-white`}
+                        href={"https://github.com/fastrodev/fastro"}
+                    >
                         <img
                             src={props.avatar_url}
                             width={20}
