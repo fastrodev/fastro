@@ -1,5 +1,5 @@
-import { InlineNav } from "@app/components/inline-nav.tsx";
 import { Footer } from "@app/components/footer.tsx";
+import Header from "@app/components/header.tsx";
 
 function convert(dateString: string) {
   const date = new Date(dateString);
@@ -38,6 +38,8 @@ export default function (
     CSS: string;
     markdown: string;
     attrs: Record<string, unknown>;
+    // deno-lint-ignore no-explicit-any
+    data?: any;
   },
 ) {
   const title = props.attrs.title as string;
@@ -48,6 +50,7 @@ export default function (
   const avatar = (props.attrs.avatar as string) ??
     "https://avatars.githubusercontent.com/u/10122431?v=4";
   const tags = props.attrs.tags as string[];
+  const data = props.data;
 
   return (
     <html lang="en">
@@ -68,24 +71,20 @@ export default function (
         <link href="/styles.css" rel="stylesheet" />
         <link href="/markdown.css" rel="stylesheet" />
       </head>
-      <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
+      <body class="bg-white dark:bg-gray-950 text-slate-900 dark:text-white">
+        <Header
+          isLogin={data.isLogin}
+          avatar_url={data.avatar_url}
+          html_url={data.html_url}
+        />
         <main
-          class={"container grow max-w-4xl px-6 mt-6 mx-auto"}
+          class={"container grow max-w-4xl p-6 mx-auto bg-gray-900 rounded-lg"}
         >
           <div class={`flex flex-col gap-y-3`}>
-            <div class={`flex flex-col gap-y-3`}>
-              <div>
-                <InlineNav
-                  title="Fastro"
-                  description="Blog"
-                  destination="/blog"
-                />
-              </div>
-              {{ image } && <img src={image} class={`rounded-t-2xl mt-2`} />}
-              <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
-                {title}
-              </h1>
-            </div>
+            {{ image } && <img src={image} class={`rounded-2xl`} />}
+            <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
+              {title}
+            </h1>
             <p class={"inline-flex items-center gap-x-2 mb-3"}>
               <img
                 src={avatar}

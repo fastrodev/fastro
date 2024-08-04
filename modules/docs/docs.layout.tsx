@@ -1,5 +1,6 @@
 import { Footer } from "@app/components/footer.tsx";
-import { InlineNav } from "@app/components/inline-nav.tsx";
+// import { InlineNav } from "@app/components/inline-nav.tsx";
+import Header from "@app/components/header.tsx";
 
 export const docToc = [
   {
@@ -113,6 +114,8 @@ export default function (
     CSS: string;
     markdown: string;
     attrs: Record<string, unknown>;
+    // deno-lint-ignore no-explicit-any
+    data?: any;
   },
 ) {
   const title = props.attrs.title as string;
@@ -120,6 +123,7 @@ export default function (
   const image = props.attrs.image as string;
   const previous = props.attrs.previous as string;
   const next = props.attrs.next as string;
+  const data = props.data;
 
   return (
     <html lang="en">
@@ -139,28 +143,28 @@ export default function (
         <link href="/styles.css" rel="stylesheet" />
         <link href="/markdown.css" rel="stylesheet" />
       </head>
-      <body class="bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
+      <body class="bg-white dark:bg-gray-950 text-slate-900 dark:text-white">
+        <Header
+          isLogin={data.isLogin}
+          avatar_url={data.avatar_url}
+          html_url={data.html_url}
+        />
         <main
-          class={"grow md:grid md:grid-cols-10 p-6 md:p-0 "}
+          class={"grow md:grid md:grid-cols-12 p-6 md:p-0 dark:bg-gray-900"}
         >
+          {/* navigation */}
           <div
-            class={`hidden md:flex md:flex-col md:grow md:gap-y-3 md:col-span-2 md:items-end md:text-right md:pr-6 md:pt-6 md:pb-6`}
+            class={`hidden dark:bg-gray-950 md:flex md:flex-col md:grow md:gap-y-3 md:col-span-2 md:items-end md:text-right md:pr-6 md:pt-6 md:pb-6`}
           >
             {docToc.map((v) => {
-              return <a href={v.url}>{v.title}</a>;
+              return <a class={`text-white`} href={v.url}>{v.title}</a>;
             })}
           </div>
+          {/* content */}
           <div
-            class={`md:col-span-6 md:border-l md:border-l-gray-200 dark:border-l-gray-800 md:pl-5 md:pt-6 flex flex-col gap-y-3 md:gap-y-6 max-w-4xl`}
+            class={`md:col-span-8 md:pt-6 flex flex-col gap-y-3 md:gap-y-6 max-w-4xl px-6`}
           >
             <div class={`flex flex-col gap-y-3`}>
-              <div class={`block`}>
-                <InlineNav
-                  title="Fastro"
-                  description="Documentation"
-                  destination="/docs"
-                />
-              </div>
               <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
                 {title}
               </h1>
@@ -176,7 +180,7 @@ export default function (
             </div>
 
             <div
-              class={`flex justify-between pb-3`}
+              class={`flex justify-between`}
             >
               {previous && (
                 <a href={previous}>
@@ -190,6 +194,8 @@ export default function (
               )}
             </div>
           </div>
+          {/* TOC of doc */}
+          <div class={`bg-gray-950 col-span-2`}></div>
         </main>
         <Footer />
         <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js" />

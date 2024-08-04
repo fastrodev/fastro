@@ -27,7 +27,7 @@ export default function Header(
         <div
             class={`container flex justify-between max-w-4xl mx-auto text-center text-sm py-6 px-3 xl:px-0 md:px-0 sm:px-0 dark:text-gray-400`}
         >
-            <a href="/" class={`flex space-x-1 items-center`}>
+            <a href="/" class={`flex space-x-2 items-center dark:text-white`}>
                 <div
                     class={`border-[1px] border-gray-400 rounded-full p-[1px]`}
                 >
@@ -36,14 +36,21 @@ export default function Header(
                 <span>Fastro</span>
             </a>
             <div class={`hidden md:flex md:items-center md:space-x-3`}>
-                <a href={"docs"}>Docs</a>
-                <a href={"#"}>Components</a>
-                <a href={"#"}>Middleware</a>
-                <a href={"blog"}>Blog</a>
-                {props.isLogin && <a href={"/signout"}>Sign out</a>}
-                {!props.isLogin && <a href={"/signin"}>Sign in</a>}
+                <a class={`dark:text-white`} href={"/docs"}>Docs</a>
+                <a class={`dark:text-white`} href={"#"}>Components</a>
+                <a class={`dark:text-white`} href={"#"}>Middleware</a>
+                <a class={`dark:text-white`} href={"/blog"}>Blog</a>
+                {props.isLogin && (
+                    <a class={`dark:text-white`} href={"/signout"}>Sign out</a>
+                )}
+                {!props.isLogin && (
+                    <a class={`dark:text-white`} href={"/signin"}>Sign in</a>
+                )}
                 {!props.avatar_url && (
-                    <a href={"https://github.com/fastrodev/fastro"}>
+                    <a
+                        class={`dark:text-white`}
+                        href={"https://github.com/fastrodev/fastro"}
+                    >
                         <GithubSvg />
                     </a>
                 )}

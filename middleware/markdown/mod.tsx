@@ -25,47 +25,47 @@ async function readMarkdownFile(folder: string, file: string) {
   }
 }
 
-// deno-lint-ignore no-explicit-any
-const record: Record<string, any> = {};
-async function getMarkdownBody(
+// const record: Record<string, unknown> = {};
+export async function getMarkdownBody(
   req: Request,
   layout: FunctionComponent,
   folder: string,
   file: string,
   prefix: string,
+  data?: unknown,
 ) {
-  const id = folder + file;
-  if (record[id]) {
-    return record[id];
-  }
+  // const id = folder + file;
 
   const filePath = prefix ? file.replace(`/${prefix}/`, "") : file;
   const pathname = prefix ? `/${prefix}/${filePath}` : file;
 
   const pattern = new URLPattern({ pathname });
   const passed = pattern.test(req.url);
-  if (!passed) return record[id] = null;
+  if (!passed) return null;
 
   const md = await readMarkdownFile(folder, filePath);
-  if (!md) return record[id] = null;
+  if (!md) return null;
 
   const m = extract(md);
   const f = await remark().process(m.body);
+  const markdown = stringToJSXElement(render(String(f)));
 
-  const markdown = render(String(f));
   const html = layout({
     CSS,
-    markdown: stringToJSXElement(markdown),
+    markdown,
     attrs: m.attrs,
+    data,
   });
 
-  return record[id] = "<!DOCTYPE html>" + renderToString(html);
+  return "<!DOCTYPE html>" + renderToString(html);
 }
 
-const defaultLayout = (props: {
+export const defaultLayout = (props: {
   CSS: string;
   markdown: string;
   attrs: Record<string, unknown>;
+  // deno-lint-ignore no-explicit-any
+  data?: any;
 }) => {
   return (
     <html lang="en">

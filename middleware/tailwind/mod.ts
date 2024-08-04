@@ -57,7 +57,7 @@ async function processCss(staticDir: string) {
   }
 }
 
-export function tailwind(pathname = "/styles.css", staticDir = "/") {
+export default function tailwind(pathname = "/styles.css", staticDir = "/") {
   const cache = new Map<string, string>();
 
   async function m(_req: HttpRequest, ctx: Context) {
