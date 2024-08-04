@@ -150,7 +150,7 @@ export default function (
           html_url={data.html_url}
         />
         <main
-          class={"grow md:grid md:grid-cols-12 p-6 md:p-0 dark:bg-gray-900"}
+          class={"grow md:grid md:grid-cols-12 md:p-0 dark:bg-gray-900"}
         >
           {/* navigation */}
           <div
@@ -162,7 +162,7 @@ export default function (
           </div>
           {/* content */}
           <div
-            class={`md:col-span-8 md:pt-6 flex flex-col gap-y-3 md:gap-y-6 max-w-4xl px-3 md:px-6`}
+            class={`md:col-span-8 md:pt-6 flex flex-col gap-y-3 md:gap-y-6 p-6`}
           >
             <div class={`flex flex-col gap-y-3`}>
               <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
@@ -179,16 +179,18 @@ export default function (
               {props.markdown}
             </div>
 
+            <div class={`grow`}></div>
+
             <div
               class={`flex justify-between`}
             >
               {previous && (
-                <a href={previous}>
+                <a class={`text-white`} href={previous}>
                   Previous
                 </a>
               )}
               {next && (
-                <a href={next}>
+                <a class={`text-white`} href={next}>
                   Next
                 </a>
               )}

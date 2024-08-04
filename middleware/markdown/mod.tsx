@@ -15,17 +15,17 @@ function stringToJSXElement(content: string) {
   return <div dangerouslySetInnerHTML={{ __html: content }} />;
 }
 
-async function readMarkdownFile(folder: string, file: string) {
+function readMarkdownFile(folder: string, file: string) {
   try {
     const path = folder + "/" + file + ".md";
-    const md = await Deno.readTextFile(path);
+    const md = Deno.readTextFileSync(path);
     return md;
   } catch {
     return null;
   }
 }
 
-// const record: Record<string, unknown> = {};
+const record: Record<string, unknown> = {};
 export async function getMarkdownBody(
   req: Request,
   layout: FunctionComponent,
@@ -34,26 +34,38 @@ export async function getMarkdownBody(
   prefix: string,
   data?: unknown,
 ) {
-  // const id = folder + file;
+  // deno-lint-ignore no-explicit-any
+  async function g(): Promise<(any)[] | null> {
+    const id = folder + file;
+    if (record[id]) {
+      // deno-lint-ignore no-explicit-any
+      return record[id] as any[];
+    }
+    const filePath = prefix ? file.replace(`/${prefix}/`, "") : file;
+    const pathname = prefix ? `/${prefix}/${filePath}` : file;
 
-  const filePath = prefix ? file.replace(`/${prefix}/`, "") : file;
-  const pathname = prefix ? `/${prefix}/${filePath}` : file;
+    const pattern = new URLPattern({ pathname });
+    const passed = pattern.test(req.url);
+    if (!passed) return null;
 
-  const pattern = new URLPattern({ pathname });
-  const passed = pattern.test(req.url);
-  if (!passed) return null;
+    const md = readMarkdownFile(folder, filePath);
+    if (!md) return null;
 
-  const md = await readMarkdownFile(folder, filePath);
-  if (!md) return null;
+    const m = extract(md);
+    const f = await remark().process(m.body);
+    const rendered = render(String(f));
+    return record[id] = [rendered, m.attrs];
+  }
 
-  const m = extract(md);
-  const f = await remark().process(m.body);
-  const markdown = stringToJSXElement(render(String(f)));
+  const resp = await g();
+  if (!resp) return null;
+  const [r, attrs] = resp;
+  const markdown = stringToJSXElement(r);
 
   const html = layout({
     CSS,
     markdown,
-    attrs: m.attrs,
+    attrs,
     data,
   });
 
@@ -64,8 +76,7 @@ export const defaultLayout = (props: {
   CSS: string;
   markdown: string;
   attrs: Record<string, unknown>;
-  // deno-lint-ignore no-explicit-any
-  data?: any;
+  data?: unknown;
 }) => {
   return (
     <html lang="en">
