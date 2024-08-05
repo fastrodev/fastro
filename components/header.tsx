@@ -29,43 +29,15 @@ export default function Header(
         >
             <a href="/" class={`flex space-x-2 items-center dark:text-white`}>
                 <div
-                    class={`border-[1px] border-gray-400 rounded-full p-[1px]`}
+                    class={`border-[2px] border-gray-400 rounded-full p-[2px]`}
                 >
-                    <BoltSvg width="18" height="18" />
+                    <BoltSvg width="14" height="14" />
                 </div>
                 <span>Fastro</span>
             </a>
-            <div class={`hidden md:flex md:items-center md:space-x-3`}>
+            <div class={`flex items-center space-x-3`}>
                 <a class={`dark:text-white`} href={"/docs"}>Docs</a>
-                <a class={`dark:text-white`} href={"#"}>Components</a>
-                <a class={`dark:text-white`} href={"#"}>Middleware</a>
-                <a class={`dark:text-white`} href={"/blog"}>Blog</a>
-                {props.isLogin && (
-                    <a class={`dark:text-white`} href={"/signout"}>Sign out</a>
-                )}
-                {!props.isLogin && (
-                    <a class={`dark:text-white`} href={"/signin"}>Sign in</a>
-                )}
-                {!props.avatar_url && (
-                    <a
-                        class={`dark:text-white`}
-                        href={"https://github.com/fastrodev/fastro"}
-                    >
-                        <GithubSvg />
-                    </a>
-                )}
-                {props.html_url && (
-                    <a href={props.html_url}>
-                        <img
-                            src={props.avatar_url}
-                            width={20}
-                            class={`rounded-full`}
-                        />
-                    </a>
-                )}
-            </div>
-            <div class={`flex items-center space-x-3 md:hidden`}>
-                <a class={`dark:text-white`} href={"/docs"}>Docs</a>
+                <a class={`dark:text-white`} href={"#"}>Modules</a>
                 <a class={`dark:text-white`} href={"/blog"}>Blog</a>
                 {props.isLogin && (
                     <a class={`dark:text-white`} href={"/signout"}>Sign out</a>

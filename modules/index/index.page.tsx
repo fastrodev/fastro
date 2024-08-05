@@ -780,10 +780,9 @@ function WhySSR() {
 
 function PoweredBy() {
   return (
-    <div class={`flex flex-col gap-y-12 mx-6 md:mx-0`}>
+    <div class={`flex flex-col gap-y-6 mx-6 md:mx-0`}>
       <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
-        High-performance web framework with near native-like RPS. Powered by
-        Deno, TypeScript, Preact JS, and Tailwind CSS
+        Powered by Deno, TypeScript, Preact JS, and Tailwind CSS
       </h2>
 
       <div
