@@ -81,7 +81,9 @@ export default function (
           class={"container grow max-w-4xl p-6 mx-auto bg-gray-900 rounded-lg"}
         >
           <div class={`flex flex-col gap-y-3`}>
-            {{ image } && <img src={image} class={`rounded-2xl`} />}
+            {{ image } && (
+              <img src={image} class={`rounded-2xl`} loading="lazy" />
+            )}
             <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
               {title}
             </h1>
