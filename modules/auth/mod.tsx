@@ -9,6 +9,17 @@ import {
 const redirectUri = Deno.env.get("REDIRECT_URI") ??
   "http://localhost:8000/callback";
 
+const GITHUB_CLIENT_ID = Deno.env.get("GITHUB_CLIENT_ID");
+const GITHUB_CLIENT_SECRET = Deno.env.get("GITHUB_CLIENT_SECRET");
+
+if (!GITHUB_CLIENT_ID) {
+  throw new Error("GITHUB_CLIENT_ID environment variable must be set");
+}
+
+if (!GITHUB_CLIENT_SECRET) {
+  throw new Error("GITHUB_CLIENT_SECRET environment variable must be set");
+}
+
 const oauthConfig = createGitHubOAuthConfig(
   { redirectUri, scope: ["user"] },
 );
