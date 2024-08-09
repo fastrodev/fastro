@@ -334,13 +334,13 @@ function SeoSvg() {
   );
 }
 
-function BoltSvg() {
+function BoltSvg(props: { height?: string; width?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="24px"
+      height={props.height || "24px"}
       viewBox="0 -960 960 960"
-      width="24px"
+      width={props.width || "24px"}
       fill="#e8eaed"
     >
       <path d="m320-80 40-280H160l360-520h80l-40 320h240L400-80h-80Z" />
@@ -635,15 +635,20 @@ function SurveySvg() {
   );
 }
 
-function ProjectBox(props: { children: VNode[] }) {
+function ProjectBox(
+  props: { children: VNode[]; active?: boolean; url?: string },
+) {
+  const ready = props.active ? "bg-green-700 cursor-pointer" : "";
+
   return (
-    <div
-      class={`p-3 border border-white rounded-xl bg-green-700 flex justify-center`}
+    <a
+      href={props.url}
+      class={`p-3 border border-white rounded-xl ${ready} flex justify-center`}
     >
       <div class={`flex flex-col items-center gap-1`}>
         {props.children}
       </div>
-    </div>
+    </a>
   );
 }
 
@@ -653,7 +658,7 @@ function WhatApps() {
       class={`flex flex-col p-6 bg-gray-900 rounded-2xl`}
     >
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-        <ProjectBox>
+        <ProjectBox active={true} url="/admin">
           <AdminSvg />
           <p>Admin</p>
         </ProjectBox>
@@ -725,17 +730,17 @@ function WhatApps() {
 function WhyFlat() {
   return (
     <div class={`flex flex-col gap-6 mx-6`}>
-      <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
+      <h2 class={`text-gray-100 sm:text-2xl text-xl`}>
         Why use a flat modular architecture?
       </h2>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
         <ProjectBox>
-          <BoltSvg />
+          <BoltSvg width="36px" height="36px" />
           <p>Faster development</p>
         </ProjectBox>
         <ProjectBox>
           <SettingSvg />
-          <p>Increased maintainability</p>
+          <p>Easy to maintain</p>
         </ProjectBox>
         <ProjectBox>
           <ScaleSvg />
@@ -753,12 +758,12 @@ function WhyFlat() {
 function WhySSR() {
   return (
     <div class={`flex flex-col gap-6 mx-6`}>
-      <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
+      <h2 class={`text-gray-100 sm:text-2xl text-xl`}>
         Why use SSR?
       </h2>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
         <ProjectBox>
-          <BoltSvg />
+          <BoltSvg width="36px" height="36px" />
           <p>Faster Initial Load Time</p>
         </ProjectBox>
         <ProjectBox>
@@ -767,11 +772,11 @@ function WhySSR() {
         </ProjectBox>
         <ProjectBox>
           <UxSvg />
-          <p>Enhanced User Experience</p>
+          <p>Better UX</p>
         </ProjectBox>
         <ProjectBox>
           <WwwSvg />
-          <p>Supporting Older Browsers</p>
+          <p>Browser Legacy</p>
         </ProjectBox>
       </div>
     </div>
@@ -782,6 +787,7 @@ function PoweredBy() {
   return (
     <div class={`flex flex-col gap-y-6 mx-6 md:mx-0`}>
       <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
+        High-performance web framework built on a flat, modular architecture.
         Powered by Deno, TypeScript, Preact JS, and Tailwind CSS
       </h2>
 
@@ -811,7 +817,7 @@ function NonLogin(props: { data: any }) {
   return (
     <section class="container flex flex-col gap-y-16 grow max-w-4xl mx-auto text-center">
       <div
-        class={`flex flex-col gap-y-6 py-16 bg-gradient-to-r from-gray-950 to-gray-900 rounded-2xl`}
+        class={`flex flex-col gap-y-6 py-16 bg-gradient-to-r from-gray-950 to-green-800 rounded-2xl`}
       >
         <div class={`text-center`}>
           <InlineNav
@@ -824,9 +830,6 @@ function NonLogin(props: { data: any }) {
         <h1 class="mx-auto max-w-4xl text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-center text-white">
           {data.title}
         </h1>
-        <h2 class="mx-auto max-w-4xl px-3 text-gray-500 sm:text-2xl text-xl">
-          {data.description}
-        </h2>
 
         <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4 mx-6 md:mx-0">
           <a
@@ -857,7 +860,7 @@ function NonLogin(props: { data: any }) {
       <PoweredBy />
 
       <div
-        class={`flex flex-col gap-y-12 py-12 rounded-2xl bg-gradient-to-r from-gray-950 to-gray-900`}
+        class={`flex flex-col gap-y-12 py-12 rounded-2xl bg-gradient-to-r from-gray-950 to-green-800`}
       >
         <WhySSR />
         <WhyFlat />
