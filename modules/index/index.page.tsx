@@ -736,7 +736,7 @@ function WhyFlat() {
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
         <ProjectBox>
           <BoltSvg width="36px" height="36px" />
-          <p>Faster development</p>
+          <p>Rapid Build</p>
         </ProjectBox>
         <ProjectBox>
           <SettingSvg />
@@ -764,7 +764,7 @@ function WhySSR() {
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
         <ProjectBox>
           <BoltSvg width="36px" height="36px" />
-          <p>Faster Initial Load Time</p>
+          <p>Quick Load</p>
         </ProjectBox>
         <ProjectBox>
           <SeoSvg />
