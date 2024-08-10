@@ -740,15 +740,15 @@ function WhyFlat() {
         </ProjectBox>
         <ProjectBox>
           <SettingSvg />
-          <p>Easy to maintain</p>
+          <p>Maintainable</p>
         </ProjectBox>
         <ProjectBox>
           <ScaleSvg />
-          <p>Improved scalability</p>
+          <p>Scalable</p>
         </ProjectBox>
         <ProjectBox>
           <RepeatSvg />
-          <p>Reusability</p>
+          <p>Reusable</p>
         </ProjectBox>
       </div>
     </div>
