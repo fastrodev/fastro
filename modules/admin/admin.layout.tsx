@@ -14,7 +14,7 @@ export default function adminLayout(
                     name="viewport"
                     content="width=device-width, initial-scale=1.0"
                 />
-                <title>{data.title}</title>
+                <title>{data.title} | Fastro</title>
                 <link href="styles.css" rel="stylesheet" />
             </head>
             <body id="root" class="antialiased bg-gray-950">

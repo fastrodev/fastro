@@ -102,20 +102,23 @@ export default function Admin({ data }: PageProps<
         description: string;
     }
 >) {
+    console.log("data ==>", data);
     return (
         <div class={` bg-gray-950`}>
             <Header isLogin={false} avatar_url="" html_url="" />
             <main
-                class={`container flex flex-col space-y-3 grow max-w-4xl mx-auto bg-gray-900 p-6 rounded-xl text-white`}
+                class={`container flex flex-col space-y-3 grow max-w-4xl mx-auto bg-gray-900 p-6 rounded-xl text-white text-sm`}
             >
                 {/* user */}
-                <div class={`flex flex-col space-y-3`}>
-                    <div class={`flex space-x-3 items-center`}>
-                        <span>Users</span>
-                        <Search />
+                <div class={`flex flex-col space-y-6`}>
+                    <div
+                        class={`flex items-center space-x-2`}
+                    >
+                        <Button>Add user</Button>
+                        <Search placeholder="Search user" />
                     </div>
                     <div
-                        class={`flex flex-col space-y-3 border-[1px] border-gray-700 p-3 rounded-xl`}
+                        class={`flex flex-col space-y-6 border-[1px] border-gray-700 p-3 rounded-xl`}
                     >
                         <div class={`flex flex-col space-y-3`}>
                             <UserItem username="Admin" groupname="admin" />
@@ -130,11 +133,6 @@ export default function Admin({ data }: PageProps<
                                 username="George"
                                 groupname="Engineering"
                             />
-                        </div>
-                        <div
-                            class={`flex justify-end items-center py-3 w-full`}
-                        >
-                            <Button>Add user</Button>
                         </div>
                     </div>
                 </div>
