@@ -60,7 +60,7 @@ export async function indexHandler(req: HttpRequest, ctx: Context) {
           </p>
 
           <p>
-            <a href="https://github.com/fastrodev/fastro/blob/main/auth/mod.tsx">
+            <a href="https://github.com/fastrodev/fastro/blob/main/modules/auth/mod.tsx">
               Source code
             </a>
           </p>
