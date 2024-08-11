@@ -6,19 +6,18 @@ export default function adminLayout(
     >,
 ) {
     return (
-        <html lang={"en"}>
+        <html lang={`en`}>
             <head>
+                <meta name="robots" content="noindex, nofollow" />
                 <meta charset="utf-8" />
                 <meta
                     name="viewport"
                     content="width=device-width, initial-scale=1.0"
                 />
                 <title>{data.title}</title>
-                <meta name="description" content={data.description} />
-                <meta property="og:image" content={data.image} />
                 <link href="styles.css" rel="stylesheet" />
             </head>
-            <body id="root" class="antialiased">
+            <body id="root" class="antialiased bg-gray-950">
                 {children}
             </body>
         </html>
