@@ -5,6 +5,7 @@ import { VNode } from "preact";
 import Header from "@app/components/header.tsx";
 import TailwindSvg from "@app/components/icons/tailwind-svg.tsx";
 import PreactSvg from "@app/components/icons/preact-svg.tsx";
+import Search from "@app/components/search.tsx";
 
 function DenoSvg() {
   return (
@@ -610,10 +611,11 @@ function ProjectBox(
 function WhatApps() {
   return (
     <div
-      class={`flex flex-col p-6 bg-gray-900 rounded-2xl`}
+      class={`flex flex-col p-6 bg-gray-900 rounded-2xl gap-y-6`}
     >
+      <Search placeholder="Search module" />
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-        <ProjectBox active={true} url="/dash/admin">
+        <ProjectBox active={true} url="/mod/admin">
           <AdminSvg />
           <p>Admin</p>
         </ProjectBox>

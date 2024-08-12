@@ -30,7 +30,6 @@ export default function Header(
             </a>
             <div class={`flex items-center space-x-3`}>
                 <a class={`dark:text-white`} href={"/blog"}>Blog</a>
-                <a class={`dark:text-white`} href={"#"}>Modules</a>
                 <a class={`dark:text-white`} href={"/docs"}>Docs</a>
 
                 {props.isLogin && (
