@@ -17,6 +17,7 @@ function render(content: string) {
 }
 
 const twc = await import(Deno.cwd() + "/tailwind.config.ts");
+console.log("twc", twc);
 if (!twc && !twc.default) throw new Error("tailwind.config.ts is needed");
 function createProcessor(
   config: {
