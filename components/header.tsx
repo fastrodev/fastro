@@ -38,26 +38,21 @@ export default function Header(
                 {!props.isLogin && (
                     <a class={`dark:text-white`} href={"/signin"}>Sign in</a>
                 )}
-                {!props.avatar_url && (
-                    <a
-                        class={`dark:text-white`}
-                        href={"https://github.com/fastrodev/fastro"}
-                    >
-                        <GithubSvg />
-                    </a>
-                )}
-                {props.avatar_url && (
-                    <a
-                        class={`dark:text-white`}
-                        href={"https://github.com/fastrodev/fastro"}
-                    >
+
+                <a
+                    class={`dark:text-white`}
+                    href={props.isLogin
+                        ? props.html_url
+                        : "https://github.com/fastrodev/fastro"}
+                >
+                    {!props.avatar_url ? <GithubSvg /> : (
                         <img
                             src={props.avatar_url}
-                            width={20}
+                            width={24}
                             class={`rounded-full`}
                         />
-                    </a>
-                )}
+                    )}
+                </a>
             </div>
         </div>
     );

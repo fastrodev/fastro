@@ -1,11 +1,11 @@
 export default function GithubSvg() {
     return (
         <svg
-            class="w-6 h-6 text-gray-800 dark:text-white"
+            class="text-gray-800 dark:text-white"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
+            width="24px"
+            height="24px"
             fill="currentColor"
             viewBox="0 0 24 24"
         >
