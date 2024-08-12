@@ -41,6 +41,7 @@ export default function Header(
                 )}
 
                 <a
+                    aria-label="user profile"
                     class={`dark:text-white`}
                     href={props.isLogin
                         ? props.html_url
