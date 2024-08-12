@@ -74,7 +74,7 @@ function UserItem(
 ) {
     return (
         <div
-            class={`flex justify-between border-b-[1px] border-b-gray-700 pb-3`}
+            class={`flex justify-between border-b-[1px] border-b-gray-700 pb-3 last:border-b-[0px]`}
         >
             <div class={`inline-flex items-center space-x-1`}>
                 {props.group && <UserGroupsSvg />}
@@ -105,41 +105,58 @@ export default function Admin({ data }: PageProps<
     console.log("data ==>", data);
     return (
         <div class={` bg-gray-950`}>
-            <Header isLogin={false} avatar_url="" html_url="" />
+            <Header
+                isLogin={false}
+                avatar_url=""
+                html_url=""
+                title="Users and Groups"
+                previous_url="/"
+            />
             <main
-                class={`container flex flex-col space-y-3 grow max-w-4xl mx-auto bg-gray-900 p-6 rounded-xl text-white text-sm`}
+                class={`container flex flex-col space-y-6 grow max-w-4xl mx-auto bg-gray-900 p-6 rounded-xl text-white text-sm`}
             >
                 {/* user */}
                 <div class={`flex flex-col space-y-6`}>
                     <div
-                        class={`flex items-center space-x-2`}
+                        class={`flex justify-between items-center space-x-3`}
                     >
-                        <Button>Add user</Button>
+                        <Button>Add User</Button>
                         <Search placeholder="Search user" />
                     </div>
                     <div
                         class={`flex flex-col space-y-6 border-[1px] border-gray-700 p-3 rounded-xl`}
                     >
                         <div class={`flex flex-col space-y-3`}>
-                            <UserItem username="Admin" groupname="admin" />
-                            <UserItem username="John" groupname="admin" />
-                            <UserItem username="Clark" groupname="HR" />
-                            <UserItem username="Ane" groupname="HR" />
+                            <UserItem username="Admin" groupname="Operations" />
+                            <UserItem username="John" groupname="Operations" />
+                            <UserItem
+                                username="Clark"
+                                groupname="Human Resources"
+                            />
+                            <UserItem
+                                username="Ane"
+                                groupname="Human Resources"
+                            />
                             <UserItem
                                 username="April"
-                                groupname="Engineering"
+                                groupname="Information Technology"
                             />
                             <UserItem
                                 username="George"
-                                groupname="Engineering"
+                                groupname="Information Technology"
                             />
                         </div>
                     </div>
                 </div>
 
                 {/* groups */}
-                <div class={`flex flex-col space-y-3`}>
-                    <div class={`text-white`}>Groups</div>
+                <div class={`flex flex-col space-y-6`}>
+                    <div
+                        class={`flex justify-between items-center space-x-3`}
+                    >
+                        <Button>Add Group</Button>
+                        <Search placeholder="Search groups" />
+                    </div>
                     <div
                         class={`flex flex-col space-y-3 border-[1px] border-gray-700 p-3 rounded-xl`}
                     >
@@ -157,11 +174,6 @@ export default function Admin({ data }: PageProps<
                             <UserItem username="Marketing" group={true} />
                             <UserItem username="Operations" group={true} />
                             <UserItem username="Sales" group={true} />
-                        </div>
-                        <div
-                            class={`flex justify-end items-center py-3 w-full`}
-                        >
-                            <Button>Add Group</Button>
                         </div>
                     </div>
                 </div>

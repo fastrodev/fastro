@@ -643,7 +643,7 @@ function ProjectBox(
   return (
     <a
       href={props.url}
-      class={`p-3 border border-white rounded-xl ${ready} flex justify-center`}
+      class={`p-3 border border-gray-700 rounded-xl ${ready} flex justify-center`}
     >
       <div class={`flex flex-col items-center gap-1`}>
         {props.children}
@@ -888,6 +888,7 @@ export default function Index({ data }: PageProps<
         isLogin={data.isLogin}
         avatar_url={data.avatar_url}
         html_url={data.html_url}
+        title={data.isLogin ? "Launchpad" : "Fastro"}
       />
 
       {data.isLogin &&

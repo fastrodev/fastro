@@ -1,34 +1,5 @@
-export function BoltSvg(props: { width?: string; height?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 -960 960 960"
-      width={props.width || "12px"}
-      height={props.height || "12px"}
-      fill="#e8eaed"
-    >
-      <path d="m320-80 40-280H160l360-520h80l-40 320h240L400-80h-80Z" />
-    </svg>
-  );
-}
-
-function ArrowSvg() {
-  return (
-    <svg
-      class="ml-2 w-4 h-4"
-      fill="currentColor"
-      viewBox="0 0 20 20"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        fill-rule="evenodd"
-        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-        clip-rule="evenodd"
-      >
-      </path>
-    </svg>
-  );
-}
+import BoltSvg from "./icons/bolt.tsx";
+import ArrowSvg from "@app/components/icons/arrow-svg.tsx";
 
 export function InlineNav(
   props: { title?: string; description?: string; destination?: string },
