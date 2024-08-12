@@ -643,7 +643,7 @@ function ProjectBox(
   return (
     <a
       href={props.url}
-      class={`p-3 border border-gray-700 rounded-xl ${ready} flex justify-center`}
+      class={`p-3 border border-gray-100 rounded-xl ${ready} flex justify-center`}
     >
       <div class={`flex flex-col items-center gap-1`}>
         {props.children}
@@ -658,7 +658,7 @@ function WhatApps() {
       class={`flex flex-col p-6 bg-gray-900 rounded-2xl`}
     >
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-        <ProjectBox active={true} url="/admin">
+        <ProjectBox active={true} url="/dash/admin">
           <AdminSvg />
           <p>Admin</p>
         </ProjectBox>
@@ -786,7 +786,7 @@ function WhySSR() {
 function PoweredBy() {
   return (
     <div class={`flex flex-col gap-y-6 mx-6 md:mx-0`}>
-      <h2 class={`text-gray-500 sm:text-2xl text-xl`}>
+      <h2 class={`text-gray-100 sm:text-2xl text-xl`}>
         High-performance web framework built on a flat, modular architecture.
         Powered by Deno, TypeScript, Preact JS, and Tailwind CSS
       </h2>
@@ -815,7 +815,7 @@ function PoweredBy() {
 function NonLogin(props: { data: any }) {
   const data = props.data;
   return (
-    <section class="container flex flex-col gap-y-16 grow max-w-4xl mx-auto text-center">
+    <section class="container flex flex-col gap-y-10 grow max-w-4xl mx-auto text-center">
       <div
         class={`flex flex-col gap-y-6 py-16 bg-gradient-to-r from-gray-950 to-green-800 rounded-2xl`}
       >

@@ -4,7 +4,7 @@ import adminLayout from "./admin.layout.tsx";
 import adminHandler from "./admin.handler.tsx";
 
 export default function adminModule(s: Fastro) {
-    s.page("/admin", {
+    s.page("/dash/admin", {
         component: adminPage,
         layout: adminLayout,
         handler: adminHandler,
