@@ -16,9 +16,18 @@ function render(content: string) {
   });
 }
 
-const twc = await import(Deno.cwd() + "/tailwind.config.ts");
-console.log("twc", twc);
-if (!twc && !twc.default) throw new Error("tailwind.config.ts is needed");
+async function getPath() {
+  let twc;
+  try {
+    twc = await import(Deno.cwd() + "/tailwind.config.ts");
+  } catch (_err) {
+    twc = await import("../../tailwind.config.ts");
+  }
+  return twc;
+}
+
+const twc = await getPath();
+
 function createProcessor(
   config: {
     staticDir: string;
