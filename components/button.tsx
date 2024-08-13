@@ -1,4 +1,4 @@
-import type { ComponentChildren } from "https://esm.sh/preact@10.23.1";
+import type { ComponentChildren } from "https://esm.sh/preact@10.23.2";
 
 export default function Button(props: { children: ComponentChildren }) {
     return (
