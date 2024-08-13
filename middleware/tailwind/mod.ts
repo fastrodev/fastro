@@ -3,8 +3,8 @@ import tailwindCss, { Config } from "npm:tailwindcss@3.4.4";
 import postcss from "npm:postcss@8.4.35";
 import cssnano from "npm:cssnano@6.0.1";
 import autoprefixer from "npm:autoprefixer@10.4.16";
-import { TailwindPluginOptions } from "@app/middleware/tailwind/types.ts";
-import { Context, HttpRequest } from "@app/http/server/types.ts";
+import { TailwindPluginOptions } from "./types.ts";
+import { Context, HttpRequest } from "../../mod.ts";
 
 function render(content: string) {
   return new Response(content, {
