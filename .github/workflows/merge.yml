@@ -22,10 +22,10 @@ jobs:
 
       - run: deno lint --unstable http
       - run: deno lint --unstable examples
-      
+
       - name: Run tests
         run: deno task test
-         
+
       - name: Generate report
         run: deno task coverage
 
@@ -34,4 +34,3 @@ jobs:
         with:
           path-to-lcov: ./cov.lcov
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          

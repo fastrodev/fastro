@@ -1,7 +1,7 @@
 name: build
 on:
   push:
-     branches:
+    branches:
       - main
 jobs:
   build:
@@ -19,10 +19,10 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: vx.x.x
-          
+
       - name: Run tests
         run: deno task test
-         
+
       - name: Generate report
         run: deno task coverage
 
@@ -31,10 +31,10 @@ jobs:
         with:
           path-to-lcov: ./cov.lcov
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Run Build
         run: GITHUB_CLIENT_ID=${{ vars.GH_CLIENT_ID }} GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} deno task build
-          
+
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:

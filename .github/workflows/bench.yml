@@ -1,13 +1,11 @@
 name: bench
 on:
-  schedule:
-    - cron: 0 0 * * *
   push:
     branches:
       - main
 jobs:
   hello_bench:
-    name: 'Hello, bench!'
+    name: "Hello, bench!"
     runs-on: ubuntu-latest
 
     env:
@@ -19,7 +17,7 @@ jobs:
       id-token: write
       contents: write
       packages: write
-    
+
     services:
       postgres:
         image: postgres
@@ -45,7 +43,7 @@ jobs:
           --health-retries 5
         ports:
           - 6379:6379
-      
+
       mongodb:
         image: mongo:4.4.6
         env:
@@ -66,7 +64,7 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      
+
       - name: Start MySQL
         run: |
           sudo /etc/init.d/mysql start
@@ -81,7 +79,7 @@ jobs:
         with:
           crate: oha
           version: 1.1.0
-      
+
       - name: Generate internal benchmarks
         run: GITHUB_CLIENT_ID=${{ vars.GH_CLIENT_ID }} GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} deno task bench
 
@@ -95,10 +93,10 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
-      
+
       - name: Run Build
         run: GITHUB_CLIENT_ID=${{ vars.GH_CLIENT_ID }} GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} deno task build
-          
+
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:
