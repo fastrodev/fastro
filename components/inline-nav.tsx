@@ -1,7 +1,7 @@
 import BoltSvg from "./icons/bolt.tsx";
 import ArrowSvg from "@app/components/icons/arrow-svg.tsx";
 
-export function InlineNav(
+export default function InlineNav(
   props: { title?: string; description?: string; destination?: string },
 ) {
   const title = props.title ?? "Fastro";

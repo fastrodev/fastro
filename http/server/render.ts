@@ -1,5 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
-import { ComponentChild, h, JSX, renderToString, VNode } from "./deps.ts";
+import {
+  ComponentChild,
+  h,
+  JSX,
+  renderToString,
+  renderToStringAsync,
+  VNode,
+} from "./deps.ts";
 import { Fastro, FunctionComponent, Page } from "./types.ts";
 import { BUILD_ID, getDevelopment } from "./mod.ts";
 
@@ -97,7 +104,7 @@ es.onmessage = function(e) {
     return layout;
   };
 
-  render = <T = any>(key: string, p: Page, data: T, nonce: string) => {
+  render = async <T = any>(key: string, p: Page, data: T, nonce: string) => {
     this.#server.serverOptions[key] = data;
     const children = typeof p.component == "function"
       ? h(p.component as FunctionComponent, { data, nonce })
@@ -114,7 +121,7 @@ es.onmessage = function(e) {
         p.script,
       );
     }
-    const html = "<!DOCTYPE html>" + renderToString(app);
+    const html = "<!DOCTYPE html>" + await renderToStringAsync(app);
     return new Response(html, {
       headers: { "content-type": "text/html" },
     });

@@ -15,4 +15,7 @@ export type {
   JSX,
   VNode,
 } from "https://esm.sh/preact@10.23.2";
-export { renderToString } from "https://esm.sh/preact-render-to-string@6.5.1?deps=preact@10.23.2";
+export {
+  renderToString,
+  renderToStringAsync,
+} from "https://esm.sh/preact-render-to-string@6.5.9?deps=preact@10.23.2";
