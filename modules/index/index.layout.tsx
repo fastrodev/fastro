@@ -20,7 +20,7 @@ export default function index(
       </head>
       <body
         id="root"
-        class={`grow bg-gray-950 text-white`}
+        class={`h-screen bg-gray-950 text-white`}
       >
         {children}
       </body>

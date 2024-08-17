@@ -1,7 +1,7 @@
 import BoltSvg from "@app/components/icons/bolt.tsx";
 import AngleLeftSvg from "@app/components/icons/angle-left-svg.tsx";
 import GithubSvg from "@app/components/icons/github-svg.tsx";
-import GridSvg from "@app/components/icons/grid-svg.tsx";
+import RocketSvg from "./icons/rocket-svg.tsx";
 
 export default function Header(
     props: {
@@ -21,7 +21,7 @@ export default function Header(
                     class={`border-[2px] border-gray-400 rounded-full p-[4px]`}
                 >
                     {props.isLogin
-                        ? <GridSvg />
+                        ? <RocketSvg />
                         : props.previous_url
                         ? <AngleLeftSvg />
                         : <BoltSvg />}
@@ -48,6 +48,7 @@ export default function Header(
                 >
                     {!props.avatar_url ? <GithubSvg /> : (
                         <img
+                            loading={"lazy"}
                             src={props.avatar_url}
                             width={24}
                             class={`rounded-full`}
