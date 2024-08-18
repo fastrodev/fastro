@@ -111,6 +111,7 @@ es.onmessage = function(e) {
         h("script", {
           src: `/js/refresh.js`,
           async: true,
+          nonce,
         }),
       );
     }
@@ -129,7 +130,7 @@ es.onmessage = function(e) {
       "content-type": "text/html",
       "x-request-id": new Date().getTime().toString(),
       "Content-Security-Policy":
-        `default-src 'self'; script-src 'self' 'nonce-${nonce}'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; frame-src 'self'`,
+        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic';`,
     });
     const children = typeof p.component == "function"
       ? h(p.component as FunctionComponent, { data, nonce })
