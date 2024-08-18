@@ -101,6 +101,7 @@ export class Context {
   send!: <T>(
     data?: T | undefined,
     status?: number | undefined,
+    headers?: Headers,
   ) => Response | Promise<Response>;
   /**
    * Middleware callback

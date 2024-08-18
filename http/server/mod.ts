@@ -52,15 +52,22 @@ const parseBody = (req: Request) => {
   };
 };
 
-const createResponse = (res: any, status = 200): Response => {
-  if (typeof res === "string") return new Response(res, { status });
+const createResponse = (
+  res: any,
+  status = 200,
+  headers?: Headers,
+): Response => {
+  const h = headers ? headers : new Headers({
+    "Content-Type": "application/json",
+  });
+  if (typeof res === "string") return new Response(res, { status, headers: h });
   if (res instanceof Response) return res;
   if (
     typeof res === "number" || typeof res === "bigint" ||
     typeof res === "boolean" || typeof res === "undefined"
-  ) return new Response(JSON.stringify(res), { status });
+  ) return new Response(JSON.stringify(res), { status, headers: h });
   try {
-    return Response.json(res, { status });
+    return Response.json(res, { status, headers: h });
   } catch (error) {
     throw error;
   }
@@ -392,8 +399,8 @@ if (root) fetchProps(root);
     ctx.next = () => {};
     ctx.url = new URL(req.url);
     ctx.server = this;
-    ctx.send = <T>(data: T, status = 200) => {
-      return createResponse(data, status);
+    ctx.send = <T>(data: T, status = 200, headers?: Headers) => {
+      return createResponse(data, status, headers);
     };
     ctx.kv = this.serverOptions["kv"];
     ctx.options = this.serverOptions;
