@@ -26,3 +26,7 @@ async function getKvInstance(path?: string): Promise<Deno.Kv> {
 }
 
 export const kv = await getKvInstance(path);
+
+export async function collectValues<T>(iter: Deno.KvListIterator<T>) {
+  return await Array.fromAsync(iter, ({ value }) => value);
+}
