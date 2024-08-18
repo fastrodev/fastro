@@ -382,11 +382,11 @@ if (root) fetchProps(root);
     }
     if (!page) return [];
     const ctx = this.serverOptions as Context;
-    ctx.render = <T>(data: T) => {
+    ctx.render = <T>(data: T, headers?: Headers) => {
       const r = new Render(this);
       key = key === "/" ? "" : key;
       key = url.origin + "/__/props" + key;
-      return r.render(key, page, data, this.getNonce());
+      return r.render(key, page, data, this.getNonce(), headers);
     };
     ctx.info = info;
     ctx.next = () => {};

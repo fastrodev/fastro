@@ -22,8 +22,14 @@ export class Render {
 
   renderJsx = (jsx: JSX.Element) => {
     const html = renderToString(jsx);
+    const headers = new Headers({
+      "content-type": "text/html",
+      "x-request-id": new Date().getTime().toString(),
+      "Content-Security-Policy":
+        `"default-src 'self'; script-src 'self' 'strict-dynamic'; style-src 'self'; font-src 'self'; img-src 'self'; frame-src 'self'"`,
+    });
     return new Response(html, {
-      headers: { "content-type": "text/html" },
+      headers,
     });
   };
 
@@ -38,8 +44,8 @@ es.onmessage = function(e) {
   };
 };`;
   };
-  #loadJs = (name: string) => {
-    return `function fetchWithRetry(t){fetch(t).then(t=>t.text()).then(t=>{if("Not Found"===t)return setTimeout(()=>{location.reload()},500);const e=document.createElement("script");e.defer = true;e.type = "module";e.textContent=t,document.body.appendChild(e)})};const origin=new URL(window.location.origin),url=origin+"js/${name}.${this.#server.getNonce()}.js";fetchWithRetry(url);`;
+  #loadJs = (name: string, nonce: string) => {
+    return `function fetchWithRetry(t){fetch(t).then(t=>t.text()).then(t=>{if("Not Found"===t)return setTimeout(()=>{location.reload()},500);const e=document.createElement("script");e.defer = true;e.type = "module";e.nonce = '${nonce}';e.textContent=t,document.body.appendChild(e)})};const origin=new URL(window.location.origin),url=origin+"js/${name}.${this.#server.getNonce()}.js";fetchWithRetry(url);`;
   };
 
   #handleDevelopment = () => {
@@ -81,8 +87,14 @@ es.onmessage = function(e) {
     this.#server.add("GET", refreshPath, refreshStream);
   };
 
-  #mutate = (layout: VNode, component: FunctionComponent, script = "") => {
-    const customScript = this.#loadJs(component.name.toLowerCase()) + script;
+  #mutate = (
+    layout: VNode,
+    component: FunctionComponent,
+    script = "",
+    nonce: string,
+  ) => {
+    const customScript = this.#loadJs(component.name.toLowerCase(), nonce) +
+      script;
     const children = layout.props.children as ComponentChild[];
     children.push(
       h("script", {
@@ -91,6 +103,7 @@ es.onmessage = function(e) {
         dangerouslySetInnerHTML: {
           __html: customScript,
         },
+        nonce,
       }),
     );
     if (getDevelopment()) {
@@ -104,8 +117,20 @@ es.onmessage = function(e) {
     return layout;
   };
 
-  render = async <T = any>(key: string, p: Page, data: T, nonce: string) => {
+  render = async <T = any>(
+    key: string,
+    p: Page,
+    data: T,
+    nonce: string,
+    hdr?: Headers,
+  ) => {
     this.#server.serverOptions[key] = data;
+    const headers = hdr ? hdr : new Headers({
+      "content-type": "text/html",
+      "x-request-id": new Date().getTime().toString(),
+      "Content-Security-Policy":
+        `default-src 'self'; script-src 'self' 'nonce-${nonce}'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; frame-src 'self'`,
+    });
     const children = typeof p.component == "function"
       ? h(p.component as FunctionComponent, { data, nonce })
       : p.component;
@@ -119,11 +144,12 @@ es.onmessage = function(e) {
         p.layout({ children, data, nonce }),
         p.component,
         p.script,
+        nonce,
       );
     }
     const html = "<!DOCTYPE html>" + await renderToStringAsync(app);
     return new Response(html, {
-      headers: { "content-type": "text/html" },
+      headers,
     });
   };
 }

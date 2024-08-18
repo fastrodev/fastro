@@ -87,7 +87,10 @@ export class Context {
    * @param data
    * @returns
    */
-  render!: <T>(data?: T | undefined) => Response | Promise<Response>;
+  render!: <T>(
+    data?: T | undefined,
+    headers?: Headers,
+  ) => Response | Promise<Response>;
   /**
    * Information for a HTTP request.
    */
