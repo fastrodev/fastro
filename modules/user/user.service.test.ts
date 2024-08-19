@@ -6,6 +6,7 @@ import {
     getUserByEmail,
     listUsers,
     listUsersByEmail,
+    listUsersByGroup,
     updateUser,
 } from "@app/modules/user/user.service.ts";
 import UserType from "@app/modules/user/user.type.ts";
@@ -33,6 +34,7 @@ Deno.test({
             username: "john4",
             password: "password",
             email: "john4@email.com",
+            group: "admin",
         });
         assertEquals(res.ok, true);
     },
@@ -99,6 +101,15 @@ Deno.test({
     async fn() {
         const res = await collectValues(listUsersByEmail());
         assertEquals(res.length, 4);
+    },
+});
+
+Deno.test({
+    name: "listUsersByGroup",
+    async fn() {
+        const res = await collectValues(listUsersByGroup("admin"));
+        assertEquals(res.length, 1);
+        assertEquals(res[0].group, "admin");
     },
 });
 
