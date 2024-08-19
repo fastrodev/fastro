@@ -24,21 +24,34 @@ export function listUsersByEmail(
     return kv.list<UserType>({ prefix: ["users_by_email"] }, options);
 }
 
+export function listUsersByGroup(
+    userGroup: string,
+    options?: Deno.KvListOptions,
+) {
+    return kv.list<UserType>(
+        { prefix: ["users_by_group", userGroup] },
+        options,
+    );
+}
+
 export async function createUser(user: UserType) {
     user.id = user.id ? user.id : ulid();
     const primaryKey = ["users", user.id];
     const byEmailKey = ["users_by_email", user.email];
 
-    const res = await kv.atomic()
+    const atomic = kv.atomic()
         .check({ key: primaryKey, versionstamp: null })
         .check({ key: byEmailKey, versionstamp: null })
         .set(primaryKey, user)
-        .set(byEmailKey, user)
-        .commit();
+        .set(byEmailKey, user);
 
-    if (!res.ok) {
-        throw new TypeError("User with ID or email already exists");
+    if (user.group) {
+        const byGroupKey = ["users_by_group", user.group, user.id];
+        atomic.set(byGroupKey, user);
     }
+
+    const res = await atomic.commit();
+    if (!res.ok) throw new Error("Failed to create user");
 
     return res;
 }

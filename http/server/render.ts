@@ -130,7 +130,7 @@ es.onmessage = function(e) {
       "content-type": "text/html",
       "x-request-id": new Date().getTime().toString(),
       "Content-Security-Policy":
-        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic';`,
+        `script-src 'self' 'unsafe-inline' 'nonce-${nonce}' 'strict-dynamic' https: http: ; object-src 'none'; base-uri 'none';`,
     });
     const children = typeof p.component == "function"
       ? h(p.component as FunctionComponent, { data, nonce })
