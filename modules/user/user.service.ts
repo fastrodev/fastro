@@ -57,20 +57,36 @@ export async function createUser(user: UserType) {
 }
 
 export async function updateUser(id: string, user: UserType) {
-    if (!id) return;
-    const existingUser = await kv.get<UserType>(["users", id]);
-    if (!existingUser.value?.email) return;
+    const atomicOp = kv.atomic();
+
+    // check exist user
+    const eu = await kv.get<UserType>(["users", id]);
+    if (eu.value?.email) {
+        atomicOp.check(eu)
+            .delete(["users_by_email", eu.value?.email]);
+    }
 
     const byEmailKey = ["users_by_email", user.email];
-    const atomicOp = kv.atomic()
-        .check(existingUser)
-        .delete(["users_by_email", existingUser.value?.email])
+    atomicOp
         .set(["users", id], user)
-        .check({ key: byEmailKey, versionstamp: null })
         .set(byEmailKey, user);
+
+    if (user.group) {
+        const byGroupKey = ["users_by_group", user.group, id];
+        atomicOp.set(byGroupKey, user);
+    }
 
     const res = await atomicOp.commit();
     if (!res.ok) throw new Error("Failed to update user");
+    return res;
+}
+
+export async function removeUserGroup(userId: string, group: string) {
+    const userGroupKey = ["users_by_group", group, userId];
+    const atomicOp = kv.atomic().delete(userGroupKey);
+
+    const res = await atomicOp.commit();
+    if (!res.ok) throw new Error("Failed to remove user group");
     return res;
 }
 

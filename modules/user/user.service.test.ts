@@ -7,6 +7,7 @@ import {
     listUsers,
     listUsersByEmail,
     listUsersByGroup,
+    removeUserGroup,
     updateUser,
 } from "@app/modules/user/user.service.ts";
 import UserType from "@app/modules/user/user.type.ts";
@@ -54,6 +55,7 @@ Deno.test({
     async fn() {
         if (!user) return;
         user.email = "john2@email.com";
+        user.group = "sales";
         if (user.id) {
             const res = await updateUser(user?.id, user);
             assertEquals(res?.ok, true);
@@ -68,6 +70,20 @@ Deno.test({
             user = await getUser(user?.id);
         }
         assertEquals(user?.email, "john2@email.com");
+        assertEquals(user?.group, "sales");
+    },
+});
+
+Deno.test({
+    name: "updateUser 2",
+    async fn() {
+        if (!user) return;
+        user.email = "john2@email.com";
+        user.group = "admin";
+        if (user.id) {
+            const res = await updateUser(user?.id, user);
+            assertEquals(res.ok, true);
+        }
     },
 });
 
@@ -108,8 +124,29 @@ Deno.test({
     name: "listUsersByGroup",
     async fn() {
         const res = await collectValues(listUsersByGroup("admin"));
+        assertEquals(res.length, 2);
+        assertEquals(res[0].group, "admin");
+        assertEquals(res[0].email, "john2@email.com");
+    },
+});
+
+Deno.test({
+    name: "removeUserGroup",
+    async fn() {
+        if (user?.id) {
+            const res = await removeUserGroup(user.id, "admin");
+            assertEquals(res.ok, true);
+        }
+    },
+});
+
+Deno.test({
+    name: "listUsersByGroup",
+    async fn() {
+        const res = await collectValues(listUsersByGroup("admin"));
         assertEquals(res.length, 1);
         assertEquals(res[0].group, "admin");
+        assertEquals(res[0].email, "john4@email.com");
     },
 });
 
