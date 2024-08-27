@@ -6,8 +6,6 @@ import {
     getUserByEmail,
     listUsers,
     listUsersByEmail,
-    listUsersByGroup,
-    removeUserGroup,
     updateUser,
 } from "@app/modules/user/user.service.ts";
 import UserType from "@app/modules/user/user.type.ts";
@@ -35,9 +33,9 @@ Deno.test({
             username: "john4",
             password: "password",
             email: "john4@email.com",
-            group: "admin",
         });
-        assertEquals(res.ok, true);
+
+        assertEquals(res.username, "john");
     },
 });
 
@@ -55,9 +53,8 @@ Deno.test({
     async fn() {
         if (!user) return;
         user.email = "john2@email.com";
-        user.group = "sales";
         if (user.id) {
-            const res = await updateUser(user?.id, user);
+            const res = await updateUser(user);
             assertEquals(res?.ok, true);
         }
     },
@@ -70,7 +67,6 @@ Deno.test({
             user = await getUser(user?.id);
         }
         assertEquals(user?.email, "john2@email.com");
-        assertEquals(user?.group, "sales");
     },
 });
 
@@ -79,9 +75,8 @@ Deno.test({
     async fn() {
         if (!user) return;
         user.email = "john2@email.com";
-        user.group = "admin";
         if (user.id) {
-            const res = await updateUser(user?.id, user);
+            const res = await updateUser(user);
             assertEquals(res.ok, true);
         }
     },
@@ -121,51 +116,19 @@ Deno.test({
 });
 
 Deno.test({
-    name: "listUsersByGroup",
-    async fn() {
-        const res = await collectValues(listUsersByGroup("admin"));
-        assertEquals(res.length, 2);
-        assertEquals(res[0].group, "admin");
-        assertEquals(res[0].email, "john2@email.com");
-    },
-});
-
-Deno.test({
-    name: "removeUserGroup",
-    async fn() {
-        if (user?.id) {
-            const res = await removeUserGroup(user.id, "admin");
-            assertEquals(res.ok, true);
-        }
-    },
-});
-
-Deno.test({
-    name: "listUsersByGroup",
-    async fn() {
-        const res = await collectValues(listUsersByGroup("admin"));
-        assertEquals(res.length, 1);
-        assertEquals(res[0].group, "admin");
-        assertEquals(res[0].email, "john4@email.com");
-    },
-});
-
-Deno.test({
     name: "deleteUser",
     async fn() {
         if (user?.id) {
             const res = await deleteUser(user.id);
             assertEquals(res?.ok, true);
+            await reset();
         }
     },
 });
 
-Deno.test({
-    name: "reset",
-    async fn() {
-        const iter = kv.list({ prefix: [] });
-        const promises = [];
-        for await (const res of iter) promises.push(kv.delete(res.key));
-        await Promise.all(promises);
-    },
-});
+async function reset() {
+    const iter = kv.list({ prefix: [] });
+    const promises = [];
+    for await (const res of iter) promises.push(kv.delete(res.key));
+    await Promise.all(promises);
+}

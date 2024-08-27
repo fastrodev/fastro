@@ -24,16 +24,6 @@ export function listUsersByEmail(
     return kv.list<UserType>({ prefix: ["users_by_email"] }, options);
 }
 
-export function listUsersByGroup(
-    userGroup: string,
-    options?: Deno.KvListOptions,
-) {
-    return kv.list<UserType>(
-        { prefix: ["users_by_group", userGroup] },
-        options,
-    );
-}
-
 export async function createUser(user: UserType) {
     user.id = user.id ? user.id : ulid();
     const primaryKey = ["users", user.id];
@@ -45,22 +35,18 @@ export async function createUser(user: UserType) {
         .set(primaryKey, user)
         .set(byEmailKey, user);
 
-    if (user.group) {
-        const byGroupKey = ["users_by_group", user.group, user.id];
-        atomic.set(byGroupKey, user);
-    }
-
     const res = await atomic.commit();
     if (!res.ok) throw new Error("Failed to create user");
 
-    return res;
+    return user;
 }
 
-export async function updateUser(id: string, user: UserType) {
+export async function updateUser(user: UserType) {
+    if (!user.id) throw new Error("user.id must be defined");
+
     const atomicOp = kv.atomic();
 
-    // check exist user
-    const eu = await kv.get<UserType>(["users", id]);
+    const eu = await kv.get<UserType>(["users", user.id]);
     if (eu.value?.email) {
         atomicOp.check(eu)
             .delete(["users_by_email", eu.value?.email]);
@@ -68,25 +54,11 @@ export async function updateUser(id: string, user: UserType) {
 
     const byEmailKey = ["users_by_email", user.email];
     atomicOp
-        .set(["users", id], user)
+        .set(["users", user.id], user)
         .set(byEmailKey, user);
-
-    if (user.group) {
-        const byGroupKey = ["users_by_group", user.group, id];
-        atomicOp.set(byGroupKey, user);
-    }
 
     const res = await atomicOp.commit();
     if (!res.ok) throw new Error("Failed to update user");
-    return res;
-}
-
-export async function removeUserGroup(userId: string, group: string) {
-    const userGroupKey = ["users_by_group", group, userId];
-    const atomicOp = kv.atomic().delete(userGroupKey);
-
-    const res = await atomicOp.commit();
-    if (!res.ok) throw new Error("Failed to remove user group");
     return res;
 }
 
