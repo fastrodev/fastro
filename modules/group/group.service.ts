@@ -1,5 +1,5 @@
 import { kv } from "@app/utils/db.ts";
-import { GroupType, PermissionType } from "@app/modules/group/group.type.ts";
+import { GroupType } from "@app/modules/group/group.type.ts";
 import { ulid } from "jsr:@std/ulid";
 
 export async function createGroup(group: GroupType) {
@@ -79,38 +79,4 @@ export async function deleteGroup(id: string) {
         }
     }
     return res;
-}
-
-export async function createUserPermission(
-    groupId: string,
-    userId: string,
-    permission: PermissionType[],
-) {
-    const atomicOp = kv.atomic();
-    const key = ["groups_permission", groupId, userId];
-    atomicOp.set(key, permission);
-    const res = await atomicOp.commit();
-    if (!res.ok) throw new Error("Failed to create permission");
-    return res;
-}
-
-export function findUserGroupPermission(
-    groupId: string,
-    userId: string,
-    options?: Deno.KvListOptions,
-) {
-    return kv.list(
-        { prefix: ["groups_permission", groupId, userId] },
-        options,
-    );
-}
-
-export function fingdUserGroupMember(
-    groupId: string,
-    options?: Deno.KvListOptions,
-) {
-    return kv.list(
-        { prefix: ["groups_permission", groupId] },
-        options,
-    );
 }

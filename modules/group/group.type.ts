@@ -1,4 +1,7 @@
-export type PermissionType = "read" | "write" | "execute";
+export type GroupArgType = {
+    name: string;
+    module: string;
+};
 
 export type GroupType = {
     id?: string;

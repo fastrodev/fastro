@@ -9,7 +9,7 @@ import {
     updateUser,
 } from "@app/modules/user/user.service.ts";
 import UserType from "@app/modules/user/user.type.ts";
-import { collectValues, kv } from "@app/utils/db.ts";
+import { collectValues, reset } from "@app/utils/db.ts";
 
 Deno.test({
     name: "createUser",
@@ -125,10 +125,3 @@ Deno.test({
         }
     },
 });
-
-async function reset() {
-    const iter = kv.list({ prefix: [] });
-    const promises = [];
-    for await (const res of iter) promises.push(kv.delete(res.key));
-    await Promise.all(promises);
-}
