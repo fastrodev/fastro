@@ -1,23 +1,49 @@
 import { kv } from "@app/utils/db.ts";
-import { GroupType } from "@app/modules/group/group.type.ts";
+import { GroupArgType, GroupType } from "@app/modules/group/group.type.ts";
 import { ulid } from "jsr:@std/ulid";
+import { combineObjects } from "@app/utils/general.ts";
 
-export async function createGroup(group: GroupType) {
+export async function createGroup(group: GroupArgType) {
+    const groupId = ulid();
+    const newGroup = {
+        groupId,
+        active: true,
+    };
+    const g = combineObjects(newGroup, group) as GroupType;
+    const primaryKey = ["groups", groupId];
+    const groupByNameKey = ["groups_by_name", group.name, groupId];
+
     const atomicOp = kv.atomic();
-    group.id = group.id ? group.id : ulid();
-    group.status = true;
-
-    const primaryKey = ["groups", group.id];
-    const groupByNameKey = ["groups_by_name", group.name, group.id];
-
     atomicOp
         .check({ key: primaryKey, versionstamp: null })
-        .set(primaryKey, group)
-        .set(groupByNameKey, group);
+        .set(primaryKey, g)
+        .set(groupByNameKey, g);
 
     const res = await atomicOp.commit();
     if (!res.ok) throw new Error("Failed to create group");
-    return group;
+    return g;
+}
+
+export async function updateGroup(group: GroupType) {
+    if (!group.groupId) throw new Error("group.id must not be null");
+
+    const atomicOp = kv.atomic();
+    const groupKey = ["groups", group.groupId];
+
+    const ug = await kv.get<GroupType>(groupKey);
+    if (ug.value?.groupId) {
+        atomicOp.check(ug)
+            .delete(["groups_by_name", ug.value.name, ug.value.groupId])
+            .set(["groups_by_name", group.name, group.groupId], group);
+    }
+
+    atomicOp.set(groupKey, group);
+
+    const res = await atomicOp.commit();
+    if (!res.ok) throw new Error("Failed to create group");
+
+    const g = await kv.get<GroupType>(groupKey);
+    return g.value;
 }
 
 export async function getGroup(groupId: string): Promise<GroupType | null> {
@@ -42,28 +68,6 @@ export function listGroupsByName(
         );
     }
     return kv.list<GroupType>({ prefix: ["groups_by_name"] }, options);
-}
-
-export async function updateGroup(group: GroupType) {
-    if (!group.id) throw new Error("group.id must not be null");
-
-    const atomicOp = kv.atomic();
-    const groupKey = ["groups", group.id];
-
-    const ug = await kv.get<GroupType>(groupKey);
-    if (ug.value?.id) {
-        atomicOp.check(ug)
-            .delete(["groups_by_name", ug.value.name, ug.value.id])
-            .set(["groups_by_name", group.name, group.id], group);
-    }
-
-    atomicOp.set(groupKey, group);
-
-    const res = await atomicOp.commit();
-    if (!res.ok) throw new Error("Failed to create group");
-
-    const g = await kv.get<GroupType>(groupKey);
-    return g.value;
 }
 
 export async function deleteGroup(id: string) {

@@ -7,8 +7,10 @@ import {
     listGroupsByName,
     updateGroup,
 } from "@app/modules/group/group.service.ts";
-import { collectValues, kv } from "@app/utils/db.ts";
+import { collectValues, reset } from "@app/utils/db.ts";
 import { GroupType } from "@app/modules/group/group.type.ts";
+
+await reset();
 
 let group: GroupType;
 Deno.test({
@@ -23,8 +25,8 @@ Deno.test({
 Deno.test({
     name: "getGroup",
     async fn() {
-        if (!group.id) return;
-        const res = await getGroup(group.id);
+        if (!group.groupId) return;
+        const res = await getGroup(group.groupId);
         assertEquals(res?.name, "admin");
     },
 });
@@ -32,7 +34,7 @@ Deno.test({
 Deno.test({
     name: "updateGroup",
     async fn() {
-        if (!group.id) return;
+        if (!group.groupId) return;
         group.name = "sales";
         const res = await updateGroup(group);
         assertEquals(res?.name, "sales");
@@ -74,18 +76,8 @@ Deno.test({
 Deno.test({
     name: "deleteGroup",
     async fn() {
-        if (!group.id) throw new Error("group.id must be defined");
-        const res = await deleteGroup(group.id);
+        if (!group.groupId) throw new Error("group.id must be defined");
+        const res = await deleteGroup(group.groupId);
         assertEquals(res.ok, true);
-    },
-});
-
-Deno.test({
-    name: "reset",
-    async fn() {
-        const iter = kv.list({ prefix: [] });
-        const promises = [];
-        for await (const res of iter) promises.push(kv.delete(res.key));
-        await Promise.all(promises);
     },
 });

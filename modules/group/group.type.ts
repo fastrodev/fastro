@@ -1,10 +1,9 @@
 export type GroupArgType = {
     name: string;
-    module: string;
+    module?: string;
 };
 
 export type GroupType = {
-    id?: string;
-    name: string;
-    status?: boolean;
-};
+    groupId: string;
+    active: boolean;
+} & GroupArgType;

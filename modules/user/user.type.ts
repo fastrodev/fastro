@@ -1,10 +1,11 @@
-type UserType = {
-    id?: string;
+export type UserArgsType = {
     username: string;
     email: string;
     password: string;
     image?: string;
-    active?: boolean;
 };
 
-export default UserType;
+export type UserType = {
+    userId: string;
+    active: boolean;
+} & UserArgsType;

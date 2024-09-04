@@ -78,8 +78,11 @@ export async function createPermission(permissionArgs: PermissionArgsType) {
 }
 
 export async function updatePermission(p: PermissionType) {
-    const atomicOp = kv.atomic();
+    if (!isValidPermissionsArray(p.permission)) {
+        throw new Error("Permission is not valid");
+    }
 
+    const atomicOp = kv.atomic();
     const primaryKey = [PRIMARY_KEY, p.permissionId];
     const res = await kv.get<PermissionType>(primaryKey);
 
@@ -128,7 +131,7 @@ export async function getPermission(permissionId: string) {
     return res.value;
 }
 
-export function getPemissionByUserId(
+export function listPermissionByUserId(
     userId: string,
     options?: Deno.KvListOptions,
 ) {
@@ -138,7 +141,7 @@ export function getPemissionByUserId(
     );
 }
 
-export function getPemissionByGroupId(
+export function listPemissionByGroupId(
     groupId: string,
     options?: Deno.KvListOptions,
 ) {
@@ -147,7 +150,7 @@ export function getPemissionByGroupId(
     }, options);
 }
 
-export function getPemissionByModule(
+export function listPemissionByModule(
     module: string,
     options?: Deno.KvListOptions,
 ) {

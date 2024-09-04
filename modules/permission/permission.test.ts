@@ -2,16 +2,16 @@ import { assertEquals } from "@app/http/server/deps.ts";
 import {
     createPermission,
     deletePermission,
-    getPemissionByGroupId,
-    getPemissionByModule,
-    getPemissionByUserId,
     getPermission,
+    listPemissionByGroupId,
+    listPemissionByModule,
+    listPermissionByUserId,
     updatePermission,
 } from "@app/modules/permission/permission.service.ts";
 import { createUser } from "@app/modules/user/user.service.ts";
 import { createGroup } from "@app/modules/group/group.service.ts";
 import { collectValues, reset } from "@app/utils/db.ts";
-import UserType from "@app/modules/user/user.type.ts";
+import { UserType } from "@app/modules/user/user.type.ts";
 import { GroupType } from "@app/modules/group/group.type.ts";
 import { PermissionType } from "@app/modules/permission/permission.type.ts";
 
@@ -31,10 +31,10 @@ Deno.test({
         g = await createGroup({ name: "admin" });
         createGroup({ name: "user" });
 
-        if (u.id && g.id) {
+        if (u && g.groupId) {
             p = await createPermission({
-                groupId: g.id,
-                userId: u.id,
+                groupId: g.groupId,
+                userId: u.userId,
                 permission: [
                     "read",
                     "write",
@@ -42,8 +42,8 @@ Deno.test({
                 ],
             });
 
-            assertEquals(p.userId, u.id);
-            assertEquals(p.groupId, g.id);
+            assertEquals(p.userId, u.userId);
+            assertEquals(p.groupId, g.groupId);
             assertEquals(p.permission, [
                 "read",
                 "write",
@@ -94,40 +94,36 @@ Deno.test({
 Deno.test({
     name: "getPermission",
     async fn() {
-        if (u.id && g.id) {
-            const res = await getPermission(p.permissionId);
-            assertEquals(res?.permission, ["read", "write", "execute"]);
-            assertEquals(res?.permissionId, p.permissionId);
-        }
+        const res = await getPermission(p.permissionId);
+        assertEquals(res?.permission, ["read", "write", "execute"]);
+        assertEquals(res?.permissionId, p.permissionId);
     },
 });
 
 Deno.test({
     name: "getPemissionByUserId",
     async fn() {
-        if (u.id) {
-            const [res] = await collectValues(getPemissionByUserId(p.userId));
-            assertEquals(res?.permission, ["read", "write", "execute"]);
-            assertEquals(res?.permissionId, p.permissionId);
-        }
+        const [res] = await collectValues(listPermissionByUserId(p.userId));
+        assertEquals(res?.permission, ["read", "write", "execute"]);
+        assertEquals(res?.permissionId, p.permissionId);
     },
 });
 
 Deno.test({
     name: "getPemissionByGroupId",
     async fn() {
-        if (g.id) {
-            const [res] = await collectValues(getPemissionByGroupId(p.groupId));
-            assertEquals(res?.permission, ["read", "write", "execute"]);
-            assertEquals(res?.permissionId, p.permissionId);
-        }
+        const [res] = await collectValues(
+            listPemissionByGroupId(p.groupId),
+        );
+        assertEquals(res?.permission, ["read", "write", "execute"]);
+        assertEquals(res?.permissionId, p.permissionId);
     },
 });
 
 Deno.test({
     name: "getPemissionByModule",
     async fn() {
-        const [res] = await collectValues(getPemissionByModule("null"));
+        const [res] = await collectValues(listPemissionByModule("null"));
         assertEquals(res?.permission, ["read", "write", "execute"]);
         assertEquals(res?.permissionId, p.permissionId);
     },
