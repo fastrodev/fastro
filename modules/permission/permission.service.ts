@@ -4,7 +4,7 @@ import {
     PermissionOpType,
     PermissionType,
 } from "@app/modules/permission/permission.type.ts";
-import UserType from "@app/modules/user/user.type.ts";
+import { UserType } from "@app/modules/user/user.type.ts";
 import { GroupType } from "@app/modules/group/group.type.ts";
 import { combineObjects } from "@app/utils/general.ts";
 import { ulid } from "jsr:@std/ulid";

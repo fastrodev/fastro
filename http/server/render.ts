@@ -126,12 +126,7 @@ es.onmessage = function(e) {
     hdr?: Headers,
   ) => {
     this.#server.serverOptions[key] = data;
-    const headers = hdr ? hdr : new Headers({
-      "content-type": "text/html",
-      "x-request-id": new Date().getTime().toString(),
-      "Content-Security-Policy":
-        `script-src 'self' 'unsafe-inline' 'nonce-${nonce}' 'strict-dynamic' https: http: ; object-src 'none'; base-uri 'none';`,
-    });
+
     const children = typeof p.component == "function"
       ? h(p.component as FunctionComponent, { data, nonce })
       : p.component;
@@ -149,8 +144,12 @@ es.onmessage = function(e) {
       );
     }
     const html = "<!DOCTYPE html>" + await renderToStringAsync(app);
-    return new Response(html, {
-      headers,
+    const headers = hdr ? hdr : new Headers({
+      "content-type": "text/html",
+      "x-request-id": new Date().getTime().toString(),
+      "Content-Security-Policy":
+        `script-src 'self' 'unsafe-inline' 'nonce-${nonce}' 'strict-dynamic' https: http: ; object-src 'none'; base-uri 'none';`,
     });
+    return new Response(html, { headers });
   };
 }
