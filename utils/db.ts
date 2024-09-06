@@ -30,3 +30,10 @@ export const kv = await getKvInstance(path);
 export async function collectValues<T>(iter: Deno.KvListIterator<T>) {
   return await Array.fromAsync(iter, ({ value }) => value);
 }
+
+export async function reset() {
+  const iter = kv.list({ prefix: [] });
+  const promises = [];
+  for await (const res of iter) promises.push(kv.delete(res.key));
+  await Promise.all(promises);
+}

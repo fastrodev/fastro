@@ -57,15 +57,18 @@ const createResponse = (
   status = 200,
   headers?: Headers,
 ): Response => {
+  if (typeof res === "string") return new Response(res, { status, headers });
+  if (res instanceof Response) return res;
+
   const h = headers ? headers : new Headers({
     "Content-Type": "application/json",
   });
-  if (typeof res === "string") return new Response(res, { status, headers: h });
-  if (res instanceof Response) return res;
   if (
     typeof res === "number" || typeof res === "bigint" ||
     typeof res === "boolean" || typeof res === "undefined"
-  ) return new Response(JSON.stringify(res), { status, headers: h });
+  ) {
+    return new Response(JSON.stringify(res), { status, headers: h });
+  }
   try {
     return Response.json(res, { status, headers: h });
   } catch (error) {
@@ -264,7 +267,7 @@ async function fetchProps(root: HTMLElement) {
     const data = await response.json();
     if (!data) throw new Error("undefined");
     hydrate(h(app, { data }), root);
-  } catch (error) {
+  } catch {
     setTimeout(() => {
       fetchProps(root);
     }, 500);
