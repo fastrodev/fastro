@@ -148,7 +148,7 @@ es.onmessage = function(e) {
       "content-type": "text/html",
       "x-request-id": new Date().getTime().toString(),
       "Content-Security-Policy":
-        `script-src 'self' 'unsafe-inline' 'nonce-${nonce}' 'strict-dynamic' https: http: ; object-src 'none'; base-uri 'none';`,
+        `script-src 'self' 'unsafe-inline' 'nonce-${nonce}' https: http: ; object-src 'none'; base-uri 'none';`,
     });
     return new Response(html, { headers });
   };
