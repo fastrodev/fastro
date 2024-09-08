@@ -6,7 +6,9 @@ export default function ProjectBox(
     const ready = props.active ? "bg-green-700 cursor-pointer" : "";
 
     const onClickHandler = () => {
-        location.replace(props.url || "/");
+        if (props.url) {
+            location.replace(props.url);
+        }
     };
 
     return (
