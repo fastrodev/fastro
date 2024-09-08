@@ -42,9 +42,9 @@ export default function (s: Fastro) {
             let html_url = "";
             if (sessionId) {
                 const r = ctx.server.serverOptions[sessionId];
-                if (r && r.value) {
-                    avatar_url = r.value.avatar_url;
-                    html_url = r.value.html_url;
+                if (r) {
+                    avatar_url = r.avatar_url;
+                    html_url = r.html_url;
                 }
             }
 
