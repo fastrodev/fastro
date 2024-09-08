@@ -2,7 +2,6 @@ import { Fastro, HttpRequest } from "@app/mod.ts";
 import indexApp from "@app/modules/index/index.page.tsx";
 import index from "@app/modules/index/index.layout.tsx";
 import { getSessionId } from "@app/modules/auth/mod.tsx";
-import { kv } from "@app/utils/db.ts";
 
 function init() {
     const basePath = Deno.env.get("DENO_DEPLOYMENT_ID")
@@ -42,9 +41,7 @@ export default function (s: Fastro) {
             let avatar_url = "";
             let html_url = "";
             if (sessionId) {
-                // deno-lint-ignore no-explicit-any
-                const r = await kv.get([sessionId]) as any;
-                console.log("r ==>", r);
+                const r = ctx.server.serverOptions[sessionId];
                 if (r && r.value) {
                     avatar_url = r.value.avatar_url;
                     html_url = r.value.html_url;

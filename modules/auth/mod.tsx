@@ -87,23 +87,23 @@ async function getUser(accessToken: string) {
   return data;
 }
 
-export const callbackHandler = async (req: HttpRequest) => {
+export const callbackHandler = async (req: HttpRequest, ctx: Context) => {
   try {
     const { response, sessionId, tokens } = await handleCallback(
       req,
     );
     const user = await getUser(tokens.accessToken);
-    kv.set([sessionId], user, { expireIn: 60 * 60 * 1000 });
+    ctx.server.serverOptions[sessionId] = user;
     return response;
   } catch {
     return new Response(null, { status: STATUS_CODE.InternalServerError });
   }
 };
 
-export const signoutHandler = async (req: HttpRequest) => {
+export const signoutHandler = async (req: HttpRequest, ctx: Context) => {
   const sessionId = await getSessionId(req);
   if (!sessionId) throw new Error("session ID is undefined");
-  await kv.delete([sessionId]);
+  ctx.server.serverOptions[sessionId] = undefined;
   return await signOut(req);
 };
 

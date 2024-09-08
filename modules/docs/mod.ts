@@ -3,7 +3,6 @@ import tocLayout from "@app/modules/toc/toc.layout.tsx";
 import tocApp from "@app/modules/toc/toc.page.tsx";
 import { docToc } from "@app/modules/docs/docs.layout.tsx";
 import { getSessionId } from "@app/modules/auth/mod.tsx";
-import { kv } from "@app/utils/db.ts";
 
 export default function (s: Fastro) {
     s.page("/docs", {
@@ -17,8 +16,7 @@ export default function (s: Fastro) {
             let avatar_url = "";
             let html_url = "";
             if (sessionId) {
-                // deno-lint-ignore no-explicit-any
-                const r = await kv.get([sessionId]) as any;
+                const r = ctx.server.serverOptions[sessionId];
                 if (r && r.value) {
                     avatar_url = r.value.avatar_url;
                     html_url = r.value.html_url;
