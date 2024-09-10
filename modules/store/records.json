@@ -1,12 +1,1 @@
-{
-  "testKey": {
-    "value": "testValue",
-    "expiresAt": 1725961526808
-  },
-  "permanentKey": {
-    "value": "permanentValue"
-  },
-  "anotherKey": {
-    "value": 1725961466965
-  }
-}
+{"testKey":{"value":"testValue","expiresAt":1725978727656},"permanentKey":{"value":"permanentValue"},"anotherKey":{"value":1725978667812}}
