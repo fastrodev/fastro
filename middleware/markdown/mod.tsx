@@ -1,5 +1,5 @@
 import { CSS, extract, remark, render } from "./deps.ts";
-import { renderToString } from "../../http/server/deps.ts";
+import { renderToString } from "../../core/server/deps.ts";
 import { Context, FunctionComponent, HttpRequest } from "../../mod.ts";
 
 import "https://esm.sh/v135/prismjs@1.29.0/components/prism-css";

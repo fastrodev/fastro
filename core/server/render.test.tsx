@@ -1,4 +1,4 @@
-import { assert, assertEquals, assertExists } from "@app/http/server/deps.ts";
+import { assert, assertEquals, assertExists } from "@app/core/server/deps.ts";
 import fastro from "@app/mod.ts";
 import hello from "@app/modules/web/hello.page.tsx";
 import dear from "@app/modules/web/dear.page.tsx";

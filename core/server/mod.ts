@@ -21,6 +21,7 @@ import {
   Static,
 } from "./types.ts";
 import { EsbuildMod } from "../build/esbuildMod.ts";
+import { Store } from "./store.ts";
 
 export function checkReferer(req: Request) {
   const referer = req.headers.get("referer");
@@ -77,7 +78,7 @@ const createResponse = (
 };
 
 export default class Server implements Fastro {
-  constructor(options?: Record<string, any>) {
+  constructor(options?: Map<string, any>) {
     this.serverOptions = options ?? {};
     this.#handler = this.#createHandler();
     this.#addPropsEndpoint();
@@ -303,10 +304,10 @@ if (root) fetchProps(root);
     }
   }
 
-  #getParamsHandler<T extends Record<string, Handler>>(
+  #getParamsHandler<T extends Map<string, Handler>>(
     req: Request,
     data: T,
-  ): [Handler, Record<string, string | undefined> | undefined] | undefined {
+  ): [Handler, Map<string, string | undefined> | undefined] | undefined {
     for (const [key, handler] of Object.entries(data)) {
       const [method, path] = key.split("-");
       const pattern = new URLPattern({ pathname: path });
@@ -318,10 +319,10 @@ if (root) fetchProps(root);
     }
   }
 
-  #getParamsPage<T extends Record<string, Page>>(
+  #getParamsPage<T extends Map<string, Page>>(
     req: Request,
     data: T,
-  ): [Page, Record<string, string | undefined> | undefined] | undefined {
+  ): [Page, Map<string, string | undefined> | undefined] | undefined {
     for (const [path, page] of Object.entries(data)) {
       const pattern = new URLPattern({ pathname: path });
       if (path.includes(":") && pattern.test(req.url)) {
@@ -381,7 +382,7 @@ if (root) fetchProps(root);
     const url = new URL(req.url);
     let key = url.pathname;
     let page: Page = this.#routePage[key];
-    let params: Record<string, string | undefined> | undefined = undefined;
+    let params: Map<string, string | undefined> | undefined = undefined;
     if (!page) {
       const res = this.#getParamsPage(req, this.#routePage);
       if (res) {
@@ -472,14 +473,14 @@ if (root) fetchProps(root);
   #iterableToRecord(
     params: URLSearchParams,
   ) {
-    const record: Record<string, string> = {};
+    const record: Map<string, string> = {};
     params.forEach((v, k) => (record[k] = v));
     return record;
   }
 
   #transformRequest = (
     req: Request,
-    params?: Record<string, string | undefined>,
+    params?: Map<string, string | undefined>,
     url?: URL,
   ) => {
     const u = url ?? new URL(req.url);
@@ -493,7 +494,7 @@ if (root) fetchProps(root);
   #transformCtx = (
     info: Deno.ServeHandlerInfo,
     url: URL,
-    options: Record<string, any>,
+    options: Map<string, any>,
   ) => {
     const ctx = options as Context;
     const r = new Render(this);
@@ -517,7 +518,7 @@ if (root) fetchProps(root);
     const url = new URL(req.url);
     const key = req.method + "-" + url.pathname;
     let handler = this.#routeHandler[key];
-    let params: Record<string, string | undefined> | undefined;
+    let params: Map<string, string | undefined> | undefined;
     if (!handler) {
       const res = this.#getParamsHandler(req, this.#routeHandler);
       if (res) {
@@ -645,11 +646,11 @@ if (root) fetchProps(root);
     }
   };
 
-  getPages(): Record<string, Page> {
+  getPages(): Map<string, Page> {
     return this.#routePage;
   }
 
-  getRoutes(): Record<string, Handler> {
+  getRoutes(): Map<string, Handler> {
     return this.#routeHandler;
   }
 
@@ -670,4 +671,5 @@ if (root) fetchProps(root);
   #maxAge = 0;
   #nonce = "";
   serverOptions: Record<string, any> = {};
+  store = new Store<string, any>();
 }

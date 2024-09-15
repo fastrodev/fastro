@@ -1,7 +1,7 @@
 import { Fastro } from "@app/mod.ts";
 import tocLayout from "@app/modules/toc/toc.layout.tsx";
 import tocApp from "@app/modules/toc/toc.page.tsx";
-import { getSessionId } from "@app/modules/auth/mod.tsx";
+import { getSession } from "@app/utils/session.ts";
 
 export default function (s: Fastro) {
     s.page("/blog", {
@@ -9,23 +9,11 @@ export default function (s: Fastro) {
         layout: tocLayout,
         folder: "modules/toc",
         handler: async (req, ctx) => {
-            const sessionId = await getSessionId(req);
-            const hasSessionIdCookie = sessionId !== undefined;
-            const isLogin = hasSessionIdCookie;
-            let avatar_url = "";
-            let html_url = "";
-            if (sessionId) {
-                const r = ctx.server.serverOptions[sessionId];
-                if (r) {
-                    avatar_url = r.avatar_url;
-                    html_url = r.html_url;
-                }
-            }
-
+            const ses = await getSession(req, ctx);
             return ctx.render({
-                isLogin,
-                avatar_url,
-                html_url,
+                isLogin: ses?.isLogin,
+                avatar_url: ses?.avatar_url,
+                html_url: ses?.html_url,
                 title: "Blog",
                 description: "Blog",
                 destination: "/blog",

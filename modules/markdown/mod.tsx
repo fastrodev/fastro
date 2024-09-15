@@ -3,8 +3,7 @@ import {
     defaultLayout,
     getMarkdownBody,
 } from "@app/middleware/markdown/mod.tsx";
-import { getSessionId } from "@app/modules/auth/mod.tsx";
-import { kv } from "@app/utils/db.ts";
+import { getSession } from "@app/utils/session.ts";
 
 /**
  * @param layout
@@ -18,31 +17,18 @@ export default function (
     prefix: string,
 ) {
     return async function middleware(req: HttpRequest, ctx: Context) {
-        const sessionId = await getSessionId(req);
-        const hasSessionIdCookie = sessionId !== undefined;
-        const isLogin = hasSessionIdCookie;
-        let avatar_url = "";
-        let html_url = "";
-        if (sessionId) {
-            // deno-lint-ignore no-explicit-any
-            const r = await kv.get([sessionId]) as any;
-            if (r && r.value) {
-                avatar_url = r.value.avatar_url;
-                html_url = r.value.html_url;
-            }
-        }
-        const data = {
-            avatar_url,
-            html_url,
-            isLogin,
-        };
+        const ses = await getSession(req, ctx);
         const body = await getMarkdownBody(
             req,
             layout,
             folder,
             ctx.url.pathname,
             prefix,
-            data,
+            {
+                avatar_url: ses?.avatar_url,
+                html_url: ses?.html_url,
+                isLogin: ses?.isLogin,
+            },
         );
         if (!body) return ctx.next();
         return new Response(body, {

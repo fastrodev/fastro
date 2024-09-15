@@ -1,4 +1,4 @@
-import { LayoutProps } from "@app/http/server/types.ts";
+import { LayoutProps } from "../../core/server/types.ts";
 
 export default function index(
   { data, children }: LayoutProps<

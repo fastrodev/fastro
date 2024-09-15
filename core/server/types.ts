@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { ComponentChildren, JSX } from "./deps.ts";
+import { Store } from "./store.ts";
 
 /**
  * The callback which is called when the server starts listening.
@@ -122,7 +123,7 @@ export class Context {
   /**
    * Server options defined in Fastro Constuctor
    */
-  options!: Record<string, any>;
+  options!: Map<string, any>;
   [key: string]: any;
 }
 
@@ -246,6 +247,7 @@ export interface Fastro {
   use(...handler: Array<Handler>): Fastro;
   group(mf: ModuleFunction): Promise<Fastro>;
   serverOptions: Record<string, any>;
+  store: Store<string, any>;
   getNonce(): string;
   getPages(): Record<string, Page>;
   getRoutes(): Record<string, Handler>;

@@ -12,8 +12,8 @@
   },
   "imports": {
     "@app/": "./",
-    "preact": "https://esm.sh/preact@10.23.2",
-    "preact/": "https://esm.sh/preact@10.23.2/",
+    "preact": "https://esm.sh/preact@10.24.0",
+    "preact/": "https://esm.sh/preact@10.24.0/",
     "chalk": "npm:chalk@5"
   },
   "compilerOptions": {

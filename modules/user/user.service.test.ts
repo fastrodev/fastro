@@ -1,4 +1,4 @@
-import { assertEquals } from "@app/http/server/deps.ts";
+import { assertEquals } from "@app/core/server/deps.ts";
 import {
     createUser,
     deleteUser,
