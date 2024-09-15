@@ -7,7 +7,7 @@ import {
   STATUS_CODE,
   STATUS_TEXT,
 } from "./deps.ts";
-import { Render } from "./render.ts";
+import { Render } from "../render/render.ts";
 import {
   Context,
   Fastro,
@@ -21,7 +21,7 @@ import {
   Static,
 } from "./types.ts";
 import { EsbuildMod } from "../build/esbuildMod.ts";
-import { Store } from "./store.ts";
+import { Store } from "../map/map.ts";
 
 export function checkReferer(req: Request) {
   const referer = req.headers.get("referer");
@@ -304,10 +304,10 @@ if (root) fetchProps(root);
     }
   }
 
-  #getParamsHandler<T extends Map<string, Handler>>(
+  #getParamsHandler<T extends Record<string, Handler>>(
     req: Request,
     data: T,
-  ): [Handler, Map<string, string | undefined> | undefined] | undefined {
+  ): [Handler, Record<string, string | undefined> | undefined] | undefined {
     for (const [key, handler] of Object.entries(data)) {
       const [method, path] = key.split("-");
       const pattern = new URLPattern({ pathname: path });
@@ -319,10 +319,10 @@ if (root) fetchProps(root);
     }
   }
 
-  #getParamsPage<T extends Map<string, Page>>(
+  #getParamsPage<T extends Record<string, Page>>(
     req: Request,
     data: T,
-  ): [Page, Map<string, string | undefined> | undefined] | undefined {
+  ): [Page, Record<string, string | undefined> | undefined] | undefined {
     for (const [path, page] of Object.entries(data)) {
       const pattern = new URLPattern({ pathname: path });
       if (path.includes(":") && pattern.test(req.url)) {
@@ -382,7 +382,7 @@ if (root) fetchProps(root);
     const url = new URL(req.url);
     let key = url.pathname;
     let page: Page = this.#routePage[key];
-    let params: Map<string, string | undefined> | undefined = undefined;
+    let params: Record<string, string | undefined> | undefined = undefined;
     if (!page) {
       const res = this.#getParamsPage(req, this.#routePage);
       if (res) {
@@ -408,6 +408,7 @@ if (root) fetchProps(root);
     };
     ctx.kv = this.serverOptions["kv"];
     ctx.options = this.serverOptions;
+    ctx.store = this.store;
     return [page, ctx, params, url];
   };
 
@@ -473,14 +474,14 @@ if (root) fetchProps(root);
   #iterableToRecord(
     params: URLSearchParams,
   ) {
-    const record: Map<string, string> = {};
+    const record: Record<string, string> = {};
     params.forEach((v, k) => (record[k] = v));
     return record;
   }
 
   #transformRequest = (
     req: Request,
-    params?: Map<string, string | undefined>,
+    params?: Record<string, string | undefined>,
     url?: URL,
   ) => {
     const u = url ?? new URL(req.url);
@@ -494,7 +495,7 @@ if (root) fetchProps(root);
   #transformCtx = (
     info: Deno.ServeHandlerInfo,
     url: URL,
-    options: Map<string, any>,
+    options: Record<string, any>,
   ) => {
     const ctx = options as Context;
     const r = new Render(this);
@@ -518,7 +519,7 @@ if (root) fetchProps(root);
     const url = new URL(req.url);
     const key = req.method + "-" + url.pathname;
     let handler = this.#routeHandler[key];
-    let params: Map<string, string | undefined> | undefined;
+    let params: Record<string, string | undefined> | undefined;
     if (!handler) {
       const res = this.#getParamsHandler(req, this.#routeHandler);
       if (res) {
@@ -628,6 +629,7 @@ if (root) fetchProps(root);
   serve = async (options?: { port?: number; onListen?: ListenHandler }) => {
     const [s] = await this.#build();
     if (s) return Deno.exit();
+    this.store.startAutoSave(10 * 1000);
 
     this.#server = Deno.serve({
       port: options && options.port ? options.port : 8000,
@@ -646,11 +648,11 @@ if (root) fetchProps(root);
     }
   };
 
-  getPages(): Map<string, Page> {
+  getPages(): Record<string, Page> {
     return this.#routePage;
   }
 
-  getRoutes(): Map<string, Handler> {
+  getRoutes(): Record<string, Handler> {
     return this.#routeHandler;
   }
 
@@ -671,5 +673,11 @@ if (root) fetchProps(root);
   #maxAge = 0;
   #nonce = "";
   serverOptions: Record<string, any> = {};
-  store = new Store<string, any>();
+  store = new Store<string | number | symbol, any>(60000, {
+    owner: Deno.env.get("GITHUB_OWNER") || "fastrodev",
+    repo: Deno.env.get("GITHUB_REPO") || "fastro",
+    path: Deno.env.get("GITHUB_PATH") || "modules/store/records.json",
+    branch: Deno.env.get("GITHUB_PATH") || "store",
+    token: Deno.env.get("GITHUB_TOKEN") || "INVALID",
+  });
 }

@@ -128,7 +128,7 @@ export class Store<K extends string | number | symbol, V> {
         }
 
         this.saveIntervalId = setInterval(() => {
-            if (!this.options) return;
+            if (!this.options || this.map.size === 0) return;
             return this.saveToGitHub(
                 this.options.token,
                 this.options.owner,
@@ -138,12 +138,14 @@ export class Store<K extends string | number | symbol, V> {
         }, interval);
     }
 
+    /*
     stopAutoSave(): void {
         if (this.saveIntervalId) {
             clearInterval(this.saveIntervalId);
             this.saveIntervalId = null;
         }
     }
+    */
 
     private async saveToGitHub(
         token: string,

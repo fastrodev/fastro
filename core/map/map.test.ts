@@ -1,5 +1,5 @@
-import { assert, assertEquals } from "./deps.ts";
-import { Store } from "./store.ts";
+import { assert, assertEquals } from "../server/deps.ts";
+import { Store } from "./map.ts";
 
 Deno.test("ExpiringMap: should set and get a value", async () => {
     const expiringMap = new Store<string, string>(1000); // 1 second TTL
