@@ -21,9 +21,7 @@ jobs:
           deno-version: vx.x.x
 
       - name: Run tests
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: deno task test
+        run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} deno task test
 
       - name: Generate report
         run: deno task coverage
