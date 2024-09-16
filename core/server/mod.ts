@@ -78,7 +78,7 @@ const createResponse = (
 };
 
 export default class Server implements Fastro {
-  constructor(options?: Map<string, any>) {
+  constructor(options?: Record<string, any>) {
     this.serverOptions = options ?? {};
     this.#handler = this.#createHandler();
     this.#addPropsEndpoint();
@@ -510,6 +510,7 @@ if (root) fetchProps(root);
     ctx.url = url;
     ctx.server = this;
     ctx.kv = this.serverOptions["kv"];
+    ctx.store = this.store;
     return ctx;
   };
 
