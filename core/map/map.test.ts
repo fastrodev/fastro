@@ -1,83 +1,103 @@
-import { assert, assertEquals } from "../server/deps.ts";
+import { assertEquals } from "../server/deps.ts";
 import { Store } from "./map.ts";
 
-Deno.test("ExpiringMap: should set and get a value", async () => {
-    const expiringMap = new Store<string, string>(1000); // 1 second TTL
-    expiringMap.set("key1", "value1");
-    assertEquals(await expiringMap.get("key1"), "value1");
+Deno.test("Store: set and get value without expiry", async () => {
+    const store = new Store<string, number>();
+    store.set("key1", 100);
+    const value = await store.get("key1");
+    assertEquals(value, 100);
 });
 
-Deno.test("ExpiringMap: should return undefined for expired keys", async () => {
-    const expiringMap = new Store<string, string>(100);
-    expiringMap.set("key1", "value1");
-    await new Promise((resolve) => setTimeout(resolve, 200));
-    assertEquals(await expiringMap.get("key1"), undefined);
-});
+Deno.test("Store: set and get value with expiry", async () => {
+    const store = new Store<string, number>();
+    store.set("key2", 200, 1000); // Set with 1 second expiry
+    const value = await store.get("key2");
+    assertEquals(value, 200);
 
-Deno.test("ExpiringMap: should check if a key exists", async () => {
-    const expiringMap = new Store<string, string>(100);
-    expiringMap.set("key1", "value1");
-    assert(expiringMap.has("key1"));
-    await new Promise((resolve) => setTimeout(resolve, 200));
-    assert(!expiringMap.has("key1"));
-});
-
-Deno.test("ExpiringMap: should delete a key", async () => {
-    const expiringMap = new Store<string, string>();
-    expiringMap.set("key1", "value1");
-    assert(expiringMap.delete("key1"));
-    assertEquals(await expiringMap.get("key1"), undefined);
-});
-
-Deno.test("ExpiringMap: should clear all entries", () => {
-    const expiringMap = new Store<string, string>();
-    expiringMap.set("key1", "value1");
-    expiringMap.set("key2", "value2");
-    expiringMap.clear();
-    assertEquals(expiringMap.size(), 0);
-});
-
-Deno.test("ExpiringMap: should get the size of the map", () => {
-    const expiringMap = new Store<string, string>();
-    expiringMap.set("key1", "value1");
-    expiringMap.set("key2", "value2");
-    assertEquals(expiringMap.size(), 2);
-});
-
-Deno.test("ExpiringMap: should iterate over valid entries using forEach", () => {
-    const expiringMap = new Store<string, string>(1000);
-    expiringMap.set("key1", "value1");
-    expiringMap.set("key2", "value2");
-
-    const entries: [string, string][] = [];
-    expiringMap.forEach((value, key) => {
-        entries.push([key, value]);
-    });
-
-    assertEquals(entries.length, 2);
-    assertEquals(entries, [["key1", "value1"], ["key2", "value2"]]);
-});
-
-Deno.test("ExpiringMap: should set a key with custom TTL", async () => {
-    const expiringMap = new Store<string, string>(2000);
-    expiringMap.set("key1", "value1", 1000);
-    assertEquals(await expiringMap.get("key1"), "value1");
+    // Wait for 1.1 seconds to let it expire
     await new Promise((resolve) => setTimeout(resolve, 1100));
-    assertEquals(await expiringMap.get("key1"), undefined);
+    const expiredValue = await store.get("key2");
+    assertEquals(expiredValue, undefined);
 });
 
-Deno.test("ExpiringMap: save it to github", async () => {
+Deno.test("Store: has method returns true for existing key", async () => {
+    const store = new Store<string, number>();
+    store.set("key3", 300);
+    assertEquals(await store.has("key3"), true);
+});
+
+Deno.test("Store: has method returns false for expired key", async () => {
+    const store = new Store<string, number>();
+    store.set("key4", 400, 500); // Set with 0.5 seconds expiry
+    await new Promise((resolve) => setTimeout(resolve, 600)); // Wait for it to expire
+    assertEquals(await store.has("key4"), false);
+});
+
+Deno.test("Store: delete method removes key", async () => {
+    const store = new Store<string, number>();
+    store.set("key5", 500);
+    assertEquals(store.delete("key5"), true);
+    assertEquals(await store.has("key5"), false);
+});
+
+Deno.test("Store: clear method removes all keys", () => {
+    const store = new Store<string, number>();
+    store.set("key6", 600);
+    store.set("key7", 700);
+    store.clear();
+    assertEquals(store.size(), 0);
+});
+
+Deno.test("Store: size method returns correct count", () => {
+    const store = new Store<string, number>();
+    store.set("key8", 800);
+    store.set("key9", 900);
+    assertEquals(store.size(), 2);
+});
+
+const d = new Date();
+const time = d.getTime();
+Deno.test("Store: save it to github", async () => {
     const token = Deno.env.get("GITHUB_TOKEN");
     if (!token) return;
-    const expiringMap = new Store<string, number>(2000, {
+    const expiringMap = new Store<string, number>({
         owner: "fastrodev",
         repo: "fastro",
         path: "modules/store/records.json",
         branch: "store",
         token,
     });
-    const d = new Date();
-    expiringMap.set("key1", d.getTime(), 1000);
-    const c = await expiringMap.commit();
-    assertEquals(c?.data.content?.name, "records.json");
+    expiringMap.set("key1", time);
+    const r = await expiringMap.commit();
+    assertEquals(r?.data.content?.name, "records.json");
+});
+
+Deno.test("Store: get value from github", async () => {
+    const token = Deno.env.get("GITHUB_TOKEN");
+    if (!token) return;
+    const expiringMap = new Store<string, number>({
+        owner: "fastrodev",
+        repo: "fastro",
+        path: "modules/store/records.json",
+        branch: "store",
+        token,
+    });
+    // get kv from github
+    const g = await expiringMap.get("key1");
+    assertEquals(g, time);
+});
+
+Deno.test("Store: destroy map", async () => {
+    const token = Deno.env.get("GITHUB_TOKEN");
+    if (!token) return;
+    const expiringMap = new Store<string, number>({
+        owner: "fastrodev",
+        repo: "fastro",
+        path: "modules/store/records.json",
+        branch: "store",
+        token,
+    });
+    await expiringMap.destroy();
+    const g = await expiringMap.get("key1");
+    assertEquals(g, undefined);
 });
