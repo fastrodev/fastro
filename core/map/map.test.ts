@@ -57,9 +57,8 @@ Deno.test("Store: size method returns correct count", () => {
 
 const d = new Date();
 const time = d.getTime();
-const token = Deno.env.get("GITHUB_TOKEN") || Deno.env.get("GH_TOKEN");
+const token = Deno.env.get("GITHUB_TOKEN");
 Deno.test("Store: save it to github", async () => {
-    if (!token) return;
     const expiringMap = new Store<string, number>({
         owner: "fastrodev",
         repo: "fastro",

@@ -2,10 +2,10 @@
 import { Octokit } from "npm:@octokit/rest";
 
 type StoreOptions = {
+    token?: string;
     owner: string;
     repo: string;
     path: string;
-    token: string;
     branch?: string;
 } | null;
 
@@ -20,25 +20,21 @@ export class Store<K extends string | number | symbol, V> {
         this.options = options;
     }
 
+    /**
+     * Adds a new element with a specified key and value to the Map. If an element with the same key already exists, the element will be updated.
+     * @param key
+     * @param value
+     * @param ttl
+     */
     set(key: K, value: V, ttl?: number): void {
         const expiry = ttl ? Date.now() + ttl : undefined;
         this.map.set(key, { value, expiry });
     }
 
-    async refresh() {
-        if (this.map.size === 0 && this.options) {
-            const map = await getMap<K, V>({
-                token: this.options.token,
-                owner: this.options.owner,
-                repo: this.options.repo,
-                path: this.options.path,
-                branch: this.options.branch,
-            });
-            if (!map) return;
-            this.map = map;
-        }
-    }
-
+    /**
+     * Returns a specified element from the Map object. If the value that is associated to the provided key is an object, then you will get a reference to that object and any change made to that object will effectively modify it inside the Map.
+     * @returns - Returns the element associated with the specified key. If no element is associated with the specified key, undefined is returned.
+     */
     async get(key: K): Promise<V | undefined> {
         await this.refresh();
         const entry = this.map.get(key);
@@ -52,6 +48,10 @@ export class Store<K extends string | number | symbol, V> {
         return undefined;
     }
 
+    /**
+     * @param key
+     * @returns boolean indicating whether an element with the specified key exists or not.
+     */
     async has(key: K): Promise<boolean> {
         await this.refresh();
         const entry = this.map.get(key);
@@ -65,6 +65,10 @@ export class Store<K extends string | number | symbol, V> {
         return false;
     }
 
+    /**
+     * @param key
+     * @returns true if an element in the Map existed and has been removed, or false if the element does not exist.
+     */
     delete(key: K): boolean {
         return this.map.delete(key);
     }
@@ -73,26 +77,42 @@ export class Store<K extends string | number | symbol, V> {
         this.map.clear();
     }
 
+    /**
+     * @returns the number of elements in the Map.
+     */
     size(): number {
         this.cleanUpExpiredEntries();
         return this.map.size;
     }
 
+    /**
+     * @returns an iterable of key, value pairs for every entry in the map.
+     */
     entries() {
         this.cleanUpExpiredEntries();
         return this.map.entries();
     }
 
+    /**
+     * @returns an iterable of values in the map
+     */
     values() {
         this.cleanUpExpiredEntries();
         return this.map.values();
     }
 
+    /**
+     * @returns an iterable of keys in the map
+     */
     keys() {
         this.cleanUpExpiredEntries();
         return this.map.keys();
     }
 
+    /**
+     * Executes a provided function once per each key/value pair in the Map, in insertion order.
+     * @param callback
+     */
     forEach(callback: (value: V, key: K) => void): void {
         this.cleanUpExpiredEntries();
         this.map.forEach((entry, key) => {
@@ -107,12 +127,11 @@ export class Store<K extends string | number | symbol, V> {
         if (this.isCommitting) {
             throw new Error("Commit in progress, please wait.");
         }
-
+        if (!this.options) throw new Error("Options is needed.");
         this.isCommitting = true;
+        this.cleanUpExpiredEntries();
         try {
-            this.cleanUpExpiredEntries();
-            if (!this.options) throw new Error("Options is needed.");
-            const x = await this.saveToGitHub(
+            return await this.saveToGitHub(
                 {
                     token: this.options.token,
                     owner: this.options.owner,
@@ -121,7 +140,6 @@ export class Store<K extends string | number | symbol, V> {
                     branch: this.options.branch,
                 },
             );
-            return x;
         } finally {
             this.isCommitting = false;
         }
@@ -132,9 +150,9 @@ export class Store<K extends string | number | symbol, V> {
         if (!this.options) throw new Error("Options is needed.");
         return await deleteGithubFile({
             token: this.options.token,
-            repoOwner: this.options.owner,
-            repoName: this.options.repo,
-            filePath: this.options.path,
+            owner: this.options.owner,
+            repo: this.options.repo,
+            path: this.options.path,
             branch: this.options.branch,
         });
     }
@@ -156,30 +174,34 @@ export class Store<K extends string | number | symbol, V> {
         }, interval);
     }
 
-    private async saveToGitHub(
-        options: {
-            token: string;
-            owner: string;
-            repo: string;
-            path: string;
-            branch?: string;
-        },
-    ) {
+    private async refresh() {
+        if (this.map.size === 0 && this.options) {
+            const map = await getMap<K, V>({
+                token: this.options.token,
+                owner: this.options.owner,
+                repo: this.options.repo,
+                path: this.options.path,
+                branch: this.options.branch,
+            });
+            if (!map) return;
+            this.map = map;
+        }
+    }
+
+    private async saveToGitHub(options: StoreOptions) {
         try {
-            if (this.options) {
-                const record = mapToRecord(this.map);
-                const data = JSON.stringify(record);
-                return await uploadFileToGitHub(
-                    {
-                        token: options.token,
-                        repoOwner: options.owner,
-                        repoName: options.repo,
-                        filePath: options.path,
-                        fileContent: data,
-                        branch: options.branch,
-                    },
-                );
+            if (!options || !options.token) {
+                throw new Error("GITHUB_TOKEN is needed");
             }
+            const opt = {
+                token: options.token,
+                owner: options.owner,
+                repo: options.repo,
+                path: options.path,
+                branch: options.branch,
+                content: JSON.stringify(mapToRecord(this.map)),
+            };
+            return await uploadFileToGitHub(opt);
         } catch (error) {
             throw error;
         }
@@ -212,21 +234,14 @@ function mapToRecord<K extends string | number | symbol, V>(
     return Object.fromEntries(map) as Record<K, V>;
 }
 
-async function getSHA(
-    options: {
-        token: string;
-        repoOwner: string;
-        repoName: string;
-        filePath: string;
-        branch?: string;
-    },
-): Promise<string | undefined> {
+async function getSHA(options: StoreOptions): Promise<string | undefined> {
+    if (!options || !options.token) throw new Error("GITHUB_TOKEN is needed");
     const octokit = new Octokit({ auth: options.token });
     try {
         const response = await octokit.repos.getContent({
-            owner: options.repoOwner,
-            repo: options.repoName,
-            path: options.filePath,
+            owner: options.owner,
+            repo: options.repo,
+            path: options.path,
             ref: options.branch,
         }) as any;
 
@@ -238,45 +253,27 @@ async function getSHA(
 
 async function uploadFileToGitHub(
     options: {
-        token: string;
-        repoOwner: string;
-        repoName: string;
-        filePath: string;
-        fileContent: string;
+        token?: string;
+        owner: string;
+        repo: string;
+        path: string;
+        content: string;
         branch?: string;
     },
 ) {
     const octokit = new Octokit({ auth: options.token });
     try {
-        const res = await getFileFromGithub(
-            {
-                token: options.token,
-                repoOwner: options.repoOwner,
-                repoName: options.repoName,
-                filePath: options.filePath,
-                branch: options.branch,
-            },
-        ) as any;
-
-        const sha = res
-            ? await getSHA({
-                token: options.token,
-                repoOwner: options.repoOwner,
-                repoName: options.repoName,
-                filePath: options.filePath,
-                branch: options.branch,
-            })
-            : undefined;
-
+        const res = await getFileFromGithub(options);
+        const sha = res ? await getSHA(options) : undefined;
         const message = res
-            ? `Update ${options.filePath}`
-            : `Create ${options.filePath}`;
+            ? `Update ${options.path}`
+            : `Create ${options.path}`;
         return await octokit.repos.createOrUpdateFileContents({
-            owner: options.repoOwner,
-            repo: options.repoName,
-            path: options.filePath,
+            owner: options.owner,
+            repo: options.repo,
+            path: options.path,
             message,
-            content: btoa(options.fileContent),
+            content: btoa(options.content),
             sha,
             branch: options.branch,
         });
@@ -286,41 +283,23 @@ async function uploadFileToGitHub(
 }
 
 async function getMap<K extends string | number | symbol, V>(
-    options: {
-        token: string;
-        owner: string;
-        repo: string;
-        path: string;
-        branch?: string;
-    },
+    options: StoreOptions,
 ) {
-    const rr = await getFileFromGithub(
-        {
-            token: options.token,
-            repoOwner: options.owner,
-            repoName: options.repo,
-            filePath: options.path,
-            branch: options.branch,
-        },
-    ) as any;
+    if (!options || !options.token) throw new Error("GITHUB_TOKEN is needed");
+    const rr = await getFileFromGithub(options) as any;
     if (!rr) return;
     const data = atob(rr.content);
     return recordToMap<K, V>(JSON.parse(data));
 }
 
-async function getFileFromGithub(options: {
-    token: string;
-    repoOwner: string;
-    repoName: string;
-    filePath: string;
-    branch?: string;
-}) {
+async function getFileFromGithub(options: StoreOptions) {
+    if (!options || !options.token) throw new Error("GITHUB_TOKEN is needed");
     const octokit = new Octokit({ auth: options.token });
     try {
         const res = await octokit.repos.getContent({
-            owner: options.repoOwner,
-            repo: options.repoName,
-            path: options.filePath,
+            owner: options.owner,
+            repo: options.repo,
+            path: options.path,
             ref: options.branch,
         });
         return res.data;
@@ -329,32 +308,19 @@ async function getFileFromGithub(options: {
     }
 }
 
-async function deleteGithubFile(
-    options: {
-        token: string;
-        repoOwner: string;
-        repoName: string;
-        filePath: string;
-        branch?: string;
-    },
-) {
+async function deleteGithubFile(options: StoreOptions) {
+    if (!options || !options.token) throw new Error("GITHUB_TOKEN is needed");
     const octokit = new Octokit({ auth: options.token });
     try {
-        const sha = await getSHA({
-            token: options.token,
-            repoOwner: options.repoOwner,
-            repoName: options.repoName,
-            filePath: options.filePath,
-            branch: options.branch,
-        });
+        const sha = await getSHA(options);
         if (!sha) throw new Error("SHA is needed");
         const res = await octokit.repos.deleteFile({
-            owner: options.repoOwner,
-            repo: options.repoName,
-            path: options.filePath,
+            owner: options.owner,
+            repo: options.repo,
+            path: options.path,
             sha,
             branch: options.branch,
-            message: `Delete ${options.filePath}`,
+            message: `Delete ${options.path}`,
         });
         return res.data;
     } catch (error) {
