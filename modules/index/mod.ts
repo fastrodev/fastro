@@ -1,7 +1,7 @@
 import { Fastro, HttpRequest } from "@app/mod.ts";
 import indexApp from "@app/modules/index/index.page.tsx";
 import index from "@app/modules/index/index.layout.tsx";
-import { getSessionId } from "@app/modules/auth/mod.tsx";
+import { getSession } from "@app/utils/session.ts";
 
 function init() {
     const basePath = Deno.env.get("DENO_DEPLOYMENT_ID")
@@ -35,19 +35,7 @@ export default function (s: Fastro) {
             const res = denoRunCheck(req);
             if (res) return init();
 
-            const sessionId = await getSessionId(req);
-            const hasSessionIdCookie = sessionId !== undefined;
-            const isLogin = hasSessionIdCookie;
-            let avatar_url = "";
-            let html_url = "";
-            if (sessionId) {
-                const r = ctx.server.serverOptions[sessionId];
-                if (r) {
-                    avatar_url = r.avatar_url;
-                    html_url = r.html_url;
-                }
-            }
-
+            const ses = await getSession(req, ctx);
             return ctx.render({
                 title: "Fast & Modular Web Framework",
                 description:
@@ -61,9 +49,9 @@ export default function (s: Fastro) {
                     : "https://fastro.dev",
                 new: "Collaboration and Profit Sharing",
                 destination: "blog/collaboration",
-                isLogin,
-                avatar_url,
-                html_url,
+                isLogin: ses?.isLogin,
+                avatar_url: ses?.avatar_url,
+                html_url: ses?.html_url,
             });
         },
     });

@@ -1,4 +1,4 @@
-import { LayoutProps } from "@app/http/server/types.ts";
+import { LayoutProps } from "@app/core/server/types.ts";
 
 export default function layout(
   { data, children }: LayoutProps<

@@ -1,4 +1,4 @@
-import { PageProps } from "@app/http/server/types.ts";
+import { PageProps } from "../../core/server/types.ts";
 
 type Post = { title: string; url: string; date: string };
 

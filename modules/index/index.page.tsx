@@ -1,4 +1,4 @@
-import { PageProps } from "@app/http/server/types.ts";
+import { PageProps } from "../../core/server/types.ts";
 import { Footer } from "@app/components/footer.tsx";
 import Header from "@app/components/header.tsx";
 import Launchpad from "@app/modules/index/index.launchpad.tsx";

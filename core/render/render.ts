@@ -6,9 +6,9 @@ import {
   renderToString,
   renderToStringAsync,
   VNode,
-} from "./deps.ts";
-import { Fastro, FunctionComponent, Page } from "./types.ts";
-import { BUILD_ID, getDevelopment } from "./mod.ts";
+} from "../server/deps.ts";
+import { Fastro, FunctionComponent, Page } from "../server/types.ts";
+import { BUILD_ID, getDevelopment } from "../server/mod.ts";
 
 export class Render {
   #server: Fastro;

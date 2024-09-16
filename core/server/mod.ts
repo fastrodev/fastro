@@ -7,7 +7,7 @@ import {
   STATUS_CODE,
   STATUS_TEXT,
 } from "./deps.ts";
-import { Render } from "./render.ts";
+import { Render } from "../render/render.ts";
 import {
   Context,
   Fastro,
@@ -21,6 +21,7 @@ import {
   Static,
 } from "./types.ts";
 import { EsbuildMod } from "../build/esbuildMod.ts";
+import { Store } from "../map/map.ts";
 
 export function checkReferer(req: Request) {
   const referer = req.headers.get("referer");
@@ -77,7 +78,7 @@ const createResponse = (
 };
 
 export default class Server implements Fastro {
-  constructor(options?: Record<string, any>) {
+  constructor(options?: Map<string, any>) {
     this.serverOptions = options ?? {};
     this.#handler = this.#createHandler();
     this.#addPropsEndpoint();
@@ -407,6 +408,7 @@ if (root) fetchProps(root);
     };
     ctx.kv = this.serverOptions["kv"];
     ctx.options = this.serverOptions;
+    ctx.store = this.store;
     return [page, ctx, params, url];
   };
 
@@ -627,6 +629,7 @@ if (root) fetchProps(root);
   serve = async (options?: { port?: number; onListen?: ListenHandler }) => {
     const [s] = await this.#build();
     if (s) return Deno.exit();
+    this.store.startAutoSave(10 * 1000);
 
     this.#server = Deno.serve({
       port: options && options.port ? options.port : 8000,
@@ -670,4 +673,11 @@ if (root) fetchProps(root);
   #maxAge = 0;
   #nonce = "";
   serverOptions: Record<string, any> = {};
+  store = new Store<string | number | symbol, any>(60000, {
+    owner: Deno.env.get("GITHUB_OWNER") || "fastrodev",
+    repo: Deno.env.get("GITHUB_REPO") || "fastro",
+    path: Deno.env.get("GITHUB_PATH") || "modules/store/records.json",
+    branch: Deno.env.get("GITHUB_PATH") || "store",
+    token: Deno.env.get("GITHUB_TOKEN") || "INVALID",
+  });
 }

@@ -1,6 +1,6 @@
 // import { InlineNav } from "@app/components/inline-nav.tsx";
 import { Footer } from "@app/components/footer.tsx";
-import { LayoutProps } from "@app/http/server/types.ts";
+import { LayoutProps } from "../../core/server/types.ts";
 import Header from "@app/components/header.tsx";
 
 export default function ({ children, data }: LayoutProps<

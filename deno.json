@@ -12,9 +12,7 @@
   },
   "imports": {
     "@app/": "./",
-    "preact": "https://esm.sh/preact@10.23.2",
-    "preact/": "https://esm.sh/preact@10.23.2/",
-    "chalk": "npm:chalk@5"
+    "preact": "npm:preact@^10.24.0"
   },
   "compilerOptions": {
     "jsx": "react-jsx",

@@ -1,5 +1,5 @@
-import { Context, Fastro, HttpRequest } from "@app/http/server/types.ts";
-import { STATUS_CODE } from "@app/http/server/deps.ts";
+import { Context, Fastro, HttpRequest } from "../../core/server/types.ts";
+import { STATUS_CODE } from "../../core/server/deps.ts";
 import { kv } from "@app/utils/db.ts";
 import {
   createGitHubOAuthConfig,
@@ -93,7 +93,7 @@ export const callbackHandler = async (req: HttpRequest, ctx: Context) => {
       req,
     );
     const user = await getUser(tokens.accessToken);
-    ctx.server.serverOptions[sessionId] = user;
+    ctx.server.store.set(sessionId, user, 60 * 1000);
     return response;
   } catch {
     return new Response(null, { status: STATUS_CODE.InternalServerError });
@@ -103,7 +103,7 @@ export const callbackHandler = async (req: HttpRequest, ctx: Context) => {
 export const signoutHandler = async (req: HttpRequest, ctx: Context) => {
   const sessionId = await getSessionId(req);
   if (!sessionId) throw new Error("session ID is undefined");
-  ctx.server.serverOptions[sessionId] = undefined;
+  ctx.server.store.delete(sessionId);
   return await signOut(req);
 };
 

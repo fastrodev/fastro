@@ -20,8 +20,8 @@ jobs:
         with:
           deno-version: vx.x.x
 
-      - run: deno lint --unstable http
-      - run: deno lint --unstable examples
+      - run: deno lint --unstable-kv core
+      - run: deno lint --unstable-kv examples
 
       - name: Run tests
         run: deno task test
