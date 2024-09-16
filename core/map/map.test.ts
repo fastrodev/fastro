@@ -57,8 +57,8 @@ Deno.test("Store: size method returns correct count", () => {
 
 const d = new Date();
 const time = d.getTime();
+const token = Deno.env.get("GITHUB_TOKEN") || Deno.env.get("GH_TOKEN");
 Deno.test("Store: save it to github", async () => {
-    const token = Deno.env.get("GITHUB_TOKEN");
     if (!token) return;
     const expiringMap = new Store<string, number>({
         owner: "fastrodev",
@@ -73,7 +73,6 @@ Deno.test("Store: save it to github", async () => {
 });
 
 Deno.test("Store: get value from github", async () => {
-    const token = Deno.env.get("GITHUB_TOKEN");
     if (!token) return;
     const expiringMap = new Store<string, number>({
         owner: "fastrodev",
@@ -88,7 +87,6 @@ Deno.test("Store: get value from github", async () => {
 });
 
 Deno.test("Store: destroy map", async () => {
-    const token = Deno.env.get("GITHUB_TOKEN");
     if (!token) return;
     const expiringMap = new Store<string, number>({
         owner: "fastrodev",
