@@ -673,7 +673,7 @@ if (root) fetchProps(root);
   #maxAge = 0;
   #nonce = "";
   serverOptions: Record<string, any> = {};
-  store = new Store<string | number | symbol, any>(60000, {
+  store = new Store<string | number | symbol, any>({
     owner: Deno.env.get("GITHUB_OWNER") || "fastrodev",
     repo: Deno.env.get("GITHUB_REPO") || "fastro",
     path: Deno.env.get("GITHUB_PATH") || "modules/store/records.json",
