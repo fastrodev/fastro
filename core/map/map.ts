@@ -190,7 +190,6 @@ export class Store<K extends string | number | symbol, V> {
 
     private async saveToGitHub(options: StoreOptions) {
         try {
-            console.log("options ==>", options);
             if (!options || !options.token) {
                 throw new Error("GITHUB_TOKEN is needed");
             }
