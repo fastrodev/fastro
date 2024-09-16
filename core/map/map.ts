@@ -127,12 +127,11 @@ export class Store<K extends string | number | symbol, V> {
         if (this.isCommitting) {
             throw new Error("Commit in progress, please wait.");
         }
-
+        if (!this.options) throw new Error("Options is needed.");
         this.isCommitting = true;
+        this.cleanUpExpiredEntries();
         try {
-            this.cleanUpExpiredEntries();
-            if (!this.options) throw new Error("Options is needed.");
-            const x = await this.saveToGitHub(
+            return await this.saveToGitHub(
                 {
                     token: this.options.token,
                     owner: this.options.owner,
@@ -141,7 +140,6 @@ export class Store<K extends string | number | symbol, V> {
                     branch: this.options.branch,
                 },
             );
-            return x;
         } finally {
             this.isCommitting = false;
         }
