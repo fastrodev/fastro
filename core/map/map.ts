@@ -107,6 +107,7 @@ export class Store<K extends string | number | symbol, V> {
             this.options.owner,
             this.options.repo,
             this.options.path,
+            this.options.branch,
         );
     }
 

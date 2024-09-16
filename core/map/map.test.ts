@@ -73,6 +73,7 @@ Deno.test("ExpiringMap: save it to github", async () => {
         owner: "fastrodev",
         repo: "fastro",
         path: "modules/store/records.json",
+        branch: "store",
         token,
     });
     const d = new Date();
