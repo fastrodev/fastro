@@ -49,6 +49,7 @@
     "group": "deno run -A examples/group.ts",
     "app_middleware": "deno run -A examples/app_middleware.ts",
     "route_middleware": "deno run -A examples/route_middleware.ts",
-    "server_rendering": "deno run -A examples/server_rendering.tsx"
+    "server_rendering": "deno run -A examples/server_rendering.tsx",
+    "store": "deno run -A --env examples/store.ts"
   }
 }
