@@ -677,7 +677,7 @@ if (root) fetchProps(root);
     owner: Deno.env.get("GITHUB_OWNER") || "fastrodev",
     repo: Deno.env.get("GITHUB_REPO") || "fastro",
     path: Deno.env.get("GITHUB_PATH") || "modules/store/records.json",
-    branch: Deno.env.get("GITHUB_PATH") || "store",
-    token: Deno.env.get("GITHUB_TOKEN") || "INVALID",
+    branch: Deno.env.get("GITHUB_BRANCH") || "store",
+    token: Deno.env.get("GITHUB_TOKEN"),
   });
 }

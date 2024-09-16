@@ -58,14 +58,12 @@ Deno.test("Store: size method returns correct count", () => {
 const d = new Date();
 const time = d.getTime();
 Deno.test("Store: save it to github", async () => {
-    const token = Deno.env.get("GITHUB_TOKEN");
-    if (!token) return;
     const expiringMap = new Store<string, number>({
         owner: "fastrodev",
         repo: "fastro",
         path: "modules/store/records.json",
         branch: "store",
-        token,
+        token: Deno.env.get("GITHUB_TOKEN"),
     });
     expiringMap.set("key1", time);
     const r = await expiringMap.commit();
@@ -73,14 +71,12 @@ Deno.test("Store: save it to github", async () => {
 });
 
 Deno.test("Store: get value from github", async () => {
-    const token = Deno.env.get("GITHUB_TOKEN");
-    if (!token) return;
     const expiringMap = new Store<string, number>({
         owner: "fastrodev",
         repo: "fastro",
         path: "modules/store/records.json",
         branch: "store",
-        token,
+        token: Deno.env.get("GITHUB_TOKEN"),
     });
     // get kv from github
     const g = await expiringMap.get("key1");
@@ -88,14 +84,12 @@ Deno.test("Store: get value from github", async () => {
 });
 
 Deno.test("Store: destroy map", async () => {
-    const token = Deno.env.get("GITHUB_TOKEN");
-    if (!token) return;
     const expiringMap = new Store<string, number>({
         owner: "fastrodev",
         repo: "fastro",
         path: "modules/store/records.json",
         branch: "store",
-        token,
+        token: Deno.env.get("GITHUB_TOKEN"),
     });
     await expiringMap.destroy();
     const g = await expiringMap.get("key1");
