@@ -2,10 +2,10 @@
 import { Octokit } from "npm:@octokit/rest";
 
 type StoreOptions = {
+    token?: string;
     owner: string;
     repo: string;
     path: string;
-    token?: string;
     branch?: string;
 } | null;
 
@@ -188,31 +188,20 @@ export class Store<K extends string | number | symbol, V> {
         }
     }
 
-    private async saveToGitHub(
-        options: {
-            token?: string;
-            owner: string;
-            repo: string;
-            path: string;
-            branch?: string;
-        },
-    ) {
+    private async saveToGitHub(options: StoreOptions) {
         try {
-            if (!options.token) throw new Error("GITHUB_TOKEN is needed");
-            if (this.options) {
-                const record = mapToRecord(this.map);
-                const data = JSON.stringify(record);
-                return await uploadFileToGitHub(
-                    {
-                        token: options.token,
-                        owner: options.owner,
-                        repo: options.repo,
-                        path: options.path,
-                        content: data,
-                        branch: options.branch,
-                    },
-                );
+            if (!options || !options.token) {
+                throw new Error("GITHUB_TOKEN is needed");
             }
+            const opt = {
+                token: options.token,
+                owner: options.owner,
+                repo: options.repo,
+                path: options.path,
+                branch: options.branch,
+                content: JSON.stringify(mapToRecord(this.map)),
+            };
+            return await uploadFileToGitHub(opt);
         } catch (error) {
             throw error;
         }
@@ -245,16 +234,8 @@ function mapToRecord<K extends string | number | symbol, V>(
     return Object.fromEntries(map) as Record<K, V>;
 }
 
-async function getSHA(
-    options: {
-        token?: string;
-        owner: string;
-        repo: string;
-        path: string;
-        branch?: string;
-    },
-): Promise<string | undefined> {
-    if (!options.token) throw new Error("GITHUB_TOKEN is needed");
+async function getSHA(options: StoreOptions): Promise<string | undefined> {
+    if (!options || !options.token) throw new Error("GITHUB_TOKEN is needed");
     const octokit = new Octokit({ auth: options.token });
     try {
         const response = await octokit.repos.getContent({
@@ -282,26 +263,8 @@ async function uploadFileToGitHub(
 ) {
     const octokit = new Octokit({ auth: options.token });
     try {
-        const res = await getFileFromGithub(
-            {
-                token: options.token,
-                owner: options.owner,
-                repo: options.repo,
-                path: options.path,
-                branch: options.branch,
-            },
-        ) as any;
-
-        const sha = res
-            ? await getSHA({
-                token: options.token,
-                owner: options.owner,
-                repo: options.repo,
-                path: options.path,
-                branch: options.branch,
-            })
-            : undefined;
-
+        const res = await getFileFromGithub(options);
+        const sha = res ? await getSHA(options) : undefined;
         const message = res
             ? `Update ${options.path}`
             : `Create ${options.path}`;
@@ -320,37 +283,17 @@ async function uploadFileToGitHub(
 }
 
 async function getMap<K extends string | number | symbol, V>(
-    options: {
-        token?: string;
-        owner: string;
-        repo: string;
-        path: string;
-        branch?: string;
-    },
+    options: StoreOptions,
 ) {
-    if (!options.token) throw new Error("GITHUB_TOKEN is needed");
-    const rr = await getFileFromGithub(
-        {
-            token: options.token,
-            owner: options.owner,
-            repo: options.repo,
-            path: options.path,
-            branch: options.branch,
-        },
-    ) as any;
+    if (!options || !options.token) throw new Error("GITHUB_TOKEN is needed");
+    const rr = await getFileFromGithub(options) as any;
     if (!rr) return;
     const data = atob(rr.content);
     return recordToMap<K, V>(JSON.parse(data));
 }
 
-async function getFileFromGithub(options: {
-    token?: string;
-    owner: string;
-    repo: string;
-    path: string;
-    branch?: string;
-}) {
-    if (!options.token) throw new Error("GITHUB_TOKEN is needed");
+async function getFileFromGithub(options: StoreOptions) {
+    if (!options || !options.token) throw new Error("GITHUB_TOKEN is needed");
     const octokit = new Octokit({ auth: options.token });
     try {
         const res = await octokit.repos.getContent({
@@ -365,25 +308,11 @@ async function getFileFromGithub(options: {
     }
 }
 
-async function deleteGithubFile(
-    options: {
-        token?: string;
-        owner: string;
-        repo: string;
-        path: string;
-        branch?: string;
-    },
-) {
-    if (!options.token) throw new Error("GITHUB_TOKEN is needed");
+async function deleteGithubFile(options: StoreOptions) {
+    if (!options || !options.token) throw new Error("GITHUB_TOKEN is needed");
     const octokit = new Octokit({ auth: options.token });
     try {
-        const sha = await getSHA({
-            token: options.token,
-            owner: options.owner,
-            repo: options.repo,
-            path: options.path,
-            branch: options.branch,
-        });
+        const sha = await getSHA(options);
         if (!sha) throw new Error("SHA is needed");
         const res = await octokit.repos.deleteFile({
             owner: options.owner,
