@@ -1,8 +1,8 @@
 import { Fastro } from "@app/mod.ts";
 import tocLayout from "@app/modules/toc/toc.layout.tsx";
 import tocApp from "@app/modules/toc/toc.page.tsx";
-import { docToc } from "@app/modules/docs/docs.layout.tsx";
 import { getSession } from "@app/utils/session.ts";
+import posts from "@app/modules/docs/docs.json" with { type: "json" };
 
 export default function (s: Fastro) {
     s.page("/docs", {
@@ -18,7 +18,7 @@ export default function (s: Fastro) {
                 title: "Docs",
                 description: "Docs",
                 destination: "/docs",
-                posts: docToc,
+                posts,
             });
         },
     });
