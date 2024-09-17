@@ -29,10 +29,52 @@ only relevant for a limited time period.
 - Implementing rate limiting or throttling for APIs
 - Maintaining leaderboards or other temporary rankings
 
-## Examples
+## Show me the code
 
-You can find this code on this
-[url](https://raw.githubusercontent.com/fastrodev/fastro/main/examples/store.ts).
+```ts
+import { Store } from "https://fastro.dev/core/map/map.ts";
+
+// init store with options
+const store = new Store({
+    owner: "fastrodev",
+    repo: "fastro",
+    branch: "store",
+    path: "modules/store/store.json",
+    token: Deno.env.get("GITHUB_TOKEN"),
+});
+
+// set key and value
+store.set("key1", "hello");
+
+// set key and value with TTL, 1000ms
+store.set("key2", "hello2", 1000);
+
+// save it to github
+store.commit();
+
+// get value
+await store.get("key1");
+
+// get value
+await store.get("key2");
+
+// clear the map
+store.clear();
+
+// delete the value based the key
+store.delete("key1");
+
+// delete the value based the key
+store.delete("key2");
+
+// delete map and github file
+await store.destroy();
+```
+
+## Example of use in web app
+
+Fastro already integrate that class via `Context`. You can find this code on
+[https://raw.githubusercontent.com/fastrodev/fastro/main/examples/store.ts](https://raw.githubusercontent.com/fastrodev/fastro/main/examples/store.ts).
 
 ```ts
 import fastro, { Context, HttpRequest } from "@app/mod.ts";

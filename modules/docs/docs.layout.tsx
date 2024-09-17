@@ -1,117 +1,6 @@
 import { Footer } from "@app/components/footer.tsx";
-// import { InlineNav } from "@app/components/inline-nav.tsx";
 import Header from "@app/components/header.tsx";
-
-export const docToc = [
-  {
-    title: "Get Started",
-    url: "/docs/start",
-  },
-  {
-    title: "App Structure",
-    url: "/docs/structure",
-  },
-  {
-    title: "Hello World",
-    url: "/docs/hello",
-  },
-  {
-    title: "Hello World Context",
-    url: "/docs/hello-context",
-  },
-  {
-    title: "Hello JSON",
-    url: "/docs/json",
-  },
-  {
-    title: "Routing",
-    url: "/docs/route",
-  },
-  {
-    title: "URL Params",
-    url: "/docs/url-params",
-  },
-  {
-    title: "Query Params",
-    url: "/docs/url-query",
-  },
-  {
-    title: "App Middleware",
-    url: "/docs/app-middleware",
-  },
-  {
-    title: "Route Middleware",
-    url: "/docs/route-middleware",
-  },
-  {
-    title: "Markdown Middleware",
-    url: "/docs/markdown",
-  },
-  {
-    title: "Tailwind Middleware",
-    url: "/docs/tailwind",
-  },
-  {
-    title: "Static File",
-    url: "/docs/static",
-  },
-  {
-    title: "Hello TSX",
-    url: "/docs/tsx",
-  },
-  {
-    title: "TSX Component",
-    url: "/docs/tsx-component",
-  },
-  {
-    title: "Function Component",
-    url: "/docs/fn-component",
-  },
-  {
-    title: "Server Side Rendering",
-    url: "/docs/ssr",
-  },
-  {
-    title: "OAuth",
-    url: "/docs/oauth",
-  },
-  {
-    title: "MySQL",
-    url: "/docs/mysql",
-  },
-  {
-    title: "Postgres",
-    url: "/docs/postgres",
-  },
-  {
-    title: "Redis",
-    url: "/docs/redis",
-  },
-  {
-    title: "Mongo",
-    url: "/docs/mongo",
-  },
-  {
-    title: "Deno KV",
-    url: "/docs/kv",
-  },
-  {
-    title: "Grouping",
-    url: "/docs/group",
-  },
-  {
-    title: "Deployment",
-    url: "/docs/deploy",
-  },
-  {
-    title: "Store",
-    url: "/docs/store",
-  },
-  {
-    title: "Benchmarks",
-    url: "/docs/benchmarks",
-  },
-];
+import posts from "@app/modules/docs/docs.json" with { type: "json" };
 
 export default function (
   props: {
@@ -160,7 +49,7 @@ export default function (
           <div
             class={`hidden dark:bg-gray-950 md:flex md:flex-col md:grow md:gap-y-3 md:col-span-2 md:items-end md:text-right md:pr-6 md:pt-6 md:pb-6`}
           >
-            {docToc.map((v) => {
+            {posts.map((v) => {
               return <a class={`text-white`} href={v.url}>{v.title}</a>;
             })}
           </div>
