@@ -47,8 +47,8 @@ export default function (s: Fastro) {
                 baseUrl: Deno.env.get("ENV") === "DEVELOPMENT"
                     ? "http://localhost:8000"
                     : "https://fastro.dev",
-                new: "Collaboration and Profit Sharing",
-                destination: "blog/collaboration",
+                new: "Store: Key and Value Map with TTL",
+                destination: "blog/store",
                 isLogin: ses?.isLogin,
                 avatar_url: ses?.avatar_url,
                 html_url: ses?.html_url,
