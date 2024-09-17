@@ -31,10 +31,15 @@ only relevant for a limited time period.
 
 ## Show me the code
 
+You can run this code with: `deno run --env -A store.ts`
+
 ```ts
 import { Store } from "https://fastro.dev/core/map/map.ts";
 
-// init store with options
+// init store with options.
+// you have to prepare the repository
+// and GITHUB_TOKEN if you want to save
+// to Github repository
 const store = new Store({
     owner: "fastrodev",
     repo: "fastro",
@@ -49,32 +54,30 @@ store.set("key1", "hello");
 // set key and value with TTL, 1000ms
 store.set("key2", "hello2", 1000);
 
-// save it to github
-store.commit();
-
 // get value
-await store.get("key1");
-
-// get value
-await store.get("key2");
+const r1 = await store.get("key1");
+console.log(r1);
+const r2 = await store.get("key2");
+console.log(r2);
 
 // clear the map
 store.clear();
 
-// delete the value based the key
+// delete the map
 store.delete("key1");
-
-// delete the value based the key
 store.delete("key2");
 
-// delete map and github file
+// save it to GitHub if you'd like.
+await store.commit();
+
+// delete the map and the github file
 await store.destroy();
 ```
 
 ## Example of use in web app
 
 Fastro already integrate that class via `Context`. You can find this code on
-[https://raw.githubusercontent.com/fastrodev/fastro/main/examples/store.ts](https://raw.githubusercontent.com/fastrodev/fastro/main/examples/store.ts).
+[examples/store.ts](https://raw.githubusercontent.com/fastrodev/fastro/main/examples/store.ts)
 
 ```ts
 import fastro, { Context, HttpRequest } from "@app/mod.ts";

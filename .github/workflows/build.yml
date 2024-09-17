@@ -23,15 +23,6 @@ jobs:
       - name: Run tests
         run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} deno task test
 
-      - name: Generate report
-        run: deno task coverage
-
-      - name: Coveralls
-        uses: coverallsapp/github-action@v2
-        with:
-          path-to-lcov: ./cov.lcov
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Run Build
         run: GITHUB_CLIENT_ID=${{ vars.GH_CLIENT_ID }} GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} deno task build
 
