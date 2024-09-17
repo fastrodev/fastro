@@ -23,7 +23,7 @@
     "start": "ENV=DEVELOPMENT deno run --env --unstable-kv -A --watch modules/app/main.ts",
     "build": "deno run --env -A --unstable-kv  modules/app/main.ts --build ",
     "prod": "deno run --env --unstable-kv -A modules/app/main.ts",
-    "test": "rm -rf .hydrate && rm -rf cov && deno test --unstable-kv -A --coverage=cov && deno coverage cov",
+    "test": "rm -rf .hydrate && rm -rf cov && deno test --env --unstable-kv -A --coverage=cov && deno coverage cov",
     "coverage": "deno coverage cov --lcov > cov.lcov",
     "bench": "deno run -A bench/run.ts",
     "oauth": "deno run --env -A --unstable-kv examples/oauth.ts",

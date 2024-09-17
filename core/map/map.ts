@@ -157,12 +157,13 @@ export class Store<K extends string | number | symbol, V> {
         });
     }
 
-    startAutoSave(interval: number): void {
+    startAutoSave(interval: number) {
         if (this.saveIntervalId) {
             clearInterval(this.saveIntervalId);
         }
 
-        this.saveIntervalId = setInterval(() => {
+        this.saveIntervalId = setInterval(async () => {
+            await this.refresh();
             if (!this.options || this.map.size === 0) return;
             return this.saveToGitHub({
                 token: this.options.token,

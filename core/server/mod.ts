@@ -630,7 +630,7 @@ if (root) fetchProps(root);
   serve = async (options?: { port?: number; onListen?: ListenHandler }) => {
     const [s] = await this.#build();
     if (s) return Deno.exit();
-    this.store.startAutoSave(10 * 1000);
+    this.store.startAutoSave(60000);
 
     this.#server = Deno.serve({
       port: options && options.port ? options.port : 8000,
@@ -678,7 +678,7 @@ if (root) fetchProps(root);
     owner: Deno.env.get("GITHUB_OWNER") || "fastrodev",
     repo: Deno.env.get("GITHUB_REPO") || "fastro",
     path: Deno.env.get("GITHUB_PATH") || "modules/store/records.json",
-    branch: Deno.env.get("GITHUB_BRANCH") || "store",
+    branch: Deno.env.get("GITHUB_BRANCH") || "main",
     token: Deno.env.get("GITHUB_TOKEN"),
   });
 }
