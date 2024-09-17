@@ -19,6 +19,11 @@ export default function (s: Fastro) {
                 destination: "/blog",
                 posts: [
                     {
+                        title: "Store: Key and Value Map with TTL",
+                        url: "/blog/store",
+                        date: "09/17/2024",
+                    },
+                    {
                         title: "Collaboration and Profit Sharing",
                         url: "/blog/collaboration",
                         date: "06/18/2024",

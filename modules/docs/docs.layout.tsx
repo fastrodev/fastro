@@ -104,6 +104,10 @@ export const docToc = [
     url: "/docs/deploy",
   },
   {
+    title: "Store",
+    url: "/docs/store",
+  },
+  {
     title: "Benchmarks",
     url: "/docs/benchmarks",
   },
