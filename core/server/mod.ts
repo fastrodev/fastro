@@ -630,7 +630,7 @@ if (root) fetchProps(root);
   serve = async (options?: { port?: number; onListen?: ListenHandler }) => {
     const [s] = await this.#build();
     if (s) return Deno.exit();
-    this.store.startAutoSave(60000);
+    this.store.sync(30000);
 
     this.#server = Deno.serve({
       port: options && options.port ? options.port : 8000,

@@ -55,9 +55,9 @@ store.set("key1", "hello");
 store.set("key2", "hello2", 1000);
 
 // get value
-const r1 = await store.get("key1");
+const r1 = store.get("key1");
 console.log(r1);
-const r2 = await store.get("key2");
+const r2 = store.get("key2");
 console.log(r2);
 
 // clear the map
@@ -116,9 +116,9 @@ f.post(
 
 f.get(
     "/",
-    async (_req: HttpRequest, ctx: Context) => {
+    (_req: HttpRequest, ctx: Context) => {
         // get the value
-        const res = await ctx.store.get("hello");
+        const res = ctx.store.get("hello");
         return Response.json({ value: res });
     },
 );

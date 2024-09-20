@@ -43,9 +43,9 @@ f.post(
 
 f.get(
     "/",
-    async (_req: HttpRequest, ctx: Context) => {
+    (_req: HttpRequest, ctx: Context) => {
         // get the value
-        const res = await ctx.store.get("hello");
+        const res = ctx.store.get("hello");
         return Response.json({ value: res });
     },
 );
