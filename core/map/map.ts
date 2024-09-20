@@ -26,17 +26,29 @@ export class Store<K extends string | number | symbol, V> {
      * @param value
      * @param ttl
      */
-    set(key: K, value: V, ttl?: number): void {
+    set(key: K, value: V, ttl?: number) {
         const expiry = ttl ? Date.now() + ttl : undefined;
         this.map.set(key, { value, expiry });
+        return this;
+    }
+
+    /**
+     * @param key
+     * @returns boolean indicating whether an element with the specified key exists or not.
+     */
+    check(key: K) {
+        if (this.map.has(key)) {
+            throw new Error(`Key ${String(key)} is already used`);
+        }
+
+        return this;
     }
 
     /**
      * Returns a specified element from the Map object. If the value that is associated to the provided key is an object, then you will get a reference to that object and any change made to that object will effectively modify it inside the Map.
      * @returns - Returns the element associated with the specified key. If no element is associated with the specified key, undefined is returned.
      */
-    async get(key: K): Promise<V | undefined> {
-        await this.refresh();
+    get(key: K) {
         const entry = this.map.get(key);
         if (entry) {
             if (entry.expiry === undefined || Date.now() < entry.expiry) {
@@ -52,8 +64,8 @@ export class Store<K extends string | number | symbol, V> {
      * @param key
      * @returns boolean indicating whether an element with the specified key exists or not.
      */
-    async has(key: K): Promise<boolean> {
-        await this.refresh();
+    has(key: K) {
+        // await this.refresh();
         const entry = this.map.get(key);
         if (entry) {
             if (entry.expiry === undefined || Date.now() < entry.expiry) {
@@ -127,7 +139,7 @@ export class Store<K extends string | number | symbol, V> {
         if (this.isCommitting) {
             throw new Error("Commit in progress, please wait.");
         }
-        if (!this.options) throw new Error("Options is needed.");
+        if (!this.options) throw new Error("Options are needed to commit");
         this.isCommitting = true;
         this.cleanUpExpiredEntries();
         try {
@@ -145,9 +157,12 @@ export class Store<K extends string | number | symbol, V> {
         }
     }
 
+    /**
+     * Delete file from repository
+     */
     async destroy() {
         this.map.clear();
-        if (!this.options) throw new Error("Options is needed.");
+        if (!this.options) throw new Error("Options are needed to destroy.");
         return await deleteGithubFile({
             token: this.options.token,
             owner: this.options.owner,
@@ -157,25 +172,30 @@ export class Store<K extends string | number | symbol, V> {
         });
     }
 
-    startAutoSave(interval: number) {
-        if (this.saveIntervalId) {
-            clearInterval(this.saveIntervalId);
+    /**
+     * Sync with github repository
+     * @param interval
+     * @returns
+     */
+    async sync(interval: number) {
+        if (await this.syncWithRepo()) {
+            if (this.saveIntervalId) clearInterval(this.saveIntervalId);
+            this.saveIntervalId = setInterval(async () => {
+                await this.syncWithRepo();
+                if (!this.options || this.map.size === 0) return;
+                await this.saveToGitHub({
+                    token: this.options.token,
+                    owner: this.options.owner,
+                    repo: this.options.repo,
+                    path: this.options.path,
+                    branch: this.options.branch,
+                });
+            }, interval);
         }
-
-        this.saveIntervalId = setInterval(async () => {
-            await this.refresh();
-            if (!this.options || this.map.size === 0) return;
-            return this.saveToGitHub({
-                token: this.options.token,
-                owner: this.options.owner,
-                repo: this.options.repo,
-                path: this.options.path,
-                branch: this.options.branch,
-            });
-        }, interval);
+        return this.saveIntervalId;
     }
 
-    private async refresh() {
+    private async syncWithRepo() {
         if (this.map.size === 0 && this.options) {
             const map = await getMap<K, V>({
                 token: this.options.token,
@@ -184,9 +204,11 @@ export class Store<K extends string | number | symbol, V> {
                 path: this.options.path,
                 branch: this.options.branch,
             });
-            if (!map) return;
+            if (!map) return false;
             this.map = map;
         }
+
+        return true;
     }
 
     private async saveToGitHub(options: StoreOptions) {
