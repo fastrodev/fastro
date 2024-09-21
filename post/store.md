@@ -51,7 +51,7 @@ const store = new Store({
 // set key and value
 store.set("key1", "hello");
 
-// set key and value with TTL
+// set key and value with 4000ms TTL
 store.check("key2").set("key2", "hello2", 4000);
 
 // Check, set, and save it to the repository.
@@ -65,7 +65,7 @@ console.log(r1); // hello
 const r2 = await store.get("key2");
 console.log(r2); // hello2
 
-// wait 2s to make sure the key is already expired
+// wait 5000ms to make sure the key is already expired
 await new Promise((resolve) => setTimeout(resolve, 5000));
 const r3 = await store.get("key2");
 console.log(r3); // undefined
@@ -79,6 +79,9 @@ store.clear();
 // delete the map
 store.delete("key1");
 store.delete("key3");
+
+// autosave the map to repository
+await store.sync();
 
 // delete the map and the github file
 await store.destroy();
