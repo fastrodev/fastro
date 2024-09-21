@@ -21,7 +21,7 @@ import {
   Static,
 } from "./types.ts";
 import { EsbuildMod } from "../build/esbuildMod.ts";
-import { Store } from "../map/map.ts";
+import { Store } from "../map/mod.ts";
 
 export function checkReferer(req: Request) {
   const referer = req.headers.get("referer");

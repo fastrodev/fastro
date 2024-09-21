@@ -1,5 +1,5 @@
 import { assertEquals } from "../server/deps.ts";
-import { Store } from "./map.ts";
+import { Store } from "./mod.ts";
 
 Deno.test("Store: set and get value without expiry", async () => {
     const store = new Store<string, number>();

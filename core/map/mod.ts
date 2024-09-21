@@ -50,7 +50,7 @@ export class Store<K extends string | number | symbol, V> {
      * @returns - Returns the element associated with the specified key. If no element is associated with the specified key, undefined is returned.
      */
     async get(key: K) {
-        await this.getMapFromRepo();
+        await this.syncMap();
         const entry = this.map.get(key);
         if (entry) {
             if (entry.expiry === undefined || Date.now() < entry.expiry) {
@@ -67,7 +67,7 @@ export class Store<K extends string | number | symbol, V> {
      * @returns boolean indicating whether an element with the specified key exists or not.
      */
     async has(key: K) {
-        await this.getMapFromRepo();
+        await this.syncMap();
         const entry = this.map.get(key);
         if (entry) {
             if (entry.expiry === undefined || Date.now() < entry.expiry) {
@@ -176,19 +176,15 @@ export class Store<K extends string | number | symbol, V> {
     }
 
     /**
-     * Save the map to the repository
+     * Save the map to the repository periodically at intervals
      * @param interval
      * @returns intervalId
      */
     async sync(interval: number = 5000) {
         if (this.intervalId) clearInterval(this.intervalId);
-        if (await this.getMapFromRepo()) {
+        if (await this.syncMap()) {
             this.intervalId = setInterval(async () => {
-                await this.getMapFromRepo();
-                if (this.map.size === 0) return;
-                if (!this.options) {
-                    throw new Error("Options are needed to sync");
-                }
+                if (!this.options || !(await this.syncMap())) return;
                 await this.saveToGitHub({
                     token: this.options.token,
                     owner: this.options.owner,
@@ -201,7 +197,7 @@ export class Store<K extends string | number | symbol, V> {
         return this.intervalId;
     }
 
-    private async getMapFromRepo() {
+    private async syncMap() {
         if (this.map.size === 0 && this.options) {
             const map = await getMap<K, V>({
                 token: this.options.token,

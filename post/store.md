@@ -34,7 +34,7 @@ only relevant for a limited time period.
 You can run this code with: `deno run -r --env -A store.ts`
 
 ```ts
-import { Store } from "https://fastro.dev/core/map/map.ts";
+import { Store } from "https://fastro.dev/core/map/mod.ts";
 
 // init store with options.
 // you have to prepare the repository
