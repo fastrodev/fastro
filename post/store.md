@@ -31,7 +31,7 @@ only relevant for a limited time period.
 
 ## Show me the code
 
-You can run this code with: `deno run --env -A store.ts`
+You can run this code with: `deno run -r --env -A store.ts`
 
 ```ts
 import { Store } from "https://fastro.dev/core/map/map.ts";
@@ -51,24 +51,34 @@ const store = new Store({
 // set key and value
 store.set("key1", "hello");
 
-// set key and value with TTL, 1000ms
-store.set("key2", "hello2", 1000);
+// set key and value with TTL
+store.check("key2").set("key2", "hello2", 4000);
 
-// get value
-const r1 = store.get("key1");
-console.log(r1);
-const r2 = store.get("key2");
-console.log(r2);
+// Check, set, and save it to the repository.
+// Please note that committing takes some time.
+// It takes around 3 seconds to save to GitHub.
+await store.check("key3").set("key3", "hello3").commit();
+
+// get the value from the in-memory map
+const r1 = await store.get("key1");
+console.log(r1); // hello
+const r2 = await store.get("key2");
+console.log(r2); // hello2
+
+// wait 2s to make sure the key is already expired
+await new Promise((resolve) => setTimeout(resolve, 5000));
+const r3 = await store.get("key2");
+console.log(r3); // undefined
+
+const r4 = await store.get("key3");
+console.log(r4); // hello3
 
 // clear the map
 store.clear();
 
 // delete the map
 store.delete("key1");
-store.delete("key2");
-
-// save it to GitHub if you'd like.
-await store.commit();
+store.delete("key3");
 
 // delete the map and the github file
 await store.destroy();
