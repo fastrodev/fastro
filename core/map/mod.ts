@@ -12,12 +12,13 @@ type StoreOptions = {
 export class Store<K extends string | number | symbol, V> {
     private map: Map<K, { value: V; expiry?: number }>;
     private options: StoreOptions;
-    private saveIntervalId: number | null = null;
+    private intervalId: number | null = null;
     private isCommitting: boolean = false;
 
     constructor(options: StoreOptions = null) {
         this.map = new Map<K, { value: V; expiry?: number }>();
         this.options = options;
+        // this.init();
     }
 
     /**
@@ -48,7 +49,8 @@ export class Store<K extends string | number | symbol, V> {
      * Returns a specified element from the Map object. If the value that is associated to the provided key is an object, then you will get a reference to that object and any change made to that object will effectively modify it inside the Map.
      * @returns - Returns the element associated with the specified key. If no element is associated with the specified key, undefined is returned.
      */
-    get(key: K) {
+    async get(key: K) {
+        await this.syncMap();
         const entry = this.map.get(key);
         if (entry) {
             if (entry.expiry === undefined || Date.now() < entry.expiry) {
@@ -64,8 +66,8 @@ export class Store<K extends string | number | symbol, V> {
      * @param key
      * @returns boolean indicating whether an element with the specified key exists or not.
      */
-    has(key: K) {
-        // await this.refresh();
+    async has(key: K) {
+        await this.syncMap();
         const entry = this.map.get(key);
         if (entry) {
             if (entry.expiry === undefined || Date.now() < entry.expiry) {
@@ -161,8 +163,9 @@ export class Store<K extends string | number | symbol, V> {
      * Delete file from repository
      */
     async destroy() {
-        this.map.clear();
         if (!this.options) throw new Error("Options are needed to destroy.");
+        if (this.intervalId) clearInterval(this.intervalId);
+        this.map.clear();
         return await deleteGithubFile({
             token: this.options.token,
             owner: this.options.owner,
@@ -173,16 +176,15 @@ export class Store<K extends string | number | symbol, V> {
     }
 
     /**
-     * Sync with github repository
+     * Save the map to the repository periodically at intervals
      * @param interval
-     * @returns
+     * @returns intervalId
      */
-    async sync(interval: number) {
-        if (await this.syncWithRepo()) {
-            if (this.saveIntervalId) clearInterval(this.saveIntervalId);
-            this.saveIntervalId = setInterval(async () => {
-                await this.syncWithRepo();
-                if (!this.options || this.map.size === 0) return;
+    async sync(interval: number = 5000) {
+        if (this.intervalId) clearInterval(this.intervalId);
+        if (await this.syncMap()) {
+            this.intervalId = setInterval(async () => {
+                if (!this.options || !(await this.syncMap())) return;
                 await this.saveToGitHub({
                     token: this.options.token,
                     owner: this.options.owner,
@@ -192,10 +194,10 @@ export class Store<K extends string | number | symbol, V> {
                 });
             }, interval);
         }
-        return this.saveIntervalId;
+        return this.intervalId;
     }
 
-    private async syncWithRepo() {
+    private async syncMap() {
         if (this.map.size === 0 && this.options) {
             const map = await getMap<K, V>({
                 token: this.options.token,

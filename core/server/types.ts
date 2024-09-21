@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { ComponentChildren, JSX } from "./deps.ts";
-import { Store } from "../map/map.ts";
+import { Store } from "../map/mod.ts";
 
 /**
  * The callback which is called when the server starts listening.
