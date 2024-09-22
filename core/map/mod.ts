@@ -18,7 +18,6 @@ export class Store<K extends string | number | symbol, V> {
     constructor(options: StoreOptions = null) {
         this.map = new Map<K, { value: V; expiry?: number }>();
         this.options = options;
-        // this.init();
     }
 
     /**
