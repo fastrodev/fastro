@@ -48,6 +48,9 @@ const store = new Store({
     token: Deno.env.get("GITHUB_TOKEN"),
 });
 
+// autosave the map to the repository
+await store.sync();
+
 // set key and value
 store.set("key1", "hello");
 
@@ -79,9 +82,6 @@ store.clear();
 // delete the map
 store.delete("key1");
 store.delete("key3");
-
-// autosave the map to repository
-await store.sync();
 
 // delete the map and the github file
 await store.destroy();
