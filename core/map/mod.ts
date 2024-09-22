@@ -310,7 +310,7 @@ async function uploadFileToGitHub(
 async function getMap<K extends string | number | symbol, V>(
     options: StoreOptions,
 ) {
-    if (!options || !options.token) throw new Error("GITHUB_TOKEN is needed");
+    if (!options || !options.token) return;
     const rr = await getFileFromGithub(options) as any;
     if (!rr) return;
     const data = atob(rr.content);
