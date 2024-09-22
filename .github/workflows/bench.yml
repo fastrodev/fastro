@@ -1,8 +1,8 @@
 name: bench
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "v*.*.*"
 jobs:
   hello_bench:
     name: "Hello, bench!"
