@@ -249,7 +249,10 @@ function recordToMap<K extends string | number | symbol, V>(
     const map = new Map<K, { value: V; expiry: number }>();
 
     Object.entries(record).forEach(([key, value]) => {
-        map.set(key as K, value as { value: V; expiry: number });
+        const entry = value as { value: V; expiry: number };
+        if (entry.expiry === undefined || Date.now() < entry.expiry) {
+            map.set(key as K, entry);
+        }
     });
 
     return map;
