@@ -31,10 +31,14 @@ only relevant for a limited time period.
 
 ## Show me the code
 
-You can run this code with: `deno run -r --env -A store.ts`.
+You can run
+[this code](https://gist.github.com/ynwd/0d97acd5b1948e7d2bd2a39afec59b8e) with:
+`deno run -r --env -A store.ts`.
 
 Create store instance: you have to prepare the repository and GITHUB_TOKEN if
-you want to save to Github repository
+you want to save to Github repository.
+
+> Please note, the maximum size of the file is 100 MB.
 
 ```ts
 import { Store } from "https://fastro.dev/core/map/mod.ts";
@@ -48,7 +52,7 @@ const store = new Store({
 });
 ```
 
-Autosave the map to the repository
+Autosave the map to the repository in every 5s by default.
 
 ```ts
 await store.sync();
@@ -63,14 +67,13 @@ store.check("key2").set("key2", "hello2", 4000);
 await store.check("key3").set("key3", "hello3").commit();
 ```
 
-Get the map & simulate the expiration
+Get the value from the map
 
 ```ts
 const r1 = await store.get("key1");
-const r2 = await store.get("key2");
 ```
 
-Simulate the TTL
+Simulate the TTL and expiration
 
 ```ts
 await new Promise((resolve) => setTimeout(resolve, 5000));
