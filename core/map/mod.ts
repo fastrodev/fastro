@@ -18,6 +18,7 @@ export class Store<K extends string | number | symbol, V> {
     constructor(options: StoreOptions = null) {
         this.map = new Map<K, { value: V; expiry?: number }>();
         this.options = options;
+        // this.init();
     }
 
     /**
@@ -153,6 +154,8 @@ export class Store<K extends string | number | symbol, V> {
                     branch: this.options.branch,
                 },
             );
+        } catch (error) {
+            console.log(error);
         } finally {
             this.isCommitting = false;
         }
@@ -316,6 +319,9 @@ async function getMap<K extends string | number | symbol, V>(
     return recordToMap<K, V>(JSON.parse(data));
 }
 
+/**
+ * Gets the contents of a file in a repository (1-100 MB)
+ */
 async function getFileFromGithub(options: StoreOptions) {
     if (!options || !options.token) throw new Error("GITHUB_TOKEN is needed");
     const octokit = new Octokit({ auth: options.token });
@@ -325,6 +331,7 @@ async function getFileFromGithub(options: StoreOptions) {
             repo: options.repo,
             path: options.path,
             ref: options.branch,
+            mediaType: { format: "raw" },
         });
         return res.data;
     } catch {
