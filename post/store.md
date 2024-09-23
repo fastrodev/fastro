@@ -31,15 +31,14 @@ only relevant for a limited time period.
 
 ## Show me the code
 
-You can run this code with: `deno run -r --env -A store.ts`
+You can run this code with: `deno run -r --env -A store.ts`.
+
+Create store instance: you have to prepare the repository and GITHUB_TOKEN if
+you want to save to Github repository
 
 ```ts
 import { Store } from "https://fastro.dev/core/map/mod.ts";
 
-// init store with options.
-// you have to prepare the repository
-// and GITHUB_TOKEN if you want to save
-// to Github repository
 const store = new Store({
     owner: "fastrodev",
     repo: "fastro",
@@ -47,49 +46,63 @@ const store = new Store({
     path: "modules/store/store.json",
     token: Deno.env.get("GITHUB_TOKEN"),
 });
+```
 
-// autosave the map to the repository
+Autosave the map to the repository
+
+```ts
 await store.sync();
+```
 
-// set key and value
+Check, set, and save it to the repository. Please note that committing takes
+some time. It takes around 3 seconds to save to GitHub.
+
+```ts
 store.set("key1", "hello");
-
-// set key and value with 4000ms TTL
 store.check("key2").set("key2", "hello2", 4000);
-
-// Check, set, and save it to the repository.
-// Please note that committing takes some time.
-// It takes around 3 seconds to save to GitHub.
 await store.check("key3").set("key3", "hello3").commit();
+```
 
-// get the value from the in-memory map
+Get the map & simulate the expiration
+
+```ts
 const r1 = await store.get("key1");
-console.log(r1); // hello
 const r2 = await store.get("key2");
-console.log(r2); // hello2
+```
 
-// wait 5000ms to make sure the key is already expired
+Simulate the TTL
+
+```ts
 await new Promise((resolve) => setTimeout(resolve, 5000));
-const r3 = await store.get("key2");
-console.log(r3); // undefined
+const r3 = await store.get("key2"); // undefined
+```
 
+Get the file from synced file
+
+```ts
 const r4 = await store.get("key3");
-console.log(r4); // hello3
+```
 
-// clear the map
+Clear and delete the map.
+
+```ts
 store.clear();
 
-// delete the map
 store.delete("key1");
 store.delete("key3");
+```
 
-// delete the map and the github file
+Destroy the file.
+
+```ts
 await store.destroy();
 ```
 
 ## Example of use in web app
 
-Fastro already integrate that class via `Context`. You can find this code on
+Fastro already integrate that class via `Context`.
+
+You can find the full code on
 [examples/store.ts](https://raw.githubusercontent.com/fastrodev/fastro/main/examples/store.ts)
 
 ```ts
@@ -100,48 +113,12 @@ const f = new fastro();
 // set default value for the store
 f.store.set("hello", "hello world");
 
-f.post(
-    "/",
-    (_req: HttpRequest, ctx: Context) => {
-        // update default value
-        ctx.store.set("hello", "hello world v2");
-        return ctx.send("Helo world", 200);
-    },
-);
-
-f.post(
-    "/ttl",
-    (_req: HttpRequest, ctx: Context) => {
-        // update default value with TTL
-        ctx.store.set("hello", "world", 1000);
-        return ctx.send("ttl", 200);
-    },
-);
-
-f.post(
-    "/commit",
-    async (_req: HttpRequest, ctx: Context) => {
-        // save store to github
-        await ctx.store.commit();
-        return ctx.send("commit", 200);
-    },
-);
-
 f.get(
     "/",
     (_req: HttpRequest, ctx: Context) => {
         // get the value
         const res = ctx.store.get("hello");
         return Response.json({ value: res });
-    },
-);
-
-f.post(
-    "/destroy",
-    async (_req: HttpRequest, ctx: Context) => {
-        // destroy file
-        await ctx.store.destroy();
-        return ctx.send("destroy", 200);
     },
 );
 
