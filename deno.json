@@ -24,7 +24,7 @@
     "build": "deno run --env -A --unstable-kv  modules/app/main.ts --build ",
     "prod": "deno run --env --unstable-kv -A modules/app/main.ts",
     "test": "rm -rf .hydrate && rm -rf cov && deno test --env --unstable-kv -A --coverage=cov && deno coverage --ignore='middleware/' cov",
-    "coverage": "deno coverage cov --lcov > cov.lcov",
+    "coverage": "deno coverage --ignore='middleware/' cov --lcov > cov.lcov",
     "bench": "deno run -A bench/run.ts",
     "oauth": "deno run --env -A --unstable-kv examples/oauth.ts",
     "deno": "deno run -A examples/deno.ts",
