@@ -84,6 +84,7 @@ const store = new Store<string, number>({
     branch: "store",
     token,
 });
+const i = store.sync(5000);
 Deno.test("Store: save it to github", async () => {
     store.set("key1", time);
     const r = await store.commit();
@@ -95,11 +96,16 @@ Deno.test("Store: get value from github", async () => {
     assertEquals(g, time);
 });
 
+Deno.test("Store: update value", async () => {
+    store.set("key1", 2);
+    const g = await store.get("key1");
+    assertEquals(g, 2);
+});
+
 Deno.test("Store: sync with github periodically", async () => {
-    const i = await store.sync(5000);
     await new Promise((resolve) => setTimeout(resolve, 10000));
-    assertEquals(typeof i, "number");
-    if (i) clearInterval(i);
+    const g = await store.get("key1");
+    assertEquals(g, 2);
 });
 
 Deno.test("Store: destroy map", async () => {
@@ -107,3 +113,5 @@ Deno.test("Store: destroy map", async () => {
     const g = await store.get("key1");
     assertEquals(g, undefined);
 });
+
+if (i) clearInterval(i);
