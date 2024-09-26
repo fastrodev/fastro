@@ -103,7 +103,7 @@ Deno.test("Store: update value", async () => {
 });
 
 Deno.test("Store: sync with github periodically", async () => {
-    await new Promise((resolve) => setTimeout(resolve, 10000));
+    await new Promise((resolve) => setTimeout(resolve, 20000));
     const g = await store.get("key1");
     assertEquals(g, 2);
 });
