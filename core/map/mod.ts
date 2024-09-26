@@ -154,8 +154,6 @@ export class Store<K extends string | number | symbol, V> {
                     branch: this.options.branch,
                 },
             );
-        } catch (error) {
-            console.log(error);
         } finally {
             this.isCommitting = false;
         }
