@@ -48,6 +48,56 @@ Deno.test("Store: clear method removes all keys", () => {
     assertEquals(store.size(), 0);
 });
 
+Deno.test("Store: entries", () => {
+    const store = new Store<string, number>();
+    store.set("key6", 600);
+    const e = store.entries();
+    const entries = Array.from(e);
+    assertEquals(entries, [
+        ["key6", { value: 600, expiry: undefined }],
+    ]);
+});
+
+Deno.test("Store: values", () => {
+    const store = new Store<string, number>();
+    store.set("key6", 600);
+    const e = store.values();
+    const entries = Array.from(e);
+    assertEquals(entries, [{ expiry: undefined, value: 600 }]);
+});
+
+Deno.test("Store: keys", () => {
+    const store = new Store<string, number>();
+    store.set("key6", 600);
+    const e = store.keys();
+    const entries = Array.from(e);
+    assertEquals(entries, ["key6"]);
+});
+
+export function processMap(map: Store<string, number>): Store<string, number> {
+    const result = new Store<string, number>();
+    map.forEach((value, key) => {
+        result.set(key, value * 2);
+    });
+    return result;
+}
+
+Deno.test("Store: forEach", () => {
+    const inputMap = new Store<string, number>();
+    inputMap.set("one", 1);
+    inputMap.set("two", 2);
+    inputMap.set("three", 3);
+
+    const expectedOutput = new Store<string, number>();
+    expectedOutput.set("one", 2);
+    expectedOutput.set("two", 4);
+    expectedOutput.set("three", 6);
+
+    const result = processMap(inputMap);
+
+    assertEquals(result, expectedOutput);
+});
+
 Deno.test("Store: size method returns correct count", () => {
     const store = new Store<string, number>();
     store.set("key8", 800);
@@ -103,7 +153,7 @@ Deno.test("Store: update value", async () => {
 });
 
 Deno.test("Store: sync with github periodically", async () => {
-    await new Promise((resolve) => setTimeout(resolve, 20000));
+    await new Promise((resolve) => setTimeout(resolve, 10000));
     const g = await store.get("key1");
     assertEquals(g, 2);
 });
@@ -112,6 +162,38 @@ Deno.test("Store: destroy map", async () => {
     await store.destroy();
     const g = await store.get("key1");
     assertEquals(g, undefined);
+});
+
+Deno.test("Store: destroy map without options", async () => {
+    try {
+        const s = new Store();
+        await s.destroy();
+    } catch (error) {
+        assertEquals(error, new Error("Options are needed to destroy"));
+    }
+});
+
+const s = new Store({
+    owner: "fastrodev",
+    repo: "fastro",
+    path: "modules/store/map.json",
+    branch: "store",
+    token,
+});
+await s.set("exist", true).commit();
+Deno.test("Store: sync exist file", async () => {
+    const newStore = new Store({
+        owner: "fastrodev",
+        repo: "fastro",
+        path: "modules/store/map.json",
+        branch: "store",
+        token,
+    });
+    const intervalId = newStore.sync();
+    await new Promise((resolve) => setTimeout(resolve, 10000));
+    const r = await newStore.get("exist");
+    assertEquals(r, true);
+    clearInterval(intervalId);
 });
 
 if (i) clearInterval(i);

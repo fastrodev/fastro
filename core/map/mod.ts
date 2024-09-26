@@ -184,18 +184,22 @@ export class Store<K extends string | number | symbol, V> {
      */
     sync(interval: number = 5000) {
         if (this.intervalId) clearInterval(this.intervalId);
-        // if (await this.syncMap()) {
         this.intervalId = setInterval(async () => {
             if (!this.options || !(await this.syncMap())) return;
-            await this.saveToGitHub({
+            const r = await this.saveToGitHub({
                 token: this.options.token,
                 owner: this.options.owner,
                 repo: this.options.repo,
                 path: this.options.path,
                 branch: this.options.branch,
             });
+            console.log(
+                JSON.stringify({
+                    sha: r.data.content?.sha,
+                    path: r.data.content?.path,
+                }),
+            );
         }, interval);
-        // }
         return this.intervalId;
     }
 
@@ -314,8 +318,8 @@ async function getMap<K extends string | number | symbol, V>(
     options: StoreOptions,
 ) {
     if (!options || !options.token) return;
-    const rr = await getFileFromGithub(options) as any;
-    if (rr) return recordToMap<K, V>(JSON.parse(rr));
+    const res = await getFileFromGithub(options) as any;
+    if (res) return recordToMap<K, V>(JSON.parse(res));
 }
 
 /**
