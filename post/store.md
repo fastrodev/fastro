@@ -55,7 +55,7 @@ const store = new Store({
 Autosave the map to the repository in every 5s by default.
 
 ```ts
-await store.sync();
+store.sync();
 ```
 
 Check, set, and save it to the repository. Please note that committing takes
