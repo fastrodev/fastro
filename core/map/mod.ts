@@ -275,7 +275,6 @@ async function getSHA(options: StoreOptions): Promise<string | undefined> {
             repo: options.repo,
             path: options.path,
             ref: options.branch,
-            mediaType: { format: "raw" },
         }) as any;
 
         return response.data.sha;
