@@ -18,7 +18,6 @@ export class Store<K extends string | number | symbol, V> {
     constructor(options: StoreOptions = null) {
         this.map = new Map<K, { value: V; expiry?: number }>();
         this.options = options;
-        // this.init();
     }
 
     /**
@@ -182,21 +181,22 @@ export class Store<K extends string | number | symbol, V> {
      */
     sync(interval: number = 5000) {
         if (this.intervalId) clearInterval(this.intervalId);
-        this.intervalId = setInterval(async () => {
-            if (!this.options || !(await this.syncMap())) return;
-            const r = await this.saveToGitHub({
+        this.intervalId = setInterval(() => {
+            if (!this.options || (this.map.size === 0)) return;
+            this.saveToGitHub({
                 token: this.options.token,
                 owner: this.options.owner,
                 repo: this.options.repo,
                 path: this.options.path,
                 branch: this.options.branch,
-            });
-            console.log(
-                JSON.stringify({
+            }).then((r) => {
+                console.log(JSON.stringify({
                     sha: r.data.content?.sha,
                     path: r.data.content?.path,
-                }),
-            );
+                }));
+            }).catch((error) => {
+                throw error;
+            });
         }, interval);
         return this.intervalId;
     }
