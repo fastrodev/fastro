@@ -12,7 +12,8 @@
   },
   "imports": {
     "@app/": "./",
-    "preact": "npm:preact@^10.24.1"
+    "preact": "npm:preact@^10.24.1",
+    "prismjs": "npm:prismjs@^1.29.0"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
