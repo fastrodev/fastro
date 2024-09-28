@@ -2,14 +2,14 @@ import { CSS, extract, remark, render } from "./deps.ts";
 import { renderToString } from "../../core/server/deps.ts";
 import { Context, FunctionComponent, HttpRequest } from "../../mod.ts";
 
-import "https://esm.sh/v135/prismjs@1.29.0/components/prism-css";
-import "https://esm.sh/v135/prismjs@1.29.0/components/prism-jsx";
-import "https://esm.sh/v135/prismjs@1.29.0/components/prism-typescript";
-import "https://esm.sh/v135/prismjs@1.29.0/components/prism-tsx";
-import "https://esm.sh/v135/prismjs@1.29.0/components/prism-bash";
-import "https://esm.sh/v135/prismjs@1.29.0/components/prism-powershell";
-import "https://esm.sh/v135/prismjs@1.29.0/components/prism-json";
-import "https://esm.sh/v135/prismjs@1.29.0/components/prism-diff";
+import "prismjs/components/prism-css.min.js";
+import "prismjs/components/prism-jsx.min.js";
+import "prismjs/components/prism-typescript.min.js";
+import "prismjs/components/prism-tsx.min.js";
+import "prismjs/components/prism-bash.min.js";
+import "prismjs/components/prism-powershell.min.js";
+import "prismjs/components/prism-json.min.js";
+import "prismjs/components/prism-diff.min.js";
 
 function stringToJSXElement(content: string) {
   return <div dangerouslySetInnerHTML={{ __html: content }} />;

@@ -12,13 +12,14 @@
   },
   "imports": {
     "@app/": "./",
-    "preact": "npm:preact@^10.24.0"
+    "preact": "npm:preact@^10.24.1",
+    "prismjs": "npm:prismjs@^1.29.0"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "preact"
   },
-  "nodeModulesDir": true,
+  "nodeModulesDir": "auto",
   "tasks": {
     "start": "ENV=DEVELOPMENT deno run --env --unstable-kv -A --watch modules/app/main.ts",
     "build": "deno run --env -A --unstable-kv  modules/app/main.ts --build ",

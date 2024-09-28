@@ -219,8 +219,7 @@ export default class Server implements Fastro {
   };
 
   #build = async () => {
-    // deno-lint-ignore no-deprecated-deno-api
-    if (Deno.run === undefined) {
+    if (Deno.Command === undefined) {
       return [];
     }
     for (const [_key, page] of Object.entries(this.#routePage)) {

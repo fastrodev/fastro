@@ -69,7 +69,8 @@ Deno.test({
                 },
             );
         } catch (error) {
-            assertEquals(error.message, "User is not found");
+            const err = error as Error;
+            assertEquals(err.message, "User is not found");
         }
     },
 });
@@ -86,7 +87,8 @@ Deno.test({
                 },
             );
         } catch (error) {
-            assertEquals(error.message, "Permission is not valid");
+            const err = error as Error;
+            assertEquals(err.message, "Permission is not valid");
         }
     },
 });
