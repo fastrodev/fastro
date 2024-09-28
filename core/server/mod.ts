@@ -219,7 +219,7 @@ export default class Server implements Fastro {
   };
 
   #build = async () => {
-    if (Deno.Command === undefined) {
+    if (Deno.env.get("DENO_DEPLOYMENT_ID") !== undefined) {
       return [];
     }
     for (const [_key, page] of Object.entries(this.#routePage)) {
