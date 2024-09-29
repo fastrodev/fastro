@@ -172,14 +172,14 @@ Deno.test("Store: destroy map without options", async () => {
     }
 });
 
-const s = new Store({
-    owner: "fastrodev",
-    repo: "store",
-    path: "modules/store/map.json",
-    branch: "main",
-    token,
-});
-await s.set("exist", true).commit();
+// const s = new Store({
+//     owner: "fastrodev",
+//     repo: "store",
+//     path: "modules/store/map.json",
+//     branch: "main",
+//     token,
+// });
+// await s.set("exist", true).commit();
 Deno.test("Store: sync exist file", async () => {
     const newStore = new Store({
         owner: "fastrodev",
