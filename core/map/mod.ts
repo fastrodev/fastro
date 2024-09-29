@@ -179,24 +179,25 @@ export class Store<K extends string | number | symbol, V> {
      * @param interval
      * @returns intervalId
      */
-    sync(interval: number = 5000) {
+    sync(interval: number = 3000) {
         if (this.intervalId) clearInterval(this.intervalId);
-        this.intervalId = setInterval(() => {
-            if (!this.options || (this.map.size === 0)) return;
-            this.saveToGitHub({
+        this.intervalId = setInterval(async () => {
+            if (!this.options || (this.map.size === 0)) {
+                return;
+            }
+            this.isCommitting = true;
+            const r = await this.saveToGitHub({
                 token: this.options.token,
                 owner: this.options.owner,
                 repo: this.options.repo,
                 path: this.options.path,
                 branch: this.options.branch,
-            }).then((r) => {
-                console.log(JSON.stringify({
-                    sha: r.data.content?.sha,
-                    path: r.data.content?.path,
-                }));
-            }).catch((error) => {
-                throw error;
             });
+            console.log(JSON.stringify({
+                sha: r.data.content?.sha,
+                path: r.data.content?.path,
+            }));
+            this.isCommitting = false;
         }, interval);
         return this.intervalId;
     }

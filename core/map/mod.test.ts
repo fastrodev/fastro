@@ -129,9 +129,9 @@ const time = d.getTime();
 const token = Deno.env.get("GITHUB_TOKEN");
 const store = new Store<string, number>({
     owner: "fastrodev",
-    repo: "fastro",
+    repo: "store",
     path: "modules/store/records.json",
-    branch: "store",
+    branch: "main",
     token,
 });
 const i = store.sync(5000);
@@ -153,7 +153,6 @@ Deno.test("Store: update value", async () => {
 });
 
 Deno.test("Store: sync with github periodically", async () => {
-    await new Promise((resolve) => setTimeout(resolve, 10000));
     const g = await store.get("key1");
     assertEquals(g, 2);
 });
@@ -175,22 +174,23 @@ Deno.test("Store: destroy map without options", async () => {
 
 const s = new Store({
     owner: "fastrodev",
-    repo: "fastro",
+    repo: "store",
     path: "modules/store/map.json",
-    branch: "store",
+    branch: "main",
     token,
 });
 await s.set("exist", true).commit();
 Deno.test("Store: sync exist file", async () => {
     const newStore = new Store({
         owner: "fastrodev",
-        repo: "fastro",
+        repo: "store",
         path: "modules/store/map.json",
-        branch: "store",
+        branch: "main",
         token,
     });
+    await newStore.get("exist");
     const intervalId = newStore.sync();
-    await new Promise((resolve) => setTimeout(resolve, 10000));
+    await new Promise((resolve) => setTimeout(resolve, 15000));
     const r = await newStore.get("exist");
     assertEquals(r, true);
     clearInterval(intervalId);
