@@ -153,7 +153,6 @@ Deno.test("Store: update value", async () => {
 });
 
 Deno.test("Store: sync with github periodically", async () => {
-    await new Promise((resolve) => setTimeout(resolve, 10000));
     const g = await store.get("key1");
     assertEquals(g, 2);
 });
@@ -189,8 +188,9 @@ Deno.test("Store: sync exist file", async () => {
         branch: "store",
         token,
     });
+    await newStore.get("exist");
     const intervalId = newStore.sync();
-    await new Promise((resolve) => setTimeout(resolve, 10000));
+    await new Promise((resolve) => setTimeout(resolve, 15000));
     const r = await newStore.get("exist");
     assertEquals(r, true);
     clearInterval(intervalId);

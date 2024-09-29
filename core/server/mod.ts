@@ -675,7 +675,7 @@ if (root) fetchProps(root);
   serverOptions: Record<string, any> = {};
   store = new Store<string | number | symbol, any>({
     owner: Deno.env.get("GITHUB_OWNER") || "fastrodev",
-    repo: Deno.env.get("GITHUB_REPO") || "fastro",
+    repo: Deno.env.get("GITHUB_REPO") || "store",
     path: Deno.env.get("GITHUB_PATH") || "modules/store/records.json",
     branch: Deno.env.get("GITHUB_BRANCH") || "main",
     token: Deno.env.get("GITHUB_TOKEN"),
