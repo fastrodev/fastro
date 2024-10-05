@@ -1,7 +1,7 @@
 ---
 title: "Store: Key and Value Map with TTL"
 description: "Store: Key and Value Map with TTL. A key-value map with time-to-live (TTL) is a data structure that associates keys with values, similar to a regular map or dictionary"
-image: https://fastro.deno.dev/store.png
+image: https://fastro.deno.dev/store.jpeg
 author: Admin
 date: 09/17/2024
 ---
