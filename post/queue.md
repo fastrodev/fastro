@@ -1,6 +1,7 @@
 ---
 title: "Using Queues to Avoid Race Conditions"
 description: "This article explores how using queues can prevent race conditions in concurrent programming by ensuring orderly access to shared resources, enhancing data integrity and application reliability."
+image: https://fastro.deno.dev/queue.jpeg
 author: Admin
 date: 10/05/2024
 ---
@@ -14,17 +15,17 @@ import { assertEquals } from "@app/core/server/deps.ts";
 import { createTaskQueue } from "@app/utils/queue.ts";
 
 Deno.test("Queue: create message", async () => {
-    const q = createTaskQueue();
-    const x = await q.process(() => "x");
-    const y = await q.process(() => 1);
-    const z = await q.process(() => true);
-    const o = await q.process(() => ({}));
-    const v = await q.process(() => {});
-    assertEquals(x, "x");
-    assertEquals(y, 1);
-    assertEquals(z, true);
-    assertEquals(o, {});
-    assertEquals(v, undefined);
+  const q = createTaskQueue();
+  const x = await q.process(() => "x");
+  const y = await q.process(() => 1);
+  const z = await q.process(() => true);
+  const o = await q.process(() => ({}));
+  const v = await q.process(() => {});
+  assertEquals(x, "x");
+  assertEquals(y, 1);
+  assertEquals(z, true);
+  assertEquals(o, {});
+  assertEquals(v, undefined);
 });
 ```
 
@@ -34,20 +35,20 @@ entries in parallel.
 
 ```ts
 Deno.test("Store: sync, same size after multiple commit", async () => {
-    const newStore = new Store({
-        owner: "fastrodev",
-        repo: "fastro",
-        path: "modules/store/map.json",
-        branch: "store",
-        token,
-    });
-    await Promise.all([
-        newStore.set("user", "zaid").commit(),
-        newStore.set("gender", "male").commit(),
-        newStore.set("city", "pare").commit(),
-        newStore.set("country", "indonesia").commit(),
-    ]);
-    assertEquals(newStore.size(), 4);
+  const newStore = new Store({
+    owner: "fastrodev",
+    repo: "fastro",
+    path: "modules/store/map.json",
+    branch: "store",
+    token,
+  });
+  await Promise.all([
+    newStore.set("user", "zaid").commit(),
+    newStore.set("gender", "male").commit(),
+    newStore.set("city", "pare").commit(),
+    newStore.set("country", "indonesia").commit(),
+  ]);
+  assertEquals(newStore.size(), 4);
 });
 ```
 
