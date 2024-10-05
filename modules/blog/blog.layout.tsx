@@ -11,6 +11,36 @@ function convert(dateString: string) {
   const formattedString = `${monthName} ${dateNumber}, ${year}`;
   return formattedString;
 }
+function formatDateToISO(date: Date): string {
+  // Check if the input is a valid Date object
+  if (!(date instanceof Date) || isNaN(date.getTime())) {
+    throw new Error("Invalid date");
+  }
+
+  // Get the components of the date
+  const year: number = date.getUTCFullYear();
+  const month: string = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const day: string = String(date.getUTCDate()).padStart(2, "0");
+  const hours: string = String(date.getUTCHours()).padStart(2, "0");
+  const minutes: string = String(date.getUTCMinutes()).padStart(2, "0");
+  const seconds: string = String(date.getUTCSeconds()).padStart(2, "0");
+
+  // Get the timezone offset in hours and minutes
+  const timezoneOffset: number = -date.getTimezoneOffset();
+  const offsetHours: string = String(Math.floor(Math.abs(timezoneOffset) / 60))
+    .padStart(2, "0");
+  const offsetMinutes: string = String(Math.abs(timezoneOffset) % 60).padStart(
+    2,
+    "0",
+  );
+
+  // Format the timezone offset
+  const timezoneString: string = (timezoneOffset >= 0 ? "+" : "-") +
+    offsetHours + offsetMinutes;
+
+  // Construct the final formatted date string
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${timezoneString}`;
+}
 
 function generateTags(tags: string[]) {
   if (!tags) {
@@ -51,6 +81,7 @@ export default function (
     "https://avatars.githubusercontent.com/u/10122431?v=4";
   const tags = props.attrs.tags as string[];
   const data = props.data;
+  const time = formatDateToISO(new Date(date));
 
   return (
     <html lang="en">
@@ -59,6 +90,17 @@ export default function (
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content={description} />
         <meta property="og:image" content={image} />
+        <meta name="author" content={author} />
+        <meta
+          property="article:published_time"
+          content={time}
+        />
+        <meta property="og:publish_date" content={time} />
+        <meta
+          property="article:modified_time"
+          content={time}
+        >
+        </meta>
         <title>{`${title} | Fastro`}</title>
 
         <link
@@ -81,9 +123,7 @@ export default function (
           class={"container grow max-w-4xl p-6 mx-auto bg-gray-900 rounded-lg"}
         >
           <div class={`flex flex-col gap-y-3`}>
-            {{ image } && (
-              <img src={image} class={`rounded-2xl`} loading="lazy" />
-            )}
+            {image && <img src={image} class={`rounded-2xl`} loading="lazy" />}
             <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
               {title}
             </h1>
