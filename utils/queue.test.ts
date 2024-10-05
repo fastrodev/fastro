@@ -8,9 +8,14 @@ Deno.test("Queue: create message", async () => {
     const z = await q.process(() => true);
     const o = await q.process(() => ({}));
     const v = await q.process(() => {});
+    const p = await q.process(async () => {
+        const r = new Promise<string>((resolve) => resolve("hello"));
+        return await r;
+    });
     assertEquals(x, "x");
     assertEquals(y, 1);
     assertEquals(z, true);
     assertEquals(o, {});
     assertEquals(v, undefined);
+    assertEquals(p, "hello");
 });
