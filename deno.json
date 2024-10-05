@@ -12,7 +12,7 @@
   },
   "imports": {
     "@app/": "./",
-    "preact": "npm:preact@^10.24.1"
+    "preact": "npm:preact@^10.24.2"
   },
   "compilerOptions": {
     "jsx": "react-jsx",

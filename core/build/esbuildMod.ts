@@ -1,6 +1,5 @@
 import { FunctionComponent, Page } from "../server/types.ts";
 import { build } from "./build.ts";
-import { esbuild } from "./deps.ts";
 
 export class EsbuildMod {
   #elementName: string;
@@ -12,9 +11,5 @@ export class EsbuildMod {
 
   build = async () => {
     return await build(this.#elementName);
-  };
-
-  stop = () => {
-    esbuild.stop();
   };
 }

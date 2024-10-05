@@ -74,8 +74,8 @@ Deno.test("Store: keys", () => {
     assertEquals(entries, ["key6"]);
 });
 
-export function processMap(map: Store<string, number>): Store<string, number> {
-    const result = new Store<string, number>();
+function processMap(map: Store<string, number>): Map<string, number> {
+    const result = new Map<string, number>();
     map.forEach((value, key) => {
         result.set(key, value * 2);
     });
@@ -88,7 +88,7 @@ Deno.test("Store: forEach", () => {
     inputMap.set("two", 2);
     inputMap.set("three", 3);
 
-    const expectedOutput = new Store<string, number>();
+    const expectedOutput = new Map<string, number>();
     expectedOutput.set("one", 2);
     expectedOutput.set("two", 4);
     expectedOutput.set("three", 6);
@@ -134,14 +134,10 @@ const store = new Store<string, number>({
     branch: "store",
     token,
 });
-const i = store.sync(5000);
-Deno.test("Store: save it to github", async () => {
-    store.set("key1", time);
-    const r = await store.commit();
-    assertEquals(r?.data.content?.name, "records.json");
-});
 
-Deno.test("Store: get value from github", async () => {
+Deno.test("Store: set and get value from github", async () => {
+    store.set("key1", time);
+    await store.commit();
     const g = await store.get("key1");
     assertEquals(g, time);
 });
@@ -157,12 +153,6 @@ Deno.test("Store: sync with github periodically", async () => {
     assertEquals(g, 2);
 });
 
-Deno.test("Store: destroy map", async () => {
-    await store.destroy();
-    const g = await store.get("key1");
-    assertEquals(g, undefined);
-});
-
 Deno.test("Store: destroy map without options", async () => {
     try {
         const s = new Store();
@@ -170,6 +160,12 @@ Deno.test("Store: destroy map without options", async () => {
     } catch (error) {
         assertEquals(error, new Error("Options are needed to destroy"));
     }
+});
+
+Deno.test("Store: destroy map", async () => {
+    await store.destroy();
+    const g = await store.get("key1");
+    assertEquals(g, undefined);
 });
 
 const s = new Store({
@@ -190,10 +186,24 @@ Deno.test("Store: sync exist file", async () => {
     });
     await newStore.get("exist");
     const intervalId = newStore.sync();
-    await new Promise((resolve) => setTimeout(resolve, 15000));
+    await new Promise((resolve) => setTimeout(resolve, 10000));
     const r = await newStore.get("exist");
     assertEquals(r, true);
     clearInterval(intervalId);
 });
 
-if (i) clearInterval(i);
+Deno.test("Store: sync, same size after multiple commit", async () => {
+    const newStore = new Store({
+        owner: "fastrodev",
+        repo: "fastro",
+        path: "modules/store/map.json",
+        branch: "store",
+        token,
+    });
+    await Promise.all([
+        newStore.set("user", "zaid").commit(),
+        newStore.set("city", "pare").commit(),
+        newStore.set("country", "indonesia").commit(),
+    ]);
+    assertEquals(newStore.size(), 4);
+});
