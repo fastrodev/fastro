@@ -5,12 +5,13 @@ import {
     type StoreOptions,
     uploadFileToGitHub,
 } from "../../utils/octokit.ts";
+import { createTaskQueue } from "../../utils/queue.ts";
 
 export class Store<K extends string | number | symbol, V> {
     private map: Map<K, { value: V; expiry?: number }>;
     private options: StoreOptions;
     private intervalId: number | null = null;
-    private isCommitting: boolean = false;
+    private taskQueue = createTaskQueue();
 
     constructor(options: StoreOptions = null) {
         this.map = new Map<K, { value: V; expiry?: number }>();
@@ -130,73 +131,81 @@ export class Store<K extends string | number | symbol, V> {
         });
     }
 
-    /**
-     * Save to github
-     */
-    async commit() {
-        if (this.isCommitting) {
-            throw new Error("Commit in progress, please wait.");
-        }
-        if (!this.options) throw new Error("Options are needed to commit");
-        this.isCommitting = true;
-        this.cleanUpExpiredEntries();
-        try {
-            return await this.saveToGitHub(
-                {
-                    token: this.options.token,
-                    owner: this.options.owner,
-                    repo: this.options.repo,
-                    path: this.options.path,
-                    branch: this.options.branch,
-                },
-            );
-        } finally {
-            this.isCommitting = false;
-        }
-    }
-
-    /**
-     * Delete file from repository
-     */
-    async destroy() {
-        if (!this.options) throw new Error("Options are needed to destroy.");
-        if (this.intervalId) clearInterval(this.intervalId);
-        this.map.clear();
-        return await deleteGithubFile({
+    private async joinMaps<K extends string | number | symbol, V>() {
+        if (!this.options) return this.map;
+        const remoteMap = await getMap<K, V>({
             token: this.options.token,
             owner: this.options.owner,
             repo: this.options.repo,
             path: this.options.path,
             branch: this.options.branch,
         });
+        if (!remoteMap) return this.map;
+
+        // deno-lint-ignore no-explicit-any
+        for (const [key, entry] of remoteMap.entries() as any) {
+            if (!this.map.has(key)) this.map.set(key, entry);
+        }
+
+        this.cleanUpExpiredEntries();
+        return this.map;
     }
+
+    /**
+     * Save to github with queue
+     */
+    commit = async () => {
+        return await this.taskQueue.process(this.commiting, this.options);
+    };
+
+    private commiting = async (options?: StoreOptions) => {
+        if (!options) return;
+        await this.joinMaps<K, V>();
+        return await this.saveToGitHub(
+            {
+                token: options?.token,
+                owner: options.owner,
+                repo: options.repo,
+                path: options.path,
+                branch: options?.branch,
+            },
+        );
+    };
 
     /**
      * Save the map to the repository periodically at intervals
      * @param interval
      * @returns intervalId
      */
-    sync(interval: number = 3000) {
+    sync(interval: number = 5000) {
         if (this.intervalId) clearInterval(this.intervalId);
-        this.intervalId = setInterval(async () => {
-            if (!this.options || (this.map.size === 0)) {
-                return;
+        this.intervalId = setInterval(() => {
+            if (this.map.size === 0) return;
+            this.taskQueue.process(this.commiting, this.options);
+        }, interval);
+        return this.intervalId;
+    }
+
+    /**
+     * Delete file from repository
+     */
+    async destroy() {
+        try {
+            if (!this.options) {
+                throw new Error("Options are needed to destroy.");
             }
-            this.isCommitting = true;
-            const r = await this.saveToGitHub({
+            if (this.intervalId) clearInterval(this.intervalId);
+            this.map.clear();
+            return await deleteGithubFile({
                 token: this.options.token,
                 owner: this.options.owner,
                 repo: this.options.repo,
                 path: this.options.path,
                 branch: this.options.branch,
             });
-            console.log(JSON.stringify({
-                sha: r.data.content?.sha,
-                path: r.data.content?.path,
-            }));
-            this.isCommitting = false;
-        }, interval);
-        return this.intervalId;
+        } catch (error) {
+            throw error;
+        }
     }
 
     private async syncMap() {
