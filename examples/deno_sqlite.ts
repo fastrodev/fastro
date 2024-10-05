@@ -1,4 +1,4 @@
-import { Database } from "https://deno.land/x/sqlite3@0.10.0/mod.ts";
+import { Database } from "jsr:@db/sqlite";
 import fastro, { Context, HttpRequest } from "@app/mod.ts";
 
 const db = new Database("sqlite.db");

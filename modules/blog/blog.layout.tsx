@@ -82,6 +82,7 @@ export default function (
   const tags = props.attrs.tags as string[];
   const data = props.data;
   const time = formatDateToISO(new Date(date));
+  const ogImage = image ?? "https://fastro.deno.dev/fastro.png";
 
   return (
     <html lang="en">
@@ -89,7 +90,7 @@ export default function (
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content={description} />
-        <meta property="og:image" content={image} />
+        <meta property="og:image" content={ogImage} />
         <meta name="author" content={author} />
         <meta
           property="article:published_time"
@@ -120,30 +121,32 @@ export default function (
           html_url={data.html_url}
         />
         <main
-          class={"container grow max-w-4xl p-6 mx-auto bg-gray-900 rounded-lg"}
+          class={"container grow max-w-4xl mx-auto bg-gray-900 rounded-lg"}
         >
-          <div class={`flex flex-col gap-y-3`}>
-            {image && <img src={image} class={`rounded-2xl`} loading="lazy" />}
-            <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
-              {title}
-            </h1>
-            <p class={"inline-flex items-center gap-x-2 mb-3"}>
-              <img
-                src={avatar}
-                class="self-center w-5 h-5 rounded-full"
-              />
-              <span class={"font-light"}>{author} • {date}</span>
-            </p>
-            {generateTags(tags)}
-          </div>
-          <hr class="h-px mb-4 bg-gray-200 border-0 dark:bg-gray-800" />
-          <div
-            data-color-mode="auto"
-            data-light-theme="light"
-            data-dark-theme="dark"
-            class="markdown-body"
-          >
-            {props.markdown}
+          {image && <img src={image} class={`rounded-t-lg`} loading="lazy" />}
+          <div class={`p-6`}>
+            <div class={`flex flex-col gap-y-3`}>
+              <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
+                {title}
+              </h1>
+              <p class={"inline-flex items-center gap-x-2 mb-3"}>
+                <img
+                  src={avatar}
+                  class="self-center w-5 h-5 rounded-full"
+                />
+                <span class={"font-light"}>{author} • {date}</span>
+              </p>
+              {generateTags(tags)}
+            </div>
+            <hr class="h-px mb-4 bg-gray-200 border-0 dark:bg-gray-800" />
+            <div
+              data-color-mode="auto"
+              data-light-theme="light"
+              data-dark-theme="dark"
+              class="markdown-body"
+            >
+              {props.markdown}
+            </div>
           </div>
         </main>
         <Footer />
