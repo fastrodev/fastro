@@ -2,6 +2,8 @@
 import { ComponentChildren, JSX } from "./deps.ts";
 import { Store } from "../map/mod.ts";
 
+export const SYNC_INTERVAL = 10000;
+
 /**
  * The callback which is called when the server starts listening.
  */

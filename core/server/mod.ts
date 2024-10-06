@@ -19,6 +19,7 @@ import {
   ModuleFunction,
   Page,
   Static,
+  SYNC_INTERVAL,
 } from "./types.ts";
 import { EsbuildMod } from "../build/esbuildMod.ts";
 import { Store } from "../map/mod.ts";
@@ -629,7 +630,7 @@ if (root) fetchProps(root);
   serve = async (options?: { port?: number; onListen?: ListenHandler }) => {
     const [s] = await this.#build();
     if (s) return Deno.exit();
-    this.store.sync(10000);
+    this.store.sync(SYNC_INTERVAL);
 
     this.#server = Deno.serve({
       port: options && options.port ? options.port : 8000,
