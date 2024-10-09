@@ -148,19 +148,6 @@ function Expiration() {
 function Fieldset() {
     return (
         <>
-            <label class="inline-flex items-center cursor-pointer">
-                <input
-                    type="checkbox"
-                    value=""
-                    class="sr-only peer"
-                    checked
-                />
-                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                </div>
-                <span class="ms-3 text-sm font-medium text-gray-300">
-                    Public Post
-                </span>
-            </label>
             <fieldset
                 class={`grid grid-cols-2 gap-2 border border-gray-600 rounded-lg p-2 text-sm bg-slate-700`}
             >
@@ -201,7 +188,9 @@ function Fieldset() {
     );
 }
 
-function TemplateCollection(props: { title: string; checked?: boolean }) {
+function TemplateCollection(
+    props: { title: string; checked?: boolean; disabled?: boolean },
+) {
     return (
         <li
             class={`inline-flex justify-between  items-center  gap-1`}
@@ -213,6 +202,7 @@ function TemplateCollection(props: { title: string; checked?: boolean }) {
                 type="radio"
                 value=""
                 checked={props.checked}
+                disabled={props.disabled}
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
             />
         </li>
@@ -292,10 +282,22 @@ function Menu(props: { avatar_url: string; username: string }) {
                         title="Job Template by Andrea"
                         checked={true}
                     />
-                    <TemplateCollection title="Ads Template by Andrea" />
-                    <TemplateCollection title="Question Template by Andrea" />
-                    <TemplateCollection title="Slide Template by Andrea" />
-                    <TemplateCollection title="Polling Template by Andrea" />
+                    <TemplateCollection
+                        title="Ads Template by Andrea"
+                        disabled={true}
+                    />
+                    <TemplateCollection
+                        title="Question Template by Andrea"
+                        disabled={true}
+                    />
+                    <TemplateCollection
+                        title="Slide Template by Andrea"
+                        disabled={true}
+                    />
+                    <TemplateCollection
+                        title="Polling Template by Andrea"
+                        disabled={true}
+                    />
                 </ul>
             </div>
             <div class={`flex flex-col gap-2`}>
@@ -380,11 +382,23 @@ function Menu(props: { avatar_url: string; username: string }) {
                     <span>Sign out</span>
                 </div>
             </a>
+            <div class={`inline-flex gap-3 justify-center text-xs font-thin`}>
+                <a href="/docs">Docs</a>
+                <a href="/blog">Blog</a>
+                <a
+                    href="https://fastro.dev/blog/collaboration"
+                    target={"_blank"}
+                >
+                    Contribute
+                </a>
+                <a href="#">Ads</a>
+            </div>
         </div>
     );
 }
 
 const images = ["gesits.jpg", "gesits-2.jpg", "gesits-3.webp"];
+const ADS_INTERVAL = 5000;
 function Ads() {
     const [currentImage, setCurrentImage] = useState(images[0]);
     const [index, setIndex] = useState(0);
@@ -392,7 +406,7 @@ function Ads() {
     useEffect(() => {
         const intervalId = setInterval(() => {
             setIndex((prevIndex) => (prevIndex + 1) % images.length);
-        }, 3000);
+        }, ADS_INTERVAL);
         return () => clearInterval(intervalId);
     }, []);
 
@@ -405,7 +419,7 @@ function Ads() {
             <a href={"https://www.gesitsmotors.com"} target="_blank">
                 <div class={`flex flex-col gap-3`}>
                     <span class={`text-xs font-extralight`}>
-                        Ads for Gesits Motor
+                        Ads from Gesits Motor
                     </span>
                     <img
                         alt="gesits ads"
@@ -450,15 +464,45 @@ function Navigation() {
                 placeholder="Tags"
                 class="block w-full p-2 text-gray-900 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
-            <Expiration />
-            <div class={`grow flex flex-col text-xs font-thin gap-5`}>
-                <Ads />
-                <div class={`inline-flex gap-3 mb-5 justify-center`}>
-                    <a href="/docs">Docs</a>
-                    <a href="/blog">Blog</a>
-                    <a href="#">Contribute</a>
-                    <a href="#">Ads</a>
+            <fieldset
+                class={`grid grid-cols-2 gap-2 border border-gray-600 rounded-lg p-2 text-sm bg-slate-700`}
+            >
+                <div class="flex items-center">
+                    <input
+                        id="public-options"
+                        type="radio"
+                        name="access"
+                        value="public"
+                        class="text-sm w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                        checked
+                    />
+                    <label
+                        for="public-options"
+                        class="block ms-2 font-medium text-gray-900 dark:text-gray-300"
+                    >
+                        Public
+                    </label>
                 </div>
+                <div class="flex items-center">
+                    <input
+                        id="public-options"
+                        type="radio"
+                        name="access"
+                        value="secret"
+                        class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus-ring-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                        disabled
+                    />
+                    <label
+                        for="public-options"
+                        class="block ms-2 font-medium text-gray-900 dark:text-gray-300"
+                    >
+                        Secret
+                    </label>
+                </div>
+            </fieldset>
+            <Expiration />
+            <div class={`grow flex flex-col text-xs font-thin py-5`}>
+                <Ads />
             </div>
         </div>
     );
@@ -466,7 +510,7 @@ function Navigation() {
 
 function Main() {
     return (
-        <div class="w-8/12 grow flex flex-col bg-gray-950 border-t border-l border-r border-gray-600 rounded-t-xl">
+        <div class="w-8/12 grow flex flex-col bg-gray-950 border-t border-l border-r border-gray-700 rounded-t-xl">
             <div class={`grow p-3 text-sm`}>
                 Preview
             </div>
