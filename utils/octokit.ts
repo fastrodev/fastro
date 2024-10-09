@@ -83,6 +83,7 @@ export async function getMap<K extends string | number | symbol, V>(
 ) {
     if (!options || !options.token) return;
     const res = await getFileFromGithub(options) as any;
+    // console.log("file", res);
     if (res) return recordToMap<K, V>(JSON.parse(res));
 }
 
@@ -100,6 +101,7 @@ export async function getFileFromGithub(options: StoreOptions) {
             ref: options.branch,
             mediaType: { format: "raw" },
         });
+        // console.log("res2", res);
         return res.data;
     } catch {
         return undefined;

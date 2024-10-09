@@ -6,7 +6,7 @@ import NonLogin from "@app/modules/index/index.non-login.tsx";
 
 export default function Index({ data }: PageProps<
   {
-    user: string;
+    username: string;
     title: string;
     description: string;
     baseUrl: string;
@@ -18,24 +18,23 @@ export default function Index({ data }: PageProps<
   }
 >) {
   return (
-    <>
-      <Header
-        isLogin={data.isLogin}
-        avatar_url={data.avatar_url}
-        html_url={data.html_url}
-        title={data.isLogin ? "Launchpad" : "Fastro"}
-      />
+    <div class={`h-full flex flex-col justify-between`}>
+      {data.isLogin && (
+        <Launchpad avatar_url={data.avatar_url} username={data.username} />
+      )}
 
-      {data.isLogin &&
-        (
-          <section class="container flex flex-col gap-y-12 grow max-w-4xl mx-auto text-center">
-            <Launchpad />
-          </section>
-        )}
-
-      {!data.isLogin && <NonLogin data={data} />}
-
-      <Footer />
-    </>
+      {!data.isLogin && (
+        <>
+          <Header
+            isLogin={data.isLogin}
+            avatar_url={data.avatar_url}
+            html_url={data.html_url}
+            title={data.isLogin ? "Launchpad" : "Fastro"}
+          />
+          <NonLogin data={data} />
+          <Footer />
+        </>
+      )}
+    </div>
   );
 }

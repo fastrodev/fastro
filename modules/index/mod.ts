@@ -36,8 +36,11 @@ export default function (s: Fastro) {
             if (res) return init();
 
             const ses = await getSession(req, ctx);
+            const title = ses?.isLogin
+                ? "Under construction ~ Home"
+                : "Fast & Modular Web Framework";
             return ctx.render({
-                title: "Fast & Modular Web Framework",
+                title,
                 description:
                     "Enhance SSR web app maintainability through a flat modular architecture",
                 image: "https://fastro.dev/fastro.png",
@@ -52,6 +55,7 @@ export default function (s: Fastro) {
                 isLogin: ses?.isLogin,
                 avatar_url: ses?.avatar_url,
                 html_url: ses?.html_url,
+                username: ses?.username,
             });
         },
     });

@@ -93,7 +93,8 @@ export const callbackHandler = async (req: HttpRequest, ctx: Context) => {
       req,
     );
     const user = await getUser(tokens.accessToken);
-    await ctx.server.store.set(sessionId, user, 60 * 1000).commit();
+    await ctx.server.store.set(sessionId, user, 24 * 60 * 60 * 1000).commit();
+    kv.set([sessionId], user);
     return response;
   } catch {
     return new Response(null, { status: STATUS_CODE.InternalServerError });

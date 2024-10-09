@@ -1,26 +1,511 @@
-export default function Launchpad() {
+import { useEffect, useState } from "preact/hooks";
+
+function Expiration() {
+    const toggleDropdown = () => {
+        const dropdown = document.getElementById("dropdownMenu");
+        if (dropdown) {
+            dropdown.classList.toggle("hidden");
+        }
+    };
+
     return (
-        <div class={`flex flex-col space-y-3 text-left`}>
+        <div class="relative inline-block text-left">
+            <div>
+                <button
+                    onClick={toggleDropdown}
+                    class="w-full  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center inline-flex justify-between items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                    <span>Expiration</span>
+                    <svg
+                        class="-mr-1 ml-2 h-5 w-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M5.23 7.21a.75.75 0 011.06 0L10 10.293l3.71-3.08a.75.75 0 111.06 1.06l-4.25 3.5a.75.75 0 01-.92 0l-4.25-3.5a.75.75 0 010-1.06z"
+                            clip-rule="evenodd"
+                        />
+                    </svg>
+                </button>
+            </div>
+
+            <div
+                id="dropdownMenu"
+                class="hidden absolute right-0 z-10 mt-2 w-full bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+            >
+                <div
+                    class="py-1"
+                    role="menu"
+                    aria-orientation="vertical"
+                    aria-labelledby="dropdownMenuButton"
+                >
+                    <div class="flex p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                        <div class="flex items-center h-5">
+                            <input
+                                id="helper-radio-4"
+                                name="helper-radio"
+                                type="radio"
+                                value=""
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                            />
+                        </div>
+                        <div class="ms-2 text-sm">
+                            <label
+                                for="helper-radio-4"
+                                class="font-medium text-gray-900 dark:text-gray-300"
+                            >
+                                <div>1 Day</div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="flex p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                        <div class="flex items-center h-5">
+                            <input
+                                id="helper-radio-5"
+                                name="helper-radio"
+                                type="radio"
+                                value=""
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                            />
+                        </div>
+                        <div class="ms-2 text-sm">
+                            <label
+                                for="helper-radio-5"
+                                class="font-medium text-gray-900 dark:text-gray-300"
+                            >
+                                <div>1 Week</div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="flex p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                        <div class="flex items-center h-5">
+                            <input
+                                id="helper-radio-6"
+                                name="helper-radio"
+                                type="radio"
+                                value=""
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                            />
+                        </div>
+                        <div class="ms-2 text-sm">
+                            <label
+                                for="helper-radio-6"
+                                class="font-medium text-gray-900 dark:text-gray-300"
+                            >
+                                <div>1 Month</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                        <div class="flex items-center h-5">
+                            <input
+                                id="helper-radio-6"
+                                name="helper-radio"
+                                type="radio"
+                                value=""
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                            />
+                        </div>
+                        <div class="ms-2 text-sm">
+                            <label
+                                for="helper-radio-6"
+                                class="font-medium text-gray-900 dark:text-gray-300"
+                            >
+                                <div>1 Year</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                        <div class="flex items-center h-5">
+                            <input
+                                id="helper-radio-7"
+                                name="helper-radio"
+                                type="radio"
+                                value=""
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                            />
+                        </div>
+                        <div class="ms-2 text-sm">
+                            <label
+                                for="helper-radio-7"
+                                class="font-medium text-gray-900 dark:text-gray-300"
+                            >
+                                <div>Custom</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function Fieldset() {
+    return (
+        <>
+            <label class="inline-flex items-center cursor-pointer">
+                <input
+                    type="checkbox"
+                    value=""
+                    class="sr-only peer"
+                    checked
+                />
+                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                </div>
+                <span class="ms-3 text-sm font-medium text-gray-300">
+                    Public Post
+                </span>
+            </label>
+            <fieldset
+                class={`grid grid-cols-2 gap-2 border border-gray-600 rounded-lg p-2 text-sm bg-slate-700`}
+            >
+                <div class="flex items-center">
+                    <input
+                        id="country-option-1"
+                        type="radio"
+                        name="types"
+                        value="text"
+                        class="text-sm w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                        checked
+                    />
+                    <label
+                        for="country-option-1"
+                        class="block ms-2 font-medium text-gray-900 dark:text-gray-300"
+                    >
+                        Message
+                    </label>
+                </div>
+                <div class="flex items-center">
+                    <input
+                        id="country-option-4"
+                        type="radio"
+                        name="types"
+                        value="template"
+                        class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus-ring-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                        disabled
+                    />
+                    <label
+                        for="country-option-4"
+                        class="block ms-2 font-medium text-gray-900 dark:text-gray-300"
+                    >
+                        Template
+                    </label>
+                </div>
+            </fieldset>
+        </>
+    );
+}
+
+function TemplateCollection(props: { title: string; checked?: boolean }) {
+    return (
+        <li
+            class={`inline-flex justify-between  items-center  gap-1`}
+        >
+            <span>{props.title}</span>
+            <input
+                id="helper-radio-4"
+                name="helper-radio"
+                type="radio"
+                value=""
+                checked={props.checked}
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+            />
+        </li>
+    );
+}
+
+function Menu(props: { avatar_url: string; username: string }) {
+    return (
+        <div class={`w-2/12 flex flex-col gap-5 pb-5`}>
+            <div class={`flex gap-2 items-center`}>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-bolt"
+                >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" />
+                </svg>
+
+                <span>Home</span>
+            </div>
+            <div class={`flex gap-2 items-center`}>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-compass"
+                >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M8 16l2 -6l6 -2l-2 6l-6 2" />
+                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                    <path d="M12 3l0 2" />
+                    <path d="M12 19l0 2" />
+                    <path d="M3 12l2 0" />
+                    <path d="M19 12l2 0" />
+                </svg>
+
+                <span>Discover</span>
+            </div>
+            <div class={`flex gap-2 items-center`}>
+                <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        d="M4.857 3A1.857 1.857 0 0 0 3 4.857v4.286C3 10.169 3.831 11 4.857 11h4.286A1.857 1.857 0 0 0 11 9.143V4.857A1.857 1.857 0 0 0 9.143 3H4.857Zm10 0A1.857 1.857 0 0 0 13 4.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 21 9.143V4.857A1.857 1.857 0 0 0 19.143 3h-4.286Zm-10 10A1.857 1.857 0 0 0 3 14.857v4.286C3 20.169 3.831 21 4.857 21h4.286A1.857 1.857 0 0 0 11 19.143v-4.286A1.857 1.857 0 0 0 9.143 13H4.857Zm10 0A1.857 1.857 0 0 0 13 14.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 21 19.143v-4.286A1.857 1.857 0 0 0 19.143 13h-4.286Z"
+                        clip-rule="evenodd"
+                    />
+                </svg>
+
+                <span>Template Collections</span>
+            </div>
+            <div class={`grow pl-3`}>
+                <ul
+                    class={`flex flex-col text-xs font-thin border-l pl-3 gap-y-3`}
+                >
+                    <TemplateCollection
+                        title="Job Template by Andrea"
+                        checked={true}
+                    />
+                    <TemplateCollection title="Ads Template by Andrea" />
+                    <TemplateCollection title="Question Template by Andrea" />
+                    <TemplateCollection title="Slide Template by Andrea" />
+                    <TemplateCollection title="Polling Template by Andrea" />
+                </ul>
+            </div>
+            <div class={`flex flex-col gap-2`}>
+                <div>Try Pro</div>
+                <div class={`text-sm font-thin`}>
+                    Upgrade for Elevating Your Template Creation and
+                    Monetization Efforts
+                </div>
+                <button
+                    type="button"
+                    class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 inline-flex justify-center items-center gap-x-1"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-up-right"
+                    >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M17 7l-10 10" />
+                        <path d="M8 7l9 0l0 9" />
+                    </svg>
+                    <span>Learn more</span>
+                </button>
+            </div>
+            <div class={`flex justify-between gap-2 items-center`}>
+                <div class={`inline-flex gap-2 items-center`}>
+                    <img
+                        loading={"lazy"}
+                        src={props.avatar_url}
+                        width={24}
+                        class={`rounded-full`}
+                    />
+
+                    <span>{props.username}</span>
+                </div>
+
+                <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke="currentColor"
+                        stroke-linecap="square"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 19H5a1 1 0 0 1-1-1v-1a3 3 0 0 1 3-3h2m10 1a3 3 0 0 1-3 3m3-3a3 3 0 0 0-3-3m3 3h1m-4 3a3 3 0 0 1-3-3m3 3v1m-3-4a3 3 0 0 1 3-3m-3 3h-1m4-3v-1m-2.121 1.879-.707-.707m5.656 5.656-.707-.707m-4.242 0-.707.707m5.656-5.656-.707.707M12 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                    />
+                </svg>
+            </div>
+            <a href={"/signout"}>
+                <div class={`inline-flex gap-2 items-center`}>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-logout"
+                    >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+                        <path d="M9 12h12l-3 -3" />
+                        <path d="M18 15l3 -3" />
+                    </svg>
+
+                    <span>Sign out</span>
+                </div>
+            </a>
+        </div>
+    );
+}
+
+const images = ["gesits.jpg", "gesits-2.jpg", "gesits-3.webp"];
+function Ads() {
+    const [currentImage, setCurrentImage] = useState(images[0]);
+    const [index, setIndex] = useState(0);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setIndex((prevIndex) => (prevIndex + 1) % images.length);
+        }, 3000);
+        return () => clearInterval(intervalId);
+    }, []);
+
+    useEffect(() => {
+        setCurrentImage(images[index]);
+    }, [index]);
+
+    return (
+        <div class={`grow flex flex-col justify-end`}>
+            <a href={"https://www.gesitsmotors.com"} target="_blank">
+                <div class={`flex flex-col gap-3`}>
+                    <span class={`text-xs font-extralight`}>
+                        Ads for Gesits Motor
+                    </span>
+                    <img
+                        alt="gesits ads"
+                        src={currentImage}
+                        class={`rounded-lg`}
+                    />
+                </div>
+            </a>
+        </div>
+    );
+}
+
+function Navigation() {
+    return (
+        <div class={`w-2/12 flex flex-col space-y-3`}>
+            <Fieldset />
             <input
                 type="text"
                 id="small-input"
-                placeholder="Title"
+                disabled
+                placeholder="Post Title"
                 class="block w-full p-2 text-gray-900 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
-            <textarea
-                id="message"
-                rows={4}
-                class="block p-2.5 w-full text-sm  rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Write your thoughts here..."
-            >
-            </textarea>
+            <input
+                type="text"
+                id="small-input"
+                disabled
+                placeholder="Short Description"
+                class="block w-full p-2 text-gray-900 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+            <input
+                type="text"
+                id="small-input"
+                disabled
+                placeholder="SEO Image"
+                class="block w-full p-2 text-gray-900 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+            <input
+                type="text"
+                id="small-input"
+                disabled
+                placeholder="Tags"
+                class="block w-full p-2 text-gray-900 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+            <Expiration />
+            <div class={`grow flex flex-col text-xs font-thin gap-5`}>
+                <Ads />
+                <div class={`inline-flex gap-3 mb-5 justify-center`}>
+                    <a href="/docs">Docs</a>
+                    <a href="/blog">Blog</a>
+                    <a href="#">Contribute</a>
+                    <a href="#">Ads</a>
+                </div>
+            </div>
+        </div>
+    );
+}
 
-            <button
-                type="submit"
-                class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-900 hover:bg-blue-800"
-            >
-                Publish post
-            </button>
+function Main() {
+    return (
+        <div class="w-8/12 grow flex flex-col bg-gray-950 border-t border-l border-r border-gray-600 rounded-t-xl">
+            <div class={`grow p-3 text-sm`}>
+                Preview
+            </div>
+            <div class="relative bottom-0 left-1/2 transform -translate-x-1/2 p-4 shadow-md">
+                <div class="w-full">
+                    <div class="relative">
+                        <input
+                            type="search"
+                            id="search"
+                            class="block w-full p-4 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Text your message here"
+                            required
+                        />
+                        <button
+                            type="submit"
+                            class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default function Launchpad(
+    props: { avatar_url: string; username: string },
+) {
+    return (
+        <div
+            class={`h-screen container flex max-w-screen-2xl bg-gray-900 space-x-5 mx-auto pt-5 px-5`}
+        >
+            <Menu
+                avatar_url={props.avatar_url}
+                username={props.username}
+            />
+            <Main />
+            <Navigation />
         </div>
     );
 }

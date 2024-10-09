@@ -217,6 +217,7 @@ export class Store<K extends string | number | symbol, V> {
                 path: this.options.path,
                 branch: this.options.branch,
             });
+            // console.log("map", map);
             if (!map) return false;
             this.map = map;
         }

@@ -11,7 +11,7 @@ export default function index(
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>
-          {`Fastro - Full Stack Web Framework for Deno, TypeScript, Preact JS, and Tailwind CSS`}
+          {data.title} | Fastro
         </title>
         <meta property="og:site_name" content="Fastro" />
         <meta name="description" content={data.description} />
