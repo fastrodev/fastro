@@ -382,17 +382,6 @@ function Menu(props: { avatar_url: string; username: string }) {
                     <span>Sign out</span>
                 </div>
             </a>
-            <div class={`inline-flex gap-3 justify-center text-xs font-thin`}>
-                <a href="/docs">Docs</a>
-                <a href="/blog">Blog</a>
-                <a
-                    href="https://fastro.dev/blog/collaboration"
-                    target={"_blank"}
-                >
-                    Contribute
-                </a>
-                <a href="#">Ads</a>
-            </div>
         </div>
     );
 }
@@ -508,12 +497,66 @@ function Navigation() {
     );
 }
 
+function Message(props: { msg: string; time: string }) {
+    return (
+        <li
+            class={`rounded-lg inline-flex gap-2`}
+        >
+            <div>
+                <img
+                    src="https://avatars.githubusercontent.com/u/10122431?v=4"
+                    width={32}
+                    class={`rounded-full`}
+                />
+            </div>
+            <div
+                class={`bg-gray-900 ps-3 pt-2 pe-2 pb-1 border border-gray-700 rounded-lg flex flex-col gap-1`}
+            >
+                <div
+                    class={`flex items-center justify-between gap-3 text-gray-500`}
+                >
+                    <span class={"grow text-sm"}>ynwd</span>
+                    <svg
+                        class="w-6 h-6"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1"
+                            d="m19 9-7 7-7-7"
+                        />
+                    </svg>
+                </div>
+                <span>
+                    {props.msg}
+                </span>
+                <span
+                    class={`text-xs font-extralight text-gray-500 text-right`}
+                >
+                    {props.time}
+                </span>
+            </div>
+        </li>
+    );
+}
+
 function Main() {
     return (
         <div class="w-8/12 grow flex flex-col bg-gray-950 border-t border-l border-r border-gray-700 rounded-t-xl">
-            <div class={`grow p-3 text-sm`}>
-                Preview
-            </div>
+            <ul class={`grow px-4 text-sm flex flex-col justify-end gap-y-3`}>
+                <Message msg="Hello world" time="10:44 AM" />
+                <Message
+                    msg="What is your name? Where is your address? How old are you?"
+                    time="10:44 AM"
+                />
+            </ul>
             <div class="relative bottom-0 left-1/2 transform -translate-x-1/2 p-4 shadow-md">
                 <div class="w-full">
                     <div class="relative">
