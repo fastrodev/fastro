@@ -103,7 +103,7 @@ export default function NonLogin(props: { data: any }) {
     return (
         <section class="container flex flex-col gap-y-10 grow max-w-4xl mx-auto text-center">
             <div
-                class={`flex flex-col gap-y-6 py-16 bg-gradient-to-r from-gray-950 to-green-800 rounded-2xl`}
+                class={`flex flex-col gap-y-6 py-16 bg-gradient-to-r from-gray-950 to-green-800 rounded-2xl border border-gray-800`}
             >
                 <div class={`text-center`}>
                     <InlineNav
@@ -146,7 +146,7 @@ export default function NonLogin(props: { data: any }) {
             <PoweredBy />
 
             <div
-                class={`flex flex-col gap-y-12 py-12 rounded-2xl bg-gradient-to-r from-gray-950 to-green-800`}
+                class={`flex flex-col gap-y-12 py-12 rounded-2xl bg-gradient-to-r from-gray-950 to-green-800 border border-gray-800`}
             >
                 <WhySSR />
                 <WhyFlat />
