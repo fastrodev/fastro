@@ -16,9 +16,9 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
 
-      - uses: denoland/setup-deno@v1
+      - uses: denoland/setup-deno@v2
         with:
-          deno-version: 2.0.0-rc.10
+          deno-version: 2.0.0
 
       - name: Run tests
         run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} deno task test

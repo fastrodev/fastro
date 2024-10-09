@@ -300,8 +300,8 @@ function Menu(props: { avatar_url: string; username: string }) {
                     />
                 </ul>
             </div>
-            <div class={`flex flex-col gap-2`}>
-                <div>Try Pro</div>
+            <div class={`flex flex-col gap-y-2`}>
+                <div class={`text-base`}>Try Pro</div>
                 <div class={`text-sm font-thin`}>
                     Upgrade for Elevating Your Template Creation and
                     Monetization Efforts
@@ -510,18 +510,18 @@ function Message(props: { msg: string; time: string }) {
                 />
             </div>
             <div
-                class={`bg-gray-900 ps-3 pt-2 pe-2 pb-1 border border-gray-700 rounded-lg flex flex-col gap-1`}
+                class={`bg-gray-900 ps-3 pt-2 pe-3 pb-2 border border-gray-700 rounded-lg flex flex-col gap-1`}
             >
                 <div
                     class={`flex items-center justify-between gap-3 text-gray-500`}
                 >
                     <span class={"grow text-sm"}>ynwd</span>
                     <svg
-                        class="w-6 h-6"
+                        class="w-4 h-4"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
+                        width="12"
+                        height="12"
                         fill="none"
                         viewBox="0 0 24 24"
                     >

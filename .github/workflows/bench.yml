@@ -70,9 +70,9 @@ jobs:
           sudo /etc/init.d/mysql start
           mysql -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;" -u$DB_USER -p$DB_PASSWORD
 
-      - uses: denoland/setup-deno@v1
+      - uses: denoland/setup-deno@v2
         with:
-          deno-version: 2.0.0-rc.10
+          deno-version: 2.0.0
 
       - name: Install Oha
         uses: baptiste0928/cargo-install@v1
