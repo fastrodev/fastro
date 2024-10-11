@@ -492,25 +492,39 @@ function Navigation() {
                 </div>
             </fieldset>
             <Expiration />
-            <div class={`grow flex flex-col text-xs font-thin py-5`}>
+            <div class={`grow flex flex-col text-xs font-thin`}>
                 <Ads />
             </div>
         </div>
     );
 }
 
-function Message(props: { username: string; msg: string; time: string }) {
+function Message(
+    props: {
+        username: string;
+        msg: string;
+        time: string;
+        img: string;
+        idx: number;
+    },
+) {
     return (
         <li
+            key={props.idx}
             class={`rounded-lg inline-flex gap-2`}
         >
-            <div>
-                <img
-                    src="https://avatars.githubusercontent.com/u/10122431?v=4"
-                    width={32}
-                    class={`rounded-full`}
-                />
-            </div>
+            {props.idx === 0
+                ? (
+                    <div>
+                        <img
+                            src={props.img}
+                            width={32}
+                            class={`rounded-full`}
+                        />
+                    </div>
+                )
+                : <div class={`w-8 block`}></div>}
+
             <div
                 class={`bg-gray-900 ps-3 pt-2 pe-3 pb-2 border border-gray-700 rounded-lg flex flex-col gap-1`}
             >
@@ -551,18 +565,94 @@ function Message(props: { username: string; msg: string; time: string }) {
     );
 }
 
+const data = [
+    {
+        username: "github-actions",
+        img: "https://avatars.githubusercontent.com/in/15368?v=4",
+        messages: [
+            { msg: "Hello world", time: "10:44 AM" },
+            {
+                msg: "What is your name?",
+                time: "10:44 AM",
+            },
+            {
+                msg: "Where is your address?",
+                time: "10:44 AM",
+            },
+            {
+                msg: "How old are you?",
+                time: "10:44 AM",
+            },
+        ],
+    },
+    {
+        username: "ynwd",
+        img: "https://avatars.githubusercontent.com/u/10122431?v=4",
+        messages: [
+            { msg: "Hello world", time: "10:44 AM" },
+            {
+                msg: "My name is ynwd?",
+                time: "10:45 AM",
+            },
+            {
+                msg: "I'm come from indonesia",
+                time: "10:45 AM",
+            },
+            {
+                msg: "I'm a boy",
+                time: "10:45 AM",
+            },
+            {
+                msg: "I'm 10 years old",
+                time: "10:45 AM",
+            },
+            {
+                msg: "a second-grade student.",
+                time: "10:45 AM",
+            },
+            {
+                msg: "I'm a gamer.",
+                time: "10:45 AM",
+            },
+            {
+                msg: "I like kebab",
+                time: "10:45 AM",
+            },
+        ],
+    },
+];
+
 function Main() {
     return (
-        <div class="w-8/12 grow flex flex-col bg-gray-950 border-t border-l border-r border-gray-700">
-            <ul class={`grow px-4 text-sm flex flex-col justify-end gap-y-3`}>
-                <Message username="ynwd" msg="Hello world" time="10:44 AM" />
-                <Message
-                    username="ynwd"
-                    msg="What is your name? Where is your address? How old are you?"
-                    time="10:44 AM"
-                />
-            </ul>
-            <div class="relative bottom-0 left-1/2 transform -translate-x-1/2 p-4 shadow-md">
+        <div class="relative grow max-h-screen max-w-8/12 flex flex-col bg-gray-950 border-t border-l border-r border-gray-700">
+            <div class={`overflow-auto pt-3`}>
+                <div
+                    class={`flex flex-col justify-end gap-y-3`}
+                >
+                    {data.map((item, index) => {
+                        return (
+                            <ul
+                                class={`px-4 text-sm flex flex-col justify-end gap-y-3`}
+                                key={index}
+                            >
+                                {item.messages.map((d, x) => {
+                                    const idx = x;
+                                    return (
+                                        <Message
+                                            idx={idx}
+                                            msg={d.msg}
+                                            time={d.time}
+                                            username={item.username}
+                                            img={item.img}
+                                        />
+                                    );
+                                })}
+                            </ul>
+                        );
+                    })}
+                </div>
+            </div>
+            <div class="relative bottom-0 left-1/2 transform -translate-x-1/2 p-3">
                 <div class="w-full">
                     <div class="relative">
                         <input
