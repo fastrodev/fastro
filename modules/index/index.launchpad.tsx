@@ -1,4 +1,4 @@
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 
 function Expiration() {
     const toggleDropdown = () => {
@@ -511,7 +511,7 @@ function Message(
     return (
         <li
             key={props.idx}
-            class={`rounded-lg inline-flex gap-2`}
+            class={`rounded-lg inline-flex gap-3`}
         >
             {props.idx === 0
                 ? (
@@ -623,16 +623,21 @@ const data = [
 ];
 
 function Main() {
+    const listRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        if (listRef.current) {
+            listRef.current.scrollTop = listRef.current.scrollHeight;
+        }
+    }, []);
+
     return (
-        <div class="relative grow max-h-screen max-w-8/12 flex flex-col bg-gray-950 border-t border-l border-r border-gray-700">
-            <div class={`overflow-auto pt-3`}>
-                <div
-                    class={`flex flex-col justify-end gap-y-3`}
-                >
+        <div class="relative grow max-w-8/12 flex flex-col bg-gray-950 border-t border-l border-r border-gray-700">
+            <div ref={listRef} class={`overflow-auto pt-3 mb-20`}>
+                <ul class={`flex flex-col justify-end gap-y-2`}>
                     {data.map((item, index) => {
                         return (
                             <ul
-                                class={`px-4 text-sm flex flex-col justify-end gap-y-3`}
+                                class={`px-4 text-sm flex flex-col justify-end gap-y-1`}
                                 key={index}
                             >
                                 {item.messages.map((d, x) => {
@@ -650,25 +655,23 @@ function Main() {
                             </ul>
                         );
                     })}
-                </div>
+                </ul>
             </div>
-            <div class="relative bottom-0 left-1/2 transform -translate-x-1/2 p-3">
-                <div class="w-full">
-                    <div class="relative">
-                        <input
-                            type="search"
-                            id="search"
-                            class="block w-full p-4 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Text your message here"
-                            required
-                        />
-                        <button
-                            type="submit"
-                            class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        >
-                            Submit
-                        </button>
-                    </div>
+            <div class="absolute bottom-0 left-0 right-0 p-3">
+                <div class="relative">
+                    <input
+                        type="search"
+                        id="search"
+                        class="block w-full p-4 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Text your message here"
+                        required
+                    />
+                    <button
+                        type="submit"
+                        class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                        Submit
+                    </button>
                 </div>
             </div>
         </div>
