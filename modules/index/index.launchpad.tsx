@@ -196,7 +196,9 @@ function TemplateCollection(
 
 function Menu(props: { avatar_url: string; username: string }) {
     return (
-        <div class={`hidden w-2/12 lg:flex lg:flex-col gap-5 ps-5 pb-5 pt-5`}>
+        <div
+            class={`hidden w-2/12 min-w-[250px] lg:flex lg:flex-col gap-5 ps-5 pb-5 pt-5`}
+        >
             <div class={`flex gap-2 items-center`}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -409,7 +411,7 @@ function Ads() {
 function Navigation() {
     return (
         <div
-            class={`hidden w-2/12 lg:flex lg:flex-col space-y-3 pe-5 pb-5 pt-5`}
+            class={`hidden w-2/12 min-w-[250px] lg:flex lg:flex-col space-y-3 pe-5 pb-5 pt-5`}
         >
             <Fieldset />
             <input
@@ -495,7 +497,7 @@ export default function Launchpad(
                 avatar_url={props.avatar_url}
                 username={props.username}
             />
-            <Main />
+            <Main avatar_url={props.avatar_url} username={props.username} />
             <Navigation />
         </div>
     );
