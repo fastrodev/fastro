@@ -58,15 +58,54 @@ interface User {
     messages: MessageType[];
 }
 
+function isLeapYear(year: number): boolean {
+    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+}
+
+function daysInYear(year: number): number {
+    return isLeapYear(year) ? 366 : 365;
+}
+
 function formatTime(isoDateString: string): string {
     const date = new Date(isoDateString);
-    let hours = date.getUTCHours();
-    const minutes = date.getUTCMinutes();
-    const ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    const formattedMinutes = String(minutes).padStart(2, "0");
-    return `${hours}:${formattedMinutes} ${ampm}`;
+    const now = new Date();
+
+    let diffInSeconds = Math.floor((date.getTime() - now.getTime()) / 1000);
+
+    const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+    // Define time units in seconds
+    const units = [
+        { value: 60, unit: "second" }, // 60 seconds in a minute
+        { value: 3600, unit: "minute" }, // 3600 seconds in an hour
+        { value: 86400, unit: "hour" }, // 86400 seconds in a day
+        { value: 604800, unit: "day" }, // 604800 seconds in a week
+        { value: 2629746, unit: "month" }, // Average seconds in a month (30.44 days)
+        { value: 31536000, unit: "year" }, // Non-leap year seconds in a year
+    ];
+
+    // Adjust for leap years
+    const currentYear = now.getFullYear();
+    const totalDaysInYear = daysInYear(currentYear);
+    const secondsInYear = totalDaysInYear * 86400; // Total seconds in the year
+
+    for (const { value, unit } of units) {
+        const absDiff = Math.abs(diffInSeconds);
+        if (absDiff < value) {
+            const relativeValue = Math.round(
+                diffInSeconds / (value / (unit === "second" ? 1 : 60)),
+            );
+            return rtf.format(
+                relativeValue,
+                unit as Intl.RelativeTimeFormatUnit,
+            );
+        }
+        diffInSeconds /= value; // Reduce diffInSeconds for the next unit
+    }
+
+    // Handle years, considering leap years
+    const years = Math.round(diffInSeconds * secondsInYear / (365 * 86400));
+    return rtf.format(years, "year" as Intl.RelativeTimeFormatUnit);
 }
 
 export function Main(props: { avatar_url: string; username: string }) {
@@ -113,7 +152,7 @@ export function Main(props: { avatar_url: string; username: string }) {
     }, [data]);
 
     return (
-        <div class="relative grow max-w-8/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
+        <div class="relative h-screen max-w-8/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
             <div ref={listRef} class={`overflow-auto pt-3 mb-20`}>
                 <ul class={`flex flex-col justify-end gap-y-2`}>
                     {data.map((item, index) => {
