@@ -240,8 +240,35 @@ function Menu(props: { avatar_url: string; username: string }) {
                     <path d="M19 12l2 0" />
                 </svg>
 
-                <span>Discover</span>
+                <span>Discover a room</span>
             </div>
+            <div class={`pl-3`}>
+                <ul
+                    class={`flex flex-col text-xs font-thin border-l pl-3 gap-y-3`}
+                >
+                    <TemplateCollection
+                        title="Smooking corner"
+                        checked={true}
+                    />
+                    <TemplateCollection
+                        title="Gossip room"
+                        disabled={true}
+                    />
+                    <TemplateCollection
+                        title="Career room"
+                        disabled={true}
+                    />
+                    <TemplateCollection
+                        title="One on one room"
+                        disabled={true}
+                    />
+                    <TemplateCollection
+                        title="Training room"
+                        disabled={true}
+                    />
+                </ul>
+            </div>
+
             <div class={`flex gap-2 items-center`}>
                 <svg
                     class="w-6 h-6 text-gray-800 dark:text-white"
@@ -261,7 +288,7 @@ function Menu(props: { avatar_url: string; username: string }) {
 
                 <span>Template Collections</span>
             </div>
-            <div class={`grow pl-3`}>
+            <div class={`pl-3`}>
                 <ul
                     class={`flex flex-col text-xs font-thin border-l pl-3 gap-y-3`}
                 >
@@ -287,6 +314,7 @@ function Menu(props: { avatar_url: string; username: string }) {
                     />
                 </ul>
             </div>
+            <div class={`grow`}></div>
             <div class={`flex flex-col gap-y-2`}>
                 <div class={`text-base`}>Try Pro</div>
                 <div class={`text-sm font-thin`}>
@@ -313,7 +341,7 @@ function Menu(props: { avatar_url: string; username: string }) {
                         <path d="M17 7l-10 10" />
                         <path d="M8 7l9 0l0 9" />
                     </svg>
-                    <span>Learn more</span>
+                    <span class={`text-sm`}>Learn more</span>
                 </button>
             </div>
             <div class={`flex justify-between gap-2 items-center`}>
