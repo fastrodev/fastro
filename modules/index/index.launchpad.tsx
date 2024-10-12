@@ -511,7 +511,7 @@ function Message(
     return (
         <li
             key={props.idx}
-            class={`rounded-lg inline-flex gap-3`}
+            class={`rounded-lg flex gap-3`}
         >
             {props.idx === 0
                 ? (
@@ -523,7 +523,7 @@ function Message(
                         />
                     </div>
                 )
-                : <div class={`w-8 block`}></div>}
+                : <div class={`w-8 min-w-8 block`}></div>}
 
             <div
                 class={`bg-gray-900 ps-3 pt-2 pe-3 pb-2 border border-gray-700 rounded-lg flex flex-col gap-1`}
@@ -570,18 +570,10 @@ const data = [
         username: "github-actions",
         img: "https://avatars.githubusercontent.com/in/15368?v=4",
         messages: [
-            { msg: "Hello world", time: "10:44 AM" },
+            { msg: "Hello world", time: "2024-10-12T15:30:00Z" },
             {
-                msg: "What is your name?",
-                time: "10:44 AM",
-            },
-            {
-                msg: "Where is your address?",
-                time: "10:44 AM",
-            },
-            {
-                msg: "How old are you?",
-                time: "10:44 AM",
+                msg: "What is your name? Where is your address? How old are you?",
+                time: "2024-10-12T15:30:00Z",
             },
         ],
     },
@@ -589,38 +581,25 @@ const data = [
         username: "ynwd",
         img: "https://avatars.githubusercontent.com/u/10122431?v=4",
         messages: [
-            { msg: "Hello world", time: "10:44 AM" },
+            { msg: "Hello world", time: "2024-10-12T15:31:00Z" },
             {
-                msg: "My name is ynwd?",
-                time: "10:45 AM",
-            },
-            {
-                msg: "I'm come from indonesia",
-                time: "10:45 AM",
-            },
-            {
-                msg: "I'm a boy",
-                time: "10:45 AM",
-            },
-            {
-                msg: "I'm 10 years old",
-                time: "10:45 AM",
-            },
-            {
-                msg: "a second-grade student.",
-                time: "10:45 AM",
-            },
-            {
-                msg: "I'm a gamer.",
-                time: "10:45 AM",
-            },
-            {
-                msg: "I like kebab",
-                time: "10:45 AM",
+                msg: "My name is ynwd. I'm come from indonesia. I'm 10 years old. a second-grade student. I'm a gamer. I like kebab",
+                time: "2024-10-12T15:31:00Z",
             },
         ],
     },
 ];
+
+function formatTime(isoDateString: string): string {
+    const date = new Date(isoDateString);
+    let hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    return `${hours}:${formattedMinutes} ${ampm}`;
+}
 
 function Main() {
     const listRef = useRef<HTMLDivElement>(null);
@@ -631,7 +610,7 @@ function Main() {
     }, []);
 
     return (
-        <div class="relative grow max-w-8/12 flex flex-col bg-gray-950 border-t border-l border-r border-gray-700">
+        <div class="relative grow max-w-8/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
             <div ref={listRef} class={`overflow-auto pt-3 mb-20`}>
                 <ul class={`flex flex-col justify-end gap-y-2`}>
                     {data.map((item, index) => {
@@ -646,7 +625,7 @@ function Main() {
                                         <Message
                                             idx={idx}
                                             msg={d.msg}
-                                            time={d.time}
+                                            time={formatTime(d.time)}
                                             username={item.username}
                                             img={item.img}
                                         />
