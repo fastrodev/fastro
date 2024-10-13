@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 import { Message } from "@app/modules/index/index.message.tsx";
+import { useBroadcastChannel } from "@app/modules/channel/mod.tsx";
+
 const initialData: User[] = [
     {
         username: "github-actions",
@@ -62,68 +64,49 @@ function formatTime(isoDateString: string): string {
     const date = new Date(isoDateString);
     const now = new Date();
 
-    // Helper function to pad single-digit numbers with leading zeros
-    const pad = (num: number) => (num < 10 ? `0${num}` : num.toString());
+    // Get local date components
+    const localYear = date.getFullYear();
+    const localMonth = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const localDay = String(date.getDate()).padStart(2, "0");
+    const localHours = date.getHours();
+    const localMinutes = String(date.getMinutes()).padStart(2, "0");
 
-    // Get the difference in milliseconds
-    const diffInMs = date.getTime() - now.getTime();
-
-    // Check if the date is today
-    const isToday = date.toDateString() === now.toDateString();
-
-    if (isToday) {
-        // Check if the date is now
-        if (diffInMs === 0) {
-            return `Now at ${pad(date.getHours())}:${pad(date.getMinutes())} ${
-                date.getHours() >= 12 ? "PM" : "AM"
-            }`;
-        }
-        return `Today at ${pad(date.getHours())}:${pad(date.getMinutes())} ${
-            date.getHours() >= 12 ? "PM" : "AM"
-        }`;
+    // Check if the date is now
+    if (
+        date.toDateString() === now.toDateString() &&
+        date.getTime() === now.getTime()
+    ) {
+        const formattedHours = localHours % 12 || 12; // Convert to 12-hour format
+        const amPm = localHours < 12 ? "AM" : "PM";
+        return `— Now at ${formattedHours}:${localMinutes} ${amPm}`;
     }
 
-    // Check if the date is in the past or future
-    const absDiffInDays = Math.abs(
-        Math.floor(diffInMs / (1000 * 60 * 60 * 24)),
-    );
+    // Format hours for 12-hour clock
+    const formattedHours = localHours % 12 || 12; // Convert to 12-hour format
+    const amPm = localHours < 12 ? "AM" : "PM";
 
-    if (diffInMs < 0) {
-        // Past date
-        if (absDiffInDays === 1) {
-            return `Yesterday at ${pad(date.getHours())}:${
-                pad(date.getMinutes())
-            } ${date.getHours() >= 12 ? "PM" : "AM"}`;
-        } else {
-            return `${absDiffInDays} days ago at ${pad(date.getHours())}:${
-                pad(date.getMinutes())
-            } ${date.getHours() >= 12 ? "PM" : "AM"}`;
-        }
-    } else {
-        // Future date
-        return `In ${absDiffInDays} day${absDiffInDays > 1 ? "s" : ""} at ${
-            pad(date.getHours())
-        }:${pad(date.getMinutes())} ${date.getHours() >= 12 ? "PM" : "AM"}`;
-    }
+    // Construct the desired format
+    return `— ${localMonth}/${localDay}/${localYear} ${formattedHours}:${localMinutes} ${amPm}`;
 }
 
 export function Main(props: { avatar_url: string; username: string }) {
     const [data, setData] = useState<User[]>(initialData);
     const [inputValue, setInputValue] = useState<string>("");
+    const { message, sendMessage } = useBroadcastChannel("all_messages");
+
+    const handleSendMessage = (data: any) => {
+        sendMessage(data);
+    };
 
     const handleInputChange = (event: Event) => {
         const target = event.target as HTMLInputElement;
         setInputValue(target.value);
     };
 
-    const insertData = () => {
+    // deno-lint-ignore no-explicit-any
+    const insertData = (newMessage?: any) => {
         // Shallow copy data
         const updatedData = [...data];
-        // init new message
-        const newMessage = {
-            msg: inputValue,
-            time: new Date().toISOString(),
-        };
         // get the latest user
         const lastUser = updatedData[updatedData.length - 1];
         if (lastUser.username === props.username) {
@@ -142,12 +125,20 @@ export function Main(props: { avatar_url: string; username: string }) {
     };
 
     const handleClick = () => {
-        insertData();
+        const newMessage = {
+            msg: inputValue,
+            time: new Date().toISOString(),
+        };
+        handleSendMessage(newMessage);
     };
 
     const handleKeyPress = (event: KeyboardEvent) => {
         if (event.key === "Enter" && inputValue.trim() !== "") {
-            insertData();
+            const newMessage = {
+                msg: inputValue,
+                time: new Date().toISOString(),
+            };
+            handleSendMessage(newMessage);
         }
     };
 
@@ -158,8 +149,14 @@ export function Main(props: { avatar_url: string; username: string }) {
         }
     }, [data]);
 
+    useEffect(() => {
+        if (message) {
+            insertData(message);
+        }
+    }, [message]);
+
     return (
-        <div class="relative h-screen max-w-8/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
+        <div class="h-screen max-w-8/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
             <div ref={listRef} class={`overflow-auto pt-3 mb-20`}>
                 <ul class={`flex flex-col justify-end gap-y-2`}>
                     {data.map((item, index) => {

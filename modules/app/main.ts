@@ -9,6 +9,7 @@ import tailwind from "@app/middleware/tailwind/mod.ts";
 import authModule from "@app/modules/auth/mod.tsx";
 import adminModule from "@app/modules/admin/mod.ts";
 import github from "@app/middleware/github/mod.ts";
+import sseModule from "@app/modules/sse/mod.ts";
 
 const s = new Server();
 
@@ -29,5 +30,6 @@ s.group(blog);
 s.group(docs);
 s.group(authModule);
 s.group(adminModule);
+s.group(sseModule);
 
 s.serve();

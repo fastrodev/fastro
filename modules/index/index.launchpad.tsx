@@ -316,8 +316,8 @@ function Menu(props: { avatar_url: string; username: string }) {
             </div>
             <div class={`grow`}></div>
             <div class={`flex flex-col gap-y-2`}>
-                <div class={`text-base`}>Try Pro</div>
-                <div class={`text-sm font-thin`}>
+                <div class={`text-sm`}>Try Pro</div>
+                <div class={`text-xs font-thin`}>
                     Upgrade for Elevating Your Template Creation and
                     Monetization Efforts
                 </div>
