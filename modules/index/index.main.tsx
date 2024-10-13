@@ -156,7 +156,7 @@ export function Main(props: { avatar_url: string; username: string }) {
     }, [message]);
 
     return (
-        <div class="h-screen max-w-8/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
+        <div class="relative h-screen max-w-8/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
             <div ref={listRef} class={`overflow-auto pt-3 mb-20`}>
                 <ul class={`flex flex-col justify-end gap-y-2`}>
                     {data.map((item, index) => {
