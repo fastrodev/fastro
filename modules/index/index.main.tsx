@@ -1,6 +1,7 @@
+// deno-lint-ignore-file no-explicit-any
 import { useEffect, useRef, useState } from "preact/hooks";
 import { Message } from "@app/modules/index/index.message.tsx";
-import { useBroadcastChannel } from "@app/modules/channel/mod.tsx";
+import useWebSocket from "@app/modules/socket/socket.ts";
 
 const initialData: User[] = [
     {
@@ -92,10 +93,13 @@ function formatTime(isoDateString: string): string {
 export function Main(props: { avatar_url: string; username: string }) {
     const [data, setData] = useState<User[]>(initialData);
     const [inputValue, setInputValue] = useState<string>("");
-    const { message, sendMessage } = useBroadcastChannel("all_messages");
+    const { message, sendMessage } = useWebSocket(
+        "ws://localhost:8000",
+    );
 
     const handleSendMessage = (data: any) => {
-        sendMessage(data);
+        // sendMessage(data);
+        sendMessage(JSON.stringify(data));
     };
 
     const handleInputChange = (event: Event) => {
@@ -103,7 +107,6 @@ export function Main(props: { avatar_url: string; username: string }) {
         setInputValue(target.value);
     };
 
-    // deno-lint-ignore no-explicit-any
     const insertData = (newMessage?: any) => {
         // Shallow copy data
         const updatedData = [...data];
@@ -151,7 +154,7 @@ export function Main(props: { avatar_url: string; username: string }) {
 
     useEffect(() => {
         if (message) {
-            insertData(message);
+            insertData(JSON.parse(message));
         }
     }, [message]);
 
