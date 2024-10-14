@@ -108,19 +108,27 @@ export function Main(
         setInputValue(target.value);
     };
 
-    const insertData = (newMessage?: any) => {
-        // Shallow copy data
+    const insertData = (newMessage: {
+        msg: string;
+        time: string;
+        username: string;
+    }) => {
         const updatedData = [...data];
-        // get the latest user
         const lastUser = updatedData[updatedData.length - 1];
-        if (lastUser.username === props.username) {
+        if (lastUser.username === newMessage.username) {
             const lastUserMessages = lastUser.messages;
-            lastUserMessages.push(newMessage);
+            lastUserMessages.push({
+                msg: newMessage.msg,
+                time: newMessage.time,
+            });
         } else {
             updatedData.push({
-                username: props.username,
+                username: newMessage.username,
                 img: props.avatar_url,
-                messages: [newMessage],
+                messages: [{
+                    msg: newMessage.msg,
+                    time: newMessage.time,
+                }],
             });
         }
 
@@ -139,6 +147,7 @@ export function Main(
     const handleKeyPress = (event: KeyboardEvent) => {
         if (event.key === "Enter" && inputValue.trim() !== "") {
             const newMessage = {
+                username: props.username,
                 msg: inputValue,
                 time: new Date().toISOString(),
             };

@@ -39,7 +39,7 @@ const useWebSocket = (url: string) => {
         reconnectTimeoutRef.current = setTimeout(() => {
             console.log("Reconnecting...");
             connectWebSocket(); // Attempt to reconnect
-        }, 1000); // Adjust the delay as needed
+        }, 1500); // Adjust the delay as needed
     };
 
     useEffect(() => {
