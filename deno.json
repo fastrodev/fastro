@@ -12,8 +12,8 @@
   },
   "imports": {
     "@app/": "./",
-    "preact": "https://esm.sh/preact@10.24.2",
-    "preact/": "https://esm.sh/preact@10.24.2/"
+    "preact": "https://esm.sh/preact@10.24.3",
+    "preact/": "https://esm.sh/preact@10.24.3/"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
