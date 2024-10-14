@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 
 const useWebSocket = (url: string) => {
-    const [message, setMessages] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
     const [isConnected, setIsConnected] = useState<boolean>(false);
     const socketRef = useRef<WebSocket | null>(null);
 
@@ -14,7 +14,7 @@ const useWebSocket = (url: string) => {
         };
 
         socketRef.current.onmessage = (event) => {
-            setMessages(event.data);
+            setMessage(event.data);
         };
 
         socketRef.current.onclose = () => {
