@@ -90,11 +90,14 @@ function formatTime(isoDateString: string): string {
     return `— ${localMonth}/${localDay}/${localYear} ${formattedHours}:${localMinutes} ${amPm}`;
 }
 
-export function Main(props: { avatar_url: string; username: string }) {
+// ws_url ws://localhost:8000
+export function Main(
+    props: { avatar_url: string; username: string; ws_url: string },
+) {
     const [data, setData] = useState<User[]>(initialData);
     const [inputValue, setInputValue] = useState<string>("");
     const { message, sendMessage } = useWebSocket(
-        "ws://localhost:8000",
+        `ws://${props.ws_url}`,
     );
 
     const handleSendMessage = (data: any) => {

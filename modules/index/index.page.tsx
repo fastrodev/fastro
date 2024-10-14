@@ -15,12 +15,17 @@ export default function Index({ data }: PageProps<
     isLogin: boolean;
     avatar_url: string;
     html_url: string;
+    ws_url: string;
   }
 >) {
   return (
     <div class={`h-full flex flex-col justify-between`}>
       {data.isLogin && (
-        <Launchpad avatar_url={data.avatar_url} username={data.username} />
+        <Launchpad
+          avatar_url={data.avatar_url}
+          username={data.username}
+          ws_url={data.ws_url}
+        />
       )}
 
       {!data.isLogin && (

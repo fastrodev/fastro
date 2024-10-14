@@ -515,7 +515,7 @@ function Navigation() {
 }
 
 export default function Launchpad(
-    props: { avatar_url: string; username: string },
+    props: { avatar_url: string; username: string; ws_url: string },
 ) {
     return (
         <div
@@ -525,7 +525,11 @@ export default function Launchpad(
                 avatar_url={props.avatar_url}
                 username={props.username}
             />
-            <Main avatar_url={props.avatar_url} username={props.username} />
+            <Main
+                avatar_url={props.avatar_url}
+                username={props.username}
+                ws_url={props.ws_url}
+            />
             <Navigation />
         </div>
     );
