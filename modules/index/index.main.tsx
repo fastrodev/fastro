@@ -96,9 +96,7 @@ export function Main(
 ) {
     const [data, setData] = useState<User[]>(initialData);
     const [inputValue, setInputValue] = useState<string>("");
-    const { message, sendMessage } = useWebSocket(
-        `ws://${props.ws_url}`,
-    );
+    const { message, sendMessage } = useWebSocket(props.ws_url);
 
     const handleSendMessage = (data: any) => {
         // sendMessage(data);

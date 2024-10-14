@@ -27,8 +27,8 @@ function denoRunCheck(req: HttpRequest) {
 
 export default function (s: Fastro) {
     const ws_url = Deno.env.get("DENO_DEPLOYMENT_ID")
-        ? "fastro.dev"
-        : "localhost:8000";
+        ? "wss://fastro.dev"
+        : "ws://localhost:8000";
     /** setup SSR */
     s.page("/", {
         component: indexApp,
