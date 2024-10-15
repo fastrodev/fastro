@@ -26,7 +26,7 @@ export class Render {
       "content-type": "text/html",
       "x-request-id": new Date().getTime().toString(),
       "Content-Security-Policy":
-        `"default-src 'self'; script-src 'self' 'strict-dynamic'; style-src 'self'; font-src 'self'; img-src 'self'; frame-src 'self'"`,
+        `default-src 'self'; script-src 'self' 'strict-dynamic'; style-src 'self'; font-src 'self'; img-src 'self'; frame-src 'self'`,
     });
     return new Response(html, {
       headers,

@@ -99,7 +99,6 @@ export function Main(
     const { message, sendMessage } = useWebSocket(props.ws_url);
 
     const handleSendMessage = (data: any) => {
-        // sendMessage(data);
         sendMessage(JSON.stringify(data));
     };
 
@@ -137,11 +136,11 @@ export function Main(
     };
 
     const handleClick = () => {
-        const newMessage = {
-            msg: inputValue,
-            time: new Date().toISOString(),
-        };
-        handleSendMessage(newMessage);
+        // const newMessage = {
+        //     msg: inputValue,
+        //     time: new Date().toISOString(),
+        // };
+        // handleSendMessage(newMessage);
     };
 
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -151,7 +150,12 @@ export function Main(
                 msg: inputValue,
                 time: new Date().toISOString(),
             };
-            handleSendMessage(newMessage);
+            const data = {
+                type: "message",
+                room: "global",
+                message: newMessage,
+            };
+            handleSendMessage(data);
         }
     };
 

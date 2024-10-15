@@ -13,7 +13,7 @@ const useWebSocket = (url: string) => {
             setIsConnected(true);
             console.log("WebSocket connection established.");
             if (reconnectTimeoutRef.current) {
-                clearTimeout(reconnectTimeoutRef.current); // Clear any existing reconnect timeout
+                clearTimeout(reconnectTimeoutRef.current);
             }
         };
 
@@ -26,29 +26,29 @@ const useWebSocket = (url: string) => {
             console.log(
                 "WebSocket connection closed. Attempting to reconnect...",
             );
-            reconnect(); // Start reconnection process
+            reconnect();
         };
 
         socketRef.current.onerror = (error) => {
             console.error("WebSocket error:", error);
-            socketRef.current?.close(); // Close the socket on error
+            socketRef.current?.close();
         };
     };
 
     const reconnect = () => {
         reconnectTimeoutRef.current = setTimeout(() => {
             console.log("Reconnecting...");
-            connectWebSocket(); // Attempt to reconnect
-        }, 1500); // Adjust the delay as needed
+            connectWebSocket();
+        }, 1000);
     };
 
     useEffect(() => {
-        connectWebSocket(); // Initial connection
+        connectWebSocket();
 
         return () => {
             socketRef.current?.close();
             if (reconnectTimeoutRef.current) {
-                clearTimeout(reconnectTimeoutRef.current); // Clear timeout on unmount
+                clearTimeout(reconnectTimeoutRef.current);
             }
         };
     }, [url]);
