@@ -93,7 +93,8 @@ export const callbackHandler = async (req: HttpRequest, ctx: Context) => {
       req,
     );
     const user = await getUser(tokens.accessToken);
-    await ctx.server.store.set(sessionId, user, 24 * 60 * 60 * 1000).commit();
+    await ctx.stores.get("core")?.set(sessionId, user, 24 * 60 * 60 * 1000)
+      .commit();
     kv.set([sessionId], user);
     return response;
   } catch {
@@ -104,7 +105,7 @@ export const callbackHandler = async (req: HttpRequest, ctx: Context) => {
 export const signoutHandler = async (req: HttpRequest, ctx: Context) => {
   const sessionId = await getSessionId(req);
   if (!sessionId) throw new Error("session ID is undefined");
-  ctx.server.store.delete(sessionId);
+  ctx.stores.get("core")?.delete(sessionId);
   return await signOut(req);
 };
 

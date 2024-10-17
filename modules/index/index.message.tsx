@@ -19,6 +19,7 @@ export function Message(
                             src={props.img}
                             width={32}
                             class={`rounded-full`}
+                            loading={"lazy"}
                         />
                     </div>
                 )
