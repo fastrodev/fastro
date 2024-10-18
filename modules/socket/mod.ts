@@ -112,5 +112,16 @@ export default function socketModule(s: Fastro) {
         return Response.json(x);
     });
 
+    s.get("/api/room", (req, ctx) => {
+        const initRooms = [
+            { name: "global", id: "1" },
+            { name: "smooking", id: "01JACJJ3CN1ZAYXDMQHC4CB2SQ" },
+            { name: "jobs", id: "01JACJFARBMNDSF1FCAH776YST" },
+            { name: "Tranning", id: "01JACFZ32G13BHA2QZZYQ4KJEK" },
+            { name: "remote", id: "01JACBS4WXSJ1EG8G5C6NVHY7E" },
+        ];
+        return Response.json(initRooms);
+    });
+
     return s;
 }

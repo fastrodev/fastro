@@ -3,6 +3,10 @@ import { Footer } from "@app/components/footer.tsx";
 import Header from "@app/components/header.tsx";
 import Launchpad from "@app/modules/index/index.launchpad.tsx";
 import NonLogin from "@app/modules/index/index.non-login.tsx";
+import {
+  AppContext,
+  createAppState,
+} from "@app/modules/index/index.context.ts";
 
 export default function Index({ data }: PageProps<
   {
@@ -19,27 +23,29 @@ export default function Index({ data }: PageProps<
   }
 >) {
   return (
-    <div class={`h-full flex flex-col justify-between`}>
-      {data.isLogin && (
-        <Launchpad
-          avatar_url={data.avatar_url}
-          username={data.username}
-          ws_url={data.ws_url}
-        />
-      )}
-
-      {!data.isLogin && (
-        <>
-          <Header
-            isLogin={data.isLogin}
+    <AppContext.Provider value={createAppState()}>
+      <div class={`h-full flex flex-col justify-between`}>
+        {data.isLogin && (
+          <Launchpad
             avatar_url={data.avatar_url}
-            html_url={data.html_url}
-            title={data.isLogin ? "Launchpad" : "Fastro"}
+            username={data.username}
+            ws_url={data.ws_url}
           />
-          <NonLogin data={data} />
-          <Footer />
-        </>
-      )}
-    </div>
+        )}
+
+        {!data.isLogin && (
+          <>
+            <Header
+              isLogin={data.isLogin}
+              avatar_url={data.avatar_url}
+              html_url={data.html_url}
+              title={data.isLogin ? "Launchpad" : "Fastro"}
+            />
+            <NonLogin data={data} />
+            <Footer />
+          </>
+        )}
+      </div>
+    </AppContext.Provider>
   );
 }

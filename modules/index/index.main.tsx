@@ -1,24 +1,26 @@
 // deno-lint-ignore-file no-explicit-any
-import { useEffect, useRef, useState } from "preact/hooks";
+import { useContext, useEffect, useRef, useState } from "preact/hooks";
 import { Message } from "@app/modules/index/index.message.tsx";
-import useWebSocket from "../hook/socket.ts";
+import useWebSocket from "@app/modules/hook/socket.ts";
 import { ulid } from "jsr:@std/ulid/ulid";
 import { formatTime, ulidToDate } from "@app/utils/ulid.ts";
-import useFetch from "../hook/fetch.ts";
+import useFetch from "@app/modules/hook/fetch.ts";
 import type { RoomType, User } from "@app/modules/types/mod.ts";
 import { initialData } from "@app/modules/socket/init.ts";
+import { AppContext } from "@app/modules/index/index.context.ts";
+import { effect } from "https://esm.sh/@preact/signals@1.3.0";
 
-// ws_url ws://localhost:8000
 export function Main(
     props: { avatar_url: string; username: string; ws_url: string },
 ) {
+    const state = useContext(AppContext);
     const { data: d } = useFetch<User[]>(
         "http://localhost:8000/api/message/global",
     );
     const [data, setData] = useState<User[]>(d as any);
     const [room, setRoom] = useState<RoomType>({
         name: "global",
-        id: "01JACCP6EB4M7KZ2XCYZPX78W9",
+        id: "1",
     });
     const [inputValue, setInputValue] = useState<string>("");
     const { message, sendMessage } = useWebSocket(props.ws_url);
@@ -42,7 +44,8 @@ export function Main(
         const time = ulidToDate(newMessage.id);
         const msg = {
             msg: newMessage.msg,
-            id: time,
+            id: newMessage.id,
+            time,
         };
 
         if (lastUser.username === newMessage.username) {
@@ -113,6 +116,16 @@ export function Main(
         }
     }, [d, initialData]);
 
+    effect(() => {
+        const c = state.room.value;
+        setRoom(c);
+        return () => console.log(`cleanup ${c.id}`);
+    });
+
+    // useEffect(() => {
+    //     console.log("room", room);
+    // }, [room]);
+
     return (
         <div class="relative grow h-screen max-w-8/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
             <div ref={listRef} class={`overflow-auto pt-3 mb-20`}>
@@ -127,6 +140,7 @@ export function Main(
                                     const idx = x;
                                     return (
                                         <Message
+                                            id={d.id}
                                             idx={idx}
                                             msg={d.msg}
                                             time={formatTime(d.id)}

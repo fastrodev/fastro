@@ -1,5 +1,6 @@
 export function Message(
     props: {
+        id: string;
         username: string;
         msg: string;
         time: string;
