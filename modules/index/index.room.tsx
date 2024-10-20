@@ -6,7 +6,9 @@ import useFetch from "@app/modules/hook/fetch.ts";
 export function Room(
     props: { title: string; id: string; checked?: boolean; disabled?: boolean },
 ) {
-    const [selectedMethod, setSelectedMethod] = useState<string>("");
+    const [selected, setSelected] = useState<string>(
+        "01JAC4GM721KGRWZHG53SMXZP0",
+    );
     const state = useContext(AppContext);
     const { data } = useFetch(`/api/room/${props.id}`);
 
@@ -14,7 +16,7 @@ export function Room(
         e: JSX.TargetedEvent<HTMLInputElement, InputEvent>,
     ) => {
         const target = e.target as HTMLInputElement;
-        setSelectedMethod(target.value);
+        setSelected(target.value);
         state.room.value = data as {
             name: string;
             id: string;
@@ -39,7 +41,7 @@ export function Room(
                             InputEvent
                         >,
                     )}
-                checked={selectedMethod === props.id}
+                checked={selected === props.id}
                 disabled={props.disabled}
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
             />
