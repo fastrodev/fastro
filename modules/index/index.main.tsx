@@ -19,7 +19,7 @@ export function Main(
         id: "01JAC4GM721KGRWZHG53SMXZP0",
     });
     const { data: d } = useFetch<User[]>(
-        `http://localhost:8000/api/message/${room.id}`,
+        `api/message/${room.id}`,
     );
     const [data, setData] = useState<User[]>(d as any);
     const [inputValue, setInputValue] = useState<string>("");
