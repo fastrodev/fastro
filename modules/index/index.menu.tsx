@@ -82,7 +82,12 @@ export function Menu(
                     class={`flex flex-col text-xs font-thin border-l pl-3 gap-y-3`}
                 >
                     {room && room.map((r) => {
-                        return <Room id={r.id} title={r.name + " room"} />;
+                        return (
+                            <Room
+                                id={r.id}
+                                title={r.name + " room"}
+                            />
+                        );
                     })}
                 </ul>
             </div>
@@ -112,7 +117,7 @@ export function Menu(
                 >
                     <TemplateCollection
                         title="Job Template by Andrea"
-                        checked={true}
+                        disabled={true}
                     />
                     <TemplateCollection
                         title="Ads Template by Andrea"

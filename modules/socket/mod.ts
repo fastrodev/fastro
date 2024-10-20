@@ -36,7 +36,6 @@ export default function socketModule(s: Fastro) {
     }
 
     function joinRoom(socket: WebSocket, room: string) {
-        console.log("room join==>", room);
         if (!connections.has(room)) connections.set(room, new Set<WebSocket>());
         connections.get(room)?.add(socket);
     }
@@ -116,7 +115,7 @@ export default function socketModule(s: Fastro) {
         const r = req.params?.room_id;
         if (!r) return NOT_FOUND;
         const room = await ctx.stores.get("core")?.get(r);
-        if (!room) return NOT_FOUND;
+        if (!room) return Response.json([]);
         return Response.json(room);
     });
 

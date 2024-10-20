@@ -27,7 +27,7 @@ export default function Ads() {
                     <img
                         alt="gesits ads"
                         src={currentImage}
-                        class={`rounded-lg`}
+                        class={`rounded-lg max-w-48`}
                     />
                 </div>
             </a>

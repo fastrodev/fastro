@@ -127,7 +127,7 @@ export function Main(
     }, [room]);
 
     return (
-        <div class="relative grow h-screen max-w-8/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
+        <div class="relative grow h-screen max-w-7/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
             <div ref={listRef} class={`overflow-auto pt-3 mb-20`}>
                 <ul class={`flex flex-col justify-end gap-y-2`}>
                     {data && data.map((item, index) => {
