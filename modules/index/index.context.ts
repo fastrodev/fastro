@@ -10,7 +10,7 @@ import { createContext } from "preact";
 export function createAppState() {
     const room = signal({
         name: "global",
-        id: "1",
+        id: "01JAC4GM721KGRWZHG53SMXZP0",
     });
 
     return { room };

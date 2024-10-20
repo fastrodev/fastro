@@ -1,30 +1,24 @@
 import { JSX } from "preact/jsx-runtime";
 import { useContext, useState } from "preact/hooks";
 import { AppContext } from "@app/modules/index/index.context.ts";
-
-const initRooms = [
-    { name: "global", id: "1" },
-    { name: "smooking", id: "01JACJJ3CN1ZAYXDMQHC4CB2SQ" },
-    { name: "jobs", id: "01JACJFARBMNDSF1FCAH776YST" },
-    { name: "Tranning", id: "01JACFZ32G13BHA2QZZYQ4KJEK" },
-    { name: "remote", id: "01JACBS4WXSJ1EG8G5C6NVHY7E" },
-];
+import useFetch from "@app/modules/hook/fetch.ts";
 
 export function Room(
     props: { title: string; id: string; checked?: boolean; disabled?: boolean },
 ) {
     const [selectedMethod, setSelectedMethod] = useState<string>("");
     const state = useContext(AppContext);
+    const { data } = useFetch(`/api/room/${props.id}`);
 
     const handleChange = (
         e: JSX.TargetedEvent<HTMLInputElement, InputEvent>,
     ) => {
         const target = e.target as HTMLInputElement;
         setSelectedMethod(target.value);
-        const [r] = initRooms.filter((v) => {
-            return v.id === target.value;
-        });
-        state.room.value = r;
+        state.room.value = data as {
+            name: string;
+            id: string;
+        };
     };
 
     return (

@@ -14,14 +14,14 @@ export function Main(
     props: { avatar_url: string; username: string; ws_url: string },
 ) {
     const state = useContext(AppContext);
-    const { data: d } = useFetch<User[]>(
-        "http://localhost:8000/api/message/global",
-    );
-    const [data, setData] = useState<User[]>(d as any);
     const [room, setRoom] = useState<RoomType>({
         name: "global",
-        id: "1",
+        id: "01JAC4GM721KGRWZHG53SMXZP0",
     });
+    const { data: d } = useFetch<User[]>(
+        `http://localhost:8000/api/message/${room.id}`,
+    );
+    const [data, setData] = useState<User[]>(d as any);
     const [inputValue, setInputValue] = useState<string>("");
     const { message, sendMessage } = useWebSocket(props.ws_url);
 
@@ -80,7 +80,7 @@ export function Main(
                 id: ulid(),
             };
             const data = {
-                room: room.name,
+                room: room.id,
                 type: "message",
                 message: newMessage,
             };
@@ -106,7 +106,7 @@ export function Main(
             const dd = [...initialData, ...d];
             const ddd = dd.map((v) => {
                 const msg = v.messages.map((m) => {
-                    m.id = ulidToDate(m.id);
+                    m.time = ulidToDate(m.id);
                     return m;
                 });
                 v.messages = msg;
@@ -118,13 +118,13 @@ export function Main(
 
     effect(() => {
         const c = state.room.value;
+        // console.log("c", c);
         setRoom(c);
-        return () => console.log(`cleanup ${c.id}`);
     });
 
-    // useEffect(() => {
-    //     console.log("room", room);
-    // }, [room]);
+    useEffect(() => {
+        // console.log("room====>", room);
+    }, [room]);
 
     return (
         <div class="relative grow h-screen max-w-8/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
@@ -143,7 +143,7 @@ export function Main(
                                             id={d.id}
                                             idx={idx}
                                             msg={d.msg}
-                                            time={formatTime(d.id)}
+                                            time={formatTime(d.time)}
                                             username={item.username}
                                             img={item.img}
                                         />
