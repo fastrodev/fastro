@@ -32,7 +32,7 @@ export function Menu(
 
     return (
         <div
-            class={`hidden w-2/12 min-w-[250px] lg:flex lg:flex-col gap-5 ps-5 pb-5 pt-5`}
+            class={`hidden w-3/12 min-w-[250px] lg:flex lg:flex-col gap-5 ps-5 pb-5 pt-5`}
         >
             <div class={`flex gap-2 items-center`}>
                 <svg

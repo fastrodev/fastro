@@ -15,7 +15,7 @@ export function Message(
         >
             {props.idx === 0
                 ? (
-                    <div>
+                    <div class={`min-w-8`}>
                         <img
                             src={props.img}
                             width={32}
