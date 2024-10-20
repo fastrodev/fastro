@@ -78,11 +78,25 @@ const createResponse = (
   }
 };
 
+const store = new Store<string | number | symbol, any>({
+  owner: Deno.env.get("GITHUB_OWNER") || "fastrodev",
+  repo: Deno.env.get("GITHUB_REPO") || "store",
+  path: Deno.env.get("GITHUB_PATH") || "modules/store/records.json",
+  branch: Deno.env.get("GITHUB_BRANCH") || "main",
+  token: Deno.env.get("GITHUB_TOKEN"),
+});
+
+store.sync(SYNC_INTERVAL);
+
 export default class Server implements Fastro {
   constructor(options?: Record<string, any>) {
     this.serverOptions = options ?? {};
     this.#handler = this.#createHandler();
     this.#addPropsEndpoint();
+    this.stores.set(
+      "core",
+      store,
+    );
   }
   getNonce(): string {
     if (this.#nonce === "") {
@@ -408,7 +422,7 @@ if (root) fetchProps(root);
     };
     ctx.kv = this.serverOptions["kv"];
     ctx.options = this.serverOptions;
-    ctx.store = this.store;
+    ctx.stores = this.stores;
     return [page, ctx, params, url];
   };
 
@@ -510,7 +524,7 @@ if (root) fetchProps(root);
     ctx.url = url;
     ctx.server = this;
     ctx.kv = this.serverOptions["kv"];
-    ctx.store = this.store;
+    ctx.stores = this.stores;
     return ctx;
   };
 
@@ -630,7 +644,7 @@ if (root) fetchProps(root);
   serve = async (options?: { port?: number; onListen?: ListenHandler }) => {
     const [s] = await this.#build();
     if (s) return Deno.exit();
-    this.store.sync(SYNC_INTERVAL);
+    // this.stores.get("core")?.sync(SYNC_INTERVAL);
 
     this.#server = Deno.serve({
       port: options && options.port ? options.port : 8000,
@@ -674,11 +688,5 @@ if (root) fetchProps(root);
   #maxAge = 0;
   #nonce = "";
   serverOptions: Record<string, any> = {};
-  store = new Store<string | number | symbol, any>({
-    owner: Deno.env.get("GITHUB_OWNER") || "fastrodev",
-    repo: Deno.env.get("GITHUB_REPO") || "store",
-    path: Deno.env.get("GITHUB_PATH") || "modules/store/records.json",
-    branch: Deno.env.get("GITHUB_BRANCH") || "main",
-    token: Deno.env.get("GITHUB_TOKEN"),
-  });
+  stores = new Map<string, Store<string | number | symbol, any>>();
 }

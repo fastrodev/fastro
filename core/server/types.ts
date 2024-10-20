@@ -129,7 +129,8 @@ export class Context {
   /**
    * Server store. Save temporary key-value with TTL
    */
-  store!: Store<string | number | symbol, any>;
+  // store!: Store<string | number | symbol, any>;
+  stores!: Map<string, Store<string | number | symbol, any>>;
   [key: string]: any;
 }
 
@@ -253,7 +254,8 @@ export interface Fastro {
   use(...handler: Array<Handler>): Fastro;
   group(mf: ModuleFunction): Promise<Fastro>;
   serverOptions: Record<string, any>;
-  store: Store<string | number | symbol, any>;
+  // store: Store<string | number | symbol, any>;
+  stores: Map<string, Store<string | number | symbol, any>>;
   getNonce(): string;
   getPages(): Record<string, Page>;
   getRoutes(): Record<string, Handler>;

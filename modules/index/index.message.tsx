@@ -1,5 +1,6 @@
 export function Message(
     props: {
+        id: string;
         username: string;
         msg: string;
         time: string;
@@ -14,11 +15,12 @@ export function Message(
         >
             {props.idx === 0
                 ? (
-                    <div>
+                    <div class={`min-w-8`}>
                         <img
                             src={props.img}
                             width={32}
                             class={`rounded-full`}
+                            loading={"lazy"}
                         />
                     </div>
                 )

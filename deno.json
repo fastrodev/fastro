@@ -21,7 +21,7 @@
   },
   "nodeModulesDir": "auto",
   "tasks": {
-    "start": "ENV=DEVELOPMENT deno run --env --unstable-kv -A --watch modules/app/main.ts",
+    "start": "ENV=DEVELOPMENT deno run --env --unstable-kv -A --watch modules/app/main.ts --debug",
     "build": "deno run --env -A --unstable-kv  modules/app/main.ts --build ",
     "prod": "deno run --env --unstable-kv -A modules/app/main.ts",
     "test": "rm -rf .hydrate && rm -rf cov && deno test --env --unstable-kv -A --coverage=cov && deno coverage cov",
