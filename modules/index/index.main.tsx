@@ -127,8 +127,10 @@ export function Main(
     }, [room]);
 
     return (
-        <div class="relative grow h-screen max-w-6/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
-            <div ref={listRef} class={`overflow-auto pt-3 mb-20`}>
+        <div class="bg-cover bg-center bg-no-repeat relative grow h-screen max-w-6/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
+            <div style="content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('/bg.png'); background-size: cover; background-position: center; opacity: 0.1; z-index: 0;">
+            </div>
+            <div ref={listRef} class={`overflow-auto pt-3 mb-20 z-10`}>
                 <ul class={`flex flex-col justify-end gap-y-2`}>
                     {data && data.map((item, index) => {
                         return (
