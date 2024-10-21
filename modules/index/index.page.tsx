@@ -23,29 +23,29 @@ export default function Index({ data }: PageProps<
   }
 >) {
   return (
-    <AppContext.Provider value={createAppState()}>
-      <div class={`h-full flex flex-col justify-between`}>
-        {data.isLogin && (
+    <>
+      {data.isLogin && (
+        <AppContext.Provider value={createAppState()}>
           <Launchpad
             avatar_url={data.avatar_url}
             username={data.username}
             ws_url={data.ws_url}
           />
-        )}
+        </AppContext.Provider>
+      )}
 
-        {!data.isLogin && (
-          <>
-            <Header
-              isLogin={data.isLogin}
-              avatar_url={data.avatar_url}
-              html_url={data.html_url}
-              title={data.isLogin ? "Launchpad" : "Fastro"}
-            />
-            <NonLogin data={data} />
-            <Footer />
-          </>
-        )}
-      </div>
-    </AppContext.Provider>
+      {!data.isLogin && (
+        <div class={`flex flex-col justify-between`}>
+          <Header
+            isLogin={data.isLogin}
+            avatar_url={data.avatar_url}
+            html_url={data.html_url}
+            title={data.isLogin ? "Launchpad" : "Fastro"}
+          />
+          <NonLogin data={data} />
+          <Footer />
+        </div>
+      )}
+    </>
   );
 }

@@ -7,7 +7,7 @@ export default function Launchpad(
 ) {
     return (
         <div
-            class={`h-screen container flex gap-x-3 max-w-screen-2xl bg-gray-900 mx-auto`}
+            class={`container flex gap-x-3 max-w-screen-2xl bg-gray-900 mx-auto`}
         >
             <Menu
                 avatar_url={props.avatar_url}
