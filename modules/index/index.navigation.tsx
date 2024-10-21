@@ -174,7 +174,7 @@ function Fieldset() {
 export function Navigation() {
     return (
         <div
-            class={`hidden w-3/12 min-w-[250px] lg:flex lg:flex-col space-y-3 pe-5 pb-5 pt-5`}
+            class={`hidden w-2/12 min-w-[250px] lg:flex lg:flex-col space-y-3 pe-5 pb-5 pt-5`}
         >
             <Fieldset />
             <input
