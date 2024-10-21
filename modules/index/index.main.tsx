@@ -48,6 +48,7 @@ function MessageInput(
                 message: newMessage,
             };
             handleSendMessage(data);
+            setInputValue("");
         }
     };
 
@@ -115,7 +116,6 @@ export function Main(
         `api/message/${room.id}`,
     );
     const [data, setData] = useState<User[]>(d as any);
-    const [_, setInputValue] = useState<string>("");
     const { message, sendMessage } = useWebSocket(props.ws_url);
 
     const insertData = (newMessage: {
@@ -144,7 +144,6 @@ export function Main(
         }
 
         setData(updatedData);
-        setInputValue("");
     };
 
     const listRef = useRef<HTMLDivElement>(null);
