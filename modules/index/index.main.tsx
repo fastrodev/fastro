@@ -216,7 +216,7 @@ export function Main(
                         })}
                     </ul>
                 </div>
-                <div class="hidden md:block absolute bottom-0 left-0 right-0 p-3">
+                <div class="absolute bottom-0 left-0 right-0 p-3">
                     <MessageInput
                         avatar_url={props.avatar_url}
                         ws_url={props.ws_url}
@@ -226,16 +226,6 @@ export function Main(
                         sendMessage={sendMessage}
                     />
                 </div>
-            </div>
-            <div class="block md:hidden fixed bottom-0 left-0 right-0 p-3">
-                <MessageInput
-                    avatar_url={props.avatar_url}
-                    ws_url={props.ws_url}
-                    username={props.username}
-                    room={room}
-                    message={message}
-                    sendMessage={sendMessage}
-                />
             </div>
         </div>
     );
