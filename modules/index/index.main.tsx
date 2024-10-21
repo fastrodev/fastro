@@ -21,11 +21,18 @@ function MessageInput(
     },
 ) {
     const [inputValue, setInputValue] = useState<string>("");
+
     const handleSendMessage = (data: any) => {
         props.sendMessage(JSON.stringify(data));
     };
 
-    const handleClick = () => {};
+    const handleClick = () => {
+        // const newMessage = {
+        //     msg: inputValue,
+        //     time: new Date().toISOString(),
+        // };
+        // handleSendMessage(newMessage);
+    };
 
     const handleKeyPress = (event: KeyboardEvent) => {
         if (event.key === "Enter" && inputValue.trim() !== "") {
@@ -50,7 +57,7 @@ function MessageInput(
     };
 
     return (
-        <div class={`flex items-center`}>
+        <div class={`flex items-center z-20`}>
             <div class={`w-12 min-w-12 block`}>
                 <img
                     src={props.avatar_url}
