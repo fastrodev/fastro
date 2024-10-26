@@ -1,4 +1,4 @@
-import { type Config } from "npm:tailwindcss@3.3.5";
+import { type Config } from "npm:tailwindcss@3.4.14";
 
 /**
  * see: https://tailwindcss.com/docs/content-configuration

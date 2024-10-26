@@ -208,7 +208,7 @@ export class Store<K extends string | number | symbol, V> {
         }
     }
 
-    private async syncMap() {
+    public async syncMap() {
         if (this.map.size === 0 && this.options) {
             const map = await getMap<K, V>({
                 token: this.options.token,

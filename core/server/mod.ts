@@ -644,7 +644,6 @@ if (root) fetchProps(root);
   serve = async (options?: { port?: number; onListen?: ListenHandler }) => {
     const [s] = await this.#build();
     if (s) return Deno.exit();
-    // this.stores.get("core")?.sync(SYNC_INTERVAL);
 
     this.#server = Deno.serve({
       port: options && options.port ? options.port : 8000,
