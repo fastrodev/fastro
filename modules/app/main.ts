@@ -32,4 +32,4 @@ s.group(authModule);
 s.group(adminModule);
 s.group(socketModule);
 
-s.serve();
+await s.serve();

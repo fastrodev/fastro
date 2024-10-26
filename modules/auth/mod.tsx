@@ -93,7 +93,12 @@ export const callbackHandler = async (req: HttpRequest, ctx: Context) => {
       req,
     );
     const user = await getUser(tokens.accessToken);
-    await ctx.stores.get("core")?.set(sessionId, user, 24 * 60 * 60 * 1000)
+    // console.log("user", user);
+    await ctx.stores.get("core")?.set(sessionId, {
+      id: user.id,
+      avatar_url: user.avatar_url,
+      login: user.login,
+    }, 24 * 60 * 60 * 1000)
       .commit();
     kv.set([sessionId], user);
     return response;

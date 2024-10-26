@@ -2,13 +2,14 @@
 import { useContext, useEffect, useRef, useState } from "preact/hooks";
 import { Message } from "@app/modules/index/index.message.tsx";
 import useWebSocket from "@app/modules/hook/socket.ts";
-import { ulid } from "jsr:@std/ulid/ulid";
+// import { ulid } from "jsr:@std/ulid/ulid";
 import { formatTime, ulidToDate } from "@app/utils/ulid.ts";
 import useFetch from "@app/modules/hook/fetch.ts";
-import type { RoomType, User } from "@app/modules/types/mod.ts";
+import type { DataType, RoomType } from "@app/modules/types/mod.ts";
 import { initialData } from "@app/modules/socket/init.ts";
 import { AppContext } from "@app/modules/index/index.context.ts";
 import { effect } from "https://esm.sh/@preact/signals@1.3.0";
+import { ulid } from "jsr:@std/ulid/ulid";
 
 function MessageInput(
     props: {
@@ -16,7 +17,6 @@ function MessageInput(
         username: string;
         avatar_url: string;
         ws_url: string;
-        message: string;
         sendMessage: (message: string) => void;
     },
 ) {
@@ -112,10 +112,10 @@ export function Main(
         name: "global",
         id: "01JAC4GM721KGRWZHG53SMXZP0",
     });
-    const { data: d } = useFetch<User[]>(
-        `api/message/${room.id}`,
+    const { data: d } = useFetch<DataType[]>(
+        `api/message/${room.id}/${props.username}`,
     );
-    const [data, setData] = useState<User[]>(d as any);
+    const [data, setData] = useState<DataType[]>(d as any);
     const { message, sendMessage } = useWebSocket(props.ws_url);
 
     const insertData = (newMessage: {
@@ -127,6 +127,7 @@ export function Main(
         const lastUser = updatedData[updatedData.length - 1];
         const time = ulidToDate(newMessage.id);
         const msg = {
+            type: "message",
             msg: newMessage.msg,
             id: newMessage.id,
             time,
@@ -137,6 +138,7 @@ export function Main(
             lastUserMessages.push(msg);
         } else {
             updatedData.push({
+                type: "message",
                 username: newMessage.username,
                 img: props.avatar_url,
                 messages: [msg],
@@ -155,13 +157,18 @@ export function Main(
 
     useEffect(() => {
         if (message) {
+            // console.log("message==>", message);
             insertData(JSON.parse(message));
         }
     }, [message]);
 
     useEffect(() => {
         if (d) {
-            const dd = [...initialData, ...d];
+            const arr = [...initialData];
+            arr[0].messages[0].msg =
+                `Hello ${props.username}! Welcome to ${room.name} room.`;
+
+            const dd = [...arr, ...d];
             const ddd = dd.map((v) => {
                 const msg = v.messages.map((m) => {
                     m.time = ulidToDate(m.id);
@@ -215,7 +222,6 @@ export function Main(
                         ws_url={props.ws_url}
                         username={props.username}
                         room={room}
-                        message={message}
                         sendMessage={sendMessage}
                     />
                 </div>

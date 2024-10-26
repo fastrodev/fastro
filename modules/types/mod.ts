@@ -4,7 +4,8 @@ export interface MessageType {
     time: string;
 }
 
-export interface User {
+export interface DataType {
+    type: "message" | "ads" | "info";
     username: string;
     img: string;
     messages: MessageType[];
@@ -14,7 +15,3 @@ export interface RoomType {
     name: string;
     id: string;
 }
-
-export const NOT_FOUND = Response.json({ message: "Not found" }, {
-    status: 404,
-});
