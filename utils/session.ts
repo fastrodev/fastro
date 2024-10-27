@@ -1,6 +1,5 @@
 import { getSessionId } from "@app/modules/auth/mod.tsx";
 import { Context, HttpRequest } from "@app/mod.ts";
-// import { kv } from "@app/utils/db.ts";
 
 export async function getSession(req: HttpRequest, ctx: Context) {
     const sessionId = await getSessionId(req);
