@@ -136,51 +136,5 @@ export default function socketModule(s: Fastro) {
         }
     });
 
-    s.get("/api/message/:room_id/:username", async (req, ctx) => {
-        const r = req.params?.room_id;
-        const u = req.params?.username;
-        if (!r || !u) return Response.json([]);
-        const room = await getMessageFromRoom(ctx, r, u);
-        if (!room) return Response.json([]);
-        return Response.json(room);
-    });
-
-    s.get("/api/room", async (req, ctx) => {
-        let r = await ctx.stores.get("core")?.get("room");
-        if (!r) r = [];
-        const rooms = [...initRooms, ...r];
-        return Response.json(rooms);
-    });
-
-    s.post("/api/room/:name", async (req, ctx) => {
-        const name = req.params?.name || "";
-        const room = {
-            name,
-            id: ulid(),
-        };
-        const store = ctx.stores.get("core");
-        let rooms = await store?.get("room") as RoomType[];
-        if (!rooms) rooms = [];
-        const exist = rooms.find((v) => v.name === name);
-        if (exist) {
-            return Response.json({ message: `Room already exist` }, {
-                status: STATUS_CODE.UnprocessableEntity,
-            });
-        }
-        rooms.push(room);
-        store?.set("room", rooms);
-        return Response.json({ message: `Room created` }, {
-            status: STATUS_CODE.Created,
-        });
-    });
-
-    s.get("/api/room/:id", (req, ctx) => {
-        const target = req.params?.id;
-        if (!target) return Response.json([]);
-        const room = initRooms.find((v) => v.id.toString() === target);
-        if (!room) return Response.json([]);
-        return Response.json(room);
-    });
-
     return s;
 }

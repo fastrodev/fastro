@@ -78,20 +78,22 @@ export function Menu(
                 <span>Explore</span>
             </div>
             <div class={`pl-3`}>
-                {loading ? <span class={`text-xs`}>Loading</span> : (
-                    <ul
-                        class={`flex flex-col text-xs font-thin border-l pl-3 gap-y-3`}
-                    >
-                        {rooms && rooms.map((r) => {
-                            return (
-                                <Room
-                                    id={r.id}
-                                    title={r.name + " room"}
-                                />
-                            );
-                        })}
-                    </ul>
-                )}
+                {loading
+                    ? <div class={`text-xs border-l-2 pl-3`}>Loading</div>
+                    : (
+                        <ul
+                            class={`flex flex-col text-xs font-thin border-l pl-3 gap-y-3`}
+                        >
+                            {rooms && rooms.map((r) => {
+                                return (
+                                    <Room
+                                        id={r.id}
+                                        title={r.name + " room"}
+                                    />
+                                );
+                            })}
+                        </ul>
+                    )}
             </div>
 
             <div class={`flex gap-2 items-center`}>

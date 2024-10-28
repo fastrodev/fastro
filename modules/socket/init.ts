@@ -8,7 +8,7 @@ const time = ulidToDate(id);
 export const initialData: DataType[] = [
     {
         type: "message",
-        username: "github-actions",
+        username: "admin",
         img: "https://avatars.githubusercontent.com/in/15368?v=4",
         messages: [
             {
@@ -20,7 +20,7 @@ export const initialData: DataType[] = [
     },
     {
         type: "message",
-        username: "github-actions",
+        username: "admin",
         img: "https://avatars.githubusercontent.com/in/15368?v=4",
         messages: [
             {
