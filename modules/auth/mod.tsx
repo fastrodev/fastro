@@ -5,6 +5,7 @@ import {
   createGitHubOAuthConfig,
   createHelpers,
 } from "jsr:@deno/kv-oauth@0.11.0";
+import { ulid } from "jsr:@std/ulid/ulid";
 
 const redirectUri = Deno.env.get("REDIRECT_URI") ??
   "http://localhost:8000/callback";
@@ -87,13 +88,32 @@ async function getUser(accessToken: string) {
   return data;
 }
 
+const findUserByLogin = (ctx: Context, login: string) => {
+  const userStore = ctx.stores.get("users");
+  if (!userStore) return null;
+  for (const [id, { value }] of userStore.entries()) {
+    if (value.username === login) {
+      return { ...value, ...{ id } };
+    }
+  }
+  return null;
+};
+
 export const callbackHandler = async (req: HttpRequest, ctx: Context) => {
   try {
     const { response, sessionId, tokens } = await handleCallback(
       req,
     );
     const user = await getUser(tokens.accessToken);
-    // console.log("user", user);
+    const registeredUser = await findUserByLogin(ctx, user.login);
+    if (!registeredUser) {
+      const id = ulid();
+      await ctx.stores.get("users")?.set(id, {
+        username: user.login,
+        avatar_url: user.avatar_url,
+      }).commit();
+    }
+
     await ctx.stores.get("core")?.set(sessionId, {
       id: user.id,
       avatar_url: user.avatar_url,
@@ -110,8 +130,12 @@ export const callbackHandler = async (req: HttpRequest, ctx: Context) => {
 export const signoutHandler = async (req: HttpRequest, ctx: Context) => {
   const sessionId = await getSessionId(req);
   if (!sessionId) throw new Error("session ID is undefined");
-  ctx.stores.get("core")?.delete(sessionId);
-  return await signOut(req);
+  const store = ctx.stores.get("core");
+  if (store) {
+    store.delete(sessionId);
+    await store.commit();
+    return await signOut(req);
+  }
 };
 
 /**

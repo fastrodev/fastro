@@ -75,7 +75,7 @@ export function Menu(
                     <path d="M19 12l2 0" />
                 </svg>
 
-                <span>Discover a room</span>
+                <span>Explore</span>
             </div>
             <div class={`pl-3`}>
                 <ul

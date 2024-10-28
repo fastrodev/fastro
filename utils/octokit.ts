@@ -83,7 +83,6 @@ export async function getMap<K extends string | number | symbol, V>(
 ) {
     if (!options || !options.token) return;
     const res = await getFileFromGithub(options) as any;
-    // console.log("file", res);
     if (res) return recordToMap<K, V>(JSON.parse(res));
 }
 

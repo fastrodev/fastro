@@ -10,6 +10,7 @@ import authModule from "@app/modules/auth/mod.tsx";
 import adminModule from "@app/modules/admin/mod.ts";
 import github from "@app/middleware/github/mod.ts";
 import socketModule from "../socket/mod.ts";
+import storeModule from "@app/modules/store/mod.ts";
 
 const s = new Server();
 
@@ -25,6 +26,7 @@ s.use(tailwind());
 /** proxy for github repo */
 s.use(github);
 
+s.group(storeModule);
 s.group(index);
 s.group(blog);
 s.group(docs);

@@ -131,26 +131,6 @@ export class Store<K extends string | number | symbol, V> {
         });
     }
 
-    private async joinMaps<K extends string | number | symbol, V>() {
-        if (!this.options) return this.map;
-        const remoteMap = await getMap<K, V>({
-            token: this.options.token,
-            owner: this.options.owner,
-            repo: this.options.repo,
-            path: this.options.path,
-            branch: this.options.branch,
-        });
-        if (!remoteMap) return this.map;
-
-        // deno-lint-ignore no-explicit-any
-        for (const [key, entry] of remoteMap.entries() as any) {
-            if (!this.map.has(key)) this.map.set(key, entry);
-        }
-
-        this.cleanUpExpiredEntries();
-        return this.map;
-    }
-
     /**
      * Save to github with queue
      */
@@ -160,7 +140,7 @@ export class Store<K extends string | number | symbol, V> {
 
     private commiting = async (options?: StoreOptions) => {
         if (!options) return;
-        await this.joinMaps<K, V>();
+        this.cleanUpExpiredEntries();
         return await this.saveToGitHub(
             {
                 token: options?.token,
@@ -217,7 +197,6 @@ export class Store<K extends string | number | symbol, V> {
                 path: this.options.path,
                 branch: this.options.branch,
             });
-            // console.log("map", map);
             if (!map) return false;
             this.map = map;
         }

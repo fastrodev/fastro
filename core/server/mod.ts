@@ -19,7 +19,6 @@ import {
   ModuleFunction,
   Page,
   Static,
-  SYNC_INTERVAL,
 } from "./types.ts";
 import { EsbuildMod } from "../build/esbuildMod.ts";
 import { Store } from "../map/mod.ts";
@@ -78,25 +77,11 @@ const createResponse = (
   }
 };
 
-const store = new Store<string | number | symbol, any>({
-  owner: Deno.env.get("GITHUB_OWNER") || "fastrodev",
-  repo: Deno.env.get("GITHUB_REPO") || "store",
-  path: Deno.env.get("GITHUB_PATH") || "modules/store/records.json",
-  branch: Deno.env.get("GITHUB_BRANCH") || "main",
-  token: Deno.env.get("GITHUB_TOKEN"),
-});
-
-store.sync(SYNC_INTERVAL);
-
 export default class Server implements Fastro {
   constructor(options?: Record<string, any>) {
     this.serverOptions = options ?? {};
     this.#handler = this.#createHandler();
     this.#addPropsEndpoint();
-    this.stores.set(
-      "core",
-      store,
-    );
   }
   getNonce(): string {
     if (this.#nonce === "") {

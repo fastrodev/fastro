@@ -5,6 +5,7 @@ import { ulid } from "jsr:@std/ulid/ulid";
 import { STATUS_CODE } from "@app/core/server/deps.ts";
 import { Store } from "@app/core/map/mod.ts";
 import { ulidToDate } from "@app/utils/ulid.ts";
+import { createCollection } from "@app/modules/store/mod.ts";
 
 interface Message {
     img: string;
@@ -45,14 +46,7 @@ async function getMessageFromRoom(
 ) {
     let store = ctx.stores.get(room);
     if (!store) {
-        store = new Store({
-            owner: "fastrodev",
-            repo: "store",
-            path: `modules/rooms/${room}/messages.json`,
-            branch: "main",
-            token: Deno.env.get("GITHUB_TOKEN"),
-        });
-        await store.syncMap();
+        store = await createCollection("rooms", room);
         ctx.stores.set(room, store);
     }
     const entries = store?.entries().toArray();
@@ -104,13 +98,7 @@ export default function socketModule(s: Fastro) {
         delete d["room"];
         const id = data.message?.id as string;
         if (!rs) {
-            const store = new Store({
-                owner: "fastrodev",
-                repo: "store",
-                path: `modules/rooms/${data.room}/messages.json`,
-                branch: "main",
-                token: Deno.env.get("GITHUB_TOKEN"),
-            });
+            const store = await createCollection("rooms", data.room);
             await store.set(id, d).commit();
             ctx.stores.set(d.room, store);
             rs = store;

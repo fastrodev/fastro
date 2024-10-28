@@ -205,5 +205,5 @@ Deno.test("Store: sync, same size after multiple commit", async () => {
         newStore.set("city", "pare").commit(),
         newStore.set("country", "indonesia").commit(),
     ]);
-    assertEquals(newStore.size(), 4);
+    assertEquals(newStore.size(), 3);
 });
