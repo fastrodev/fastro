@@ -10,6 +10,64 @@ import { AppContext } from "@app/modules/index/index.context.ts";
 import { effect } from "https://esm.sh/@preact/signals@1.3.0";
 import MessageInput from "@app/modules/index/index.input.tsx";
 
+function ListMessage(props: { data: DataType[] }) {
+    const listRef = useRef<HTMLDivElement>(null);
+    const data = props.data;
+
+    useEffect(() => {
+        if (listRef.current) {
+            listRef.current.scrollTop = listRef.current.scrollHeight;
+        }
+    }, [props.data]);
+
+    return (
+        <div
+            ref={listRef}
+            class={`overflow-auto pt-3 mb-20 z-10`}
+        >
+            <ul class={`flex flex-col justify-end gap-y-2`}>
+                {data && data.map((item, index) => {
+                    return (
+                        <ul
+                            class={`px-4 text-sm flex flex-col justify-end gap-y-2`}
+                            key={index}
+                        >
+                            {item.messages.map((d, x) => {
+                                const idx = x;
+                                return (
+                                    <Message
+                                        id={d.id}
+                                        idx={idx}
+                                        msg={d.msg}
+                                        time={formatTime(d.time)}
+                                        username={item.username}
+                                        img={item.img}
+                                    />
+                                );
+                            })}
+                        </ul>
+                    );
+                })}
+            </ul>
+        </div>
+    );
+}
+
+function Background() {
+    return (
+        <div style="content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('/bg.png'); background-position: center; opacity: 0.1; z-index: 0;" />
+    );
+}
+
+function Loading(props: { children: any }) {
+    return (
+        <div class="bg-center bg-no-repeat relative grow h-screen max-w-8/12 flex flex-col justify-center bg-gray-950 border-t border-l border-r border-gray-700 p-4 text-center">
+            {props.children}
+            <Background />
+        </div>
+    );
+}
+
 export function Main(
     props: { avatar_url: string; username: string; ws_url: string },
 ) {
@@ -96,55 +154,13 @@ export function Main(
 
     return (
         <>
-            {error && (
-                <div class="bg-center bg-no-repeat relative grow h-screen max-w-8/12 flex flex-col justify-center bg-gray-950 border-t border-l border-r border-gray-700 p-4 text-center">
-                    {error}
-                    <div style="content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('/bg.png'); background-position: center; opacity: 0.1; z-index: 0;">
-                    </div>
-                </div>
-            )}
-            {loading &&
-                (
-                    <div class="bg-center bg-no-repeat relative grow h-screen max-w-8/12 flex flex-col justify-center bg-gray-950 border-t border-l border-r border-gray-700 p-4 text-center">
-                        Loading
-                        <div style="content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('/bg.png'); background-position: center; opacity: 0.1; z-index: 0;">
-                        </div>
-                    </div>
-                )}
+            {error && <Loading>{error}</Loading>}
+            {loading && <Loading>Loading</Loading>}
             {!loading && (
-                <div class="bg-center bg-no-repeat relative grow h-screen max-w-8/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
-                    <div style="content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('/bg.png'); background-position: center; opacity: 0.1; z-index: 0;">
-                    </div>
-                    <div
-                        ref={listRef}
-                        class={`overflow-auto pt-3 mb-20 z-10`}
-                    >
-                        <ul class={`flex flex-col justify-end gap-y-2`}>
-                            {data && data.map((item, index) => {
-                                return (
-                                    <ul
-                                        class={`px-4 text-sm flex flex-col justify-end gap-y-2`}
-                                        key={index}
-                                    >
-                                        {item.messages.map((d, x) => {
-                                            const idx = x;
-                                            return (
-                                                <Message
-                                                    id={d.id}
-                                                    idx={idx}
-                                                    msg={d.msg}
-                                                    time={formatTime(
-                                                        d.time,
-                                                    )}
-                                                    username={item.username}
-                                                    img={item.img}
-                                                />
-                                            );
-                                        })}
-                                    </ul>
-                                );
-                            })}
-                        </ul>
+                <div class={`grow relative`}>
+                    <div class="bg-center bg-no-repeat h-screen flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
+                        <Background />
+                        <ListMessage data={data} />
                     </div>
                     <div class="absolute bottom-0 left-0 right-0 p-3">
                         <MessageInput
