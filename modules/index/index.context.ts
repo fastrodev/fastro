@@ -17,3 +17,14 @@ export function createAppState() {
 }
 
 export const AppContext = createContext(createAppState());
+
+export function createMainState() {
+    const state = signal({
+        name: "global",
+        id: "01JAC4GM721KGRWZHG53SMXZP0",
+    });
+
+    return { state };
+}
+
+export const MainContext = createContext(createMainState());
