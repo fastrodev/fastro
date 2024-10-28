@@ -37,7 +37,6 @@ export default function (s: Fastro) {
         handler: async (req, ctx) => {
             const res = denoRunCheck(req);
             if (res) return init();
-
             const ses = await getSession(req, ctx);
             const title = ses?.isLogin
                 ? "Under construction ~ Home"

@@ -11,6 +11,7 @@ import adminModule from "@app/modules/admin/mod.ts";
 import github from "@app/middleware/github/mod.ts";
 import socketModule from "../socket/mod.ts";
 import storeModule from "@app/modules/store/mod.ts";
+import roomModules from "@app/modules/room/mod.ts";
 
 const s = new Server();
 
@@ -33,5 +34,6 @@ s.group(docs);
 s.group(authModule);
 s.group(adminModule);
 s.group(socketModule);
+s.group(roomModules);
 
 await s.serve();
