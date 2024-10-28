@@ -23,7 +23,7 @@ function ListMessage(props: { data: DataType[] }) {
     return (
         <div
             ref={listRef}
-            class={`overflow-auto pt-3 mb-20 z-0`}
+            class={`overflow-scroll pt-3 mb-20 z-0`}
         >
             <ul class={`flex flex-col justify-end gap-y-2`}>
                 {data && data.map((item, index) => {
