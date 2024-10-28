@@ -26,7 +26,7 @@ function TemplateCollection(
 export function Menu(
     props: { avatar_url: string; username: string },
 ) {
-    const { data: room } = useFetch<RoomType[]>(
+    const { data: rooms, loading } = useFetch<RoomType[]>(
         "/api/room",
     );
 
@@ -78,18 +78,20 @@ export function Menu(
                 <span>Explore</span>
             </div>
             <div class={`pl-3`}>
-                <ul
-                    class={`flex flex-col text-xs font-thin border-l pl-3 gap-y-3`}
-                >
-                    {room && room.map((r) => {
-                        return (
-                            <Room
-                                id={r.id}
-                                title={r.name + " room"}
-                            />
-                        );
-                    })}
-                </ul>
+                {loading ? <span class={`text-xs`}>Loading</span> : (
+                    <ul
+                        class={`flex flex-col text-xs font-thin border-l pl-3 gap-y-3`}
+                    >
+                        {rooms && rooms.map((r) => {
+                            return (
+                                <Room
+                                    id={r.id}
+                                    title={r.name + " room"}
+                                />
+                            );
+                        })}
+                    </ul>
+                )}
             </div>
 
             <div class={`flex gap-2 items-center`}>

@@ -12,7 +12,7 @@ export const initialData: DataType[] = [
         img: "https://avatars.githubusercontent.com/in/15368?v=4",
         messages: [
             {
-                msg: "Hello world! What is your name? Where is your address? How old are you?",
+                msg: "Hello world!",
                 time,
                 id,
             },

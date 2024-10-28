@@ -87,7 +87,7 @@ export function Main(
     }, [d, initialData]);
 
     useEffect(() => {
-        return setLoading(true);
+        setLoading(true);
     }, [room]);
 
     effect(() => {
