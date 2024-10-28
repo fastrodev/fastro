@@ -23,7 +23,7 @@ function ListMessage(props: { data: DataType[] }) {
     return (
         <div
             ref={listRef}
-            class={`overflow-auto pt-3 mb-20 z-10`}
+            class={`overflow-scroll pt-3 mb-20 z-0`}
         >
             <ul class={`flex flex-col justify-end gap-y-2`}>
                 {data && data.map((item, index) => {
@@ -158,7 +158,7 @@ export function Main(
             {loading && <Loading>Loading</Loading>}
             {!loading && (
                 <div class={`grow md:relative flex flex-col`}>
-                    <div class="bg-center bg-no-repeat h-screen flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
+                    <div class="grow bg-center bg-no-repeat h-screen flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
                         <Background />
                         <ListMessage data={data} />
                     </div>
