@@ -162,7 +162,7 @@ export function Main(
                         <Background />
                         <ListMessage data={data} />
                     </div>
-                    <div class="absolute bottom-0 left-0 right-0 p-3">
+                    <div class="fixed md:absolute bottom-0 left-0 right-0 p-3">
                         <MessageInput
                             avatar_url={props.avatar_url}
                             ws_url={props.ws_url}
