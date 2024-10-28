@@ -95,8 +95,10 @@ export function Main(
         <>
             {loading
                 ? (
-                    <div class="grow h-screen max-w-8/12 flex justify-center bg-gray-950 border-t border-l border-r border-gray-700 p-4">
+                    <div class="bg-center bg-no-repeat relative grow h-screen max-w-8/12 flex flex-col justify-center bg-gray-950 border-t border-l border-r border-gray-700 p-4 text-center">
                         Loading
+                        <div style="content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('/bg.png'); background-position: center; opacity: 0.1; z-index: 0;">
+                        </div>
                     </div>
                 )
                 : (
