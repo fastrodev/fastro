@@ -18,7 +18,7 @@ export function Main(
         name: "global",
         id: "01JAC4GM721KGRWZHG53SMXZP0",
     });
-    const { data: d, loading, error } = useFetch<DataType[]>(
+    const { data: d, loading, setLoading, error } = useFetch<DataType[]>(
         `api/message/${room.id}/${props.username}`,
     );
     const [data, setData] = useState<DataType[]>(d as any);
@@ -63,7 +63,6 @@ export function Main(
 
     useEffect(() => {
         if (message) {
-            // console.log("message==>", message);
             insertData(JSON.parse(message));
         }
     }, [message]);
@@ -87,66 +86,77 @@ export function Main(
         }
     }, [d, initialData]);
 
+    useEffect(() => {
+        return setLoading(true);
+    }, [room]);
+
     effect(() => {
         setRoom(state.room.value);
     });
 
     return (
         <>
-            {loading
-                ? (
+            {error && (
+                <div class="bg-center bg-no-repeat relative grow h-screen max-w-8/12 flex flex-col justify-center bg-gray-950 border-t border-l border-r border-gray-700 p-4 text-center">
+                    {error}
+                    <div style="content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('/bg.png'); background-position: center; opacity: 0.1; z-index: 0;">
+                    </div>
+                </div>
+            )}
+            {loading &&
+                (
                     <div class="bg-center bg-no-repeat relative grow h-screen max-w-8/12 flex flex-col justify-center bg-gray-950 border-t border-l border-r border-gray-700 p-4 text-center">
                         Loading
                         <div style="content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('/bg.png'); background-position: center; opacity: 0.1; z-index: 0;">
                         </div>
                     </div>
-                )
-                : (
-                    <div class="bg-center bg-no-repeat relative grow h-screen max-w-8/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
-                        <div style="content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('/bg.png'); background-position: center; opacity: 0.1; z-index: 0;">
-                        </div>
-                        <div
-                            ref={listRef}
-                            class={`overflow-auto pt-3 mb-20 z-10`}
-                        >
-                            <ul class={`flex flex-col justify-end gap-y-2`}>
-                                {data && data.map((item, index) => {
-                                    return (
-                                        <ul
-                                            class={`px-4 text-sm flex flex-col justify-end gap-y-2`}
-                                            key={index}
-                                        >
-                                            {item.messages.map((d, x) => {
-                                                const idx = x;
-                                                return (
-                                                    <Message
-                                                        id={d.id}
-                                                        idx={idx}
-                                                        msg={d.msg}
-                                                        time={formatTime(
-                                                            d.time,
-                                                        )}
-                                                        username={item.username}
-                                                        img={item.img}
-                                                    />
-                                                );
-                                            })}
-                                        </ul>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-                        <div class="absolute bottom-0 left-0 right-0 p-3">
-                            <MessageInput
-                                avatar_url={props.avatar_url}
-                                ws_url={props.ws_url}
-                                username={props.username}
-                                room={room}
-                                sendMessage={sendMessage}
-                            />
-                        </div>
-                    </div>
                 )}
+            {!loading && (
+                <div class="bg-center bg-no-repeat relative grow h-screen max-w-8/12 flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
+                    <div style="content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('/bg.png'); background-position: center; opacity: 0.1; z-index: 0;">
+                    </div>
+                    <div
+                        ref={listRef}
+                        class={`overflow-auto pt-3 mb-20 z-10`}
+                    >
+                        <ul class={`flex flex-col justify-end gap-y-2`}>
+                            {data && data.map((item, index) => {
+                                return (
+                                    <ul
+                                        class={`px-4 text-sm flex flex-col justify-end gap-y-2`}
+                                        key={index}
+                                    >
+                                        {item.messages.map((d, x) => {
+                                            const idx = x;
+                                            return (
+                                                <Message
+                                                    id={d.id}
+                                                    idx={idx}
+                                                    msg={d.msg}
+                                                    time={formatTime(
+                                                        d.time,
+                                                    )}
+                                                    username={item.username}
+                                                    img={item.img}
+                                                />
+                                            );
+                                        })}
+                                    </ul>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-3">
+                        <MessageInput
+                            avatar_url={props.avatar_url}
+                            ws_url={props.ws_url}
+                            username={props.username}
+                            room={room}
+                            sendMessage={sendMessage}
+                        />
+                    </div>
+                </div>
+            )}
         </>
     );
 }
