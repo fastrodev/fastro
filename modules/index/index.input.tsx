@@ -49,7 +49,7 @@ export default function MessageInput(
     };
 
     return (
-        <div class={`flex items-center z-20`}>
+        <div class={`flex items-center bg-transparent z-20`}>
             <div class={`w-12 min-w-12 block`}>
                 <img
                     src={props.avatar_url}
