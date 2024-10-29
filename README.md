@@ -61,7 +61,7 @@ And to create your first JSX SSR page, you can follow
 Feel free to help us!
 
 Here are some issues to improving.
+
 - [Unit tests](https://github.com/fastrodev/fastro/tree/main/http)
 - [Middlewares](https://github.com/fastrodev/fastro/tree/main/middleware)
 - [Use case examples](https://github.com/fastrodev/fastro/tree/main/examples)
-- [App Templates](https://github.com/fastrodev/template)
