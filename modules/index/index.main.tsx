@@ -158,8 +158,8 @@ export function Main(
             {loading && <Loading>Loading</Loading>}
             {!loading && (
                 <div class={`grow md:relative`}>
+                    <Background />
                     <div class="grow bg-center bg-no-repeat h-screen flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
-                        <Background />
                         <ListMessage data={data} />
                     </div>
                     <div class="fixed md:absolute bottom-0 left-0 right-0 p-3 z-10">
