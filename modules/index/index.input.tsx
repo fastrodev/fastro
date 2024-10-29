@@ -65,8 +65,8 @@ export default function MessageInput(
                     onInput={handleInputChange}
                     onKeyPress={handleKeyPress}
                     type="text"
-                    placeholder="Type a message..."
-                    class="w-full flex-grow bg-gray-700 text-white placeholder-gray-400 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Message"
+                    class="w-full bg-gray-700 text-white placeholder-gray-400 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                 />
                 <button

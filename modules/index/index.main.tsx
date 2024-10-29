@@ -157,7 +157,7 @@ export function Main(
             {error && <Loading>{error}</Loading>}
             {loading && <Loading>Loading</Loading>}
             {!loading && (
-                <div class={`grow md:relative flex flex-col`}>
+                <div class={`grow md:relative`}>
                     <div class="grow bg-center bg-no-repeat h-screen flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
                         <Background />
                         <ListMessage data={data} />
