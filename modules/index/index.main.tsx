@@ -23,7 +23,7 @@ function ListMessage(props: { data: DataType[] }) {
     return (
         <div
             ref={listRef}
-            class={`overflow-scroll pt-3 mb-16 z-0`}
+            class={`overflow-auto pt-3 mb-16 z-0`}
         >
             <ul class={`flex flex-col justify-end gap-y-2`}>
                 {data && data.map((item, index) => {
@@ -162,7 +162,7 @@ export function Main(
                         <Background />
                         <ListMessage data={data} />
                     </div>
-                    <div class="fixed md:absolute bottom-0 left-0 right-0 pb-4 pl-3 pr-3 z-10">
+                    <div class="fixed md:absolute bottom-0 left-0 right-0 p-3 z-10">
                         <MessageInput
                             avatar_url={props.avatar_url}
                             ws_url={props.ws_url}
