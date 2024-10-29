@@ -59,10 +59,10 @@ function Background() {
     );
 }
 
-function Loading(props: { children: any }) {
+function Loading(props: { text: string }) {
     return (
-        <div class="bg-center bg-no-repeat relative grow h-screen max-w-8/12 flex flex-col justify-center bg-gray-950 border-t border-l border-r border-gray-700 p-4 text-center">
-            {props.children}
+        <div class="relative grow h-screen max-w-8/12 flex flex-col justify-center bg-gray-950 border-t border-l border-r border-gray-700 p-4 text-center">
+            {props.text}
             <Background />
         </div>
     );
@@ -154,22 +154,22 @@ export function Main(
 
     return (
         <>
-            {error && <Loading>{error}</Loading>}
-            {loading && <Loading>Loading</Loading>}
+            {error && <Loading text={error} />}
+            {loading && <Loading text="Loading" />}
             {!loading && (
-                <div class={`grow`}>
-                    <div class="relative grow bg-center bg-no-repeat h-screen flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700 pb-16">
-                        <Background />
+                <div class={`grow static md:relative`}>
+                    <Background />
+                    <div class="h-screen flex flex-col justify-end bg-gray-950 pb-20 md:border-l-[1px] md:border-r-[1px] border-gray-800">
                         <ListMessage data={data} />
-                        <div class="absolute bottom-0 left-0 right-0 p-3 z-10">
-                            <MessageInput
-                                avatar_url={props.avatar_url}
-                                ws_url={props.ws_url}
-                                username={props.username}
-                                room={room}
-                                sendMessage={sendMessage}
-                            />
-                        </div>
+                    </div>
+                    <div class="fixed md:absolute bottom-0 left-0 right-0 md:flex md:flex-col p-3 z-10 bg-gray-900 border-t-[1px] border-gray-800">
+                        <MessageInput
+                            avatar_url={props.avatar_url}
+                            ws_url={props.ws_url}
+                            username={props.username}
+                            room={room}
+                            sendMessage={sendMessage}
+                        />
                     </div>
                 </div>
             )}
