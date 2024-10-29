@@ -23,7 +23,7 @@ function ListMessage(props: { data: DataType[] }) {
     return (
         <div
             ref={listRef}
-            class={`overflow-auto pt-3 mb-16 z-0`}
+            class={`overflow-auto pt-3 z-0`}
         >
             <ul class={`flex flex-col justify-end gap-y-2`}>
                 {data && data.map((item, index) => {
@@ -157,19 +157,19 @@ export function Main(
             {error && <Loading>{error}</Loading>}
             {loading && <Loading>Loading</Loading>}
             {!loading && (
-                <div class={`grow relative`}>
-                    <Background />
-                    <div class="grow bg-center bg-no-repeat h-screen flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
+                <div class={`grow`}>
+                    <div class="relative grow bg-center bg-no-repeat h-screen flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700 pb-16">
+                        <Background />
                         <ListMessage data={data} />
-                    </div>
-                    <div class="absolute bottom-0 left-0 right-0 p-3 z-10">
-                        <MessageInput
-                            avatar_url={props.avatar_url}
-                            ws_url={props.ws_url}
-                            username={props.username}
-                            room={room}
-                            sendMessage={sendMessage}
-                        />
+                        <div class="absolute bottom-0 left-0 right-0 p-3 z-10">
+                            <MessageInput
+                                avatar_url={props.avatar_url}
+                                ws_url={props.ws_url}
+                                username={props.username}
+                                room={room}
+                                sendMessage={sendMessage}
+                            />
+                        </div>
                     </div>
                 </div>
             )}
