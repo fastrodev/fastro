@@ -27,7 +27,7 @@ export function Message(
                 : <div class={`w-8 min-w-8 block`}></div>}
 
             <div
-                class={`bg-gray-900 ps-3 pt-2 pe-3 pb-2 border border-gray-700 rounded-lg flex flex-col gap-1`}
+                class={`bg-gray-900 ps-3 pt-2 pe-3 pb-2 border border-gray-800 rounded-lg flex flex-col gap-1`}
             >
                 <div
                     class={`flex items-center justify-between gap-3 text-gray-500`}
