@@ -157,12 +157,12 @@ export function Main(
             {error && <Loading>{error}</Loading>}
             {loading && <Loading>Loading</Loading>}
             {!loading && (
-                <div class={`grow md:relative`}>
+                <div class={`grow relative`}>
                     <Background />
                     <div class="grow bg-center bg-no-repeat h-screen flex flex-col justify-end bg-gray-950 border-t border-l border-r border-gray-700">
                         <ListMessage data={data} />
                     </div>
-                    <div class="fixed md:absolute bottom-0 left-0 right-0 p-3 z-10">
+                    <div class="absolute bottom-0 left-0 right-0 p-3 z-10">
                         <MessageInput
                             avatar_url={props.avatar_url}
                             ws_url={props.ws_url}
