@@ -80,7 +80,7 @@ export function Main(
         `api/message/${room.id}/${props.username}`,
     );
     const [data, setData] = useState<DataType[]>(d as any);
-    const { message, sendMessage } = useWebSocket(props.ws_url);
+    const { message, sendMessage, isConnected } = useWebSocket(props.ws_url);
 
     const insertData = (newMessage: {
         msg: string;
@@ -121,13 +121,13 @@ export function Main(
     }, [data]);
 
     useEffect(() => {
-        if (message) {
+        if (isConnected && message) {
             insertData(JSON.parse(message));
         }
-    }, [message]);
+    }, [message, isConnected]);
 
     useEffect(() => {
-        if (d) {
+        if (isConnected && d) {
             const arr = [...initialData];
             arr[0].messages[0].msg =
                 `Hello ${props.username}! Welcome to ${room.name} room.`;
@@ -143,7 +143,7 @@ export function Main(
             });
             setData(ddd);
         }
-    }, [d, initialData]);
+    }, [d, initialData, isConnected]);
 
     useEffect(() => {
         setLoading(true);

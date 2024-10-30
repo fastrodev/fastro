@@ -1,10 +1,12 @@
 // deno-lint-ignore-file
 import { useEffect, useRef, useState } from "preact/hooks";
+
 const useWebSocket = (url: string) => {
     const [message, setMessage] = useState<string>("");
     const [isConnected, setIsConnected] = useState<boolean>(false);
     const socketRef = useRef<WebSocket | null>(null);
     const reconnectTimeoutRef = useRef<any>(null);
+    const messageQueueRef = useRef<string[]>([]); // Message queue
 
     const connectWebSocket = () => {
         socketRef.current = new WebSocket(url);
@@ -12,6 +14,13 @@ const useWebSocket = (url: string) => {
         socketRef.current.onopen = () => {
             setIsConnected(true);
             console.log("WebSocket connection established.");
+            // Send any queued messages
+            while (messageQueueRef.current.length > 0) {
+                const queuedMessage = messageQueueRef.current.shift();
+                if (queuedMessage) {
+                    socketRef.current?.send(queuedMessage);
+                }
+            }
             if (reconnectTimeoutRef.current) {
                 clearTimeout(reconnectTimeoutRef.current);
             }
@@ -31,15 +40,17 @@ const useWebSocket = (url: string) => {
 
         socketRef.current.onerror = (error) => {
             console.error("WebSocket error:", error);
+            // Close the socket on error
             socketRef.current?.close();
         };
     };
 
-    const reconnect = () => {
+    const reconnect = (attempt: number = 1) => {
+        const delay = Math.min(1000 * Math.pow(2, attempt), 30000); // Exponential backoff with max delay
         reconnectTimeoutRef.current = setTimeout(() => {
-            console.log("Reconnecting...");
+            console.log(`Reconnecting... Attempt #${attempt}`);
             connectWebSocket();
-        }, 1000);
+        }, delay);
     };
 
     useEffect(() => {
@@ -53,9 +64,13 @@ const useWebSocket = (url: string) => {
         };
     }, [url]);
 
-    const sendMessage = (message: string) => {
+    const sendMessage = (msg: string) => {
         if (socketRef.current && isConnected) {
-            socketRef.current.send(message);
+            socketRef.current.send(msg);
+        } else {
+            // Queue message if not connected
+            messageQueueRef.current.push(msg);
+            console.log("Message queued:", msg);
         }
     };
 
