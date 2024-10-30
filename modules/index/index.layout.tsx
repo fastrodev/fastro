@@ -27,6 +27,7 @@ export default function index(
         <meta property="og:image" content={data.image} />
         <link href="/styles.css" rel="stylesheet" />
         <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
       </head>
       <body
         id="root"
