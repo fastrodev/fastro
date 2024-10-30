@@ -3,8 +3,8 @@
     "short_name": "Fastro",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#000000",
+    "background_color": "#000000",
+    "theme_color": "#ffffff",
     "description": "Web-Based Messaging Application",
     "icons": [
         {
