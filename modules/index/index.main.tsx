@@ -88,7 +88,6 @@ export function Main(
         id: string;
         img: string;
     }) => {
-        console.log(newMessage);
         const updatedData = [...data];
         const lastUser = updatedData[updatedData.length - 1];
         const time = ulidToDate(newMessage.id);
