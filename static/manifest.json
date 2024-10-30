@@ -4,7 +4,7 @@
     "start_url": "/",
     "display": "standalone",
     "background_color": "#1b1f23",
-    "theme_color": "#ffffff",
+    "theme_color": "#000000",
     "description": "Web-Based Messaging Application",
     "icons": [
         {
