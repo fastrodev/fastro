@@ -86,7 +86,9 @@ export function Main(
         msg: string;
         username: string;
         id: string;
+        img: string;
     }) => {
+        console.log(newMessage);
         const updatedData = [...data];
         const lastUser = updatedData[updatedData.length - 1];
         const time = ulidToDate(newMessage.id);
@@ -104,7 +106,7 @@ export function Main(
             updatedData.push({
                 type: "message",
                 username: newMessage.username,
-                img: props.avatar_url,
+                img: newMessage.img,
                 messages: [msg],
             });
         }
