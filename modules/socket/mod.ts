@@ -118,10 +118,10 @@ export default function socketModule(s: Fastro) {
         socket.onmessage = async (event) => {
             const data: Data = JSON.parse(event.data);
             joinRoom(ctx, socket, data.room);
-            await injectData(ctx, data);
             if (data.type === "message" && data.message?.msg !== "") {
                 broadcastMessage(data.room, JSON.stringify(data.message));
             }
+            await injectData(ctx, data);
         };
         socket.onclose = () => console.log("DISCONNECTED");
         socket.onerror = (error) => console.error("ERROR:", error);
