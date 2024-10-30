@@ -87,7 +87,7 @@ export default function socketModule(s: Fastro) {
         }
     }
 
-    async function joinRoom(ctx: Context, socket: WebSocket, room: string) {
+    function joinRoom(ctx: Context, socket: WebSocket, room: string) {
         if (!connections.has(room)) connections.set(room, new Set<WebSocket>());
         connections.get(room)?.add(socket);
     }
@@ -118,7 +118,7 @@ export default function socketModule(s: Fastro) {
         socket.onmessage = async (event) => {
             const data: Data = JSON.parse(event.data);
             joinRoom(ctx, socket, data.room);
-            injectData(ctx, data);
+            await injectData(ctx, data);
             if (data.type === "message" && data.message?.msg !== "") {
                 broadcastMessage(data.room, JSON.stringify(data.message));
             }
