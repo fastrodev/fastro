@@ -26,6 +26,7 @@ export default function index(
         <meta name="description" content={data.description} />
         <meta property="og:image" content={data.image} />
         <link href="/styles.css" rel="stylesheet" />
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body
         id="root"
