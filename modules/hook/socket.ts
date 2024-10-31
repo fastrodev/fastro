@@ -10,6 +10,10 @@ const useWebSocket = (url: string, room: string) => {
 
     const connectWebSocket = () => {
         socketRef.current = new WebSocket(url);
+        console.log(socketRef.current);
+        if (socketRef.current.readyState !== WebSocket.OPEN) {
+            setIsConnected(false);
+        }
 
         socketRef.current.onopen = () => {
             setIsConnected(true);
