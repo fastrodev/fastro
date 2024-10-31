@@ -41,14 +41,8 @@ export default function socketModule(s: Fastro) {
     }
 
     function joinRoom(ctx: Context, socket: WebSocket, room: string) {
-        const s = connections.get(room);
-        if (s) {
-            s.add(socket);
-        } else {
-            const s = new Set<WebSocket>();
-            s.add(socket);
-            connections.set(room, s);
-        }
+        if (!connections.has(room)) connections.set(room, new Set<WebSocket>());
+        connections.get(room)?.add(socket);
     }
 
     const injectData = async (ctx: Context, data: Data) => {
