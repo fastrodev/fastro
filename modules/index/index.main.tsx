@@ -80,7 +80,10 @@ export function Main(
         `api/message/${room.id}/${props.username}`,
     );
     const [data, setData] = useState<DataType[]>(d as any);
-    const { message, sendMessage, isConnected } = useWebSocket(props.ws_url);
+    const { message, sendMessage, isConnected } = useWebSocket(
+        props.ws_url,
+        room.id,
+    );
 
     const insertData = (newMessage: {
         msg: string;

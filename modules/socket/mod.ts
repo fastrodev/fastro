@@ -28,53 +28,6 @@ const initRooms = [
     { name: "remote", id: "01JACBS4WXSJ1EG8G5C6NVHY7E" },
 ];
 
-type Arr = {
-    type: string;
-    username: string;
-    img: string;
-    messages: {
-        msg: any;
-        time: string;
-        id: string | number | symbol;
-    }[];
-};
-
-async function getMessageFromRoom(
-    ctx: Context,
-    room: string,
-    username: string,
-) {
-    let store = ctx.stores.get(room);
-    if (!store) {
-        store = await createCollection("rooms", room);
-        ctx.stores.set(room, store);
-    }
-    const entries = store?.entries().toArray();
-
-    const o = entries.map(([id, { value }]) => ({
-        type: value.type,
-        username: value.message.username,
-        img: value.message.img,
-        messages: [{
-            msg: value.message.msg,
-            time: ulidToDate(id as string),
-            id,
-        }],
-    }));
-    const y: Arr[] = [];
-    const updatedData = [...o];
-    for (const e of updatedData) {
-        const l = y[y.length - 1];
-        if (l && l.username === e.username) {
-            l.messages.push(e.messages[0]);
-        } else {
-            y.push(e);
-        }
-    }
-
-    return y;
-}
-
 export default function socketModule(s: Fastro) {
     const connections = new Map<string, Set<WebSocket>>();
     function broadcastMessage(room: string, message: string) {
@@ -118,6 +71,7 @@ export default function socketModule(s: Fastro) {
         socket.onmessage = async (event) => {
             const data: Data = JSON.parse(event.data);
             joinRoom(ctx, socket, data.room);
+            if (data.type === "ping") return;
             if (data.type === "message" && data.message?.msg !== "") {
                 broadcastMessage(data.room, JSON.stringify(data.message));
             }
