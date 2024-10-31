@@ -8,18 +8,25 @@ const useWebSocket = (url: string, room: string) => {
     const reconnectTimeoutRef = useRef<any>(null);
     const messageQueueRef = useRef<string[]>([]); // Message queue
 
+    function ping() {
+        console.log(socketRef.current);
+        let count = 0;
+        const i = setInterval(() => {
+            if (socketRef.current?.readyState === WebSocket.OPEN) {
+                clearInterval(i);
+            }
+            socketRef.current?.send(JSON.stringify({ type: "ping", room }));
+            count++;
+        }, 1000);
+
+        console.log(`WebSocket connection established: ${room}`);
+    }
+
     const connectWebSocket = () => {
         socketRef.current = new WebSocket(url);
-        console.log(socketRef.current);
-        if (socketRef.current.readyState !== WebSocket.OPEN) {
-            setIsConnected(false);
-        }
-
         socketRef.current.onopen = () => {
             setIsConnected(true);
-            socketRef.current?.send(JSON.stringify({ type: "ping", room }));
-            console.log(`WebSocket connection established: ${room}`);
-            // Send any queued messages
+            ping();
             while (messageQueueRef.current.length > 0) {
                 const queuedMessage = messageQueueRef.current.shift();
                 if (queuedMessage) {

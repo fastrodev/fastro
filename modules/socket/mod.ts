@@ -68,6 +68,7 @@ export default function socketModule(s: Fastro) {
         socket.onmessage = async (event) => {
             const data: Data = JSON.parse(event.data);
             joinRoom(ctx, socket, data.room);
+            console.log(event.data);
             if (data.type === "ping") return;
             if (data.type === "message" && data.message?.msg !== "") {
                 broadcastMessage(data.room, JSON.stringify(data.message));
