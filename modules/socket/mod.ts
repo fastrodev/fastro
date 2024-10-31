@@ -6,6 +6,7 @@ import { STATUS_CODE } from "@app/core/server/deps.ts";
 import { Store } from "@app/core/map/mod.ts";
 import { ulidToDate } from "@app/utils/ulid.ts";
 import { createCollection } from "@app/modules/store/mod.ts";
+import { DAY } from "jsr:@std/datetime@^0.221.0/constants";
 
 interface Message {
     img: string;
@@ -20,27 +21,23 @@ interface Data {
     message?: Message;
 }
 
-const initRooms = [
-    { name: "global", id: "01JAC4GM721KGRWZHG53SMXZP0" },
-    { name: "smooking", id: "01JACJJ3CN1ZAYXDMQHC4CB2SQ" },
-    { name: "jobs", id: "01JACJFARBMNDSF1FCAH776YST" },
-    { name: "training", id: "01JACFZ32G13BHA2QZZYQ4KJEK" },
-    { name: "remote", id: "01JACBS4WXSJ1EG8G5C6NVHY7E" },
-];
-
 export default function socketModule(s: Fastro) {
     const connections = new Map<string, Set<WebSocket>>();
     function broadcastMessage(room: string, message: string) {
         const sockets = connections.get(room);
-        if (!sockets) return;
-        for (const client of sockets) {
-            if (client.readyState === WebSocket.OPEN) {
-                client.send(message);
+        if (sockets) {
+            console.log("sockets==>", sockets);
+            console.log("size", sockets.size);
+            for (const client of sockets) {
+                if (client.readyState === WebSocket.OPEN) {
+                    client.send(message);
+                }
             }
         }
     }
 
     function joinRoom(ctx: Context, socket: WebSocket, room: string) {
+        if (socket.readyState !== WebSocket.OPEN) return;
         if (!connections.has(room)) connections.set(room, new Set<WebSocket>());
         connections.get(room)?.add(socket);
     }
@@ -52,12 +49,12 @@ export default function socketModule(s: Fastro) {
         const id = data.message?.id as string;
         if (!rs) {
             const store = await createCollection("rooms", data.room);
-            await store.set(id, d).commit();
+            await store.set(id, d, DAY).commit();
             ctx.stores.set(d.room, store);
             rs = store;
         }
 
-        await rs?.set(id, d).commit();
+        await rs?.set(id, d, DAY).commit();
     };
 
     function handleConnection(
