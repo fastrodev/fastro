@@ -29,10 +29,15 @@ export default function socketModule(s: Fastro) {
             console.log("sockets==>", sockets);
             console.log("size", sockets.size);
             for (const client of sockets) {
+                if (client.readyState === WebSocket.CLOSED) {
+                    client.close(1000, "Normal Closure");
+                    sockets.delete(client);
+                }
                 if (client.readyState === WebSocket.OPEN) {
                     client.send(message);
                 }
             }
+            console.log("size", sockets.size);
         }
     }
 
