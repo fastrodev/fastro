@@ -41,12 +41,13 @@ export default function socketModule(s: Fastro) {
     }
 
     function joinRoom(ctx: Context, socket: WebSocket, room: string) {
-        if (!connections.has(room)) {
+        const s = connections.get(room);
+        if (s) {
+            s.add(socket);
+        } else {
             const s = new Set<WebSocket>();
             s.add(socket);
             connections.set(room, s);
-        } else {
-            connections.get(room)?.add(socket);
         }
     }
 
