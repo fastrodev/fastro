@@ -12,7 +12,7 @@ const useWebSocket = (url: string, room: string) => {
         console.log(socketRef.current);
         let count = 0;
         const i = setInterval(() => {
-            if (socketRef.current?.readyState === WebSocket.OPEN) {
+            if (count > 2) {
                 clearInterval(i);
             }
             socketRef.current?.send(JSON.stringify({ type: "ping", room }));
