@@ -80,7 +80,7 @@ export function Main(
         `api/message/${room.id}/${props.username}`,
     );
     const [data, setData] = useState<DataType[]>(d as any);
-    const { message, sendMessage, isConnected } = useWebSocket(
+    const { message, sendMessage, isConnected, ping } = useWebSocket(
         props.ws_url,
         room.id,
     );
@@ -150,6 +150,7 @@ export function Main(
 
     useEffect(() => {
         setLoading(true);
+        ping();
     }, [room]);
 
     effect(() => {

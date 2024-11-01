@@ -26,7 +26,6 @@ export default function socketModule(s: Fastro) {
     function broadcastMessage(room: string, message: string) {
         const sockets = connections.get(room);
         if (sockets) {
-            console.log("sockets==>", sockets);
             console.log("size", sockets.size);
             for (const client of sockets) {
                 if (client.readyState === WebSocket.CLOSED) {
@@ -42,7 +41,6 @@ export default function socketModule(s: Fastro) {
     }
 
     function joinRoom(ctx: Context, socket: WebSocket, room: string) {
-        if (socket.readyState !== WebSocket.OPEN) return;
         if (!connections.has(room)) connections.set(room, new Set<WebSocket>());
         connections.get(room)?.add(socket);
     }
