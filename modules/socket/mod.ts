@@ -1,10 +1,5 @@
 // deno-lint-ignore-file
 import { Context, Fastro } from "@app/mod.ts";
-import { type RoomType } from "@app/modules/types/mod.ts";
-import { ulid } from "jsr:@std/ulid/ulid";
-import { STATUS_CODE } from "@app/core/server/deps.ts";
-import { Store } from "@app/core/map/mod.ts";
-import { ulidToDate } from "@app/utils/ulid.ts";
 import { createCollection } from "@app/modules/store/mod.ts";
 import { DAY } from "jsr:@std/datetime@^0.221.0/constants";
 
@@ -22,8 +17,7 @@ interface Data {
 }
 
 export default function socketModule(s: Fastro) {
-    const connections = new Map<string, Set<WebSocket>>();
-    function broadcastMessage(room: string, message: string) {
+    function broadcastMessage(connections: any, room: string, message: string) {
         const sockets = connections.get(room);
         if (sockets) {
             console.log("size", sockets.size);
@@ -40,7 +34,8 @@ export default function socketModule(s: Fastro) {
         }
     }
 
-    function joinRoom(ctx: Context, socket: WebSocket, room: string) {
+    async function joinRoom(ctx: Context, socket: WebSocket, room: string) {
+        const connections = await ctx.stores.get("core")?.get("connections");
         if (!connections.has(room)) connections.set(room, new Set<WebSocket>());
         connections.get(room)?.add(socket);
     }
@@ -74,7 +69,8 @@ export default function socketModule(s: Fastro) {
             console.log(event.data);
             if (data.type === "ping") return;
             if (data.type === "message" && data.message?.msg !== "") {
-                broadcastMessage(data.room, JSON.stringify(data.message));
+                const c = await ctx.stores.get("core")?.get("connections");
+                broadcastMessage(c, data.room, JSON.stringify(data.message));
             }
             await injectData(ctx, data);
         };
