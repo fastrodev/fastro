@@ -12,7 +12,7 @@ const useWebSocket = (url: string, room: string) => {
         console.log(socketRef.current);
         let count = 0;
         const i = setInterval(() => {
-            if (count > 0) {
+            if (count > 1) {
                 clearInterval(i);
             }
             socketRef.current?.send(JSON.stringify({ type: "ping", room }));
@@ -26,7 +26,6 @@ const useWebSocket = (url: string, room: string) => {
         socketRef.current = new WebSocket(url);
         socketRef.current.onopen = () => {
             setIsConnected(true);
-            ping();
             while (messageQueueRef.current.length > 0) {
                 const queuedMessage = messageQueueRef.current.shift();
                 if (queuedMessage) {
