@@ -22,7 +22,7 @@ export default function socketModule(s: Fastro) {
         if (sockets) {
             console.log("size", sockets.size);
             for (const client of sockets) {
-                if (client.readyState === WebSocket.CLOSED) {
+                if (client.readyState !== WebSocket.OPEN) {
                     client.close(1000, "Normal Closure");
                     sockets.delete(client);
                 }
@@ -35,6 +35,7 @@ export default function socketModule(s: Fastro) {
     }
 
     async function joinRoom(ctx: Context, socket: WebSocket, room: string) {
+        if (socket.readyState !== WebSocket.OPEN) return;
         const connections = await ctx.stores.get("core")?.get("connections");
         if (!connections.has(room)) connections.set(room, new Set<WebSocket>());
         connections.get(room)?.add(socket);
@@ -65,7 +66,7 @@ export default function socketModule(s: Fastro) {
 
         socket.onmessage = async (event) => {
             const data: Data = JSON.parse(event.data);
-            joinRoom(ctx, socket, data.room);
+            await joinRoom(ctx, socket, data.room);
             console.log(event.data);
             if (data.type === "ping") return;
             if (data.type === "message" && data.message?.msg !== "") {

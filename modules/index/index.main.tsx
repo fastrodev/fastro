@@ -83,6 +83,7 @@ export function Main(
     const { message, sendMessage, isConnected, ping } = useWebSocket(
         props.ws_url,
         room.id,
+        props.username,
     );
 
     const insertData = (newMessage: {

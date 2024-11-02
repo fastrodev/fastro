@@ -1,22 +1,26 @@
 // deno-lint-ignore-file
 import { useEffect, useRef, useState } from "preact/hooks";
 
-const useWebSocket = (url: string, room: string) => {
+const useWebSocket = (url: string, room: string, user: string) => {
     const [message, setMessage] = useState<string>("");
     const [isConnected, setIsConnected] = useState<boolean>(false);
     const socketRef = useRef<WebSocket | null>(null);
     const reconnectTimeoutRef = useRef<any>(null);
-    const messageQueueRef = useRef<string[]>([]); // Message queue
+    const messageQueueRef = useRef<string[]>([]);
+    const countRef = useRef<number>(0);
 
     function ping() {
         console.log(socketRef.current);
-        let count = 0;
         const i = setInterval(() => {
-            if (count > 1) {
+            if (countRef.current > 0) {
                 clearInterval(i);
+                setIsConnected(true);
+                return;
             }
-            socketRef.current?.send(JSON.stringify({ type: "ping", room }));
-            count++;
+            socketRef.current?.send(
+                JSON.stringify({ type: "ping", room, user }),
+            );
+            countRef.current++;
         }, 1000);
 
         console.log(`WebSocket connection established: ${room}`);
