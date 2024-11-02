@@ -199,6 +199,8 @@ export class Store<K extends string | number | symbol, V> {
             });
             if (!map) return false;
             this.map = map;
+            this.cleanUpExpiredEntries();
+            await this.commit();
         }
 
         return true;
@@ -224,10 +226,13 @@ export class Store<K extends string | number | symbol, V> {
     }
 
     private cleanUpExpiredEntries(): void {
+        let count = 0;
         for (const [key, entry] of this.map.entries()) {
             if (entry.expiry !== undefined && Date.now() >= entry.expiry) {
                 this.map.delete(key);
+                count++;
             }
         }
+        console.log(`${count} entries deleted`);
     }
 }
