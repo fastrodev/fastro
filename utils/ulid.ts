@@ -42,12 +42,6 @@ export function formatTime(isoDateString: string): string {
         return `• ${hoursAgo} hour${hoursAgo !== 1 ? "s" : ""} ago`;
     }
 
-    // Check if the time difference is less than 1 year
-    if (now.diff(date, "year") < 1) {
-        const monthsAgo = now.diff(date, "month");
-        return `• ${monthsAgo} month${monthsAgo !== 1 ? "s" : ""} ago`;
-    }
-
     // Format for dates older than a day
     const formattedDate = date.format("MM/DD/YYYY hh:mm A");
     return `• ${formattedDate}`;

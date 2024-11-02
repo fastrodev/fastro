@@ -68,6 +68,14 @@ function Loading(props: { text: string }) {
     );
 }
 
+function capitalizeFirstLetterOfWords(input: string): string {
+    // Split the input string into words using space as a delimiter
+    return input.split(" ").map((word) => {
+        // Capitalize the first letter and concatenate with the rest of the word
+        return word.charAt(0).toUpperCase() + word.slice(1);
+    }).join(" "); // Join the words back together with spaces
+}
+
 export function Main(
     props: { avatar_url: string; username: string; ws_url: string },
 ) {
@@ -133,10 +141,11 @@ export function Main(
     useEffect(() => {
         if (isConnected && d) {
             const arr = [...initialData];
+            const name = capitalizeFirstLetterOfWords(`${room.name} room`);
             arr[0].messages[0].msg =
-                `Hello ${props.username}! Welcome to ${room.name} room.`;
+                `Hello ${props.username}! Welcome to ${name}.`;
 
-            const dd = [...arr, ...d];
+            const dd = [...d, ...arr];
             const ddd = dd.map((v) => {
                 const msg = v.messages.map((m) => {
                     m.time = ulidToDate(m.id);

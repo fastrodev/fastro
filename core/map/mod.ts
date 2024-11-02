@@ -200,7 +200,7 @@ export class Store<K extends string | number | symbol, V> {
             if (!map) return false;
             this.map = map;
             this.cleanUpExpiredEntries();
-            await this.commit();
+            this.commit();
         }
 
         return true;

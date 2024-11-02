@@ -2,26 +2,26 @@ import useFetch from "@app/modules/hook/fetch.ts";
 import type { RoomType } from "@app/modules/types/mod.ts";
 import { Room } from "@app/modules/index/index.room.tsx";
 
-function TemplateCollection(
-    props: { title: string; checked?: boolean; disabled?: boolean },
-) {
-    return (
-        <li
-            class={`inline-flex justify-between items-start gap-1`}
-        >
-            <span>{props.title}</span>
-            <input
-                id="helper-radio-4"
-                name="helper-radio"
-                type="radio"
-                value=""
-                checked={props.checked}
-                disabled={props.disabled}
-                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-            />
-        </li>
-    );
-}
+// function TemplateCollection(
+//     props: { title: string; checked?: boolean; disabled?: boolean },
+// ) {
+//     return (
+//         <li
+//             class={`inline-flex justify-between items-start gap-1`}
+//         >
+//             <span>{props.title}</span>
+//             <input
+//                 id="helper-radio-4"
+//                 name="helper-radio"
+//                 type="radio"
+//                 value=""
+//                 checked={props.checked}
+//                 disabled={props.disabled}
+//                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+//             />
+//         </li>
+//     );
+// }
 
 export function Menu(
     props: { avatar_url: string; username: string },
@@ -32,9 +32,10 @@ export function Menu(
 
     return (
         <div
-            class={`hidden w-2/12 min-w-[250px] lg:flex lg:flex-col gap-5 ps-5 pb-5 pt-5`}
+            class={`hidden w-2/12 min-w-[250px] lg:flex lg:flex-col gap-y-2 ps-5 pt-5`}
         >
-            <div class={`flex gap-2 items-center`}>
+            {
+                /* <div class={`flex gap-2 items-center`}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -52,8 +53,9 @@ export function Menu(
                 </svg>
 
                 <span>Home</span>
-            </div>
-            <div class={`flex gap-2 items-center`}>
+            </div> */
+            }
+            <div class={`flex gap-1 items-center`}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -64,15 +66,11 @@ export function Menu(
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-compass"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-brand-safari"
                 >
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M8 16l2 -6l6 -2l-2 6l-6 2" />
                     <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                    <path d="M12 3l0 2" />
-                    <path d="M12 19l0 2" />
-                    <path d="M3 12l2 0" />
-                    <path d="M19 12l2 0" />
                 </svg>
 
                 <span>Explore</span>
@@ -95,7 +93,8 @@ export function Menu(
                         </ul>
                     )}
             </div>
-
+            {
+                /*
             <div class={`flex gap-2 items-center`}>
                 <svg
                     class="w-6 h-6 text-gray-800 dark:text-white"
@@ -141,6 +140,8 @@ export function Menu(
                     />
                 </ul>
             </div>
+             */
+            }
             <div class={`grow`}></div>
             <div class={`flex justify-between gap-2 items-center`}>
                 <div class={`inline-flex gap-2 items-center`}>

@@ -8,10 +8,20 @@ import { DAY } from "jsr:@std/datetime@^0.221.0/constants";
 
 const initRooms = [
     { name: "global", id: "01JAC4GM721KGRWZHG53SMXZP0" },
-    { name: "smooking", id: "01JACJJ3CN1ZAYXDMQHC4CB2SQ" },
+    { name: "news", id: "01JBNM8TFVV961WFHCDK50N7CV" },
+    { name: "jobs", id: "01JACBS4WXSJ1EG8G5C6NVHY7E" },
+    { name: "startup", id: "01JBNPF4KWPD0TYS6SSSHZGY5E" },
     { name: "english", id: "01JACJFARBMNDSF1FCAH776YST" },
+    { name: "smooking", id: "01JACJJ3CN1ZAYXDMQHC4CB2SQ" },
     { name: "training", id: "01JACFZ32G13BHA2QZZYQ4KJEK" },
-    { name: "remote jobs", id: "01JACBS4WXSJ1EG8G5C6NVHY7E" },
+    { name: "health", id: "01JBNM5X3Y12692X1EDCCR3G2Z" },
+    { name: "finance", id: "01JBNM75G892T2K4FN7Q10AYAZ" },
+    { name: "travel", id: "01JBNM7ZRDMZTM21F6X0986YB4" },
+    { name: "food", id: "01JBNM9H6TTQMF9C2JBX5CEJSY" },
+    { name: "automotive", id: "01JBNMBY9PV6ZY22RZJSKXAP2B" },
+    { name: "sport", id: "01JBNMDE6XR6S4WKKSZ715B913" },
+    { name: "education", id: "01JBNMYGN7VSN4H49YF63TX08R" },
+    { name: "trading", id: "01JBNPHEMX9GYCH0RXB1WR75VR" },
 ];
 
 type Arr = {
@@ -76,6 +86,7 @@ export default function roomModules(s: Fastro) {
         const store = ctx.stores.get("rooms");
         await store?.syncMap();
         const entries = store?.entries().toArray();
+        console.log("entries", entries);
         if (!entries) return Response.json([]);
         const r: any = [];
         entries.map(([id, { value }]) => {

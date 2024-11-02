@@ -18,26 +18,4 @@ export const initialData: DataType[] = [
             },
         ],
     },
-    {
-        type: "message",
-        username: "admin",
-        img: "https://avatars.githubusercontent.com/in/15368?v=4",
-        messages: [
-            {
-                msg: "What is your name?",
-                time,
-                id,
-            },
-            {
-                msg: "Where is your address?",
-                time,
-                id,
-            },
-            {
-                msg: "How old are you?",
-                time,
-                id,
-            },
-        ],
-    },
 ];
