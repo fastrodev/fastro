@@ -7,13 +7,8 @@ import { createCollection } from "@app/modules/store/mod.ts";
 import { DAY } from "jsr:@std/datetime@^0.221.0/constants";
 
 const initRooms = [
-    { name: "global", id: "01JAC4GM721KGRWZHG53SMXZP0" },
-    { name: "news", id: "01JBNM8TFVV961WFHCDK50N7CV" },
-    { name: "jobs", id: "01JACBS4WXSJ1EG8G5C6NVHY7E" },
     { name: "startup", id: "01JBNPF4KWPD0TYS6SSSHZGY5E" },
     { name: "english", id: "01JACJFARBMNDSF1FCAH776YST" },
-    { name: "smooking", id: "01JACJJ3CN1ZAYXDMQHC4CB2SQ" },
-    { name: "training", id: "01JACFZ32G13BHA2QZZYQ4KJEK" },
     { name: "health", id: "01JBNM5X3Y12692X1EDCCR3G2Z" },
     { name: "finance", id: "01JBNM75G892T2K4FN7Q10AYAZ" },
     { name: "travel", id: "01JBNM7ZRDMZTM21F6X0986YB4" },
@@ -22,7 +17,23 @@ const initRooms = [
     { name: "sport", id: "01JBNMDE6XR6S4WKKSZ715B913" },
     { name: "education", id: "01JBNMYGN7VSN4H49YF63TX08R" },
     { name: "trading", id: "01JBNPHEMX9GYCH0RXB1WR75VR" },
+    { name: "fashion", id: "01JBNVTCRG7A5SQ61BHJZKHT2Y" },
+    { name: "furniture", id: "01JBNVV1H4DM86NAJ59DBCSMNA" },
+    { name: "electronic", id: "01JBNVW2H8GWWACVB6R7XYR49F" },
 ];
+
+const g = [
+    { name: "global", id: "01JAC4GM721KGRWZHG53SMXZP0" },
+    {
+        name: "jobs",
+        id: "01JACBS4WXSJ1EG8G5C6NVHY7E",
+    },
+    { name: "news", id: "01JBNM8TFVV961WFHCDK50N7CV" },
+];
+const i = initRooms.sort((a, b) => {
+    return a.name.localeCompare(b.name);
+});
+const arr = [...g, ...i];
 
 type Arr = {
     type: string;
@@ -92,7 +103,7 @@ export default function roomModules(s: Fastro) {
         entries.map(([id, { value }]) => {
             r.push({ id, name: value.name });
         });
-        const rooms = [...initRooms, ...r];
+        const rooms = [...arr, ...r];
         return Response.json(rooms);
     });
 
@@ -126,7 +137,7 @@ export default function roomModules(s: Fastro) {
         const r: any = [];
         entries.map(([id, { value }]) => r.push({ id, name: value.name }));
 
-        const rooms = [...initRooms, ...r];
+        const rooms = [...arr, ...r];
         const room = rooms.find((v) => v.id.toString() === target);
         if (!room) return Response.json([]);
         return Response.json(room);

@@ -233,6 +233,6 @@ export class Store<K extends string | number | symbol, V> {
                 count++;
             }
         }
-        console.log(`${count} entries deleted`);
+        // console.log(`${count} entries deleted`);
     }
 }

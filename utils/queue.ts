@@ -30,5 +30,5 @@ export function createTaskQueue() {
         });
     }
 
-    return { process: process };
+    return { process };
 }

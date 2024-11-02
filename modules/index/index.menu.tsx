@@ -32,30 +32,9 @@ export function Menu(
 
     return (
         <div
-            class={`hidden w-2/12 min-w-[250px] lg:flex lg:flex-col gap-y-2 ps-5 pt-5`}
+            class={`hidden w-2/12 min-w-[250px] lg:flex lg:flex-col gap-y-5 ps-5 pt-5`}
         >
-            {
-                /* <div class={`flex gap-2 items-center`}>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-bolt"
-                >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" />
-                </svg>
-
-                <span>Home</span>
-            </div> */
-            }
-            <div class={`flex gap-1 items-center`}>
+            <div class={`flex gap-2 items-center`}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -73,11 +52,11 @@ export function Menu(
                     <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
                 </svg>
 
-                <span>Explore</span>
+                <span>Discover</span>
             </div>
             <div class={`pl-3`}>
                 {loading
-                    ? <div class={`text-xs border-l-2 pl-3`}>Loading</div>
+                    ? <div class={`text-xs border-l-[1px] pl-3`}>Loading</div>
                     : (
                         <ul
                             class={`flex flex-col text-xs font-thin border-l pl-3 gap-y-3`}
@@ -142,6 +121,27 @@ export function Menu(
             </div>
              */
             }
+            <div class={`flex gap-2 items-center`}>
+                <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M16 10.5h.01m-4.01 0h.01M8 10.5h.01M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-6.6a1 1 0 0 0-.69.275l-2.866 2.723A.5.5 0 0 1 8 18.635V17a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"
+                    />
+                </svg>
+
+                <span>Chats</span>
+            </div>
             <div class={`grow`}></div>
             <div class={`flex justify-between gap-2 items-center`}>
                 <div class={`inline-flex gap-2 items-center`}>

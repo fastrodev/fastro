@@ -35,10 +35,15 @@ export default function socketModule(s: Fastro) {
     }
 
     async function joinRoom(ctx: Context, socket: WebSocket, room: string) {
-        if (socket.readyState !== WebSocket.OPEN) return;
-        const connections = await ctx.stores.get("core")?.get("connections");
-        if (!connections.has(room)) connections.set(room, new Set<WebSocket>());
-        connections.get(room)?.add(socket);
+        if (socket.readyState == WebSocket.OPEN) {
+            const connections = await ctx.stores.get("core")?.get(
+                "connections",
+            );
+            if (!connections.has(room)) {
+                connections.set(room, new Set<WebSocket>());
+            }
+            connections.get(room)?.add(socket);
+        }
     }
 
     const injectData = async (ctx: Context, data: Data) => {

@@ -22,6 +22,7 @@ import {
 } from "./types.ts";
 import { EsbuildMod } from "../build/esbuildMod.ts";
 import { Store } from "../map/mod.ts";
+import { createTaskQueue } from "@app/utils/queue.ts";
 
 export function checkReferer(req: Request) {
   const referer = req.headers.get("referer");
@@ -396,7 +397,8 @@ if (root) fetchProps(root);
       const r = new Render(this);
       key = key === "/" ? "" : key;
       key = url.origin + "/__/props" + key;
-      return r.render(key, page, data, this.getNonce(), headers);
+      const x = r.render(key, page, data, this.getNonce(), headers);
+      return x;
     };
     ctx.info = info;
     ctx.next = () => {};
@@ -553,10 +555,10 @@ if (root) fetchProps(root);
         info,
       ) as any;
       if (page) {
-        return page.handler(
+        return await page.handler(
           this.#transformRequest(req, pageParams, pageUrl),
           pageCtx,
-        ) as Promise<Response>;
+        ) as Response;
       }
 
       return this.#handleStaticFile(req);
@@ -673,4 +675,5 @@ if (root) fetchProps(root);
   #nonce = "";
   serverOptions: Record<string, any> = {};
   stores = new Map<string, Store<string | number | symbol, any>>();
+  private taskQueue = createTaskQueue();
 }
