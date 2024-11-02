@@ -10,12 +10,10 @@ const useWebSocket = (url: string, room: string, user: string) => {
     const countRef = useRef<number>(0);
 
     function ping() {
-        console.log(socketRef.current);
         const i = setInterval(() => {
             if (countRef.current > 0) {
-                clearInterval(i);
                 setIsConnected(true);
-                return;
+                return clearInterval(i);
             }
             socketRef.current?.send(
                 JSON.stringify({ type: "ping", room, user }),
