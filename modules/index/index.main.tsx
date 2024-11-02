@@ -23,13 +23,13 @@ function ListMessage(props: { data: DataType[] }) {
     return (
         <div
             ref={listRef}
-            class={`overflow-auto pt-3 z-0`}
+            class={`overflow-y-auto hover:overflow-y-scroll pt-3 z-0`}
         >
-            <ul class={`flex flex-col justify-end gap-y-2`}>
+            <ul class={`flex flex-col justify-end`}>
                 {data && data.map((item, index) => {
                     return (
                         <ul
-                            class={`px-4 text-sm flex flex-col justify-end gap-y-2`}
+                            class={`px-4 text-sm flex flex-col justify-end gap-y-2 mb-2`}
                             key={index}
                         >
                             {item.messages.map((d, x) => {
@@ -164,7 +164,7 @@ export function Main(
             {!loading && (
                 <div class={`grow static md:relative`}>
                     <Background />
-                    <div class="h-screen flex flex-col justify-end bg-gray-950 pb-20 md:border-l-[1px] md:border-r-[1px] border-gray-800">
+                    <div class="h-screen flex flex-col justify-end bg-gray-950 pb-16 md:border-l-[1px] md:border-r-[1px] border-gray-800">
                         <ListMessage data={data} />
                     </div>
                     <div class="fixed md:absolute bottom-0 left-0 right-0 md:flex md:flex-col p-3 z-10 bg-gray-900 border-t-[1px] border-gray-800">

@@ -23,3 +23,38 @@ pre {
     border-color: var(--bs-border-width);
     border-width: 1px;
 }
+
+* {
+    scrollbar-width: thin;
+    /* Makes the scrollbar thinner */
+    scrollbar-color: var(--secondary) var(--primary);
+    /* Color of thumb and track */
+}
+
+:root {
+    --primary: #111827;
+    /* Track color */
+    --secondary: #1f2937;
+    /* Thumb color */
+}
+
+*::-webkit-scrollbar {
+    width: 15px;
+    /* Width of the scrollbar */
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--primary);
+    /* Track color */
+    border-radius: 5px;
+    /* Rounded corners for track */
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--secondary);
+    /* Thumb color */
+    border-radius: 14px;
+    /* Rounded corners for thumb */
+    border: 3px solid var(--primary);
+    /* Space between thumb and track */
+}
