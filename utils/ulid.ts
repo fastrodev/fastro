@@ -1,3 +1,5 @@
+import dayjs from "npm:dayjs";
+
 export function ulidToDate(ulid: string) {
     // Base32 character set
     const base32Chars = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
@@ -20,30 +22,33 @@ export function ulidToDate(ulid: string) {
 }
 
 export function formatTime(isoDateString: string): string {
-    const date = new Date(isoDateString);
-    const now = new Date();
+    const date = dayjs(isoDateString);
+    const now = dayjs();
 
-    // Get local date components
-    const localYear = date.getFullYear();
-    const localMonth = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
-    const localDay = String(date.getDate()).padStart(2, "0");
-    const localHours = date.getHours();
-    const localMinutes = String(date.getMinutes()).padStart(2, "0");
-
-    // Check if the date is now
-    if (
-        date.toDateString() === now.toDateString() &&
-        date.getTime() === now.getTime()
-    ) {
-        const formattedHours = localHours % 12 || 12; // Convert to 12-hour format
-        const amPm = localHours < 12 ? "AM" : "PM";
-        return `— Now at ${formattedHours}:${localMinutes} ${amPm}`;
+    // Check if the time difference is less than 1 minute
+    if (now.diff(date, "minute") < 1) {
+        return "• now";
     }
 
-    // Format hours for 12-hour clock
-    const formattedHours = localHours % 12 || 12; // Convert to 12-hour format
-    const amPm = localHours < 12 ? "AM" : "PM";
+    // Check if the time difference is less than 1 hour
+    if (now.diff(date, "hour") < 1) {
+        const minutesAgo = now.diff(date, "minute");
+        return `• ${minutesAgo} minute${minutesAgo !== 1 ? "s" : ""} ago`;
+    }
 
-    // Construct the desired format
-    return `— ${localMonth}/${localDay}/${localYear} ${formattedHours}:${localMinutes} ${amPm}`;
+    // Check if the time difference is less than 1 day
+    if (now.diff(date, "day") < 1) {
+        const hoursAgo = now.diff(date, "hour");
+        return `• ${hoursAgo} hour${hoursAgo !== 1 ? "s" : ""} ago`;
+    }
+
+    // Check if the time difference is less than 1 year
+    if (now.diff(date, "year") < 1) {
+        const monthsAgo = now.diff(date, "month");
+        return `• ${monthsAgo} month${monthsAgo !== 1 ? "s" : ""} ago`;
+    }
+
+    // Format for dates older than a day
+    const formattedDate = date.format("MM/DD/YYYY hh:mm A");
+    return `• ${formattedDate}`;
 }

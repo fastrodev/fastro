@@ -30,13 +30,13 @@ export function Message(
                 class={`bg-gray-900 ps-3 pt-2 pe-3 pb-2 border border-gray-800 rounded-lg flex flex-col gap-1`}
             >
                 <div
-                    class={`flex items-center justify-between gap-3 text-gray-500`}
+                    class={`flex items-center justify-between gap-3 text-gray-500 font-light text-xs`}
                 >
                     <div class={`inline-flex items-center gap-x-1`}>
-                        <span class={"grow text-xs font-thin text-gray-200"}>
+                        <span class={"grow"}>
                             {props.username}
                         </span>
-                        <span class={"grow text-xs font-thin"}>
+                        <span class={"grow"}>
                             {props.time}
                         </span>
                     </div>
