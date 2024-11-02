@@ -8,14 +8,16 @@ const useFetch = <T>(url: string) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.statusText}`);
+                if (url) {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`Error: ${response.statusText}`);
+                    }
+                    const result: T = await response.json();
+                    setData(result);
                 }
-                const result: T = await response.json();
-
-                setData(result);
             } catch (err) {
+                console.log(err);
                 setError(err instanceof Error ? err.message : "Unknown error");
             } finally {
                 setLoading(false);

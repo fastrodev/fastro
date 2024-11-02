@@ -84,8 +84,9 @@ export function Main(
         name: "global",
         id: "01JAC4GM721KGRWZHG53SMXZP0",
     });
+    const [url, setUrl] = useState<string>("");
     const { data: d, loading, setLoading, error } = useFetch<DataType[]>(
-        `api/message/${room.id}/${props.username}`,
+        url,
     );
     const [data, setData] = useState<DataType[]>(d as any);
     const { message, sendMessage, isConnected, ping } = useWebSocket(
@@ -159,6 +160,8 @@ export function Main(
     }, [d, initialData, isConnected]);
 
     useEffect(() => {
+        const url = `api/message/${room.id}/${props.username}`;
+        setUrl(url);
         setLoading(true);
         ping();
     }, [room]);
@@ -170,8 +173,8 @@ export function Main(
     return (
         <>
             {error && <Loading text={error} />}
-            {loading && <Loading text="Loading" />}
-            {!loading && (
+            {!error && loading && <Loading text="Loading" />}
+            {!error && !loading && (
                 <div class={`grow static md:relative`}>
                     <Background />
                     <div class="h-screen flex flex-col justify-end bg-gray-950 pb-16 md:border-l-[1px] md:border-r-[1px] border-gray-800">

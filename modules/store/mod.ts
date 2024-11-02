@@ -14,7 +14,7 @@ export async function createCollection(
     const store = new Store<string | number | symbol, any>({
         owner: Deno.env.get("GITHUB_OWNER") || "fastrodev",
         repo: Deno.env.get("GITHUB_REPO") || "store",
-        branch: Deno.env.get("GITHUB_BRANCH") || "main",
+        branch: Deno.env.get("GITHUB_BRANCH") || "dev",
         token: Deno.env.get("GITHUB_TOKEN"),
         path,
     });
