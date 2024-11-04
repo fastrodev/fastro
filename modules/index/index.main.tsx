@@ -101,6 +101,8 @@ export function Main(
         id: string;
         img: string;
     }) => {
+        console.log("newMessage", newMessage);
+        if (!newMessage.id && !newMessage.msg) return;
         const updatedData = [...data];
         const lastUser = updatedData[updatedData.length - 1];
         const time = ulidToDate(newMessage.id);
@@ -135,7 +137,12 @@ export function Main(
 
     useEffect(() => {
         if (isConnected && message) {
-            insertData(JSON.parse(message));
+            const msg = JSON.parse(message);
+            if (Array.isArray(msg)) {
+                state.message.value = msg;
+            } else {
+                insertData(msg);
+            }
         }
     }, [message, isConnected]);
 
@@ -163,7 +170,10 @@ export function Main(
         const url = `api/message/${room.id}/${props.username}`;
         setUrl(url);
         setLoading(true);
-        ping();
+        ping({
+            username: props.username,
+            avatar_url: props.avatar_url,
+        });
     }, [room]);
 
     effect(() => {

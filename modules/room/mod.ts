@@ -97,7 +97,7 @@ export default function roomModules(s: Fastro) {
         const store = ctx.stores.get("rooms");
         await store?.syncMap();
         const entries = store?.entries().toArray();
-        console.log("entries", entries);
+        // console.log("entries", entries);
         if (!entries) return Response.json([]);
         const r: any = [];
         entries.map(([id, { value }]) => {

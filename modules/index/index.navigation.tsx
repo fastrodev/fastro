@@ -1,4 +1,14 @@
-import Ads from "@app/modules/index/index.ads.tsx";
+// deno-lint-ignore-file no-explicit-any
+// import Ads from "@app/modules/index/index.ads.tsx";
+import { effect } from "https://esm.sh/@preact/signals@1.3.0";
+import { AppContext } from "@app/modules/index/index.context.ts";
+import { useContext, useState } from "preact/hooks";
+
+// import useWebSocket from "@app/modules/hook/socket.ts";
+
+// import { RoomType } from "@app/modules/types/mod.ts";
+
+/*
 function Expiration() {
     const toggleDropdown = () => {
         const dropdown = document.getElementById("dropdownMenu");
@@ -170,81 +180,42 @@ function Fieldset() {
         </>
     );
 }
-
+*/
 export function Navigation() {
+    const state = useContext(AppContext);
+    const [message, setMessage] = useState<any>();
+
+    effect(() => {
+        setMessage(state.message.value);
+    });
+
     return (
         <div
-            class={`hidden w-2/12 min-w-[250px] lg:flex lg:flex-col space-y-3 pe-5 pb-5 pt-5`}
+            class={`hidden w-2/12 h-screen lg:flex lg:justify-between pe-5 pb-5 pt-5`}
         >
-            <Fieldset />
-            <input
-                type="text"
-                id="small-input"
-                disabled
-                placeholder="Post Title"
-                class="block w-full p-2 text-gray-900 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
-            <input
-                type="text"
-                id="small-input"
-                disabled
-                placeholder="Short Description"
-                class="block w-full p-2 text-gray-900 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
-            <input
-                type="text"
-                id="small-input"
-                disabled
-                placeholder="SEO Image"
-                class="block w-full p-2 text-gray-900 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
-            <input
-                type="text"
-                id="small-input"
-                disabled
-                placeholder="Tags"
-                class="block w-full p-2 text-gray-900 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
-            <fieldset
-                class={`grid grid-cols-2 gap-2 border border-gray-600 rounded-lg p-2 text-sm bg-slate-700`}
-            >
-                <div class="flex items-center">
-                    <input
-                        id="public-options"
-                        type="radio"
-                        name="access"
-                        value="public"
-                        class="text-sm w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                        checked
-                    />
-                    <label
-                        for="public-options"
-                        class="block ms-2 font-medium text-gray-900 dark:text-gray-300"
+            {message
+                ? (
+                    <ul
+                        class={`grow overflow-y-auto flex flex-col gap-y-2`}
                     >
-                        Public
-                    </label>
-                </div>
-                <div class="flex items-center">
-                    <input
-                        id="public-options"
-                        type="radio"
-                        name="access"
-                        value="secret"
-                        class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus-ring-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                        disabled
-                    />
-                    <label
-                        for="public-options"
-                        class="block ms-2 font-medium text-gray-900 dark:text-gray-300"
-                    >
-                        Secret
-                    </label>
-                </div>
-            </fieldset>
-            <Expiration />
-            <div class={`grow flex flex-col text-xs font-thin`}>
-                <Ads />
-            </div>
+                        {message.map((v: any) => {
+                            return (
+                                <li class={`flex items-center gap-x-3`}>
+                                    <img
+                                        src={v.avatar_url}
+                                        width={24}
+                                        class={`rounded-full`}
+                                        loading={"lazy"}
+                                    />
+                                    <span class={`text-base`}>
+                                        {v.username}
+                                    </span>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                )
+                : <div class={`grow`}></div>}
         </div>
     );
 }

@@ -9,14 +9,14 @@ const useWebSocket = (url: string, room: string, user: string) => {
     const messageQueueRef = useRef<string[]>([]);
     const countRef = useRef<number>(0);
 
-    function ping() {
+    function ping(data: any) {
         const i = setInterval(() => {
             if (countRef.current > 0) {
                 setIsConnected(true);
                 return clearInterval(i);
             }
             socketRef.current?.send(
-                JSON.stringify({ type: "ping", room, user }),
+                JSON.stringify({ ...{ type: "ping", room, user }, ...data }),
             );
             countRef.current++;
         }, 1000);

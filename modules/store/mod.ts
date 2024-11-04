@@ -28,5 +28,6 @@ export default async function storeModule(s: Fastro) {
     s.stores.set("core", core);
     s.stores.set("users", await createCollection("users"));
     s.stores.set("rooms", await createCollection("rooms"));
+    s.stores.set("connected", await createCollection("connected"));
     return s;
 }

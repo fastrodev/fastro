@@ -13,6 +13,7 @@ interface Message {
 interface Data {
     type: string;
     room: string;
+    user: string;
     message?: Message;
 }
 
@@ -20,30 +21,57 @@ export default function socketModule(s: Fastro) {
     function broadcastMessage(connections: any, room: string, message: string) {
         const sockets = connections.get(room);
         if (sockets) {
-            console.log("size", sockets.size);
             for (const client of sockets) {
-                if (client.readyState !== WebSocket.OPEN) {
-                    client.close(1000, "Normal Closure");
-                    sockets.delete(client);
-                }
                 if (client.readyState === WebSocket.OPEN) {
                     client.send(message);
                 }
             }
-            console.log("size", sockets.size);
         }
     }
 
-    async function joinRoom(ctx: Context, socket: WebSocket, room: string) {
-        if (socket.readyState == WebSocket.OPEN) {
-            const connections = await ctx.stores.get("core")?.get(
-                "connections",
-            );
-            if (!connections.has(room)) {
-                connections.set(room, new Set<WebSocket>());
+    async function broadcastConnection(ctx: Context, data: Data) {
+        const connected = ctx.stores.get("connected")?.entries().toArray();
+        const connectedUsers: any[] = [];
+        if (connected) {
+            for (const key in connected) {
+                const [username, { value: { data } }] = connected[key];
+                connectedUsers.push({
+                    username,
+                    avatar_url: data.avatar_url,
+                });
             }
-            connections.get(room)?.add(socket);
         }
+
+        const connections = await ctx.stores.get("core")?.get("connections");
+        const sockets = connections.get(data.room);
+        if (!sockets) return;
+        for (const client of sockets) {
+            if (client.readyState !== WebSocket.OPEN) {
+                client.close(1000, "Normal Closure");
+                sockets.delete(client);
+            }
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify(connectedUsers));
+            }
+        }
+    }
+
+    async function joinRoom(
+        ctx: Context,
+        socket: WebSocket,
+        data: Data,
+    ) {
+        const connections = await ctx.stores.get("core")?.get(
+            "connections",
+        );
+        if (!connections.has(data.room)) {
+            connections.set(data.room, new Set<WebSocket>());
+        }
+        connections.get(data.room)?.add(socket);
+
+        // set connected
+        const connected = ctx.stores.get("connected");
+        connected?.set(data.user, { data, socket });
     }
 
     const injectData = async (ctx: Context, data: Data) => {
@@ -71,16 +99,35 @@ export default function socketModule(s: Fastro) {
 
         socket.onmessage = async (event) => {
             const data: Data = JSON.parse(event.data);
-            await joinRoom(ctx, socket, data.room);
-            console.log(event.data);
-            if (data.type === "ping") return;
+            await joinRoom(ctx, socket, data);
+            if (data.type === "ping") {
+                return broadcastConnection(ctx, data);
+            }
             if (data.type === "message" && data.message?.msg !== "") {
                 const c = await ctx.stores.get("core")?.get("connections");
                 broadcastMessage(c, data.room, JSON.stringify(data.message));
+                return await injectData(ctx, data);
             }
-            await injectData(ctx, data);
         };
-        socket.onclose = () => console.log("DISCONNECTED");
+        socket.onclose = async () => {
+            const c = ctx.stores.get("connected");
+            if (!c) return;
+            const e = c.entries().toArray();
+            for (const key in e) {
+                const [username, { value: { socket, data } }] = e[key];
+                if (socket && socket.readyState !== WebSocket.OPEN) {
+                    c.delete(username);
+                    broadcastConnection(ctx, {
+                        type: "ping",
+                        room: data.room,
+                        user: data.user,
+                    });
+                }
+            }
+
+            console.log("DISCONNECTED");
+        };
+
         socket.onerror = (error) => console.error("ERROR:", error);
     }
 

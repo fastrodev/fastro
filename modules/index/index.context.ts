@@ -12,8 +12,9 @@ export function createAppState() {
         name: "global",
         id: "01JAC4GM721KGRWZHG53SMXZP0",
     });
+    const message = signal<any | null>();
 
-    return { room };
+    return { room, message };
 }
 
 export const AppContext = createContext(createAppState());
