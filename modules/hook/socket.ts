@@ -87,7 +87,14 @@ const useWebSocket = (url: string, room: string, user: string) => {
         }
     };
 
-    return { message, sendMessage, isConnected, setIsConnected, ping };
+    return {
+        message,
+        sendMessage,
+        isConnected,
+        setIsConnected,
+        ping,
+        countRef,
+    };
 };
 
 export default useWebSocket;

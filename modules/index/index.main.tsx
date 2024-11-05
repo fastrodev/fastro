@@ -89,7 +89,7 @@ export function Main(
         url,
     );
     const [data, setData] = useState<DataType[]>(d as any);
-    const { message, sendMessage, isConnected, ping } = useWebSocket(
+    const { message, sendMessage, isConnected, ping, countRef } = useWebSocket(
         props.ws_url,
         room.id,
         props.username,
@@ -135,6 +135,7 @@ export function Main(
         }
     }, [data]);
 
+    // save messages received from server
     useEffect(() => {
         if (isConnected && message) {
             const msg = JSON.parse(message);
@@ -146,6 +147,7 @@ export function Main(
         }
     }, [message, isConnected]);
 
+    // load saved message from server
     useEffect(() => {
         if (isConnected && d) {
             const arr = [...initialData];
@@ -166,16 +168,24 @@ export function Main(
         }
     }, [d, initialData, isConnected]);
 
+    // ping ws when the room changes
     useEffect(() => {
         const url = `api/message/${room.id}/${props.username}`;
         setUrl(url);
         setLoading(true);
         ping({
+            room: room.id,
             username: props.username,
             avatar_url: props.avatar_url,
         });
     }, [room]);
 
+    // reset connection if the room changes
+    useEffect(() => {
+        return () => countRef.current = 0;
+    }, [isConnected, room]);
+
+    // monitor the room state
     effect(() => {
         setRoom(state.room.value);
     });

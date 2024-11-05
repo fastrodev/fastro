@@ -2,7 +2,7 @@
 // import Ads from "@app/modules/index/index.ads.tsx";
 import { effect } from "https://esm.sh/@preact/signals@1.3.0";
 import { AppContext } from "@app/modules/index/index.context.ts";
-import { useContext, useState } from "preact/hooks";
+import { useContext, useEffect, useState } from "preact/hooks";
 
 // import useWebSocket from "@app/modules/hook/socket.ts";
 
@@ -184,21 +184,30 @@ function Fieldset() {
 export function Navigation() {
     const state = useContext(AppContext);
     const [message, setMessage] = useState<any>();
+    const [room, setRoom] = useState<string | null>();
+    const [data, setData] = useState<any>();
 
     effect(() => {
+        setRoom(state.room.value.id);
         setMessage(state.message.value);
     });
+
+    useEffect(() => {
+        if (!message) return;
+        const d = [...message];
+        setData(d.filter((v) => v.room === room));
+    }, [message, room]);
 
     return (
         <div
             class={`hidden w-2/12 h-screen lg:flex lg:justify-between pe-5 pb-5 pt-5`}
         >
-            {message
+            {data
                 ? (
                     <ul
                         class={`grow overflow-y-auto flex flex-col gap-y-2`}
                     >
-                        {message.map((v: any) => {
+                        {data.map((v: any) => {
                             return (
                                 <li class={`flex items-center gap-x-3`}>
                                     <img

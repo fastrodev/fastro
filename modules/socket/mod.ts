@@ -30,13 +30,14 @@ export default function socketModule(s: Fastro) {
     }
 
     async function broadcastConnection(ctx: Context, data: Data) {
-        const connected = ctx.stores.get("connected")?.entries().toArray();
         const connectedUsers: any[] = [];
-        if (connected) {
-            for (const key in connected) {
-                const [username, { value: { data } }] = connected[key];
+        const entries = ctx.stores.get("connected")?.entries().toArray();
+        if (entries) {
+            for (const key in entries) {
+                const [username, { value: { data } }] = entries[key];
                 connectedUsers.push({
                     username,
+                    room: data.room,
                     avatar_url: data.avatar_url,
                 });
             }
@@ -112,9 +113,9 @@ export default function socketModule(s: Fastro) {
         socket.onclose = async () => {
             const c = ctx.stores.get("connected");
             if (!c) return;
-            const e = c.entries().toArray();
-            for (const key in e) {
-                const [username, { value: { socket, data } }] = e[key];
+            const entries = c.entries().toArray();
+            for (const key in entries) {
+                const [username, { value: { socket, data } }] = entries[key];
                 if (socket && socket.readyState !== WebSocket.OPEN) {
                     c.delete(username);
                     broadcastConnection(ctx, {
@@ -124,7 +125,6 @@ export default function socketModule(s: Fastro) {
                     });
                 }
             }
-
             console.log("DISCONNECTED");
         };
 
