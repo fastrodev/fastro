@@ -31,7 +31,9 @@ export default function socketModule(s: Fastro) {
 
     async function broadcastConnection(ctx: Context, data: Data) {
         const connectedUsers: any[] = [];
-        const entries = ctx.stores.get("connected")?.entries().toArray();
+        const c = ctx.stores.get("connected");
+        if (!c) return;
+        const entries = c.entries().toArray();
         if (entries) {
             for (const key in entries) {
                 const [username, { value: { data } }] = entries[key];
@@ -41,18 +43,9 @@ export default function socketModule(s: Fastro) {
                     avatar_url: data.avatar_url,
                 });
             }
-        }
-
-        const connections = await ctx.stores.get("core")?.get("connections");
-        const sockets = connections.get(data.room);
-        if (!sockets) return;
-        for (const client of sockets) {
-            if (client.readyState !== WebSocket.OPEN) {
-                client.close(1000, "Normal Closure");
-                sockets.delete(client);
-            }
-            if (client.readyState === WebSocket.OPEN) {
-                client.send(JSON.stringify(connectedUsers));
+            for (const key in entries) {
+                const [, { value: { socket } }] = entries[key];
+                socket.send(JSON.stringify(connectedUsers));
             }
         }
     }
@@ -62,15 +55,6 @@ export default function socketModule(s: Fastro) {
         socket: WebSocket,
         data: Data,
     ) {
-        const connections = await ctx.stores.get("core")?.get(
-            "connections",
-        );
-        if (!connections.has(data.room)) {
-            connections.set(data.room, new Set<WebSocket>());
-        }
-        connections.get(data.room)?.add(socket);
-
-        // set connected
         const connected = ctx.stores.get("connected");
         connected?.set(data.user, { data, socket });
     }

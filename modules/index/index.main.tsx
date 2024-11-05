@@ -101,7 +101,6 @@ export function Main(
         id: string;
         img: string;
     }) => {
-        console.log("newMessage", newMessage);
         if (!newMessage.id && !newMessage.msg) return;
         const updatedData = [...data];
         const lastUser = updatedData[updatedData.length - 1];
@@ -178,6 +177,7 @@ export function Main(
             username: props.username,
             avatar_url: props.avatar_url,
         });
+        return () => setRoom(state.room.value);
     }, [room]);
 
     // reset connection if the room changes
