@@ -8,7 +8,7 @@ export function Menu(
 ) {
     return (
         <div
-            class={`hidden w-2/12 min-w-[250px] lg:flex lg:flex-col gap-y-5 pb-5 ps-5 pt-5`}
+            class={`hidden w-2/12 lg:flex lg:flex-col gap-y-5 pb-5 ps-5 pt-5`}
         >
             <Discover />
             <Chat />
