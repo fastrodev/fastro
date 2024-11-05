@@ -183,19 +183,27 @@ function Fieldset() {
 */
 export function Navigation() {
     const state = useContext(AppContext);
-    const [message, setMessage] = useState<any>();
+    const [message, setMessage] = useState<string | null>();
     const [room, setRoom] = useState<string | null>();
     const [data, setData] = useState<any>();
 
     effect(() => {
         setRoom(state.room.value.id);
         setMessage(state.message.value);
+        return () => {
+            setMessage(null);
+            setRoom(null);
+        };
     });
 
     useEffect(() => {
         if (!message) return;
         const d = [...message];
-        setData(d.filter((v) => v.room === room));
+        const dd = d.filter((v: any) => v.room === room);
+        setData(dd);
+        return () => {
+            setData(null);
+        };
     }, [message, room]);
 
     return (
