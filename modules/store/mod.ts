@@ -23,9 +23,7 @@ export async function createCollection(
 }
 
 export default async function storeModule(s: Fastro) {
-    const core = await createCollection("core");
-    core.set("connections", new Map<string, Set<WebSocket>>());
-    s.stores.set("core", core);
+    s.stores.set("core", await createCollection("core"));
     s.stores.set("users", await createCollection("users"));
     s.stores.set("rooms", await createCollection("rooms"));
     s.stores.set("connected", await createCollection("connected"));
