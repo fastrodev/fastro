@@ -18,12 +18,15 @@ interface Data {
 }
 
 export default function socketModule(s: Fastro) {
-    function broadcastMessage(connections: any, room: string, message: string) {
-        const sockets = connections.get(room);
-        if (sockets) {
-            for (const client of sockets) {
-                if (client.readyState === WebSocket.OPEN) {
-                    client.send(message);
+    function broadcastMessage(ctx: Context, room: string, message: string) {
+        const c = ctx.stores.get("connected");
+        if (!c) return;
+        const entries = c.entries().toArray();
+        if (entries) {
+            for (const key in entries) {
+                const [, { value: { socket } }] = entries[key];
+                if (socket.readyState === WebSocket.OPEN) {
+                    socket.send(message);
                 }
             }
         }
@@ -45,7 +48,9 @@ export default function socketModule(s: Fastro) {
             }
             for (const key in entries) {
                 const [, { value: { socket } }] = entries[key];
-                socket.send(JSON.stringify(connectedUsers));
+                if (socket.readyState === WebSocket.OPEN) {
+                    socket.send(JSON.stringify(connectedUsers));
+                }
             }
         }
     }
@@ -56,7 +61,9 @@ export default function socketModule(s: Fastro) {
         data: Data,
     ) {
         const connected = ctx.stores.get("connected");
-        connected?.set(data.user, { data, socket });
+        if (data.user) {
+            connected?.set(data.user, { data, socket });
+        }
     }
 
     const injectData = async (ctx: Context, data: Data) => {
@@ -89,8 +96,7 @@ export default function socketModule(s: Fastro) {
                 return broadcastConnection(ctx, data);
             }
             if (data.type === "message" && data.message?.msg !== "") {
-                const c = await ctx.stores.get("core")?.get("connections");
-                broadcastMessage(c, data.room, JSON.stringify(data.message));
+                broadcastMessage(ctx, data.room, JSON.stringify(data.message));
                 return await injectData(ctx, data);
             }
         };
