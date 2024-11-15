@@ -1,11 +1,10 @@
-import {
-    deleteGithubFile,
-    getMap,
-    mapToRecord,
-    type StoreOptions,
-    uploadFileToGitHub,
-} from "../../utils/octokit.ts";
+import { kv } from "@app/utils/db.ts";
 import { createTaskQueue } from "../../utils/queue.ts";
+
+type StoreOptions = {
+    key: string;
+    namespace?: string;
+} | null;
 
 export class Store<K extends string | number | symbol, V> {
     private map: Map<K, { value: V; expiry?: number }>;
@@ -141,15 +140,12 @@ export class Store<K extends string | number | symbol, V> {
     private commiting = async (options?: StoreOptions) => {
         if (!options) return;
         this.cleanUpExpiredEntries();
-        return await this.saveToGitHub(
-            {
-                token: options?.token,
-                owner: options.owner,
-                repo: options.repo,
-                path: options.path,
-                branch: options?.branch,
-            },
-        );
+        const key = options.namespace
+            ? [options.key, options.namespace]
+            : [options.key];
+        return await kv.atomic()
+            .set(key, this.map)
+            .commit();
     };
 
     /**
@@ -169,20 +165,11 @@ export class Store<K extends string | number | symbol, V> {
     /**
      * Delete file from repository
      */
-    async destroy() {
+    destroy() {
         try {
-            if (!this.options) {
-                throw new Error("Options are needed to destroy.");
-            }
             if (this.intervalId) clearInterval(this.intervalId);
             this.map.clear();
-            return await deleteGithubFile({
-                token: this.options.token,
-                owner: this.options.owner,
-                repo: this.options.repo,
-                path: this.options.path,
-                branch: this.options.branch,
-            });
+            return this;
         } catch (error) {
             throw error;
         }
@@ -190,39 +177,16 @@ export class Store<K extends string | number | symbol, V> {
 
     public async syncMap() {
         if (this.map.size === 0 && this.options) {
-            const map = await getMap<K, V>({
-                token: this.options.token,
-                owner: this.options.owner,
-                repo: this.options.repo,
-                path: this.options.path,
-                branch: this.options.branch,
-            });
+            const res = await kv.get([this.options.key]);
+            // deno-lint-ignore no-explicit-any
+            const map = res.value as Map<any, any>;
             if (!map) return false;
             this.map = map;
             this.cleanUpExpiredEntries();
-            this.commit();
+            await this.commit();
         }
 
         return true;
-    }
-
-    private async saveToGitHub(options: StoreOptions) {
-        try {
-            if (!options || !options.token) {
-                throw new Error("GITHUB_TOKEN is needed");
-            }
-            const opt = {
-                token: options.token,
-                owner: options.owner,
-                repo: options.repo,
-                path: options.path,
-                branch: options.branch,
-                content: JSON.stringify(mapToRecord(this.map)),
-            };
-            return await uploadFileToGitHub(opt);
-        } catch (error) {
-            throw error;
-        }
     }
 
     private cleanUpExpiredEntries(): void {
@@ -233,6 +197,5 @@ export class Store<K extends string | number | symbol, V> {
                 count++;
             }
         }
-        // console.log(`${count} entries deleted`);
     }
 }

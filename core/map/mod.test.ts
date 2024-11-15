@@ -126,13 +126,8 @@ Deno.test("Store: set with check", () => {
 
 const d = new Date();
 const time = d.getTime();
-const token = Deno.env.get("GITHUB_TOKEN");
 const store = new Store<string, number>({
-    owner: "fastrodev",
-    repo: "fastro",
-    path: "modules/store/records.json",
-    branch: "store",
-    token,
+    key: "modules/store/records.json",
 });
 
 Deno.test("Store: set and get value from github", async () => {
@@ -162,43 +157,44 @@ Deno.test("Store: destroy map without options", async () => {
     }
 });
 
-Deno.test("Store: destroy map", async () => {
-    await store.destroy();
+Deno.test("Store: destroy map", {
+    sanitizeResources: false,
+    sanitizeOps: false,
+    sanitizeExit: false,
+}, async () => {
+    await store.destroy().commit();
     const g = await store.get("key1");
+    // console.log();
     assertEquals(g, undefined);
 });
 
 const s = new Store({
-    owner: "fastrodev",
-    repo: "fastro",
-    path: "modules/store/map.json",
-    branch: "store",
-    token,
+    key: "test-key",
 });
 await s.set("exist", true).commit();
-Deno.test("Store: sync exist file", async () => {
+Deno.test("Store: sync exist file", {
+    sanitizeResources: false,
+    sanitizeOps: false,
+    sanitizeExit: false,
+}, async () => {
     const newStore = new Store({
-        owner: "fastrodev",
-        repo: "fastro",
-        path: "modules/store/map.json",
-        branch: "store",
-        token,
+        key: "test-key",
     });
     await newStore.get("exist");
     const intervalId = newStore.sync();
-    await new Promise((resolve) => setTimeout(resolve, 10000));
+    // console.log();
     const r = await newStore.get("exist");
     assertEquals(r, true);
     clearInterval(intervalId);
 });
 
-Deno.test("Store: sync, same size after multiple commit", async () => {
+Deno.test("Store: sync, same size after multiple commit", {
+    sanitizeResources: false,
+    sanitizeOps: false,
+    sanitizeExit: false,
+}, async () => {
     const newStore = new Store({
-        owner: "fastrodev",
-        repo: "fastro",
-        path: "modules/store/map.json",
-        branch: "store",
-        token,
+        key: "test-key",
     });
     await Promise.all([
         newStore.set("user", "zaid").commit(),

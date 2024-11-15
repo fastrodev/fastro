@@ -114,13 +114,17 @@ export const callbackHandler = async (req: HttpRequest, ctx: Context) => {
       }).commit();
     }
 
-    await ctx.stores.get("core")?.set(sessionId, {
+    // await ctx.stores.get("core")?.set(sessionId, {
+    //   id: user.id,
+    //   avatar_url: user.avatar_url,
+    //   login: user.login,
+    // }, 24 * 60 * 60 * 1000)
+    //   .commit();
+    kv.set([sessionId], {
       id: user.id,
       avatar_url: user.avatar_url,
       login: user.login,
-    }, 24 * 60 * 60 * 1000)
-      .commit();
-    kv.set([sessionId], user);
+    });
     return response;
   } catch {
     return new Response(null, { status: STATUS_CODE.InternalServerError });
