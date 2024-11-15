@@ -6,11 +6,12 @@ export async function createMessage(
     options: { userId: string; content: string; title: string },
 ) {
     const store = new Store({
-        token: Deno.env.get("GITHUB_TOKEN"),
-        owner: Deno.env.get("MESSAGE_OWNER") || "fastrodev",
-        repo: Deno.env.get("MESSAGE_REPO") || "fastro",
-        branch: Deno.env.get("MESSAGE_BRANCH") || "store",
-        path: `modules/store/${options.userId}/message.json`,
+        // token: Deno.env.get("GITHUB_TOKEN"),
+        // owner: Deno.env.get("MESSAGE_OWNER") || "fastrodev",
+        // repo: Deno.env.get("MESSAGE_REPO") || "fastro",
+        // branch: Deno.env.get("MESSAGE_BRANCH") || "store",
+        // path: `modules/store/${options.userId}/message.json`,
+        key: "message",
     });
 
     const postId = ulid();
