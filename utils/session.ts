@@ -6,7 +6,7 @@ export async function getSession(req: HttpRequest, _ctx: Context) {
     const sessionId = await getSessionId(req);
     if (!sessionId) return undefined;
     // deno-lint-ignore no-explicit-any
-    const r = (await kv.get([sessionId])).value as any;
+    const r = (await kv.get(["session", sessionId])).value as any;
     if (!r) return;
     const avatar_url = r.avatar_url;
     const html_url = r.html_url;

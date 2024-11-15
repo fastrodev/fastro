@@ -6,6 +6,7 @@ import {
   createHelpers,
 } from "jsr:@deno/kv-oauth@0.11.0";
 import { ulid } from "jsr:@std/ulid/ulid";
+import { DAY } from "jsr:@std/datetime@^0.221.0/constants";
 
 const redirectUri = Deno.env.get("REDIRECT_URI") ??
   "http://localhost:8000/callback";
@@ -114,17 +115,11 @@ export const callbackHandler = async (req: HttpRequest, ctx: Context) => {
       }).commit();
     }
 
-    // await ctx.stores.get("core")?.set(sessionId, {
-    //   id: user.id,
-    //   avatar_url: user.avatar_url,
-    //   login: user.login,
-    // }, 24 * 60 * 60 * 1000)
-    //   .commit();
-    kv.set([sessionId], {
+    kv.set(["session", sessionId], {
       id: user.id,
       avatar_url: user.avatar_url,
       login: user.login,
-    });
+    }, { expireIn: DAY });
     return response;
   } catch {
     return new Response(null, { status: STATUS_CODE.InternalServerError });
