@@ -3,7 +3,7 @@ import { createTaskQueue } from "../../utils/queue.ts";
 
 type StoreOptions = {
     key: string;
-    namespace?: string;
+    namespace?: Array<string>;
 } | null;
 
 export class Store<K extends string | number | symbol, V> {
@@ -140,8 +140,9 @@ export class Store<K extends string | number | symbol, V> {
     private commiting = async (options?: StoreOptions) => {
         if (!options) return;
         this.cleanUpExpiredEntries();
+
         const key = options.namespace
-            ? [options.key, options.namespace]
+            ? [options.key, ...options.namespace]
             : [options.key];
         return await kv.atomic()
             .set(key, this.map)
@@ -178,7 +179,7 @@ export class Store<K extends string | number | symbol, V> {
     public async syncMap() {
         if (this.map.size === 0 && this.options) {
             const key = this.options.namespace
-                ? [this.options.key, this.options.namespace]
+                ? [this.options.key, ...this.options.namespace]
                 : [this.options.key];
             const res = await kv.get(key);
 

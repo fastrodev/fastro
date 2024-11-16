@@ -34,25 +34,19 @@ export default function socketModule(s: Fastro) {
     }
 
     async function broadcastConnection(ctx: Context, data: Data) {
-        const connectedUsers: any[] = [];
         const c = ctx.stores.get("connected");
         if (!c) return;
         const entries = c.entries().toArray();
-        // console.log("broadcastConnection:", JSON.stringify(entries));
-        if (entries) {
-            for (const key in entries) {
-                const [username, { value: { data } }] = entries[key];
-                connectedUsers.push({
-                    username,
-                    room: data.room,
-                    avatar_url: data.avatar_url,
-                });
-            }
-            for (const key in entries) {
-                const [, { value: { socket } }] = entries[key];
-                if (socket.readyState === WebSocket.OPEN) {
-                    socket.send(JSON.stringify(connectedUsers));
-                }
+        const connected = Array.from(entries).map(([, { value }]) => ({
+            username: value.data.username,
+            room: value.data.room,
+            avatar_url: value.data.avatar_url,
+        }));
+
+        for (const key in entries) {
+            const [, { value: { socket } }] = entries[key];
+            if (socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify(connected));
             }
         }
     }
@@ -96,10 +90,14 @@ export default function socketModule(s: Fastro) {
             const data: Data = JSON.parse(event.data);
             await joinRoom(ctx, socket, data);
             if (data.type === "ping") {
-                return broadcastConnection(ctx, data);
+                return await broadcastConnection(ctx, data);
             }
             if (data.type === "message" && data.message?.msg !== "") {
-                broadcastMessage(ctx, data.room, JSON.stringify(data.message));
+                broadcastMessage(
+                    ctx,
+                    data.room,
+                    JSON.stringify(data.message),
+                );
                 return await injectData(ctx, data);
             }
         };
@@ -111,7 +109,7 @@ export default function socketModule(s: Fastro) {
                 const [username, { value: { socket, data } }] = entries[key];
                 if (socket && socket.readyState !== WebSocket.OPEN) {
                     c.delete(username);
-                    broadcastConnection(ctx, {
+                    await broadcastConnection(ctx, {
                         type: "ping",
                         room: data.room,
                         user: data.user,

@@ -4,7 +4,7 @@ import { Store } from "@app/core/map/mod.ts";
 
 export async function createCollection(
     key: string,
-    namespace?: string,
+    ...namespace: Array<string>
 ) {
     const store = new Store<string | number | symbol, any>({
         key,
