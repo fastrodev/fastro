@@ -15,10 +15,16 @@ const useWebSocket = (url: string, room: string, user: string) => {
                 setIsConnected(true);
                 return clearInterval(i);
             }
-            socketRef.current?.send(
-                JSON.stringify({ ...{ type: "ping", room, user }, ...data }),
-            );
-            countRef.current++;
+
+            if (socketRef.current?.readyState === WebSocket.OPEN) {
+                socketRef.current?.send(
+                    JSON.stringify({
+                        ...{ type: "ping", room, user },
+                        ...data,
+                    }),
+                );
+                countRef.current++;
+            }
         }, 1000);
 
         console.log(`WebSocket connection established: ${room}`);
