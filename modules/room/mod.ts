@@ -132,6 +132,7 @@ export default function roomModules(s: Fastro) {
         if (!target) return Response.json([]);
 
         const store = ctx.stores.get("rooms");
+        // console.log(store);
         const entries = store?.entries().toArray();
         if (!entries) return Response.json([]);
         const r: any = [];

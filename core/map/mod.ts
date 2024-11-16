@@ -177,7 +177,11 @@ export class Store<K extends string | number | symbol, V> {
 
     public async syncMap() {
         if (this.map.size === 0 && this.options) {
-            const res = await kv.get([this.options.key]);
+            const key = this.options.namespace
+                ? [this.options.key, this.options.namespace]
+                : [this.options.key];
+            const res = await kv.get(key);
+
             // deno-lint-ignore no-explicit-any
             const map = res.value as Map<any, any>;
             if (!map) return false;

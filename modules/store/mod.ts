@@ -10,6 +10,7 @@ export async function createCollection(
         key,
         namespace,
     });
+
     await store.syncMap();
     return store;
 }

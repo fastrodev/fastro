@@ -22,7 +22,7 @@ export default function socketModule(s: Fastro) {
         const c = ctx.stores.get("connected");
         if (!c) return;
         const entries = c.entries().toArray();
-        console.log("broadcastMessage:", JSON.stringify(entries));
+        // console.log("broadcastMessage:", JSON.stringify(entries));
         if (entries) {
             for (const key in entries) {
                 const [, { value: { socket } }] = entries[key];
@@ -38,7 +38,7 @@ export default function socketModule(s: Fastro) {
         const c = ctx.stores.get("connected");
         if (!c) return;
         const entries = c.entries().toArray();
-        console.log("broadcastConnection:", JSON.stringify(entries));
+        // console.log("broadcastConnection:", JSON.stringify(entries));
         if (entries) {
             for (const key in entries) {
                 const [username, { value: { data } }] = entries[key];
@@ -62,7 +62,7 @@ export default function socketModule(s: Fastro) {
         socket: WebSocket,
         data: Data,
     ) {
-        console.log("joinRoom:", JSON.stringify(data));
+        // console.log("joinRoom:", JSON.stringify(data));
         const connected = ctx.stores.get("connected");
         if (data.user) {
             connected?.set(data.user, { data, socket });
@@ -77,7 +77,7 @@ export default function socketModule(s: Fastro) {
         if (!rs) {
             const store = await createCollection("rooms", data.room);
             await store.set(id, d, DAY).commit();
-            ctx.stores.set(d.room, store);
+            ctx.stores.set(data.room, store);
             rs = store;
         }
 
