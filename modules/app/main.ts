@@ -15,6 +15,8 @@ import roomModules from "@app/modules/room/mod.ts";
 
 const s = new Server();
 
+console.log(Deno.env.get("DENO_KV_ACCESS_TOKEN"));
+
 /** markdown with default folder and prefix */
 s.use(markdownDocs(blogLayout, "post", "blog"));
 
