@@ -85,7 +85,6 @@ async function getUser(accessToken: string) {
     },
   });
   const data = await response.json();
-  kv.set([data.id], data);
   return data;
 }
 
