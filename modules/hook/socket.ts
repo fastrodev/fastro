@@ -30,7 +30,7 @@ const useWebSocket = (url: string, room: string, user: string) => {
             }
 
             console.log(`WebSocket connection closed: ${room}`);
-        }, 100);
+        }, 300);
     }
 
     const connectWebSocket = () => {
@@ -70,6 +70,12 @@ const useWebSocket = (url: string, room: string, user: string) => {
             console.error("WebSocket error:", error);
             // Close the socket on error
             socketRef.current?.close();
+            if (reconnectTimeoutRef.current) {
+                clearTimeout(reconnectTimeoutRef.current);
+                setIsConnected(false);
+                countRef.current = 0;
+                setMessage("");
+            }
         };
     };
 
