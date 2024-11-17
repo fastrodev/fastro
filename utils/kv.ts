@@ -7,7 +7,7 @@ if (args === "reset") {
 
 if (args === "deploy") {
     const kd = await Deno.openKv(
-        "https://api.deno.com/databases/8ce5f998-0c99-465e-971b-b8911d896fed/connect",
+        `https://api.deno.com/databases/${Deno.env.get("DATABASE_ID")}/connect`,
     );
 
     const iter = kd.list({ prefix: [] });
