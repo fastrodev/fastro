@@ -10,7 +10,11 @@ if (args === "deploy") {
         "https://api.deno.com/databases/8ce5f998-0c99-465e-971b-b8911d896fed/connect",
     );
 
-    getAll(kd);
+    const iter = kd.list({ prefix: [] });
+    await Array.fromAsync(iter, ({ key, value }) => {
+        console.log(`[${key}]:`, value);
+        return value;
+    });
 } else {
     getAll(kv);
 }

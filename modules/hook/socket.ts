@@ -11,7 +11,9 @@ const useWebSocket = (url: string, room: string, user: string) => {
 
     function ping(data: any) {
         const i = setInterval(() => {
-            if (countRef.current > 0) {
+            if (
+                countRef.current > 3
+            ) {
                 setIsConnected(true);
                 return clearInterval(i);
             }
@@ -25,7 +27,7 @@ const useWebSocket = (url: string, room: string, user: string) => {
                 );
                 countRef.current++;
             }
-        }, 1000);
+        }, 100);
 
         console.log(`WebSocket connection established: ${room}`);
     }
