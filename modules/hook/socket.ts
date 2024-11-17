@@ -12,7 +12,7 @@ const useWebSocket = (url: string, room: string, user: string) => {
     function ping(data: any) {
         const i = setInterval(() => {
             if (
-                countRef.current > 3
+                countRef.current > 0
             ) {
                 setIsConnected(true);
                 return clearInterval(i);
@@ -26,10 +26,11 @@ const useWebSocket = (url: string, room: string, user: string) => {
                     }),
                 );
                 countRef.current++;
+                return console.log(`WebSocket connection established: ${room}`);
             }
-        }, 100);
 
-        console.log(`WebSocket connection established: ${room}`);
+            console.log(`WebSocket connection closed: ${room}`);
+        }, 100);
     }
 
     const connectWebSocket = () => {
@@ -56,7 +57,13 @@ const useWebSocket = (url: string, room: string, user: string) => {
             console.log(
                 "WebSocket connection closed. Attempting to reconnect...",
             );
-            reconnect();
+            const i = setInterval(() => {
+                if (isConnected) {
+                    return clearInterval(i);
+                }
+                countRef.current++;
+                reconnect(countRef.current);
+            }, 1000);
         };
 
         socketRef.current.onerror = (error) => {
@@ -81,6 +88,9 @@ const useWebSocket = (url: string, room: string, user: string) => {
             socketRef.current?.close();
             if (reconnectTimeoutRef.current) {
                 clearTimeout(reconnectTimeoutRef.current);
+                setIsConnected(false);
+                countRef.current = 0;
+                setMessage("");
             }
         };
     }, [url]);

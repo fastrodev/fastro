@@ -56,10 +56,9 @@ export default function socketModule(s: Fastro) {
         socket: WebSocket,
         data: Data,
     ) {
-        // console.log("joinRoom:", JSON.stringify(data));
         const connected = ctx.stores.get("connected");
         if (data.user) {
-            connected?.set(data.user, { data, socket });
+            connected?.set(data.user, { data, socket }, DAY);
         }
     }
 

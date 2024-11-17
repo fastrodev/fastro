@@ -52,6 +52,6 @@
     "route_middleware": "deno run -A examples/route_middleware.ts",
     "server_rendering": "deno run -A examples/server_rendering.tsx",
     "store": "deno run -A --env examples/store.ts",
-    "kv": "deno run --env -A --unstable-kv utils/kv.ts"
+    "cmd": "deno run --env -A --unstable-kv utils/cmd.ts"
   }
 }
