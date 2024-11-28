@@ -10,7 +10,7 @@ import { AppContext } from "@app/modules/index/index.context.ts";
 function Loader(props: { text: string }) {
   return (
     <div
-      class={`container h-screen w-full flex flex-col justify-center text-center bg-gray-900`}
+      class={`max-w-screen-2xl mx-auto h-screen w-full flex flex-col justify-center text-center bg-gray-900`}
     >
       {props.text}
     </div>

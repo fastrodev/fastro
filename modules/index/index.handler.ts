@@ -29,7 +29,7 @@ export const handler = async (req: HttpRequest, ctx: Context) => {
 
   const ses = await getSession(req, ctx);
   const ws_url = Deno.env.get("DENO_DEPLOYMENT_ID")
-    ? "wss://fastro.deno.dev"
+    ? "wss://fastro.dev"
     : "ws://localhost:8000";
 
   if (ses) {
