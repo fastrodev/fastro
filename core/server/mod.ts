@@ -553,10 +553,10 @@ if (root) fetchProps(root);
         info,
       ) as any;
       if (page) {
-        return await page.handler(
+        return page.handler(
           this.#transformRequest(req, pageParams, pageUrl),
           pageCtx,
-        ) as Promise<Response>;
+        ) as Response;
       }
 
       return await this.#handleStaticFile(req);
