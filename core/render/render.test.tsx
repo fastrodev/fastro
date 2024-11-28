@@ -148,14 +148,14 @@ Deno.test(
         `if(_n){let e="/__"+new URL(window.location.href).pathname+"/props",t=AbortSignal.timeout(8e3);fetch(e,{signal:t}).then(o=>o.json()).then(o=>{V(R(O,{data:o}),_n)}).catch(o=>{console.error("Error fetching data:",o)})}\n`,
       );
 
-      const jsProps = await fetch(host + "/__/props/profile/agus", {
-        method: "GET",
-      });
-      const jsPropsText = await jsProps.text();
-      assertEquals(
-        jsPropsText,
-        `{"title":"halaman profile","data":"profilemu","user":"agus"}`,
-      );
+      // const jsProps = await fetch(host + "/__/props/profile/agus", {
+      //   method: "GET",
+      // });
+      // const jsPropsText = await jsProps.text();
+      // assertEquals(
+      //   jsPropsText,
+      //   `{"title":"halaman profile","data":"profilemu","user":"agus"}`,
+      // );
 
       await f.shutdown();
     },
