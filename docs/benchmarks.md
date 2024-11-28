@@ -4,12 +4,17 @@ description: This is the final output of an internal benchmark run in github act
 image: https://fastro.dev/fastro.png
 ---
 
-This is the final output of an internal benchmark run in [github action](https://github.com/fastrodev/fastro/actions) on `10/5/2024, 10:37:19 PM`. It consists of several simple applications for [specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json). Each is then accessed by the [OHA](https://github.com/hatoo/oha) within 10s. The results are then sorted by the fastest.
+This is the final output of an internal benchmark run in
+[github action](https://github.com/fastrodev/fastro/actions) on
+`10/5/2024, 10:37:19 PM`. It consists of several simple applications for
+[specific purpose](https://github.com/fastrodev/fastro/blob/main/deno.json).
+Each is then accessed by the [OHA](https://github.com/hatoo/oha) within 10s. The
+results are then sorted by the fastest.
 
-You can find the benchmark script in this code: [run.ts](https://github.com/fastrodev/fastro/blob/main/bench/run.ts)
+You can find the benchmark script in this code:
+[run.ts](https://github.com/fastrodev/fastro/blob/main/bench/run.ts)
 
 ## Benchmark results
-
 
 | module                                                                                               |   rps |    % | oha cmd                                                            |
 | :--------------------------------------------------------------------------------------------------- | ----: | ---: | :----------------------------------------------------------------- |

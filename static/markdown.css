@@ -1,24 +1,24 @@
 ul,
 ol {
-    margin: 1em 0;
-    padding: 0;
+  margin: 1em 0;
+  padding: 0;
 }
 
 ul {
-    list-style: disc outside none;
+  list-style: disc outside none;
 }
 
 ol {
-    list-style: decimal outside none;
+  list-style: decimal outside none;
 }
 
 li {
-    display: list-item;
+  display: list-item;
 }
 
 a {
-    color: #007bff;
-    text-decoration: none;
-    cursor: pointer;
-    transition: color 0.2s ease-in-out;
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
 }

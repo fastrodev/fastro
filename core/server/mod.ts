@@ -382,33 +382,31 @@ if (root) fetchProps(root);
     const url = new URL(req.url);
     let key = url.pathname;
     let page: Page = this.#routePage[key];
-    let params: Record<string, string | undefined> | undefined = undefined;
-    if (!page) {
-      const res = this.#getParamsPage(req, this.#routePage);
-      if (res) {
-        const [pg, prm] = res;
-        page = pg;
-        params = prm;
-      }
-    }
     if (!page) return [];
+    let params: Record<string, string | undefined> | undefined = undefined;
+    const res = this.#getParamsPage(req, this.#routePage);
+    if (res) {
+      const [pg, prm] = res;
+      page = pg;
+      params = prm;
+    }
     const ctx = this.serverOptions as Context;
-    ctx.render = <T>(data: T, headers?: Headers) => {
-      const r = new Render(this);
-      key = key === "/" ? "" : key;
-      key = url.origin + "/__/props" + key;
-      return r.render(key, page, data, this.getNonce(), headers);
-    };
     ctx.info = info;
     ctx.next = () => {};
     ctx.url = new URL(req.url);
     ctx.server = this;
-    ctx.send = <T>(data: T, status = 200, headers?: Headers) => {
-      return createResponse(data, status, headers);
-    };
     ctx.kv = this.serverOptions["kv"];
     ctx.options = this.serverOptions;
     ctx.stores = this.stores;
+    ctx.render = async <T>(data: T, headers?: Headers) => {
+      const r = new Render(this);
+      key = key === "/" ? "" : key;
+      key = url.origin + "/__/props" + key;
+      return await r.render(key, page, data, this.getNonce(), headers);
+    };
+    ctx.send = <T>(data: T, status = 200, headers?: Headers) => {
+      return createResponse(data, status, headers);
+    };
     return [page, ctx, params, url];
   };
 
@@ -557,10 +555,10 @@ if (root) fetchProps(root);
         return await page.handler(
           this.#transformRequest(req, pageParams, pageUrl),
           pageCtx,
-        ) as Response;
+        ) as Promise<Response>;
       }
 
-      return this.#handleStaticFile(req);
+      return await this.#handleStaticFile(req);
     };
   };
 

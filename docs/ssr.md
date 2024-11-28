@@ -20,7 +20,7 @@ Create component `modules/web/hello.tsx`
 
 ```tsx
 export const hello = () => {
-    return <h1>Hello</h1>;
+  return <h1>Hello</h1>;
 };
 ```
 
@@ -30,18 +30,18 @@ Create layout `modules/web/app.layout.tsx`
 import { LayoutProps } from "https://fastro.deno.dev/http/server/types.ts";
 
 export function layout(
-    { data, children }: LayoutProps<{ title: string }>,
+  { data, children }: LayoutProps<{ title: string }>,
 ) {
-    return (
-        <html>
-            <head>
-                <title>{data.title}</title>
-            </head>
-            <body id="root">
-                {children}
-            </body>
-        </html>
-    );
+  return (
+    <html>
+      <head>
+        <title>{data.title}</title>
+      </head>
+      <body id="root">
+        {children}
+      </body>
+    </html>
+  );
 }
 ```
 
@@ -55,10 +55,10 @@ import hello from "$fastro/modules/web/hello.page.tsx";
 const f = new fastro();
 
 f.page("/", {
-    component: hello,
-    layout,
-    handler: (_req, ctx) => ctx.render({ title: "Hello world" }),
-    folder: "modules/web",
+  component: hello,
+  layout,
+  handler: (_req, ctx) => ctx.render({ title: "Hello world" }),
+  folder: "modules/web",
 });
 
 f.serve();

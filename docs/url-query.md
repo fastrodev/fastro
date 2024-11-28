@@ -12,8 +12,8 @@ import fastro, { HttpRequest } from "https://fastro.deno.dev/mod.ts";
 const f = new fastro();
 
 f.get("/:user", (req: HttpRequest) => {
-    const data = { user: req.params?.user, title: req.query?.title };
-    return Response.json(data);
+  const data = { user: req.params?.user, title: req.query?.title };
+  return Response.json(data);
 });
 
 await f.serve();

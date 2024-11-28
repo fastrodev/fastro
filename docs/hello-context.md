@@ -12,10 +12,10 @@ import fastro, { Context, HttpRequest } from "https://fastro.deno.dev/mod.ts";
 const f = new fastro();
 
 f.get(
-    "/",
-    (_req: HttpRequest, ctx: Context) => {
-        return ctx.send("Helo world", 200);
-    },
+  "/",
+  (_req: HttpRequest, ctx: Context) => {
+    return ctx.send("Helo world", 200);
+  },
 );
 
 await f.serve();

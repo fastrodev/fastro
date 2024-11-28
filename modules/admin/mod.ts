@@ -4,11 +4,11 @@ import adminLayout from "./admin.layout.tsx";
 import adminHandler from "./admin.handler.tsx";
 
 export default function adminModule(s: Fastro) {
-    s.page("/mod/admin", {
-        component: adminPage,
-        layout: adminLayout,
-        handler: adminHandler,
-        folder: "modules/admin",
-    });
-    return s;
+  s.page("/mod/admin", {
+    component: adminPage,
+    layout: adminLayout,
+    handler: adminHandler,
+    folder: "modules/admin",
+  });
+  return s;
 }

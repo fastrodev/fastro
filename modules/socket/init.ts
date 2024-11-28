@@ -6,16 +6,16 @@ const id = ulid();
 const time = ulidToDate(id);
 
 export const initialData: DataType[] = [
-    {
-        type: "message",
-        username: "admin",
-        img: "https://avatars.githubusercontent.com/in/15368?v=4",
-        messages: [
-            {
-                msg: "Hello world!",
-                time,
-                id,
-            },
-        ],
-    },
+  {
+    type: "message",
+    username: "admin",
+    img: "https://avatars.githubusercontent.com/in/15368?v=4",
+    messages: [
+      {
+        msg: "Hello world!",
+        time,
+        id,
+      },
+    ],
+  },
 ];

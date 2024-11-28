@@ -1,13 +1,14 @@
 export default function BoltSvg(props: { height?: string; width?: string }) {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height={props.height || "24px"}
-            width={props.width || "24px"}
-            fill="#e8eaed"
-            viewBox="0 -960 960 960"
-        >
-            <path d="m320-80 40-280H160l360-520h80l-40 320h240L400-80h-80Z" />
-        </svg>
-    );
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height={props.height || 18}
+      fill={"#ffffff"}
+      viewBox="327.782 -762.789 303.276 564.689"
+      width={props.width || 18}
+    >
+      <path d="M 456 -200 L 630 -540 L 510 -540 L 510 -760 L 330 -420 L 456 -420 L 456 -200 Z M 480 -400 Z">
+      </path>
+    </svg>
+  );
 }

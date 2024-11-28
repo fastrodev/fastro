@@ -182,57 +182,57 @@ function Fieldset() {
 }
 */
 export function Navigation() {
-    const state = useContext(AppContext);
-    const [message, setMessage] = useState<string | null>();
-    const [room, setRoom] = useState<string | null>();
-    const [data, setData] = useState<any>();
+  const state = useContext(AppContext);
+  const [message, setMessage] = useState<string | null>();
+  const [room, setRoom] = useState<string | null>();
+  const [data, setData] = useState<any>();
 
-    effect(() => {
-        setRoom(state.room.value.id);
-        setMessage(state.message.value);
-        return () => {
-            setMessage(null);
-            setRoom(null);
-        };
-    });
+  effect(() => {
+    setRoom(state.room.value.id);
+    setMessage(state.message.value);
+    return () => {
+      setMessage(null);
+      setRoom(null);
+    };
+  });
 
-    useEffect(() => {
-        if (!message) return;
-        const d = [...message];
-        const dd = d.filter((v: any) => v.room === room);
-        setData(dd);
-        return () => {
-            setData(null);
-        };
-    }, [message, room]);
+  useEffect(() => {
+    if (!message) return;
+    const d = [...message];
+    const dd = d.filter((v: any) => v.room === room);
+    setData(dd);
+    return () => {
+      setData(null);
+    };
+  }, [message, room]);
 
-    return (
-        <div
-            class={`hidden w-2/12 h-screen lg:flex lg:justify-between pe-5 pb-5 pt-5`}
-        >
-            {data
-                ? (
-                    <ul
-                        class={`grow overflow-y-auto flex flex-col gap-y-2`}
-                    >
-                        {data.map((v: any) => {
-                            return (
-                                <li class={`flex items-center gap-x-3`}>
-                                    <img
-                                        src={v.avatar_url}
-                                        width={24}
-                                        class={`rounded-full`}
-                                        loading={"lazy"}
-                                    />
-                                    <span class={`text-base`}>
-                                        {v.username}
-                                    </span>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                )
-                : <div class={`grow`}></div>}
-        </div>
-    );
+  return (
+    <div
+      class={`hidden w-2/12 h-screen lg:flex lg:justify-between pe-5 pb-5 pt-5`}
+    >
+      {data
+        ? (
+          <ul
+            class={`grow overflow-y-auto flex flex-col gap-y-2`}
+          >
+            {data.map((v: any) => {
+              return (
+                <li class={`flex items-center gap-x-3`}>
+                  <img
+                    src={v.avatar_url}
+                    width={24}
+                    class={`rounded-full`}
+                    loading={"lazy"}
+                  />
+                  <span class={`text-base`}>
+                    {v.username}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        )
+        : <div class={`grow`}></div>}
+    </div>
+  );
 }

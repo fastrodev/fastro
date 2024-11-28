@@ -44,11 +44,11 @@ you want to save to Github repository.
 import { Store } from "https://fastro.dev/core/map/mod.ts";
 
 const store = new Store({
-    owner: "fastrodev",
-    repo: "fastro",
-    branch: "store",
-    path: "modules/store/store.json",
-    token: Deno.env.get("GITHUB_TOKEN"),
+  owner: "fastrodev",
+  repo: "fastro",
+  branch: "store",
+  path: "modules/store/store.json",
+  token: Deno.env.get("GITHUB_TOKEN"),
 });
 ```
 
@@ -117,12 +117,12 @@ const f = new fastro();
 f.store.set("hello", "hello world");
 
 f.get(
-    "/",
-    (_req: HttpRequest, ctx: Context) => {
-        // get the value
-        const res = ctx.store.get("hello");
-        return Response.json({ value: res });
-    },
+  "/",
+  (_req: HttpRequest, ctx: Context) => {
+    // get the value
+    const res = ctx.store.get("hello");
+    return Response.json({ value: res });
+  },
 );
 
 await f.serve();
