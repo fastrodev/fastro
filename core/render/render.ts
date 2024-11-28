@@ -4,7 +4,7 @@ import {
   h,
   JSX,
   renderToString,
-  renderToStringAsync,
+  // renderToStringAsync,
   VNode,
 } from "../server/deps.ts";
 import { Fastro, FunctionComponent, Page } from "../server/types.ts";
@@ -118,7 +118,7 @@ es.onmessage = function(e) {
     return layout;
   };
 
-  render = async <T = any>(
+  render = <T = any>(
     key: string,
     p: Page,
     data: T,
@@ -143,7 +143,7 @@ es.onmessage = function(e) {
         nonce,
       );
     }
-    const html = "<!DOCTYPE html>" + await renderToStringAsync(app);
+    const html = "<!DOCTYPE html>" + renderToString(app);
     const headers = hdr ? hdr : new Headers({
       "content-type": "text/html",
       "x-request-id": new Date().getTime().toString(),

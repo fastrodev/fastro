@@ -23,6 +23,7 @@ import {
 import { EsbuildMod } from "../build/esbuildMod.ts";
 import { Store } from "../map/mod.ts";
 import { createTaskQueue } from "@app/utils/queue.ts";
+import { ulid } from "jsr:@std/ulid/ulid";
 
 export function checkReferer(req: Request) {
   const referer = req.headers.get("referer");
@@ -86,7 +87,7 @@ export default class Server implements Fastro {
   }
   getNonce(): string {
     if (this.#nonce === "") {
-      this.#nonce = crypto.randomUUID().replace(/-/g, "");
+      this.#nonce = ulid();
     }
     return this.#nonce;
   }
@@ -398,11 +399,11 @@ if (root) fetchProps(root);
     ctx.kv = this.serverOptions["kv"];
     ctx.options = this.serverOptions;
     ctx.stores = this.stores;
-    ctx.render = async <T>(data: T, headers?: Headers) => {
+    ctx.render = <T>(data: T, headers?: Headers) => {
       const r = new Render(this);
       key = key === "/" ? "" : key;
       key = url.origin + "/__/props" + key;
-      return await r.render(key, page, data, this.getNonce(), headers);
+      return r.render(key, page, data, this.getNonce(), headers);
     };
     ctx.send = <T>(data: T, status = 200, headers?: Headers) => {
       return createResponse(data, status, headers);

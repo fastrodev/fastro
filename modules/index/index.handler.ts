@@ -32,29 +32,29 @@ export const handler = async (req: HttpRequest, ctx: Context) => {
     ? "wss://fastro.dev"
     : "ws://localhost:8000";
 
-  if (ses) {
-    return ctx.render({
+  const obj = ses
+    ? {
       title: "Under construction ~ Home",
       isLogin: true,
       avatar_url: ses?.avatar_url,
       html_url: ses?.html_url,
       ws_url,
       username: ses?.username,
-    });
-  }
+    }
+    : {
+      title: "Fast & Modular Web Framework",
+      description:
+        "Enhance SSR web app maintainability through a flat modular architecture",
+      image: "https://fastro.dev/fastro.png",
+      start: Deno.env.get("ENV") === "DEVELOPMENT"
+        ? "http://localhost:8000/docs/start"
+        : "https://fastro.dev/docs/start",
+      baseUrl: Deno.env.get("ENV") === "DEVELOPMENT"
+        ? "http://localhost:8000"
+        : "https://fastro.dev",
+      new: "Using Queues to Avoid Race Conditions",
+      destination: "blog/queue",
+    };
 
-  return ctx.render({
-    title: "Fast & Modular Web Framework",
-    description:
-      "Enhance SSR web app maintainability through a flat modular architecture",
-    image: "https://fastro.dev/fastro.png",
-    start: Deno.env.get("ENV") === "DEVELOPMENT"
-      ? "http://localhost:8000/docs/start"
-      : "https://fastro.dev/docs/start",
-    baseUrl: Deno.env.get("ENV") === "DEVELOPMENT"
-      ? "http://localhost:8000"
-      : "https://fastro.dev",
-    new: "Using Queues to Avoid Race Conditions",
-    destination: "blog/queue",
-  });
+  return await ctx.render(obj);
 };
