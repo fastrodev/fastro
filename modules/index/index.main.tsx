@@ -7,7 +7,7 @@ import useFetch from "@app/modules/hook/fetch.ts";
 import type { DataType, RoomType } from "@app/modules/types/mod.ts";
 import { initialData } from "@app/modules/socket/init.ts";
 import { AppContext } from "@app/modules/index/index.context.ts";
-import { effect } from "https://esm.sh/@preact/signals@1.3.0";
+import { effect } from "@preact/signals";
 import MessageInput from "@app/modules/index/index.input.tsx";
 
 function ListMessage(props: { data: DataType[] }) {

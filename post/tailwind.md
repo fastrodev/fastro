@@ -16,7 +16,7 @@ you can now style your web app with Tailwind CSS in a super easy way.
 Create `tailwind.config.ts` file.
 
 ```ts
-import { type Config } from "npm:tailwindcss@3.3.5";
+import { type Config } from "npm:tailwindcss@3.4.15";
 export default {
   content: [
     "./modules/**/*.tsx",

@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 // import Ads from "@app/modules/index/index.ads.tsx";
-import { effect } from "https://esm.sh/@preact/signals@1.3.0";
+import { effect } from "@preact/signals";
 import { AppContext } from "@app/modules/index/index.context.ts";
 import { useContext, useEffect, useState } from "preact/hooks";
 

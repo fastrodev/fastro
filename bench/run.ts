@@ -1,5 +1,5 @@
 import { delay } from "jsr:@std/async@^0.224.1";
-import { markdownTable } from "https://esm.sh/markdown-table@3.0.2";
+import { markdownTable } from "npm:markdown-table@3.0.2";
 const time = 10;
 
 async function oha(url?: string) {

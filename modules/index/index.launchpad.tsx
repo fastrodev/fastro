@@ -4,7 +4,7 @@ import { Menu } from "@app/modules/index/index.menu.tsx";
 import useFetch from "@app/modules/hook/fetch.ts";
 import { DataType, RoomType } from "@app/modules/types/mod.ts";
 import { useContext } from "preact/hooks";
-import { effect } from "https://esm.sh/@preact/signals@1.3.0";
+import { effect } from "@preact/signals";
 import { AppContext } from "@app/modules/index/index.context.ts";
 
 function Loader(props: { text: string }) {
