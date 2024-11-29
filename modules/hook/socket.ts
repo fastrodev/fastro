@@ -25,8 +25,7 @@ const useWebSocket = (url: string, room: string, user: string) => {
             ...data,
           }),
         );
-        countRef.current++;
-        return console.log(`WebSocket connection established: ${room}`);
+        return countRef.current++;
       }
 
       console.log(`WebSocket connection closed: ${room}`);

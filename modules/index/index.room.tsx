@@ -12,9 +12,7 @@ export function Room(
   const state = useContext(AppContext);
   const { data } = useFetch(`/api/room/${props.id}`);
 
-  const handleChange = (
-    e: JSX.TargetedEvent<HTMLInputElement, InputEvent>,
-  ) => {
+  const handleChange = (e: JSX.TargetedEvent<HTMLInputElement, InputEvent>) => {
     const target = e.target as HTMLInputElement;
     setSelected(target.value);
     state.room.value = data as {
@@ -33,13 +31,7 @@ export function Room(
         name="room"
         type="radio"
         value={props.id}
-        onInput={(e) =>
-          handleChange(
-            e as JSX.TargetedEvent<
-              HTMLInputElement,
-              InputEvent
-            >,
-          )}
+        onChange={handleChange}
         checked={selected === props.id}
         disabled={props.disabled}
         class="w-4 h-4 text-blue-600 bg-gray-100 focus:ring-blue-600 ring-offset-gray-700 focus:ring-offset-gray-700 focus:ring-2 border-gray-500"
