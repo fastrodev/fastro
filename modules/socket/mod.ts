@@ -60,7 +60,7 @@ export default function socketModule(s: Fastro) {
     const connected = ctx.stores.get("connected");
     console.log("connected", connected);
     if (data.user) {
-      connected?.set(data.user, { data, socket }, DAY);
+      connected?.set(data.user, { data, socket });
     }
   }
 
