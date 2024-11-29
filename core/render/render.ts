@@ -4,6 +4,7 @@ import {
   h,
   JSX,
   renderToString,
+  renderToStringAsync,
   // renderToStringAsync,
   VNode,
 } from "../server/deps.ts";
@@ -118,7 +119,7 @@ es.onmessage = function(e) {
     return layout;
   };
 
-  render = <T = any>(
+  render = async <T = any>(
     key: string,
     p: Page,
     data: T,
@@ -143,10 +144,10 @@ es.onmessage = function(e) {
         nonce,
       );
     }
-    const html = "<!DOCTYPE html>" + renderToString(app);
+    const html = "<!DOCTYPE html>" + await renderToStringAsync(app);
     const headers = hdr ? hdr : new Headers({
       "content-type": "text/html",
-      "x-request-id": new Date().getTime().toString(),
+      "x-request-id": Date.now().toString(),
       "Content-Security-Policy":
         `script-src 'self' 'unsafe-inline' 'nonce-${nonce}' https: http: ; object-src 'none'; base-uri 'none';`,
     });

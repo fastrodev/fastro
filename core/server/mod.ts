@@ -399,11 +399,11 @@ if (root) fetchProps(root);
     ctx.kv = this.serverOptions["kv"];
     ctx.options = this.serverOptions;
     ctx.stores = this.stores;
-    ctx.render = <T>(data: T, headers?: Headers) => {
+    ctx.render = async <T>(data: T, headers?: Headers) => {
       const r = new Render(this);
       key = key === "/" ? "" : key;
       key = url.origin + "/__/props" + key;
-      return r.render(key, page, data, this.getNonce(), headers);
+      return await r.render(key, page, data, this.getNonce(), headers);
     };
     ctx.send = <T>(data: T, status = 200, headers?: Headers) => {
       return createResponse(data, status, headers);
