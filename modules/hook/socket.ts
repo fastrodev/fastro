@@ -57,7 +57,7 @@ const useWebSocket = (url: string, room: string, user: string) => {
       setIsConnected(false);
 
       // Attempt to reconnect after a delay
-      reconnectTimeoutRef.current = setTimeout(() => {
+      reconnectTimeoutRef.current = setInterval(() => {
         connectWebSocket();
       }, 3000); // Reconnect after 3 seconds
     };
