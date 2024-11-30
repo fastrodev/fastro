@@ -181,6 +181,67 @@ function Fieldset() {
     );
 }
 */
+
+function Item(props: { data: any }) {
+  const [show, setShow] = useState<any>(false);
+
+  const handleClick = (_v: any) => {
+    setShow(!show);
+  };
+
+  return (
+    <li
+      class={`relative flex items-center justify-between gap-x-3`}
+    >
+      <div
+        class={`flex items-center gap-x-3`}
+      >
+        <img
+          src={props.data.avatar_url}
+          width={24}
+          class={`rounded-full`}
+          loading={"lazy"}
+        />
+        <span class={`text-base`}>
+          {props.data.username}
+        </span>
+      </div>
+
+      <div class={`cursor-pointer`} onClick={() => handleClick(props.data)}>
+        <svg
+          class="w-4 h-4"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="12"
+          height="12"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1"
+            d="m19 9-7 7-7-7"
+          />
+        </svg>
+      </div>
+      <div
+        class={`absolute ${
+          show ? "" : "hidden"
+        } flex flex-col text-xs mt-24 w-full z-10 bg-black border-t border-r border-l border-b rounded-md`}
+      >
+        <div class={`border-b p-1`}>
+          Send Message
+        </div>
+        <div class={`p-1`}>
+          Profile
+        </div>
+      </div>
+    </li>
+  );
+}
+
 export function Navigation() {
   const state = useContext(AppContext);
   const [message, setMessage] = useState<string | null>();
@@ -216,19 +277,7 @@ export function Navigation() {
             class={`grow overflow-y-auto flex flex-col gap-y-2`}
           >
             {data.map((v: any) => {
-              return (
-                <li class={`flex items-center gap-x-3`}>
-                  <img
-                    src={v.avatar_url}
-                    width={24}
-                    class={`rounded-full`}
-                    loading={"lazy"}
-                  />
-                  <span class={`text-base`}>
-                    {v.username}
-                  </span>
-                </li>
-              );
+              return <Item data={v} />;
             })}
           </ul>
         )
