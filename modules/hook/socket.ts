@@ -25,11 +25,12 @@ const useWebSocket = (url: string, room: string, user: string) => {
             ...data,
           }),
         );
-        return countRef.current++;
+        countRef.current++;
+        console.log("ws ping:", room);
+      } else {
+        console.log("ws close:", room);
       }
-
-      console.log(`WebSocket connection closed: ${room}`);
-    }, 300);
+    }, 500);
   }
 
   useEffect(() => {
@@ -52,12 +53,14 @@ const useWebSocket = (url: string, room: string, user: string) => {
     };
 
     socketRef.current.onclose = () => {
+      console.error("WebSocket close");
       setIsConnected(false);
     };
 
     socketRef.current.onerror = (error) => {
       console.error("WebSocket error:", error);
       // Close the socket on error
+      setIsConnected(false);
       socketRef.current?.close();
     };
 
