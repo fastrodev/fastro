@@ -178,6 +178,13 @@ export function Main(
 
   // reset connection if the room changes
   useEffect(() => {
+    if (isConnected) {
+      ping({
+        room: room.id,
+        username: props.username,
+        avatar_url: props.avatar_url,
+      });
+    }
     return () => countRef.current = 0;
   }, [isConnected, room]);
 

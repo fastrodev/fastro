@@ -57,9 +57,9 @@ const useWebSocket = (url: string, room: string, user: string) => {
       setIsConnected(false);
 
       // Attempt to reconnect after a delay
-      reconnectTimeoutRef.current = setInterval(() => {
+      reconnectTimeoutRef.current = setTimeout(() => {
         connectWebSocket();
-      }, 3000); // Reconnect after 3 seconds
+      }, 2000); // Reconnect after 2 seconds
     };
 
     socketRef.current.onerror = (error) => {
@@ -78,7 +78,7 @@ const useWebSocket = (url: string, room: string, user: string) => {
         socketRef.current.close();
       }
       if (reconnectTimeoutRef.current) {
-        clearInterval(reconnectTimeoutRef.current);
+        clearTimeout(reconnectTimeoutRef.current);
       }
     };
   }, [url]);
