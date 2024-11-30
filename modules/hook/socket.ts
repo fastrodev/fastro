@@ -11,9 +11,7 @@ const useWebSocket = (url: string, room: string, user: string) => {
 
   function ping(data: any) {
     const i = setInterval(() => {
-      if (
-        countRef.current > 1
-      ) {
+      if (countRef.current > 1) {
         setIsConnected(true);
         return clearInterval(i);
       }
@@ -33,10 +31,12 @@ const useWebSocket = (url: string, room: string, user: string) => {
     }, 500);
   }
 
-  useEffect(() => {
+  const connectWebSocket = () => {
     socketRef.current = new WebSocket(url);
+
     socketRef.current.onopen = () => {
       setIsConnected(true);
+      countRef.current = 0; // Reset ping count on successful connection
       while (messageQueueRef.current.length > 0) {
         const queuedMessage = messageQueueRef.current.shift();
         if (queuedMessage) {
@@ -53,8 +53,13 @@ const useWebSocket = (url: string, room: string, user: string) => {
     };
 
     socketRef.current.onclose = () => {
-      console.error("WebSocket close");
+      console.error("WebSocket closed. Attempting to reconnect...");
       setIsConnected(false);
+
+      // Attempt to reconnect after a delay
+      reconnectTimeoutRef.current = setTimeout(() => {
+        connectWebSocket();
+      }, 3000); // Reconnect after 3 seconds
     };
 
     socketRef.current.onerror = (error) => {
@@ -63,9 +68,18 @@ const useWebSocket = (url: string, room: string, user: string) => {
       setIsConnected(false);
       socketRef.current?.close();
     };
+  };
+
+  useEffect(() => {
+    connectWebSocket(); // Initial connection
 
     return () => {
-      socketRef.current?.close();
+      if (socketRef.current) {
+        socketRef.current.close();
+      }
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+      }
     };
   }, [url]);
 
