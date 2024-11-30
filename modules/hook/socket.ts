@@ -78,7 +78,7 @@ const useWebSocket = (url: string, room: string, user: string) => {
         socketRef.current.close();
       }
       if (reconnectTimeoutRef.current) {
-        clearTimeout(reconnectTimeoutRef.current);
+        clearInterval(reconnectTimeoutRef.current);
       }
     };
   }, [url]);
