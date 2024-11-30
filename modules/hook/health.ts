@@ -27,7 +27,7 @@ const useHealthCheck = () => {
   useEffect(() => {
     fetchHealthStatus();
 
-    const intervalId = setInterval(fetchHealthStatus, 5000);
+    const intervalId = setInterval(fetchHealthStatus, 30 * 1000);
 
     return () => clearInterval(intervalId);
   }, []);
