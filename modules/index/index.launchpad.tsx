@@ -6,6 +6,7 @@ import { DataType, RoomType } from "@app/modules/types/mod.ts";
 import { useContext } from "preact/hooks";
 import { effect } from "@preact/signals";
 import { AppContext } from "@app/modules/index/index.context.ts";
+import useHealthCheck from "@app/modules/hook/health.ts";
 
 function Loader(props: { text: string }) {
   return (
@@ -17,6 +18,10 @@ function Loader(props: { text: string }) {
   );
 }
 
+interface HealthStatus {
+  status: string;
+}
+
 export default function Launchpad(
   props: { avatar_url: string; username: string; ws_url: string },
 ) {
@@ -24,6 +29,7 @@ export default function Launchpad(
   const { data: rooms, loading: loadRoom } = useFetch<RoomType[]>(
     "/api/room",
   );
+  const { healthStatus: _status, error: _err } = useHealthCheck();
 
   const url = `api/message/${state.room.value.id}/${props.username}`;
   const { data: messages, loading: loadMessage, error } = useFetch<

@@ -4,6 +4,10 @@ import index from "@app/modules/index/index.layout.tsx";
 import { handler } from "@app/modules/index/index.handler.ts";
 
 export default function (s: Fastro) {
+  s.get("/health", (req) => {
+    console.log(req.url);
+    return Response.json({ message: "ok" });
+  });
   s.page("/", {
     component: indexApp,
     layout: index,

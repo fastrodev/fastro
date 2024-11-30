@@ -37,7 +37,7 @@ export default function socketModule(s: Fastro) {
     const c = ctx.stores.get("connected");
     if (!c) return;
     const entries = c.entries().toArray();
-    console.log("entries", JSON.stringify(entries));
+    // console.log("entries", JSON.stringify(entries));
     const connected = Array.from(entries).map(([, { value }]) => ({
       username: value.data.username,
       room: value.data.room,
@@ -58,7 +58,7 @@ export default function socketModule(s: Fastro) {
     data: Data,
   ) {
     const connected = ctx.stores.get("connected");
-    console.log("connected", connected);
+    // console.log("connected", connected);
     if (data.user) {
       connected?.set(data.user, { data, socket });
     }

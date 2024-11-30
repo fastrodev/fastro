@@ -177,7 +177,6 @@ export class Store<K extends string | number | symbol, V> {
   }
 
   public async syncMap() {
-    console.log(`size`, this.map.size);
     if (this.map.size === 0 && this.options) {
       const key = this.options.namespace
         ? [this.options.key, ...this.options.namespace]
