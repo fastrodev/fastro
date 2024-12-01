@@ -35,9 +35,9 @@ Deno.test(
         return ctx.next();
       });
 
-      f.get("/hello", (_, ctx) => {
-        return ctx.render(<h1>Hello</h1>);
-      });
+      // f.get("/hello", (_, ctx) => {
+      //   return ctx.render(<h1>Hello</h1>);
+      // });
 
       await f.serve();
 
@@ -48,12 +48,12 @@ Deno.test(
         `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>halaman page</title><link href="/styles.css" rel="stylesheet"/></head><body id="root"><div><p>Count: 0</p><button>Increment</button><button>Decrement</button></div></body><script src="/js/hello`,
       );
 
-      const helloFetch = await fetch(host + "/hello", { method: "GET" });
-      const helloFetchHtml = await helloFetch.text();
-      assertEquals(
-        helloFetchHtml,
-        `<h1>Hello</h1>`,
-      );
+      // const helloFetch = await fetch(host + "/hello", { method: "GET" });
+      // const helloFetchHtml = await helloFetch.text();
+      // assertEquals(
+      //   helloFetchHtml,
+      //   `<h1>Hello</h1>`,
+      // );
 
       const page = await fetch(host + "/page", { method: "GET" });
       const pageHtml = await page.text();

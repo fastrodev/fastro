@@ -499,11 +499,11 @@ if (root) fetchProps(root);
   ) => {
     const ctx = options as Context;
     const r = new Render(this);
-    if (!page) {
-      ctx.render = <T>(jsx: T) => {
-        return r.renderJsx(jsx as JSX.Element);
-      };
-    }
+    // if (!page) {
+    //   ctx.render = <T>(jsx: T) => {
+    //     return r.renderJsx(jsx as JSX.Element);
+    //   };
+    // }
     ctx.send = <T>(data: T, status = 200) => {
       return createResponse(data, status);
     };
