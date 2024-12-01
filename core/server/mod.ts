@@ -3,7 +3,7 @@ import {
   contentType,
   encodeHex,
   extname,
-  JSX,
+  // JSX,
   STATUS_CODE,
   STATUS_TEXT,
 } from "./deps.ts";
@@ -260,12 +260,14 @@ export default class Server implements Fastro {
 `;
     const str = `${debug}import { h, hydrate } from "preact";
 import app from "../${folder}${name}.page.tsx";
+function getXRequestId() {
+    const metaTag = document.querySelector('meta[name="x-request-id"]');
+    return metaTag ? metaTag.content : null;
+}
 async function fetchProps(root: HTMLElement) {
   try {
     const parsedUrl = new URL(window.location.href);
-    const key = parsedUrl.pathname === "/" ? "" : parsedUrl.pathname;
-    const url = "/__/props" + key; 
-    const response = await fetch(url);
+    const response = await fetch("/__/" + getXRequestId());
     const data = await response.json();
     if (!data) throw new Error("undefined");
     hydrate(h(app, { data }), root);
@@ -359,12 +361,16 @@ if (root) fetchProps(root);
     });
   };
 
+  // TODO
   #addPropsEndpoint = () => {
-    const path = "/__/props/:key*";
+    const path = "/__/:key*";
     this.add("GET", path, (req, _ctx) => {
       const ref = checkReferer(req);
       if (!getDevelopment() && ref) return ref;
-      const data = this.serverOptions[req.url];
+      const key = req.params?.key ? req.params?.key : "";
+      const data = this.serverOptions[key];
+      // console.log(req.params?.key);
+      // console.log(`data ${req.params?.key} ===>`, data);
       return new Response(JSON.stringify(data), {
         headers: new Headers({
           "Content-Type": "application/json",
@@ -381,7 +387,7 @@ if (root) fetchProps(root);
     info: Deno.ServeHandlerInfo,
   ) => {
     const url = new URL(req.url);
-    let key = url.pathname;
+    const key = url.pathname;
     let page: Page = this.#routePage[key];
     if (!page) return [];
     let params: Record<string, string | undefined> | undefined = undefined;
@@ -401,8 +407,8 @@ if (root) fetchProps(root);
     ctx.stores = this.stores;
     ctx.render = async <T>(data: T, headers?: Headers) => {
       const r = new Render(this);
-      key = key === "/" ? "" : key;
-      key = url.origin + "/__/props" + key;
+      // key = key === "/" ? "" : key;
+      // key = url.origin + "/__/props" + key;
       return await r.render(key, page, data, this.getNonce(), headers);
     };
     ctx.send = <T>(data: T, status = 200, headers?: Headers) => {
@@ -495,10 +501,10 @@ if (root) fetchProps(root);
     info: Deno.ServeHandlerInfo,
     url: URL,
     options: Record<string, any>,
-    page?: boolean,
+    _page?: boolean,
   ) => {
     const ctx = options as Context;
-    const r = new Render(this);
+    const _r = new Render(this);
     // if (!page) {
     //   ctx.render = <T>(jsx: T) => {
     //     return r.renderJsx(jsx as JSX.Element);

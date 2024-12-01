@@ -56,7 +56,8 @@ export const handler = async (req: HttpRequest, ctx: Context) => {
       destination: "blog/queue",
     };
 
-  const x = await ctx.render(obj);
-  console.log("x", x.headers);
-  return x;
+  return await ctx.render(obj);
+  // console.log("x", x.headers);
+  // console.log("ses", ses);
+  // return x;
 };

@@ -1,6 +1,5 @@
-// deno-lint-ignore-file no-explicit-any
 import {
-  ComponentChild,
+  // ComponentChild,
   h,
   JSX,
   renderToString,
@@ -93,10 +92,24 @@ es.onmessage = function(e) {
     component: FunctionComponent,
     script = "",
     nonce: string,
+    id?: string,
   ) => {
     const customScript = this.#loadJs(component.name.toLowerCase(), nonce) +
       script;
-    const children = layout.props.children as ComponentChild[];
+    // deno-lint-ignore no-explicit-any
+    const children = layout.props.children as any;
+    // deno-lint-ignore no-explicit-any
+    const head = children[0] as any;
+    if (head && head.type === "head") {
+      // deno-lint-ignore no-explicit-any
+      const c = head.props.children as any;
+      // @ts-ignore: ignore meta
+      c.push(h("meta", {
+        name: "x-request-id",
+        content: id,
+      }));
+    }
+
     children.push(
       h("script", {
         defer: true,
@@ -119,14 +132,16 @@ es.onmessage = function(e) {
     return layout;
   };
 
+  // deno-lint-ignore no-explicit-any
   render = async <T = any>(
-    key: string,
+    _key: string,
     p: Page,
     data: T,
     nonce: string,
     hdr?: Headers,
   ) => {
-    this.#server.serverOptions[key] = data;
+    const id = Date.now().toString();
+    this.#server.serverOptions[id] = data;
 
     const children = typeof p.component == "function"
       ? h(p.component as FunctionComponent, { data, nonce })
@@ -135,6 +150,7 @@ es.onmessage = function(e) {
       children,
       data,
       nonce,
+      // deno-lint-ignore no-explicit-any
     }) as any;
     if (app.props.children && typeof p.component == "function") {
       app = this.#mutate(
@@ -142,12 +158,13 @@ es.onmessage = function(e) {
         p.component,
         p.script,
         nonce,
+        id,
       );
     }
     const html = "<!DOCTYPE html>" + await renderToStringAsync(app);
     const headers = hdr ? hdr : new Headers({
       "content-type": "text/html",
-      "x-request-id": Date.now().toString(),
+      "x-request-id": id,
       "Content-Security-Policy":
         `script-src 'self' 'unsafe-inline' 'nonce-${nonce}' https: http: ; object-src 'none'; base-uri 'none';`,
     });

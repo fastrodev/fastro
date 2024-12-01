@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 function fetchWithRetry(url) {
   fetch(url)
     .then((response) => response.text())

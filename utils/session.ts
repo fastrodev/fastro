@@ -7,6 +7,10 @@ export async function getSession(req: HttpRequest, _ctx: Context) {
   if (!sessionId) return undefined;
   // deno-lint-ignore no-explicit-any
   const r = (await kv.get(["session", sessionId])).value as any;
+  // console.log("r", {
+  //   sessionId,
+  //   login: r.login,
+  // });
   if (!r) return;
   const avatar_url = r.avatar_url;
   const html_url = r.html_url;
