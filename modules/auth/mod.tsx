@@ -127,11 +127,12 @@ export const callbackHandler = async (req: HttpRequest, ctx: Context) => {
 
 export const signoutHandler = async (req: HttpRequest, ctx: Context) => {
   const sessionId = await getSessionId(req);
-  if (!sessionId) throw new Error("session ID is undefined");
-  const store = ctx.stores.get("core");
-  if (store) {
-    store.delete(sessionId);
-    await store.commit();
+  if (sessionId) {
+    const store = ctx.stores.get("core");
+    if (store) {
+      store.delete(sessionId);
+      await store.commit();
+    }
     return await signOut(req);
   }
 };
