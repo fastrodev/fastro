@@ -56,5 +56,5 @@ export const handler = async (req: HttpRequest, ctx: Context) => {
       destination: "blog/queue",
     };
 
-  return await ctx.render(obj);
+  return ctx.render(obj);
 };

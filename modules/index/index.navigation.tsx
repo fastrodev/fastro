@@ -189,6 +189,16 @@ function Item(props: { data: any }) {
     setShow(!show);
   };
 
+  const handleSendMessage = (_v: any) => {
+    // create room
+    // add to users chats
+    throw new Error("Function not implemented.");
+  };
+
+  const handleSeeProfile = (_v: any) => {
+    throw new Error("Function not implemented.");
+  };
+
   return (
     <li
       class={`relative flex items-center justify-between gap-x-3`}
@@ -229,13 +239,19 @@ function Item(props: { data: any }) {
       <div
         class={`absolute ${
           show ? "" : "hidden"
-        } flex flex-col text-xs mt-24 w-full z-10 bg-black border-t border-r border-l border-b rounded-md`}
+        } flex flex-col text-xs mt-[118px] w-full z-10 bg-black border-t border-r border-l border-b rounded-md`}
       >
-        <div class={`border-b p-1`}>
+        <div
+          class={`border-b p-3 cursor-pointer`}
+          onClick={() => handleSendMessage(props.data)}
+        >
           Send Message
         </div>
-        <div class={`p-1`}>
-          Profile
+        <div
+          class={`p-3 cursor-pointer`}
+          onClick={() => handleSeeProfile(props.data)}
+        >
+          See Profile
         </div>
       </div>
     </li>

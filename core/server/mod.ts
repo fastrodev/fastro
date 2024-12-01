@@ -461,7 +461,7 @@ if (root) fetchProps(root);
       if (!match) continue;
       const x = await m.handler(
         this.#transformRequest(req, match?.pathname.groups, u),
-        this.#transformCtx(info, u, this.serverOptions),
+        this.#transformCtx(info, u, this.serverOptions, false),
       ) as any;
 
       if (x instanceof Response) {
@@ -495,12 +495,15 @@ if (root) fetchProps(root);
     info: Deno.ServeHandlerInfo,
     url: URL,
     options: Record<string, any>,
+    page?: boolean,
   ) => {
     const ctx = options as Context;
     const r = new Render(this);
-    ctx.render = <T>(jsx: T) => {
-      return r.renderJsx(jsx as JSX.Element);
-    };
+    if (!page) {
+      ctx.render = <T>(jsx: T) => {
+        return r.renderJsx(jsx as JSX.Element);
+      };
+    }
     ctx.send = <T>(data: T, status = 200) => {
       return createResponse(data, status);
     };
@@ -529,7 +532,7 @@ if (root) fetchProps(root);
       }
     }
 
-    const ctx = this.#transformCtx(info, url, this.serverOptions);
+    const ctx = this.#transformCtx(info, url, this.serverOptions, false);
     return this.#record[id] = { handler, ctx, params, url };
   };
 
