@@ -239,8 +239,14 @@ function Item(props: { data: any }) {
       <div
         class={`absolute ${
           show ? "" : "hidden"
-        } flex flex-col text-xs mt-[118px] w-full z-10 bg-black border-t border-r border-l border-b rounded-md`}
+        } flex flex-col justify-end text-xs mt-[10rem] w-full z-10 bg-black border-t border-r border-l border-b rounded-md`}
       >
+        <div
+          class={`border-b p-3 cursor-pointer`}
+          onClick={() => handleSeeProfile(props.data)}
+        >
+          See Profile
+        </div>
         <div
           class={`border-b p-3 cursor-pointer`}
           onClick={() => handleSendMessage(props.data)}
@@ -249,9 +255,9 @@ function Item(props: { data: any }) {
         </div>
         <div
           class={`p-3 cursor-pointer`}
-          onClick={() => handleSeeProfile(props.data)}
+          onClick={() => handleSendMessage(props.data)}
         >
-          See Profile
+          Save Contact
         </div>
       </div>
     </li>

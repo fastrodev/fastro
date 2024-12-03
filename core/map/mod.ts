@@ -189,9 +189,10 @@ export class Store<K extends string | number | symbol, V> {
       this.map = map;
       this.cleanUpExpiredEntries();
       await this.commit();
+    } else {
+      console.log("debug this.map.size ==>", this.map.size);
+      return true;
     }
-
-    return true;
   }
 
   private cleanUpExpiredEntries(): void {
