@@ -98,7 +98,7 @@ export default function socketModule(s: Fastro) {
       if (res && data.type === "ping") {
         return await broadcastConnection(ctx, data);
       }
-      if (res && data.type === "message" && data.message?.msg !== "") {
+      if (data.type === "message" && data.message?.msg !== "") {
         broadcastMessage(
           ctx,
           data.room,
