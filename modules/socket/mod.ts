@@ -107,7 +107,7 @@ export default function socketModule(s: Fastro) {
         return await injectData(ctx, data);
       }
 
-      console.log("socket.onmessage-fail to connect", data);
+      // console.log("socket.onmessage-fail to connect", data);
     };
     socket.onclose = async () => {
       const c = ctx.stores.get("connected");
