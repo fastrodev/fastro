@@ -58,10 +58,14 @@ export default function socketModule(s: Fastro) {
     data: Data,
   ) {
     const connected = ctx.stores.get("connected");
-    console.log("connected", connected);
+    console.log("joinRoom-connected", connected);
+    console.log("joinRoom-data", data);
     if (data.user) {
       connected?.set(data.user, { data, socket });
+      return true;
     }
+
+    return false;
   }
 
   const injectData = async (ctx: Context, data: Data) => {
@@ -89,11 +93,12 @@ export default function socketModule(s: Fastro) {
 
     socket.onmessage = async (event) => {
       const data: Data = JSON.parse(event.data);
-      await joinRoom(ctx, socket, data);
-      if (data.type === "ping") {
+      const res = await joinRoom(ctx, socket, data);
+      console.log("socket.onmessage-res", res);
+      if (res && data.type === "ping") {
         return await broadcastConnection(ctx, data);
       }
-      if (data.type === "message" && data.message?.msg !== "") {
+      if (res && data.type === "message" && data.message?.msg !== "") {
         broadcastMessage(
           ctx,
           data.room,
@@ -101,6 +106,8 @@ export default function socketModule(s: Fastro) {
         );
         return await injectData(ctx, data);
       }
+
+      console.log("socket.onmessage-fail to connect", data);
     };
     socket.onclose = async () => {
       const c = ctx.stores.get("connected");
