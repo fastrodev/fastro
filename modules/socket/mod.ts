@@ -22,7 +22,7 @@ export default function socketModule(s: Fastro) {
     const c = ctx.stores.get("connected");
     if (!c) return;
     const entries = c.entries().toArray();
-    console.log("broadcastMessage:", JSON.stringify(entries));
+    console.log("broadcastMessage:", entries);
     if (entries) {
       for (const key in entries) {
         const [, { value: { socket } }] = entries[key];
@@ -37,7 +37,7 @@ export default function socketModule(s: Fastro) {
     const c = ctx.stores.get("connected");
     if (!c) return;
     const entries = c.entries().toArray();
-    // console.log("entries", JSON.stringify(entries));
+    console.log("broadcastConnection", entries);
     const connected = Array.from(entries).map(([, { value }]) => ({
       username: value.data.username,
       room: value.data.room,
