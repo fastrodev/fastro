@@ -22,7 +22,7 @@ export default function socketModule(s: Fastro) {
     const c = ctx.stores.get("connected");
     if (!c) return;
     const entries = c.entries().toArray();
-    // console.log("broadcastMessage:", JSON.stringify(entries));
+    console.log("broadcastMessage:", JSON.stringify(entries));
     if (entries) {
       for (const key in entries) {
         const [, { value: { socket } }] = entries[key];
