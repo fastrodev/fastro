@@ -62,10 +62,7 @@ export default function socketModule(s: Fastro) {
     console.log("joinRoom-data", data);
     if (data.user) {
       connected?.set(data.user, { data, socket });
-      return true;
     }
-
-    return false;
   }
 
   const injectData = async (ctx: Context, data: Data) => {
@@ -93,9 +90,8 @@ export default function socketModule(s: Fastro) {
 
     socket.onmessage = async (event) => {
       const data: Data = JSON.parse(event.data);
-      const res = await joinRoom(ctx, socket, data);
-      console.log("socket.onmessage-res", res);
-      if (res && data.type === "ping") {
+      if (data.type === "ping") {
+        await joinRoom(ctx, socket, data);
         return await broadcastConnection(ctx, data);
       }
       if (data.type === "message" && data.message?.msg !== "") {
