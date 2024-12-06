@@ -94,13 +94,11 @@ export default function socketModule(s: Fastro) {
       }
     };
     socket.onclose = async () => {
-      const c = ctx.stores.get("connected");
-      if (!c) return;
-      const entries = c.entries().toArray();
+      const entries = connected.entries().toArray();
       for (const key in entries) {
         const [username, { value: { socket, data } }] = entries[key];
         if (socket && socket.readyState !== WebSocket.OPEN) {
-          c.delete(username);
+          connected.delete(username);
           await broadcastConnection({
             type: "ping",
             room: data.room,
