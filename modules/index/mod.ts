@@ -5,7 +5,7 @@ import { handler } from "@app/modules/index/index.handler.ts";
 
 export default function (s: Fastro) {
   s.get("/health", (req) => {
-    console.log(`${Deno.hostname()}:`, req.url);
+    console.log(`${Deno.hostname()} - ${s.getNonce()}:`, req.url);
     return Response.json({ message: "ok" });
   });
   s.page("/", {
