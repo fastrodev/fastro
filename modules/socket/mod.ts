@@ -21,20 +21,15 @@ export default function socketModule(s: Fastro) {
   const connected = new Map<string, any>();
   console.log("s.getNonce:", s.getNonce());
 
-  function broadcastMessage(ctx: Context, room: string, message: string) {
+  function broadcastMessage(message: string) {
     const entries = connected.entries().toArray();
-    if (entries) {
-      for (const key in entries) {
-        const [, { socket }] = entries[key];
-        if (socket.readyState === WebSocket.OPEN) {
-          socket.send(message);
-        }
-      }
+    for (const key in entries) {
+      const [, { socket }] = entries[key];
+      socket.send(message);
     }
   }
 
   async function broadcastConnection(
-    ctx: Context,
     data: Data,
     socket: WebSocket,
   ) {
@@ -82,14 +77,10 @@ export default function socketModule(s: Fastro) {
       }
       const data: Data = JSON.parse(event.data);
       if (data.type === "ping") {
-        return await broadcastConnection(ctx, data, socket);
+        return await broadcastConnection(data, socket);
       }
       if (data.type === "message" && data.message?.msg !== "") {
-        broadcastMessage(
-          ctx,
-          data.room,
-          JSON.stringify(data.message),
-        );
+        broadcastMessage(JSON.stringify(data.message));
         return await injectData(ctx, data);
       }
     };
@@ -101,7 +92,7 @@ export default function socketModule(s: Fastro) {
         const [username, { value: { socket, data } }] = entries[key];
         if (socket && socket.readyState !== WebSocket.OPEN) {
           c.delete(username);
-          await broadcastConnection(ctx, {
+          await broadcastConnection({
             type: "ping",
             room: data.room,
             user: data.user,
