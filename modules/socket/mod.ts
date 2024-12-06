@@ -46,9 +46,7 @@ export default function socketModule(s: Fastro) {
 
     for (const key in entries) {
       const [, { value: { socket } }] = entries[key];
-      if (socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify(connected));
-      }
+      socket.send(JSON.stringify(connected));
     }
   }
 
@@ -58,8 +56,8 @@ export default function socketModule(s: Fastro) {
     data: Data,
   ) {
     const connected = ctx.stores.get("connected");
-    console.log("joinRoom-connected", connected);
-    console.log("joinRoom-data", data);
+    // console.log("joinRoom-connected", connected);
+    // console.log("joinRoom-data", data);
     if (data.user) {
       connected?.set(data.user, { data, socket });
     }
@@ -89,6 +87,10 @@ export default function socketModule(s: Fastro) {
     };
 
     socket.onmessage = async (event) => {
+      if (socket.readyState !== WebSocket.OPEN) {
+        console.log("socket.readyState", socket.readyState);
+        return;
+      }
       const data: Data = JSON.parse(event.data);
       if (data.type === "ping") {
         await joinRoom(ctx, socket, data);
