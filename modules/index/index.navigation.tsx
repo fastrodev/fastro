@@ -205,7 +205,7 @@ function Item(props: { data: any }) {
       class={`relative flex items-center justify-between gap-x-3`}
     >
       <div
-        class={`flex items-center gap-x-3`}
+        class={`select-none flex items-center gap-x-3`}
       >
         <img
           src={props.data.avatar_url}
@@ -218,13 +218,19 @@ function Item(props: { data: any }) {
         </span>
       </div>
 
-      <div class={`cursor-pointer`} onClick={() => handleClick(props.data)}>
+      <div
+        class={`cursor-pointer`}
+        onClick={(e) => {
+          e.preventDefault();
+          handleClick(props.data);
+        }}
+      >
         <ArrowDownSvg />
       </div>
       <div
         class={`absolute ${
           show ? "" : "hidden"
-        } flex flex-col justify-end text-xs mt-[10rem] w-full z-10 bg-black border-t border-r border-l border-b rounded-md`}
+        } select-none flex flex-col justify-end text-xs mt-[10rem] w-full z-10 bg-black border-t border-r border-l border-b rounded-md`}
       >
         <div
           class={`border-b p-3 cursor-pointer`}

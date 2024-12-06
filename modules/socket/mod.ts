@@ -94,9 +94,10 @@ export default function socketModule(s: Fastro) {
       }
     };
     socket.onclose = async () => {
+      console.log("DISCONNECTED");
       const entries = connected.entries().toArray();
       for (const key in entries) {
-        const [username, { value: { socket, data } }] = entries[key];
+        const [username, { socket, data }] = entries[key];
         if (socket && socket.readyState !== WebSocket.OPEN) {
           connected.delete(username);
           await broadcastConnection({
@@ -106,7 +107,6 @@ export default function socketModule(s: Fastro) {
           }, socket);
         }
       }
-      console.log("DISCONNECTED");
     };
 
     socket.onerror = (error) => console.error("ERROR:", error);
