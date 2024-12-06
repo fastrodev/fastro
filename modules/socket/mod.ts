@@ -18,14 +18,14 @@ interface Data {
 }
 
 export default function socketModule(s: Fastro) {
+  const connected = new Map<string, any>();
+  console.log("s.getNonce:", s.getNonce());
+
   function broadcastMessage(ctx: Context, room: string, message: string) {
-    const c = ctx.stores.get("connected");
-    if (!c) return;
-    const entries = c.entries().toArray();
-    // console.log("broadcastMessage:", entries);
+    const entries = connected.entries().toArray();
     if (entries) {
       for (const key in entries) {
-        const [, { value: { socket } }] = entries[key];
+        const [, { socket }] = entries[key];
         if (socket.readyState === WebSocket.OPEN) {
           socket.send(message);
         }
@@ -33,33 +33,22 @@ export default function socketModule(s: Fastro) {
     }
   }
 
-  async function broadcastConnection(ctx: Context, data: Data) {
-    const c = ctx.stores.get("connected");
-    if (!c) return;
-    const entries = c.entries().toArray();
-    // console.log("broadcastConnection", entries);
-    const connected = Array.from(entries).map(([, { value }]) => ({
-      username: value.data.username,
-      room: value.data.room,
-      avatar_url: value.data.avatar_url,
+  async function broadcastConnection(
+    ctx: Context,
+    data: Data,
+    socket: WebSocket,
+  ) {
+    connected.set(data.user, { data, socket });
+    const entries = connected.entries().toArray();
+    const cc = Array.from(entries).map(([, { data }]) => ({
+      username: data.username,
+      room: data.room,
+      avatar_url: data.avatar_url,
     }));
 
     for (const key in entries) {
-      const [, { value: { socket } }] = entries[key];
-      socket.send(JSON.stringify(connected));
-    }
-  }
-
-  async function joinRoom(
-    ctx: Context,
-    socket: WebSocket,
-    data: Data,
-  ) {
-    const connected = ctx.stores.get("connected");
-    // console.log("joinRoom-connected", connected);
-    // console.log("joinRoom-data", data);
-    if (data.user) {
-      connected?.set(data.user, { data, socket });
+      const [, { socket }] = entries[key];
+      socket.send(JSON.stringify(cc));
     }
   }
 
@@ -93,8 +82,7 @@ export default function socketModule(s: Fastro) {
       }
       const data: Data = JSON.parse(event.data);
       if (data.type === "ping") {
-        await joinRoom(ctx, socket, data);
-        return await broadcastConnection(ctx, data);
+        return await broadcastConnection(ctx, data, socket);
       }
       if (data.type === "message" && data.message?.msg !== "") {
         broadcastMessage(
@@ -104,8 +92,6 @@ export default function socketModule(s: Fastro) {
         );
         return await injectData(ctx, data);
       }
-
-      // console.log("socket.onmessage-fail to connect", data);
     };
     socket.onclose = async () => {
       const c = ctx.stores.get("connected");
@@ -119,7 +105,7 @@ export default function socketModule(s: Fastro) {
             type: "ping",
             room: data.room,
             user: data.user,
-          });
+          }, socket);
         }
       }
       console.log("DISCONNECTED");
