@@ -19,14 +19,16 @@ interface Data {
 
 export default function socketModule(s: Fastro) {
   const connected = new Map<string, any>();
-  console.log("s.getNonce:", s.getNonce());
 
   function broadcastMessage(message: string) {
     const entries = connected.entries().toArray();
     for (const key in entries) {
       const [, { socket }] = entries[key];
       if (socket.readyState === WebSocket.OPEN) {
+        console.log("s.getNonce:", s.getNonce());
         socket.send(message);
+      } else {
+        socket.close();
       }
     }
   }
@@ -46,7 +48,10 @@ export default function socketModule(s: Fastro) {
     for (const key in entries) {
       const [, { socket }] = entries[key];
       if (socket.readyState === WebSocket.OPEN) {
+        console.log("s.getNonce:", s.getNonce());
         socket.send(JSON.stringify(cc));
+      } else {
+        socket.close();
       }
     }
   }
