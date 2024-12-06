@@ -25,7 +25,9 @@ export default function socketModule(s: Fastro) {
     const entries = connected.entries().toArray();
     for (const key in entries) {
       const [, { socket }] = entries[key];
-      socket.send(message);
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(message);
+      }
     }
   }
 
@@ -43,7 +45,9 @@ export default function socketModule(s: Fastro) {
 
     for (const key in entries) {
       const [, { socket }] = entries[key];
-      socket.send(JSON.stringify(cc));
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify(cc));
+      }
     }
   }
 
