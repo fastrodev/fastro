@@ -25,7 +25,7 @@ export default function socketModule(s: Fastro) {
     for (const key in entries) {
       const [, { socket }] = entries[key];
       if (socket.readyState === WebSocket.OPEN) {
-        console.log("s.getNonce:", s.getNonce());
+        // console.log("s.getNonce:", s.getNonce());
         socket.send(message);
       } else {
         socket.close();
@@ -38,6 +38,7 @@ export default function socketModule(s: Fastro) {
     socket: WebSocket,
   ) {
     connected.set(data.user, { data, socket });
+    console.log(`connected ${s.getNonce()}:`, connected);
     const entries = connected.entries().toArray();
     const cc = Array.from(entries).map(([, { data }]) => ({
       username: data.username,
@@ -48,7 +49,7 @@ export default function socketModule(s: Fastro) {
     for (const key in entries) {
       const [, { socket }] = entries[key];
       if (socket.readyState === WebSocket.OPEN) {
-        console.log("s.getNonce:", s.getNonce());
+        // console.log("s.getNonce:", s.getNonce());
         socket.send(JSON.stringify(cc));
       } else {
         socket.close();

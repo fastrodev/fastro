@@ -84,11 +84,9 @@ export default class Server implements Fastro {
     this.serverOptions = options ?? {};
     this.#handler = this.#createHandler();
     this.#addPropsEndpoint();
+    this.#nonce = ulid();
   }
   getNonce(): string {
-    if (this.#nonce === "") {
-      this.#nonce = ulid();
-    }
     return this.#nonce;
   }
   get(
