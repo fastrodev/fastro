@@ -12,9 +12,10 @@
   },
   "imports": {
     "@app/": "./",
-    "preact": "npm:preact@^10.25.0",
-    "@preact/signals": "npm:@preact/signals@^1.2.3",
-    "preact-render-to-string": "npm:preact-render-to-string@^6.5.11"
+    "preact": "npm:preact@^10.26.0",
+    "@preact/signals": "npm:@preact/signals@^2.0.1",
+    "preact-render-to-string": "npm:preact-render-to-string@^6.5.13",
+    "preact/jsx-runtime": "npm:preact@10.26.0/jsx-runtime"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
@@ -22,7 +23,7 @@
   },
   "nodeModulesDir": "auto",
   "tasks": {
-    "start": "ENV=DEVELOPMENT deno run --env --unstable-kv -A --watch modules/app/main.ts --debug",
+    "start": "ENV=DEVELOPMENT deno run --env --unstable-kv -A --watch modules/app/wait.ts --debug",
     "build": "deno run --env -A --unstable-kv  modules/app/main.ts --build ",
     "prod": "deno run --env --unstable-kv -A modules/app/main.ts",
     "test": "rm -rf .hydrate && rm -rf cov && deno test --env --unstable-kv -A --coverage=cov && deno coverage cov",
