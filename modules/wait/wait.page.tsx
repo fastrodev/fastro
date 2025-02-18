@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
-import { JSX } from "preact/jsx-runtime";
 import { useTypingAnimation } from "@app/hooks/useTypingAnimation.ts";
+import { JSX } from "preact/jsx-runtime";
 
 export default function Wait() {
   const [email, setEmail] = useState("");
@@ -259,8 +259,9 @@ export default function Wait() {
     }
   };
 
-  const handleChange = (e: JSX.TargetedEvent<HTMLInputElement, InputEvent>) => {
-    setEmail((e.target as HTMLInputElement).value);
+  // Replace handleChange function
+  const handleChange = (e: { currentTarget: { value: string } }) => {
+    setEmail(e.currentTarget.value);
   };
 
   const toggleTheme = () => {
@@ -393,7 +394,7 @@ export default function Wait() {
                         type="email"
                         placeholder="Enter your email address"
                         value={email}
-                        onChange={handleChange}
+                        onInput={handleChange}
                         required
                         className={`w-full p-3 backdrop-blur-sm border rounded-lg
                         focus:outline-none focus:ring-2 focus:ring-blue-500 
