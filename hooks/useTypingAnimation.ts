@@ -16,12 +16,9 @@ export function useTypingAnimation({
   maxDelay = 70,
 }: UseTypingAnimationProps) {
   const [displayText, setDisplayText] = useState("");
-  const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
     setDisplayText("");
-    setIsDone(false);
-
     if (!shouldType) return;
 
     let timeoutId: number;
@@ -35,7 +32,6 @@ export function useTypingAnimation({
         setDisplayText(text.slice(0, currentIndex));
 
         if (currentIndex === text.length) {
-          setIsDone(true);
           if (onComplete) onComplete();
         } else {
           currentIndex++;
@@ -53,5 +49,5 @@ export function useTypingAnimation({
     };
   }, [text, shouldType, minDelay, maxDelay]);
 
-  return { displayText, isDone };
+  return { displayText };
 }
