@@ -20,7 +20,7 @@ export default function layout(
           content="black-translucent"
         />
         <title>
-          {data.title} | Fastro
+          {data.title} | Fastro Solutions
         </title>
         <meta property="og:site_name" content="Fastro" />
         <meta name="description" content={data.description} />
