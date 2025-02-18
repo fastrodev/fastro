@@ -160,7 +160,7 @@ export default function Wait() {
               <>
                 <div className="py-2 sm:py-3 md:py-4 lg:py-5 min-h-[120px] sm:min-h-[140px] md:min-h-[160px] lg:min-h-[180px] flex items-center">
                   <h2
-                    className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 
+                    className={`text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl 
                       font-extrabold mb-0 sm:mb-3 md:mb-4
                       leading-[1.4] sm:leading-[1.5] md:leading-[1.6]
                       tracking-tight md:tracking-tighter
@@ -169,10 +169,13 @@ export default function Wait() {
                       isDark
                         ? "bg-gradient-to-br from-gray-200 to-gray-600"
                         : "bg-gradient-to-br from-gray-800 to-gray-600"
-                    } bg-clip-text text-transparent transition-opacity duration-500`}
+                    } bg-clip-text text-transparent transition-opacity duration-500
+                      drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]`}
                   >
                     <span className="block py-2">
-                      {displayText}
+                      <span className="[text-shadow:_0_0_10px_rgba(255,255,255,0.1)]">
+                        {displayText}
+                      </span>
                       <span className="inline-block w-0.5 sm:w-1 
                           h-[1em] ml-0.5 sm:ml-1 
                           animate-pulse bg-current" />
@@ -201,9 +204,9 @@ export default function Wait() {
                     />
                     <button
                       type="submit"
-                      className={`w-full text-white py-3 px-4 rounded-lg
-                            text-lg font-semibold transition-colors
-                            ${themeStyles.button}`}
+                      className={`w-full text-white py-2.5 sm:py-3 px-4 rounded-lg
+                        text-base sm:text-lg font-semibold transition-colors
+                        ${themeStyles.button}`}
                     >
                       Join Waitlist
                     </button>
