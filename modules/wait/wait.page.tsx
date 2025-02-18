@@ -220,7 +220,7 @@ export default function Wait() {
         <div
           className={`flex-grow flex flex-col justify-center items-center 
             backdrop-blur-lg bg-white/10 dark:bg-black/10
-            border border-gray-200/20 dark:border-gray-800/20
+            border border-gray-200/20 dark:border-gray-100/20
             rounded-2xl shadow-2xl
             p-6 sm:p-8
             ${themeStyles.text}
