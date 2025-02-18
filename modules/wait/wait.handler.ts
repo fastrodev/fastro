@@ -3,7 +3,7 @@ import addEmail from "@app/modules/wait/wait.service.ts";
 
 export default async function waitHandler(_req: HttpRequest, ctx: Context) {
   return await ctx.render({
-    title: "Inventory Management & Purchasing Solutions",
+    title: "Aplikasi Inventory & Purchasing",
     description:
       "Inventory management & purchasing solutions for small businesses.",
   });
