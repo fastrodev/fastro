@@ -1,7 +1,8 @@
 import { useEffect, useState } from "preact/hooks";
+import { JSX } from "preact/jsx-runtime";
 
 interface UseTypingAnimationProps {
-  text: string;
+  text: string | JSX.Element;
   shouldType?: boolean;
   onComplete?: () => void;
   minDelay?: number;
@@ -28,7 +29,7 @@ export function useTypingAnimation({
     const typeNextCharacter = () => {
       if (!isActive) return;
 
-      if (currentIndex <= text.length) {
+      if ((typeof text === "string") && currentIndex <= text.length) {
         setDisplayText(text.slice(0, currentIndex));
 
         if (currentIndex === text.length) {
