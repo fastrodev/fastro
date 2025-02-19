@@ -368,6 +368,45 @@ export const CategoryIcons = {
       <path d="M9.828 9.172a4 4 0 1 0 0 5.656a10 10 0 0 0 2.172 -2.828a10 10 0 0 1 2.172 -2.828a4 4 0 1 1 0 5.656a10 10 0 0 1 -2.172 -2.828a10 10 0 0 0 -2.172 -2.828" />
     </svg>
   ),
+
+  Forecast: ({ className = "", size = 72 }: IconProps): JSX.Element => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={className}
+      class="icon icon-tabler icons-tabler-outline icon-tabler-brain"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M15.5 13a3.5 3.5 0 0 0 -3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8" />
+      <path d="M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1 -7 0v-1.8" />
+      <path d="M17.5 16a3.5 3.5 0 0 0 0 -7h-.5" />
+      <path d="M19 9.3v-2.8a3.5 3.5 0 0 0 -7 0" />
+      <path d="M6.5 16a3.5 3.5 0 0 1 0 -7h.5" />
+      <path d="M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10" />
+    </svg>
+  ),
+
+  Over: ({ className = "", size = 72 }: IconProps): JSX.Element => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      class="icon icon-tabler icons-tabler-filled icon-tabler-egg-cracked"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M11.236 2.066l-1.694 5.647l-.029 .123a1 1 0 0 0 .406 .978l2.764 1.974l-1.551 2.716a1 1 0 1 0 1.736 .992l2 -3.5l.052 -.105a1 1 0 0 0 -.339 -1.205l-2.918 -2.085l1.623 -5.41c3.641 1.074 6.714 6.497 6.714 11.892c0 4.59 -3.273 7.71 -8 7.917c-4.75 0 -8 -3.21 -8 -7.917c0 -5.654 3.372 -11.344 7.236 -12.017" />
+    </svg>
+  ),
 };
 
 export const getIconForHeading = (
@@ -435,7 +474,15 @@ export const getIconForHeading = (
   }
 
   if (heading.match(/moving/i)) {
-    return <CategoryIcons.Moving className={baseClass} />;
+    return <CategoryIcons.Analysis className={baseClass} />;
+  }
+
+  if (heading.match(/forecast/i)) {
+    return <CategoryIcons.Forecast className={baseClass} />;
+  }
+
+  if (heading.match(/over/i)) {
+    return <CategoryIcons.Over className={baseClass} />;
   }
 
   return <CategoryIcons.Inventory className={baseClass} />;
