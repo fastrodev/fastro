@@ -79,7 +79,7 @@ export default function Wait() {
       "Budget Purchasing Sering Over?",
       "Kontrol budget dengan limit system",
       "Aktifkan kontrol budget",
-      getIconForHeading("Budget", isDark),
+      getIconForHeading("Over", isDark),
     ],
     [
       "Data Harga Supplier Berantakan?",
