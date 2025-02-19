@@ -326,9 +326,9 @@ export default function Wait() {
                 {/* Main Content Area - Update flex structure */}
                 <div className="flex flex-col flex-1 min-h-[50vh] justify-between">
                   {/* Content Section */}
-                  <div className="flex-initial">
+                  <div className="flex flex-col gap-y-0">
                     {/* Heading Section */}
-                    <div className="flex flex-col gap-8">
+                    <div className="flex-initial">
                       <div className="py-2 sm:py-3 md:py-4 lg:py-5 min-h-[100px] sm:min-h-[120px] md:min-h-[140px] lg:min-h-[160px] flex items-center">
                         <h2
                           className={`text-[2.5rem] sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl 
@@ -356,7 +356,7 @@ export default function Wait() {
 
                     {/* Answer Section */}
                     {showAnswer && (
-                      <div className="w-full max-w-md mx-auto opacity-0 animate-fade-in mt-6">
+                      <div className="w-full max-w-md mx-auto opacity-0 animate-fade-in">
                         <p
                           className={`text-base sm:text-xl text-left ${themeStyles.answer}`}
                         >
@@ -364,63 +364,69 @@ export default function Wait() {
                         </p>
                       </div>
                     )}
+                  </div>
 
-                    {/* CTA Section */}
-                    {showCTA && (
-                      <div className="w-full max-w-md mx-auto opacity-0 animate-fade-in mt-6">
-                        <p
-                          className={`text-base sm:text-xl text-left font-medium ${themeStyles.cta}`}
-                        >
-                          {ctaText}
-                        </p>
+                  <div className="flex-grow flex items-center justify-center min-h-[120px]">
+                    {nextQueued && (
+                      <div className="flex gap-2">
+                        <div
+                          className={`w-3 h-3 rounded-full ${
+                            isDark ? "bg-blue-400/50" : "bg-blue-500/50"
+                          } animate-[bounce_1s_ease-in-out_infinite]`}
+                          style={{ animationDelay: "0s" }}
+                        />
+                        <div
+                          className={`w-3 h-3 rounded-full ${
+                            isDark ? "bg-blue-400/50" : "bg-blue-500/50"
+                          } animate-[bounce_1s_ease-in-out_infinite]`}
+                          style={{ animationDelay: "0.2s" }}
+                        />
+                        <div
+                          className={`w-3 h-3 rounded-full ${
+                            isDark ? "bg-blue-400/50" : "bg-blue-500/50"
+                          } animate-[bounce_1s_ease-in-out_infinite]`}
+                          style={{ animationDelay: "0.4s" }}
+                        />
                       </div>
                     )}
                   </div>
 
-                  {/* Centered Animation */}
-                  {nextQueued && (
-                    <div className="flex-initial flex justify-center items-center py-8">
-                      <div className="flex space-x-2">
-                        <div
-                          className="w-2 h-2 rounded-full bg-current animate-bounce opacity-70"
-                          style={{ animationDelay: "0ms" }}
-                        />
-                        <div
-                          className="w-2 h-2 rounded-full bg-current animate-bounce opacity-70"
-                          style={{ animationDelay: "150ms" }}
-                        />
-                        <div
-                          className="w-2 h-2 rounded-full bg-current animate-bounce opacity-70"
-                          style={{ animationDelay: "300ms" }}
-                        />
-                      </div>
-                    </div>
-                  )}
-
                   {/* Form Section */}
-                  <div className="flex-initial">
-                    <div className="w-full max-w-md mx-auto">
-                      <form onSubmit={handleSubmit} className="space-y-4">
-                        <input
-                          type="email"
-                          placeholder="Enter your email address"
-                          value={email}
-                          onInput={handleChange}
-                          required
-                          className={`w-full p-3 backdrop-blur-sm border rounded-lg
+                  <div className="flex-initial mt-auto">
+                    <div className="flex flex-col gap-y-6">
+                      {/* CTA Section */}
+                      {showCTA && (
+                        <div className="w-full max-w-md mx-auto opacity-0 animate-fade-in">
+                          <p
+                            className={`text-base sm:text-xl text-left font-medium ${themeStyles.cta}`}
+                          >
+                            {ctaText}
+                          </p>
+                        </div>
+                      )}
+                      <div className="w-full max-w-md mx-auto">
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                          <input
+                            type="email"
+                            placeholder="Enter your email address"
+                            value={email}
+                            onInput={handleChange}
+                            required
+                            className={`w-full p-3 backdrop-blur-sm border rounded-lg
                         focus:outline-none focus:ring-2 focus:ring-blue-500 
                         focus:border-transparent transition-colors
                         ${themeStyles.input}`}
-                        />
-                        <button
-                          type="submit"
-                          className={`w-full text-white py-2.5 sm:py-3 px-4 rounded-lg
+                          />
+                          <button
+                            type="submit"
+                            className={`w-full text-white py-2.5 sm:py-3 px-4 rounded-lg
                         text-base sm:text-lg font-semibold transition-colors
                         ${themeStyles.button}`}
-                        >
-                          Join Waitlist
-                        </button>
-                      </form>
+                          >
+                            Join Waitlist
+                          </button>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -467,7 +473,7 @@ export default function Wait() {
                     </a>
                   </div>
 
-                  <p className="text-sm">
+                  <p className="text-xs">
                     Powered by{" "}
                     <a
                       href="https://github.com/fastrodev/fastro"
