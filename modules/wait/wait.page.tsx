@@ -3,13 +3,12 @@ import { useTypingAnimation } from "@app/hooks/useTypingAnimation.ts";
 import { JSX } from "preact/jsx-runtime";
 import BoltSvg from "@app/components/icons/bolt.tsx";
 import { getIconForHeading } from "@app/components/icons/CategoryIcons.tsx";
-// import { getIconForHeading } from "@app/components/icons/CategoryIcons";
 
 export default function Wait() {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isDark, setIsDark] = useState(true);
-  const [headingIndex, setHeadingIndex] = useState(0);
+  const [headingIndex, setHeadingIndex] = useState(0); // Changed from 1 to 0
   const [gradientPosition, setGradientPosition] = useState({ x: 50, y: 50 });
   const [direction, setDirection] = useState({ x: 1, y: 1 });
   const [showAnswer, setShowAnswer] = useState(true); // Changed to true
@@ -17,133 +16,143 @@ export default function Wait() {
   const [nextQueued, setNextQueued] = useState(false);
   const [isAnimating, setIsAnimating] = useState(true);
 
+  // Add initialText state
+  const [initialRender, setInitialRender] = useState(true);
+
+  // Add useEffect to handle initial render
+  useEffect(() => {
+    if (initialRender) {
+      setInitialRender(false);
+    }
+  }, []);
+
   const headings = [
     [
       "Masih Pakai Spreadsheet untuk Stok?",
       "Upgrade ke sistem inventaris modern",
       "Coba demo gratis sekarang",
-      getIconForHeading("Masih Pakai Spreadsheet untuk Stok?", isDark),
+      getIconForHeading("Spreadsheet", isDark),
     ],
     [
       "Kesulitan Tracking Barang Manual?",
       "Otomatisasi dengan barcode scanner",
       "Lihat demo scan barcode",
-      getIconForHeading("Kesulitan Tracking Barang Manual?", isDark),
+      getIconForHeading("Barcode", isDark),
     ],
     [
       "Stok Fisik Sering Tidak Cocok?",
       "Real-time stock opname system",
       "Mulai stock opname digital",
-      getIconForHeading("Stok Fisik Sering Tidak Cocok?", isDark),
+      getIconForHeading("Opname", isDark),
     ],
     [
       "Sering Kehabisan Stok Mendadak?",
       "Notifikasi minimum stok otomatis",
       "Aktifkan alert stok minimum",
-      getIconForHeading("Sering Kehabisan Stok Mendadak?", isDark),
+      getIconForHeading("Notifikasi", isDark),
     ],
     [
       "Bingung Monitor Multi-Cabang?",
       "Satu dashboard untuk semua lokasi",
       "Demo monitoring multi-cabang",
-      getIconForHeading("Bingung Monitor Multi-Cabang?", isDark),
+      getIconForHeading("Cabang", isDark),
     ],
     [
       "Purchase Order Manual Berantakan?",
       "Automasi PO dengan approval system",
       "Lihat workflow PO digital",
-      getIconForHeading("Purchase Order Manual Berantakan?", isDark),
+      getIconForHeading("Automasi", isDark),
     ],
     [
       "Laporan Purchasing Tidak Akurat?",
       "Laporan real-time dengan analitik",
       "Coba template laporan otomatis",
-      getIconForHeading("Laporan Purchasing Tidak Akurat?", isDark),
+      getIconForHeading("Laporan", isDark),
     ],
     [
       "Supplier Performance Tidak Terukur?",
       "Scoring dan evaluasi supplier",
       "Demo evaluasi supplier",
-      getIconForHeading("Supplier Performance Tidak Terukur?", isDark),
+      getIconForHeading("Score", isDark),
     ],
     [
       "Budget Purchasing Sering Over?",
       "Kontrol budget dengan limit system",
       "Aktifkan kontrol budget",
-      getIconForHeading("Budget Purchasing Sering Over?", isDark),
+      getIconForHeading("Budget", isDark),
     ],
     [
       "Data Harga Supplier Berantakan?",
       "Katalog supplier terorganisir",
       "Lihat manajemen katalog",
-      getIconForHeading("Data Harga Supplier Berantakan?", isDark),
+      getIconForHeading("Harga", isDark),
     ],
     [
       "Proses Approval PO Lama?",
       "Mobile approval dalam 1 klik",
       "Coba approval system",
-      getIconForHeading("Proses Approval PO Lama?", isDark),
+      getIconForHeading("Approval", isDark),
     ],
     [
       "Dokumen Purchase Sering Hilang?",
       "Arsip digital terintegrasi",
       "Demo document management",
-      getIconForHeading("Dokumen Purchase Sering Hilang?", isDark),
+      getIconForHeading("Dokumen", isDark),
     ],
     [
       "Kesulitan Bandingkan Harga Supplier?",
       "Price comparison otomatis",
       "Lihat analisis perbandingan",
-      getIconForHeading("Kesulitan Bandingkan Harga Supplier?", isDark),
+      getIconForHeading("Compare", isDark),
     ],
     [
       "Retur Barang Tidak Terorganisir?",
       "Sistem retur barang sistematis",
       "Coba sistem retur digital",
-      getIconForHeading("Retur Barang Tidak Terorganisir?", isDark),
+      getIconForHeading("Retur", isDark),
     ],
     [
       "Forecast Stok Sering Meleset?",
       "AI predictive inventory",
       "Demo prediksi kebutuhan stok",
-      getIconForHeading("Forecast Stok Sering Meleset?", isDark),
+      getIconForHeading("Forecast", isDark),
     ],
     [
       "Kesulitan Cek Status PO?",
       "Tracking PO real-time",
       "Lihat status tracking PO",
-      getIconForHeading("Kesulitan Cek Status PO?", isDark),
+      getIconForHeading("Purchase", isDark),
     ],
     [
       "Banyak Barang Slow-Moving?",
       "Analisis perputaran stok",
       "Coba analisis inventory aging",
-      getIconForHeading("Banyak Barang Slow-Moving?", isDark),
+      getIconForHeading("Moving", isDark),
     ],
     [
       "Proses Receiving Lama?",
       "Receiving system dengan mobile scan",
       "Demo receiving digital",
-      getIconForHeading("Proses Receiving Lama?", isDark),
+      getIconForHeading("Receiving", isDark),
     ],
     [
       "Cost Analysis Tidak Akurat?",
       "Perhitungan landed cost otomatis",
       "Lihat kalkulasi biaya detail",
-      getIconForHeading("Cost Analysis Tidak Akurat?", isDark),
+      getIconForHeading("Analysis", isDark),
     ],
     [
       "Data Tersebar di Banyak Sistem?",
       "Satu platform terintegrasi",
       "Demo sistem all-in-one",
-      getIconForHeading("Data Tersebar di Banyak Sistem?", isDark),
+      getIconForHeading("Integrasi", isDark),
     ],
   ];
 
   // Heading animation - update timing
   const { displayText: headingText } = useTypingAnimation({
-    text: headings[headingIndex][0],
-    shouldType: isAnimating,
+    text: !initialRender ? headings[headingIndex][0] : headings[0][0],
+    shouldType: isAnimating && !initialRender,
     minDelay: 20,
     maxDelay: 40,
     onComplete: () => {
@@ -155,8 +164,8 @@ export default function Wait() {
 
   // Answer animation - update timing
   const { displayText: answerText } = useTypingAnimation({
-    text: headings[headingIndex][1],
-    shouldType: showAnswer && isAnimating,
+    text: !initialRender ? headings[headingIndex][1] : headings[0][1],
+    shouldType: showAnswer && isAnimating && !initialRender,
     minDelay: 20,
     maxDelay: 35,
     onComplete: () => {
@@ -168,8 +177,10 @@ export default function Wait() {
 
   // CTA animation
   const { displayText: ctaText } = useTypingAnimation({
-    text: showAnswer ? headings[headingIndex][2] : "", // Use the CTA text (third element)
-    shouldType: showCTA && isAnimating,
+    text: showAnswer && !initialRender
+      ? headings[headingIndex][2]
+      : headings[0][2],
+    shouldType: showCTA && isAnimating && !initialRender,
     minDelay: 10,
     maxDelay: 30,
     onComplete: () => {
