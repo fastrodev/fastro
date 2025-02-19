@@ -3,7 +3,7 @@ export default function BoltSvg(props: { height?: string; width?: string }) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       height={props.height || 18}
-      fill={"#ffffff"}
+      fill="currentColor"
       viewBox="327.782 -762.789 303.276 564.689"
       width={props.width || 18}
     >
