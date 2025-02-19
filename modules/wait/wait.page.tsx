@@ -529,6 +529,7 @@ export default function Wait() {
 
         {/* Theme Toggle Button */}
         <button
+          type="button"
           onClick={toggleTheme}
           className={`fixed bottom-4 right-4 p-3 rounded-full transition-colors 
             shadow-lg hover:scale-110 transform duration-200 z-50

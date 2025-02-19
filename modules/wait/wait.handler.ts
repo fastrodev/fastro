@@ -6,6 +6,7 @@ export default async function waitHandler(_req: HttpRequest, ctx: Context) {
     title: "Software Inventory & Purchasing",
     description:
       "Inventory management & purchasing software for small businesses.",
+    image: "https://fastro.deno.dev/fastro.png",
   });
 }
 
