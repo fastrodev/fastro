@@ -6,7 +6,7 @@ interface IconProps {
 }
 
 export const CategoryIcons = {
-  Spreadsheet: ({ className = "", size = 64 }: IconProps): JSX.Element => (
+  Spreadsheet: ({ className = "", size = 88 }: IconProps): JSX.Element => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
@@ -18,19 +18,31 @@ export const CategoryIcons = {
       stroke-linecap="round"
       stroke-linejoin="round"
       className={className}
-      class="icon icon-tabler icons-tabler-outline icon-tabler-file-type-xls"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-brand-google-drive"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-      <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
-      <path d="M4 15l4 6" />
-      <path d="M4 21l4 -6" />
-      <path d="M17 20.25c0 .414 .336 .75 .75 .75h1.25a1 1 0 0 0 1 -1v-1a1 1 0 0 0 -1 -1h-1a1 1 0 0 1 -1 -1v-1a1 1 0 0 1 1 -1h1.25a.75 .75 0 0 1 .75 .75" />
-      <path d="M11 15v6h3" />
+      <path d="M12 10l-6 10l-3 -5l6 -10z" />
+      <path d="M9 15h12l-3 5h-12" />
+      <path d="M15 15l-6 -10h6l6 10z" />
     </svg>
   ),
 
-  Tracking: ({ className = "", size = 64 }: IconProps): JSX.Element => (
+  Notifikasi: ({ className = "", size = 72 }: IconProps): JSX.Element => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      class="icon icon-tabler icons-tabler-filled icon-tabler-alert-square-rounded"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 2l.642 .005l.616 .017l.299 .013l.579 .034l.553 .046c4.687 .455 6.65 2.333 7.166 6.906l.03 .29l.046 .553l.041 .727l.006 .15l.017 .617l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.455 4.687 -2.333 6.65 -6.906 7.166l-.29 .03l-.553 .046l-.727 .041l-.15 .006l-.617 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.687 -.455 -6.65 -2.333 -7.166 -6.906l-.03 -.29l-.046 -.553l-.041 -.727l-.006 -.15l-.017 -.617l-.004 -.318v-.648l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.455 -4.687 2.333 -6.65 6.906 -7.166l.29 -.03l.553 -.046l.727 -.041l.15 -.006l.617 -.017c.21 -.003 .424 -.005 .642 -.005zm.01 13l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm-.01 -8a1 1 0 0 0 -.993 .883l-.007 .117v4l.007 .117a1 1 0 0 0 1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z" />
+    </svg>
+  ),
+
+  Opname: ({ className = "", size = 72 }: IconProps): JSX.Element => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
@@ -42,17 +54,14 @@ export const CategoryIcons = {
       stroke-linecap="round"
       stroke-linejoin="round"
       className={className}
-      class="icon icon-tabler icons-tabler-outline icon-tabler-device-ipad-horizontal-search"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-script"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M11.5 20h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v5.5" />
-      <path d="M9 17h2" />
-      <path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-      <path d="M20.2 20.2l1.8 1.8" />
+      <path d="M17 20h-11a3 3 0 0 1 0 -6h11a3 3 0 0 0 0 6h1a3 3 0 0 0 3 -3v-11a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v8" />
     </svg>
   ),
 
-  Analytics: ({ className = "", size = 64 }: IconProps): JSX.Element => (
+  Laporan: ({ className = "", size = 72 }: IconProps): JSX.Element => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
@@ -64,19 +73,85 @@ export const CategoryIcons = {
       stroke-linecap="round"
       stroke-linejoin="round"
       className={className}
-      class="icon icon-tabler icons-tabler-outline icon-tabler-chart-histogram"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-report"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M3 3v18h18" />
-      <path d="M20 18v3" />
-      <path d="M16 16v5" />
-      <path d="M12 13v8" />
-      <path d="M8 16v5" />
-      <path d="M3 11c6 0 5 -5 9 -5s3 5 9 5" />
+      <path d="M8 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h5.697" />
+      <path d="M18 14v4h4" />
+      <path d="M18 11v-4a2 2 0 0 0 -2 -2h-2" />
+      <path d="M8 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+      <path d="M18 18m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+      <path d="M8 11h4" />
+      <path d="M8 15h3" />
     </svg>
   ),
 
-  Inventory: ({ className = "", size = 64 }: IconProps): JSX.Element => (
+  Supplier: ({ className = "", size = 72 }: IconProps): JSX.Element => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      class="icon icon-tabler icons-tabler-filled icon-tabler-shopping-cart"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M6 2a1 1 0 0 1 .993 .883l.007 .117v1.068l13.071 .935a1 1 0 0 1 .929 1.024l-.01 .114l-1 7a1 1 0 0 1 -.877 .853l-.113 .006h-12v2h10a3 3 0 1 1 -2.995 3.176l-.005 -.176l.005 -.176c.017 -.288 .074 -.564 .166 -.824h-5.342a3 3 0 1 1 -5.824 1.176l-.005 -.176l.005 -.176a3.002 3.002 0 0 1 1.995 -2.654v-12.17h-1a1 1 0 0 1 -.993 -.883l-.007 -.117a1 1 0 0 1 .883 -.993l.117 -.007h2zm0 16a1 1 0 1 0 0 2a1 1 0 0 0 0 -2zm11 0a1 1 0 1 0 0 2a1 1 0 0 0 0 -2z" />
+    </svg>
+  ),
+
+  Automasi: ({ className = "", size = 72 }: IconProps): JSX.Element => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={className}
+      class="icon icon-tabler icons-tabler-outline icon-tabler-settings-automation"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
+      <path d="M10 9v6l5 -3z" />
+    </svg>
+  ),
+
+  Cabang: ({ className = "", size = 72 }: IconProps): JSX.Element => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={className}
+      class="icon icon-tabler icons-tabler-outline icon-tabler-hierarchy-3"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M8 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M12 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M20 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M4 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M16 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M5 17l2 -3" />
+      <path d="M9 10l2 -3" />
+      <path d="M13 7l2 3" />
+      <path d="M17 14l2 3" />
+      <path d="M15 14l-2 3" />
+      <path d="M9 14l2 3" />
+    </svg>
+  ),
+
+  Inventory: ({ className = "", size = 72 }: IconProps): JSX.Element => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
@@ -97,7 +172,7 @@ export const CategoryIcons = {
     </svg>
   ),
 
-  Barcode: ({ className = "", size = 64 }: IconProps): JSX.Element => (
+  Barcode: ({ className = "", size = 72 }: IconProps): JSX.Element => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
@@ -127,7 +202,7 @@ export const CategoryIcons = {
     </svg>
   ),
 
-  Alert: ({ className = "", size = 64 }: IconProps): JSX.Element => (
+  Receiving: ({ className = "", size = 72 }: IconProps): JSX.Element => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
@@ -135,14 +210,29 @@ export const CategoryIcons = {
       viewBox="0 0 24 24"
       fill="currentColor"
       className={className}
-      class="icon icon-tabler icons-tabler-filled icon-tabler-info-triangle"
+      class="icon icon-tabler icons-tabler-filled icon-tabler-rosette-discount-check"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M12 1.67c.955 0 1.845 .467 2.39 1.247l.105 .16l8.114 13.548a2.914 2.914 0 0 1 -2.307 4.363l-.195 .008h-16.225a2.914 2.914 0 0 1 -2.582 -4.2l.099 -.185l8.11 -13.538a2.914 2.914 0 0 1 2.491 -1.403zm0 9.33h-1l-.117 .007a1 1 0 0 0 0 1.986l.117 .007v3l.007 .117a1 1 0 0 0 .876 .876l.117 .007h1l.117 -.007a1 1 0 0 0 .876 -.876l.007 -.117l-.007 -.117a1 1 0 0 0 -.764 -.857l-.112 -.02l-.117 -.006v-3l-.007 -.117a1 1 0 0 0 -.876 -.876l-.117 -.007zm.01 -3l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007z" />
+      <path d="M12.01 2.011a3.2 3.2 0 0 1 2.113 .797l.154 .145l.698 .698a1.2 1.2 0 0 0 .71 .341l.135 .008h1a3.2 3.2 0 0 1 3.195 3.018l.005 .182v1c0 .27 .092 .533 .258 .743l.09 .1l.697 .698a3.2 3.2 0 0 1 .147 4.382l-.145 .154l-.698 .698a1.2 1.2 0 0 0 -.341 .71l-.008 .135v1a3.2 3.2 0 0 1 -3.018 3.195l-.182 .005h-1a1.2 1.2 0 0 0 -.743 .258l-.1 .09l-.698 .697a3.2 3.2 0 0 1 -4.382 .147l-.154 -.145l-.698 -.698a1.2 1.2 0 0 0 -.71 -.341l-.135 -.008h-1a3.2 3.2 0 0 1 -3.195 -3.018l-.005 -.182v-1a1.2 1.2 0 0 0 -.258 -.743l-.09 -.1l-.697 -.698a3.2 3.2 0 0 1 -.147 -4.382l.145 -.154l.698 -.698a1.2 1.2 0 0 0 .341 -.71l.008 -.135v-1l.005 -.182a3.2 3.2 0 0 1 3.013 -3.013l.182 -.005h1a1.2 1.2 0 0 0 .743 -.258l.1 -.09l.698 -.697a3.2 3.2 0 0 1 2.269 -.944zm3.697 7.282a1 1 0 0 0 -1.414 0l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" />
     </svg>
   ),
 
-  Document: ({ className = "", size = 64 }: IconProps): JSX.Element => (
+  Analysis: ({ className = "", size = 72 }: IconProps): JSX.Element => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      class="icon icon-tabler icons-tabler-filled icon-tabler-chart-dots-2"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M3 2a1 1 0 0 1 1 1v17h17a1 1 0 0 1 .993 .883l.007 .117a1 1 0 0 1 -1 1h-18a1 1 0 0 1 -1 -1v-18a1 1 0 0 1 1 -1m18.97 .757a1 1 0 0 1 -.727 1.213l-5.256 1.314a3 3 0 0 1 -.55 1.465l1.768 2.358a3.003 3.003 0 0 1 3.795 2.893a3 3 0 0 1 -5.436 1.751l-3.57 1.428a3 3 0 0 1 -5.994 -.179l.005 -.176a3 3 0 0 1 5.43 -1.576l3.57 -1.428l.015 -.17c.06 -.518 .253 -.996 .542 -1.4l-1.767 -2.357a3.003 3.003 0 0 1 -3.795 -2.893l.005 -.176a3 3 0 0 1 5.497 -1.48l5.255 -1.314a1 1 0 0 1 1.213 .727" />
+    </svg>
+  ),
+
+  Integrasi: ({ className = "", size = 72 }: IconProps): JSX.Element => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
@@ -154,14 +244,20 @@ export const CategoryIcons = {
       stroke-linecap="round"
       stroke-linejoin="round"
       className={className}
-      class="icon icon-tabler icons-tabler-outline icon-tabler-script"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-brand-codesandbox"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M17 20h-11a3 3 0 0 1 0 -6h11a3 3 0 0 0 0 6h1a3 3 0 0 0 3 -3v-11a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v8" />
+      <path d="M20 7.5v9l-4 2.25l-4 2.25l-4 -2.25l-4 -2.25v-9l4 -2.25l4 -2.25l4 2.25z" />
+      <path d="M12 12l4 -2.25l4 -2.25" />
+      <path d="M12 12l0 9" />
+      <path d="M12 12l-4 -2.25l-4 -2.25" />
+      <path d="M20 12l-4 2v4.75" />
+      <path d="M4 12l4 2l0 4.75" />
+      <path d="M8 5.25l4 2.25l4 -2.25" />
     </svg>
   ),
 
-  Budget: ({ className = "", size = 64 }: IconProps): JSX.Element => (
+  Purchase: ({ className = "", size = 72 }: IconProps): JSX.Element => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
@@ -169,10 +265,107 @@ export const CategoryIcons = {
       viewBox="0 0 24 24"
       fill="currentColor"
       className={className}
-      class="icon icon-tabler icons-tabler-filled icon-tabler-coin"
+      class="icon icon-tabler icons-tabler-filled icon-tabler-shopping-cart"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M17 3.34a10 10 0 1 1 -15 8.66l.005 -.324a10 10 0 0 1 14.995 -8.336zm-5 2.66a1 1 0 0 0 -1 1a3 3 0 1 0 0 6v2a1.024 1.024 0 0 1 -.866 -.398l-.068 -.101a1 1 0 0 0 -1.732 .998a3 3 0 0 0 2.505 1.5h.161a1 1 0 0 0 .883 .994l.117 .007a1 1 0 0 0 1 -1l.176 -.005a3 3 0 0 0 -.176 -5.995v-2c.358 -.012 .671 .14 .866 .398l.068 .101a1 1 0 0 0 1.732 -.998a3 3 0 0 0 -2.505 -1.501h-.161a1 1 0 0 0 -1 -1zm1 7a1 1 0 0 1 0 2v-2zm-2 -4v2a1 1 0 0 1 0 -2z" />
+      <path d="M6 2a1 1 0 0 1 .993 .883l.007 .117v1.068l13.071 .935a1 1 0 0 1 .929 1.024l-.01 .114l-1 7a1 1 0 0 1 -.877 .853l-.113 .006h-12v2h10a3 3 0 1 1 -2.995 3.176l-.005 -.176l.005 -.176c.017 -.288 .074 -.564 .166 -.824h-5.342a3 3 0 1 1 -5.824 1.176l-.005 -.176l.005 -.176a3.002 3.002 0 0 1 1.995 -2.654v-12.17h-1a1 1 0 0 1 -.993 -.883l-.007 -.117a1 1 0 0 1 .883 -.993l.117 -.007h2zm0 16a1 1 0 1 0 0 2a1 1 0 0 0 0 -2zm11 0a1 1 0 1 0 0 2a1 1 0 0 0 0 -2z" />
+    </svg>
+  ),
+
+  Harga: ({ className = "", size = 72 }: IconProps): JSX.Element => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      class="icon icon-tabler icons-tabler-filled icon-tabler-tags"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M9.172 5a3 3 0 0 1 2.121 .879l5.71 5.71a3.41 3.41 0 0 1 0 4.822l-3.592 3.592a3.41 3.41 0 0 1 -4.822 0l-5.71 -5.71a3 3 0 0 1 -.879 -2.121v-4.172a3 3 0 0 1 3 -3zm-2.172 4h-.01a1 1 0 1 0 .01 2a1 1 0 0 0 0 -2" />
+      <path d="M14.293 5.293a1 1 0 0 1 1.414 0l4.593 4.592a5.82 5.82 0 0 1 0 8.23l-1.592 1.592a1 1 0 0 1 -1.414 -1.414l1.592 -1.592a3.82 3.82 0 0 0 0 -5.402l-4.592 -4.592a1 1 0 0 1 0 -1.414" />
+    </svg>
+  ),
+
+  Approval: ({ className = "", size = 72 }: IconProps): JSX.Element => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      class="icon icon-tabler icons-tabler-filled icon-tabler-shield-check"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M11.998 2l.118 .007l.059 .008l.061 .013l.111 .034a.993 .993 0 0 1 .217 .112l.104 .082l.255 .218a11 11 0 0 0 7.189 2.537l.342 -.01a1 1 0 0 1 1.005 .717a13 13 0 0 1 -9.208 16.25a1 1 0 0 1 -.502 0a13 13 0 0 1 -9.209 -16.25a1 1 0 0 1 1.005 -.717a11 11 0 0 0 7.531 -2.527l.263 -.225l.096 -.075a.993 .993 0 0 1 .217 -.112l.112 -.034a.97 .97 0 0 1 .119 -.021l.115 -.007zm3.71 7.293a1 1 0 0 0 -1.415 0l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" />
+    </svg>
+  ),
+
+  Compare: ({ className = "", size = 72 }: IconProps): JSX.Element => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={className}
+      class="icon icon-tabler icons-tabler-outline icon-tabler-git-compare"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M6 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M18 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M11 6h5a2 2 0 0 1 2 2v8" />
+      <path d="M14 9l-3 -3l3 -3" />
+      <path d="M13 18h-5a2 2 0 0 1 -2 -2v-8" />
+      <path d="M10 15l3 3l-3 3" />
+    </svg>
+  ),
+
+  Score: ({ className = "", size = 72 }: IconProps): JSX.Element => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={className}
+      class="icon icon-tabler icons-tabler-outline icon-tabler-chart-radar"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3l9.5 7l-3.5 11h-12l-3.5 -11z" />
+      <path d="M12 7.5l5.5 4l-2.5 5.5h-6.5l-2 -5.5z" />
+      <path d="M2.5 10l9.5 3l9.5 -3" />
+      <path d="M12 3v10l6 8" />
+      <path d="M6 21l6 -8" />
+    </svg>
+  ),
+
+  Moving: ({ className = "", size = 72 }: IconProps): JSX.Element => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={className}
+      class="icon icon-tabler icons-tabler-outline icon-tabler-infinity"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M9.828 9.172a4 4 0 1 0 0 5.656a10 10 0 0 0 2.172 -2.828a10 10 0 0 1 2.172 -2.828a4 4 0 1 1 0 5.656a10 10 0 0 1 -2.172 -2.828a10 10 0 0 0 -2.172 -2.828" />
     </svg>
   ),
 };
@@ -185,26 +378,65 @@ export const getIconForHeading = (
     isDark ? "text-blue-400/80" : "text-blue-600/80"
   } scale-125`;
 
-  if (heading.match(/spreadsheet|excel|data|tersebar/i)) {
+  if (heading.match(/spreadsheet/i)) {
     return <CategoryIcons.Spreadsheet className={baseClass} />;
   }
-  if (heading.match(/track|monitor|status|receiving|multi-cabang/i)) {
-    return <CategoryIcons.Tracking className={baseClass} />;
+  if (heading.match(/notifikasi/i)) {
+    return <CategoryIcons.Notifikasi className={baseClass} />;
   }
-  if (heading.match(/analisis|report|performance|forecast|slow-moving|cost/i)) {
-    return <CategoryIcons.Analytics className={baseClass} />;
+  if (heading.match(/opname/i)) {
+    return <CategoryIcons.Opname className={baseClass} />;
   }
-  if (heading.match(/barcode|scan/i)) {
+  if (heading.match(/barcode/i)) {
     return <CategoryIcons.Barcode className={baseClass} />;
   }
-  if (heading.match(/alert|notifikasi|kehabisan/i)) {
-    return <CategoryIcons.Alert className={baseClass} />;
+  if (heading.match(/receiving/i)) {
+    return <CategoryIcons.Receiving className={baseClass} />;
   }
-  if (heading.match(/dokumen|arsip|approval|po/i)) {
-    return <CategoryIcons.Document className={baseClass} />;
+  if (heading.match(/analysis|retur/i)) {
+    return <CategoryIcons.Analysis className={baseClass} />;
   }
-  if (heading.match(/budget|harga|supplier|cost/i)) {
-    return <CategoryIcons.Budget className={baseClass} />;
+  if (heading.match(/Integrasi/i)) {
+    return <CategoryIcons.Integrasi className={baseClass} />;
   }
+  if (heading.match(/purchase/i)) {
+    return <CategoryIcons.Purchase className={baseClass} />;
+  }
+  if (heading.match(/cabang/i)) {
+    return <CategoryIcons.Cabang className={baseClass} />;
+  }
+
+  if (heading.match(/automasi/i)) {
+    return <CategoryIcons.Automasi className={baseClass} />;
+  }
+
+  if (heading.match(/laporan|dokumen|retur/i)) {
+    return <CategoryIcons.Laporan className={baseClass} />;
+  }
+
+  if (heading.match(/supplier/i)) {
+    return <CategoryIcons.Supplier className={baseClass} />;
+  }
+
+  if (heading.match(/harga|budget|pricing/i)) {
+    return <CategoryIcons.Harga className={baseClass} />;
+  }
+
+  if (heading.match(/approval/i)) {
+    return <CategoryIcons.Approval className={baseClass} />;
+  }
+
+  if (heading.match(/compare/i)) {
+    return <CategoryIcons.Compare className={baseClass} />;
+  }
+
+  if (heading.match(/score/i)) {
+    return <CategoryIcons.Score className={baseClass} />;
+  }
+
+  if (heading.match(/moving/i)) {
+    return <CategoryIcons.Moving className={baseClass} />;
+  }
+
   return <CategoryIcons.Inventory className={baseClass} />;
 };
