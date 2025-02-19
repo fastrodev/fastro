@@ -390,10 +390,10 @@ export default function Wait() {
                   </div>
 
                   {/* Icon Display Section */}
-                  <div className="flex-grow flex items-center justify-center min-h-[200px]">
-                    {/* Increased min-height */}
+                  <div className="flex-grow flex items-center justify-center min-h-[240px]">
+                    {/* Increased height */}
                     {nextQueued && (
-                      <div className="flex gap-6 scale-150 animate-fade-in">
+                      <div className="flex gap-8 scale-150 animate-fade-in">
                         {/* Increased gap and scale */}
                         {headings[headingIndex][3]}
                       </div>
