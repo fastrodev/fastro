@@ -31,7 +31,7 @@ export default function layout(
         <meta property="og:url" content="https://fastro.dev" />
         <meta
           property="og:title"
-          content={`${data.title} | Inventory & Purchasing Software`}
+          content={`${data.title} | Fastro Solutions`}
         />
         <meta property="og:description" content={data.description} />
         <meta property="og:image" content={data.image} />
