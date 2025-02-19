@@ -1,6 +1,9 @@
 import { useEffect, useState } from "preact/hooks";
 import { useTypingAnimation } from "@app/hooks/useTypingAnimation.ts";
 import { JSX } from "preact/jsx-runtime";
+import BoltSvg from "@app/components/icons/bolt.tsx";
+import { getIconForHeading } from "@app/components/icons/CategoryIcons.tsx";
+// import { getIconForHeading } from "@app/components/icons/CategoryIcons";
 
 export default function Wait() {
   const [email, setEmail] = useState("");
@@ -19,101 +22,121 @@ export default function Wait() {
       "Masih Pakai Spreadsheet untuk Stok?",
       "Upgrade ke sistem inventaris modern",
       "Coba demo gratis sekarang",
+      getIconForHeading("Masih Pakai Spreadsheet untuk Stok?", isDark),
     ],
     [
       "Kesulitan Tracking Barang Manual?",
       "Otomatisasi dengan barcode scanner",
       "Lihat demo scan barcode",
+      getIconForHeading("Kesulitan Tracking Barang Manual?", isDark),
     ],
     [
       "Stok Fisik Sering Tidak Cocok?",
       "Real-time stock opname system",
       "Mulai stock opname digital",
+      getIconForHeading("Stok Fisik Sering Tidak Cocok?", isDark),
     ],
     [
       "Sering Kehabisan Stok Mendadak?",
       "Notifikasi minimum stok otomatis",
       "Aktifkan alert stok minimum",
+      getIconForHeading("Sering Kehabisan Stok Mendadak?", isDark),
     ],
     [
       "Bingung Monitor Multi-Cabang?",
       "Satu dashboard untuk semua lokasi",
       "Demo monitoring multi-cabang",
+      getIconForHeading("Bingung Monitor Multi-Cabang?", isDark),
     ],
     [
       "Purchase Order Manual Berantakan?",
       "Automasi PO dengan approval system",
       "Lihat workflow PO digital",
+      getIconForHeading("Purchase Order Manual Berantakan?", isDark),
     ],
     [
       "Laporan Purchasing Tidak Akurat?",
       "Laporan real-time dengan analitik",
       "Coba template laporan otomatis",
+      getIconForHeading("Laporan Purchasing Tidak Akurat?", isDark),
     ],
     [
       "Supplier Performance Tidak Terukur?",
       "Scoring dan evaluasi supplier",
       "Demo evaluasi supplier",
+      getIconForHeading("Supplier Performance Tidak Terukur?", isDark),
     ],
     [
       "Budget Purchasing Sering Over?",
       "Kontrol budget dengan limit system",
       "Aktifkan kontrol budget",
+      getIconForHeading("Budget Purchasing Sering Over?", isDark),
     ],
     [
       "Data Harga Supplier Berantakan?",
       "Katalog supplier terorganisir",
       "Lihat manajemen katalog",
+      getIconForHeading("Data Harga Supplier Berantakan?", isDark),
     ],
     [
       "Proses Approval PO Lama?",
       "Mobile approval dalam 1 klik",
       "Coba approval system",
+      getIconForHeading("Proses Approval PO Lama?", isDark),
     ],
     [
       "Dokumen Purchase Sering Hilang?",
       "Arsip digital terintegrasi",
       "Demo document management",
+      getIconForHeading("Dokumen Purchase Sering Hilang?", isDark),
     ],
     [
       "Kesulitan Bandingkan Harga Supplier?",
       "Price comparison otomatis",
       "Lihat analisis perbandingan",
+      getIconForHeading("Kesulitan Bandingkan Harga Supplier?", isDark),
     ],
     [
       "Retur Barang Tidak Terorganisir?",
       "Sistem retur barang sistematis",
       "Coba sistem retur digital",
+      getIconForHeading("Retur Barang Tidak Terorganisir?", isDark),
     ],
     [
       "Forecast Stok Sering Meleset?",
       "AI predictive inventory",
       "Demo prediksi kebutuhan stok",
+      getIconForHeading("Forecast Stok Sering Meleset?", isDark),
     ],
     [
       "Kesulitan Cek Status PO?",
       "Tracking PO real-time",
       "Lihat status tracking PO",
+      getIconForHeading("Kesulitan Cek Status PO?", isDark),
     ],
     [
       "Banyak Barang Slow-Moving?",
       "Analisis perputaran stok",
       "Coba analisis inventory aging",
+      getIconForHeading("Banyak Barang Slow-Moving?", isDark),
     ],
     [
       "Proses Receiving Lama?",
       "Receiving system dengan mobile scan",
       "Demo receiving digital",
+      getIconForHeading("Proses Receiving Lama?", isDark),
     ],
     [
       "Cost Analysis Tidak Akurat?",
       "Perhitungan landed cost otomatis",
       "Lihat kalkulasi biaya detail",
+      getIconForHeading("Cost Analysis Tidak Akurat?", isDark),
     ],
     [
       "Data Tersebar di Banyak Sistem?",
       "Satu platform terintegrasi",
       "Demo sistem all-in-one",
+      getIconForHeading("Data Tersebar di Banyak Sistem?", isDark),
     ],
   ];
 
@@ -366,27 +389,13 @@ export default function Wait() {
                     )}
                   </div>
 
-                  <div className="flex-grow flex items-center justify-center min-h-[120px]">
+                  {/* Icon Display Section */}
+                  <div className="flex-grow flex items-center justify-center min-h-[200px]">
+                    {/* Increased min-height */}
                     {nextQueued && (
-                      <div className="flex gap-2">
-                        <div
-                          className={`w-3 h-3 rounded-full ${
-                            isDark ? "bg-blue-400/50" : "bg-blue-500/50"
-                          } animate-[bounce_1s_ease-in-out_infinite]`}
-                          style={{ animationDelay: "0s" }}
-                        />
-                        <div
-                          className={`w-3 h-3 rounded-full ${
-                            isDark ? "bg-blue-400/50" : "bg-blue-500/50"
-                          } animate-[bounce_1s_ease-in-out_infinite]`}
-                          style={{ animationDelay: "0.2s" }}
-                        />
-                        <div
-                          className={`w-3 h-3 rounded-full ${
-                            isDark ? "bg-blue-400/50" : "bg-blue-500/50"
-                          } animate-[bounce_1s_ease-in-out_infinite]`}
-                          style={{ animationDelay: "0.4s" }}
-                        />
+                      <div className="flex gap-6 scale-150 animate-fade-in">
+                        {/* Increased gap and scale */}
+                        {headings[headingIndex][3]}
                       </div>
                     )}
                   </div>
@@ -471,19 +480,16 @@ export default function Wait() {
                         <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                       </svg>
                     </a>
-                  </div>
-
-                  <p className="text-xs">
-                    Powered by{" "}
                     <a
                       href="https://github.com/fastrodev/fastro"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`transition-colors ${themeStyles.link}`}
+                      class={`transition-colors hover:scale-110 transform duration-200 ${themeStyles.footer}`}
+                      aria-label="Fastro"
                     >
-                      Fastro Framework
+                      <BoltSvg width="24" height="24" />
                     </a>
-                  </p>
+                  </div>
                 </div>
               </>
             )
