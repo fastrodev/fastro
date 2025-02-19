@@ -31,18 +31,18 @@ export default function layout(
         <meta property="og:url" content="https://fastro.dev" />
         <meta
           property="og:title"
-          content={`${data.title} | Inventory & Purchasing Software`}
+          content={`${data.title} | Fastro Solutions`}
         />
         <meta property="og:description" content={data.description} />
         <meta property="og:image" content={data.image} />
-        <meta property="og:site_name" content="Fastro Inventory Solutions" />
+        <meta property="og:site_name" content="Fastro Solutions" />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://fastro.dev" />
         <meta
           property="twitter:title"
-          content={`${data.title} | Inventory & Purchasing Software`}
+          content={`${data.title} | Fastro Solutions`}
         />
         <meta property="twitter:description" content={data.description} />
         <meta property="twitter:image" content={data.image} />
