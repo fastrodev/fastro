@@ -5,7 +5,7 @@ export default async function waitHandler(_req: HttpRequest, ctx: Context) {
   return await ctx.render({
     title: "Software Inventory & Purchasing",
     description:
-      "Inventory management & purchasing software for small businesses.",
+      "Modern inventory & purchasing software to help small businesses automate stock control and procurement tasks.",
     image: "https://fastro.deno.dev/fastro.png",
   });
 }
