@@ -440,7 +440,7 @@ export default function Wait() {
                     {showAnswer && (
                       <div className="w-full max-w-md mx-auto opacity-0 animate-fade-in">
                         <p
-                          className={`text-xl sm:text-3xl md:text-3xl text-left ${themeStyles.answer}`}
+                          className={`text-xl sm:text-3xl md:text-3xl text-left font-medium ${themeStyles.answer}`}
                         >
                           {answerText}
                         </p>
