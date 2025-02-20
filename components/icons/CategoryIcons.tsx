@@ -18,12 +18,21 @@ export const CategoryIcons = {
       stroke-linecap="round"
       stroke-linejoin="round"
       className={className}
-      class="icon icon-tabler icons-tabler-outline icon-tabler-brand-google-drive"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-chart-column"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M12 10l-6 10l-3 -5l6 -10z" />
-      <path d="M9 15h12l-3 5h-12" />
-      <path d="M15 15l-6 -10h6l6 10z" />
+      <path d="M4 20h3" />
+      <path d="M17 20h3" />
+      <path d="M10.5 20h3" />
+      <path d="M4 16h3" />
+      <path d="M17 16h3" />
+      <path d="M10.5 16h3" />
+      <path d="M4 12h3" />
+      <path d="M17 12h3" />
+      <path d="M10.5 12h3" />
+      <path d="M4 8h3" />
+      <path d="M17 8h3" />
+      <path d="M4 4h3" />
     </svg>
   ),
 
@@ -48,16 +57,12 @@ export const CategoryIcons = {
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      fill="currentColor"
       className={className}
-      class="icon icon-tabler icons-tabler-outline icon-tabler-script"
+      class="icon icon-tabler icons-tabler-filled icon-tabler-stack-3"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M17 20h-11a3 3 0 0 1 0 -6h11a3 3 0 0 0 0 6h1a3 3 0 0 0 3 -3v-11a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v8" />
+      <path d="M20.894 17.553a1 1 0 0 1 -.447 1.341l-8 4a1 1 0 0 1 -.894 0l-8 -4a1 1 0 0 1 .894 -1.788l7.553 3.774l7.554 -3.775a1 1 0 0 1 1.341 .447m0 -4a1 1 0 0 1 -.447 1.341l-8 4a1 1 0 0 1 -.894 0l-8 -4a1 1 0 0 1 .894 -1.788l7.552 3.775l7.554 -3.775a1 1 0 0 1 1.341 .447m0 -4a1 1 0 0 1 -.447 1.341l-8 4a1 1 0 0 1 -.894 0l-8 -4a1 1 0 0 1 .894 -1.788l7.552 3.775l7.554 -3.775a1 1 0 0 1 1.341 .447m-8.887 -8.552q .056 0 .111 .007l.111 .02l.086 .024l.012 .006l.012 .002l.029 .014l.05 .019l.016 .009l.012 .005l8 4a1 1 0 0 1 0 1.788l-8 4a1 1 0 0 1 -.894 0l-8 -4a1 1 0 0 1 0 -1.788l8 -4l.011 -.005l.018 -.01l.078 -.032l.011 -.002l.013 -.006l.086 -.024l.11 -.02l.056 -.005z" />
     </svg>
   ),
 
@@ -399,12 +404,63 @@ export const CategoryIcons = {
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="currentColor"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
       className={className}
-      class="icon icon-tabler icons-tabler-filled icon-tabler-egg-cracked"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-chart-bar-popular"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M11.236 2.066l-1.694 5.647l-.029 .123a1 1 0 0 0 .406 .978l2.764 1.974l-1.551 2.716a1 1 0 1 0 1.736 .992l2 -3.5l.052 -.105a1 1 0 0 0 -.339 -1.205l-2.918 -2.085l1.623 -5.41c3.641 1.074 6.714 6.497 6.714 11.892c0 4.59 -3.273 7.71 -8 7.917c-4.75 0 -8 -3.21 -8 -7.917c0 -5.654 3.372 -11.344 7.236 -12.017" />
+      <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+      <path d="M9 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+      <path d="M15 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+      <path d="M4 20h14" />
+    </svg>
+  ),
+
+  Habis: ({ className = "", size = 72 }: IconProps): JSX.Element => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={className}
+      class="icon icon-tabler icons-tabler-outline icon-tabler-scale-outline"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M3 3m0 4a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z" />
+      <path d="M12 7c1.956 0 3.724 .802 5 2.095l-2.956 2.904a3 3 0 0 0 -2.038 -.799a3 3 0 0 0 -2.038 .798l-2.956 -2.903a6.979 6.979 0 0 1 5 -2.095z" />
+    </svg>
+  ),
+
+  Akurat: ({ className = "", size = 72 }: IconProps): JSX.Element => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={className}
+      class="icon icon-tabler icons-tabler-outline icon-tabler-chart-histogram"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M3 3v18h18" />
+      <path d="M20 18v3" />
+      <path d="M16 16v5" />
+      <path d="M12 13v8" />
+      <path d="M8 16v5" />
+      <path d="M3 11c6 0 5 -5 9 -5s3 5 9 5" />
     </svg>
   ),
 };
@@ -483,6 +539,14 @@ export const getIconForHeading = (
 
   if (heading.match(/over/i)) {
     return <CategoryIcons.Over className={baseClass} />;
+  }
+
+  if (heading.match(/habis/i)) {
+    return <CategoryIcons.Habis className={baseClass} />;
+  }
+
+  if (heading.match(/akurat/i)) {
+    return <CategoryIcons.Akurat className={baseClass} />;
   }
 
   return <CategoryIcons.Inventory className={baseClass} />;

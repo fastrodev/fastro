@@ -33,6 +33,30 @@ export default function Wait() {
       getIconForHeading("Spreadsheet", isDark),
     ],
     [
+      "Pembelian Barang Masih Manual?",
+      "Automasi proses purchasing",
+      "Lihat fitur purchasing",
+      getIconForHeading("Manual", isDark),
+    ],
+    [
+      "Sering Salah Hitung Harga Pokok?",
+      "Kalkulasi otomatis landed cost",
+      "Coba kalkulasi biaya",
+      getIconForHeading("Harga", isDark),
+    ],
+    [
+      "Kesulitan Cek Stok di Cabang?",
+      "Monitoring multi-cabang",
+      "Demo monitoring cabang",
+      getIconForHeading("Cabang", isDark),
+    ],
+    [
+      "Susah banget bikin PO?",
+      "Automasi pembuatan PO",
+      "Lihat fitur pembuatan PO",
+      getIconForHeading("PO", isDark),
+    ],
+    [
       "Kesulitan Tracking Barang Manual?",
       "Otomatisasi dengan barcode scanner",
       "Lihat demo scan barcode",
@@ -48,7 +72,7 @@ export default function Wait() {
       "Sering Kehabisan Stok Mendadak?",
       "Notifikasi minimum stok otomatis",
       "Aktifkan alert stok minimum",
-      getIconForHeading("Notifikasi", isDark),
+      getIconForHeading("Habis", isDark),
     ],
     [
       "Bingung Monitor Multi-Cabang?",
@@ -66,7 +90,7 @@ export default function Wait() {
       "Laporan Purchasing Tidak Akurat?",
       "Laporan real-time dengan analitik",
       "Coba template laporan otomatis",
-      getIconForHeading("Laporan", isDark),
+      getIconForHeading("Akurat", isDark),
     ],
     [
       "Supplier Performance Tidak Terukur?",
@@ -138,7 +162,7 @@ export default function Wait() {
       "Cost Analysis Tidak Akurat?",
       "Perhitungan landed cost otomatis",
       "Lihat kalkulasi biaya detail",
-      getIconForHeading("Analysis", isDark),
+      getIconForHeading("Akurat", isDark),
     ],
     [
       "Data Tersebar di Banyak Sistem?",
@@ -326,8 +350,7 @@ export default function Wait() {
       ? "text-blue-400 hover:text-blue-300"
       : "text-blue-600 hover:text-blue-500",
     answer: isDark ? "text-gray-100" : "text-gray-700", // Added specific color for answers
-    cta:
-      "bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent", // Consistent gradient for CTA
+    cta: isDark ? "text-gray-100" : "text-gray-700", // Consistent gradient for CTA
     cardGlow: isDark
       ? "shadow-[0_0_100px_rgba(168,85,247,0.5),0_0_50px_rgba(255,255,255,0.15)] hover:shadow-[0_0_150px_rgba(168,85,247,0.6),0_0_80px_rgba(255,255,255,0.2)] border-white/20"
       : "shadow-[0_0_60px_rgba(0,0,0,0.2)] hover:shadow-[0_0_80px_rgba(0,0,0,0.25)] border-gray-300/50",
@@ -417,7 +440,7 @@ export default function Wait() {
                     {showAnswer && (
                       <div className="w-full max-w-md mx-auto opacity-0 animate-fade-in">
                         <p
-                          className={`text-base sm:text-xl text-left ${themeStyles.answer}`}
+                          className={`text-xl sm:text-3xl md:text-3xl text-left ${themeStyles.answer}`}
                         >
                           {answerText}
                         </p>
@@ -426,10 +449,10 @@ export default function Wait() {
                   </div>
 
                   {/* Icon Display Section */}
-                  <div className="flex-grow flex items-center justify-center min-h-[240px]">
+                  <div className="flex-grow flex items-center justify-center min-h-[160px]">
                     {/* Increased height */}
                     {nextQueued && (
-                      <div className="flex gap-8 scale-150 animate-fade-in">
+                      <div className="flex gap-1 scale-150 animate-fade-in">
                         {/* Increased gap and scale */}
                         {headings[headingIndex][3]}
                       </div>
@@ -443,14 +466,14 @@ export default function Wait() {
                       {showCTA && (
                         <div className="w-full max-w-md mx-auto opacity-0 animate-fade-in">
                           <p
-                            className={`text-base sm:text-xl text-left font-medium ${themeStyles.cta}`}
+                            className={`text-xl sm:text-3xl md:text-3xl text-left font-medium ${themeStyles.cta}`}
                           >
                             {ctaText}
                           </p>
                         </div>
                       )}
                       <div className="w-full max-w-md mx-auto">
-                        <form onSubmit={handleSubmit} className="space-y-4">
+                        <form onSubmit={handleSubmit} className="space-y-6">
                           <input
                             type="email"
                             placeholder="Enter your email address"
@@ -458,15 +481,16 @@ export default function Wait() {
                             onInput={handleChange}
                             required
                             className={`w-full p-3 backdrop-blur-sm border rounded-lg
-                        focus:outline-none focus:ring-2 focus:ring-blue-500 
-                        focus:border-transparent transition-colors
-                        ${themeStyles.input}`}
+                              text-xl sm:text-2xl md:text-3xl
+                              focus:outline-none focus:ring-2 focus:ring-blue-500 
+                              focus:border-transparent transition-colors
+                              ${themeStyles.input}`}
                           />
                           <button
                             type="submit"
                             className={`w-full text-white py-2.5 sm:py-3 px-4 rounded-lg
-                        text-base sm:text-lg font-semibold transition-colors
-                        ${themeStyles.button}`}
+                              text-xl sm:text-2xl md:text-3xl font-semibold transition-colors
+                              ${themeStyles.button}`}
                           >
                             Join Waitlist
                           </button>
