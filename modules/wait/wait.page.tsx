@@ -9,8 +9,7 @@ export default function Wait() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isDark, setIsDark] = useState(true);
   const [headingIndex, setHeadingIndex] = useState(0); // Changed from 1 to 0
-  const [gradientPosition, setGradientPosition] = useState({ x: 50, y: 50 });
-  const [direction, setDirection] = useState({ x: 1, y: 1 });
+  const [gradientPosition, setGradientPosition] = useState({ x: 50, y: 50 }); // Update initial position to center
   const [showAnswer, setShowAnswer] = useState(true); // Changed to true
   const [showCTA, setShowCTA] = useState(true); // Changed to true
   const [nextQueued, setNextQueued] = useState(false);
@@ -228,33 +227,40 @@ export default function Wait() {
     }
   }, [headingIndex, isAnimating]);
 
+  // Update the gradient movement effect
   useEffect(() => {
-    const speed = 0.5; // Controls how fast the gradient moves
-    const interval = setInterval(() => {
-      setGradientPosition((prev) => {
-        const newX = prev.x + (speed * direction.x);
-        const newY = prev.y + (speed * direction.y);
-        const newDirection = { ...direction };
+    const speed = 0.3; // Increased from 0.02 to 0.1
+    const centerX = 50; // Keep X position fixed at center
+    const minY = 30; // Minimum Y position
+    const maxY = 70; // Maximum Y position
+    let direction = 1; // 1 for moving down, -1 for moving up
+    let currentY = 50; // Start from center
 
-        // Bounce off edges
-        if (newX >= 100 || newX <= 0) {
-          newDirection.x *= -1;
-          setDirection(newDirection);
+    const interval = setInterval(() => {
+      setGradientPosition(() => {
+        // Calculate new Y position
+        let newY = currentY + (speed * direction);
+
+        // Change direction when reaching boundaries
+        if (newY >= maxY) {
+          direction = -1;
+          newY = maxY;
+        } else if (newY <= minY) {
+          direction = 1;
+          newY = minY;
         }
-        if (newY >= 100 || newY <= 0) {
-          newDirection.y *= -1;
-          setDirection(newDirection);
-        }
+
+        currentY = newY;
 
         return {
-          x: Math.max(0, Math.min(100, newX)),
-          y: Math.max(0, Math.min(100, newY)),
+          x: centerX,
+          y: newY,
         };
       });
-    }, 50); // Smaller interval for smoother animation
+    }, 30); // Reduced interval from 50ms to 30ms for smoother animation
 
     return () => clearInterval(interval);
-  }, [direction]);
+  }, []);
 
   const handleSubmit = async (e: JSX.TargetedEvent<HTMLFormElement, Event>) => {
     e.preventDefault();
@@ -292,10 +298,22 @@ export default function Wait() {
     setIsDark(!isDark);
   };
 
+  // Update the theme styles to separate main background and card background
   const themeStyles = {
     background: isDark
-      ? `radial-gradient(circle at ${gradientPosition.x}% ${gradientPosition.y}%, #2e1065, #000000)`
-      : `radial-gradient(circle at ${gradientPosition.x}% ${gradientPosition.y}%, #ffffff, #fafafa)`,
+      ? `radial-gradient(circle at ${gradientPosition.x}% ${gradientPosition.y}%, 
+      #faf5ff 0%,    /* Lightest purple */
+      #e9d5ff 5%,    /* Light purple */
+      #d8b4fe 10%,   /* Medium light purple */
+      #c084fc 15%,   /* Purple */
+      #a855f7 20%,   /* Medium purple */
+      #7e22ce 23%,   /* Dark purple */
+      #581c87 30%,   /* Darker purple */
+      #000000 65%)` /* Pure black */
+      : "#f8fafc", /* Single light gray color */
+    cardBg: isDark
+      ? "bg-gray-900/90" // Slightly more transparent for better glow effect
+      : "bg-white/95",
     text: isDark ? "text-gray-100" : "text-gray-800",
     input: isDark
       ? "bg-gray-700/30 border-gray-600 text-white placeholder-gray-400"
@@ -310,6 +328,9 @@ export default function Wait() {
     answer: isDark ? "text-gray-100" : "text-gray-700", // Added specific color for answers
     cta:
       "bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent", // Consistent gradient for CTA
+    cardGlow: isDark
+      ? "shadow-[0_0_100px_rgba(168,85,247,0.5),0_0_50px_rgba(255,255,255,0.15)] hover:shadow-[0_0_150px_rgba(168,85,247,0.6),0_0_80px_rgba(255,255,255,0.2)] border-white/20"
+      : "shadow-[0_0_60px_rgba(0,0,0,0.2)] hover:shadow-[0_0_80px_rgba(0,0,0,0.25)] border-gray-300/50",
   };
 
   return (
@@ -347,12 +368,16 @@ export default function Wait() {
       <div className="relative z-10 w-full max-w-xl mx-auto p-8 min-h-screen flex flex-col">
         <div
           className={`flex-grow flex flex-col 
-            backdrop-blur-lg bg-white/10 dark:bg-black/10
-            border border-gray-200/20 dark:border-gray-100/20
-            rounded-2xl shadow-2xl
+            backdrop-blur-lg ${themeStyles.cardBg}
+            border ${isDark ? "border-white/10" : "border-gray-200/30"}
+            rounded-2xl 
+            ${themeStyles.cardGlow}
+            transition-all duration-300 ease-in-out
             p-6 sm:p-8
             ${themeStyles.text}
-            relative z-20`}
+            relative z-20
+            hover:border-opacity-50
+            `}
         >
           {!isSubmitted
             ? (
