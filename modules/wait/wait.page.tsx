@@ -42,7 +42,7 @@ export default function Wait() {
       "Sering Salah Hitung Harga Pokok?",
       "Kalkulasi otomatis landed cost",
       "Coba kalkulasi biaya",
-      getIconForHeading("Harga", isDark),
+      getIconForHeading("Salah", isDark),
     ],
     [
       "Kesulitan Cek Stok di Cabang?",
@@ -84,7 +84,7 @@ export default function Wait() {
       "Purchase Order Manual Berantakan?",
       "Automasi PO dengan approval system",
       "Lihat workflow PO digital",
-      getIconForHeading("Automasi", isDark),
+      getIconForHeading("Salah", isDark),
     ],
     [
       "Laporan Purchasing Tidak Akurat?",
@@ -120,7 +120,7 @@ export default function Wait() {
       "Dokumen Purchase Sering Hilang?",
       "Arsip digital terintegrasi",
       "Demo document management",
-      getIconForHeading("Dokumen", isDark),
+      getIconForHeading("Hilang", isDark),
     ],
     [
       "Kesulitan Bandingkan Harga Supplier?",
