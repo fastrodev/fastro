@@ -526,13 +526,48 @@ export const CategoryIcons = {
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="currentColor"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
       className={className}
-      class="icon icon-tabler icons-tabler-filled icon-tabler-file-x"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-world-bolt"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M12 2l.117 .007a1 1 0 0 1 .876 .876l.007 .117v4l.005 .15a2 2 0 0 0 1.838 1.844l.157 .006h4l.117 .007a1 1 0 0 1 .876 .876l.007 .117v9a3 3 0 0 1 -2.824 2.995l-.176 .005h-10a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h5zm-1.489 9.14a1 1 0 0 0 -1.301 1.473l.083 .094l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.403 1.403l.094 -.083l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.403 -1.403l-.083 -.094l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.403 -1.403l-.094 .083l-1.293 1.292l-1.293 -1.292l-.094 -.083l-.102 -.07z" />
-      <path d="M19 7h-4l-.001 -4.001z" />
+      <path d="M20.985 12.52a9 9 0 1 0 -7.52 8.36" />
+      <path d="M3.6 9h16.8" />
+      <path d="M3.6 15h10.9" />
+      <path d="M11.5 3a17 17 0 0 0 0 18" />
+      <path d="M12.5 3c2.313 3.706 3.07 7.856 2.27 12" />
+      <path d="M19 16l-2 3h4l-2 3" />
+    </svg>
+  ),
+
+  Berantakan: ({ className = "", size = 72 }: IconProps): JSX.Element => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={className}
+      class="icon icon-tabler icons-tabler-outline icon-tabler-brand-google-podcasts"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3v2" />
+      <path d="M12 19v2" />
+      <path d="M12 8v8" />
+      <path d="M8 17v2" />
+      <path d="M4 11v2" />
+      <path d="M20 11v2" />
+      <path d="M8 5v8" />
+      <path d="M16 7v-2" />
+      <path d="M16 19v-8" />
     </svg>
   ),
 };
@@ -635,6 +670,10 @@ export const getIconForHeading = (
 
   if (heading.match(/salah/i)) {
     return <CategoryIcons.Salah className={baseClass} />;
+  }
+
+  if (heading.match(/berantakan/i)) {
+    return <CategoryIcons.Berantakan className={baseClass} />;
   }
 
   return <CategoryIcons.Inventory className={baseClass} />;
