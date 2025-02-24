@@ -27,6 +27,18 @@ export default function Wait() {
 
   const headings = [
     [
+      "Data Gudang dan Purchasing Terpisah?",
+      "Integrasi sistem gudang dan purchasing",
+      "Lihat fitur integrasi",
+      getIconForHeading("Integrasi", isDark),
+    ],
+    [
+      "Kesulitan Bandingkan Harga Supplier?",
+      "Price comparison otomatis",
+      "Lihat analisis perbandingan",
+      getIconForHeading("Compare", isDark),
+    ],
+    [
       "Masih Pakai Spreadsheet untuk Stok?",
       "Upgrade ke sistem inventaris modern",
       "Coba demo gratis sekarang",
@@ -122,12 +134,7 @@ export default function Wait() {
       "Demo document management",
       getIconForHeading("Hilang", isDark),
     ],
-    [
-      "Kesulitan Bandingkan Harga Supplier?",
-      "Price comparison otomatis",
-      "Lihat analisis perbandingan",
-      getIconForHeading("Compare", isDark),
-    ],
+
     [
       "Retur Barang Tidak Terorganisir?",
       "Sistem retur barang sistematis",
