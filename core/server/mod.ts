@@ -359,7 +359,6 @@ if (root) fetchProps(root);
     });
   };
 
-  // TODO
   #addPropsEndpoint = () => {
     const path = "/__/:key*";
     this.add("GET", path, (req, _ctx) => {
@@ -367,8 +366,21 @@ if (root) fetchProps(root);
       if (!getDevelopment() && ref) return ref;
       const key = req.params?.key ? req.params?.key : "";
       const data = this.serverOptions[key];
-      // console.log(req.params?.key);
-      // console.log(`data ${req.params?.key} ===>`, data);
+
+      // Handle case where data doesn't exist
+      if (data === undefined || data === null) {
+        return new Response(JSON.stringify({ error: "Data not found" }), {
+          status: 404,
+          headers: new Headers({
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "null",
+            "Access-Control-Allow-Methods": "GET",
+            "Access-Control-Allow-Headers": "Content-Type",
+          }),
+        });
+      }
+
+      // Data exists, return normally
       return new Response(JSON.stringify(data), {
         headers: new Headers({
           "Content-Type": "application/json",
