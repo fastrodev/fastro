@@ -1,7 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 import { useTypingAnimation } from "@app/hooks/useTypingAnimation.ts";
 import { JSX } from "preact/jsx-runtime";
-import BoltSvg from "@app/components/icons/bolt.tsx";
 import { getIconForHeading } from "@app/components/icons/CategoryIcons.tsx";
 
 export default function Wait() {
