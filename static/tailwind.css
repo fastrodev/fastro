@@ -10,6 +10,6 @@
 pre {
     border-style: solid;
     border-color: var(--color-border);
-    border-width: 1px;
     background-color: transparent;
+    border-width: 1px;
 }

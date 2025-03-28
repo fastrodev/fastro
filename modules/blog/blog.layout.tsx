@@ -113,18 +113,31 @@ export default function (
         />
         <style>
           {`
-          .markdown-body {
+          .markdown-body, .post-title {
             font-family: 'Merriweather', serif;
           }
           `}
         </style>
       </head>
-      <body class="bg-gray-100 dark:bg-gray-950 text-slate-900 dark:text-white">
-        <main class="container grow max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-lg mt-8">
-          {image && <img src={image} class={`rounded-t-lg`} loading="lazy" />}
+      <body class="bg-gray-200 dark:bg-gray-950 text-slate-900 dark:text-white">
+        <main class="container grow max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-lg mt-8 relative before:content-[''] before:absolute before:inset-0 before:rounded-lg before:z-[-1] before:shadow-[0_0_20px_10px_rgba(0,0,0,0.2)] dark:before:shadow-[0_0_20px_10px_rgba(128,0,128,0.3)] border border-gray-200 dark:border-gray-900">
+          {image && (
+            <div class="relative rounded-t-lg overflow-hidden">
+              <img
+                src={image}
+                class="w-full max-h-64 object-cover"
+                loading="lazy"
+              />
+              <div
+                class="absolute inset-0 pointer-events-none"
+                style="box-shadow: inset 0 0 100px 40px rgba(0,0,0,0.7);background: linear-gradient(to right, rgba(0,0,0,0.5) 0px, transparent 70px, transparent calc(100% - 70px), rgba(0,0,0,0.5) 100%),linear-gradient(to bottom, rgba(0,0,0,0.5) 0px, transparent 70px, transparent calc(100% - 70px), rgba(0,0,0,0.5) 100%);z-index: 2;"
+              >
+              </div>
+            </div>
+          )}
           <div class={`p-6`}>
             <div class={`flex flex-col gap-y-3`}>
-              <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
+              <h1 class="post-title text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
                 {title}
               </h1>
               <p class="inline-flex items-center gap-x-2 mb-3">
