@@ -1,4 +1,5 @@
 import { Footer } from "@app/components/footer.tsx";
+import Header from "@app/components/header.tsx";
 
 function convert(dateString: string) {
   const date = new Date(dateString);
@@ -78,7 +79,7 @@ export default function (
   const avatar = (props.attrs.avatar as string) ??
     "https://avatars.githubusercontent.com/u/10122431?v=4";
   const tags = props.attrs.tags as string[];
-  // const data = props.data;
+  const data = props.data;
   const time = formatDateToISO(new Date(date));
   const ogImage = image ?? "https://fastro.deno.dev/fastro.png";
 
@@ -120,7 +121,13 @@ export default function (
         </style>
       </head>
       <body class="bg-gray-200 dark:bg-gray-950 text-slate-900 dark:text-white">
-        <main class="container grow max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-lg mt-8 relative before:content-[''] before:absolute before:inset-0 before:rounded-lg before:z-[-1] before:shadow-[0_0_20px_10px_rgba(0,0,0,0.2)] dark:before:shadow-[0_0_20px_10px_rgba(128,0,128,0.3)] border border-gray-200 dark:border-gray-900">
+        <Header
+          isLogin={data.isLogin}
+          avatar_url={data.avatar_url}
+          html_url={data.html_url}
+        />
+
+        <main class="container grow max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-lg relative before:content-[''] before:absolute before:inset-0 before:rounded-lg before:z-[-1] before:shadow-[0_0_40px_20px_rgba(0,0,0,0.2)] dark:before:shadow-[0_0_40px_20px_rgba(128,0,128,0.3)] border border-gray-200 dark:border-gray-800">
           {image && (
             <div class="relative rounded-t-lg overflow-hidden">
               <img

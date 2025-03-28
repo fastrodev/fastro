@@ -42,15 +42,17 @@ export default function (
           avatar_url={data.avatar_url}
           html_url={data.html_url}
         />
-        <main
-          class={"grow md:grid md:grid-cols-12 md:p-0 dark:bg-gray-900"}
-        >
+        <main class="grow md:grid md:grid-cols-12 md:p-0 dark:bg-gray-900">
           {/* navigation */}
           <div
             class={`hidden dark:bg-gray-950 md:flex md:flex-col md:grow md:gap-y-3 md:col-span-2 md:items-end md:text-right md:pr-6 md:pt-6 md:pb-6`}
           >
             {posts.map((v) => {
-              return <a class={`text-white`} href={v.url}>{v.title}</a>;
+              return (
+                <a class={` text-gray-800 dark:text-white `} href={v.url}>
+                  {v.title}
+                </a>
+              );
             })}
           </div>
           {/* content */}
@@ -78,19 +80,19 @@ export default function (
               class={`flex justify-between`}
             >
               {previous && (
-                <a class={`text-white`} href={previous}>
+                <a class={`dark:text-gray-100 text-gray-800`} href={previous}>
                   Previous
                 </a>
               )}
               {next && (
-                <a class={`text-white`} href={next}>
+                <a class={`dark:text-gray-100 text-gray-800`} href={next}>
                   Next
                 </a>
               )}
             </div>
           </div>
           {/* TOC of doc */}
-          <div class={`bg-gray-950 col-span-2`}></div>
+          <div class={`dark:bg-gray-950 col-span-2`}></div>
         </main>
         <Footer />
         <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js" />

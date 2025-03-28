@@ -67,15 +67,46 @@ function WhatsAppSvg() {
 export function Footer() {
   return (
     <div
-      class={`container flex justify-between items-center max-w-4xl mx-auto text-center text-sm py-6 dark:text-gray-400 px-6 xl:px-0 md:px-0 sm:px-0`}
+      class={`container flex justify-between items-center max-w-4xl mx-auto text-center text-sm py-6 text-gray-700 dark:text-gray-100 px-6 xl:px-0 md:px-0 sm:px-0`}
     >
       <div class={`flex items-center space-x-3`}>
-        <TwitterSvg />
-        <WhatsAppSvg />
-        <LinkedInSvg />
+        <a
+          href=" https://x.com/fastrodev"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-gray-700 dark:text-gray-100"
+        >
+          <TwitterSvg />
+        </a>
+        <a
+          href="https://wa.me/628121619781"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-gray-700 dark:text-gray-100"
+        >
+          <WhatsAppSvg />
+        </a>
+        <a
+          href=" https://www.linkedin.com/company/fastro"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-gray-700 dark:text-gray-100"
+        >
+          <LinkedInSvg />
+        </a>
       </div>
 
-      <span>Made with ♡ in Tulungagung</span>
+      <span>
+        Made with{" "}
+        <a
+          href="https://github.com/fastrodev/fastro"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-gray-700 dark:text-gray-100"
+        >
+          Fastro Framework
+        </a>
+      </span>
     </div>
   );
 }

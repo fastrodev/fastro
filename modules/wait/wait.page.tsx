@@ -354,6 +354,7 @@ export default function Wait() {
     cardGlow: isDark
       ? "shadow-[0_0_100px_rgba(168,85,247,0.5),0_0_50px_rgba(255,255,255,0.15)] hover:shadow-[0_0_150px_rgba(168,85,247,0.6),0_0_80px_rgba(255,255,255,0.2)] border-white/20"
       : "shadow-[0_0_60px_rgba(0,0,0,0.2)] hover:shadow-[0_0_80px_rgba(0,0,0,0.25)] border-gray-300/50",
+    header: isDark ? "text-gray-100" : "text-gray-800",
   };
 
   return (
@@ -389,6 +390,27 @@ export default function Wait() {
 
       {/* Content Layer */}
       <div className="relative z-10 w-full max-w-xl mx-auto p-8 min-h-screen flex flex-col">
+        {/* Header */}
+        <header
+          className={`mb-8 w-full flex justify-center ${themeStyles.header}`}
+        >
+          <div className="flex space-x-3">
+            <a
+              href="blog"
+              className={themeStyles.link}
+              class={`dark:text-gray-50`}
+            >
+              Blog
+            </a>
+            <a
+              href="docs"
+              className={themeStyles.link}
+              class={`dark:text-gray-50`}
+            >
+              Docs
+            </a>
+          </div>
+        </header>
         <div
           className={`flex-grow flex flex-col 
             backdrop-blur-lg ${themeStyles.cardBg}
@@ -499,12 +521,6 @@ export default function Wait() {
                     </div>
                   </div>
                 </div>
-
-                {/* Footer - Move outside main content area */}
-                <div
-                  className={`w-full mt-8 flex flex-col items-center space-y-4 ${themeStyles.footer}`}
-                >
-                </div>
               </>
             )
             : (
@@ -530,7 +546,21 @@ export default function Wait() {
             )}
         </div>
 
-        {/* Theme Toggle Button */}
+        {/* Footer - Move outside main content area */}
+        <footer
+          className={`w-full mt-8 flex justify-center ${themeStyles.footer}`}
+        >
+          <a
+            href="https://github.com/fastrodev/fastro"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={themeStyles.link}
+            class={`dark:text-gray-50`}
+          >
+            Made with Fastro Framework
+          </a>
+        </footer>
+
         <button
           type="button"
           onClick={toggleTheme}

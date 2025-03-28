@@ -25,7 +25,7 @@ export default function ({ children, data }: LayoutProps<
         <meta name="description" content={data.description} />
         <meta
           property="og:image"
-          content={"https://fastro.deno.dev/fastro.png"}
+          content="https://fastro.deno.dev/fastro.png"
         />
         <title>{`${data.title} | Fastro`}</title>
         <link href="/styles.css" rel="stylesheet" />
@@ -36,9 +36,7 @@ export default function ({ children, data }: LayoutProps<
           avatar_url={data.avatar_url}
           html_url={data.html_url}
         />
-        <main
-          class={"container grow max-w-4xl px-6 py-6 mx-auto bg-gray-200  dark:bg-gray-900 rounded-xl"}
-        >
+        <main class="container grow max-w-4xl px-6 py-6 mx-auto bg-gray-200  dark:bg-gray-900 rounded-xl">
           {children}
         </main>
         <Footer />

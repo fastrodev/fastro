@@ -14,12 +14,12 @@ export default function Header(
 ) {
   return (
     <div
-      class={`container flex justify-between max-w-4xl mx-auto text-center text-sm py-6 px-3 xl:px-0 md:px-0 sm:px-0 dark:text-gray-400`}
+      class={`container flex justify-between max-w-4xl mx-auto text-center text-sm py-6 px-3 xl:px-0 md:px-0 sm:px-0 text-gray-700 dark:text-gray-400`}
     >
-      <div class={`flex space-x-2 items-center text-white`}>
-        <a href="/" class={`text-white`}>
+      <div class={`flex space-x-2 items-center`}>
+        <a href="/" class={`text-gray-700 dark:text-gray-100`}>
           <div
-            class={`border-[1px] border-white rounded-full p-1`}
+            class={`border-[1px] border-gray-700 dark:border-gray-100 rounded-full p-1`}
           >
             {props.isLogin
               ? <RocketSvg />
@@ -28,29 +28,31 @@ export default function Header(
               : <BoltSvg />}
           </div>
         </a>
-        <span>{`${props.title || "Fastro"}`}</span>
+        <span class="text-black dark:text-white">
+          {`${props.title || "Fastro"}`}
+        </span>
       </div>
       <div class={`flex items-center space-x-3`}>
-        <a class={`dark:text-white`} href={"/blog"}>Blog</a>
-        <a class={`dark:text-white`} href={"/docs"}>Docs</a>
+        <a class={`text-black dark:text-white`} href="/blog">Blog</a>
+        <a class={`text-black dark:text-white`} href="/docs">Docs</a>
 
         {props.isLogin && (
-          <a class={`dark:text-white`} href={"/signout"}>Sign out</a>
+          <a class={`text-black dark:text-white`} href="/signout">Sign out</a>
         )}
         {!props.isLogin && (
-          <a class={`dark:text-white`} href={"/signin"}>Sign in</a>
+          <a class={`text-black dark:text-white`} href="/signin">Sign in</a>
         )}
 
         <a
           aria-label="user profile"
-          class={`dark:text-white`}
+          class={`text-black dark:text-white`}
           href={props.isLogin
             ? props.html_url
             : "https://github.com/fastrodev/fastro"}
         >
           {!props.avatar_url ? <GithubSvg /> : (
             <img
-              loading={"lazy"}
+              loading="lazy"
               src={props.avatar_url}
               width={24}
               class={`rounded-full`}
