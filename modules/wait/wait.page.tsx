@@ -2,6 +2,7 @@ import { useEffect, useState } from "preact/hooks";
 import { useTypingAnimation } from "@app/hooks/useTypingAnimation.ts";
 import { JSX } from "preact/jsx-runtime";
 import { getIconForHeading } from "@app/components/icons/CategoryIcons.tsx";
+import BoltSvg from "@app/components/icons/bolt.tsx";
 
 export default function Wait() {
   const [email, setEmail] = useState("");
@@ -392,8 +393,16 @@ export default function Wait() {
       <div className="relative z-10 w-full max-w-xl mx-auto p-8 min-h-screen flex flex-col">
         {/* Header */}
         <header
-          className={`mb-8 w-full flex justify-center ${themeStyles.header}`}
+          className={`mb-8 w-full flex justify-between ${themeStyles.header}`}
         >
+          <div className="flex items-center space-x-2">
+            <div
+              class={`border-[1px] border-gray-700 dark:border-gray-100 rounded-full p-1`}
+            >
+              <BoltSvg />
+            </div>
+            <span>Fastro</span>
+          </div>
           <div className="flex space-x-3">
             <a
               href="blog"
