@@ -1,5 +1,4 @@
 import { Footer } from "@app/components/footer.tsx";
-import Header from "@app/components/header.tsx";
 
 function convert(dateString: string) {
   const date = new Date(dateString);
@@ -44,17 +43,16 @@ function formatDateToISO(date: Date): string {
 
 function generateTags(tags: string[]) {
   if (!tags) {
+    // deno-lint-ignore jsx-no-useless-fragment
     return <></>;
   }
 
   return (
-    <div class={"flex space-x-1 mb-3"}>
+    <div class="flex space-x-1 mb-3">
       {tags &&
         tags.map((tag) => (
           <a href={`tag/${tag}`}>
-            <span
-              class={"rounded border dark:bg-gray-800 border-slate-700 px-2 py-1 font-light"}
-            >
+            <span class="rounded border dark:bg-gray-800 border-slate-700 px-2 py-1 font-light">
               {tag}
             </span>
           </a>
@@ -80,7 +78,7 @@ export default function (
   const avatar = (props.attrs.avatar as string) ??
     "https://avatars.githubusercontent.com/u/10122431?v=4";
   const tags = props.attrs.tags as string[];
-  const data = props.data;
+  // const data = props.data;
   const time = formatDateToISO(new Date(date));
   const ogImage = image ?? "https://fastro.deno.dev/fastro.png";
 
@@ -97,11 +95,7 @@ export default function (
           content={time}
         />
         <meta property="og:publish_date" content={time} />
-        <meta
-          property="article:modified_time"
-          content={time}
-        >
-        </meta>
+        <meta property="article:modified_time" content={time} />
         <title>{`${title} | Fastro`}</title>
 
         <link
@@ -113,28 +107,32 @@ export default function (
         </style>
         <link href="/styles.css" rel="stylesheet" />
         <link href="/markdown.css" rel="stylesheet" />
-      </head>
-      <body class="bg-white dark:bg-gray-950 text-slate-900 dark:text-white">
-        <Header
-          isLogin={data.isLogin}
-          avatar_url={data.avatar_url}
-          html_url={data.html_url}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&family=Merriweather:wght@400;700&display=swap"
+          rel="stylesheet"
         />
-        <main
-          class={"container grow max-w-4xl mx-auto bg-gray-900 rounded-lg"}
-        >
+        <style>
+          {`
+          .markdown-body {
+            font-family: 'Merriweather', serif;
+          }
+          `}
+        </style>
+      </head>
+      <body class="bg-gray-100 dark:bg-gray-950 text-slate-900 dark:text-white">
+        <main class="container grow max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-lg mt-8">
           {image && <img src={image} class={`rounded-t-lg`} loading="lazy" />}
           <div class={`p-6`}>
             <div class={`flex flex-col gap-y-3`}>
               <h1 class="text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl dark:text-white">
                 {title}
               </h1>
-              <p class={"inline-flex items-center gap-x-2 mb-3"}>
+              <p class="inline-flex items-center gap-x-2 mb-3">
                 <img
                   src={avatar}
                   class="self-center w-5 h-5 rounded-full"
                 />
-                <span class={"font-light"}>{author} • {date}</span>
+                <span class="font-light">{author} • {date}</span>
               </p>
               {generateTags(tags)}
             </div>
@@ -143,7 +141,7 @@ export default function (
               data-color-mode="auto"
               data-light-theme="light"
               data-dark-theme="dark"
-              class="markdown-body"
+              class="markdown-body text-gray-900 dark:text-white"
             >
               {props.markdown}
             </div>

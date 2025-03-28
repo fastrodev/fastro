@@ -11,6 +11,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Inter", "sans-serif"], // Headings
+        serif: ["Merriweather", "serif"], // Body text
+      },
       animation: {
         "fade-in": "fadeIn 0.5s ease-out forwards",
         "cursor-blink": "blink 1s step-end infinite",

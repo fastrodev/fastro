@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.token.operator {
+    color: #fff;
+    background: transparent;
+}
+
+pre {
+    border-style: solid;
+    border-color: var(--color-border);
+    border-width: 1px;
+    background-color: transparent;
+}
