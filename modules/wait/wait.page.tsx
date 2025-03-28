@@ -2,12 +2,26 @@ import { useEffect, useState } from "preact/hooks";
 import { useTypingAnimation } from "@app/hooks/useTypingAnimation.ts";
 import { JSX } from "preact/jsx-runtime";
 import { getIconForHeading } from "@app/components/icons/CategoryIcons.tsx";
-import BoltSvg from "@app/components/icons/bolt.tsx";
+import { PageProps } from "@app/mod.ts";
+import { Footer } from "@app/components/footer.tsx";
+import Header from "@app/components/header.tsx";
 
-export default function Wait() {
+export default function Wait({ data }: PageProps<
+  {
+    user: string;
+    title: string;
+    description: string;
+    baseUrl: string;
+    new: string;
+    destination: string;
+    isLogin: boolean;
+    avatar_url: string;
+    html_url: string;
+  }
+>) {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
   const [headingIndex, setHeadingIndex] = useState(0); // Changed from 1 to 0
   const [gradientPosition, setGradientPosition] = useState({ x: 50, y: 50 }); // Update initial position to center
   const [showAnswer, setShowAnswer] = useState(true); // Changed to true
@@ -390,36 +404,12 @@ export default function Wait() {
       </div>
 
       {/* Content Layer */}
-      <div className="relative z-10 w-full max-w-xl mx-auto p-8 min-h-screen flex flex-col">
-        {/* Header */}
-        <header
-          className={`mb-8 w-full flex justify-between ${themeStyles.header}`}
-        >
-          <div className="flex items-center space-x-2">
-            <div
-              class={`border-[1px] border-gray-700 dark:border-gray-100 rounded-full p-1`}
-            >
-              <BoltSvg />
-            </div>
-            <span>Fastro</span>
-          </div>
-          <div className="flex space-x-3">
-            <a
-              href="blog"
-              className={themeStyles.link}
-              class={`dark:text-gray-50`}
-            >
-              Blog
-            </a>
-            <a
-              href="docs"
-              className={themeStyles.link}
-              class={`dark:text-gray-50`}
-            >
-              Docs
-            </a>
-          </div>
-        </header>
+      <div className="relative z-10 w-full max-w-xl mx-auto min-h-screen flex flex-col">
+        <Header
+          isLogin={data.isLogin}
+          avatar_url={data.avatar_url}
+          html_url={data.html_url}
+        />
         <div
           className={`flex-grow flex flex-col 
             backdrop-blur-lg ${themeStyles.cardBg}
@@ -555,21 +545,7 @@ export default function Wait() {
             )}
         </div>
 
-        {/* Footer - Move outside main content area */}
-        <footer
-          className={`w-full mt-8 flex justify-center ${themeStyles.footer}`}
-        >
-          <a
-            href="https://github.com/fastrodev/fastro"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={themeStyles.link}
-            class={`dark:text-gray-50`}
-          >
-            Made with Fastro Framework
-          </a>
-        </footer>
-
+        <Footer />
         <button
           type="button"
           onClick={toggleTheme}
