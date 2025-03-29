@@ -10,16 +10,21 @@ export default function Header(
     html_url: string;
     title?: string;
     previous_url?: string;
+    isDark?: boolean;
   },
 ) {
+  const textColorClass = props.isDark ? "text-gray-100" : "text-gray-700";
+  const borderColorClass = props.isDark ? "border-gray-100" : "border-gray-300"; // Adjusted for better dark mode visibility
+  const linkTextColorClass = props.isDark ? "text-gray-100" : "text-gray-700"; // Define link text color
+
   return (
     <div
-      class={`container flex justify-between max-w-4xl mx-auto text-center text-sm py-6 px-3 xl:px-0 md:px-0 sm:px-0 text-gray-700 dark:text-gray-400`}
+      class={`container flex justify-between max-w-4xl mx-auto text-center text-sm py-6 px-3 xl:px-0 md:px-0 sm:px-0 ${textColorClass}`}
     >
       <div class={`flex space-x-2 items-center`}>
-        <a href="/" class={`text-gray-700 dark:text-gray-100`}>
+        <a href="/" class={`${textColorClass}`}>
           <div
-            class={`border-[1px] border-gray-700 dark:border-gray-100 rounded-full p-1`}
+            class={`border-[1px] ${borderColorClass} rounded-full p-1`}
           >
             {props.isLogin
               ? <RocketSvg />
@@ -28,24 +33,24 @@ export default function Header(
               : <BoltSvg />}
           </div>
         </a>
-        <span class="text-black dark:text-white">
+        <span class={`${textColorClass}`}>
           {`${props.title || "Fastro"}`}
         </span>
       </div>
       <div class={`flex items-center space-x-3`}>
-        <a class={`text-black dark:text-white`} href="/blog">Blog</a>
-        <a class={`text-black dark:text-white`} href="/docs">Docs</a>
+        <a class={`${linkTextColorClass}`} href="/blog">Blog</a>
+        <a class={`${linkTextColorClass}`} href="/docs">Docs</a>
 
         {props.isLogin && (
-          <a class={`text-black dark:text-white`} href="/signout">Sign out</a>
+          <a class={`${linkTextColorClass}`} href="/signout">Sign out</a>
         )}
         {!props.isLogin && (
-          <a class={`text-black dark:text-white`} href="/signin">Sign in</a>
+          <a class={`${linkTextColorClass}`} href="/signin">Sign in</a>
         )}
 
         <a
           aria-label="user profile"
-          class={`text-black dark:text-white`}
+          class={`${linkTextColorClass}`}
           href={props.isLogin
             ? props.html_url
             : "https://github.com/fastrodev/fastro"}

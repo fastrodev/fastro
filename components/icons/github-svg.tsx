@@ -1,7 +1,6 @@
 export default function GithubSvg() {
   return (
     <svg
-      class="text-gray-800 dark:text-white"
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       width="24px"

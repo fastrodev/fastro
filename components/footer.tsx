@@ -1,4 +1,5 @@
 function TwitterSvg() {
+  const color = "currentColor";
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6,7 +7,7 @@ function TwitterSvg() {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
+      stroke={color}
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
@@ -20,6 +21,7 @@ function TwitterSvg() {
 }
 
 function LinkedInSvg() {
+  const color = "currentColor";
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +29,7 @@ function LinkedInSvg() {
       height="26"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
+      stroke={color}
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
@@ -44,6 +46,7 @@ function LinkedInSvg() {
 }
 
 function WhatsAppSvg() {
+  const color = "currentColor";
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +54,7 @@ function WhatsAppSvg() {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
+      stroke={color}
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
@@ -63,18 +66,20 @@ function WhatsAppSvg() {
     </svg>
   );
 }
-
-export function Footer() {
+export function Footer(props: {
+  isDark?: boolean;
+}) {
+  const textColorClass = props.isDark ? "text-gray-100" : "text-gray-700";
   return (
     <div
-      class={`container flex justify-between items-center max-w-4xl mx-auto text-center text-sm py-6 text-gray-700 dark:text-gray-100 px-6 xl:px-0 md:px-0 sm:px-0`}
+      class={`container flex justify-between items-center max-w-4xl mx-auto text-center text-sm py-8 ${textColorClass} px-6 xl:px-0 md:px-0 sm:px-0`}
     >
       <div class={`flex items-center space-x-3`}>
         <a
-          href=" https://x.com/fastrodev"
+          href="https://x.com/fastrodev"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-gray-700 dark:text-gray-100"
+          class={textColorClass}
         >
           <TwitterSvg />
         </a>
@@ -82,27 +87,27 @@ export function Footer() {
           href="https://wa.me/628121619781"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-gray-700 dark:text-gray-100"
+          class={textColorClass}
         >
           <WhatsAppSvg />
         </a>
         <a
-          href=" https://www.linkedin.com/company/fastro"
+          href="https://www.linkedin.com/company/fastro"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-gray-700 dark:text-gray-100"
+          class={textColorClass}
         >
           <LinkedInSvg />
         </a>
       </div>
 
-      <span>
+      <span class={textColorClass}>
         Made with{" "}
         <a
           href="https://github.com/fastrodev/fastro"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-gray-700 dark:text-gray-100"
+          class={textColorClass}
         >
           Fastro Framework
         </a>

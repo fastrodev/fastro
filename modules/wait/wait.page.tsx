@@ -21,7 +21,7 @@ export default function Wait({ data }: PageProps<
 >) {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
   const [headingIndex, setHeadingIndex] = useState(0); // Changed from 1 to 0
   const [gradientPosition, setGradientPosition] = useState({ x: 50, y: 50 }); // Update initial position to center
   const [showAnswer, setShowAnswer] = useState(true); // Changed to true
@@ -409,6 +409,7 @@ export default function Wait({ data }: PageProps<
           isLogin={data.isLogin}
           avatar_url={data.avatar_url}
           html_url={data.html_url}
+          isDark={isDark}
         />
         <div
           className={`flex-grow flex flex-col 
@@ -447,7 +448,7 @@ export default function Wait({ data }: PageProps<
                       bg-clip-text text-transparent transition-opacity duration-500
                       drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]`}
                         >
-                          <span className="block py-2">
+                          <span className="block py-2 ml-7">
                             <span className="[text-shadow:_0_0_10px_rgba(255,255,255,0.1)]">
                               {headingText}
                             </span>
@@ -545,7 +546,7 @@ export default function Wait({ data }: PageProps<
             )}
         </div>
 
-        <Footer />
+        <Footer isDark={isDark} />
         <button
           type="button"
           onClick={toggleTheme}
