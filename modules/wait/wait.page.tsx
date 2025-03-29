@@ -426,102 +426,75 @@ export default function Wait({ data }: PageProps<
         >
           {!isSubmitted
             ? (
-              <>
-                {/* Main Content Area - Update flex structure */}
-                <div className="flex flex-col flex-1 min-h-[50vh] justify-between">
-                  {/* Content Section */}
-                  <div className="flex flex-col gap-y-0">
-                    {/* Heading Section */}
-                    <div className="flex-initial">
-                      <div className="py-2 sm:py-3 md:py-4 lg:py-5 min-h-[100px] sm:min-h-[120px] md:min-h-[140px] lg:min-h-[160px] flex items-center">
-                        <h2
-                          className={`text-[2.5rem] sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl 
-                      font-extrabold
-                      leading-[1.2] sm:leading-[1.5] md:leading-[1.6]
-                      tracking-tight md:tracking-tighter
-                      max-w-[95vw] sm:max-w-[85vw] md:max-w-[80vw] mx-auto
+              <div className="flex flex-col flex-1 min-h-[600px]">
+                {/* Content Section - Top */}
+                <div className="flex-initial">
+                  <div className="max-w-2xl w-full">
+                    <div className="px-8 flex flex-col gap-y-8">
+                      <h2
+                        className={`text-3xl sm:text-4xl md:text-5xl font-black tracking-tight
                       ${
-                            isDark
-                              ? "bg-gradient-to-br from-blue-300 to-purple-200"
-                              : "bg-gradient-to-br from-gray-800 to-gray-600"
-                          } 
-                      bg-clip-text text-transparent transition-opacity duration-500
-                      drop-shadow-[0_0_8px_rgba(255,255,255,0.15)]`}
-                        >
-                          <span className="block py-2 ml-7">
-                            <span className="[text-shadow:_0_0_10px_rgba(255,255,255,0.1)]">
-                              {headingText}
-                            </span>
-                            <span className="inline-block w-0.5 sm:w-1 h-[1em] ml-0.5 sm:ml-1 animate-pulse bg-current" />
-                          </span>
-                        </h2>
-                      </div>
-                    </div>
+                          isDark
+                            ? "bg-gradient-to-br from-blue-300 to-purple-200"
+                            : "bg-gradient-to-br from-gray-800 to-gray-600"
+                        }
+                      bg-clip-text text-transparent`}
+                      >
+                        {headingText}
+                        <span className="inline-block w-0.5 h-[1em] ml-1 animate-pulse bg-current" />
+                      </h2>
 
-                    {/* Answer Section */}
-                    {showAnswer && (
-                      <div className="w-full max-w-md mx-auto opacity-0 animate-fade-in">
+                      {showAnswer && (
                         <p
-                          className={`text-xl sm:text-3xl md:text-3xl text-left font-medium ${themeStyles.answer}`}
+                          className={`text-xl sm:text-2xl md:text-3xl font-medium ${themeStyles.answer}`}
                         >
                           {answerText}
                         </p>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Icon Display Section */}
-                  <div className="flex-grow flex items-center justify-center min-h-[160px]">
-                    {/* Increased height */}
-                    {nextQueued && (
-                      <div className="flex gap-1 scale-150 animate-fade-in">
-                        {/* Increased gap and scale */}
-                        {headings[headingIndex][3]}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Form Section */}
-                  <div className="flex-initial mt-auto">
-                    <div className="flex flex-col gap-y-6">
-                      {/* CTA Section */}
-                      {showCTA && (
-                        <div className="w-full max-w-md mx-auto opacity-0 animate-fade-in">
-                          <p
-                            className={`text-xl sm:text-3xl md:text-3xl text-left font-medium ${themeStyles.cta}`}
-                          >
-                            {ctaText}
-                          </p>
-                        </div>
                       )}
-                      <div className="w-full max-w-md mx-auto">
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                          <input
-                            type="email"
-                            placeholder="Enter your email address"
-                            value={email}
-                            onInput={handleChange}
-                            required
-                            className={`w-full p-3 backdrop-blur-sm border rounded-lg
-                              text-xl sm:text-2xl md:text-3xl
-                              focus:outline-none focus:ring-2 focus:ring-blue-500 
-                              focus:border-transparent transition-colors
-                              ${themeStyles.input}`}
-                          />
-                          <button
-                            type="submit"
-                            className={`w-full text-white py-2.5 sm:py-3 px-4 rounded-lg
-                              text-xl sm:text-2xl md:text-3xl font-semibold transition-colors
-                              ${themeStyles.button}`}
-                          >
-                            Join Waitlist
-                          </button>
-                        </form>
-                      </div>
+
+                      {showCTA && (
+                        <p
+                          className={`text-xl sm:text-2xl md:text-3xl font-medium ${themeStyles.cta}`}
+                        >
+                          {ctaText}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
-              </>
+
+                {/* Icon Section - Middle */}
+                <div className="flex-1 flex items-center justify-center px-8">
+                  {nextQueued && (
+                    <div className="transform transition-all duration-300 ease-in-out hover:scale-110">
+                      {headings[headingIndex][3]}
+                    </div>
+                  )}
+                </div>
+
+                {/* Form Section - Bottom */}
+                <div className="flex-initial px-8 mb-8">
+                  <form
+                    onSubmit={handleSubmit}
+                    className="flex flex-col sm:flex-row gap-3 w-full"
+                  >
+                    <input
+                      type="email"
+                      placeholder="Enter your email address"
+                      value={email}
+                      onInput={handleChange}
+                      required
+                      className={`flex-1 px-4 py-2 text-base sm:text-lg rounded-lg ${themeStyles.input}`}
+                    />
+                    <button
+                      type="submit"
+                      className={`px-4 py-2 text-base sm:text-lg font-medium rounded-lg text-white whitespace-nowrap ${themeStyles.button}`}
+                    >
+                      Join Waitlist
+                    </button>
+                  </form>
+                </div>
+              </div>
             )
             : (
               <>
