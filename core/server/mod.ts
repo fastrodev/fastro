@@ -22,7 +22,7 @@ import {
 } from "./types.ts";
 import { EsbuildMod } from "../build/esbuildMod.ts";
 import { Store } from "../map/mod.ts";
-import { createTaskQueue } from "@app/utils/queue.ts";
+import { createTaskQueue } from "../../utils/queue.ts";
 import { ulid } from "jsr:@std/ulid/ulid";
 
 export function checkReferer(req: Request) {
