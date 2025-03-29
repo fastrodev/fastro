@@ -428,9 +428,9 @@ export default function Wait({ data }: PageProps<
             ? (
               <div className="flex flex-col flex-1 min-h-[600px]">
                 {/* Content Section - Top */}
-                <div className="flex-initial">
+                <div className="flex-initial mt-8">
                   <div className="max-w-2xl w-full">
-                    <div className="px-8 flex flex-col gap-y-8">
+                    <div className="px-8 flex flex-col gap-y-4">
                       <h2
                         className={`text-3xl sm:text-4xl md:text-5xl font-black tracking-tight
                       ${
@@ -464,7 +464,7 @@ export default function Wait({ data }: PageProps<
                 </div>
 
                 {/* Icon Section - Middle */}
-                <div className="flex-1 flex items-center justify-center px-8">
+                <div className="flex-1 flex items-center justify-center px-8 py-8 min-h-[200px]">
                   {nextQueued && (
                     <div className="transform transition-all duration-300 ease-in-out hover:scale-110">
                       {headings[headingIndex][3]}
