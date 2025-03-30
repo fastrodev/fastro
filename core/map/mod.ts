@@ -1,4 +1,4 @@
-import { kv } from "@app/utils/db.ts";
+import { kv } from "../../utils/db.ts";
 import { createTaskQueue } from "../../utils/queue.ts";
 
 type StoreOptions = {
