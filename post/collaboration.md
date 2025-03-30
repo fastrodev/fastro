@@ -1,7 +1,7 @@
 ---
 title: "Unlock Your Potential: Collaborate and Share Profits!"
 description: "Dream of more than a fixed salary? Join our team of Programmers, Business Analysts, and Designers to build amazing apps and share the profits! Discover a winning profit-sharing strategy that fuels team success."
-image: /collab.jpeg
+image: https://fastro.deno.dev/fastro.png/collab.jpeg
 author: Admin
 date: 06/18/2024
 ---
