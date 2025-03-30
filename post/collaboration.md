@@ -1,24 +1,39 @@
 ---
-title: "Collaboration and Profit Sharing"
-description: "Unleash the Power of Collaboration!  Programmers, Business Analysts, and Designers: Discover how to maximize profits and fuel team success with a winning profit-sharing strategy for your app."
-image: https://fastro.deno.dev/collab.png
+title: "Unlock Your Potential: Collaborate and Share Profits!"
+description: "Dream of more than a fixed salary? Join our team of Programmers, Business Analysts, and Designers to build amazing apps and share the profits! Discover a winning profit-sharing strategy that fuels team success."
+image: /collab.jpeg
 author: Admin
 date: 06/18/2024
 ---
 
-As the employee, you typically receive a fixed income based on a salary. That's
-perfectly acceptable.
+**Ready to take control of your income and build something amazing?**
 
-However, I now propose a collaboration between business analyst, designer,
-product manager, programmer, and quality assurance -- to create several free
-apps.
+Forget the limitations of a fixed salary. We're proposing a collaboration
+between talented individuals like you – business analysts, designers, product
+managers, programmers, and QA specialists – to create a suite of free apps with
+real earning potential.
 
-These apps will be continuously maintained and developed to attract a large user
-base. We will place relevant ads on these apps. If a user wants to remove the
-ads, they will need to subscribe on a monthly basis.
+**Here's the deal:**
 
-Profits generated will be divided based on the following percentages, according
-to assumed workload.
+We'll build and maintain these apps together, attracting a large user base.
+Revenue will be generated through targeted ads and optional monthly
+subscriptions for ad-free access. Profits are then shared based on your
+contribution.
+
+**Why collaborate with us?**
+
+- **Unlimited Earning Potential:** Earn more based on your contribution and the
+  success of the apps.
+- **Build Your Portfolio:** Showcase your skills and gain valuable experience on
+  real-world projects.
+- **Be Part of a Team:** Collaborate with talented individuals and make a
+  meaningful impact.
+- **Flexible and Remote:** Work on your own schedule from anywhere in the world.
+
+**Profit Sharing Breakdown:**
+
+We believe in fair compensation. Here's how the profits are divided, based on
+the estimated workload for each role:
 
 | Role              | Task                                                               | Output                                              | Sharing Profit |
 | ----------------- | ------------------------------------------------------------------ | --------------------------------------------------- | :------------: |
@@ -26,72 +41,37 @@ to assumed workload.
 | Designer          | Design UI/UX applications.                                         | Clickable Figma Prototype                           |     12.5 %     |
 | Product Manager   | Overseeing its entire lifecycle from ideation to launch and beyond | Scrum Artifacts, User Metrics, and Business Metrics |     12.5 %     |
 | Frontend          | Create a user interface & integrate it with APIs                   | Web Application (SSR)                               |     12.5 %     |
-| Backend           | Database desain & create APIs                                      | Application Programming Interface (API)             |     12.5 %     |
+| Backend           | Database design & create APIs                                      | Application Programming Interface (API)             |     12.5 %     |
 | Quality Assurance | Test and ensure the application's quality                          | Stakeholder satisfaction                            |     12.5 %     |
 | Infrastructure    | Maintain the operational of Server & Database                      | CI/CD, Deployment                                   |     12.5 %     |
 | Core Framework    | Framework maintenance                                              | The Latest Synced Framework                         |     12.5 %     |
 
-## Comission from every new income
+**Bonus Commission:**
 
 | Role  | Task                                                                       | Output                     | commission |
 | ----- | -------------------------------------------------------------------------- | -------------------------- | :--------: |
 | Sales | Attract vendors and brands to run ads on the platform. Acquire paid users. | Ads placement & paid users |     5%     |
 
-## Use cases
+**Examples of Collaboration:**
 
-It is posibble for a contributor to handle multiple task. And each task will be
-calculated as sharing profit ratio.
+- **The Idea:** A modular and customizable e-commerce platform.
+- **The Team:**
+  - A **Core Framework Developer** maintains and updates the core framework.
+  - A **Frontend Developer** creates reusable UI components.
+  - A **Backend Developer** builds the API endpoints for product management and
+    order processing.
+  - An **Infrastructure Engineer** sets up and maintains the cloud
+    infrastructure.
+  - A **QA Specialist** ensures the platform is stable and secure.
+- **The Outcome:** A widely adopted open-source e-commerce platform with a
+  vibrant community of developers and users.
 
-#### Business Analyst + Designer + Product Manager
+**Ready to Get Started?**
 
-> Imam's initial contribution was to design the purchase application (as a
-> designer).
->
-> However, to ensure a user-friendly experience, he gathered feedback from
-> actual users on how the application functioned (acting as a business analyst).
-> He also created user stories, scrum artifacts, set up user and business
-> metrics (as a product manager).
->
-> Therefore, Imam's total contribution would be calculated as 12.5% + 12.5% +
-> 12.5% = 37.5%
+- Got a brilliant app idea?
+  [Share it with us!](https://github.com/fastrodev/feedback/issues/new)
+- Want to learn more? Email us at [hello@fastro.dev](mailto:hello@fastro.dev)
+- Chat with us on WhatsApp:
+  [Start a conversation](https://api.whatsapp.com/send?phone=628121619781)
 
-#### Frontend + Quality Assurance
-
-> Firman's task is to create the user interface and experience (as a frontend
-> developer). But he also makes sure all features are working as expected
-> (acting as Quality Assurance).
->
-> Once the application was developed by the development team (including
-> developers, QA testers, DevOps engineers), Firman successfully attracted
-> brands to place advertisements on the platform.
->
-> Therefore, Firman's total contribution would be calculated as 12.5% + 12.5% =
-> 25%
->
-> He also gets a 5% commission on the deals he secures with brands.
-
-#### Founder + Backend + Infrastructure
-
-> Yanu is the Founder of Framework. His tasks include updating and syncing with
-> the upstream dependency (as a Core Framework).
->
-> In addition, he designs the database, creates APIs for the application (acting
-> as backend), and sets up the CI/CD for application deployment (acting as
-> infrastructure).
->
-> Therefore, Yanu's total contribution would be calculated as 12.5% + 12.5% +
-> 12.5% = 37.5%
-
-## Call for collaboration
-
-Do you have a design concept or idea?
-
-Please [submit here.](https://github.com/fastrodev/feedback/issues/new)
-
-Or
-
-Send your message to [hello@fastro.dev](mailto:hello@fastro.dev)
-
-Or
-
-Send to [Whatsapp](https://api.whatsapp.com/send?phone=628121619781)
+**Let's build something amazing together!**

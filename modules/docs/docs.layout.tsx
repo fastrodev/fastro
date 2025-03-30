@@ -27,7 +27,7 @@ export default function (
         <meta property="og:image" content={image} />
         <title>{`${title} | Fastro`}</title>
         <link
-          href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"
+          href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/themes/prism.min.css"
           rel="stylesheet"
         />
         <style>
@@ -95,8 +95,8 @@ export default function (
           <div class={`dark:bg-gray-950 col-span-2`}></div>
         </main>
         <Footer />
-        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js" />
-        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js" />
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-core.min.js" />
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/autoloader/prism-autoloader.min.js" />
       </body>
     </html>
   );

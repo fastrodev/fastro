@@ -101,17 +101,14 @@ export function Footer(props: {
         </a>
       </div>
 
-      <span class={textColorClass}>
-        Made with{" "}
+      <div class={`flex gap-x-3`}>
         <a
-          href="https://github.com/fastrodev/fastro"
-          target="_blank"
-          rel="noopener noreferrer"
           class={textColorClass}
+          href="/blog/collaboration"
         >
-          Fastro Framework
+          Collaborate with us
         </a>
-      </span>
+      </div>
     </div>
   );
 }

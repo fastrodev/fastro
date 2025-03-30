@@ -1,6 +1,6 @@
 import { Context, HttpRequest } from "@app/mod.ts";
 import addEmail from "@app/modules/wait/wait.service.ts";
-import { getSessionId } from "@app/modules/auth/mod.tsx";
+import { getSession } from "@app/utils/session.ts";
 
 function init() {
   const basePath = Deno.env.get("DENO_DEPLOYMENT_ID")
@@ -28,21 +28,13 @@ export default async function waitHandler(req: HttpRequest, ctx: Context) {
   const res = denoRunCheck(req);
   if (res) return init();
 
-  const sessionId = await getSessionId(req);
-  const hasSessionIdCookie = sessionId !== undefined;
-  const isLogin = hasSessionIdCookie;
-  let avatar_url = "";
-  let html_url = "";
-  if (sessionId) {
-    const r = ctx.server.serverOptions[sessionId];
-    if (r) {
-      avatar_url = r.avatar_url;
-      html_url = r.html_url;
-    }
-  }
+  const ses = await getSession(req, ctx);
+  const isLogin = ses?.isLogin;
+  const avatar_url = ses?.avatar_url;
+  const html_url = ses?.avatar_url;
 
   return await ctx.render({
-    title: "Software Inventory & Purchasing",
+    title: "Web Framework for Deno",
     description:
       "Modern inventory & purchasing software to help small businesses automate stock control and procurement tasks.",
     image: "https://fastro.deno.dev/fastro.png",

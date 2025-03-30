@@ -2,14 +2,14 @@ import { CSS, extract, remark, render } from "./deps.ts";
 import { renderToString } from "../../core/server/deps.ts";
 import { Context, FunctionComponent, HttpRequest } from "../../mod.ts";
 
-import "npm:prismjs@^1.29.0/components/prism-css.min.js";
-import "npm:prismjs@^1.29.0/components/prism-jsx.min.js";
-import "npm:prismjs@^1.29.0/components/prism-typescript.min.js";
-import "npm:prismjs@^1.29.0/components/prism-tsx.min.js";
-import "npm:prismjs@^1.29.0/components/prism-bash.min.js";
-import "npm:prismjs@^1.29.0/components/prism-powershell.min.js";
-import "npm:prismjs@^1.29.0/components/prism-json.min.js";
-import "npm:prismjs@^1.29.0/components/prism-diff.min.js";
+import "npm:prismjs@^1.30.0/components/prism-css.min.js";
+import "npm:prismjs@^1.30.0/components/prism-jsx.min.js";
+import "npm:prismjs@^1.30.0/components/prism-typescript.min.js";
+import "npm:prismjs@^1.30.0/components/prism-tsx.min.js";
+import "npm:prismjs@^1.30.0/components/prism-bash.min.js";
+import "npm:prismjs@^1.30.0/components/prism-powershell.min.js";
+import "npm:prismjs@^1.30.0/components/prism-json.min.js";
+import "npm:prismjs@^1.30.0/components/prism-diff.min.js";
 
 function stringToJSXElement(content: string) {
   return <div dangerouslySetInnerHTML={{ __html: content }} />;
@@ -87,7 +87,7 @@ export const defaultLayout = (props: {
           {props.CSS}
         </style>
         <link
-          href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"
+          href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/themes/prism.min.css"
           rel="stylesheet"
         />
       </head>
@@ -100,8 +100,8 @@ export const defaultLayout = (props: {
         >
           {props.markdown}
         </main>
-        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js" />
-        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js" />
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-core.min.js" />
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/autoloader/prism-autoloader.min.js" />
       </body>
     </html>
   );

@@ -13,12 +13,12 @@ export default function layout(
           name="viewport"
           content="width=device-width, initial-scale=1, viewport-fit=cover"
         />
-        <title>{data.title} | Fastro Solutions</title>
+        <title>{data.title} | Fastro Web Services</title>
 
         {/* Primary Meta Tags */}
         <meta
           name="title"
-          content={`${data.title} | Fastro Solutions`}
+          content={`${data.title} | Fastro Web Services`}
         />
         <meta name="description" content={data.description} />
         <meta
@@ -31,18 +31,18 @@ export default function layout(
         <meta property="og:url" content="https://fastro.dev" />
         <meta
           property="og:title"
-          content={`${data.title} | Fastro Solutions`}
+          content={`${data.title} | Fastro Web Services`}
         />
         <meta property="og:description" content={data.description} />
         <meta property="og:image" content={data.image} />
-        <meta property="og:site_name" content="Fastro Solutions" />
+        <meta property="og:site_name" content="Fastro Web Services" />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://fastro.dev" />
         <meta
           property="twitter:title"
-          content={`${data.title} | Fastro Solutions`}
+          content={`${data.title} | Fasto Web Services`}
         />
         <meta property="twitter:description" content={data.description} />
         <meta property="twitter:image" content={data.image} />

@@ -34,12 +34,18 @@ export default function Header(
           </div>
         </a>
         <span class={`${textColorClass}`}>
-          {`${props.title || "Fastro"}`}
+          {`${props.title || "Fastro Framework"}`}
         </span>
       </div>
       <div class={`flex items-center space-x-3`}>
         <a class={`${linkTextColorClass}`} href="/blog">Blog</a>
         <a class={`${linkTextColorClass}`} href="/docs">Docs</a>
+        <a
+          class={`${linkTextColorClass}`}
+          href="https://github.com/denosaurs/bench?tab=readme-ov-file#hello-bench"
+        >
+          Benchmarks
+        </a>
 
         {props.isLogin && (
           <a class={`${linkTextColorClass}`} href="/signout">Sign out</a>
