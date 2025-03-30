@@ -34,7 +34,7 @@ export default function Header(
           </div>
         </a>
         <span class={`${textColorClass}`}>
-          {`${props.title || "Fastro Framework"}`}
+          {`${props.title || "Fastro"}`}
         </span>
       </div>
       <div class={`flex items-center space-x-3`}>
