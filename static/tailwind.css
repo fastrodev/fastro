@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 .token.operator {
-    color: #fff;
     background: transparent;
 }
 

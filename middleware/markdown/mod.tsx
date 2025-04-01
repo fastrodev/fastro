@@ -10,6 +10,7 @@ import "npm:prismjs@^1.30.0/components/prism-bash.min.js";
 import "npm:prismjs@^1.30.0/components/prism-powershell.min.js";
 import "npm:prismjs@^1.30.0/components/prism-json.min.js";
 import "npm:prismjs@^1.30.0/components/prism-diff.min.js";
+import "npm:prismjs@^1.30.0/components/prism-go.min.js";
 
 function stringToJSXElement(content: string) {
   return <div dangerouslySetInnerHTML={{ __html: content }} />;

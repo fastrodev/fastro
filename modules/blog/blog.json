@@ -1,5 +1,25 @@
 [
   {
+    "title": "Understanding Go Channels: A Simple Guide with Kitchen Analogies",
+    "url": "/blog/channel",
+    "date": "04/01/2025"
+  },
+  {
+    "title": "Understanding Mutex in Go: Race Conditions vs Thread-Safe Code",
+    "url": "/blog/mutex",
+    "date": "04/01/2025"
+  },
+  {
+    "title": "sync.WaitGroup vs errgroup in Go: A Complete Comparison Guide",
+    "url": "/blog/errgroup",
+    "date": "04/01/2025"
+  },
+  {
+    "title": "Understanding sync.WaitGroup in Go: A Simple Guide with Examples",
+    "url": "/blog/waitgroup",
+    "date": "04/01/2025"
+  },
+  {
     "title": "Startup Success: 3 Key Ingredients",
     "url": "/blog/startup",
     "date": "03/30/2025"
