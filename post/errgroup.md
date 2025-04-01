@@ -1,6 +1,6 @@
 ---
 title: "sync.WaitGroup vs errgroup in Go: A Complete Comparison Guide"
-image: https://fastro.deno.dev/go.png
+image: https://fastro.deno.dev/go.jpeg
 description: "Learn the key differences between sync.WaitGroup and errgroup in Go. This guide covers error handling, use cases, and practical examples to help you choose the right tool for concurrent programming."
 author: Admin
 date: 04/01/2025

@@ -1,6 +1,6 @@
 ---
 title: "Understanding sync.WaitGroup in Go: A Simple Guide with Examples"
-image: https://fastro.deno.dev/go.png
+image: https://fastro.deno.dev/go.jpeg
 description: "Learn how to coordinate multiple goroutines in Go using sync.WaitGroup. This guide explains the concept using simple analogies and practical examples, perfect for Go beginners."
 author: Admin
 date: 04/01/2025

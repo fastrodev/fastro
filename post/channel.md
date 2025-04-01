@@ -1,6 +1,6 @@
 ---
 title: "Understanding Go Channels: A Simple Guide with Kitchen Analogies"
-image: https://fastro.deno.dev/go.png
+image: https://fastro.deno.dev/go.jpeg
 description: "Learn how Go channels work with simple analogies and practical examples. Perfect for beginners to understand goroutine communication and synchronization in Go programming."
 author: Admin
 date: 04/01/2025

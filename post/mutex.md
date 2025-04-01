@@ -1,6 +1,6 @@
 ---
 title: "Understanding Mutex in Go: Race Conditions vs Thread-Safe Code"
-image: https://fastro.deno.dev/go.png
+image: https://fastro.deno.dev/go.jpeg
 description: "Learn how to use sync.Mutex in Go with practical examples. Compare code with and without mutex to understand race conditions and thread safety in concurrent programming."
 author: Admin
 date: 04/01/2025
