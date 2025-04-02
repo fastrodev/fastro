@@ -1,77 +1,77 @@
 ---
-title: "Unlock Your Potential: Collaborate and Share Profits!"
-description: "Dream of more than a fixed salary? Join our team of Programmers, Business Analysts, and Designers to build amazing apps and share the profits! Discover a winning profit-sharing strategy that fuels team success."
+title: "Maksimalin Potensi Lo: Kolaborasi dan Bagi Cuan!"
+description: "Bosen sama gaji tetap? Gabung tim Programmer, Business Analyst, dan Designer kita buat bikin aplikasi keren dan bagi cuan! Temukan strategi profit-sharing yang bikin tim sukses bareng-bareng."
 image: https://fastro.deno.dev/collab.jpeg
 author: Admin
 date: 06/18/2024
 ---
 
-**Ready to take control of your income and build something amazing?**
+**Siap bikin cuan gede dan bangun sesuatu yang keren?**
 
-Forget the limitations of a fixed salary. We're proposing a collaboration
-between talented individuals like you – business analysts, designers, product
-managers, programmers, and QA specialists – to create a suite of free apps with
-real earning potential.
+Lupain aja gaji tetap yang gitu-gitu doang. Kita nawarin kolaborasi bareng
+anak-anak berbakat kayak lo – bisnis analis, desainer, prodak manajer,
+programmer, dan QA specialist – buat bikin berbagai aplikasi gratis yang beneran
+bisa ngasilin duit.
 
-**Here's the deal:**
+**Begini ceritanya:**
 
-We'll build and maintain these apps together, attracting a large user base.
-Revenue will be generated through targeted ads and optional monthly
-subscriptions for ad-free access. Profits are then shared based on your
-contribution.
+Kita bangun dan maintain aplikasi bareng-bareng, sambil narik banyak user. Cuan
+bakal didapet dari iklan yang tertarget dan langganan bulanan opsional buat
+akses tanpa iklan. Duitnya dibagi-bagi sesuai kontribusi lo.
 
-**Why collaborate with us?**
+**Kenapa harus kolaborasi sama kita?**
 
-- **Unlimited Earning Potential:** Earn more based on your contribution and the
-  success of the apps.
-- **Build Your Portfolio:** Showcase your skills and gain valuable experience on
-  real-world projects.
-- **Be Part of a Team:** Collaborate with talented individuals and make a
-  meaningful impact.
-- **Flexible and Remote:** Work on your own schedule from anywhere in the world.
+- **Potensi Cuan Gak Ada Batasnya:** Makin gede kontribusi dan sukses appnya,
+  makin gede juga duit lo.
+- **Perkaya Portfolio:** Pamer skill lo dan dapetin pengalaman berharga dari
+  proyek dunia nyata.
+- **Jadi Bagian dari Tim Kece:** Kolaborasi bareng orang-orang berbakat dan
+  bikin impact yang berasa.
+- **Fleksibel dan Remote:** Kerja sesuai jadwal lo dari mana aja di seluruh
+  dunia.
 
-**Profit Sharing Breakdown:**
+**Pembagian Cuan:**
 
-We believe in fair compensation. Here's how the profits are divided, based on
-the estimated workload for each role:
+Kita percaya bayaran yang adil. Begini cara bagi-bagi cuan, berdasarkan
+perkiraan beban kerja tiap peran:
 
-| Role              | Task                                                               | Output                                              | Sharing Profit |
-| ----------------- | ------------------------------------------------------------------ | --------------------------------------------------- | :------------: |
-| Business Analyst  | Define user requirements & business flow                           | Business Requirements Document (BRD)                |     12.5 %     |
-| Designer          | Design UI/UX applications.                                         | Clickable Figma Prototype                           |     12.5 %     |
-| Product Manager   | Overseeing its entire lifecycle from ideation to launch and beyond | Scrum Artifacts, User Metrics, and Business Metrics |     12.5 %     |
-| Frontend          | Create a user interface & integrate it with APIs                   | Web Application (SSR)                               |     12.5 %     |
-| Backend           | Database design & create APIs                                      | Application Programming Interface (API)             |     12.5 %     |
-| Quality Assurance | Test and ensure the application's quality                          | Stakeholder satisfaction                            |     12.5 %     |
-| Infrastructure    | Maintain the operational of Server & Database                      | CI/CD, Deployment                                   |     12.5 %     |
-| Core Framework    | Framework maintenance                                              | The Latest Synced Framework                         |     12.5 %     |
+| Peran             | Tugas                                                                    | Output                                            | Bagi Cuan |
+| ----------------- | ------------------------------------------------------------------------ | ------------------------------------------------- | :-------: |
+| Business Analyst  | Definisiin kebutuhan user & alur bisnis                                  | Business Requirements Document (BRD)              |  12.5 %   |
+| Designer          | Desain UI/UX aplikasi                                                    | Prototype Figma yang Bisa Diklik                  |  12.5 %   |
+| Product Manager   | Ngawasin seluruh siklus produk dari ide sampai peluncuran dan seterusnya | Artefak Scrum, Metrik Pengguna, dan Metrik Bisnis |  12.5 %   |
+| Frontend          | Bikin user interface & integrasiin dengan API                            | Aplikasi Web (SSR)                                |  12.5 %   |
+| Backend           | Desain database & bikin API                                              | Application Programming Interface (API)           |  12.5 %   |
+| Quality Assurance | Test dan pastiin kualitas aplikasi                                       | Kepuasan stakeholder                              |  12.5 %   |
+| Infrastructure    | Jagain operasional Server & Database                                     | CI/CD, Deployment                                 |  12.5 %   |
+| Core Framework    | Maintenance framework                                                    | Framework Terupdate Terbaru                       |  12.5 %   |
 
-**Bonus Commission:**
+**Komisi Bonus:**
 
-| Role  | Task                                                                       | Output                     | commission |
-| ----- | -------------------------------------------------------------------------- | -------------------------- | :--------: |
-| Sales | Attract vendors and brands to run ads on the platform. Acquire paid users. | Ads placement & paid users |     5%     |
+| Peran | Tugas                                                                            | Output                               | Komisi |
+| ----- | -------------------------------------------------------------------------------- | ------------------------------------ | :----: |
+| Sales | Narik vendor dan brand buat pasang iklan di platform. Dapetin pengguna berbayar. | Penempatan iklan & pengguna berbayar |   5%   |
 
-**Examples of Collaboration:**
+**Contoh Kolaborasi:**
 
-- **The Idea:** A modular and customizable e-commerce platform.
-- **The Team:**
-  - A **Core Framework Developer** maintains and updates the core framework.
-  - A **Frontend Developer** creates reusable UI components.
-  - A **Backend Developer** builds the API endpoints for product management and
-    order processing.
-  - An **Infrastructure Engineer** sets up and maintains the cloud
-    infrastructure.
-  - A **QA Specialist** ensures the platform is stable and secure.
-- **The Outcome:** A widely adopted open-source e-commerce platform with a
-  vibrant community of developers and users.
+- **Idenya:** Platform e-commerce yang modular dan bisa dikustomisasi.
+- **Timnya:**
+  - **Core Framework Developer** maintain dan update framework intinya.
+  - **Frontend Developer** bikin komponen UI yang bisa dipakai ulang.
+  - **Backend Developer** bangun endpoint API untuk manajemen produk dan
+    pemrosesan order.
+  - **Infrastructure Engineer** setup dan jagain infrastruktur cloud.
+  - **QA Specialist** mastiin platformnya stabil dan aman.
+- **Hasilnya:** Platform e-commerce open-source yang banyak dipakai dengan
+  komunitas developer dan pengguna yang aktif.
 
-**Ready to Get Started?**
+**Siap Mulai?**
 
-- Got a brilliant app idea?
-  [Share it with us!](https://github.com/fastrodev/feedback/issues/new)
-- Want to learn more? Email us at [hello@fastro.dev](mailto:hello@fastro.dev)
-- Chat with us on WhatsApp:
-  [Start a conversation](https://api.whatsapp.com/send?phone=628121619781)
+- Punya ide app keren?
+  [Share ke kita!](https://github.com/fastrodev/feedback/issues/new)
+- Pengen tau lebih banyak? Email kita di
+  [hello@fastro.dev](mailto:hello@fastro.dev)
+- Chat sama kita di WhatsApp:
+  [Mulai obrolan](https://api.whatsapp.com/send?phone=628121619781)
 
-**Let's build something amazing together!**
+**Ayo bikin sesuatu yang keren bareng-bareng!**
