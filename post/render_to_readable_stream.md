@@ -1,8 +1,7 @@
 ---
-title: "Fastro v0.83.0: renderToReadableStream"
+title: "Fastro v0.83.0: Boosting Performance with renderToReadableStream"
 image: https://fastro.deno.dev/fastro.png
-description: "Use renderToReadableStream to improve the performance of
-the page load "
+description: "Enhancing page load times by replacing renderToString with streaming React server rendering"
 author: Admin
 date: 10/26/2023
 ---

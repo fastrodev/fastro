@@ -120,7 +120,7 @@ export default function (
           `}
         </style>
       </head>
-      <body class="bg-gray-200 dark:bg-gray-950 text-slate-900 dark:text-white">
+      <body class="bg-white dark:bg-gray-950 text-slate-900 dark:text-white">
         <Header
           isLogin={data.isLogin}
           avatar_url={data.avatar_url}

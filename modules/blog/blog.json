@@ -50,22 +50,22 @@
     "date": "11/15/2023"
   },
   {
-    "title": "renderToReadableStream",
+    "title": "Boosting Performance with renderToReadableStream",
     "url": "/blog/render_to_readable_stream",
     "date": "10/26/2023"
   },
   {
-    "title": "React",
+    "title": "Fixing React Version Consistency Issues",
     "url": "/blog/react",
     "date": "10/22/2023"
   },
   {
-    "title": "Preact",
+    "title": "Preact Integration and Secure Server Side Props",
     "url": "/blog/preact_and_encrypted_props",
     "date": "08/16/2023"
   },
   {
-    "title": "Hello",
+    "title": "Hello World",
     "url": "/blog/hello",
     "date": "11/15/2023"
   }

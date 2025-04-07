@@ -1,6 +1,6 @@
 ---
-title: "Fastro v0.80.0: Preact and Server Side Props Encryption"
-description: "Preact integration and robust encryption of Server Side Props"
+title: "Fastro v0.80.0: Preact Integration and Secure Server Side Props"
+description: "Switching from React to Preact for faster performance and implementing robust encryption for server-side props"
 image: https://fastro.deno.dev/fastro.png
 author: Admin
 date: 08/16/2023

@@ -1,7 +1,7 @@
 ---
-title: "Fastro v0.82.0: Back to using React"
+title: "Fastro v0.82.0: Fixing React Version Consistency Issues"
 image: https://fastro.deno.dev/fastro.png
-description: "The error in the previous version has been resolved"
+description: "Resolving version mismatch between server-side and client-side React components"
 author: Admin
 date: 10/22/2023
 ---

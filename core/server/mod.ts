@@ -653,7 +653,13 @@ if (root) fetchProps(root);
       port: options && options.port ? options.port : 8000,
       handler: this.#handler,
       signal: this.#ac.signal,
-      onListen: options && options.onListen ? options.onListen : undefined,
+      onListen: options && options.onListen ? options.onListen : () => {
+        console.log(
+          `%cListening on: %chttp://localhost:${options?.port ?? 8000}`,
+          "color: blue",
+          "color: white",
+        );
+      },
     });
   };
 
