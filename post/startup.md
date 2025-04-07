@@ -77,7 +77,7 @@ Kenapa?
 Jadi, startup harus super hemat, perlakukan setiap rupiah kayak itu yang
 terakhir.
 
-### Takeaway Utama
+### Kesimpulan
 
 Kalau kamu mau mulai perusahaan, inget 3 hal ini:
 
