@@ -14,7 +14,7 @@ export default function Header(
   },
 ) {
   const textColorClass = props.isDark ? "text-gray-100" : "text-gray-700";
-  const borderColorClass = props.isDark ? "border-gray-100" : "border-gray-300"; // Adjusted for better dark mode visibility
+  const borderColorClass = props.isDark ? "border-gray-100" : "border-gray-700"; // Adjusted for better dark mode visibility
   const linkTextColorClass = props.isDark ? "text-gray-100" : "text-gray-700"; // Define link text color
 
   return (
