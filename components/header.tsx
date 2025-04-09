@@ -23,7 +23,7 @@ export default function Header(
       <div class={`flex space-x-2 items-center`}>
         <a href="/" class={`text-gray-100`}>
           <div
-            class={`border-[1px] border-gray-100 bg-gray-900 rounded-full p-1`}
+            class={`border-[1px] border-gray-600 bg-gray-900 rounded-full p-[1px]`}
           >
             {props.isLogin
               ? <RocketSvg />
