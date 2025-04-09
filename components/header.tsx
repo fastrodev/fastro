@@ -14,7 +14,6 @@ export default function Header(
   },
 ) {
   const textColorClass = props.isDark ? "text-gray-100" : "text-gray-700";
-  const borderColorClass = props.isDark ? "border-gray-100" : "border-gray-700"; // Adjusted for better dark mode visibility
   const linkTextColorClass = props.isDark ? "text-gray-100" : "text-gray-700"; // Define link text color
 
   return (
@@ -22,9 +21,9 @@ export default function Header(
       class={`container flex justify-between max-w-4xl mx-auto text-center text-sm py-6 px-3 xl:px-0 md:px-0 sm:px-0 ${textColorClass}`}
     >
       <div class={`flex space-x-2 items-center`}>
-        <a href="/" class={`${textColorClass}`}>
+        <a href="/" class={`text-gray-100`}>
           <div
-            class={`border-[1px] ${borderColorClass} rounded-full p-1`}
+            class={`border-[1px] border-gray-100 bg-gray-900 rounded-full p-1`}
           >
             {props.isLogin
               ? <RocketSvg />

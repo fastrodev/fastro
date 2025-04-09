@@ -5,13 +5,13 @@ type Post = { title: string; url: string; date: string };
 export default function Toc({ data }: PageProps<{ posts: Post[] }>) {
   {
     return (
-      <ul class={`flex flex-col gap-y-1`}>
+      <ul class={`flex flex-col gap-y-3`}>
         {data.posts.map((v) => {
           return (
             <li>
               <a
                 href={v.url}
-                class={`flex items-center space-x-[1px] gap-y-1 gap-x-0`}
+                class={`flex items-baseline`}
               >
                 {v.date && (
                   <div
