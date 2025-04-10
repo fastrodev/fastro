@@ -84,6 +84,21 @@ export default function Home({ data }: PageProps<{
     setPostContent(e.currentTarget.value);
   };
 
+  // Add keyboard handling for Enter submission
+  const handleKeyDown = (
+    e: JSX.TargetedEvent<HTMLTextAreaElement, KeyboardEvent>,
+  ) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+
+      if (postContent.trim()) {
+        handleSubmit({
+          preventDefault: () => {},
+        } as unknown as JSX.TargetedEvent<HTMLFormElement, Event>);
+      }
+    }
+  };
+
   // Handle post deletion
   const handleDeletePost = async (postId: string) => {
     if (!confirm("Are you sure you want to delete this post?")) {
@@ -199,28 +214,31 @@ export default function Home({ data }: PageProps<{
                     placeholder="What's on your mind?"
                     value={postContent}
                     onInput={handleChange}
+                    onKeyDown={handleKeyDown}
                     required
                     rows={4}
                     className={`w-full px-4 py-2 rounded-lg border ${themeStyles.input} resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                   />
+                  {/* Add hint text for keyboard shortcuts */}
+                  <p className={`text-xs mt-1 ${themeStyles.footer} hidden sm:block`}>
+                    Press Enter to submit, Shift+Enter for new line
+                  </p>
+                  <p className={`text-xs mt-1 ${themeStyles.footer} block sm:hidden`}>
+                    Enter to send
+                  </p>
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <div className="flex justify-start w-full">
-                    {submitSuccess && (
-                      <div className="min-w-10 bg-green-500/20 text-green-500 px-4 py-2 rounded-lg mr-2">
-                        Post created successfully!
-                      </div>
-                    )}
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting || !postContent.trim()}
-                    className={`items-center px-4 py-2 rounded-lg text-white font-medium ${themeStyles.button} disabled:opacity-50 transition-all duration-200`}
-                  >
-                    {isSubmitting ? "Posting..." : "Post"}
-                  </button>
+                <div className="flex justify-start w-full">
+                  {submitSuccess && (
+                    <div className="bg-green-500/20 text-green-500 px-4 py-2 rounded-lg">
+                      Post created successfully!
+                    </div>
+                  )}
+                  {isSubmitting && (
+                    <div className="bg-blue-500/20 text-blue-500 px-4 py-2 rounded-lg">
+                      Posting...
+                    </div>
+                  )}
                 </div>
               </form>
             </div>
@@ -298,24 +316,26 @@ export default function Home({ data }: PageProps<{
                       <div className="mt-4 pt-3 border-t border-gray-700/30 flex items-center">
                         <a
                           href={`/post/${post.id}`}
-                          className={`flex items-center ${themeStyles.footer} hover:${
+                          className={`flex items-center gap-x-1 ${themeStyles.footer} hover:${
                             themeStyles.link.split(" ")[0]
                           }`}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
+                            width="24"
+                            height="24"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="mr-1"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-message-2"
                           >
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
-                            </path>
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M8 9h8" />
+                            <path d="M8 13h6" />
+                            <path d="M9 18h-3a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-3l-3 3l-3 -3z" />
                           </svg>
                           <span>
                             {post.commentCount
