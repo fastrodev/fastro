@@ -212,7 +212,7 @@ export default function Home({ data }: PageProps<{
             </div>
 
             {/* Posts list */}
-            <div className="space-y-4">
+            <div className="space-y-4 mb-8">
               {posts.length > 0
                 ? (
                   posts.map((post) => (
