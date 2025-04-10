@@ -40,7 +40,7 @@ export default async function postDetailHandler(
     title: `Post by ${post.author}`,
     description: post.content.substring(0, 150) +
       (post.content.length > 150 ? "..." : ""),
-    image: "https://fastro.deno.dev/fastro.png",
+    image: "https://fastro.deno.dev/fastro.jpeg",
     isLogin,
     avatar_url,
     html_url,
