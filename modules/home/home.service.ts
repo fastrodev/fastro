@@ -11,6 +11,7 @@ interface Post {
   content: string;
   timestamp: string;
   author: string;
+  commentCount?: number;
 }
 
 export async function createPost(input: PostInput): Promise<Post> {
@@ -37,21 +38,39 @@ export async function createPost(input: PostInput): Promise<Post> {
 }
 
 export async function getPosts(limit = 20): Promise<Post[]> {
-  console.log("Fetching posts, limit:", limit);
-  const iterator = kv.list<Post>({ prefix: ["posts"] }, { limit });
+  console.log("Fetching posts");
 
-  // Collect all entries from the iterator
-  const results: Post[] = [];
+  // Get all posts
+  const postsResults: Post[] = [];
+  const iterator = kv.list<Post>({ prefix: ["posts"] });
+
   for await (const entry of iterator) {
-    results.push(entry.value);
+    postsResults.push(entry.value);
   }
 
-  // Sort posts by timestamp (newest first)
-  const posts = results.sort((a, b) =>
-    new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-  );
+  // Get comment counts for each post
+  const commentCounts = new Map<string, number>();
+  const commentsIterator = kv.list<Comment>({ prefix: ["comments"] });
 
-  console.log(`Retrieved ${posts.length} posts from database`);
+  for await (const entry of commentsIterator) {
+    const postId = entry.value.postId;
+    commentCounts.set(postId, (commentCounts.get(postId) || 0) + 1);
+  }
+
+  // Add comment counts to posts
+  const postsWithComments = postsResults.map((post) => ({
+    ...post,
+    commentCount: commentCounts.get(post.id) || 0,
+  }));
+
+  // Sort posts by timestamp (newest first)
+  const posts = postsWithComments
+    .sort((a, b) =>
+      new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    )
+    .slice(0, limit);
+
+  console.log(`Retrieved ${posts.length} posts`);
   return posts;
 }
 
@@ -159,7 +178,7 @@ export async function getCommentsByPostId(postId: string): Promise<Comment[]> {
 
   // Sort comments by timestamp (newest first)
   const comments = results.sort((a, b) =>
-    new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
   );
 
   console.log(`Retrieved ${comments.length} comments for post ${postId}`);

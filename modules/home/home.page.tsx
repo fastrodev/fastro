@@ -9,6 +9,7 @@ interface Post {
   content: string;
   timestamp: string;
   author: string;
+  commentCount?: number;
 }
 
 export default function Home({ data }: PageProps<{
@@ -287,11 +288,50 @@ export default function Home({ data }: PageProps<{
                       {/* Make the content clickable to view details */}
                       <a href={`/post/${post.id}`} className="block">
                         <p
-                          className={`${themeStyles.text} whitespace-pre-wrap`}
+                          className={`${themeStyles.text} whitespace-pre-wrap mb-3`}
                         >
                           {post.content}
                         </p>
                       </a>
+
+                      {/* Comment count indicator - only shown when comments exist */}
+                      <div className="mt-4 pt-3 border-t border-gray-700/30 flex items-center">
+                        <a
+                          href={`/post/${post.id}`}
+                          className={`flex items-center ${themeStyles.footer} hover:${
+                            themeStyles.link.split(" ")[0]
+                          }`}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="mr-1"
+                          >
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
+                            </path>
+                          </svg>
+                          <span>
+                            {post.commentCount
+                              ? (
+                                <>
+                                  {post.commentCount} {post.commentCount === 1
+                                    ? "comment"
+                                    : "comments"}
+                                </>
+                              )
+                              : (
+                                "Add comment"
+                              )}
+                          </span>
+                        </a>
+                      </div>
                     </div>
                   ))
                 )
