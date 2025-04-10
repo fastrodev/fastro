@@ -31,7 +31,17 @@ export default async function waitHandler(req: HttpRequest, ctx: Context) {
   const ses = await getSession(req, ctx);
   const isLogin = ses?.isLogin;
   const avatar_url = ses?.avatar_url;
-  const html_url = ses?.avatar_url;
+  const html_url = ses?.html_url; // Fixed the typo here, was using avatar_url twice
+
+  // Redirect to home page if user is already logged in
+  if (isLogin) {
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: "/home",
+      },
+    });
+  }
 
   return await ctx.render({
     title: "Web Framework for Deno",

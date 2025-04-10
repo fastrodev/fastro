@@ -133,7 +133,13 @@ export const signoutHandler = async (req: HttpRequest, ctx: Context) => {
       store.delete(sessionId);
       await store.commit();
     }
-    return await signOut(req);
+    await signOut(req);
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: "/",
+      },
+    });
   }
 };
 

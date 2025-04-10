@@ -26,7 +26,7 @@ meskipun Anda bukan orang IT.
 
 ### Tabel Perbandingan: Server On-Premise vs GCP Compute Engine vs Serverless
 
-| **Aspek**      | **Server On-Premise**                                  | **GCP Compute Engine**                     | **Serverless (Cloud Run + Firestore)**                           |
+| **Aspek**      | **Server On-Premise**                                  | **GCP Compute Engine**                     | **Serverless**                                                   |
 | -------------- | ------------------------------------------------------ | ------------------------------------------ | ---------------------------------------------------------------- |
 | **Harga**      | Rp 7.000.000–15.000.000 (sekali bayar) + biaya listrik | Rp 1.300.000/bulan (biaya sewa bulanan)    | Rp 150.000–600.000/bulan (bayar sesuai pakai)                    |
 | **Kelebihan**  | - Kontrol penuh<br>- Tidak butuh internet              | - Bisa diskalakan<br>- Andal dan fleksibel | - Skalabilitas otomatis<br>- Perawatan minimal<br>- Biaya rendah |
@@ -104,7 +104,7 @@ tidak keberatan dengan biaya bulanan.
 
 ---
 
-### 3. Serverless (Cloud Run + Firestore)
+### 3. Serverless
 
 **Apa itu?**\
 Serverless adalah cara menjalankan aplikasi tanpa harus memikirkan server sama
