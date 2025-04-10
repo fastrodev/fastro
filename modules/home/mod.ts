@@ -2,7 +2,9 @@ import { Fastro } from "@app/mod.ts";
 import pageLayout from "@app/modules/home/home.layout.tsx";
 import pageComponent from "@app/modules/home/home.page.tsx";
 import pageHandler, {
+  commentHandler,
   deletePostHandler,
+  getCommentsHandler,
   postHandler,
 } from "@app/modules/home/home.handler.ts";
 import postDetailComponent from "@app/modules/home/post.page.tsx";
@@ -33,9 +35,8 @@ export default function (s: Fastro) {
   // Add API endpoint for deleting a post
   s.delete("/api/post/:id", deletePostHandler);
 
-  // Log registered routes after registration
-  // console.log("Registered pages:", Object.keys(s.getPages()));
-  // console.log("Registered routes:", Object.keys(s.getRoutes()));
+  s.post("/api/comment", commentHandler);
+  s.get("/api/comments/:id", getCommentsHandler);
 
   return s;
 }
