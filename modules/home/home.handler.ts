@@ -43,7 +43,7 @@ export default async function homeHandler(req: HttpRequest, ctx: Context) {
   return await ctx.render({
     title: "Home",
     description: "Share your thoughts and connect with others",
-    image: "https://fastro.deno.dev/fastro.png",
+    image: "https://fastro.deno.dev/fastro.jpeg",
     isLogin,
     avatar_url,
     html_url,
