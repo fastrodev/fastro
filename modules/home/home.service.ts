@@ -55,6 +55,26 @@ export async function getPosts(limit = 20): Promise<Post[]> {
   return posts;
 }
 
+export async function getPostById(id: string): Promise<Post | null> {
+  console.log("Fetching post with ID:", id);
+
+  try {
+    // Use the correct key structure for your KV database
+    const primaryKey = ["posts", id];
+
+    const result = await kv.get<Post>(primaryKey);
+    if (!result.value) {
+      console.log("Post not found with ID:", id);
+      return null;
+    }
+
+    return result.value;
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    return null;
+  }
+}
+
 export async function deletePostById(id: string): Promise<boolean> {
   const primaryKey = ["posts", id];
   console.log("Deleting post with ID:", id);

@@ -399,14 +399,19 @@ if (root) fetchProps(root);
     const url = new URL(req.url);
     const key = url.pathname;
     let page: Page = this.#routePage[key];
-    if (!page) return [];
     let params: Record<string, string | undefined> | undefined = undefined;
-    const res = this.#getParamsPage(req, this.#routePage);
-    if (res) {
-      const [pg, prm] = res;
-      page = pg;
-      params = prm;
+
+    if (!page) {
+      const res = this.#getParamsPage(req, this.#routePage);
+      if (res) {
+        const [pg, prm] = res;
+        page = pg;
+        params = prm;
+      }
     }
+
+    if (!page) return [];
+
     const ctx = this.serverOptions as Context;
     ctx.info = info;
     ctx.next = () => {};
@@ -417,8 +422,6 @@ if (root) fetchProps(root);
     ctx.stores = this.stores;
     ctx.render = async <T>(data: T, headers?: Headers) => {
       const r = new Render(this);
-      // key = key === "/" ? "" : key;
-      // key = url.origin + "/__/props" + key;
       return await r.render(key, page, data, this.getNonce(), headers);
     };
     ctx.send = <T>(data: T, status = 200, headers?: Headers) => {
@@ -515,11 +518,6 @@ if (root) fetchProps(root);
   ) => {
     const ctx = options as Context;
     const _r = new Render(this);
-    // if (!page) {
-    //   ctx.render = <T>(jsx: T) => {
-    //     return r.renderJsx(jsx as JSX.Element);
-    //   };
-    // }
     ctx.send = <T>(data: T, status = 200) => {
       return createResponse(data, status);
     };

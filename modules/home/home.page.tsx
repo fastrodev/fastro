@@ -1,4 +1,5 @@
-import { useState } from "preact/hooks";
+// deno-lint-ignore-file
+import { useEffect, useState } from "preact/hooks";
 import { PageProps } from "@app/mod.ts";
 import Header from "./header.tsx";
 import { JSX } from "preact/jsx-runtime";
@@ -25,6 +26,18 @@ export default function Home({ data }: PageProps<{
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [isDark, setIsDark] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile devices
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Handle post submission
   const handleSubmit = async (e: JSX.TargetedEvent<HTMLFormElement, Event>) => {
@@ -94,11 +107,9 @@ export default function Home({ data }: PageProps<{
     setIsDark(!isDark);
   };
 
-  // Theme styles with solid colors
+  // Theme styles with performance optimizations
   const themeStyles = {
-    background: isDark
-      ? "#0f172a" /* Slate 900 - solid dark background */
-      : "#f8fafc", /* Very light gray - solid light background */
+    background: isDark ? "#0f172a" : "#f8fafc",
     cardBg: isDark ? "bg-gray-800/90" : "bg-white/90",
     text: isDark ? "text-gray-100" : "text-gray-800",
     input: isDark
@@ -112,14 +123,17 @@ export default function Home({ data }: PageProps<{
       ? "text-purple-400 hover:text-purple-300"
       : "text-purple-600 hover:text-purple-500",
     cardBorder: isDark ? "border-gray-700" : "border-gray-200",
-    cardGlow: isDark
-      ? "shadow-[0_0_35px_rgba(147,51,234,0.3)]" /* Enhanced purple glow for dark theme */
-      : "shadow-[0_0_20px_rgba(147,51,234,0.15)]", /* Light purple glow */
+    // Simplified shadows for mobile
+    cardGlow: isMobile
+      ? isDark ? "shadow-md" : "shadow-sm"
+      : isDark
+      ? "shadow-[0_0_35px_rgba(147,51,234,0.3)]"
+      : "shadow-[0_0_20px_rgba(147,51,234,0.15)]",
   };
 
   return (
     <div className="relative min-h-screen">
-      {/* Background Layer */}
+      {/* Background Layer - simplified for mobile */}
       <div className="fixed inset-0 z-0">
         {/* Solid Background */}
         <div
@@ -127,25 +141,27 @@ export default function Home({ data }: PageProps<{
           style={{ backgroundColor: themeStyles.background }}
         />
 
-        {/* Subtle Dot Pattern (optional - much simpler than gradient) */}
-        <div className="absolute inset-0 z-[1]">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `
-                radial-gradient(${
-                isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"
-              } 1px, transparent 1px)
-              `,
-              backgroundSize: "20px 20px",
-            }}
-          />
-        </div>
+        {/* Dot pattern only on non-mobile */}
+        {!isMobile && (
+          <div className="absolute inset-0 z-[1]">
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `
+                  radial-gradient(${
+                  isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"
+                } 1px, transparent 1px)
+                `,
+                backgroundSize: "20px 20px",
+              }}
+            />
+          </div>
+        )}
       </div>
 
       {/* Content Layer */}
       <div className="relative z-10 min-h-screen">
-        {/* Theme toggle button - moved to bottom-right corner */}
+        {/* Theme toggle button */}
         <button
           type="button"
           onClick={toggleTheme}
@@ -159,7 +175,7 @@ export default function Home({ data }: PageProps<{
           {isDark ? "☀️" : "🌙"}
         </button>
 
-        <div className="max-w-xl mx-auto backdrop-blur-lg">
+        <div className="max-w-xl mx-auto">
           <Header
             isLogin={data.isLogin}
             avatar_url={data.avatar_url}
@@ -168,14 +184,12 @@ export default function Home({ data }: PageProps<{
           />
 
           <main className="max-w-2xl mx-auto px-4">
-            {/* Post creation card */}
+            {/* Post creation card - reduced blur effects */}
             <div
-              className={`${themeStyles.cardBg} rounded-lg ${themeStyles.cardGlow} p-6 mb-4 border ${themeStyles.cardBorder} backdrop-blur-lg`}
+              className={`${themeStyles.cardBg} rounded-lg ${themeStyles.cardGlow} p-6 mb-4 border ${themeStyles.cardBorder} ${
+                !isMobile ? "backdrop-blur-lg" : ""
+              }`}
             >
-              <h2 className={`text-2xl font-bold mb-4 ${themeStyles.text}`}>
-                Create a Post
-              </h2>
-
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <textarea
@@ -189,9 +203,6 @@ export default function Home({ data }: PageProps<{
                 </div>
 
                 <div className="flex justify-between items-center">
-                  {
-                    /*  */
-                  }
                   <div className="flex justify-start w-full">
                     {submitSuccess && (
                       <div className="min-w-10 bg-green-500/20 text-green-500 px-4 py-2 rounded-lg mr-2">
@@ -211,14 +222,20 @@ export default function Home({ data }: PageProps<{
               </form>
             </div>
 
-            {/* Posts list */}
+            {/* Posts list - performance optimized */}
             <div className="space-y-4 mb-8">
               {posts.length > 0
                 ? (
                   posts.map((post) => (
                     <div
                       key={post.id}
-                      className={`${themeStyles.cardBg} rounded-lg ${themeStyles.cardGlow} p-6 border ${themeStyles.cardBorder} relative backdrop-blur-lg transition-all duration-300 hover:scale-[1.01]`}
+                      className={`${themeStyles.cardBg} rounded-lg ${themeStyles.cardGlow} p-6 border ${themeStyles.cardBorder} relative ${
+                        !isMobile ? "backdrop-blur-lg" : ""
+                      } ${
+                        !isMobile
+                          ? "transition-all duration-300 hover:scale-[1.01]"
+                          : ""
+                      }`}
                     >
                       {/* Delete button */}
                       <button
@@ -238,9 +255,9 @@ export default function Home({ data }: PageProps<{
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         >
                           <path d="M3 6h18"></path>
                           <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6">
@@ -262,15 +279,23 @@ export default function Home({ data }: PageProps<{
                           </p>
                         </div>
                       </div>
-                      <p className={`${themeStyles.text} whitespace-pre-wrap`}>
-                        {post.content}
-                      </p>
+
+                      {/* Make the content clickable to view details */}
+                      <a href={`/post/${post.id}`} className="block">
+                        <p
+                          className={`${themeStyles.text} whitespace-pre-wrap`}
+                        >
+                          {post.content}
+                        </p>
+                      </a>
                     </div>
                   ))
                 )
                 : (
                   <div
-                    className={`${themeStyles.cardBg} rounded-lg ${themeStyles.cardGlow} p-6 border ${themeStyles.cardBorder} text-center ${themeStyles.text} backdrop-blur-lg`}
+                    className={`${themeStyles.cardBg} rounded-lg ${themeStyles.cardGlow} p-6 border ${themeStyles.cardBorder} text-center ${themeStyles.text} ${
+                      !isMobile ? "backdrop-blur-lg" : ""
+                    }`}
                   >
                     <p>No posts yet. Be the first to post something!</p>
                   </div>
