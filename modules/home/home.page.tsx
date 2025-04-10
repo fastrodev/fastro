@@ -19,6 +19,7 @@ export default function Home({ data }: PageProps<{
   isLogin: boolean;
   avatar_url: string;
   html_url: string;
+  author: string;
   posts: Post[];
 }>) {
   const [postContent, setPostContent] = useState("");
@@ -30,6 +31,7 @@ export default function Home({ data }: PageProps<{
 
   // Detect mobile devices
   useEffect(() => {
+    console.log("author", data.author);
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -237,34 +239,36 @@ export default function Home({ data }: PageProps<{
                           : ""
                       }`}
                     >
-                      {/* Delete button */}
-                      <button
-                        type="button"
-                        onClick={() => handleDeletePost(post.id)}
-                        className={`absolute top-4 right-4 p-1.5 rounded-full hover:bg-gray-700/30 transition-colors ${
-                          isDark
-                            ? "text-gray-400 hover:text-gray-200"
-                            : "text-gray-500 hover:text-gray-700"
-                        }`}
-                        aria-label="Delete post"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
+                      {/* Delete button - only visible to post author */}
+                      {data.isLogin && data.author === post.author && (
+                        <button
+                          type="button"
+                          onClick={() => handleDeletePost(post.id)}
+                          className={`absolute top-4 right-4 p-1.5 rounded-full hover:bg-gray-700/30 transition-colors ${
+                            isDark
+                              ? "text-gray-400 hover:text-gray-200"
+                              : "text-gray-500 hover:text-gray-700"
+                          }`}
+                          aria-label="Delete post"
                         >
-                          <path d="M3 6h18"></path>
-                          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6">
-                          </path>
-                          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                        </svg>
-                      </button>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M3 6h18"></path>
+                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6">
+                            </path>
+                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                          </svg>
+                        </button>
+                      )}
 
                       <div className="flex items-center mb-4">
                         <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">

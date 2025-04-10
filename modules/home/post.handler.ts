@@ -19,6 +19,7 @@ export default async function postDetailHandler(
   const isLogin = ses?.isLogin || false;
   const avatar_url = ses?.avatar_url || "";
   const html_url = ses?.html_url || "";
+  const author = ses?.username || "";
 
   // Get the post details
   const post = await getPostById(id);
@@ -43,6 +44,7 @@ export default async function postDetailHandler(
     isLogin,
     avatar_url,
     html_url,
+    author,
     post,
   });
 }

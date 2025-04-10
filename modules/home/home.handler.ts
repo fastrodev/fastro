@@ -20,10 +20,19 @@ export default async function homeHandler(req: HttpRequest, ctx: Context) {
 
   const avatar_url = ses?.avatar_url;
   const html_url = ses?.html_url;
+  const author = ses?.username;
   // Get posts for the initial page load
   const posts = await getPosts();
   console.log("Posts data:", JSON.stringify(posts, null, 2));
   console.log("Number of posts:", posts.length);
+  //**
+  // {
+  //  "id": "01JRF7X2TM6PPRJ52VP98R6ATJ",
+  //  "content": "okeeeee",
+  //  "timestamp": "2025-04-10T06:58:51.860Z",
+  //  "author": "ynwd"
+  // },
+  //  */
 
   return await ctx.render({
     title: "Home",
@@ -32,6 +41,7 @@ export default async function homeHandler(req: HttpRequest, ctx: Context) {
     isLogin,
     avatar_url,
     html_url,
+    author,
     posts,
   });
 }

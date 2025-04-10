@@ -34,8 +34,8 @@ export default function (s: Fastro) {
   s.delete("/api/post/:id", deletePostHandler);
 
   // Log registered routes after registration
-  console.log("Registered pages:", Object.keys(s.getPages()));
-  console.log("Registered routes:", Object.keys(s.getRoutes()));
+  // console.log("Registered pages:", Object.keys(s.getPages()));
+  // console.log("Registered routes:", Object.keys(s.getRoutes()));
 
   return s;
 }
