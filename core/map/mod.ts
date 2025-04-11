@@ -1,5 +1,5 @@
 import { kv } from "../utils/kv.ts";
-import { createTaskQueue } from "../../utils/queue.ts";
+import { createTaskQueue } from "../utils/queue.ts";
 
 type StoreOptions = {
   key: string;
