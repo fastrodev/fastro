@@ -20,14 +20,19 @@ export class Render {
     }
   }
 
-  renderJsx = (jsx: JSX.Element) => {
+  renderJsx = (jsx: JSX.Element, headers?: Headers) => {
     const html = renderToString(jsx);
-    const headers = new Headers({
-      "content-type": "text/html",
-      "x-request-id": new Date().getTime().toString(),
-      "Content-Security-Policy":
-        `default-src 'self'; script-src 'self' 'strict-dynamic'; style-src 'self'; font-src 'self'; img-src 'self'; frame-src 'self'`,
-    });
+    if (!headers) {
+      return new Response(html, {
+        headers: new Headers({
+          "content-type": "text/html",
+          "x-request-id": new Date().getTime().toString(),
+          "Content-Security-Policy":
+            `default-src 'self'; script-src 'self' 'strict-dynamic'; style-src 'self'; font-src 'self'; img-src 'self'; frame-src 'self'`,
+        }),
+      });
+    }
+
     return new Response(html, {
       headers,
     });

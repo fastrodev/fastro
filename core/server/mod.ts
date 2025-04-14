@@ -478,13 +478,21 @@ if (root) fetchProps(root);
         : this.#findMatch(m, id, url, method, true);
 
       if (!match) continue;
-      const x = await m.handler(
+      const ctx = this.#transformCtx(info, u, this.serverOptions, false);
+      ctx.render = <T>(
+        data: T,
+        headers?: Headers,
+      ) => {
+        const r = new Render(this);
+        return r.renderJsx(data as preact.JSX.Element, headers);
+      };
+      const handler = await m.handler(
         this.#transformRequest(req, match?.pathname.groups, u),
-        this.#transformCtx(info, u, this.serverOptions, false),
+        ctx,
       ) as any;
 
-      if (x instanceof Response) {
-        return x;
+      if (handler instanceof Response) {
+        return handler;
       }
     }
   };
@@ -547,6 +555,13 @@ if (root) fetchProps(root);
     }
 
     const ctx = this.#transformCtx(info, url, this.serverOptions, false);
+    ctx.render = <T>(
+      data: T,
+      headers?: Headers,
+    ) => {
+      const r = new Render(this);
+      return r.renderJsx(data as preact.JSX.Element, headers);
+    };
     return this.#record[id] = { handler, ctx, params, url };
   };
 
