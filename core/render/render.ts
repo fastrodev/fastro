@@ -1,10 +1,9 @@
+// deno-lint-ignore-file no-explicit-any
 import {
-  // ComponentChild,
   h,
   JSX,
   renderToString,
   renderToStringAsync,
-  // renderToStringAsync,
   VNode,
 } from "../server/deps.ts";
 import { Fastro, FunctionComponent, Page } from "../server/types.ts";
@@ -101,14 +100,11 @@ es.onmessage = function(e) {
   ) => {
     const customScript = this.#loadJs(component.name.toLowerCase(), nonce) +
       script;
-    // deno-lint-ignore no-explicit-any
+
     const children = layout.props.children as any;
-    // deno-lint-ignore no-explicit-any
     const head = children[0] as any;
     if (head && head.type === "head") {
-      // deno-lint-ignore no-explicit-any
       const c = head.props.children as any;
-      // @ts-ignore: ignore meta
       c.push(h("meta", {
         name: "x-request-id",
         content: id,
@@ -137,7 +133,6 @@ es.onmessage = function(e) {
     return layout;
   };
 
-  // deno-lint-ignore no-explicit-any
   render = async <T = any>(
     _key: string,
     p: Page,
@@ -155,7 +150,6 @@ es.onmessage = function(e) {
       children,
       data,
       nonce,
-      // deno-lint-ignore no-explicit-any
     }) as any;
     if (app.props.children && typeof p.component == "function") {
       app = this.#mutate(
