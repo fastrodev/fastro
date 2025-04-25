@@ -32,5 +32,13 @@ export default function (s: Fastro) {
   });
 
   s.post("/api/submit", submitHandler);
+  s.get("/api/get", (req, ctx) => {
+    return new Response("Oke", {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  });
   return s;
 }
