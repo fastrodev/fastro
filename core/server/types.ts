@@ -83,6 +83,7 @@ export type Static = {
  * Define the information for a HTTP request, render, send & options
  */
 export class Context {
+  setHeaders!: (headers: Headers) => void;
   /**
    * Render a JSX Component or a Page with data
    * - If you call it from a standart handler (GET, POST, PUT, DELETE), it will render a JSX component.
@@ -259,4 +260,5 @@ export interface Fastro {
   getNonce(): string;
   getPages(): Record<string, Page>;
   getRoutes(): Record<string, Handler>;
+  getHeaders(): Headers;
 }

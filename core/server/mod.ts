@@ -486,6 +486,10 @@ if (root) fetchProps(root);
         const r = new Render(this);
         return r.renderJsx(data as preact.JSX.Element, headers);
       };
+      ctx.setHeaders = (headers: Headers) => {
+        this.#headers = headers;
+        return;
+      };
       const handler = await m.handler(
         this.#transformRequest(req, match?.pathname.groups, u),
         ctx,
@@ -574,7 +578,7 @@ if (root) fetchProps(root);
       if (r.handler) {
         const tr = this.#transformRequest(req, r.params, r.url);
         const res = await r.handler(tr, r.ctx);
-        return createResponse(res);
+        return createResponse(res, 200, this.#headers);
       }
 
       const pm = await this.#handlePageMiddleware(req, info);
@@ -693,6 +697,10 @@ if (root) fetchProps(root);
     return this.#routeHandler;
   }
 
+  getHeaders(): Headers {
+    return this.#headers;
+  }
+
   #server: Deno.HttpServer | undefined;
   #ac: AbortController = new AbortController();
   #handler: (
@@ -709,6 +717,19 @@ if (root) fetchProps(root);
   #staticReferer = false;
   #maxAge = 0;
   #nonce = "";
+  #headers: Headers = new Headers({
+    "x-request-id": new Date().getTime().toString(),
+    "Content-Security-Policy":
+      `default-src 'self'; script-src 'self' 'strict-dynamic'; style-src 'self'; font-src 'self'; img-src 'self'; frame-src 'self'`,
+    "Content-Type": "application/json",
+    "X-Content-Type-Options": "nosniff",
+    "X-XSS-Protection": "1; mode=block",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "no-referrer",
+    "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+    "Cross-Origin-Embedder-Policy": "require-corp",
+    "Cross-Origin-Opener-Policy": "same-origin",
+  });
   serverOptions: Record<string, any> = {};
   stores = new Map<string, Store<string | number | symbol, any>>();
   private taskQueue = createTaskQueue();

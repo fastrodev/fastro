@@ -23,12 +23,7 @@ export class Render {
     const html = renderToString(jsx);
     if (!headers) {
       return new Response(html, {
-        headers: new Headers({
-          "content-type": "text/html",
-          "x-request-id": new Date().getTime().toString(),
-          "Content-Security-Policy":
-            `default-src 'self'; script-src 'self' 'strict-dynamic'; style-src 'self'; font-src 'self'; img-src 'self'; frame-src 'self'`,
-        }),
+        headers: this.#server.getHeaders(),
       });
     }
 
