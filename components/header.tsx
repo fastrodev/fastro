@@ -42,13 +42,6 @@ export default function Header(
           Benchmarks
         </a>
 
-        {props.isLogin && (
-          <a class={`${linkTextColorClass}`} href="/signout">Sign out</a>
-        )}
-        {!props.isLogin && (
-          <a class={`${linkTextColorClass}`} href="/signin">Sign in</a>
-        )}
-
         <a
           aria-label="user profile"
           class={`${linkTextColorClass}`}
