@@ -37,6 +37,9 @@ export default function (s: Fastro) {
       status: 200,
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*", // Allow requests from any origin
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
       },
     });
   });
