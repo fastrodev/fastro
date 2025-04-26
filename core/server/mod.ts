@@ -614,6 +614,7 @@ if (root) fetchProps(root);
       if (r.handler) {
         const tr = this.#transformRequest(req, r.params, r.url);
         const res = await r.handler(tr, r.ctx);
+        console.log("Request:", req.method, req.url);
         return createResponse(res);
       }
 
