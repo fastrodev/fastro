@@ -54,28 +54,68 @@ const parseBody = (req: Request) => {
     return JSON.parse(text) as T;
   };
 };
+const defaultCorsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Access-Control-Allow-Credentials": "true",
+  "Access-Control-Max-Age": "86400",
+};
 
 const createResponse = (
   res: any,
   status = 200,
   headers?: Headers,
 ): Response => {
-  if (typeof res === "string") return new Response(res, { status, headers });
+  // Merge default CORS headers with provided headers
+  const mergedHeaders = new Headers(defaultCorsHeaders);
+  if (headers) {
+    for (const [k, v] of headers.entries()) {
+      mergedHeaders.set(k, v);
+    }
+  }
+
+  if (typeof res === "string") {
+    if (!mergedHeaders.has("Content-Type")) {
+      mergedHeaders.set("Content-Type", "text/plain; charset=utf-8");
+    }
+    return new Response(res, { status, headers: mergedHeaders });
+  }
+
   if (res instanceof Response) return res;
 
-  const h = headers ? headers : new Headers({
-    "Content-Type": "application/json",
-  });
   if (
     typeof res === "number" || typeof res === "bigint" ||
     typeof res === "boolean" || typeof res === "undefined"
   ) {
-    return new Response(JSON.stringify(res), { status, headers: h });
+    if (!mergedHeaders.has("Content-Type")) {
+      mergedHeaders.set("Content-Type", "application/json");
+    }
+    return new Response(JSON.stringify(res), {
+      status,
+      headers: mergedHeaders,
+    });
   }
+
   try {
-    return Response.json(res, { status, headers: h });
+    if (!mergedHeaders.has("Content-Type")) {
+      mergedHeaders.set("Content-Type", "application/json");
+    }
+    // Use Response.json if available, else fallback
+    if (typeof Response.json === "function") {
+      return Response.json(res, { status, headers: mergedHeaders });
+    } else {
+      return new Response(JSON.stringify(res), {
+        status,
+        headers: mergedHeaders,
+      });
+    }
   } catch (error) {
-    throw error;
+    console.error("Failed to serialize response:", error);
+    return new Response(
+      JSON.stringify({ error: "Failed to serialize response" }),
+      { status: 500, headers: mergedHeaders },
+    );
   }
 };
 
