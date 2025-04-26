@@ -43,7 +43,7 @@ export default function (s: Fastro) {
       },
     });
   });
-  s.post("/api/post", (req, ctx) => {
+  s.post("/api/v1/post", (req, ctx) => {
     console.log("POST", req.body);
     return new Response("Oke", {
       status: 200,
