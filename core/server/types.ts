@@ -260,5 +260,4 @@ export interface Fastro {
   getNonce(): string;
   getPages(): Record<string, Page>;
   getRoutes(): Record<string, Handler>;
-  getHeaders(): Headers;
 }

@@ -23,7 +23,7 @@ export class Render {
     const html = renderToString(jsx);
     if (!headers) {
       return new Response(html, {
-        headers: this.#server.getHeaders(),
+        headers: new Headers(),
       });
     }
 
