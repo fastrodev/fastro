@@ -43,5 +43,17 @@ export default function (s: Fastro) {
       },
     });
   });
+  s.post("/api/post", (req, ctx) => {
+    console.log("POST", req.body);
+    return new Response("Oke", {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*", // Allow requests from any origin
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    });
+  });
   return s;
 }
