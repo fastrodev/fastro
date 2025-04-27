@@ -43,6 +43,16 @@ export default function (s: Fastro) {
       },
     });
   });
+  s.options("/api/v1/post", (req, ctx) => {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "*", // Allow requests from any origin
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      },
+    });
+  });
   s.post("/api/v1/post", async (req, ctx) => {
     console.log("Handling post request");
     const headers = {
@@ -53,14 +63,6 @@ export default function (s: Fastro) {
       "Access-Control-Max-Age": "86400", // 24 hours cache for preflight requests
     };
 
-    // Handle preflight OPTIONS request
-    if (req.method === "OPTIONS") {
-      console.log("Handling preflight OPTIONS request");
-      return new Response(null, {
-        status: 204,
-        headers,
-      });
-    }
     let responseBody = {};
     let responseStatus = 200;
 
