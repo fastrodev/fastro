@@ -67,55 +67,22 @@ const createResponse = (
   status = 200,
   headers?: Headers,
 ): Response => {
-  // Merge default CORS headers with provided headers
-  const mergedHeaders = new Headers(defaultCorsHeaders);
-  if (headers) {
-    for (const [k, v] of headers.entries()) {
-      mergedHeaders.set(k, v);
-    }
-  }
-
-  if (typeof res === "string") {
-    if (!mergedHeaders.has("Content-Type")) {
-      mergedHeaders.set("Content-Type", "text/plain; charset=utf-8");
-    }
-    return new Response(res, { status, headers: mergedHeaders });
-  }
-
+  if (typeof res === "string") return new Response(res, { status, headers });
   if (res instanceof Response) return res;
 
+  const h = headers ? headers : new Headers({
+    "Content-Type": "application/json",
+  });
   if (
     typeof res === "number" || typeof res === "bigint" ||
     typeof res === "boolean" || typeof res === "undefined"
   ) {
-    if (!mergedHeaders.has("Content-Type")) {
-      mergedHeaders.set("Content-Type", "application/json");
-    }
-    return new Response(JSON.stringify(res), {
-      status,
-      headers: mergedHeaders,
-    });
+    return new Response(JSON.stringify(res), { status, headers: h });
   }
-
   try {
-    if (!mergedHeaders.has("Content-Type")) {
-      mergedHeaders.set("Content-Type", "application/json");
-    }
-    // Use Response.json if available, else fallback
-    if (typeof Response.json === "function") {
-      return Response.json(res, { status, headers: mergedHeaders });
-    } else {
-      return new Response(JSON.stringify(res), {
-        status,
-        headers: mergedHeaders,
-      });
-    }
+    return Response.json(res, { status, headers: h });
   } catch (error) {
-    console.error("Failed to serialize response:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to serialize response" }),
-      { status: 500, headers: mergedHeaders },
-    );
+    throw error;
   }
 };
 
