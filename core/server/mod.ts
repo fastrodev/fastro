@@ -3,7 +3,6 @@ import {
   contentType,
   encodeHex,
   extname,
-  // JSX,
   STATUS_CODE,
   STATUS_TEXT,
 } from "./deps.ts";
@@ -54,13 +53,6 @@ const parseBody = (req: Request) => {
     return JSON.parse(text) as T;
   };
 };
-const defaultCorsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization",
-  "Access-Control-Allow-Credentials": "true",
-  "Access-Control-Max-Age": "86400",
-};
 
 const createResponse = (
   res: any,
@@ -89,6 +81,7 @@ const createResponse = (
 export default class Server implements Fastro {
   constructor(options?: Record<string, any>) {
     this.serverOptions = options ?? {};
+    this._render = new Render(this); // Add this line
     this.#handler = this.#createHandler();
     this.#addPropsEndpoint();
     this.#nonce = ulid();
@@ -486,12 +479,8 @@ if (root) fetchProps(root);
 
       if (!match) continue;
       const ctx = this.#transformCtx(info, u, this.serverOptions, false);
-      ctx.render = <T>(
-        data: T,
-        headers?: Headers,
-      ) => {
-        const r = new Render(this);
-        return r.renderJsx(data as preact.JSX.Element, headers);
+      ctx.render = <T>(data: T, headers?: Headers) => {
+        return this._render.renderJsx(data as preact.JSX.Element, headers);
       };
       const handler = await m.handler(
         this.#transformRequest(req, match?.pathname.groups, u),
@@ -562,12 +551,8 @@ if (root) fetchProps(root);
     }
 
     const ctx = this.#transformCtx(info, url, this.serverOptions, false);
-    ctx.render = <T>(
-      data: T,
-      headers?: Headers,
-    ) => {
-      const r = new Render(this);
-      return r.renderJsx(data as preact.JSX.Element, headers);
+    ctx.render = <T>(data: T, headers?: Headers) => {
+      return this._render.renderJsx(data as preact.JSX.Element, headers);
     };
     return this.#record[id] = { handler, ctx, params, url };
   };
@@ -720,4 +705,5 @@ if (root) fetchProps(root);
   serverOptions: Record<string, any> = {};
   stores = new Map<string, Store<string | number | symbol, any>>();
   private taskQueue = createTaskQueue();
+  private _render: Render;
 }
