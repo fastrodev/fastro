@@ -44,12 +44,13 @@ export default async function waitHandler(req: HttpRequest, ctx: Context) {
   }
 
   return await ctx.render({
-    title: "Web Framework for Deno",
+    title: "Fastro Services",
     description:
-      "Modern inventory & purchasing software to help small businesses automate stock control and procurement tasks.",
+      "Fastro is a fast and lightweight framework for building web applications.",
     image: "https://fastro.deno.dev/fastro.png",
     isLogin,
     avatar_url,
+    baseUrl: "http://localhost:8000",
     html_url,
   });
 }
