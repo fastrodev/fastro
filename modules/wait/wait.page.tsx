@@ -122,7 +122,7 @@ export default function Wait({ data }: PageProps<
               <p class="text-gray-600 mb-6">Ini adalah halaman dokumentasi.</p>
 
               <div class="lg:hidden mb-6">
-                <TableOfContents />
+                <TableOfContents tocItems={[]} />
               </div>
 
               <div class="mb-8" id="memulai">
@@ -169,7 +169,7 @@ export default function Wait({ data }: PageProps<
           {/* Column 3: Content TOC - Hidden on mobile, shown on larger screens */}
           <div class="hidden lg:block lg:w-64 lg:flex-shrink-0">
             <div class="sticky top-24">
-              <TableOfContents />
+              <TableOfContents tocItems={[]} />
             </div>
           </div>
         </div>

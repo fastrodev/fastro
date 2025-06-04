@@ -205,7 +205,7 @@ export default function Footer(
               © 2025 {title || "Fastro"}. All rights reserved.
             </p>
             <p class="text-sm text-gray-600 mt-2 md:mt-0">
-              Made with ❤️ by the Fastro Services Team.
+              Made with ❤️ by the Fastro Team
             </p>
           </div>
         </div>

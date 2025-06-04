@@ -67,8 +67,9 @@ startup hidup.
 
 Hampir semua startup yang gagal mati karena kehabisan uang.
 
-Saran Paul Graham simpel tapi tajam: "Cara terbaik hemat uang adalah jangan
-rekrut orang terlalu banyak."
+Saran Paul Graham simpel tapi tajam:
+
+> Cara terbaik hemat uang adalah jangan rekrut orang terlalu banyak.
 
 Kenapa?
 

@@ -93,8 +93,7 @@ export default function Header(
               isLogin ? "justify-end" : "justify-between"
             }`}
           >
-            <a href={`${baseUrl}/learn`}>Learn</a>
-            <a href={`${baseUrl}/reference`}>Reference</a>
+            <a href={`${baseUrl}/Docs`}>Docs</a>
             <a href="#">Blog</a>
             <a href="#">
               <GithubSvg />
