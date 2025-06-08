@@ -44,41 +44,45 @@ export default function Header(
   return (
     <header class="bg-white border-b border-gray-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center gap-2 py-4 relative">
+        <div class="flex items-center py-4 gap-1 relative">
           <div class="relative lg:hidden">
-            <button
-              type="button"
-              onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
-              class="flex items-center gap-2 px-3 py-2 bg-white border rounded-lg shadow-sm text-sm text-gray-700 hover:bg-gray-50"
-            >
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            {navigationSections.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
+                class="flex items-center px-3 py-2 bg-white border rounded-lg shadow-sm text-sm text-gray-700 hover:bg-gray-50"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                </path>
-              </svg>
-            </button>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  >
+                  </path>
+                </svg>
+              </button>
+            )}
 
-            <MobileNavigation
-              isOpen={isMobileNavOpen}
-              baseUrl={baseUrl}
-              navigationSections={navigationSections}
-            />
+            {navigationSections.length > 0 && (
+              <MobileNavigation
+                isOpen={isMobileNavOpen}
+                navigationSections={navigationSections}
+              />
+            )}
           </div>
-          <div
+          <a
+            href={`${baseUrl}/`}
             class={`flex items-center gap-2 text-lg font-semibold text-gray-900`}
           >
             <BoltSvg width="32" height="32" />
             <span class={`hidden lg:block`}>Fastro</span>
-          </div>
+          </a>
 
           <div class="flex-1 mx-2">
             <input
@@ -93,9 +97,9 @@ export default function Header(
               isLogin ? "justify-end" : "justify-between"
             }`}
           >
-            <a href={`${baseUrl}/Docs`}>Docs</a>
-            <a href="#">Blog</a>
-            <a href="#">
+            <a href="/docs">Docs</a>
+            <a href="/blog">Blog</a>
+            <a href="https://github.com/fastrodev/fastro">
               <GithubSvg />
             </a>
           </div>

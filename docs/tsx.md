@@ -54,5 +54,6 @@ f.get("/user/:name", (req: HttpRequest, ctx: Context) => {
 ## Next Steps
 
 Learn how to create reusable
-[TSX Components](tsx-component?section=handling-requests) for better code
-organization.
+[TSX Components](tsx-component?section=handling-requests) &
+[Function Components](fn-component?section=server-side-rendering) for better
+code organization.

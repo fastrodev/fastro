@@ -5,6 +5,17 @@ import layout from "./docs.layout.tsx";
 import { getMarkdownBody } from "../../middleware/markdown/markdown-utils.tsx";
 
 export default function (s: Fastro) {
+  s.get("/docs", () => {
+    const baseUrl = Deno.env.get("BASE_URL") || "http://localhost:8000";
+    const url = new URL(`${baseUrl}/docs/start`);
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: url.toString(),
+      },
+    });
+  });
+
   s.page("/docs/:file", {
     component,
     layout,
@@ -27,8 +38,6 @@ export default function (s: Fastro) {
 
       const [jsxElement, attrs, toc] = markdownData;
 
-      console.log("req.query", req.query);
-
       return ctx.render({
         posts,
         title: attrs?.title || "Documentation",
@@ -37,6 +46,7 @@ export default function (s: Fastro) {
         markdown: jsxElement,
         attrs,
         toc,
+        url: req.url,
         baseUrl: Deno.env.get("BASE_URL") || "http://localhost:8000",
         section: req.query?.section || "",
       });

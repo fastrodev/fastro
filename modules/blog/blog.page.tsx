@@ -1,0 +1,75 @@
+// deno-lint-ignore-file no-explicit-any no-window
+import { useState } from "preact/hooks";
+import Header from "../wait/Header.tsx";
+import TableOfContents from "../wait/TableOfContents.tsx";
+import PostCreator from "./PostCreator.tsx";
+import BlogSidebar from "./BlogSidebar.tsx";
+import BlogPostsList from "./BlogPostsList.tsx";
+import BlogPostDetail from "./BlogPostDetail.tsx";
+import SponsorCTA from "./SponsorCTA.tsx";
+
+export default function Blog(
+  props: {
+    data: any;
+  },
+) {
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
+
+  const data = props.data;
+
+  return (
+    <div class="min-h-screen" style="background-color: rgb(244, 242, 238);">
+      <div class="sticky top-0 z-50">
+        <Header
+          title="Documentation"
+          isLogin={false}
+          user=""
+          avatar_url=""
+          baseUrl={data.baseUrl}
+          isMobileNavOpen={isMobileNavOpen}
+          setIsMobileNavOpen={setIsMobileNavOpen}
+          isMobileTocOpen={isMobileTocOpen}
+          setIsMobileTocOpen={setIsMobileTocOpen}
+          navigationSections={[]}
+        />
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row gap-6 py-6">
+          <div class="hidden lg:block lg:w-64 lg:flex-shrink-0">
+            <BlogSidebar />
+          </div>
+
+          <div class="flex-1 min-w-0">
+            {props.data.post
+              ? (
+                <BlogPostDetail
+                  onBack={() => {
+                    window.history.back();
+                  }}
+                  post={props.data.post}
+                />
+              )
+              : (
+                <>
+                  <PostCreator />
+                  <BlogPostsList />
+                </>
+              )}
+          </div>
+
+          {/* Column 3: Content TOC - Hidden on mobile, shown on larger screens */}
+          <div class="hidden lg:block lg:w-64 lg-flex-shrink-0">
+            <div class="sticky top-24 flex flex-col gap-6">
+              {props.data.post && props.data.post.toc && (
+                <TableOfContents tocItems={props.data.post.toc} />
+              )}
+              <SponsorCTA />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

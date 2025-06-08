@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Create a new app"
 description: Learn how to create your first Fastro application with server-side rendering and Preact components in minutes.
 image: https://fastro.deno.dev/fastro.png
 previous: "/"

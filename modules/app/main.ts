@@ -7,7 +7,7 @@ import tailwind from "@app/middleware/tailwind/mod.ts";
 import blog from "@app/modules/blog/mod.ts";
 import docs from "@app/modules/docs/mod.ts";
 import authModule from "@app/modules/auth/mod.tsx";
-import homeModule from "@app/modules/home/mod.ts";
+// import homeModule from "@app/modules/home/mod.ts";
 
 const s = new Server();
 
@@ -20,6 +20,6 @@ s.group(waitModule);
 s.group(blog);
 s.group(docs);
 s.group(authModule);
-s.group(homeModule);
+// s.group(homeModule);
 
 await s.serve();

@@ -8,18 +8,18 @@ interface NavigationItem {
 
 interface NavigationSection {
   title: string;
+  href: string; // Add this to match your navigation-sections.ts
   items: NavigationItem[];
 }
 
 interface NavigationProps {
-  baseUrl: string;
   className?: string;
   navigationSections: NavigationSection[];
   activePath?: string;
 }
 
 export default function Navigation(
-  { baseUrl, className = "", navigationSections, activePath }: NavigationProps,
+  { className = "", navigationSections, activePath }: NavigationProps,
 ): JSX.Element {
   // Check if an item is active
   const isItemActive = (href: string): boolean => {
@@ -53,8 +53,6 @@ export default function Navigation(
       .map(({ index }) => index);
   });
 
-  console.log("activePath", activePath);
-
   const toggleSection = (index: number) => {
     setOpenSections((prev) => prev.includes(index) ? [] : [index]);
   };
@@ -67,28 +65,40 @@ export default function Navigation(
 
         return (
           <div key={index} class={index > 0 ? "mt-8" : ""}>
-            <button
-              onClick={() => toggleSection(index)}
-              class="w-full flex items-center justify-between font-semibold text-gray-900 mb-3 hover:text-gray-700 transition-colors"
-            >
-              <span>{navigation.title}</span>
-              <svg
-                class={`w-4 h-4 transform transition-transform ${
-                  isOpen ? "rotate-180" : "rotate-0"
-                }`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            {/* implement the href on the root of section here */}
+            <div class="flex items-center justify-between mb-3">
+              <a
+                href={navigation.href}
+                class="font-semibold text-gray-900 hover:text-gray-700 transition-colors flex-1"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            {isOpen && (
+                {navigation.title}
+              </a>
+              {/* hide the toggle if no items provided */}
+              {navigation.items.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => toggleSection(index)}
+                  class="ml-2 p-1 hover:bg-gray-100 rounded transition-colors"
+                >
+                  <svg
+                    class={`w-4 h-4 transform transition-transform ${
+                      isOpen ? "rotate-180" : "rotate-0"
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+              )}
+            </div>
+            {isOpen && navigation.items.length > 0 && (
               <div class="space-y-2">
                 {navigation.items.map((item) => {
                   const isActive = isItemActive(item.href);

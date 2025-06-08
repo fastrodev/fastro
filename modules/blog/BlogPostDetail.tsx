@@ -1,0 +1,216 @@
+// deno-lint-ignore-file
+import { useState } from "preact/hooks";
+
+const toc = [
+  { value: "#features-of-fastro", label: "Features of Fastro" },
+  {
+    value: "#getting-started-with-fastro",
+    label: "Getting Started with Fastro",
+  },
+];
+
+interface BlogPostDetailProps {
+  post?: {
+    id: string;
+    title: string;
+    content: string;
+    author: string;
+    publishedAt: string;
+    tags?: string[];
+    readTime?: string;
+  };
+  onBack: () => void;
+}
+
+export default function BlogPostDetail(
+  props: BlogPostDetailProps,
+) {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  // Handle case when no post is provided
+  if (!props.post) {
+    return (
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div class="mb-4">
+          <button
+            type="button"
+            onClick={props.onBack}
+            class="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+          >
+            <svg
+              class="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            Back to posts
+          </button>
+        </div>
+        <div class="text-center py-8">
+          <p class="text-gray-500">Post not found</p>
+        </div>
+      </div>
+    );
+  }
+
+  const currentPost = props.post;
+
+  return (
+    <article class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      {/* Back button */}
+      <div class="mb-4">
+        <button
+          type="button"
+          onClick={props.onBack}
+          class="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+        >
+          <svg
+            class="w-4 h-4 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
+          </svg>
+          Back to posts
+        </button>
+      </div>
+
+      <header class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">
+          {currentPost.title}
+        </h1>
+
+        <div class="flex flex-wrap items-center text-sm text-gray-600 gap-4">
+          <span class="flex items-center">
+            <svg
+              class="w-4 h-4 mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
+            </svg>
+            {currentPost.author}
+          </span>
+
+          <span class="flex items-center">
+            <svg
+              class="w-4 h-4 mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+            {formatDate(currentPost.publishedAt)}
+          </span>
+
+          {currentPost.readTime && (
+            <span class="flex items-center">
+              <svg
+                class="w-4 h-4 mr-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              {currentPost.readTime}
+            </span>
+          )}
+        </div>
+
+        {/* Tags */}
+        {currentPost.tags && currentPost.tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mt-4">
+            {currentPost.tags.map((tag: string) => (
+              <span
+                key={tag}
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </header>
+
+      <div
+        data-color-mode="auto"
+        data-light-theme="light"
+        data-dark-theme="dark"
+        class="markdown-body"
+        dangerouslySetInnerHTML={{ __html: currentPost.content }}
+      />
+
+      <style>
+        {`
+        .markdown-body .anchor {
+          opacity: 0;
+          transition: opacity 0.2s;
+          text-decoration: none;
+          margin-left: -16px;
+          padding-right: 2px;
+          color: #0969da;
+        }
+        
+        .markdown-body h1:hover .anchor,
+        .markdown-body h2:hover .anchor,
+        .markdown-body h3:hover .anchor,
+        .markdown-body h4:hover .anchor,
+        .markdown-body h5:hover .anchor,
+        .markdown-body h6:hover .anchor,
+        .markdown-body .anchor:hover {
+          opacity: 1;
+        }
+        
+        .markdown-body .anchor .octicon {
+          vertical-align: middle;
+          width: 12px;
+          height: 12px;
+        }
+        
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3,
+        .markdown-body h4,
+        .markdown-body h5,
+        .markdown-body h6 {position: relative;}`}
+      </style>
+    </article>
+  );
+}

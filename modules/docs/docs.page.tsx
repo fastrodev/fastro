@@ -1,4 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
+import { useState } from "preact/hooks";
 import Footer from "../wait/Footer.tsx";
 import Header from "../wait/Header.tsx";
 import Navigation from "../wait/Navigation.tsx";
@@ -7,13 +8,19 @@ import { MarkdownComponent } from "./markdown.component.tsx";
 import { getNavigationSections } from "./navigation-sections.ts";
 
 export default function Docs(
-  props: { data: any; url?: URL },
+  props: {
+    data: any;
+  },
 ) {
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
+
   const data = props.data;
   const nav = getNavigationSections(data.baseUrl);
+  const activePath = props.data.url;
 
   return (
-    <div class="min-h-screen bg-gray-50">
+    <div class="min-h-screen" style="background-color: rgb(244, 242, 238);">
       <div class="sticky top-0 z-50">
         <Header
           title="Documentation"
@@ -21,11 +28,11 @@ export default function Docs(
           user=""
           avatar_url=""
           baseUrl={data.baseUrl}
-          isMobileNavOpen={false}
-          setIsMobileNavOpen={() => {}}
-          isMobileTocOpen={false}
-          setIsMobileTocOpen={() => {}}
-          navigationSections={[]}
+          isMobileNavOpen={isMobileNavOpen}
+          setIsMobileNavOpen={setIsMobileNavOpen}
+          isMobileTocOpen={isMobileTocOpen}
+          setIsMobileTocOpen={setIsMobileTocOpen}
+          navigationSections={nav}
         />
       </div>
 
@@ -34,9 +41,8 @@ export default function Docs(
           <div class="hidden lg:block lg:w-64 lg:flex-shrink-0">
             <div class="lg:sticky lg:top-24">
               <Navigation
-                baseUrl={data.baseUrl}
                 navigationSections={nav}
-                activePath={props.data.section}
+                activePath={activePath}
               />
             </div>
           </div>
