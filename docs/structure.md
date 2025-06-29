@@ -32,7 +32,7 @@ The initial setup includes three main modules:
 
 ## Directory Structure
 
-```
+```bash
 .
 ├── components/
 │   ├── footer.tsx

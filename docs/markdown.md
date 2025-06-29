@@ -27,7 +27,7 @@ await f.serve();
 
 Create a `post/hello.md` file in your project:
 
-````md
+````bash
 ---
 title: "Hello"
 description: "Hello markdown"
@@ -52,14 +52,14 @@ The middleware supports tables, code blocks, and more:
 | y    | 24    |
 
 ```js
-console.log("Hello, world!");
+console.log("hello")
 ```
+````
 
 ## Frontmatter Support
 
 All frontmatter fields are automatically parsed and made available to your
 application.
-````
 
 ## Accessing Your Content
 

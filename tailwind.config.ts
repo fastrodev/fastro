@@ -1,5 +1,5 @@
 import { type Config } from "npm:tailwindcss@3.4.15";
-import ty from "npm:@tailwindcss/typography";
+import ty from "@tailwindcss/typography";
 
 /**
  * see: https://tailwindcss.com/docs/content-configuration

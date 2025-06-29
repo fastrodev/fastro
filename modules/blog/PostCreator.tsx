@@ -105,7 +105,7 @@ export default function PostCreator() {
         </div>
 
         {/* Tab Content */}
-        <div class="h-32 overflow-hidden border border-gray-200 border-t-0 rounded-b-lg">
+        <div class="h-32 overflow-hidden border border-gray-200 border-t-0 rounded-b-lg mt-0">
           {activeTab === "edit"
             ? (
               <textarea
@@ -113,7 +113,7 @@ export default function PostCreator() {
                 value={postContent}
                 onInput={(e) =>
                   setPostContent((e.target as HTMLTextAreaElement).value)}
-                class="w-full h-full px-4 py-3 border-0 focus:border-0 focus:ring-1 focus:ring-blue-200 outline-none resize-none bg-transparent transition-colors"
+                class="w-full h-full px-4 py-3 border-0 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:ring-inset resize-none bg-transparent transition-all duration-200 rounded-b-lg"
               />
             )
             : (

@@ -44,7 +44,7 @@ export default function Header(
   return (
     <header class="bg-white border-b border-gray-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center py-4 gap-1 relative">
+        <div class="flex items-center py-3 gap-1 relative">
           <div class="relative lg:hidden">
             {navigationSections.length > 0 && (
               <button
@@ -88,7 +88,7 @@ export default function Header(
             <input
               type="text"
               placeholder="Cari..."
-              class="w-full px-3 py-2 bg-white border rounded-lg shadow-sm text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              class="w-full px-3 py-1 bg-white border rounded-2xl shadow-sm text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
@@ -97,8 +97,6 @@ export default function Header(
               isLogin ? "justify-end" : "justify-between"
             }`}
           >
-            <a href="/docs">Docs</a>
-            <a href="/blog">Blog</a>
             <a href="https://github.com/fastrodev/fastro">
               <GithubSvg />
             </a>

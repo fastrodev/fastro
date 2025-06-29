@@ -44,9 +44,9 @@ export default async function waitHandler(req: HttpRequest, ctx: Context) {
   }
 
   return await ctx.render({
-    title: "Web Framework for Deno",
+    title: "Rapid Development Framework",
     description:
-      "Supercharge Your Fullstack Apps: Fast API for Deno and SSR Library for Preact",
+      "Accelerate your web projects with powerful APIs and seamless server-side rendering",
     image: "https://fastro.deno.dev/fastro.png",
     isLogin,
     avatar_url,
