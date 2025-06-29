@@ -19,7 +19,7 @@ export default function Blog(
   const data = props.data;
 
   return (
-    <div class="min-h-screen" style="background-color: rgb(244, 242, 238);">
+    <div class="min-h-screen bg-gray-900 text-gray-300">
       <div class="sticky top-0 z-50">
         <Header
           title="Documentation"
@@ -37,7 +37,7 @@ export default function Blog(
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row gap-6 py-6">
-          <div class="hidden lg:block lg:w-64 lg:flex-shrink-0">
+          <div class="hidden lg:block lg:w-64 lg-flex-shrink-0">
             <BlogSidebar />
           </div>
 
@@ -61,7 +61,7 @@ export default function Blog(
 
           {/* Column 3: Content TOC - Hidden on mobile, shown on larger screens */}
           <div class="hidden lg:block lg:w-64 lg-flex-shrink-0">
-            <div class="sticky top-24 flex flex-col gap-6">
+            <div class="sticky top-20 flex flex-col gap-y-3">
               {props.data.post && props.data.post.toc && (
                 <TableOfContents tocItems={props.data.post.toc} />
               )}

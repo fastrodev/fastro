@@ -21,7 +21,7 @@ Fastro is a modern web framework for Deno that combines the simplicity of Expres
 To get started with Fastro, you need to have Deno installed on your machine. You can install Deno by following the instructions on the [Deno website](https://deno.land/).
 Once you have Deno installed, you can create a new Fastro application by running the following command:
 \`\`\`bash
-deno run --allow-net --allow-read https://deno.land/x/fastro@0.1.0/mod.ts
+deno run -A -r https://fastro.deno.dev
 \`\`\`
 
 Fastro is a powerful, modern web framework built specifically for Deno. It combines the simplicity of Express.js with the power and security of Deno, making it an excellent choice for building fast, secure web applications.

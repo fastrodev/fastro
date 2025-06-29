@@ -49,14 +49,14 @@ const blogPosts = [
 
 const getTagClasses = (color: string) => {
   const colorMap: { [key: string]: string } = {
-    blue: "bg-blue-100 text-blue-800",
-    green: "bg-green-100 text-green-800",
-    purple: "bg-purple-100 text-purple-800",
-    red: "bg-red-100 text-red-800",
-    indigo: "bg-indigo-100 text-indigo-800",
-    orange: "bg-orange-100 text-orange-800",
+    blue: "bg-blue-900/50 text-blue-300",
+    green: "bg-green-900/50 text-green-300",
+    purple: "bg-purple-900/50 text-purple-300",
+    red: "bg-red-900/50 text-red-300",
+    indigo: "bg-indigo-900/50 text-indigo-300",
+    orange: "bg-orange-900/50 text-orange-300",
   };
-  return colorMap[color] || "bg-gray-100 text-gray-800";
+  return colorMap[color] || "bg-gray-700 text-gray-300";
 };
 
 export default function BlogPostsList() {
@@ -65,7 +65,7 @@ export default function BlogPostsList() {
       {blogPosts.map((post) => (
         <article
           key={post.id}
-          class="bg-white/80 backdrop-blur-sm border border-stone-300/50 shadow-sm hover:shadow-md hover:bg-white/90 hover:border-stone-300/70 transition-all duration-200 rounded-2xl p-6"
+          class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 shadow-sm hover:shadow-md hover:bg-gray-800/80 transition-all duration-200 rounded-2xl p-6"
         >
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-3">
@@ -75,16 +75,16 @@ export default function BlogPostsList() {
                 class="w-10 h-10 rounded-full object-cover"
               />
               <div>
-                <h4 class="font-medium text-gray-900 text-sm">
+                <h4 class="font-medium text-gray-200 text-sm">
                   {post.author.name}
                 </h4>
-                <p class="text-xs text-gray-500">{post.publishedAt}</p>
+                <p class="text-xs text-gray-400">{post.publishedAt}</p>
               </div>
             </div>
 
             <button
               type="button"
-              class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+              class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
               onClick={() => console.log("Menu clicked for post:", post.id)}
             >
               <svg
@@ -107,7 +107,7 @@ export default function BlogPostsList() {
               />
             </div>
             <div>
-              <h2 class="text-xl font-semibold text-gray-900 hover:text-blue-600 cursor-pointer">
+              <h2 class="text-xl font-semibold text-gray-100 hover:text-blue-400 cursor-pointer">
                 {post.title}
               </h2>
             </div>
@@ -128,7 +128,7 @@ export default function BlogPostsList() {
                 </span>
               ))}
             </div>
-            <div class="flex items-center gap-4 text-sm text-gray-500">
+            <div class="flex items-center gap-4 text-sm text-gray-400">
               <span>{post.readTime}</span>
             </div>
           </div>

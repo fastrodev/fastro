@@ -1,6 +1,5 @@
 import { JSX } from "preact";
 import MobileNavigation from "./MobileNavigation.tsx";
-import MobileTableOfContents from "./MobileTableOfContents.tsx";
 import BoltSvg from "../../components/icons/bolt.tsx";
 import GithubSvg from "../../components/icons/github-svg.tsx";
 
@@ -42,7 +41,8 @@ export default function Header(
   }: HeaderProps,
 ): JSX.Element {
   return (
-    <header class="bg-white border-b border-gray-200">
+    // replaced border-b with shadow
+    <header class="bg-gray-900 shadow-lg">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center py-3 gap-1 relative">
           <div class="relative lg:hidden">
@@ -50,7 +50,7 @@ export default function Header(
               <button
                 type="button"
                 onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
-                class="flex items-center px-3 py-2 bg-white border rounded-lg shadow-sm text-sm text-gray-700 hover:bg-gray-50"
+                class="flex items-center px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg shadow-sm text-sm text-gray-300 hover:bg-gray-700"
               >
                 <svg
                   class="w-4 h-4"
@@ -78,17 +78,19 @@ export default function Header(
           </div>
           <a
             href={`${baseUrl}/`}
-            class={`flex items-center gap-2 text-lg font-semibold text-gray-900`}
+            class="flex items-center gap-2 text-lg font-semibold text-white"
+            aria-label="Fastro Home"
           >
             <BoltSvg width="32" height="32" />
-            <span class={`hidden lg:block`}>Fastro</span>
+            <span class="sr-only">Fastro Home</span>
+            <span class="hidden lg:block">Fastro</span>
           </a>
 
           <div class="flex-1 mx-2">
             <input
               type="text"
               placeholder="Cari..."
-              class="w-full px-3 py-1 bg-white border rounded-2xl shadow-sm text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              class="w-full px-3 py-1 bg-gray-800 border border-gray-700 rounded-2xl shadow-sm text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
@@ -97,8 +99,14 @@ export default function Header(
               isLogin ? "justify-end" : "justify-between"
             }`}
           >
-            <a href="https://github.com/fastrodev/fastro">
+            <a
+              href="https://github.com/fastrodev/fastro"
+              aria-label="Fastro on GitHub"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <GithubSvg />
+              <span class="sr-only">Fastro on GitHub</span>
             </a>
           </div>
         </div>

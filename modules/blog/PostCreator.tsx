@@ -57,7 +57,7 @@ export default function PostCreator() {
 
       return (
         <div
-          class="prose prose-sm max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-blue-600 prose-strong:text-gray-900 prose-code:text-pink-600 prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-gray-900 prose-pre:text-gray-100"
+          class="prose prose-sm max-w-none prose-invert prose-headings:text-gray-200 prose-p:text-gray-400 prose-a:text-blue-400 prose-strong:text-gray-200 prose-code:text-pink-400 prose-code:bg-gray-700 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-gray-800 prose-pre:text-gray-300"
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
       );
@@ -68,44 +68,46 @@ export default function PostCreator() {
   };
 
   return (
-    <div class="mb-6 border border-gray-200 rounded-xl p-4 bg-white">
-      <div class="flex flex-col">
-        {/* Tab Navigation */}
-        <div class="flex border-b border-gray-200">
+    <div class="mb-8">
+      <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl">
+        {/* make sure the tall between edit and preview mode have the same height. */}
+        <div class="flex border-b border-gray-700 px-4 gap-0 h-16">
           <button
             type="button"
             onClick={() => setActiveTab("edit")}
-            class={`px-4 py-2 font-medium text-sm transition-colors relative ${
+            class={`h-full px-3 flex items-center font-medium text-base transition-colors relative ${
               activeTab === "edit"
-                ? "text-blue-600"
-                : "text-gray-500 hover:text-gray-700"
+                ? "text-blue-400"
+                : "text-gray-400 hover:text-gray-200"
             }`}
+            style={{
+              borderBottom: activeTab === "edit"
+                ? "2px solid #60a5fa"
+                : "2px solid transparent",
+            }}
           >
             Edit
-            {activeTab === "edit" && (
-              <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600">
-              </div>
-            )}
           </button>
           <button
             type="button"
             onClick={() => setActiveTab("preview")}
-            class={`px-4 py-2 font-medium text-sm transition-colors relative ${
+            class={`h-full px-3 flex items-center font-medium text-base transition-colors relative ${
               activeTab === "preview"
-                ? "text-blue-600"
-                : "text-gray-500 hover:text-gray-700"
+                ? "text-blue-400"
+                : "text-gray-400 hover:text-gray-200"
             }`}
+            style={{
+              borderBottom: activeTab === "preview"
+                ? "2px solid #60a5fa"
+                : "2px solid transparent",
+            }}
           >
             Preview
-            {activeTab === "preview" && (
-              <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600">
-              </div>
-            )}
           </button>
         </div>
 
         {/* Tab Content */}
-        <div class="h-32 overflow-hidden border border-gray-200 border-t-0 rounded-b-lg mt-0">
+        <div class="min-h-[120px] px-4 py-3 flex">
           {activeTab === "edit"
             ? (
               <textarea
@@ -113,24 +115,30 @@ export default function PostCreator() {
                 value={postContent}
                 onInput={(e) =>
                   setPostContent((e.target as HTMLTextAreaElement).value)}
-                class="w-full h-full px-4 py-3 border-0 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:ring-inset resize-none bg-transparent transition-all duration-200 rounded-b-lg"
+                class="w-full h-full min-h-[120px] border-0 focus:outline-none resize-none bg-transparent text-gray-300 placeholder-gray-500"
+                style={{ minHeight: "120px", maxHeight: "320px" }}
               />
             )
             : (
-              <div class="w-full h-full px-4 py-3 overflow-y-auto">
+              <div
+                class="w-full h-full px-1 py-1 overflow-y-auto"
+                style={{ minHeight: "120px", maxHeight: "320px" }}
+              >
                 {renderPreview(postContent)}
               </div>
             )}
         </div>
 
-        <div class="flex justify-between mt-3">
+        {/* Actions */}
+        <div class="flex justify-between items-center px-4 py-3 border-t border-gray-700 gap-3">
           <button
             type="button"
             onClick={handleAttachFile}
-            class="px-3 py-2 text-gray-500 hover:text-gray-700 hover:bg-gray-50 border border-gray-200 rounded-lg transition-colors font-medium flex items-center gap-2"
+            class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
+            aria-label="Attach file"
           >
             <svg
-              class="w-4 h-4"
+              class="w-5 h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -141,16 +149,17 @@ export default function PostCreator() {
                 stroke-linejoin="round"
                 stroke-width="2"
                 d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
-              />
+              >
+              </path>
             </svg>
-            Attach file
           </button>
           <button
             type="button"
             onClick={handleCreatePost}
-            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors font-medium"
+            disabled={!postContent.trim()}
+            class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors font-medium disabled:bg-gray-600 disabled:cursor-not-allowed"
           >
-            Create Post
+            Post
           </button>
         </div>
       </div>

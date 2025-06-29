@@ -10,47 +10,50 @@ export default function Footer(
   { title, description, baseUrl }: FooterProps,
 ): JSX.Element {
   return (
-    <footer class="bg-white border-t border-gray-200 mt-0">
+    <footer class="bg-gray-900">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* change this with brand description */}
-          <div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 xl:grid-cols-12 gap-8">
+          {/* Brand Description */}
+          <div class="sm:col-span-2 md:col-span-2 xl:col-span-5">
             <div class="mb-6">
-              <h3 class="text-lg font-bold text-gray-900 mb-2">Fastro</h3>
-              <p class="text-sm text-gray-600 leading-relaxed">
-                A modern, fast, and lightweight web framework built for
-                performance and developer experience. Create blazing-fast
-                applications with ease.
+              <h3 class="text-lg font-bold text-gray-100 mb-4">
+                {"Fastro Framework"}
+              </h3>
+              <p class="text-sm text-gray-400 leading-relaxed">
+                {description}
               </p>
             </div>
           </div>
 
+          {/* Empty column for spacing on very large screens */}
+          <div class="hidden xl:block xl:col-span-1"></div>
+
           {/* Documentation Links */}
-          <div>
-            <h4 class="text-sm font-semibold text-gray-900 mb-4">
-              Dokumentasi
+          <div class="xl:col-span-2">
+            <h4 class="text-sm font-semibold text-gray-100 mb-4">
+              Documentation
             </h4>
             <ul class="space-y-2">
               <li>
                 <a
                   href={`${baseUrl}/docs`}
-                  class="text-sm text-gray-600 hover:text-gray-900"
+                  class="text-sm text-gray-400 hover:text-white"
                 >
-                  Beranda
+                  Home
                 </a>
               </li>
               <li>
                 <a
                   href={`${baseUrl}/docs`}
-                  class="text-sm text-gray-600 hover:text-gray-900"
+                  class="text-sm text-gray-400 hover:text-white"
                 >
-                  Memulai
+                  Getting Started
                 </a>
               </li>
               <li>
                 <a
-                  href={`${baseUrl}/docs`}
-                  class="text-sm text-gray-600 hover:text-gray-900"
+                  href={`${baseUrl}/docs/api`}
+                  class="text-sm text-gray-400 hover:text-white"
                 >
                   API Reference
                 </a>
@@ -58,48 +61,48 @@ export default function Footer(
               <li>
                 <a
                   href="https://github.com/fastrodev/fastro/tree/main/examples"
-                  class="text-sm text-gray-600 hover:text-gray-900"
+                  class="text-sm text-gray-400 hover:text-white"
                 >
-                  Contoh
+                  Examples
                 </a>
               </li>
             </ul>
           </div>
 
           {/* Community Links */}
-          <div>
-            <h4 class="text-sm font-semibold text-gray-900 mb-4">
-              Komunitas
+          <div class="xl:col-span-2">
+            <h4 class="text-sm font-semibold text-gray-100 mb-4">
+              Community
             </h4>
             <ul class="space-y-2">
               <li>
                 <a
-                  href="#"
-                  class="text-sm text-gray-600 hover:text-gray-900"
+                  href="https://chat.whatsapp.com/KwSP4Q1IE8m5NA9DNk1Sxa"
+                  class="text-sm text-gray-400 hover:text-white"
                 >
-                  Discord
+                  Whatsapp
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
-                  class="text-sm text-gray-600 hover:text-gray-900"
+                  href="https://github.com/fastrodev/fastro/discussions"
+                  class="text-sm text-gray-400 hover:text-white"
                 >
-                  Forum
+                  GitHub Discussions
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
-                  class="text-sm text-gray-600 hover:text-gray-900"
+                  href="https://github.com/fastrodev/fastro/blob/main/CONTRIBUTING.md"
+                  class="text-sm text-gray-400 hover:text-white"
                 >
-                  Kontribusi
+                  Contributing
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
-                  class="text-sm text-gray-600 hover:text-gray-900"
+                  href="https://github.com/orgs/fastrodev/projects/1"
+                  class="text-sm text-gray-400 hover:text-white"
                 >
                   Roadmap
                 </a>
@@ -107,54 +110,57 @@ export default function Footer(
             </ul>
           </div>
 
-          {/* Resources Links */}
-          <div>
-            <h4 class="text-sm font-semibold text-gray-900 mb-4">Resources</h4>
+          {/* Organization Links */}
+          <div class="xl:col-span-2">
+            <h4 class="text-sm font-semibold text-gray-100 mb-4">
+              Organization
+            </h4>
             <ul class="space-y-2">
               <li>
                 <a
                   href="#"
-                  class="text-sm text-gray-600 hover:text-gray-900"
+                  class="text-sm text-gray-400 hover:text-white"
                 >
-                  Blog
+                  About
                 </a>
               </li>
               <li>
                 <a
                   href="#"
-                  class="text-sm text-gray-600 hover:text-gray-900"
+                  class="text-sm text-gray-400 hover:text-white"
                 >
-                  Changelog
+                  Careers
                 </a>
               </li>
               <li>
                 <a
                   href="#"
-                  class="text-sm text-gray-600 hover:text-gray-900"
+                  class="text-sm text-gray-400 hover:text-white"
                 >
-                  Status
+                  Privacy Policy
                 </a>
               </li>
               <li>
                 <a
                   href="#"
-                  class="text-sm text-gray-600 hover:text-gray-900"
+                  class="text-sm text-gray-400 hover:text-white"
                 >
-                  Support
+                  Terms of Service
                 </a>
               </li>
             </ul>
           </div>
         </div>
-
-        {/* Bottom Section */}
-        <div class="mt-8 pt-8 border-t border-gray-200">
-          <div class="flex flex-col md:flex-row justify-between items-center">
-            <p class="text-sm text-gray-600">
+      </div>
+      {/* Bottom Section */}
+      <div class="mt-8 p-6 shadow-[0_-4px_24px_0_rgba(0,0,0,0.25)]">
+        <div class={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
+          <div class="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-6">
+            <p class="text-sm text-gray-400">
               © 2025 {"Fastro Services"}. All rights reserved.
             </p>
-            <p class="text-sm text-gray-600 mt-2 md:mt-0">
-              Made with ❤️ by the Fastro Team
+            <p class="text-sm text-gray-400">
+              Made with ❤️ in Tulungagung by the Fastro Team
             </p>
           </div>
         </div>

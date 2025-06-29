@@ -66,7 +66,7 @@ export default function layout(
       </head>
       <body
         id="root"
-        className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+        className="bg-gray-900 text-white"
       >
         {children}
         <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-core.min.js" />

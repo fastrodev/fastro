@@ -9,10 +9,9 @@ export const MarkdownComponent = (
     toc?: Array<{ value: string; label: string }> | null;
   },
 ) => (
-  <main class="bg-white rounded-lg shadow-sm border p-4 sm:p-6 lg:p-8">
+  <main class="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-4 sm:p-6 lg:p-8">
     <div
-      data-color-mode="auto"
-      data-light-theme="light"
+      data-color-mode="dark"
       data-dark-theme="dark"
       class="markdown-body"
     >

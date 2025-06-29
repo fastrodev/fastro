@@ -58,7 +58,9 @@ export default function Navigation(
   };
 
   return (
-    <nav class={`bg-white rounded-lg shadow-sm border p-6 ${className}`}>
+    <nav
+      class={`bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6 ${className}`}
+    >
       {navigationSections.map((navigation, index) => {
         const hasActiveItem = sectionHasActiveItem(navigation);
         const isOpen = openSections.includes(index) || hasActiveItem;
@@ -69,7 +71,7 @@ export default function Navigation(
             <div class="flex items-center justify-between mb-3">
               <a
                 href={navigation.href}
-                class="font-semibold text-gray-900 hover:text-gray-700 transition-colors flex-1"
+                class="font-semibold text-white hover:text-gray-300 transition-colors flex-1"
               >
                 {navigation.title}
               </a>
@@ -78,7 +80,7 @@ export default function Navigation(
                 <button
                   type="button"
                   onClick={() => toggleSection(index)}
-                  class="ml-2 p-1 hover:bg-gray-100 rounded transition-colors"
+                  class="ml-2 p-1 hover:bg-gray-700 rounded transition-colors text-gray-300"
                 >
                   <svg
                     class={`w-4 h-4 transform transition-transform ${
@@ -108,8 +110,8 @@ export default function Navigation(
                         href={item.href}
                         class={`block px-3 py-2 text-sm rounded-md transition-colors ${
                           isActive
-                            ? "bg-blue-100 text-blue-700 font-medium"
-                            : "text-gray-700 hover:bg-gray-100"
+                            ? "bg-gray-700 text-white font-medium"
+                            : "text-gray-400 hover:bg-gray-700/50 hover:text-white"
                         }`}
                       >
                         {item.label}

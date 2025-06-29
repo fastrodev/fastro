@@ -1,13 +1,4 @@
 // deno-lint-ignore-file
-import { useState } from "preact/hooks";
-
-const toc = [
-  { value: "#features-of-fastro", label: "Features of Fastro" },
-  {
-    value: "#getting-started-with-fastro",
-    label: "Getting Started with Fastro",
-  },
-];
 
 interface BlogPostDetailProps {
   post?: {
@@ -36,12 +27,12 @@ export default function BlogPostDetail(
   // Handle case when no post is provided
   if (!props.post) {
     return (
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div class="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
         <div class="mb-4">
           <button
             type="button"
             onClick={props.onBack}
-            class="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+            class="flex items-center text-blue-400 hover:text-blue-300 transition-colors"
           >
             <svg
               class="w-4 h-4 mr-2"
@@ -60,7 +51,7 @@ export default function BlogPostDetail(
           </button>
         </div>
         <div class="text-center py-8">
-          <p class="text-gray-500">Post not found</p>
+          <p class="text-gray-400">Post not found</p>
         </div>
       </div>
     );
@@ -69,13 +60,13 @@ export default function BlogPostDetail(
   const currentPost = props.post;
 
   return (
-    <article class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <article class="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
       {/* Back button */}
       <div class="mb-4">
         <button
           type="button"
           onClick={props.onBack}
-          class="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+          class="flex items-center text-blue-400 hover:text-blue-300 transition-colors"
         >
           <svg
             class="w-4 h-4 mr-2"
@@ -95,11 +86,11 @@ export default function BlogPostDetail(
       </div>
 
       <header class="mb-6">
-        <h1 class="text-3xl font-bold text-gray-900 mb-4">
+        <h1 class="text-3xl font-bold text-gray-100 mb-4">
           {currentPost.title}
         </h1>
 
-        <div class="flex flex-wrap items-center text-sm text-gray-600 gap-4">
+        <div class="flex flex-wrap items-center text-sm text-gray-400 gap-4">
           <span class="flex items-center">
             <svg
               class="w-4 h-4 mr-1"
@@ -160,7 +151,7 @@ export default function BlogPostDetail(
             {currentPost.tags.map((tag: string) => (
               <span
                 key={tag}
-                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-900 bg-opacity-50 text-blue-300"
               >
                 {tag}
               </span>
@@ -170,8 +161,7 @@ export default function BlogPostDetail(
       </header>
 
       <div
-        data-color-mode="auto"
-        data-light-theme="light"
+        data-color-mode="dark"
         data-dark-theme="dark"
         class="markdown-body"
         dangerouslySetInnerHTML={{ __html: currentPost.content }}
@@ -179,13 +169,17 @@ export default function BlogPostDetail(
 
       <style>
         {`
+        .markdown-body {
+          background-color: transparent;
+          color: #adbac7;
+        }
         .markdown-body .anchor {
           opacity: 0;
           transition: opacity 0.2s;
           text-decoration: none;
           margin-left: -16px;
           padding-right: 2px;
-          color: #0969da;
+          color: #58a6ff;
         }
         
         .markdown-body h1:hover .anchor,
@@ -209,7 +203,7 @@ export default function BlogPostDetail(
         .markdown-body h3,
         .markdown-body h4,
         .markdown-body h5,
-        .markdown-body h6 {position: relative;}`}
+        .markdown-body h6 {position: relative; color: #e6edf3;}`}
       </style>
     </article>
   );

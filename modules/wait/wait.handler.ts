@@ -44,9 +44,9 @@ export default async function waitHandler(req: HttpRequest, ctx: Context) {
   }
 
   return await ctx.render({
-    title: "Rapid Development Framework",
+    title: "Modern Web Framework for Deno & Preact.js",
     description:
-      "Accelerate your web projects with powerful APIs and seamless server-side rendering",
+      "Fastro is a modern web framework for Deno and Preact, engineered for building high-performance web applications. It empowers developers with lightning-fast APIs, seamless server-side rendering (SSR) for optimal SEO and performance, and a true zero-config developer experience to get you started in seconds.",
     image: "https://fastro.deno.dev/fastro.png",
     isLogin,
     avatar_url,
