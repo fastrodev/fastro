@@ -42,7 +42,7 @@ export default function TableOfContents(
             <a
               href={item.value}
               onClick={(e) => handleTocClick(e, item.value)}
-              class="block pl-4 pr-3 py-1 text-sm text-gray-400 hover:text-gray-100 hover:bg-gray-800 rounded-md"
+              class="block h-10 pl-4 pr-3 py-1 text-sm text-gray-400 hover:text-gray-100 hover:bg-gray-800 rounded-md"
             >
               {item.label}
             </a>

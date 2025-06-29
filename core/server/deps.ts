@@ -6,13 +6,13 @@ export * from "jsr:@std/path@^1.0.8";
 export { encodeHex } from "jsr:@std/encoding@^1.0.7/hex";
 export { assert, assertEquals, assertExists } from "jsr:@std/assert@^1.0.11";
 
-export { h } from "npm:preact@^10.26.0";
+export { h } from "npm:preact@^10.26.9";
 export type {
   ComponentChild,
   ComponentChildren,
   JSX,
   VNode,
-} from "npm:preact@^10.26.0 ";
+} from "npm:preact@^10.26.9 ";
 export {
   renderToString,
   renderToStringAsync,

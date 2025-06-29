@@ -12,10 +12,10 @@
   },
   "imports": {
     "@app/": "./",
-    "preact": "npm:preact@^10.26.0",
+    "preact": "npm:preact@^10.26.9",
     "@preact/signals": "npm:@preact/signals@^2.0.1",
     "preact-render-to-string": "npm:preact-render-to-string@^6.5.13",
-    "preact/jsx-runtime": "npm:preact@10.26.0/jsx-runtime",
+    "preact/jsx-runtime": "npm:preact@10.26.9/jsx-runtime",
     "@tailwindcss/typography": "npm:@tailwindcss/typography@0.5.16"
   },
   "compilerOptions": {

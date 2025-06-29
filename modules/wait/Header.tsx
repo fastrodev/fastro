@@ -1,7 +1,9 @@
+// deno-lint-ignore-file no-window no-window-prefix
 import { JSX } from "preact";
 import MobileNavigation from "./MobileNavigation.tsx";
 import BoltSvg from "../../components/icons/bolt.tsx";
 import GithubSvg from "../../components/icons/github-svg.tsx";
+import { useEffect, useState } from "preact/hooks";
 
 interface NavigationItem {
   href: string;
@@ -40,20 +42,32 @@ export default function Header(
     navigationSections,
   }: HeaderProps,
 ): JSX.Element {
+  const [atTop, setAtTop] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => setAtTop(window.scrollY === 0);
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    // replaced border-b with shadow
-    <header class="bg-gray-900 shadow-lg">
+    <header
+      class={`bg-gray-900 transition-shadow duration-200 ${
+        atTop ? "" : "shadow-lg"
+      }`}
+    >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center py-3 gap-1 relative">
+        <div class="flex items-center py-6 gap-3 relative">
           <div class="relative lg:hidden">
             {navigationSections.length > 0 && (
               <button
                 type="button"
                 onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
-                class="flex items-center px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg shadow-sm text-sm text-gray-300 hover:bg-gray-700"
+                class="flex items-center p-2 bg-gray-800 border border-gray-700 rounded-lg shadow-sm text-sm text-gray-300 hover:bg-gray-700"
               >
                 <svg
-                  class="w-4 h-4"
+                  class="w-5 h-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -86,11 +100,11 @@ export default function Header(
             <span class="hidden lg:block">Fastro</span>
           </a>
 
-          <div class="flex-1 mx-2">
+          <div class="flex-1">
             <input
               type="text"
-              placeholder="Cari..."
-              class="w-full px-3 py-1 bg-gray-800 border border-gray-700 rounded-2xl shadow-sm text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Search..."
+              class="w-full px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-2xl shadow-sm text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 

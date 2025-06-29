@@ -7,6 +7,7 @@ import BlogSidebar from "./BlogSidebar.tsx";
 import BlogPostsList from "./BlogPostsList.tsx";
 import BlogPostDetail from "./BlogPostDetail.tsx";
 import SponsorCTA from "./SponsorCTA.tsx";
+import FeaturedSidebarCard from "./FeaturedSidebarCard.tsx";
 
 export default function Blog(
   props: {
@@ -36,7 +37,7 @@ export default function Blog(
       </div>
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col lg:flex-row gap-6 py-6">
+        <div class="flex flex-col lg:flex-row gap-6 pb-6">
           <div class="hidden lg:block lg:w-64 lg-flex-shrink-0">
             <BlogSidebar />
           </div>
@@ -61,10 +62,11 @@ export default function Blog(
 
           {/* Column 3: Content TOC - Hidden on mobile, shown on larger screens */}
           <div class="hidden lg:block lg:w-64 lg-flex-shrink-0">
-            <div class="sticky top-20 flex flex-col gap-y-3">
+            <div class="sticky top-20 flex flex-col gap-y-0">
               {props.data.post && props.data.post.toc && (
                 <TableOfContents tocItems={props.data.post.toc} />
               )}
+              <FeaturedSidebarCard />
               <SponsorCTA />
             </div>
           </div>

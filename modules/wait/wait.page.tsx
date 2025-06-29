@@ -48,7 +48,7 @@ export default function Wait({ data }: PageProps<
       </div>
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col gap-6 py-6">
+        <div class="flex flex-col gap-6 pb-6">
           <HeroSection
             title={data.title}
             description={data.description}

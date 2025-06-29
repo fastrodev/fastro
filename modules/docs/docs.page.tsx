@@ -37,7 +37,7 @@ export default function Docs(
       </div>
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col lg:flex-row gap-6 py-6">
+        <div class="flex flex-col lg:flex-row gap-6 pb-6">
           <div class="hidden lg:block lg:w-64 lg:flex-shrink-0">
             <div class="lg:sticky lg:top-20">
               <Navigation
