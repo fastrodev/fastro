@@ -10,9 +10,9 @@ export default function Footer(
   { title, description, baseUrl }: FooterProps,
 ): JSX.Element {
   return (
-    <footer class="bg-gray-900">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 xl:grid-cols-12 gap-8">
+    <footer class="bg-transparent mt-3">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 xl:grid-cols-12 gap-8 border-t border-gray-800 pt-6">
           {/* Brand Description */}
           <div class="sm:col-span-2 md:col-span-2 xl:col-span-5">
             <div class="mb-6">
@@ -160,7 +160,7 @@ export default function Footer(
               © 2025 {"Fastro Services"}. All rights reserved.
             </p>
             <p class="text-sm text-gray-400">
-              Made with ❤️ in Tulungagung by the Fastro Team
+              Made with ❤️ in Ketanon, Tulungagung, ID
             </p>
           </div>
         </div>

@@ -20,7 +20,7 @@ export default function Wait({ data }: PageProps<
     popularPosts?: Array<{
       title: string;
       slug: string;
-      excerpt: string;
+      description: string;
       date: string;
       readTime: string;
       image?: string;
@@ -53,8 +53,8 @@ export default function Wait({ data }: PageProps<
             title={data.title}
             description={data.description}
           />
-          <PostsSection popularPosts={data.popularPosts} />
           <FeatureCards />
+          <PostsSection popularPosts={data.popularPosts} />
         </div>
       </div>
 

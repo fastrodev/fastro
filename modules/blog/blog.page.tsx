@@ -8,6 +8,7 @@ import BlogPostsList from "./BlogPostsList.tsx";
 import BlogPostDetail from "./BlogPostDetail.tsx";
 import SponsorCTA from "./SponsorCTA.tsx";
 import FeaturedSidebarCard from "./FeaturedSidebarCard.tsx";
+import TabNav from "../wait/TabNav.tsx";
 
 export default function Blog(
   props: {
@@ -16,7 +17,9 @@ export default function Blog(
 ) {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
-
+  const [activeTab, setActiveTab] = useState<"new" | "popular" | "featured">(
+    "new",
+  );
   const data = props.data;
 
   return (
@@ -42,7 +45,7 @@ export default function Blog(
             <BlogSidebar />
           </div>
 
-          <div class="flex-1 min-w-0">
+          <div class="flex-1">
             {props.data.post
               ? (
                 <BlogPostDetail
@@ -53,10 +56,14 @@ export default function Blog(
                 />
               )
               : (
-                <>
+                <div class="flex flex-col gap-3">
+                  {/* Post Creator - Shown only if no post is selected */}
                   <PostCreator />
+                  <div class="relative h-16 lg:h-20">
+                    <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
+                  </div>
                   <BlogPostsList />
-                </>
+                </div>
               )}
           </div>
 
