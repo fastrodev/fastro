@@ -1,5 +1,6 @@
 import { type Config } from "npm:tailwindcss@3.4.15";
 import ty from "@tailwindcss/typography";
+import ts from "tailwind-scrollbar";
 
 /**
  * see: https://tailwindcss.com/docs/content-configuration
@@ -49,6 +50,7 @@ export default {
   },
   plugins: [
     ty,
+    ts,
   ],
   darkMode: "class",
 } satisfies Config;

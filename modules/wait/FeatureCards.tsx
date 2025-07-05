@@ -36,7 +36,7 @@ const featureCards: FeatureCardData[] = [
       "Comprehensive guides and API references to help you build amazing applications.",
   },
   {
-    href: "/blog",
+    href: "/play",
     icon: (
       <svg
         class="w-full h-full max-w-[72px] max-h-[72px] text-gray-400 group-hover:text-blue-400 transition-colors"
@@ -56,7 +56,7 @@ const featureCards: FeatureCardData[] = [
         />
       </svg>
     ),
-    title: "Stories",
+    title: "Fastro Play",
     description:
       "Discover tutorials, example apps, and templates powered by the Fastro framework.",
   },
@@ -81,7 +81,7 @@ function FeatureCard({ href, icon, title, description }: FeatureCardData) {
           <h2 class="text-xl sm:text-2xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
             {title}
           </h2>
-          <p class="text-sm sm:text-base text-gray-400 leading-relaxed flex-1">
+          <p class="text-sm sm:text-base text-gray-400 leading-relaxed flex-1 pb-3 sm:pb-6">
             {description}
           </p>
         </div>
@@ -100,7 +100,6 @@ function FeatureCard({ href, icon, title, description }: FeatureCardData) {
 
 export default function FeatureCards({}: FeatureCardsProps) {
   return (
-    // add thin top border
     <div class="grid gap-6 sm:gap-8 md:grid-cols-2">
       {featureCards.map((card) => <FeatureCard {...card} />)}
     </div>

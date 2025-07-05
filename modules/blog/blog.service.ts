@@ -1,8 +1,15 @@
 export const md = `---
-title: Frontmatter section
+title: Fastro, a modern web framework for Deno and Preact
 description: A brief introduction to Fastro, a modern web framework for Deno.
+published_at: 2025-06-07
+author: Abu Zaid
+avatar: https://avatars.githubusercontent.com/u/10122431?s=70&v=4
+url: #
+bio: Abu Zaid is a software engineer and open source enthusiast. He loves building web applications
+readTime: 5 min read
 tags: ["Fastro", "Deno", "Web Framework", "Tutorial"]
-image: https://fastro.dev/logo.png
+image: https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=300&fit=crop&crop=entropy&auto=format&q=80
+post_type: blog
 ---
 
 Fastro is a modern web framework for Deno that combines the simplicity of Express.js with the power and security of Deno. It is designed to be fast, secure, and easy to use, making it an excellent choice for building web applications.

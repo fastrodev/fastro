@@ -53,7 +53,7 @@ export default function PostCard({ post, index }: PostCardProps): JSX.Element {
   return (
     <article class="group">
       <a
-        href={`/blog/${post.slug}`}
+        href={`/play/${post.slug}`}
         class="block p-5 sm:p-7 border border-gray-700 rounded-2xl bg-gray-800 hover:bg-blue-900/30 backdrop-blur-lg shadow-xl hover:shadow-2xl transition-all duration-300 h-full hover:border-blue-500/70 relative overflow-hidden group"
         style={{
           boxShadow:
@@ -84,7 +84,20 @@ export default function PostCard({ post, index }: PostCardProps): JSX.Element {
               </p>
             </div>
             <div class="flex items-center justify-between">
-              <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-gray-400">
+              {/*  */}
+              <div class="flex flex-row items-center gap-2 text-xs text-gray-400">
+                <div class={`flex items-center gap-2`}>
+                  <img
+                    src="https://avatars.githubusercontent.com/u/10122431?s=70&v=4"
+                    alt="Avatar"
+                    class="w-4 h-4 rounded-full object-cover border border-gray-600 shadow"
+                    loading="lazy"
+                  />
+                  <span>
+                    Fastro Team
+                  </span>
+                </div>
+                <span class="inline">•</span>
                 <time dateTime={post.date}>
                   {new Date(post.date).toLocaleDateString(
                     "en-US",
@@ -95,8 +108,6 @@ export default function PostCard({ post, index }: PostCardProps): JSX.Element {
                     },
                   )}
                 </time>
-                <span class="hidden sm:inline">•</span>
-                <span>{post.readTime}</span>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

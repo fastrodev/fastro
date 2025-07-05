@@ -7,8 +7,9 @@ import BlogSidebar from "./BlogSidebar.tsx";
 import BlogPostsList from "./BlogPostsList.tsx";
 import BlogPostDetail from "./BlogPostDetail.tsx";
 import SponsorCTA from "./SponsorCTA.tsx";
-import FeaturedSidebarCard from "./FeaturedSidebarCard.tsx";
+// import FeaturedSidebarCard from "./FeaturedSidebarCard.tsx";
 import TabNav from "../wait/TabNav.tsx";
+import AuthorCard from "./AuthorCard.tsx";
 
 export default function Blog(
   props: {
@@ -17,7 +18,9 @@ export default function Blog(
 ) {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"new" | "popular" | "featured">(
+  const [activeTab, setActiveTab] = useState<
+    "new" | "popular" | "featured" | "trending" | "all"
+  >(
     "new",
   );
   const data = props.data;
@@ -50,7 +53,8 @@ export default function Blog(
               ? (
                 <BlogPostDetail
                   onBack={() => {
-                    window.history.back();
+                    // change to go to the /blog page
+                    window.location.href = "/play";
                   }}
                   post={props.data.post}
                 />
@@ -68,13 +72,22 @@ export default function Blog(
           </div>
 
           {/* Column 3: Content TOC - Hidden on mobile, shown on larger screens */}
-          <div class="hidden lg:block lg:w-64 lg-flex-shrink-0">
-            <div class="sticky top-20 flex flex-col gap-y-0">
-              {props.data.post && props.data.post.toc && (
-                <TableOfContents tocItems={props.data.post.toc} />
-              )}
-              <FeaturedSidebarCard />
+          <div class="hidden lg:w-64 lg-flex-shrink-0 lg:flex lg:flex-col lg:gap-y-6">
+            <div class="sticky top-14 flex flex-col gap-y-6">
+              {props.data.post && props.data.post.author &&
+                props.data.post.toc &&
+                (
+                  <>
+                    <AuthorCard author={props.data.post.author} />
+                    <TableOfContents tocItems={props.data.post.toc} />
+                  </>
+                )}
+
               <SponsorCTA />
+              {/* add text to explain simple words about fastro services */}
+              <div class="text-xs text-gray-500 text-center">
+                Made with ❤️ in Tulungagung, Indonesia
+              </div>
             </div>
           </div>
         </div>

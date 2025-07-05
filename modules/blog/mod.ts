@@ -35,7 +35,7 @@ function processMarkdown(markdownContent: string) {
 }
 
 export default function (s: Fastro) {
-  s.page("/blog", {
+  s.page("/play", {
     component: blog,
     layout,
     folder: "modules/blog",
@@ -54,22 +54,37 @@ export default function (s: Fastro) {
     },
   });
 
-  s.page("/blog/:id", {
+  s.page("/play/:id", {
     component: blog,
     layout,
     folder: "modules/blog",
     handler: async (req, ctx) => {
       const { content, frontmatter, tocData } = await processMarkdown(md);
-      console.log("tocData", tocData);
+      const fm = frontmatter as any;
+      const author = {
+        name: fm?.author,
+        avatar: fm?.avatar,
+        url: fm?.url,
+        bio: fm?.bio,
+      };
+
       const post = {
         id: "1",
-        title: "Getting Started with Fastro: A Modern Deno Framework",
+        title: fm?.title,
         content,
-        description: (frontmatter as any)?.description,
-        author: "John Doe",
-        publishedAt: "2025-06-07T10:00:00Z",
-        tags: (frontmatter as any)?.tags || [],
-        readTime: "5 min read",
+        description: fm?.description,
+        image: fm?.image,
+        author,
+        // Fix: support both publishedAt and published_at, and avoid invalid date
+        publishedAt: (() => {
+          const dateStr = fm?.publishedAt || fm?.published_at;
+          const date = dateStr ? new Date(dateStr) : new Date();
+          return isNaN(date.getTime())
+            ? new Date().toISOString()
+            : date.toISOString();
+        })(),
+        tags: fm?.tags || [],
+        readTime: fm.readTime,
         toc: tocData,
       };
 
@@ -136,6 +151,44 @@ export default function (s: Fastro) {
   s.delete("/api/post/:id", () => {});
   s.get("/api/post/:id", () => {});
   s.get("/api/post", () => {});
+  s.get("/api/unpslash/:query", async (req) => {
+    console.log("Fetching random image with query:", req.params?.query);
+
+    async function getRandomUnsplashImage(apiKey: string, query = "") {
+      try {
+        const baseUrl = "https://api.unsplash.com/photos/random";
+        const url = query
+          ? `${baseUrl}?client_id=${apiKey}&query=${query}`
+          : `${baseUrl}?client_id=${apiKey}`;
+
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return {
+          url: data.urls.regular,
+          description: data.description || "Random Unsplash Image",
+          photographer: data.user.name,
+          link: data.links.html,
+        };
+      } catch (error) {
+        console.error("Error fetching random image:", error);
+        return null;
+      }
+    }
+
+    const res = await getRandomUnsplashImage(
+      "nl3jYsSY7NohOhpeEQiJ0C-duV0VP0XsKF-hA2EJoIU",
+      req.params?.query,
+    );
+
+    console.log("Unsplash response:", res);
+    return new Response(JSON.stringify(res), {
+      status: 200,
+    });
+  });
 
   return s;
 }

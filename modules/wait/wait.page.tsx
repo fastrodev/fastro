@@ -54,7 +54,9 @@ export default function Wait({ data }: PageProps<
             description={data.description}
           />
           <FeatureCards />
-          <PostsSection popularPosts={data.popularPosts} />
+          <div class={`py-0 lg:py-6`}>
+            <PostsSection popularPosts={data.popularPosts} />
+          </div>
         </div>
       </div>
 

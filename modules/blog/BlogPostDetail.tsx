@@ -1,14 +1,19 @@
 // deno-lint-ignore-file
 
+import TableOfContents from "../wait/TableOfContents.tsx";
+
 interface BlogPostDetailProps {
   post?: {
     id: string;
     title: string;
     content: string;
-    author: string;
+    author: any;
     publishedAt: string;
     tags?: string[];
     readTime?: string;
+    image?: string;
+    toc?: any;
+    description?: string;
   };
   onBack: () => void;
 }
@@ -47,7 +52,7 @@ export default function BlogPostDetail(
                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
-            Back to posts
+            Go to all posts
           </button>
         </div>
         <div class="text-center py-8">
@@ -58,11 +63,11 @@ export default function BlogPostDetail(
   }
 
   const currentPost = props.post;
-
+  // console.log("Current Post:", currentPost);
   return (
     <article class="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
       {/* Back button */}
-      <div class="mb-4">
+      <div class="mb-4 flex justify-between items-center">
         <button
           type="button"
           onClick={props.onBack}
@@ -81,12 +86,26 @@ export default function BlogPostDetail(
               d="M10 19l-7-7m0 0l7-7m-7 7h18"
             />
           </svg>
-          Back to posts
+          Go to all posts
+        </button>
+        <button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-6 h-6 text-gray-400 hover:text-gray-200 transition-colors"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="5" cy="12" r="1.5" />
+            <circle cx="12" cy="12" r="1.5" />
+            <circle cx="19" cy="12" r="1.5" />
+          </svg>
         </button>
       </div>
 
-      <header class="mb-6">
-        <h1 class="text-3xl font-bold text-gray-100 mb-4">
+      <header class="mb-6 flex flex-col gap-4">
+        <h1 class="text-3xl font-bold text-gray-100">
           {currentPost.title}
         </h1>
 
@@ -105,7 +124,7 @@ export default function BlogPostDetail(
                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
               />
             </svg>
-            {currentPost.author}
+            {currentPost.author.name}
           </span>
 
           <span class="flex items-center">
@@ -147,7 +166,7 @@ export default function BlogPostDetail(
 
         {/* Tags */}
         {currentPost.tags && currentPost.tags.length > 0 && (
-          <div class="flex flex-wrap gap-2 mt-4">
+          <div class="flex flex-wrap gap-2">
             {currentPost.tags.map((tag: string) => (
               <span
                 key={tag}
@@ -159,6 +178,32 @@ export default function BlogPostDetail(
           </div>
         )}
       </header>
+
+      {/* make it full width with cover style and proportional height*/}
+      {currentPost.image && (
+        <div class="w-full flex justify-center mb-4">
+          <img
+            src={currentPost.image}
+            alt={currentPost.title}
+            class="w-full max-h-96 object-cover rounded-lg shadow-md border border-gray-700"
+            style={{ aspectRatio: "16/9" }}
+          />
+        </div>
+      )}
+
+      {/* hide on large devices */}
+      {currentPost.description && (
+        <h2 class="text-gray-400 mb-4">
+          {currentPost.description}
+        </h2>
+      )}
+
+      {/* hide on large devices */}
+      {currentPost.toc && (
+        <div class="lg:hidden *:mt-4 mb-6">
+          <TableOfContents tocItems={currentPost.toc} />
+        </div>
+      )}
 
       <div
         data-color-mode="dark"

@@ -1,34 +1,38 @@
+import PanelCard from "./PanelCard.tsx";
+
+const tags = [
+  { name: "Applications", count: 12 },
+  { name: "Careers", count: 7 },
+  { name: "Services", count: 15 },
+  { name: "Templates", count: 5 },
+  { name: "Middleware", count: 6 },
+].sort((a, b) => b.count - a.count);
+
 export default function BlogSidebar() {
   return (
-    <>
-      <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 shadow-sm hover:shadow-md hover:bg-gray-800/80 transition-all duration-200 rounded-2xl p-3">
+    <aside class="flex flex-col gap-6 z-0 top-14 sticky">
+      <div class="bg-gray-800/50 border border-gray-700 shadow-md rounded-xl p-3">
+        <input
+          type="text"
+          placeholder="Search tags..."
+          class="mb-4 px-3 py-2 rounded-md bg-gray-900 text-gray-100 placeholder-gray-500 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition w-full"
+        />
         <div class="flex flex-col gap-2">
-          <span class="px-3 py-2 bg-blue-900/50 text-blue-300 text-sm font-medium rounded-lg hover:bg-blue-800/50 cursor-pointer transition-colors">
-            JavaScript
-          </span>
-          <span class="px-3 py-2 bg-green-900/50 text-green-300 text-sm font-medium rounded-lg hover:bg-green-800/50 cursor-pointer transition-colors">
-            TypeScript
-          </span>
-          <span class="px-3 py-2 bg-purple-900/50 text-purple-300 text-sm font-medium rounded-lg hover:bg-purple-800/50 cursor-pointer transition-colors">
-            Fastro
-          </span>
-          <span class="px-3 py-2 bg-orange-900/50 text-orange-300 text-sm font-medium rounded-lg hover:bg-orange-800/50 cursor-pointer transition-colors">
-            Web Dev
-          </span>
-          <span class="px-3 py-2 bg-red-900/50 text-red-300 text-sm font-medium rounded-lg hover:bg-red-800/50 cursor-pointer transition-colors">
-            Performance
-          </span>
-          <span class="px-3 py-2 bg-yellow-900/50 text-yellow-300 text-sm font-medium rounded-lg hover:bg-yellow-800/50 cursor-pointer transition-colors">
-            Routing
-          </span>
-          <span class="px-3 py-2 bg-indigo-900/50 text-indigo-300 text-sm font-medium rounded-lg hover:bg-indigo-800/50 cursor-pointer transition-colors">
-            Database
-          </span>
-          <span class="px-3 py-2 bg-pink-900/50 text-pink-300 text-sm font-medium rounded-lg hover:bg-pink-800/50 cursor-pointer transition-colors">
-            API
-          </span>
+          {tags.map((tag) => (
+            <span
+              key={tag.name}
+              class="px-3 py-1.5 bg-gray-900 text-gray-200 text-sm font-normal rounded-full hover:bg-blue-700/70 hover:text-white cursor-pointer transition-colors border border-gray-700 flex items-center justify-between"
+              style={{ letterSpacing: "0.01em" }}
+            >
+              <span>{tag.name}</span>
+              <span class="ml-3 bg-gray-700 text-gray-300 rounded-full px-2 py-0.5 text-xs font-semibold">
+                {tag.count}
+              </span>
+            </span>
+          ))}
         </div>
       </div>
-    </>
+      <PanelCard />
+    </aside>
   );
 }

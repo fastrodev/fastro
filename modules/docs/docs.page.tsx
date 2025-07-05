@@ -39,7 +39,7 @@ export default function Docs(
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row gap-6 pb-6">
           <div class="hidden lg:block lg:w-64 lg:flex-shrink-0">
-            <div class="lg:sticky lg:top-20">
+            <div class="lg:sticky lg:top-14">
               <Navigation
                 navigationSections={nav}
                 activePath={activePath}
@@ -66,7 +66,7 @@ export default function Docs(
 
           {/* Column 3: Content TOC - Hidden on mobile, shown on larger screens */}
           <div class="hidden lg:block lg:w-64 lg-flex-shrink-0">
-            <div class="sticky top-20">
+            <div class="sticky top-14">
               {props.data.toc && <TableOfContents tocItems={props.data.toc} />}
             </div>
           </div>

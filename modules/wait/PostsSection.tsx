@@ -14,7 +14,9 @@ export interface PostsSectionProps {
 }
 
 export default function PostsSection({ popularPosts }: PostsSectionProps) {
-  const [activeTab, setActiveTab] = useState<"new" | "popular" | "featured">(
+  const [activeTab, setActiveTab] = useState<
+    "new" | "popular" | "featured" | "trending" | "all"
+  >(
     "new",
   );
 
@@ -163,7 +165,7 @@ export default function PostsSection({ popularPosts }: PostsSectionProps) {
 
   return (
     <div>
-      <div class="relative h-20 lg:h-28">
+      <div class="relative h-20 lg:h-24">
         <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
 
