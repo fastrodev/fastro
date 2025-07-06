@@ -57,6 +57,45 @@ const ChevronUpIcon = (
   </svg>
 );
 
+const ClipIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="icon icon-tabler icons-tabler-outline icon-tabler-paperclip"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" />
+  </svg>
+);
+
+const ImageIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="icon icon-tabler icons-tabler-outline icon-tabler-photo"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M15 8h.01" />
+    <path d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12z" />
+    <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5" />
+    <path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3" />
+  </svg>
+);
+
 const ClassIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -251,15 +290,23 @@ export default function PostCreator(
         new Date().getFullYear()
       }`;
 
+      // adjust the indentation for YAML tags
+      let tagsYaml = "";
+      if (Array.isArray(tags) && tags.length > 0) {
+        tagsYaml = "\n" + tags.map((tag: string) => `  - ${tag}`).join("\n");
+      } else {
+        tagsYaml = "";
+      }
+
       const fm = `---
 title: ${json?.title || "Untitled Post"}
 description: ${json?.description || "Untitled description"}
-tags: ${JSON.stringify(json?.tags)}
+image: ${image.url}
 type: ${json?.type || "blog"}
 author: ${json?.author || "Anonymous"}
 read_time: ${json?.readTime || "1 min read"}
 published_at: ${published}
-image: ${image.url}
+tags:${tagsYaml}
 ---
 
 ${postContent.replace(/---[\s\S]*?---/, "").trim()}
@@ -281,8 +328,11 @@ ${postContent.replace(/---[\s\S]*?---/, "").trim()}
             setPostContent(`---
 title: Untitled Post
 description: Untitled description
-tags: ["technology", "electronics", "hardware", "laptop"]
 type: blog
+tags:
+  - tech
+  - laptop
+  - coding
 ---
 
 Write your post content here...`);
@@ -390,6 +440,13 @@ Write your post content here...`);
         <div class={`flex items-center gap-2`}>
           <button
             type="button"
+            class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
+            disabled
+          >
+            {ClipIcon}
+          </button>
+          <button
+            type="button"
             onClick={handleUnsplash}
             class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
             aria-label="Generate Unsplash image based on tags"
@@ -401,26 +458,7 @@ Write your post content here...`);
             type="button"
             // onClick={handleUnsplash}
             class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
-            aria-label="Generate Unsplash image based on tags"
-            title="Generate Unsplash image based on tags"
-          >
-            {RocketIcon}
-          </button>
-          <button
-            type="button"
-            // onClick={handleUnsplash}
-            class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
-            aria-label="Generate Unsplash image based on tags"
-            title="Generate Unsplash image based on tags"
-          >
-            {ClassIcon}
-          </button>
-          <button
-            type="button"
-            // onClick={handleUnsplash}
-            class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
-            aria-label="Generate Unsplash image based on tags"
-            title="Generate Unsplash image based on tags"
+            disabled
           >
             {VideoIcon}
           </button>
@@ -428,10 +466,17 @@ Write your post content here...`);
             type="button"
             // onClick={handleUnsplash}
             class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
-            aria-label="Generate Unsplash image based on tags"
-            title="Generate Unsplash image based on tags"
+            disabled
           >
-            {StoreIcon}
+            {ImageIcon}
+          </button>
+          <button
+            type="button"
+            // onClick={handleUnsplash}
+            class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
+            disabled
+          >
+            {RocketIcon}
           </button>
         </div>
         <button
