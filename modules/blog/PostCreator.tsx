@@ -126,6 +126,10 @@ Write your post content here...`);
     }
   };
 
+  // is it possible to add loader while fetching image?
+  // if so, add it here
+  // also, add error handling for image fetching
+  // and show error message if image fetching fails
   const handleUnsplash = async () => {
     const json = renderPreview(postContent).frontmatterJson;
     const tags = json?.tags || ["blue", "sky"];
@@ -155,7 +159,16 @@ ${postContent.replace(/---[\s\S]*?---/, "").trim()}
     return (
       <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl pl-4 pr-6 py-6">
         <div
-          onClick={() => setEditorActive(true)}
+          onClick={() => {
+            setEditorActive(true);
+            setPostContent(`---
+title: Untitled Post
+description: Untitled description
+tags: ["technology", "laptop"]
+---
+
+Write your post content here...`);
+          }}
           onMouseDown={(e) => e.preventDefault()}
           class="w-full flex items-center justify-between h-[24px] cursor-pointer border-0 focus:outline-none resize-none bg-transparent text-gray-500"
         >

@@ -179,8 +179,11 @@ export default function (s: Fastro) {
       }
     }
 
+    const unsplashAccessKey = Deno.env.get("UNSPLASH_ACCESS_KEY");
+    if (!unsplashAccessKey) throw new Error("UNSPLASH_ACCESS_KEY needed");
+
     const res = await getRandomUnsplashImage(
-      "nl3jYsSY7NohOhpeEQiJ0C-duV0VP0XsKF-hA2EJoIU",
+      unsplashAccessKey,
       req.params?.query,
     );
 

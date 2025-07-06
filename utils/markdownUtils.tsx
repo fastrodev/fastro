@@ -31,68 +31,73 @@ export const renderPreview = (content: string) => {
     const preview = (
       <div class="text-sm sm:text-base bg-gray-800 shadow-sm border border-gray-700 p-4 rounded-lg">
         {frontmatterJson && (
-          <div class="mb-4">
-            <h2 class="text-2xl font-bold text-gray-100 mb-2">
+          <div class="mb-3 flex flex-col gap-4">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-100 mb-0">
               {frontmatterJson.title || "Untitled Post"}
             </h2>
-            <div class="flex flex-wrap items-center text-xs text-gray-400 gap-4 mb-3">
-              {frontmatterJson.author && (
-                <span class="flex items-center">
-                  <svg
-                    class="w-4 h-4 mr-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
-                  {frontmatterJson.author}
-                </span>
-              )}
-              {frontmatterJson.published && (
-                <span class="flex items-center">
-                  <svg
-                    class="w-4 h-4 mr-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                  {frontmatterJson.published}
-                </span>
-              )}
-              {frontmatterJson.readTime && (
-                <span class="flex items-center">
-                  <svg
-                    class="w-4 h-4 mr-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  {frontmatterJson.readTime}
-                </span>
-              )}
-            </div>
+
+            {(frontmatterJson.author || frontmatterJson.published ||
+              frontmatterJson.readTime) && (
+              <div class="flex flex-wrap items-center text-xs text-gray-400 gap-4">
+                {frontmatterJson.author && (
+                  <span class="flex items-center">
+                    <svg
+                      class="w-4 h-4 mr-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                    {frontmatterJson.author}
+                  </span>
+                )}
+                {frontmatterJson.published && (
+                  <span class="flex items-center">
+                    <svg
+                      class="w-4 h-4 mr-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                    {frontmatterJson.published}
+                  </span>
+                )}
+                {frontmatterJson.readTime && (
+                  <span class="flex items-center">
+                    <svg
+                      class="w-4 h-4 mr-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    {frontmatterJson.readTime}
+                  </span>
+                )}
+              </div>
+            )}
+
             {frontmatterJson.tags && frontmatterJson.tags.length > 0 && (
-              <div class="flex flex-wrap gap-2 mb-4 ">
+              <div class="flex flex-wrap gap-2">
                 {frontmatterJson.tags.map((tag: string) => (
                   <span
                     key={tag}
@@ -105,7 +110,7 @@ export const renderPreview = (content: string) => {
             )}
 
             {frontmatterJson.image && (
-              <div class="mb-4 w-full flex justify-center">
+              <div class="w-full flex justify-center">
                 <img
                   src={frontmatterJson.image}
                   alt={frontmatterJson.title || "Post Image"}
@@ -115,7 +120,7 @@ export const renderPreview = (content: string) => {
               </div>
             )}
             {frontmatterJson.description && (
-              <h3 class="text-gray-400 mb-2 text-base font-normal">
+              <h3 class="text-gray-400 text-base font-normal">
                 {frontmatterJson.description}
               </h3>
             )}
