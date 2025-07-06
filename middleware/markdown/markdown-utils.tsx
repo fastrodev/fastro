@@ -11,7 +11,7 @@ const fileCache = new Map<string, string | null>();
 
 function readMarkdownFile(folder: string, file: string) {
   const path = folder + "/" + file + ".md";
-  console.log("Reading markdown file:", path);
+  // console.log("Reading markdown file:", path);
 
   // Check cache first
   if (fileCache.has(path)) {

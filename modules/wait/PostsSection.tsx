@@ -1,5 +1,5 @@
 import { useState } from "preact/hooks";
-import PostCard from "./PostCard.tsx";
+import PostCard from "../blog/PostCard.tsx";
 import TabNav from "./TabNav.tsx";
 
 export interface PostsSectionProps {

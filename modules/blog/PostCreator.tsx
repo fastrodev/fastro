@@ -1,7 +1,26 @@
 import { useRef, useState } from "preact/hooks";
 import { renderPreview } from "../../utils/markdownUtils.tsx";
 
-// SVG Constants
+const MarkdownIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="icon icon-tabler icons-tabler-outline icon-tabler-markdown"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+    <path d="M7 15v-6l2 2l2 -2v6" />
+    <path d="M14 13l2 2l2 -2m-2 2v-6" />
+  </svg>
+);
+
 const ChevronDownIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +57,6 @@ const ChevronUpIcon = (
   </svg>
 );
 
-// change this with image icon
 const UnsplashIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -54,6 +72,20 @@ const UnsplashIcon = (
   >
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
     <path d="M4 11h5v4h6v-4h5v9h-16zm5 -7h6v4h-6z" />
+  </svg>
+);
+
+const SpinnerIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    class="animate-spin icon icon-tabler icons-tabler-filled icon-tabler-inner-shadow-top-right"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10 -10 10s-10 -4.477 -10 -10s4.477 -10 10 -10zm0 3a1 1 0 0 0 0 2a5 5 0 0 1 5 5a1 1 0 0 0 2 0a7 7 0 0 0 -7 -7z" />
   </svg>
 );
 
@@ -89,15 +121,8 @@ export default function PostCreator() {
   const [activeTab, setActiveTab] = useState<"edit" | "preview">("edit");
   const [editorActive, setEditorActive] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const [postContent, setPostContent] = useState(`---
-title: Untitled Post
-description: Untitled description
-tags: ["technology", "laptop"]
----
-
-
-Write your post content here...`);
+  const [postContent, setPostContent] = useState("");
+  const [loadingImage, setLoadingImage] = useState(false);
 
   const handleCreatePost = async () => {
     if (!postContent.trim()) return;
@@ -126,33 +151,43 @@ Write your post content here...`);
     }
   };
 
-  // is it possible to add loader while fetching image?
-  // if so, add it here
-  // also, add error handling for image fetching
-  // and show error message if image fetching fails
   const handleUnsplash = async () => {
-    const json = renderPreview(postContent).frontmatterJson;
-    const tags = json?.tags || ["blue", "sky"];
-    const tagString = tags.join(" ");
-    const image = await getRandomUnsplashImage(tagString);
-    const published = `${new Date().getDate()}-${new Date().getMonth() + 1}-${
-      new Date().getFullYear()
-    }`;
+    setLoadingImage(true); // Start loader
+    // setImageError(null); // Reset error state
 
-    const fm = `---
+    try {
+      const json = renderPreview(postContent).frontmatterJson;
+      const tags = json?.tags || ["blue", "sky"];
+      const tagString = tags.join(" ");
+      const image = await getRandomUnsplashImage(tagString);
+
+      if (!image) {
+        throw new Error("Failed to fetch image. Please try again.");
+      }
+
+      const published = `${new Date().getDate()}-${new Date().getMonth() + 1}-${
+        new Date().getFullYear()
+      }`;
+
+      const fm = `---
 title: ${json?.title || "Untitled Post"}
 description: ${json?.description || "Untitled description"}
-tags: ${JSON.stringify(json?.tags || ["untitled", "default"])}
+tags: ${JSON.stringify(json?.tags)}
 author: ${json?.author || "Anonymous"}
-readTime: ${json?.readTime || "1 min read"}
+read_time: ${json?.readTime || "1 min read"}
 type: ${json?.type || "blog"}
-published: ${published}
-image: ${image?.url}
+published_at: ${published}
+image: ${image.url}
 ---
 
 ${postContent.replace(/---[\s\S]*?---/, "").trim()}
 `;
-    setPostContent(fm);
+      setPostContent(fm);
+    } catch (error) {
+      console.error("Error fetching image:", error);
+    } finally {
+      setLoadingImage(false);
+    }
   };
 
   if (!editorActive) {
@@ -164,13 +199,13 @@ ${postContent.replace(/---[\s\S]*?---/, "").trim()}
             setPostContent(`---
 title: Untitled Post
 description: Untitled description
-tags: ["technology", "laptop"]
+tags: ["technology", "electronics", "hardware", "laptop"]
 ---
 
 Write your post content here...`);
           }}
           onMouseDown={(e) => e.preventDefault()}
-          class="w-full flex items-center justify-between h-[24px] cursor-pointer border-0 focus:outline-none resize-none bg-transparent text-gray-500"
+          class="w-full flex items-center justify-between h-[24px] cursor-pointer border-0 focus:outline-none resize-none bg-transparent text-gray-500 text-sm sm:text-base"
         >
           <span>What's on your mind? Write a new post...</span>
           {ChevronDownIcon}
@@ -221,10 +256,18 @@ Write your post content here...`);
           Preview
         </button>
         <div class="flex-1" />
+        <a
+          href="https://www.markdownguide.org/cheat-sheet/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-ellipsis text-gray-400 hover:text-blue-400 flex items-center gap-1 transition-colors"
+        >
+          {MarkdownIcon}
+        </a>
         <button
           type="button"
           class="ml-2 p-2 text-gray-400 hover:text-blue-400 rounded-full transition-colors"
-          onMouseDown={(e) => e.preventDefault()} // Prevent text selection on click
+          onMouseDown={(e) => e.preventDefault()}
           onClick={() => setEditorActive(false)}
           aria-label="Switch to simple input"
         >
@@ -232,7 +275,7 @@ Write your post content here...`);
         </button>
       </div>
 
-      <div class="min-h-[120px] px-4 py-3 flex bg-transparent">
+      <div class="min-h-[120px] px-4 py-3 flex bg-gray-900">
         {activeTab === "edit"
           ? (
             <textarea
@@ -241,8 +284,12 @@ Write your post content here...`);
               value={postContent}
               onInput={(e) =>
                 setPostContent((e.target as HTMLTextAreaElement).value)}
-              class="w-full h-60 border-0 focus:outline-none resize-none bg-transparent text-gray-300 placeholder-gray-500 text-xs sm:text-md font-mono overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800"
+              class="w-full h-60 border-0 focus:outline-none resize-none bg-transparent text-gray-300 placeholder-gray-500 text-sm font-mono overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800"
               autoFocus
+              spellcheck={false}
+              autocorrect="off"
+              autocomplete="off"
+              autocapitalize="off"
             />
           )
           : (
@@ -252,9 +299,7 @@ Write your post content here...`);
           )}
       </div>
 
-      {/* Actions */}
       <div class="flex justify-between items-center px-4 py-3 border-t border-gray-700 gap-3">
-        {/* add text when hover the button */}
         <button
           type="button"
           onClick={handleUnsplash}
@@ -262,7 +307,7 @@ Write your post content here...`);
           aria-label="Generate Unsplash image based on tags"
           title="Generate Unsplash image based on tags"
         >
-          {UnsplashIcon}
+          {loadingImage ? SpinnerIcon : UnsplashIcon}
         </button>
         <button
           type="button"

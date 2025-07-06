@@ -1,4 +1,4 @@
-import PostCard from "../wait/PostCard.tsx";
+import PostCard from "./PostCard.tsx";
 
 const blogPosts = [
   {

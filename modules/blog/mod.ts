@@ -152,8 +152,6 @@ export default function (s: Fastro) {
   s.get("/api/post/:id", () => {});
   s.get("/api/post", () => {});
   s.get("/api/unpslash/:query", async (req) => {
-    console.log("Fetching random image with query:", req.params?.query);
-
     async function getRandomUnsplashImage(apiKey: string, query = "") {
       try {
         const baseUrl = "https://api.unsplash.com/photos/random";
@@ -187,7 +185,6 @@ export default function (s: Fastro) {
       req.params?.query,
     );
 
-    console.log("Unsplash response:", res);
     return new Response(JSON.stringify(res), {
       status: 200,
     });

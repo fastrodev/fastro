@@ -85,12 +85,12 @@ export default function PostCard({ post, index }: PostCardProps): JSX.Element {
             </div>
             <div class="flex items-center justify-between">
               {/*  */}
-              <div class="flex flex-row items-center gap-2 text-xs text-gray-400">
+              <div class="flex flex-row items-center gap-2 text-sm text-gray-400">
                 <div class={`flex items-center gap-2`}>
                   <img
                     src="https://avatars.githubusercontent.com/u/10122431?s=70&v=4"
                     alt="Avatar"
-                    class="w-4 h-4 rounded-full object-cover border border-gray-600 shadow"
+                    class="w-6 h-6 rounded-full object-cover border border-gray-600 shadow"
                     loading="lazy"
                   />
                   <span>
