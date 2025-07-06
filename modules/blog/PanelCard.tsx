@@ -1,6 +1,6 @@
 export default function PanelCard() {
   return (
-    <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 shadow-sm hover:shadow-md hover:bg-gray-800/80 transition-all duration-200 rounded-2xl p-3">
+    <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 shadow-sm hover:shadow-md hover:bg-gray-800/80 transition-all duration-200 rounded-2xl p-3 cursor-pointer">
       <div class="flex items-center gap-3 mb-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -21,11 +21,11 @@ export default function PanelCard() {
           <path d="M4 20h14" />
         </svg>
         <span class="text-base text-gray-200">
-          Analytics Panel
+          Insights Dashboard
         </span>
       </div>
       <div class="text-sm text-gray-400 mb-2">
-        Track post performance and audience engagement with real-time
+        Monitor your post performance and audience engagement in real time.
       </div>
     </div>
   );

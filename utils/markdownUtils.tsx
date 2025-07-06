@@ -29,7 +29,7 @@ export const renderPreview = (content: string) => {
     console.log("Converted HTML content:", htmlContent);
 
     const preview = (
-      <div class="text-sm sm:text-base bg-gray-800 shadow-sm border border-gray-700 p-4 rounded-lg">
+      <div class="text-sm h-full sm:text-base bg-gray-800/60 shadow-sm border border-gray-700 p-4 rounded-lg">
         {frontmatterJson && (
           <div class="mb-3 flex flex-col gap-4">
             <h2 class="text-2xl sm:text-3xl font-bold text-gray-100 mb-0">

@@ -54,7 +54,7 @@ export default function PostCard({ post, index }: PostCardProps): JSX.Element {
     <article class="group">
       <a
         href={`/play/${post.slug}`}
-        class="block p-5 sm:p-7 border border-gray-700 rounded-2xl bg-gray-800 hover:bg-blue-900/30 backdrop-blur-lg shadow-xl hover:shadow-2xl transition-all duration-300 h-full hover:border-blue-500/70 relative overflow-hidden group"
+        class="block p-3 sm:p-4 border border-gray-700 rounded-2xl bg-gray-800 hover:bg-blue-900/30 backdrop-blur-lg shadow-xl hover:shadow-2xl transition-all duration-300 h-full hover:border-blue-500/70 relative overflow-hidden group"
         style={{
           boxShadow:
             "0 4px 24px 0 rgba(0,0,0,0.25), 0 1.5px 8px 0 rgba(0,0,0,0.10)",
@@ -69,11 +69,10 @@ export default function PostCard({ post, index }: PostCardProps): JSX.Element {
           }}
         />
         <div class="flex gap-4 h-full relative z-10">
-          {/* Thumbnail with animation */}
           <div class="transition-transform duration-300 group-hover:scale-105">
             {renderThumbnail(post, index)}
           </div>
-          {/* Content */}
+
           <div class="flex flex-col gap-3 flex-1 min-w-0">
             <div class="flex-1">
               <h3 class="text-lg sm:text-xl font-bold text-white group-hover:text-blue-400 transition-colors mb-2 line-clamp-2">
@@ -84,8 +83,7 @@ export default function PostCard({ post, index }: PostCardProps): JSX.Element {
               </p>
             </div>
             <div class="flex items-center justify-between">
-              {/*  */}
-              <div class="flex flex-row items-center gap-2 text-sm text-gray-400">
+              <div class="flex flex-row items-center gap-2 text-xs sm:text-md text-gray-400">
                 <div class={`flex items-center gap-2`}>
                   <img
                     src="https://avatars.githubusercontent.com/u/10122431?s=70&v=4"

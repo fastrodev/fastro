@@ -57,6 +57,67 @@ const ChevronUpIcon = (
   </svg>
 );
 
+const ClassIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="icon icon-tabler icons-tabler-outline icon-tabler-school"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
+    <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
+  </svg>
+);
+
+const StoreIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="icon icon-tabler icons-tabler-outline icon-tabler-building-store"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M3 21l18 0" />
+    <path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4" />
+    <path d="M5 21l0 -10.15" />
+    <path d="M19 21l0 -10.15" />
+    <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
+  </svg>
+);
+
+const RocketIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="icon icon-tabler icons-tabler-outline icon-tabler-rocket"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3 -5a9 9 0 0 0 6 -8a3 3 0 0 0 -3 -3a9 9 0 0 0 -8 6a6 6 0 0 0 -5 3" />
+    <path d="M7 14a6 6 0 0 0 -3 6a6 6 0 0 0 6 -3" />
+    <path d="M15 9m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  </svg>
+);
+
 const UnsplashIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -68,10 +129,30 @@ const UnsplashIcon = (
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="icon icon-tabler icons-tabler-outline icon-tabler-brand-unsplash"
+    class="icon icon-tabler icons-tabler-outline icon-tabler-blockquote"
   >
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M4 11h5v4h6v-4h5v9h-16zm5 -7h6v4h-6z" />
+    <path d="M6 15h15" />
+    <path d="M21 19h-15" />
+    <path d="M15 11h6" />
+    <path d="M21 7h-6" />
+    <path d="M9 9h1a1 1 0 1 1 -1 1v-2.5a2 2 0 0 1 2 -2" />
+    <path d="M3 9h1a1 1 0 1 1 -1 1v-2.5a2 2 0 0 1 2 -2" />
+  </svg>
+);
+
+const VideoIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    class="icon icon-tabler icons-tabler-filled icon-tabler-video"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M20.117 7.625a1 1 0 0 0 -.564 .1l-4.553 2.275v4l4.553 2.275a1 1 0 0 0 1.447 -.892v-6.766a1 1 0 0 0 -.883 -.992z" />
+    <path d="M5 5c-1.645 0 -3 1.355 -3 3v8c0 1.645 1.355 3 3 3h8c1.645 0 3 -1.355 3 -3v-8c0 -1.645 -1.355 -3 -3 -3z" />
   </svg>
 );
 
@@ -174,9 +255,9 @@ export default function PostCreator(
 title: ${json?.title || "Untitled Post"}
 description: ${json?.description || "Untitled description"}
 tags: ${JSON.stringify(json?.tags)}
+type: ${json?.type || "blog"}
 author: ${json?.author || "Anonymous"}
 read_time: ${json?.readTime || "1 min read"}
-type: ${json?.type || "blog"}
 published_at: ${published}
 image: ${image.url}
 ---
@@ -201,6 +282,7 @@ ${postContent.replace(/---[\s\S]*?---/, "").trim()}
 title: Untitled Post
 description: Untitled description
 tags: ["technology", "electronics", "hardware", "laptop"]
+type: blog
 ---
 
 Write your post content here...`);
@@ -280,7 +362,7 @@ Write your post content here...`);
         </button>
       </div>
 
-      <div class="min-h-[120px] px-4 py-3 flex bg-gray-900">
+      <div class="min-h-[480px] px-4 py-3 flex bg-gray-900">
         {activeTab === "edit"
           ? (
             <textarea
@@ -289,7 +371,7 @@ Write your post content here...`);
               value={postContent}
               onInput={(e) =>
                 setPostContent((e.target as HTMLTextAreaElement).value)}
-              class="w-full h-60 border-0 focus:outline-none resize-none bg-transparent text-gray-300 placeholder-gray-500 text-sm font-mono overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800"
+              class="w-full h-auto border-0 focus:outline-none resize-none bg-transparent text-gray-300 placeholder-gray-500 text-sm font-mono overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800"
               autoFocus
               spellcheck={false}
               autocorrect="off"
@@ -305,15 +387,53 @@ Write your post content here...`);
       </div>
 
       <div class="flex justify-between items-center px-4 py-3 border-t border-gray-700 gap-3">
-        <button
-          type="button"
-          onClick={handleUnsplash}
-          class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
-          aria-label="Generate Unsplash image based on tags"
-          title="Generate Unsplash image based on tags"
-        >
-          {loadingImage ? SpinnerIcon : UnsplashIcon}
-        </button>
+        <div class={`flex items-center gap-2`}>
+          <button
+            type="button"
+            onClick={handleUnsplash}
+            class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
+            aria-label="Generate Unsplash image based on tags"
+            title="Generate Unsplash image based on tags"
+          >
+            {loadingImage ? SpinnerIcon : UnsplashIcon}
+          </button>
+          <button
+            type="button"
+            // onClick={handleUnsplash}
+            class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
+            aria-label="Generate Unsplash image based on tags"
+            title="Generate Unsplash image based on tags"
+          >
+            {RocketIcon}
+          </button>
+          <button
+            type="button"
+            // onClick={handleUnsplash}
+            class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
+            aria-label="Generate Unsplash image based on tags"
+            title="Generate Unsplash image based on tags"
+          >
+            {ClassIcon}
+          </button>
+          <button
+            type="button"
+            // onClick={handleUnsplash}
+            class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
+            aria-label="Generate Unsplash image based on tags"
+            title="Generate Unsplash image based on tags"
+          >
+            {VideoIcon}
+          </button>
+          <button
+            type="button"
+            // onClick={handleUnsplash}
+            class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
+            aria-label="Generate Unsplash image based on tags"
+            title="Generate Unsplash image based on tags"
+          >
+            {StoreIcon}
+          </button>
+        </div>
         <button
           type="button"
           onClick={handleCreatePost}

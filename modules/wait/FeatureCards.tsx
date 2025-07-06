@@ -11,31 +11,6 @@ interface FeatureCardData {
 
 const featureCards: FeatureCardData[] = [
   {
-    href: "/docs",
-    icon: (
-      <svg
-        class="w-full h-full max-w-[72px] max-h-[72px] text-gray-400 group-hover:text-blue-400 transition-colors"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M12 6.03v13m0-13c-2.819-.831-4.715-1.076-8.029-1.023A.99.99 0 0 0 3 6v11c0 .563.466 1.014 1.03 1.007 3.122-.043 5.018.212 7.97 1.023m0-13c2.819-.831 4.715-1.076 8.029-1.023A.99.99 0 0 1 21 6v11c0 .563-.466 1.014-1.03 1.007-3.122-.043-5.018.212-7.97 1.023"
-        />
-      </svg>
-    ),
-    title: "Documentation",
-    description:
-      "Comprehensive guides and API references to help you build amazing applications.",
-  },
-  {
     href: "/play",
     icon: (
       <svg
@@ -60,28 +35,108 @@ const featureCards: FeatureCardData[] = [
     description:
       "Discover tutorials, example apps, and templates powered by the Fastro framework.",
   },
+  // add more feature cards here for performance dashboard
+  {
+    href: "/#",
+    icon: (
+      <svg
+        class="w-full h-full max-w-[72px] max-h-[72px] text-gray-400 group-hover:text-blue-400 transition-colors"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <rect
+          x="3"
+          y="13"
+          width="6"
+          height="8"
+          rx="1"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <rect
+          x="9"
+          y="9"
+          width="6"
+          height="12"
+          rx="1"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <rect
+          x="15"
+          y="5"
+          width="6"
+          height="16"
+          rx="1"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <path d="M4 21h16" stroke="currentColor" stroke-width="2" />
+      </svg>
+    ),
+    title: "Insights",
+    description:
+      "Track your app’s performance, monitor analytics, and gain insights into your usage.",
+  },
+  {
+    href: "/docs",
+    icon: (
+      <svg
+        class="w-full h-full max-w-[72px] max-h-[72px] text-gray-400 group-hover:text-blue-400 transition-colors"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 6.03v13m0-13c-2.819-.831-4.715-1.076-8.029-1.023A.99.99 0 0 0 3 6v11c0 .563.466 1.014 1.03 1.007 3.122-.043 5.018.212 7.97 1.023m0-13c2.819-.831 4.715-1.076 8.029-1.023A.99.99 0 0 1 21 6v11c0 .563-.466 1.014-1.03 1.007-3.122-.043-5.018.212-7.97 1.023"
+        />
+      </svg>
+    ),
+    title: "Documentation",
+    description:
+      "Comprehensive guides and API references to help you build amazing applications.",
+  },
 ];
+
+// make it 3 columns on larger screens
+// and 1 column on mobile screens
+export default function FeatureCards({}: FeatureCardsProps) {
+  return (
+    <div class="grid gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {featureCards.map((card) => <FeatureCard {...card} />)}
+    </div>
+  );
+}
 
 function FeatureCard({ href, icon, title, description }: FeatureCardData) {
   return (
     <a href={href} class="group h-full">
       <main
-        class="bg-gray-800/80 rounded-xl shadow-md border border-gray-700 p-6 md:p-8 group-hover:border-blue-500/50 group-hover:shadow-xl transition-all h-full flex relative overflow-hidden backdrop-blur-lg hover:bg-blue-900/20"
+        class="bg-gray-800/80 rounded-xl shadow-md border border-gray-700/50 p-3 sm:p-4 md:p-6 group-hover:border-blue-500/50 group-hover:shadow-xl transition-all h-full flex relative overflow-hidden backdrop-blur-lg hover:bg-blue-900/20"
         style={{
           boxShadow:
             "0 4px 24px 0 rgba(0,0,0,0.25), 0 1.5px 8px 0 rgba(0,0,0,0.10)",
         }}
       >
         {/* Icon on the left - full height */}
-        <div class="flex-shrink-0 mr-5 flex items-center justify-center">
-          {icon}
-        </div>
+        <div class="flex-shrink-0 mr-3 sm:mr-4 flex justify-start">{icon}</div>
         {/* Text content on the right */}
         <div class="flex flex-col flex-1 text-left">
-          <h2 class="text-xl sm:text-2xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+          <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-white mb-0.5 sm:mb-1 group-hover:text-blue-400 transition-colors">
             {title}
           </h2>
-          <p class="text-sm sm:text-base text-gray-400 leading-relaxed flex-1 pb-3 sm:pb-6">
+          <p class="text-xs sm:text-sm md:text-base text-gray-400 leading-relaxed flex-1 pb-1 sm:pb-2 md:pb-4">
             {description}
           </p>
         </div>
@@ -95,13 +150,5 @@ function FeatureCard({ href, icon, title, description }: FeatureCardData) {
         />
       </main>
     </a>
-  );
-}
-
-export default function FeatureCards({}: FeatureCardsProps) {
-  return (
-    <div class="grid gap-6 sm:gap-8 md:grid-cols-2">
-      {featureCards.map((card) => <FeatureCard {...card} />)}
-    </div>
   );
 }

@@ -157,7 +157,7 @@ export default function Footer(
 
           <div class="flex flex-col md:flex-row justify-between items-center gap-y-1 border-t border-gray-800 p-y-4 pt-6">
             <p class="text-xs text-gray-400">
-              Made with ❤️ in Tulungagung, Indonesia
+              Made with ❤️ in Tulungagung
             </p>
             <p class="text-xs text-gray-400">
               © 2025 {"Fastro Services"}. All rights reserved.
