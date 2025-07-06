@@ -37,9 +37,9 @@ Fastro is a powerful, modern web framework built specifically for Deno. It combi
 export function createPost(
   arg0: {
     content: string;
-    author: any;
-    avatar: any;
-    image: any;
+    author: string;
+    avatar: string;
+    image: string;
     title: string;
     description: string;
     tags: string;

@@ -117,7 +117,9 @@ async function getRandomUnsplashImage(query = "") {
   }
 }
 
-export default function PostCreator() {
+export default function PostCreator(
+  props: { onActivate?: () => void; onDeactivate?: () => void },
+) {
   const [activeTab, setActiveTab] = useState<"edit" | "preview">("edit");
   const [editorActive, setEditorActive] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -143,6 +145,7 @@ export default function PostCreator() {
         console.log("Post created successfully:", result);
         setPostContent("");
         setEditorActive(false);
+        props.onDeactivate?.();
       } else {
         console.error("Failed to create post:", response.statusText);
       }
@@ -152,9 +155,7 @@ export default function PostCreator() {
   };
 
   const handleUnsplash = async () => {
-    setLoadingImage(true); // Start loader
-    // setImageError(null); // Reset error state
-
+    setLoadingImage(true);
     try {
       const json = renderPreview(postContent).frontmatterJson;
       const tags = json?.tags || ["blue", "sky"];
@@ -203,6 +204,7 @@ tags: ["technology", "electronics", "hardware", "laptop"]
 ---
 
 Write your post content here...`);
+            props.onActivate?.();
           }}
           onMouseDown={(e) => e.preventDefault()}
           class="w-full flex items-center justify-between h-[24px] cursor-pointer border-0 focus:outline-none resize-none bg-transparent text-gray-500 text-sm sm:text-base"
@@ -268,7 +270,10 @@ Write your post content here...`);
           type="button"
           class="ml-2 p-2 text-gray-400 hover:text-blue-400 rounded-full transition-colors"
           onMouseDown={(e) => e.preventDefault()}
-          onClick={() => setEditorActive(false)}
+          onClick={() => {
+            setEditorActive(false);
+            props.onDeactivate?.();
+          }}
           aria-label="Switch to simple input"
         >
           {ChevronUpIcon}

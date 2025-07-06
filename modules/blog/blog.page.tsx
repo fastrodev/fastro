@@ -23,6 +23,7 @@ export default function Blog(
   >(
     "new",
   );
+  const [isPostCreatorActive, setIsPostCreatorActive] = useState(false); // New state
   const data = props.data;
 
   return (
@@ -61,12 +62,22 @@ export default function Blog(
               )
               : (
                 <div class="flex flex-col gap-3">
-                  {/* Post Creator - Shown only if no post is selected */}
-                  <PostCreator />
-                  <div class="relative h-16 lg:h-20">
-                    <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
-                  </div>
-                  <BlogPostsList />
+                  <PostCreator
+                    onActivate={() => setIsPostCreatorActive(true)} // Activate
+                    onDeactivate={() => setIsPostCreatorActive(false)} // Deactivate
+                  />
+                  {/* Conditionally hide these elements */}
+                  {!isPostCreatorActive && (
+                    <>
+                      <div class="relative h-16 lg:h-20">
+                        <TabNav
+                          activeTab={activeTab}
+                          setActiveTab={setActiveTab}
+                        />
+                      </div>
+                      <BlogPostsList />
+                    </>
+                  )}
                 </div>
               )}
           </div>
