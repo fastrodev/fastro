@@ -1,3 +1,4 @@
+import UserAccountSvg from "../../components/icons/user-account-svg.tsx";
 import PanelCard from "./PanelCard.tsx";
 
 const tags = [
@@ -10,7 +11,7 @@ const tags = [
 
 export default function BlogSidebar() {
   return (
-    <aside class="flex flex-col gap-6 z-0 top-14 sticky">
+    <aside class="flex flex-col gap-6 sticky top-16">
       <div class="bg-gray-800/50 border border-gray-700 shadow-md rounded-xl p-3">
         <input
           type="text"

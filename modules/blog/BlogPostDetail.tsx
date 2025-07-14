@@ -32,7 +32,7 @@ export default function BlogPostDetail(
   // Handle case when no post is provided
   if (!props.post) {
     return (
-      <div class="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
+      <div class="bg-gray-800/50 rounded-lg shadow-sm border border-gray-700 p-6">
         <div class="mb-4">
           <button
             type="button"
@@ -65,7 +65,7 @@ export default function BlogPostDetail(
   const currentPost = props.post;
   // console.log("Current Post:", currentPost);
   return (
-    <article class="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
+    <article class="bg-gray-800/50 rounded-xl shadow-sm border border-gray-700 p-6">
       {/* Back button */}
       <div class="mb-4 flex justify-between items-center">
         <button

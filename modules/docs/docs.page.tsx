@@ -20,7 +20,7 @@ export default function Docs(
   const activePath = props.data.url;
 
   return (
-    <div class="min-h-screen bg-gray-900 text-white">
+    <div class="min-h-screen bg-gray-950 text-white">
       <div class="sticky top-0 z-50">
         <Header
           title="Documentation"
@@ -36,10 +36,10 @@ export default function Docs(
         />
       </div>
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row gap-6 pb-6">
           <div class="hidden lg:block lg:w-64 lg:flex-shrink-0">
-            <div class="lg:sticky lg:top-14">
+            <div class="lg:sticky lg:top-16">
               <Navigation
                 navigationSections={nav}
                 activePath={activePath}
@@ -66,7 +66,7 @@ export default function Docs(
 
           {/* Column 3: Content TOC - Hidden on mobile, shown on larger screens */}
           <div class="hidden lg:block lg:w-64 lg-flex-shrink-0">
-            <div class="sticky top-14">
+            <div class="sticky top-16">
               {props.data.toc && <TableOfContents tocItems={props.data.toc} />}
             </div>
           </div>

@@ -252,26 +252,24 @@
 }
 
 /* Images */
+/* add natural border for dark theme */
 .markdown-body img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
   max-width: 100%;
   height: auto;
-  border-style: none;
+  max-height: 60vh;
   box-sizing: content-box;
-}
-
-[data-color-mode="dark"].markdown-body img {
-  border-radius: 6px;
-  border: 1px solid #30363d;
+  align-self: center;
 }
 
 /* Title and description styling */
 .markdown-body .markdown-title {
   margin-top: 0;
   margin-bottom: 16px;
-}
-
-[data-color-mode="dark"].markdown-body .markdown-title {
-  color: #f0f6fc;
 }
 
 .markdown-body .markdown-description {

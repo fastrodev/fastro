@@ -147,10 +147,6 @@ export default function (s: Fastro) {
     }
   });
 
-  s.put("/api/post/:id", () => {});
-  s.delete("/api/post/:id", () => {});
-  s.get("/api/post/:id", () => {});
-  s.get("/api/post", () => {});
   s.get("/api/unpslash/:query", async (req) => {
     async function getRandomUnsplashImage(apiKey: string, query = "") {
       try {
@@ -189,6 +185,11 @@ export default function (s: Fastro) {
       status: 200,
     });
   });
+
+  s.put("/api/post/:id", () => {});
+  s.delete("/api/post/:id", () => {});
+  s.get("/api/post/:id", () => {});
+  s.get("/api/post", () => {});
 
   return s;
 }

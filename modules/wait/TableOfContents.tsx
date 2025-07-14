@@ -28,7 +28,7 @@ export default function TableOfContents(
 
   return (
     <nav
-      class={`bg-gray-800 rounded-lg shadow-md border border-gray-700 px-4 py-3 ${className}`}
+      class={`bg-gray-800/50 rounded-lg shadow-md border border-gray-700 px-4 py-3 ${className}`}
     >
       <div class="font-semibold text-gray-200 mb-4">On this page</div>
       {tocItems.map((item) => (

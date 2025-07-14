@@ -62,6 +62,25 @@ export default function PostsSection({ popularPosts }: PostsSectionProps) {
       image:
         "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=300&fit=crop&crop=entropy&auto=format&q=80",
     },
+    {
+      title: "Scaling Fastro Applications",
+      slug: "scaling-fastro-applications",
+      description:
+        "Techniques for scaling your Fastro apps to handle more users and data.",
+      date: "2025-06-10",
+      readTime: "9 min read",
+      image:
+        "https://images.unsplash.com/photo-1508780709619-79562169bc64?w=400&h=300&fit=crop&crop=entropy&auto=format&q=80",
+    },
+    {
+      title: "Fastro Security Essentials",
+      slug: "fastro-security-essentials",
+      description: "Best practices for securing your Fastro applications.",
+      date: "2025-06-05",
+      readTime: "8 min read",
+      image:
+        "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?w=400&h=300&fit=crop&crop=entropy&auto=format&q=80",
+    },
   ];
 
   const mockNewPosts = [
@@ -104,6 +123,24 @@ export default function PostsSection({ popularPosts }: PostsSectionProps) {
       readTime: "7 min read",
       image:
         "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=400&h=300&fit=crop&crop=entropy&auto=format&q=80",
+    },
+    {
+      title: "Fastro CLI Tips",
+      slug: "fastro-cli-tips",
+      description: "Useful tips for working efficiently with the Fastro CLI.",
+      date: "2025-06-09",
+      readTime: "5 min read",
+      image:
+        "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=300&fit=crop&crop=entropy&auto=format&q=80",
+    },
+    {
+      title: "Testing Fastro Apps",
+      slug: "testing-fastro-apps",
+      description: "How to write and run tests for your Fastro applications.",
+      date: "2025-06-06",
+      readTime: "7 min read",
+      image:
+        "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=300&fit=crop&crop=entropy&auto=format&q=80",
     },
   ];
 
@@ -148,6 +185,25 @@ export default function PostsSection({ popularPosts }: PostsSectionProps) {
       image:
         "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?w=400&h=300&fit=crop&crop=entropy&auto=format&q=80",
     },
+    {
+      title: "Fastro and Serverless",
+      slug: "fastro-and-serverless",
+      description: "Deploy Fastro applications using serverless platforms.",
+      date: "2025-06-03",
+      readTime: "11 min read",
+      image:
+        "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400&h=300&fit=crop&crop=entropy&auto=format&q=80",
+    },
+    {
+      title: "Fastro Community Projects",
+      slug: "fastro-community-projects",
+      description:
+        "Explore open-source projects built by the Fastro community.",
+      date: "2025-06-02",
+      readTime: "10 min read",
+      image:
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop&crop=entropy&auto=format&q=80",
+    },
   ];
 
   const posts = popularPosts || mockPopularPosts;
@@ -169,7 +225,8 @@ export default function PostsSection({ popularPosts }: PostsSectionProps) {
         <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
 
-      <div class="grid gap-6 sm:gap-8 lg:grid-cols-2">
+      {/* make it 3 columns on large screen, 2 on medium screen, and 1 on small screen */}
+      <div class="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {getCurrentPosts().map((post, index) => (
           <PostCard key={index} post={post} index={index} />
         ))}

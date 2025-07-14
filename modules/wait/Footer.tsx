@@ -10,16 +10,17 @@ export default function Footer(
   { title, description, baseUrl }: FooterProps,
 ): JSX.Element {
   return (
-    <footer class="bg-gray-950 mt-6">
+    // make the background more darker
+    <footer class="bg-black mt-6">
       {/* Bottom Section */}
-      <div class=" p-6 shadow-[0_-4px_24px_0_rgba(0,0,0,0.25)]">
-        <div class="flex flex-col gap-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col gap-y-6 shadow-[0_-4px_24px_0_rgba(0,0,0,0.25)]">
+        <div class="py-6 flex flex-col gap-y-6 max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 xl:grid-cols-12 gap-8">
             {/* Brand Description */}
             <div class="sm:col-span-2 md:col-span-2 xl:col-span-5">
               <div class="mb-6">
                 <h3 class="text-lg font-bold text-gray-100 mb-4">
-                  {"Fastro Framework"}
+                  {"Fastro CMS"}
                 </h3>
                 <p class="text-sm text-gray-400 leading-relaxed">
                   {description}
@@ -154,15 +155,14 @@ export default function Footer(
               </ul>
             </div>
           </div>
-
-          <div class="flex flex-col md:flex-row justify-between items-center gap-y-1 border-t border-gray-800 p-y-4 pt-6">
-            <p class="text-xs text-gray-400">
-              Made with ❤️ in Tulungagung
-            </p>
-            <p class="text-xs text-gray-400">
-              © 2025 {"Fastro Services"}. All rights reserved.
-            </p>
-          </div>
+        </div>
+        <div class="py-6 px-4 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-y-1 border-t border-gray-800">
+          <p class="text-xs text-gray-400">
+            Made with ❤️ in Tulungagung
+          </p>
+          <p class="text-xs text-gray-400">
+            © 2025 {"Fastro Services"}. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

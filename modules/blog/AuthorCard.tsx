@@ -24,7 +24,7 @@ export default function AuthorCard(
         {author.name}
       </div>
       {author.bio && (
-        <div class="text-xs text-gray-400 mt-1">
+        <div class="text-xs sm:text-sm text-gray-400 mt-1">
           {author.bio}
         </div>
       )}

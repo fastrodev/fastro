@@ -1,5 +1,6 @@
 import { useRef, useState } from "preact/hooks";
 import { renderPreview } from "../../utils/markdownUtils.tsx";
+import { JSX } from "preact/jsx-runtime";
 
 const MarkdownIcon = (
   <svg
@@ -209,6 +210,18 @@ const SpinnerIcon = (
   </svg>
 );
 
+const defaultContent = `---
+title: Untitled Post
+description: Untitled description
+type: blog
+tags:
+  - tech
+  - laptop
+  - coding
+---
+
+Write your post content here...`;
+
 async function getRandomUnsplashImage(query = "") {
   try {
     const baseUrl = "/api/unpslash"; // Adjust this to your API endpoint
@@ -245,6 +258,8 @@ export default function PostCreator(
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [postContent, setPostContent] = useState("");
   const [loadingImage, setLoadingImage] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [imageUrl, setImageUrl] = useState("");
 
   const handleCreatePost = async () => {
     if (!postContent.trim()) return;
@@ -274,6 +289,103 @@ export default function PostCreator(
     }
   };
 
+  const handleAttachmentClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleUpload = async (
+    e: JSX.TargetedEvent<HTMLInputElement, Event>,
+  ) => {
+    const file = e.currentTarget.files?.[0];
+    if (!file) return;
+
+    // Check if file is an image
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file (JPEG, PNG, etc.)");
+      return;
+    }
+
+    // setUploadingImage(true);
+
+    try {
+      // Generate a unique filename
+      const extension = file.name.split(".").pop();
+      const filename = `uploads/${Date.now()}-${
+        Math.random()
+          .toString(36)
+          .substring(2, 15)
+      }.${extension}`;
+
+      console.log("Requesting signed URL for:", filename);
+
+      // Get a signed URL from our API
+      const signedUrlResponse = await fetch(
+        "/api/signed-url",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // Send both filename and contentType
+          body: JSON.stringify({ filename, contentType: file.type }),
+        },
+      );
+
+      if (!signedUrlResponse.ok) {
+        const errorData = await signedUrlResponse.text();
+        console.error("Signed URL response error:", errorData);
+        throw new Error(`Failed to get signed URL: ${errorData}`);
+      }
+
+      const data = await signedUrlResponse.json();
+      console.log("Signed URL received:", data);
+
+      if (!data.signedUrl) {
+        throw new Error("No signed URL returned from server");
+      }
+
+      const { signedUrl } = data;
+
+      const uploadResponse = await fetch(signedUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": file.type,
+          "x-goog-content-length-range": "0,10485760",
+        },
+        body: file,
+      });
+
+      if (!uploadResponse.ok) {
+        const uploadErrorText = await uploadResponse.text();
+        console.error("Upload error details:", uploadErrorText);
+        throw new Error(
+          `Failed to upload image: ${uploadResponse.status} ${uploadResponse.statusText}`,
+        );
+      }
+
+      const publicUrl =
+        `https://storage.googleapis.com/replix-394315-file/${filename}`;
+      console.log("Setting public URL:", publicUrl);
+      setImageUrl(publicUrl);
+
+      // Append the image URL to the post content
+
+      setPostContent(postContent + `\n\n![Image](${publicUrl})`);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert(
+        `Failed to upload image: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
+      );
+    } finally {
+      // setUploadingImage(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
   const handleUnsplash = async () => {
     setLoadingImage(true);
     try {
@@ -300,12 +412,12 @@ export default function PostCreator(
 
       const fm = `---
 title: ${json?.title || "Untitled Post"}
-description: ${json?.description || "Untitled description"}
 image: ${image.url}
 type: ${json?.type || "blog"}
-author: ${json?.author || "Anonymous"}
 read_time: ${json?.readTime || "1 min read"}
 published_at: ${published}
+description: ${json?.description || "Untitled description"}
+author: ${json?.author || "Anonymous"}
 tags:${tagsYaml}
 ---
 
@@ -325,17 +437,7 @@ ${postContent.replace(/---[\s\S]*?---/, "").trim()}
         <div
           onClick={() => {
             setEditorActive(true);
-            setPostContent(`---
-title: Untitled Post
-description: Untitled description
-type: blog
-tags:
-  - tech
-  - laptop
-  - coding
----
-
-Write your post content here...`);
+            setPostContent(defaultContent);
             props.onActivate?.();
           }}
           onMouseDown={(e) => e.preventDefault()}
@@ -438,10 +540,18 @@ Write your post content here...`);
 
       <div class="flex justify-between items-center px-4 py-3 border-t border-gray-700 gap-3">
         <div class={`flex items-center gap-2`}>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleUpload}
+            accept="image/jpeg,image/png,image/gif"
+            className="hidden"
+          />
+
           <button
             type="button"
+            onClick={handleAttachmentClick}
             class="p-2 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded-full transition-colors"
-            disabled
           >
             {ClipIcon}
           </button>

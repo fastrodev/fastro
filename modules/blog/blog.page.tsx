@@ -27,7 +27,7 @@ export default function Blog(
   const data = props.data;
 
   return (
-    <div class="min-h-screen bg-gray-900 text-gray-300">
+    <div class="min-h-screen bg-gray-950 text-gray-300">
       <div class="sticky top-0 z-50">
         <Header
           title="Documentation"
@@ -43,25 +43,28 @@ export default function Blog(
         />
       </div>
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row gap-6 pb-6">
-          <div class="hidden lg:block lg:w-64 lg-flex-shrink-0">
+          {/* can you make this element static to the screen? */}
+          <div class="hidden lg:block lg:w-4/12 lg-flex-shrink-0">
             <BlogSidebar />
           </div>
 
-          <div class="flex-1">
+          {/* column 2 */}
+          <div class={`lg:w-5/12`}>
             {props.data.post
               ? (
-                <BlogPostDetail
-                  onBack={() => {
-                    // change to go to the /blog page
-                    window.location.href = "/play";
-                  }}
-                  post={props.data.post}
-                />
+                <div class="flex-col mx-auto">
+                  <BlogPostDetail
+                    onBack={() => {
+                      window.location.href = "/play";
+                    }}
+                    post={props.data.post}
+                  />
+                </div>
               )
               : (
-                <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-y-3 mx-auto">
                   <PostCreator
                     onActivate={() => setIsPostCreatorActive(true)} // Activate
                     onDeactivate={() => setIsPostCreatorActive(false)} // Deactivate
@@ -82,9 +85,9 @@ export default function Blog(
               )}
           </div>
 
-          {/* Column 3: Content TOC - Hidden on mobile, shown on larger screens */}
-          <div class="hidden lg:w-64 lg-flex-shrink-0 lg:flex lg:flex-col lg:gap-y-6">
-            <div class="sticky top-14 flex flex-col gap-y-6">
+          {/* column 3 */}
+          <div class="hidden lg:w-3/12 lg-flex-shrink-0 lg:flex lg:flex-col lg:gap-y-6">
+            <div class="sticky top-16 flex flex-col gap-y-6">
               {props.data.post && props.data.post.author &&
                 props.data.post.toc &&
                 (

@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 import { FunctionalComponent } from "preact";
 
 interface TabNavProps {
@@ -7,6 +8,7 @@ interface TabNavProps {
   ) => void;
 }
 
+// if All selected, go to /play
 const tabs = [
   { label: "New", value: "new" },
   { label: "Popular", value: "popular" },
@@ -34,14 +36,20 @@ const TabNav: FunctionalComponent<TabNavProps> = (
         }
       `}
       </style>
-      <div className="inline-flex space-x-3 px-4 py-3">
+      <div className="inline-flex space-x-2 px-4 py-3">
         {tabs.map((tab) => (
           <button
             key={tab.value}
             type="button"
-            onClick={() => setActiveTab(tab.value as typeof activeTab)}
-            class={`px-5 py-2 rounded-full font-semibold text-sm transition-all duration-200 shadow-sm whitespace-nowrap
-              sm:px-7 sm:py-3 sm:text-base ${
+            onClick={() => {
+              if (tab.value === "all") {
+                window.location.href = "/play";
+              } else {
+                setActiveTab(tab.value as typeof activeTab);
+              }
+            }}
+            class={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-200 shadow-sm whitespace-nowrap
+              sm:px-6 sm:py-3 sm:text-base ${
               activeTab === tab.value
                 ? "bg-gradient-to-r from-blue-700 to-blue-500 text-white shadow-lg scale-105"
                 : "bg-gray-800 text-gray-200 hover:bg-gray-700 hover:text-blue-200"

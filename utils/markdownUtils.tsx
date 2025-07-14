@@ -20,13 +20,25 @@ export const renderPreview = (content: string) => {
       ? yaml.parse(frontmatter.replace(/^---|---$/g, "").trim())
       : null;
 
-    let htmlContent = marked(body, {
+    const htmlContent = marked(body, {
       breaks: true,
       gfm: true,
     }) as string;
 
-    htmlContent = htmlContent.replace(/<(\w+)[^>]*>/g, "<$1>");
-    console.log("Converted HTML content:", htmlContent);
+    const processedHtml = htmlContent
+      .replace(/<p>(<img[^>]*>)<\/p>/g, "$1")
+      .replace(
+        /<img([^>]*?)class=["']?([^"'>]*)["']?([^>]*)>/g,
+        `<img$1class="$2 w-full max-h-96 object-cover rounded-lg shadow-md border border-gray-700"$3>`,
+      )
+      .replace(
+        /<img((?!class=)[^>])*?>/g,
+        (match) =>
+          match.replace(
+            /<img((?!class=)[^>]*)>/,
+            `<img$1 class="w-full max-h-96 object-cover rounded-lg shadow-md border border-gray-700">`,
+          ),
+      );
 
     const preview = (
       <div class="text-sm h-full sm:text-base bg-gray-800/60 shadow-sm border border-gray-700 p-4 rounded-lg">
@@ -127,8 +139,8 @@ export const renderPreview = (content: string) => {
           </div>
         )}
         <div
-          class="markdown-body prose prose-invert prose-headings:font-semibold prose-headings:text-gray-100 prose-p:text-gray-300 prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline"
-          dangerouslySetInnerHTML={{ __html: htmlContent }}
+          class="markdown-body"
+          dangerouslySetInnerHTML={{ __html: processedHtml }}
         />
       </div>
     );

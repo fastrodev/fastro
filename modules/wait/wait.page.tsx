@@ -31,7 +31,7 @@ export default function Wait({ data }: PageProps<
   const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
 
   return (
-    <div class="min-h-screen bg-gray-900 text-white">
+    <div class="min-h-screen bg-gray-950 text-white">
       <div class="sticky top-0 z-50">
         <Header
           title={data.title}
@@ -47,16 +47,14 @@ export default function Wait({ data }: PageProps<
         />
       </div>
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col gap-6 pb-6">
+      <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col gap-4 pb-6 sm:gap-6">
           <HeroSection
             title={data.title}
             description={data.description}
           />
           <FeatureCards />
-          <div class={`py-0 lg:py-6`}>
-            <PostsSection popularPosts={data.popularPosts} />
-          </div>
+          <PostsSection popularPosts={data.popularPosts} />
         </div>
       </div>
 

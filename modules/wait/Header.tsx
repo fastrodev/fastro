@@ -54,12 +54,12 @@ export default function Header(
 
   return (
     <header
-      class={`bg-gray-900 transition-shadow duration-200 ${
+      class={`bg-gray-950 transition-shadow duration-200 ${
         atTop ? "" : "shadow-lg"
       }`}
     >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center py-3 relative">
+      <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center py-4 relative">
           <div class="relative lg:hidden">
             {navigationSections.length > 0 && (
               <button
@@ -132,15 +132,6 @@ export default function Header(
               </svg>
               <span class="hidden sm:block">Search</span>
             </button>
-
-            <a
-              href="#"
-              aria-label="User Account"
-              class="text-gray-300 hover:text-white flex items-center gap-1"
-            >
-              <UserAccountSvg />
-              <span class="hidden sm:block">Login</span>
-            </a>
           </div>
         </div>
       </div>

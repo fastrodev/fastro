@@ -17,7 +17,8 @@
     "preact-render-to-string": "npm:preact-render-to-string@^6.5.13",
     "preact/jsx-runtime": "npm:preact@10.26.9/jsx-runtime",
     "@tailwindcss/typography": "npm:@tailwindcss/typography@0.5.16",
-    "tailwind-scrollbar": "npm:tailwind-scrollbar@^3.1.0"
+    "tailwind-scrollbar": "npm:tailwind-scrollbar@^3.1.0",
+    "google-cloud/storage": "npm:@google-cloud/storage@^7.16.0"
   },
   "compilerOptions": {
     "jsx": "react-jsx",

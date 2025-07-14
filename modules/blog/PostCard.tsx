@@ -22,10 +22,14 @@ export default function PostCard({ post, index }: PostCardProps): JSX.Element {
   ) => {
     if (post.image) {
       return (
+        // can you make the image have full height of the container?
+        // and make it responsive
+        // and make it rounded
+        // and make it cover the whole area
         <img
           src={post.image}
           alt={post.title}
-          class="w-24 sm:w-28 h-full rounded-lg object-cover flex-shrink-0"
+          class="h-full w-32 rounded-lg object-cover flex-shrink-0 aspect-square"
           loading="lazy"
         />
       );
@@ -54,7 +58,7 @@ export default function PostCard({ post, index }: PostCardProps): JSX.Element {
     <article class="group">
       <a
         href={`/play/${post.slug}`}
-        class="block p-3 sm:p-4 border border-gray-700 rounded-2xl bg-gray-800 hover:bg-blue-900/30 backdrop-blur-lg shadow-xl hover:shadow-2xl transition-all duration-300 h-full hover:border-blue-500/70 relative overflow-hidden group"
+        class="block p-3 sm:p-4 border border-gray-700 rounded-2xl bg-gray-800/50 hover:bg-blue-900/30 backdrop-blur-lg shadow-xl hover:shadow-2xl transition-all duration-300 h-full hover:border-blue-500/70 relative overflow-hidden group"
         style={{
           boxShadow:
             "0 4px 24px 0 rgba(0,0,0,0.25), 0 1.5px 8px 0 rgba(0,0,0,0.10)",
@@ -78,13 +82,13 @@ export default function PostCard({ post, index }: PostCardProps): JSX.Element {
               <h3 class="text-lg sm:text-xl font-bold text-white group-hover:text-blue-400 transition-colors mb-2 line-clamp-2">
                 {post.title}
               </h3>
-              <p class="text-sm sm:text-base text-gray-200 mb-2 line-clamp-2 sm:line-clamp-3">
+              <p class="text-sm sm:text-base text-gray-400 mb-2 line-clamp-2 sm:line-clamp-3">
                 {post.description}
               </p>
             </div>
             <div class="flex items-center justify-between">
-              <div class="flex flex-row items-center gap-2 text-xs sm:text-md text-gray-400">
-                <div class={`flex items-center gap-2`}>
+              <div class="flex flex-row items-center gap-1 text-xs text-gray-400">
+                <div class={`flex items-center gap-1`}>
                   <img
                     src="https://avatars.githubusercontent.com/u/10122431?s=70&v=4"
                     alt="Avatar"
@@ -96,7 +100,10 @@ export default function PostCard({ post, index }: PostCardProps): JSX.Element {
                   </span>
                 </div>
                 <span class="inline">•</span>
-                <time dateTime={post.date}>
+                <time
+                  dateTime={post.date}
+                  class={`line-clamp-2 sm:line-clamp-3`}
+                >
                   {new Date(post.date).toLocaleDateString(
                     "en-US",
                     {
@@ -109,18 +116,20 @@ export default function PostCard({ post, index }: PostCardProps): JSX.Element {
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                class="text-gray-400 group-hover:text-blue-400 transition-colors flex-shrink-0"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-dots-vertical"
               >
-                <path d="M7 17L17 7" />
-                <path d="M7 7h10v10" />
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
               </svg>
             </div>
           </div>
