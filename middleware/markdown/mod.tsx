@@ -1,7 +1,7 @@
 import { CSS } from "./deps.ts";
 import { renderToString } from "../../core/server/deps.ts";
 import { Context, HttpRequest } from "../../mod.ts";
-import { tocToJSX } from "./toc.tsx";
+// import { tocToJSX } from "./toc.tsx";
 import { getMarkdownBody } from "./markdown-utils.tsx";
 import { defaultMarkdownWrapper } from "./default-wrapper.tsx";
 import { defaultLayout } from "./default-layout.tsx";
