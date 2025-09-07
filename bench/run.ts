@@ -89,7 +89,16 @@ async function bench(server: string, ext: string) {
     res = await oha();
   }
 
-  console.log("res==>", res);
+  if (!res) {
+    console.log(`error with ${server}`);
+    await killServer();
+    return {
+      ext,
+      module: server,
+      requestsPerSec: 0,
+      oha: `error with ${server}`,
+    };
+  }
 
   await killServer();
   return {
