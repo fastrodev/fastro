@@ -70,6 +70,12 @@ jobs:
           sudo /etc/init.d/mysql start
           mysql -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;" -u$DB_USER -p$DB_PASSWORD
 
+      - name: Setup PostgreSQL
+        run: |
+          PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE USER root WITH PASSWORD 'root';"
+          PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE DATABASE homestead OWNER root;"
+          PGPASSWORD=postgres psql -h localhost -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE homestead TO root;"
+
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
