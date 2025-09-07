@@ -89,6 +89,8 @@ async function bench(server: string, ext: string) {
     res = await oha();
   }
 
+  console.log("res==>", res);
+
   await killServer();
   return {
     ext,
