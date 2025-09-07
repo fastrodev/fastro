@@ -73,8 +73,8 @@ jobs:
       - name: Setup PostgreSQL
         run: |
           PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE USER root WITH PASSWORD 'root';"
-          PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE DATABASE homestead OWNER root;"
-          PGPASSWORD=postgres psql -h localhost -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE homestead TO root;"
+          PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE DATABASE root OWNER root;"
+          PGPASSWORD=postgres psql -h localhost -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE root TO root;"
 
       - uses: denoland/setup-deno@v2
         with:
