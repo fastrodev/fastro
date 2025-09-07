@@ -44,12 +44,13 @@ export default async function waitHandler(req: HttpRequest, ctx: Context) {
   }
 
   return await ctx.render({
-    title: "Web Framework for Deno",
+    title: "The Next-Gen Content Management System",
     description:
-      "Modern inventory & purchasing software to help small businesses automate stock control and procurement tasks.",
+      "Experience the future of web development with our content management system. Built on Fastro Framework, Deno, and Preact, it delivers exceptional performance, scalability, and a smooth developer experience. Perfect for launching websites and apps, optimizing workflows, and enjoying seamless collaboration.",
     image: "https://fastro.deno.dev/fastro.png",
     isLogin,
     avatar_url,
+    baseUrl: Deno.env.get("BASE_URL") || "http://localhost:8000",
     html_url,
   });
 }

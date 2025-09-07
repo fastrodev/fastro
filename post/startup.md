@@ -6,6 +6,8 @@ author: Admin
 date: 03/30/2025
 ---
 
+## Table of Contents
+
 > Disadur dari post asli:\
 > [I just READ 60+ Paul Graham's ESSAY from 2005 to 2025](https://www.linkedin.com/posts/umar482_i-just-read-60-paul-grahams-essay-from-activity-7311673525658877953-LVNN/)
 
@@ -22,7 +24,7 @@ presentasi 90 slide untuk investor.
 
 Mari kita breakdown satu per satu:
 
-### Mengapa produk yang diinginkan pelanggan itu kunci?
+## Mengapa produk yang diinginkan pelanggan itu kunci?
 
 Fakta: 90% pendiri startup bikin solusi yang nggak ada yang minta.
 
@@ -42,7 +44,7 @@ Bedanya startup sukses dan yang mati?
 Bayangin restoran: kalau makanannya enak, orang pasti dateng. Produkmu harus
 "enak" buat pelanggan—dan itu harus divalidasi secepat mungkin.
 
-### Mengapa orang yang tepat itu penting?
+## Mengapa orang yang tepat itu penting?
 
 Banyak pendiri startup salah kaprah, mengira "orang yang tepat" itu harus
 engineer dari perusahaan besar seperti FAANG atau lulusan universitas top
@@ -61,12 +63,13 @@ Kalau kamu lihat startup yang gagal, seringkali timnya penuh dengan orang ber-CV
 bagus tapi nol semangat. Orang yang punya "semangat membara" inilah yang bikin
 startup hidup.
 
-### Mengapa hemat uang itu krusial?
+## Mengapa hemat uang itu krusial?
 
 Hampir semua startup yang gagal mati karena kehabisan uang.
 
-Saran Paul Graham simpel tapi tajam: "Cara terbaik hemat uang adalah jangan
-rekrut orang terlalu banyak."
+Saran Paul Graham simpel tapi tajam:
+
+> Cara terbaik hemat uang adalah jangan rekrut orang terlalu banyak.
 
 Kenapa?
 
@@ -77,7 +80,7 @@ Kenapa?
 Jadi, startup harus super hemat, perlakukan setiap rupiah kayak itu yang
 terakhir.
 
-### Kesimpulan
+## Kesimpulan
 
 Kalau kamu mau mulai perusahaan, inget 3 hal ini:
 
