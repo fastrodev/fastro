@@ -1,6 +1,6 @@
 import { type Config } from "npm:tailwindcss@3.4.15";
-import ty from "@tailwindcss/typography";
-import ts from "tailwind-scrollbar";
+import ty from "npm:@tailwindcss/typography@0.5.16";
+import ts from "npm:tailwind-scrollbar@^3.1.0";
 
 /**
  * see: https://tailwindcss.com/docs/content-configuration
