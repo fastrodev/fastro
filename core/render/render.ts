@@ -21,14 +21,12 @@ export class Render {
 
   renderJsx = (jsx: JSX.Element, headers?: Headers) => {
     const html = renderToString(jsx);
-    if (!headers) {
-      return new Response(html, {
-        headers: new Headers(),
-      });
+    const responseHeaders = headers || new Headers();
+    if (!responseHeaders.has("content-type")) {
+      responseHeaders.set("content-type", "text/html");
     }
-
     return new Response(html, {
-      headers,
+      headers: responseHeaders,
     });
   };
 

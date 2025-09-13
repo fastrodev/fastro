@@ -22,7 +22,7 @@ import {
 import { EsbuildMod } from "../build/esbuildMod.ts";
 import { Store } from "../map/mod.ts";
 import { createTaskQueue } from "../utils/queue.ts";
-import { ulid } from "jsr:@std/ulid/ulid";
+import { ulid } from "jsr:@std/ulid@^1.0.0";
 
 export function checkReferer(req: Request) {
   const referer = req.headers.get("referer");
@@ -544,9 +544,8 @@ if (root) fetchProps(root);
     if (!handler) {
       const res = this.#getParamsHandler(req, this.#routeHandler);
       if (res) {
-        const [h, p] = res;
-        handler = h;
-        params = p;
+        handler = res[0];
+        params = res[1];
       }
     }
 
@@ -559,31 +558,45 @@ if (root) fetchProps(root);
 
   #createHandler = () => {
     return async (req: Request, info: Deno.ServeHandlerInfo) => {
-      const m = await this.#handleMiddleware(req, info);
-      if (m) return m;
+      try {
+        const m = await this.#handleMiddleware(req, info);
+        if (m) return m;
 
-      const r = this.#handleRequest(req, info);
-      if (r.handler) {
-        const tr = this.#transformRequest(req, r.params, r.url);
-        const res = await r.handler(tr, r.ctx);
-        return createResponse(res);
+        const r = this.#handleRequest(req, info);
+        if (r.handler) {
+          const tr = this.#transformRequest(req, r.params, r.url);
+          const res = await r.handler(tr, r.ctx);
+          return createResponse(res);
+        }
+
+        const pm = await this.#handlePageMiddleware(req, info);
+        if (pm) return pm;
+
+        const [page, pageCtx, pageParams, pageUrl] = this.#handlePage(
+          req,
+          info,
+        ) as any;
+        if (page) {
+          return page.handler(
+            this.#transformRequest(req, pageParams, pageUrl),
+            pageCtx,
+          ) as Response;
+        }
+
+        return await this.#handleStaticFile(req);
+      } catch (error) {
+        const errorMessage =
+          typeof error === "object" && error !== null && "message" in error
+            ? (error as { message?: string }).message
+            : String(error);
+        return new Response(
+          JSON.stringify({ error: errorMessage ?? "Internal Server Error" }),
+          {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
       }
-
-      const pm = await this.#handlePageMiddleware(req, info);
-      if (pm) return pm;
-
-      const [page, pageCtx, pageParams, pageUrl] = this.#handlePage(
-        req,
-        info,
-      ) as any;
-      if (page) {
-        return page.handler(
-          this.#transformRequest(req, pageParams, pageUrl),
-          pageCtx,
-        ) as Response;
-      }
-
-      return await this.#handleStaticFile(req);
     };
   };
 

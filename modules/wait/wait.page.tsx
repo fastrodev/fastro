@@ -50,7 +50,7 @@ export default function Wait({ data }: PageProps<
       <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col gap-4 pb-6 sm:gap-6">
           <HeroSection
-            title={data.title}
+            title="The Next-Gen Content Management System"
             description={data.description}
           />
           <FeatureCards />
