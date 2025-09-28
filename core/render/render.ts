@@ -11,11 +11,12 @@ import { BUILD_ID, getDevelopment } from "../server/mod.ts";
 
 export class Render {
   #server: Fastro;
+  #uglifiedCache = new Map<string, string>();
+
   constructor(server: Fastro) {
     this.#server = server;
     if (getDevelopment()) {
       this.#handleDevelopment();
-      this.#addRefreshEndPoint();
     }
   }
 
@@ -41,8 +42,105 @@ es.onmessage = function(e) {
   };
 };`;
   };
+  #minifyScript = (src: string) => {
+    // remove block comments
+    src = src.replace(/\/\*[\s\S]*?\*\//g, "");
+    // remove line comments
+    src = src.replace(/\/\/[^\n\r]*/g, "");
+    // collapse whitespace/newlines to single spaces
+    src = src.replace(/[\r\n]+/g, " ");
+    src = src.replace(/\s+/g, " ");
+    // remove spaces around common punctuation to shrink further
+    src = src.replace(/\s*([=+\-*/{}();:,<>])\s*/g, "$1");
+    return src.trim();
+  };
+  // also uglify the variable/function names to avoid exposing internal details
+  #uglifyScript = (src: string) => {
+    let s = this.#minifyScript(src);
+    const renameMap: Record<string, string> = {
+      recordReload: "a",
+      clearReloads: "b",
+      fetchWithRetry: "c",
+      key: "d",
+      raw: "e",
+      arr: "f",
+      now: "g",
+      url: "u",
+      count: "k",
+      org: "o",
+    };
+    for (const [from, to] of Object.entries(renameMap)) {
+      s = s.replace(new RegExp(`\\b${from}\\b`, "g"), to);
+    }
+    return s;
+  };
+  #createLoaderScript = (nonce: string, scriptPath: string) => {
+    return `(function(){
+  function recordReload() {
+    try {
+      var key = '__fastro_reload_times__';
+      var raw = sessionStorage.getItem(key) || '[]';
+      var arr = JSON.parse(raw);
+      var now = Date.now();
+      arr = arr.filter(function(t){ return now - t < 10000; });
+      arr.push(now);
+      sessionStorage.setItem(key, JSON.stringify(arr));
+      return arr.length;
+    } catch (e) { return 0; }
+  }
+  function clearReloads() {
+    try { sessionStorage.removeItem('__fastro_reload_times__'); } catch (e) {}
+  }
+  function fetchWithRetry(url){
+    fetch(url)
+      .then(function(res){ return res.text(); })
+      .then(function(text){
+        if (text === "Not Found") {
+          var count = recordReload();
+          if (count > 3) { console.warn('Too many reloads, aborting'); return; }
+          return setTimeout(function(){ location.reload(); }, 500);
+        }
+        clearReloads();
+        var s = document.createElement('script');
+        s.defer = true;
+        s.type = 'module';
+        s.nonce = '${nonce}';
+        s.textContent = text;
+        document.body.appendChild(s);
+      })
+      .catch(function(){
+        var count = recordReload();
+        if (count > 3) { console.warn('Too many reloads, aborting'); return; }
+        setTimeout(function(){ location.reload(); }, 500);
+      });
+  }
+  var org = window.location.origin.replace(/\\/$/, '');
+  var url = org + '/${scriptPath}';
+  fetchWithRetry(url);
+})();`;
+  };
+
   #loadJs = (name: string, nonce: string) => {
-    return `function fetchWithRetry(t){fetch(t).then(t=>t.text()).then(t=>{if("Not Found"===t)return setTimeout(()=>{location.reload()},500);const e=document.createElement("script");e.defer = true;e.type = "module";e.nonce = '${nonce}';e.textContent=t,document.body.appendChild(e)})};const origin=new URL(window.location.origin),url=origin+"js/${name}.${this.#server.getNonce()}.js";fetchWithRetry(url);`;
+    const scriptPath = `js/${name}.${this.#server.getNonce()}.js`;
+    const cacheKey = name;
+
+    if (getDevelopment()) {
+      return this.#createLoaderScript(nonce, scriptPath);
+    }
+
+    if (this.#uglifiedCache.has(cacheKey)) {
+      return this.#uglifiedCache.get(cacheKey)!
+        .replace("${nonce}", nonce)
+        .replace("${scriptPath}", scriptPath);
+    }
+
+    const template = this.#createLoaderScript("${nonce}", "${scriptPath}");
+    const uglified = this.#uglifyScript(template);
+    this.#uglifiedCache.set(cacheKey, uglified);
+
+    return uglified
+      .replace("${nonce}", nonce)
+      .replace("${scriptPath}", scriptPath);
   };
 
   #handleDevelopment = () => {
@@ -56,32 +154,30 @@ es.onmessage = function(e) {
           },
         }),
     );
+
+    this.#server.add("GET", `/___refresh___`, this.#createRefreshStream);
   };
 
-  #addRefreshEndPoint = () => {
-    const refreshStream = (_req: Request) => {
-      let timerId: number | undefined = undefined;
-      const body = new ReadableStream({
-        start(controller) {
-          controller.enqueue(`data: ${BUILD_ID}\nretry: 100\n\n`);
-          timerId = setInterval(() => {
-            controller.enqueue(`data: ${BUILD_ID}\n\n`);
-          }, 500);
-        },
-        cancel() {
-          if (timerId !== undefined) {
-            clearInterval(timerId);
-          }
-        },
-      });
-      return new Response(body.pipeThrough(new TextEncoderStream()), {
-        headers: {
-          "content-type": "text/event-stream",
-        },
-      });
-    };
-    const refreshPath = `/___refresh___`;
-    this.#server.add("GET", refreshPath, refreshStream);
+  #createRefreshStream = (_req: Request) => {
+    let timerId: number | undefined = undefined;
+    const body = new ReadableStream({
+      start(controller) {
+        controller.enqueue(`data: ${BUILD_ID}\nretry: 100\n\n`);
+        timerId = setInterval(() => {
+          controller.enqueue(`data: ${BUILD_ID}\n\n`);
+        }, 500);
+      },
+      cancel() {
+        if (timerId !== undefined) {
+          clearInterval(timerId);
+        }
+      },
+    });
+    return new Response(body.pipeThrough(new TextEncoderStream()), {
+      headers: {
+        "content-type": "text/event-stream",
+      },
+    });
   };
 
   #mutate = (

@@ -259,12 +259,11 @@ export default class Server implements Fastro {
     const str = `${debug}import { h, hydrate } from "preact";
 import app from "../${folder}${name}.page.tsx";
 function getXRequestId() {
-    const metaTag = document.querySelector('meta[name="x-request-id"]');
-    return metaTag ? metaTag.content : null;
+  const metaTag = document.querySelector<HTMLMetaElement>('meta[name="x-request-id"]');
+  return metaTag ? metaTag.content : null;
 }
 async function fetchProps(root: HTMLElement) {
   try {
-    const parsedUrl = new URL(window.location.href);
     const response = await fetch("/__/" + getXRequestId());
     const data = await response.json();
     if (!data) throw new Error("undefined");
