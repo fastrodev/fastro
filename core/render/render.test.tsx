@@ -59,7 +59,7 @@ Deno.test(
       const pageHtml = await page.text();
       assertEquals(
         pageHtml,
-        `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>halaman page</title><link href="/styles.css" rel="stylesheet"/></head><body id="root"><h1>Hello</h1></body></html>`,
+        `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>halaman page</title></head><body id="root"><h1>Hello</h1></body></html>`,
       );
 
       await f.shutdown();
