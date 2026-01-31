@@ -112,6 +112,8 @@ Fastro thrives on your ideas! Whether you're fixing a bug, suggesting a feature,
 or writing a custom middleware, we welcome your contributions.
 
 - **Explore our [Middleware Collection](/MIDDLEWARES.md)** and add yours!
+- **Share your creations in our [Showcase](/SHOWCASE.md)** and inspire the
+  community!
 - **Check out our [Contributing Guide](CONTRIBUTING.md)** for details on
   creating middlewares and development workflows.
 - Have a question? [Open an issue](https://github.com/fastrodev/fastro/issues).
