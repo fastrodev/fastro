@@ -785,3 +785,31 @@ Deno.test("string response", async (t) => {
     }
   });
 });
+
+Deno.test("serve - cache hit with fallthrough across multiple requests", async () => {
+  _resetForTests();
+  let callCount = 0;
+  server.get("/multi-fall", (_req, _ctx, next) => {
+    callCount++;
+    return next!();
+  });
+  server.get("/multi-fall", (_req, _ctx) => {
+    return new Response("second match");
+  });
+
+  const s = await server.serve({ port: 0 });
+  const addr = s.addr as Deno.NetAddr;
+  const port = addr.port;
+
+  // First request: should hit both
+  const res1 = await fetch(`http://localhost:${port}/multi-fall`);
+  assertEquals(await res1.text(), "second match");
+  assertEquals(callCount, 1);
+
+  // Second request: should hit cache for the first route
+  const res2 = await fetch(`http://localhost:${port}/multi-fall`);
+  assertEquals(await res2.text(), "second match");
+  assertEquals(callCount, 2);
+
+  s.close();
+});

@@ -696,3 +696,29 @@ Deno.test("createRouteMiddleware - handles async string return", async () => {
   const response = await middleware(req, ctx, next);
   assertEquals(await (response as Response).text(), "Async String Response");
 });
+
+Deno.test("createRouteMiddleware - fallthrough to next matching route in same builder (cached)", async () => {
+  const handler1: Handler = (_req, _ctx, next) => next!();
+  const handler2: Handler = () => new Response("Second Match");
+  const routes = [
+    { method: "GET", path: "/multi-match-cache", handler: handler1 },
+    { method: "GET", path: "/multi-match-cache", handler: handler2 },
+  ];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/multi-match-cache");
+  const ctx: Context = {
+    url: new URL(req.url),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Global Next");
+
+  // First call - miss
+  const res1 = await middleware(req, ctx, next);
+  assertEquals(await res1.text(), "Second Match");
+
+  // Second call - hit
+  const res2 = await middleware(req, ctx, next);
+  assertEquals(await res2.text(), "Second Match");
+});

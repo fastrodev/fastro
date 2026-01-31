@@ -1,4 +1,4 @@
 Deno.serve({
-  port: 8000,
+  port: 3000,
   handler: () => new Response("Hello world!"),
 });

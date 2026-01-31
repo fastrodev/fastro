@@ -40,26 +40,7 @@ export function build(routes: Route[]): Middleware {
     const method = req.method;
     const cacheKey = `${method}:${url.pathname}`;
 
-    // Check cache
-    const cached = cache.get(cacheKey);
-    if (cached !== undefined) {
-      if (cached === null) return next();
-
-      const route = routes[cached.routeIndex];
-      ctx.params = { ...cached.params };
-      const mws = route.middlewares ?? [];
-      const dispatch = (j: number): Response | Promise<Response> => {
-        if (j < mws.length) {
-          return mws[j](req, ctx, () => dispatch(j + 1));
-        }
-        // Note: cached routes don't support fallthrough to NEXT route in the same builder
-        // but they do support fallthrough to the global next()
-        return toResponse(route.handler(req, ctx, next));
-      };
-      return dispatch(0);
-    }
-
-    const tryRoute = (index: number): Response | Promise<Response> => {
+    function tryRoute(index: number): Response | Promise<Response> {
       for (let i = index; i < routes.length; i++) {
         const route = routes[i];
         if (route.method !== method) continue;
@@ -90,7 +71,26 @@ export function build(routes: Route[]): Middleware {
         cache.set(cacheKey, null);
       }
       return next();
-    };
+    }
+
+    // Check cache
+    const cached = cache.get(cacheKey);
+    if (cached !== undefined) {
+      if (cached === null) return next();
+
+      const route = routes[cached.routeIndex];
+      ctx.params = { ...cached.params };
+      const mws = route.middlewares ?? [];
+      const dispatch = (j: number): Response | Promise<Response> => {
+        if (j < mws.length) {
+          return mws[j](req, ctx, () => dispatch(j + 1));
+        }
+        return toResponse(
+          route.handler(req, ctx, () => tryRoute(cached.routeIndex + 1)),
+        );
+      };
+      return dispatch(0);
+    }
 
     return tryRoute(0);
   };

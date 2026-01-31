@@ -167,8 +167,7 @@ function serve(
     string,
     {
       routeIndex: number;
-      context: Context;
-      handler: () => Response | Promise<Response>;
+      params: Record<string, string>;
     } | null
   >();
   const MAX_CACHE_SIZE = options.cacheSize ?? 10000;
@@ -219,24 +218,35 @@ function serve(
       const continueToRoutes = () => {
         // Check cache first
         const cached = matchCache.get(urlStr);
+
+        // Only parse URL when needed for uncached routes or cache hits needing query
+        const hasQuery = url.search.length > 1;
+        const query = hasQuery ? parseQuery(url.searchParams) : {};
+
         if (cached !== undefined) {
           if (cached === null) {
             return new Response("Not found", { status: 404 });
           }
+          const route = routes[cached.routeIndex];
+          const context: Context = {
+            ...initialContext,
+            params: cached.params,
+            query,
+          };
           return applyMiddlewares(
             req,
-            cached.context,
-            cached.handler,
-            routes[cached.routeIndex].middlewares,
+            context,
+            () =>
+              toResponse(
+                route.handler(req, context, () =>
+                  tryRoute(cached.routeIndex + 1)),
+              ),
+            route.middlewares,
           );
         }
 
-        // Only parse URL when needed for uncached routes
-        const hasQuery = url.search.length > 1;
-        const query = hasQuery ? parseQuery(url.searchParams) : {};
-
         // Pattern matching for uncached routes
-        const tryRoute = (i: number): Response | Promise<Response> => {
+        function tryRoute(i: number): Response | Promise<Response> {
           if (i >= routes.length) {
             if (matchCache.size < MAX_CACHE_SIZE) {
               matchCache.set(urlStr, null);
@@ -261,29 +271,30 @@ function serve(
                 url,
               };
 
-              const cachedHandler = () =>
-                toResponse(route.handler(req, context, () => tryRoute(i + 1)));
-
-              if (matchCache.size >= MAX_CACHE_SIZE) {
-                const firstKey = matchCache.keys().next().value!;
-                matchCache.delete(firstKey);
+              if (!matchCache.has(urlStr)) {
+                if (matchCache.size >= MAX_CACHE_SIZE) {
+                  const firstKey = matchCache.keys().next().value!;
+                  matchCache.delete(firstKey);
+                }
+                matchCache.set(urlStr, {
+                  routeIndex: i,
+                  params,
+                });
               }
 
-              matchCache.set(urlStr, {
-                routeIndex: i,
-                context,
-                handler: cachedHandler,
-              });
               return applyMiddlewares(
                 req,
                 context,
-                cachedHandler,
+                () =>
+                  toResponse(
+                    route.handler(req, context, () => tryRoute(i + 1)),
+                  ),
                 route.middlewares,
               );
             }
           }
           return tryRoute(i + 1);
-        };
+        }
 
         return tryRoute(0);
       };
