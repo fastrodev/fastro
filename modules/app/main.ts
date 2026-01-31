@@ -1,4 +1,4 @@
-import app from "./mod.ts";
+import app from "../../mod.ts";
 
 app.get("/", () => {
   return new Response("Hello world!");
