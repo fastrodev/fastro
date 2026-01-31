@@ -1,479 +1,698 @@
 import { assertEquals } from "@std/assert";
-import { build, matchPath, createRouter } from "./router.ts";
-import { Middleware, Handler, Context } from "./server.ts";
+import { build, createRouter, matchPath, type Route } from "./router.ts";
+import { Context, Handler, Middleware } from "./types.ts";
 
 Deno.test("matchPath - exact match without params", () => {
-    const result = matchPath("/api", "/api");
-    assertEquals(result, { params: {} });
+  const result = matchPath("/api", "/api");
+  assertEquals(result, { params: {} });
 });
 
 Deno.test("matchPath - match with params", () => {
-    const result = matchPath("/hello/:id", "/hello/123");
-    assertEquals(result, { params: { id: "123" } });
+  const result = matchPath("/hello/:id", "/hello/123");
+  assertEquals(result, { params: { id: "123" } });
 });
 
 Deno.test("matchPath - no match due to different lengths", () => {
-    const result = matchPath("/api", "/api/test");
-    assertEquals(result, null);
+  const result = matchPath("/api", "/api/test");
+  assertEquals(result, null);
 });
 
 Deno.test("matchPath - no match due to different parts", () => {
-    const result = matchPath("/hello/:id", "/bye/123");
-    assertEquals(result, null);
+  const result = matchPath("/hello/:id", "/bye/123");
+  assertEquals(result, null);
 });
 
 Deno.test("matchPath - multiple params", () => {
-    const result = matchPath("/user/:id/post/:postId", "/user/456/post/789");
-    assertEquals(result, { params: { id: "456", postId: "789" } });
+  const result = matchPath("/user/:id/post/:postId", "/user/456/post/789");
+  assertEquals(result, { params: { id: "456", postId: "789" } });
 });
 
 Deno.test("matchPath - root path match", () => {
-    const result = matchPath("/", "/");
-    assertEquals(result, { params: {} });
+  const result = matchPath("/", "/");
+  assertEquals(result, { params: {} });
 });
 
 Deno.test("matchPath - no match for root vs non-root", () => {
-    const result = matchPath("/", "/api");
-    assertEquals(result, null);
+  const result = matchPath("/", "/api");
+  assertEquals(result, null);
 });
 
 Deno.test("matchPath - param with special characters", () => {
-    const result = matchPath("/file/:name", "/file/test-file.txt");
-    assertEquals(result, { params: { name: "test-file.txt" } });
+  const result = matchPath("/file/:name", "/file/test-file.txt");
+  assertEquals(result, { params: { name: "test-file.txt" } });
 });
 
 Deno.test("matchPath - empty route and request", () => {
-    const result = matchPath("", "");
-    assertEquals(result, { params: {} });
+  const result = matchPath("", "");
+  assertEquals(result, { params: {} });
 });
 
 Deno.test("matchPath - no match for empty vs non-empty", () => {
-    const result = matchPath("", "/api");
-    assertEquals(result, null);
+  const result = matchPath("", "/api");
+  assertEquals(result, null);
 });
 
 Deno.test("matchPath - trailing slash mismatch", () => {
-    const result = matchPath("/api", "/api/");
-    assertEquals(result, null);
+  const result = matchPath("/api", "/api/");
+  assertEquals(result, null);
 });
 
 Deno.test("matchPath - both with trailing slash", () => {
-    const result = matchPath("/api/", "/api/");
-    assertEquals(result, { params: {} });
+  const result = matchPath("/api/", "/api/");
+  assertEquals(result, { params: {} });
 });
 
 Deno.test("createRouteMiddleware - calls handler for matching route", async () => {
-    const mockHandler: Handler = () => new Response("OK");
-    const routes = [{ method: "GET", path: "/test", handler: mockHandler }];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/test");
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const mockHandler: Handler = () => new Response("OK");
+  const routes = [{ method: "GET", path: "/test", handler: mockHandler }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/test");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(response.status, 200);
-    assertEquals(await response.text(), "OK");
+  const response = await middleware(req, ctx, next);
+  assertEquals(response.status, 200);
+  assertEquals(await response.text(), "OK");
 });
 
 Deno.test("createRouteMiddleware - extracts params correctly", async () => {
-    const mockHandler: Handler = (_, ctx) => new Response(`ID: ${ctx.params?.id}`);
-    const routes = [{ method: "GET", path: "/test/:id", handler: mockHandler }];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/test/123");
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const mockHandler: Handler = (_, ctx) =>
+    new Response(`ID: ${ctx.params?.id}`);
+  const routes = [{ method: "GET", path: "/test/:id", handler: mockHandler }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/test/123");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "ID: 123");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "ID: 123");
 });
 
 Deno.test("createRouteMiddleware - applies middlewares in order", async () => {
-    let log = "";
-    const mw1: Middleware = (_req, _ctx, next) => {
-        log += "mw1-";
-        return next();
-    };
-    const mw2: Middleware = (_req, _ctx, next) => {
-        log += "mw2-";
-        return next();
-    };
-    const mockHandler: Handler = (_req, _ctx) => {
-        log += "handler";
-        return new Response("OK");
-    };
-    const routes = [{ method: "GET", path: "/test", handler: mockHandler, middlewares: [mw1, mw2] }];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/test");
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  let log = "";
+  const mw1: Middleware = (_req, _ctx, next) => {
+    log += "mw1-";
+    return next();
+  };
+  const mw2: Middleware = (_req, _ctx, next) => {
+    log += "mw2-";
+    return next();
+  };
+  const mockHandler: Handler = (_req, _ctx) => {
+    log += "handler";
+    return new Response("OK");
+  };
+  const routes = [{
+    method: "GET",
+    path: "/test",
+    handler: mockHandler,
+    middlewares: [mw1, mw2],
+  }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/test");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    await middleware(req, ctx, next);
-    assertEquals(log, "mw1-mw2-handler");
+  await middleware(req, ctx, next);
+  assertEquals(log, "mw1-mw2-handler");
 });
 
 Deno.test("createRouteMiddleware - calls next if no route matches", async () => {
-    const routes = [{ method: "GET", path: "/test", handler: () => new Response("OK") }];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/other");
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const routes = [{
+    method: "GET",
+    path: "/test",
+    handler: () => new Response("OK"),
+  }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/other");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "Next");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "Next");
 });
 
 Deno.test("createRouteMiddleware - ignores route if method does not match", async () => {
-    const routes = [{ method: "POST", path: "/test", handler: () => new Response("OK") }];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/test", { method: "GET" });
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const routes = [{
+    method: "POST",
+    path: "/test",
+    handler: () => new Response("OK"),
+  }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/test", { method: "GET" });
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "Next");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "Next");
 });
 
 Deno.test("createRouteMiddleware - middleware returns response without calling next", async () => {
-    const mw: Middleware = () => new Response("MW Response");
-    const mockHandler: Handler = () => new Response("Handler");
-    const routes = [{ method: "GET", path: "/test", handler: mockHandler, middlewares: [mw] }];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/test");
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const mw: Middleware = () => new Response("MW Response");
+  const mockHandler: Handler = () => new Response("Handler");
+  const routes = [{
+    method: "GET",
+    path: "/test",
+    handler: mockHandler,
+    middlewares: [mw],
+  }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/test");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "MW Response");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "MW Response");
 });
 
 Deno.test("createRouteMiddleware - multiple routes, first matches", async () => {
-    const handler1: Handler = () => new Response("First");
-    const handler2: Handler = () => new Response("Second");
-    const routes = [
-        { method: "GET", path: "/test", handler: handler1 },
-        { method: "GET", path: "/other", handler: handler2 }
-    ];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/test");
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const handler1: Handler = () => new Response("First");
+  const handler2: Handler = () => new Response("Second");
+  const routes = [
+    { method: "GET", path: "/test", handler: handler1 },
+    { method: "GET", path: "/other", handler: handler2 },
+  ];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/test");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "First");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "First");
 });
 
 Deno.test("createRouteMiddleware - multiple routes, second matches", async () => {
-    const handler1: Handler = () => new Response("First");
-    const handler2: Handler = () => new Response("Second");
-    const routes = [
-        { method: "GET", path: "/other", handler: handler1 },
-        { method: "GET", path: "/test", handler: handler2 }
-    ];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/test");
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const handler1: Handler = () => new Response("First");
+  const handler2: Handler = () => new Response("Second");
+  const routes = [
+    { method: "GET", path: "/other", handler: handler1 },
+    { method: "GET", path: "/test", handler: handler2 },
+  ];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/test");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "Second");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "Second");
 });
 
 Deno.test("createRouteMiddleware - no middlewares on route", async () => {
-    const mockHandler: Handler = () => new Response("OK");
-    const routes = [{ method: "GET", path: "/test", handler: mockHandler }];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/test");
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const mockHandler: Handler = () => new Response("OK");
+  const routes = [{ method: "GET", path: "/test", handler: mockHandler }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/test");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "OK");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "OK");
 });
 
 Deno.test("createRouteMiddleware - async handler", async () => {
-    const mockHandler: Handler = async () => {
-        await new Promise(resolve => setTimeout(resolve, 1));
-        return new Response("Async OK");
-    };
-    const routes = [{ method: "GET", path: "/test", handler: mockHandler }];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/test");
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const mockHandler: Handler = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1));
+    return new Response("Async OK");
+  };
+  const routes = [{ method: "GET", path: "/test", handler: mockHandler }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/test");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "Async OK");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "Async OK");
 });
 
 Deno.test("createRouteMiddleware - async middleware", async () => {
-    const mw: Middleware = async (_req, _ctx, next) => {
-        await new Promise(resolve => setTimeout(resolve, 1));
-        return next();
-    };
-    const mockHandler: Handler = () => new Response("OK");
-    const routes = [{ method: "GET", path: "/test", handler: mockHandler, middlewares: [mw] }];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/test");
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const mw: Middleware = async (_req, _ctx, next) => {
+    await new Promise((resolve) => setTimeout(resolve, 1));
+    return next();
+  };
+  const mockHandler: Handler = () => new Response("OK");
+  const routes = [{
+    method: "GET",
+    path: "/test",
+    handler: mockHandler,
+    middlewares: [mw],
+  }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/test");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "OK");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "OK");
 });
 
 Deno.test("RouteBuilder - get method", async () => {
-    const builder = createRouter();
-    const handler: Handler = () => new Response("GET");
-    builder.get("/test", handler);
-    const middleware = builder.build();
-    const req = new Request("http://localhost/test");
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const builder = createRouter();
+  const handler: Handler = () => new Response("GET");
+  builder.get("/test", handler);
+  const middleware = builder.build();
+  const req = new Request("http://localhost/test");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "GET");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "GET");
 });
 
 Deno.test("RouteBuilder - post method", async () => {
-    const builder = createRouter();
-    const handler: Handler = () => new Response("POST");
-    builder.post("/test", handler);
-    const middleware = builder.build();
-    const req = new Request("http://localhost/test", { method: "POST" });
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const builder = createRouter();
+  const handler: Handler = () => new Response("POST");
+  builder.post("/test", handler);
+  const middleware = builder.build();
+  const req = new Request("http://localhost/test", { method: "POST" });
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "POST");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "POST");
 });
 
 Deno.test("RouteBuilder - put method", async () => {
-    const builder = createRouter();
-    const handler: Handler = () => new Response("PUT");
-    builder.put("/test", handler);
-    const middleware = builder.build();
-    const req = new Request("http://localhost/test", { method: "PUT" });
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const builder = createRouter();
+  const handler: Handler = () => new Response("PUT");
+  builder.put("/test", handler);
+  const middleware = builder.build();
+  const req = new Request("http://localhost/test", { method: "PUT" });
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "PUT");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "PUT");
 });
 
 Deno.test("RouteBuilder - delete method", async () => {
-    const builder = createRouter();
-    const handler: Handler = () => new Response("DELETE");
-    builder.delete("/test", handler);
-    const middleware = builder.build();
-    const req = new Request("http://localhost/test", { method: "DELETE" });
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const builder = createRouter();
+  const handler: Handler = () => new Response("DELETE");
+  builder.delete("/test", handler);
+  const middleware = builder.build();
+  const req = new Request("http://localhost/test", { method: "DELETE" });
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "DELETE");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "DELETE");
 });
 
 Deno.test("RouteBuilder - patch method", async () => {
-    const builder = createRouter();
-    const handler: Handler = () => new Response("PATCH");
-    builder.patch("/test", handler);
-    const middleware = builder.build();
-    const req = new Request("http://localhost/test", { method: "PATCH" });
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const builder = createRouter();
+  const handler: Handler = () => new Response("PATCH");
+  builder.patch("/test", handler);
+  const middleware = builder.build();
+  const req = new Request("http://localhost/test", { method: "PATCH" });
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "PATCH");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "PATCH");
 });
 
 Deno.test("RouteBuilder - head method", async () => {
-    const builder = createRouter();
-    const handler: Handler = () => new Response("HEAD");
-    builder.head("/test", handler);
-    const middleware = builder.build();
-    const req = new Request("http://localhost/test", { method: "HEAD" });
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const builder = createRouter();
+  const handler: Handler = () => new Response("HEAD");
+  builder.head("/test", handler);
+  const middleware = builder.build();
+  const req = new Request("http://localhost/test", { method: "HEAD" });
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "HEAD");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "HEAD");
 });
 
 Deno.test("RouteBuilder - options method", async () => {
-    const builder = createRouter();
-    const handler: Handler = () => new Response("OPTIONS");
-    builder.options("/test", handler);
-    const middleware = builder.build();
-    const req = new Request("http://localhost/test", { method: "OPTIONS" });
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const builder = createRouter();
+  const handler: Handler = () => new Response("OPTIONS");
+  builder.options("/test", handler);
+  const middleware = builder.build();
+  const req = new Request("http://localhost/test", { method: "OPTIONS" });
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "OPTIONS");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "OPTIONS");
 });
 
 Deno.test("RouteBuilder - with middlewares", async () => {
-    const builder = createRouter();
-    const handler: Handler = () => new Response("OK");
-    const mw: Middleware = (_req, _ctx, next) => next();
-    builder.get("/test", handler, mw);
-    const middleware = builder.build();
-    const req = new Request("http://localhost/test");
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const builder = createRouter();
+  const handler: Handler = () => new Response("OK");
+  const mw: Middleware = (_req, _ctx, next) => next();
+  builder.get("/test", handler, mw);
+  const middleware = builder.build();
+  const req = new Request("http://localhost/test");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "OK");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "OK");
 });
 
 Deno.test("RouteBuilder - chaining methods", async () => {
-    const builder = createRouter();
-    const getHandler: Handler = () => new Response("GET");
-    const postHandler: Handler = () => new Response("POST");
-    builder.get("/get", getHandler).post("/post", postHandler);
-    const middleware = builder.build();
+  const builder = createRouter();
+  const getHandler: Handler = () => new Response("GET");
+  const postHandler: Handler = () => new Response("POST");
+  builder.get("/get", getHandler).post("/post", postHandler);
+  const middleware = builder.build();
 
-    const getReq = new Request("http://localhost/get");
-    const getCtx: Context = { url: new URL("http://localhost/get"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const getResponse = await middleware(getReq, getCtx, () => new Response("Next"));
-    assertEquals(await getResponse.text(), "GET");
+  const getReq = new Request("http://localhost/get");
+  const getCtx: Context = {
+    url: new URL("http://localhost/get"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const getResponse = await middleware(
+    getReq,
+    getCtx,
+    () => new Response("Next"),
+  );
+  assertEquals(await getResponse.text(), "GET");
 
-    const postReq = new Request("http://localhost/post", { method: "POST" });
-    const postCtx: Context = { url: new URL("http://localhost/post"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const postResponse = await middleware(postReq, postCtx, () => new Response("Next"));
-    assertEquals(await postResponse.text(), "POST");
+  const postReq = new Request("http://localhost/post", { method: "POST" });
+  const postCtx: Context = {
+    url: new URL("http://localhost/post"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const postResponse = await middleware(
+    postReq,
+    postCtx,
+    () => new Response("Next"),
+  );
+  assertEquals(await postResponse.text(), "POST");
 });
 
 Deno.test("RouteBuilder - with params", async () => {
-    const builder = createRouter();
-    const handler: Handler = (_req, ctx) => new Response(`ID: ${ctx.params?.id}`);
-    builder.get("/test/:id", handler);
-    const middleware = builder.build();
-    const req = new Request("http://localhost/test/123");
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const builder = createRouter();
+  const handler: Handler = (_req, ctx) => new Response(`ID: ${ctx.params?.id}`);
+  builder.get("/test/:id", handler);
+  const middleware = builder.build();
+  const req = new Request("http://localhost/test/123");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "ID: 123");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "ID: 123");
 });
 
 Deno.test("RouteBuilder - multiple middlewares", async () => {
-    const builder = createRouter();
-    const handler: Handler = () => new Response("OK");
-    const mw1: Middleware = (_req, _ctx, next) => next();
-    const mw2: Middleware = (_req, _ctx, next) => next();
-    builder.get("/test", handler, mw1, mw2);
-    const middleware = builder.build();
-    const req = new Request("http://localhost/test");
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const builder = createRouter();
+  const handler: Handler = () => new Response("OK");
+  const mw1: Middleware = (_req, _ctx, next) => next();
+  const mw2: Middleware = (_req, _ctx, next) => next();
+  builder.get("/test", handler, mw1, mw2);
+  const middleware = builder.build();
+  const req = new Request("http://localhost/test");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "OK");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "OK");
 });
 
 Deno.test("RouteBuilder - no route matches, calls next", async () => {
-    const builder = createRouter();
-    const handler: Handler = () => new Response("OK");
-    builder.get("/test", handler);
-    const middleware = builder.build();
-    const req = new Request("http://localhost/other");
-    const ctx: Context = { url: new URL("http://localhost"), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  const builder = createRouter();
+  const handler: Handler = () => new Response("OK");
+  builder.get("/test", handler);
+  const middleware = builder.build();
+  const req = new Request("http://localhost/other");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "Next");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "Next");
 });
 Deno.test("createRouteMiddleware - handler calls next to fall through to outer next", async () => {
-    const handler: Handler = (_req, _ctx, next) => {
-        return next!();
-    };
-    const routes = [
-        { method: "GET", path: "/test", handler: handler }
-    ];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/test");
-    const ctx: Context = { url: new URL(req.url), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Outer Next");
+  const handler: Handler = (_req, _ctx, next) => {
+    return next!();
+  };
+  const routes = [
+    { method: "GET", path: "/test", handler: handler },
+  ];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/test");
+  const ctx: Context = {
+    url: new URL(req.url),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Outer Next");
 
-    const response = await middleware(req, ctx, next);
-    assertEquals(await response.text(), "Outer Next");
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "Outer Next");
 });
 
 Deno.test("matchPath - empty segment for parameter", () => {
-    const result = matchPath("/hello/:id", "/hello/");
-    assertEquals(result, null);
+  const result = matchPath("/hello/:id", "/hello/");
+  assertEquals(result, null);
 });
 
 Deno.test("createRouteMiddleware - cache hit with middlewares", async () => {
-    let mwCalled = 0;
-    const mw: Middleware = (_req, _ctx, next) => {
-        mwCalled++;
-        return next();
-    };
-    const handler: Handler = () => new Response("OK");
-    const routes = [{ method: "GET", path: "/cache-test", handler, middlewares: [mw] }];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/cache-test");
-    const ctx: Context = { url: new URL(req.url), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Next");
+  let mwCalled = 0;
+  const mw: Middleware = (_req, _ctx, next) => {
+    mwCalled++;
+    return next();
+  };
+  const handler: Handler = () => new Response("OK");
+  const routes = [{
+    method: "GET",
+    path: "/cache-test",
+    handler,
+    middlewares: [mw],
+  }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/cache-test");
+  const ctx: Context = {
+    url: new URL(req.url),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
 
-    // First call - cache miss
-    await middleware(req, ctx, next);
-    assertEquals(mwCalled, 1);
+  // First call - cache miss
+  await middleware(req, ctx, next);
+  assertEquals(mwCalled, 1);
 
-    // Second call - cache hit
-    await middleware(req, ctx, next);
-    assertEquals(mwCalled, 2);
+  // Second call - cache hit
+  await middleware(req, ctx, next);
+  assertEquals(mwCalled, 2);
 });
 
 Deno.test("createRouteMiddleware - cache hit with global next fallthrough", async () => {
-    const handler: Handler = (_req, _ctx, next) => next!();
-    const routes = [{ method: "GET", path: "/cache-fallthrough", handler }];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/cache-fallthrough");
-    const ctx: Context = { url: new URL(req.url), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Global Next");
+  const handler: Handler = (_req, _ctx, next) => next!();
+  const routes = [{ method: "GET", path: "/cache-fallthrough", handler }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/cache-fallthrough");
+  const ctx: Context = {
+    url: new URL(req.url),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Global Next");
 
-    // First call - cache miss
-    const res1 = await middleware(req, ctx, next);
-    assertEquals(await res1.text(), "Global Next");
+  // First call - cache miss
+  const res1 = await middleware(req, ctx, next);
+  assertEquals(await res1.text(), "Global Next");
 
-    // Second call - cache hit
-    const res2 = await middleware(req, ctx, next);
-    assertEquals(await res2.text(), "Global Next");
+  // Second call - cache hit
+  const res2 = await middleware(req, ctx, next);
+  assertEquals(await res2.text(), "Global Next");
 });
 
 Deno.test("createRouteMiddleware - fallthrough to next matching route in same builder", async () => {
-    const handler1: Handler = (_req, _ctx, next) => next!();
-    const handler2: Handler = () => new Response("Second Match");
-    const routes = [
-        { method: "GET", path: "/multi-match", handler: handler1 },
-        { method: "GET", path: "/multi-match", handler: handler2 }
-    ];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/multi-match");
-    const ctx: Context = { url: new URL(req.url), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    const next = () => new Response("Global Next");
+  const handler1: Handler = (_req, _ctx, next) => next!();
+  const handler2: Handler = () => new Response("Second Match");
+  const routes = [
+    { method: "GET", path: "/multi-match", handler: handler1 },
+    { method: "GET", path: "/multi-match", handler: handler2 },
+  ];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/multi-match");
+  const ctx: Context = {
+    url: new URL(req.url),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Global Next");
 
-    const res = await middleware(req, ctx, next);
-    assertEquals(await res.text(), "Second Match");
+  const res = await middleware(req, ctx, next);
+  assertEquals(await res.text(), "Second Match");
 });
 
 Deno.test("createRouteMiddleware - cache null for non-matching routes", async () => {
-    const routes: any[] = [];
-    const middleware = build(routes);
-    const req = new Request("http://localhost/no-match");
-    const ctx: Context = { url: new URL(req.url), params: {}, query: {}, remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 } };
-    let nextCalled = 0;
-    const next = () => {
-        nextCalled++;
-        return new Response("Next");
-    };
+  const routes: Route[] = [];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/no-match");
+  const ctx: Context = {
+    url: new URL(req.url),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  let nextCalled = 0;
+  const next = () => {
+    nextCalled++;
+    return new Response("Next");
+  };
 
-    await middleware(req, ctx, next);
-    assertEquals(nextCalled, 1);
+  await middleware(req, ctx, next);
+  assertEquals(nextCalled, 1);
 
-    await middleware(req, ctx, next);
-    assertEquals(nextCalled, 2);
+  await middleware(req, ctx, next);
+  assertEquals(nextCalled, 2);
+});
+
+Deno.test("createRouteMiddleware - handles string return", async () => {
+  const handler: Handler = () => "String Response";
+  const routes = [{ method: "GET", path: "/string", handler }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/string");
+  const ctx: Context = {
+    url: new URL(req.url),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
+
+  const response = await middleware(req, ctx, next);
+  assertEquals(await (response as Response).text(), "String Response");
+});
+
+Deno.test("createRouteMiddleware - handles async string return", async () => {
+  const handler: Handler = async () => {
+    await new Promise((r) => setTimeout(r, 1));
+    return "Async String Response";
+  };
+  const routes = [{ method: "GET", path: "/async-string", handler }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/async-string");
+  const ctx: Context = {
+    url: new URL(req.url),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
+
+  const response = await middleware(req, ctx, next);
+  assertEquals(await (response as Response).text(), "Async String Response");
 });

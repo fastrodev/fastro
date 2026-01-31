@@ -46,7 +46,7 @@ export type Handler = (
   req: Request,
   context: Context,
   next?: Next,
-) => Response | Promise<Response>;
+) => Response | Promise<Response> | string | Promise<string>;
 export type Next = () => Response | Promise<Response>;
 export type Middleware = (
   req: Request,

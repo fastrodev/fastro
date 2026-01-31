@@ -136,6 +136,13 @@ function serve(
   >();
   const MAX_CACHE_SIZE = options.cacheSize ?? 10000;
 
+  const toResponse = async (
+    res: Response | Promise<Response> | string | Promise<string>,
+  ) => {
+    const resolved = await res;
+    return typeof resolved === "string" ? new Response(resolved) : resolved;
+  };
+
   /**
    * Parses query parameters from URLSearchParams into a record object.
    * @param searchParams The URLSearchParams to parse.
@@ -218,7 +225,7 @@ function serve(
               };
 
               const cachedHandler = () =>
-                route.handler(req, context, () => tryRoute(i + 1));
+                toResponse(route.handler(req, context, () => tryRoute(i + 1)));
 
               if (matchCache.size >= MAX_CACHE_SIZE) {
                 const firstKey = matchCache.keys().next().value!;
@@ -257,7 +264,7 @@ function serve(
         return applyMiddlewares(
           req,
           context,
-          () => rootRoute.handler(req, context, continueToRoutes),
+          () => toResponse(rootRoute.handler(req, context, continueToRoutes)),
           rootRoute.middlewares,
         );
       }

@@ -5,5 +5,6 @@ app.get("/", () => {
 });
 
 app.get("/string", () => "Hello world!");
+app.get("/async", async () => "Hello from async!");
 
 app.serve({ port: parseInt(Deno.args[0]) || 8000 });
