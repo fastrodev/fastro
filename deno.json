@@ -11,51 +11,29 @@
     ".": "./mod.ts"
   },
   "imports": {
-    "@app/": "./",
-    "preact": "npm:preact@^10.27.2",
-    "@preact/signals": "npm:@preact/signals@^2.0.1",
-    "preact-render-to-string": "npm:preact-render-to-string@^6.5.13",
-    "preact/jsx-runtime": "npm:preact@^10.27.2/jsx-runtime",
-    "@tailwindcss/typography": "npm:@tailwindcss/typography@0.5.16",
-    "tailwind-scrollbar": "npm:tailwind-scrollbar@^3.1.0",
-    "google-cloud/storage": "npm:@google-cloud/storage@^7.16.0"
+    "react": "npm:react@^19.2.4",
+    "react/jsx-runtime": "npm:react@^19.2.4/jsx-runtime",
+    "react/jsx-dev-runtime": "npm:react@^19.2.4/jsx-dev-runtime",
+    "react-dom": "npm:react-dom@^19.2.4"
   },
   "compilerOptions": {
+    "lib": [
+      "deno.worker",
+      "deno.unstable",
+      "deno.ns",
+      "deno.window",
+      "dom"
+    ],
     "jsx": "react-jsx",
-    "jsxImportSource": "preact"
+    "jsxImportSource": "react",
+    "types": [
+      "npm:@types/react@^19",
+      "npm:@types/react-dom@^19"
+    ]
   },
   "nodeModulesDir": "auto",
   "tasks": {
-    "api": "deno run --env -A --unstable-kv modules/api/main.ts",
-    "start": "ENV=DEVELOPMENT deno run --env --unstable-kv -A --watch modules/app/main.ts --debug",
-    "build": "deno run --env -A --unstable-kv  modules/app/main.ts --build ",
-    "prod": "deno run --env --unstable-kv -A modules/app/main.ts",
-    "test": "rm -rf .hydrate && rm -rf cov && deno test --env --unstable-kv -A --coverage=cov && deno coverage cov",
-    "coverage": "deno coverage cov --lcov > cov.lcov",
-    "bench": "deno run -A bench/run.ts",
-    "oauth": "deno run --env -A --unstable-kv examples/oauth.ts",
-    "deno": "deno run -A examples/deno.ts",
-    "hook": "deno run -A examples/hook.ts",
-    "raw_json": "deno run -A examples/raw_json.ts",
-    "raw_string": "deno run -A examples/raw_string.ts",
-    "ctx_json": "deno run -A examples/ctx_json.ts",
-    "ctx_jsx": "deno run -A examples/ctx_jsx.tsx",
-    "ctx_string": "deno run -A examples/ctx_string.ts",
-    "string_response": "deno run -A examples/string_response.ts",
-    "deno_kv": "deno run -A --unstable-kv examples/deno_kv.ts",
-    "deno_sqlite": "deno run -A --unstable-ffi examples/deno_sqlite.ts",
-    "deno_postgres": "deno run -A examples/deno_postgres.ts",
-    "deno_mysql": "deno run -A examples/deno_mysql.ts",
-    "deno_redis": "deno run -A examples/deno_redis.ts",
-    "deno_mongo": "deno run -A examples/deno_mongo.ts",
-    "params_query": "deno run -A examples/params_query.ts",
-    "static_file_string": "deno run -A examples/static_file_string.ts",
-    "static_file_image": "deno run -A examples/static_file_image.ts",
-    "markdown_middleware": "deno run -A --env --unstable-kv examples/markdown_middleware.ts",
-    "group": "deno run -A examples/group.ts",
-    "app_middleware": "deno run -A examples/app_middleware.ts",
-    "route_middleware": "deno run -A examples/route_middleware.ts",
-    "server_rendering": "deno run -A examples/server_rendering.tsx",
-    "cmd": "deno run --env -A --unstable-kv utils/cmd.ts"
+    "dev": "deno run -A --watch=static/,routes/,core/ --env --unstable-kv main.ts 3000",
+    "start": "ENV=production deno run -A --env --unstable-kv main.ts 3000"
   }
 }
