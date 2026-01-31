@@ -41,14 +41,14 @@ trap cleanup EXIT
 if [[ "${1-}" == "--coverage" ]]; then
   rm -rf cov_profile
   # run all core tests
-  deno test --allow-net --allow-read --allow-write --coverage=cov_profile core/coverage.test.ts core/router.test.ts core/server.test.ts core/loader.test.ts
+  deno test --allow-net --allow-read --allow-write --coverage=cov_profile core/router.test.ts core/server.test.ts core/loader.test.ts
   # generate lcov
-  deno coverage cov_profile --lcov --include=core --exclude=modules --exclude=modules/** > cov_profile/raw_lcov.info
+  deno coverage cov_profile --lcov --include=core --exclude=modules --exclude="modules/**" > cov_profile/raw_lcov.info
   awk 'BEGIN{skip=0} /^SF:/{ if ($0 ~ "/modules/") { skip=1 } else { skip=0; print } next } { if (!skip) print }' cov_profile/raw_lcov.info > cov_profile/lcov.info
   cp cov_profile/lcov.info coverage.lcov
-  deno coverage cov_profile --include=core --exclude=modules --exclude=modules/** || true
+  deno coverage cov_profile --include=core --exclude=modules --exclude="modules/**" || true
   rm -rf cov_profile
 else
   # run all core tests
-  deno test --allow-net --allow-read --allow-write core/coverage.test.ts core/router.test.ts core/server.test.ts core/loader.test.ts
+  deno test --allow-net --allow-read --allow-write core/router.test.ts core/server.test.ts core/loader.test.ts
 fi

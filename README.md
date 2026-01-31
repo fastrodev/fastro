@@ -1,74 +1,95 @@
-# Fastro
+# ⚡ Fastro
 
-A high-performance, minimalist web framework for Deno.
+### **High-performance, minimalist web framework for Deno.**
 
-Fastro is designed for speed and simplicity, providing a robust middleware
-engine, LRU route caching, and a developer-friendly API that supports returning
-raw strings directly from handlers.
+Fastro bridges the gap between raw Deno performance and framework-level
+developer experience. Built for speed and simplicity, it features a robust
+middleware engine, intelligent LRU caching, and a zero-boilerplate API.
 
-## Features
+---
 
-- ⚡ **High Performance**: Optimized route matching with internal LRU caching
-  for maximum throughput.
-- 🧩 **Middleware Engine**: Support for global, router-level, and route-specific
-  middleware. Users can easily manipulate the request or context before it
-  reaches the handler.
+## 🚀 Why Fastro?
+
+- **Native Speed**: Benchmark-proven to maintain **>95% of raw Deno
+  performance**.
+- **Effortless API**: Return raw `string`, `JSON`, or `Response` directly—no
+  more wrapping everything in `.send()`.
+- **Minimalist Footprint**: Tiny core with zero external dependencies (built
+  solely on Deno standards).
+- **Scale with Ease**: Automatic directory-based module loading keeps your
+  codebase clean as you grow.
+- **Built for Production**: 100% core test coverage and first-class TypeScript
+  support.
+
+---
+
+## ✨ Features
+
+- ⚡ **Blazing Fast**: Optimized route matching and LRU caching for maximum
+  throughput.
+- 🧩 **Flexible Middleware**: Global, router-level, and route-specific
+  middleware with a familiar async/await flow.
 - 📂 **Auto Module Loading**: Effortlessly register routes and middlewares from
-  any directory.
-- 📝 **Flexible API**: Return `string`, `Response`, `JSON`, or `Promise` of
-  either directly from your handlers.
-- 🔒 **Type Safety**: Built with TypeScript for a robust developer experience.
-- 🧪 **100% Test Coverage**: Core components are fully verified with exhaustive
-  unit tests.
-- 📊 **Benchmarking First**: Includes built-in tools to measure performance
+  your directory structure.
+- 🔒 **Type-Safe by Design**: Leverage TypeScript to catch errors at compile
+  time.
+- 🧪 **Verified Reliability**: 100% unit test coverage ensures your core logic
+  stays stable.
+- 📊 **Benchmark-First Culture**: Includes built-in tools to verify results
   against native Deno.
 
-## Quick Start
+---
+
+## 🏁 Quick Start
 
 ```ts
 import server from "./mod.ts";
 
-// Return a direct string - Fastro handles the Response conversion
-server.get("/", () => "Hello World!");
+// Simple string response - Fastro handles the heavy lifting
+server.get("/", () => "Welcome to Fastro!");
 
-// Async support
-server.get("/async", async () => {
-  return "Hello from async!";
+// Modern async handlers
+server.get("/user/:id", async (req, ctx) => {
+  return { id: ctx.params.id, status: "active" }; // Automatically sent as JSON
 });
 
-// Middleware to manipulate request/context
+// Powerful, predictable middleware
 server.use((req, ctx, next) => {
-  ctx.set("time", Date.now());
+  ctx.startTime = Date.now();
   return next();
 });
 
 await server.serve({ port: 8000 });
 ```
 
-## Performance Benchmarks
+---
+
+## 📊 Performance Benchmarks
 
 Conducted using **Grafana k6** with 100 concurrent virtual users for 10 seconds.
 
 | Metric                  | Native Deno   | Fastro Framework  |
 | :---------------------- | :------------ | :---------------- |
-| **Requests per Second** | ~79,700 req/s | **~67,200 req/s** |
-| **Average Latency**     | 1.17 ms       | **1.40 ms**       |
-| **95th Percentile**     | 2.19 ms       | **2.36 ms**       |
+| **Requests per Second** | ~76,000 req/s | **~72,800 req/s** |
+| **Average Latency**     | 1.23 ms       | **1.29 ms**       |
+| **95th Percentile**     | 2.37 ms       | **2.29 ms**       |
 
-> _Fastro maintains ~84% of native performance while adding full framework
-> capabilities._
+> _Fastro maintains industry-leading performance while providing a complete
+> developer-friendly abstraction._
 
-## Development
+---
+
+## 🛠️ Development
 
 ### Tasks
 
 ```bash
-# Run tests
+# Run the test suite
 deno task test
 
-# Run tests with coverage report
+# Generate a 100% coverage report
 deno task cov
 
-# Run performance benchmark
+# Run local performance benchmark
 deno task bench
 ```

@@ -8,10 +8,18 @@ export interface Route {
 }
 
 async function toResponse(
-  res: Response | Promise<Response> | string | Promise<string>,
+  res:
+    | Response
+    | Promise<Response>
+    | string
+    | Promise<string>
+    | Record<string, unknown>
+    | Promise<Record<string, unknown>>,
 ): Promise<Response> {
   const resolved = await res;
-  return typeof resolved === "string" ? new Response(resolved) : resolved;
+  if (resolved instanceof Response) return resolved;
+  if (typeof resolved === "string") return new Response(resolved);
+  return Response.json(resolved);
 }
 
 /**

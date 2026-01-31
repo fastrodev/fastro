@@ -8,6 +8,7 @@ function toResponse(res: unknown): Response | Promise<Response> {
   if (res instanceof Response) return res;
   if (typeof res === "string") return new Response(res);
   if (res instanceof Promise) return (res as Promise<unknown>).then(toResponse);
+  if (res !== null && typeof res === "object") return Response.json(res);
   return res as Response;
 }
 
@@ -28,33 +29,46 @@ function applyMiddlewares(
 function tryRoute(
   i: number,
   context: Context,
-  u: URL | undefined,
+  _u: URL | undefined,
   req: Request,
   urlStr: string,
   pathname: string,
   cacheKey: string,
   method: string,
-  matchCache: Map<string, any>,
+  matchCache: Map<
+    string,
+    {
+      routeIndex: number;
+      params: Record<string, string>;
+      query: Record<string, string>;
+    } | null
+  >,
   MAX_CACHE_SIZE: number,
   routeRegex: RegExp[],
 ): Response | Promise<Response> {
   for (let j = i; j < routes.length; j++) {
     const route = routes[j];
     if (method === route.method) {
-      const rawPattern = (route as any).pattern as any;
-      let match: RegExpExecArray | null | undefined;
+      const rawPattern = route.pattern as unknown as {
+        pathname?: string;
+        exec: (
+          url: string,
+        ) => { pathname?: { groups?: Record<string, string> } } | null;
+      };
+      let match: unknown | null | undefined;
       let groups: Record<string, string> | undefined;
       if (
         rawPattern && rawPattern.pathname === undefined &&
         typeof rawPattern.exec === "function"
       ) {
-        const res = rawPattern.exec(urlStr) as any;
+        const res = rawPattern.exec(urlStr);
         groups = res?.pathname?.groups;
-        match = res ? ([] as unknown as RegExpExecArray) : null;
+        match = res;
       } else {
         const regex = routeRegex[j];
-        match = regex.exec(pathname);
-        groups = (match as any)?.groups;
+        const res = regex.exec(pathname);
+        groups = res?.groups;
+        match = res;
       }
       if (match) {
         const params: Record<string, string> = {};
@@ -80,7 +94,7 @@ function tryRoute(
           tryRoute(
             j + 1,
             context,
-            u,
+            _u,
             req,
             urlStr,
             pathname,
@@ -143,7 +157,7 @@ function registerRoute(
   if (typeof path === "string") {
     routePaths.push(path);
   } else {
-    const p = (path as any).pathname;
+    const p = (path as URLPattern).pathname;
     routePaths.push(typeof p === "string" ? p : "");
   }
 }
@@ -183,7 +197,7 @@ function delete_(
 function extractParamNames(path: string | URLPattern): string[] {
   const p = typeof path === "string"
     ? path
-    : (path && (path as any).pathname) || "";
+    : (path && (path as URLPattern).pathname) || "";
   if (typeof p !== "string") return [];
   return Array.from(p.matchAll(/:([a-zA-Z0-9_]+)/g), (m) => m[1]);
 }
@@ -200,7 +214,7 @@ function serve(
     } | null
   >();
   const MAX_CACHE_SIZE = options.cacheSize ?? 10000;
-  const routeRegex: RegExp[] = routes.map((r, idx) => {
+  const routeRegex: RegExp[] = routes.map((_r, idx) => {
     let pStr = routePaths[idx];
     if (!pStr) pStr = "/";
     const escape = (s: string) => s.replace(/[.*+?^${}()|[\\]\\]/g, "\\$&");
@@ -229,26 +243,33 @@ function serve(
     !!(rootRoute && rootRoute.middlewares.length > 0);
   const canUseFastRoot =
     !!(rootRoute && !hasGlobalMiddlewares && !rootRouteHasMiddlewares);
+  const rootHandler = rootRoute?.handler;
+  const rh0 = rootHandler && rootHandler.length === 0;
 
   const handler = (
     req: Request,
     info: Deno.ServeHandlerInfo,
   ): Response | Promise<Response> => {
-    const urlStr = req.url;
     const method = req.method;
+    const urlStr = req.url;
+    const thirdSlash = urlStr.indexOf("/", 8);
 
     if (method === "GET" && canUseFastRoot) {
-      const thirdSlash = urlStr.indexOf("/", 8);
       if (urlStr.length === thirdSlash + 1) {
-        const rootCtx = {
-          params: emptyParams,
-          query: emptyQuery,
-          remoteAddr: info.remoteAddr,
-          get url() {
-            return new URL(urlStr);
-          },
-        } as unknown as Context;
-        const res = rootRoute!.handler(req, rootCtx, rootNext);
+        const res = rh0
+          ? (rootHandler as () =>
+            | Response
+            | Promise<Response>
+            | string
+            | Promise<string>)()
+          : rootHandler!(req, {
+            params: emptyParams,
+            query: emptyQuery,
+            remoteAddr: info.remoteAddr,
+            get url() {
+              return new URL(urlStr);
+            },
+          } as unknown as Context, rootNext);
         if (res instanceof Response) return res;
         if (typeof res === "string") return new Response(res);
         return toResponse(res);
@@ -257,7 +278,6 @@ function serve(
 
     const cacheKey = method + ":" + urlStr;
     const cached = matchCache.get(cacheKey);
-    const thirdSlash = urlStr.indexOf("/", 8);
     const qIdx = urlStr.indexOf("?", thirdSlash);
     const pathname = qIdx === -1
       ? urlStr.slice(thirdSlash)
@@ -308,7 +328,7 @@ function serve(
       get url() {
         return url || new URL(urlStr);
       },
-    } as any;
+    } as unknown as Context;
 
     const runFinal = () => {
       if (cached !== undefined) {

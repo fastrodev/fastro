@@ -58,13 +58,20 @@ export type Context = {
 /**
  * A function that handles a specific route.
  * Handlers can return a standard `Response`, a raw `string` (which will be
- * converted to a text/plain response), or a Promise of either.
+ * converted to a text/plain response), an object (which will be converted
+ * to a JSON response), or a Promise of either.
  */
 export type Handler = (
   req: Request,
   context: Context,
   next?: Next,
-) => Response | Promise<Response> | string | Promise<string>;
+) =>
+  | Response
+  | Promise<Response>
+  | string
+  | Promise<string>
+  | Record<string, unknown>
+  | Promise<Record<string, unknown>>;
 
 /**
  * A function to continue execution to the next item in the middleware chain.
