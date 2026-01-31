@@ -64,3 +64,4 @@ temp/
 modules/order/data.json
 modules/test*
 modules/module*
+k6

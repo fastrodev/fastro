@@ -38,6 +38,7 @@
     "dev": "deno run -A --watch=static/,routes/,core/ --env --unstable-kv main.ts 3000",
     "start": "ENV=production deno run -A --env --unstable-kv main.ts 3000",
     "test": "deno test --allow-net --allow-read --allow-write core/*.test.ts",
-    "cov": "rm -rf cov_profile && deno test --allow-net --allow-read --allow-write --coverage=cov_profile core/*.test.ts && deno coverage cov_profile --include=\"core/\" && rm -rf cov_profile"
+    "cov": "rm -rf cov_profile && deno test --allow-net --allow-read --allow-write --coverage=cov_profile core/*.test.ts && deno coverage cov_profile --include=\"core/\" && rm -rf cov_profile",
+    "bench": "./run_bench.sh"
   }
 }
