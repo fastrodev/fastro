@@ -1,0 +1,28 @@
+{
+  "scriptId": "370",
+  "url": "file:///home/dev/project/fw/fastro/modules/test_mod_default_abcecac282264e98840e0633077ffa36/mod.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 82,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "test_mod_default_abcecac282264e98840e0633077ffa36_mw",
+      "ranges": [
+        {
+          "startOffset": 15,
+          "endOffset": 81,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

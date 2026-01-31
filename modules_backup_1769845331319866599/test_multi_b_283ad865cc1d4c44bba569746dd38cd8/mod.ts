@@ -1,0 +1,1 @@
+export const test_multi_b_283ad865cc1d4c44bba569746dd38cd8 = () => {};

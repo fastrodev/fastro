@@ -1,0 +1,134 @@
+{
+  "scriptId": "334",
+  "url": "file:///home/dev/project/fw/fastro/core/loader.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1890,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "autoRegisterModules",
+      "ranges": [
+        {
+          "startOffset": 665,
+          "endOffset": 1889,
+          "count": 15
+        },
+        {
+          "startOffset": 844,
+          "endOffset": 911,
+          "count": 25
+        },
+        {
+          "startOffset": 873,
+          "endOffset": 907,
+          "count": 24
+        },
+        {
+          "startOffset": 1172,
+          "endOffset": 1887,
+          "count": 24
+        },
+        {
+          "startOffset": 1294,
+          "endOffset": 1318,
+          "count": 21
+        },
+        {
+          "startOffset": 1318,
+          "endOffset": 1433,
+          "count": 18
+        },
+        {
+          "startOffset": 1433,
+          "endOffset": 1684,
+          "count": 3
+        },
+        {
+          "startOffset": 1460,
+          "endOffset": 1585,
+          "count": 2
+        },
+        {
+          "startOffset": 1585,
+          "endOffset": 1684,
+          "count": 1
+        },
+        {
+          "startOffset": 1691,
+          "endOffset": 1883,
+          "count": 3
+        },
+        {
+          "startOffset": 1771,
+          "endOffset": 1798,
+          "count": 1
+        },
+        {
+          "startOffset": 1798,
+          "endOffset": 1883,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 927,
+          "endOffset": 1139,
+          "count": 12
+        },
+        {
+          "startOffset": 965,
+          "endOffset": 975,
+          "count": 4
+        },
+        {
+          "startOffset": 975,
+          "endOffset": 1004,
+          "count": 8
+        },
+        {
+          "startOffset": 1004,
+          "endOffset": 1013,
+          "count": 2
+        },
+        {
+          "startOffset": 1013,
+          "endOffset": 1044,
+          "count": 6
+        },
+        {
+          "startOffset": 1044,
+          "endOffset": 1053,
+          "count": 1
+        },
+        {
+          "startOffset": 1053,
+          "endOffset": 1084,
+          "count": 5
+        },
+        {
+          "startOffset": 1084,
+          "endOffset": 1094,
+          "count": 3
+        },
+        {
+          "startOffset": 1094,
+          "endOffset": 1138,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

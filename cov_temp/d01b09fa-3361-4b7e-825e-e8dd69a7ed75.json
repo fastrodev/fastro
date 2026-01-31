@@ -1,0 +1,28 @@
+{
+  "scriptId": "381",
+  "url": "file:///home/dev/project/fw/fastro/modules/a/mod.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 25,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "default",
+      "ranges": [
+        {
+          "startOffset": 16,
+          "endOffset": 22,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

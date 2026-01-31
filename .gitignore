@@ -65,3 +65,7 @@ modules/order/data.json
 modules/test*
 modules/module*
 k6
+cov_profile/
+coverage.lcov
+node_modules/*
+.deno/*
