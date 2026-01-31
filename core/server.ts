@@ -1,39 +1,12 @@
 import { Context, Handler, Middleware, Route } from "./types.ts";
 
-// Registered routes
 const routes: Route[] = [];
-
-// Global middlewares applied to all routes
 const middlewares: Middleware[] = [];
 
-/**
- * Adds a global middleware that applies to all routes.
- *
- * Global middlewares are executed for every request before the route handler.
- * They are perfect for logging, authentication, or injecting common functionality.
- *
- * @example
- * ```ts
- * server.use((req, ctx, next) => {
- *   console.log(`${req.method} ${req.url}`);
- *   return next();
- * });
- * ```
- *
- * @param middleware The middleware function to register globally.
- */
 function use(middleware: Middleware) {
   middlewares.push(middleware);
 }
 
-/**
- * Helper function to register a route with the specified method, path, handler, and optional route-specific middlewares.
- * Combines route middlewares with global middlewares in the order: route middlewares first, then global.
- * @param method The HTTP method (e.g., "GET", "POST").
- * @param path The URL path for the route (supports dynamic parameters like :id).
- * @param handler The handler function to process the request.
- * @param routeMiddlewares Optional middlewares specific to this route.
- */
 function registerRoute(
   method: string,
   path: string,
@@ -49,21 +22,6 @@ function registerRoute(
   });
 }
 
-/**
- * Registers a GET route with optional route-specific middlewares.
- *
- * Use this to handle GET requests for a specific path. You can return
- * a standard Response, a string, or a Promise of either.
- *
- * @example
- * ```ts
- * server.get("/", () => "Hello World");
- * ```
- *
- * @param path The URL path (e.g., "/users/:id").
- * @param handler Function to process the request.
- * @param routeMiddlewares Optional middlewares to run only for this route.
- */
 function get(
   path: string,
   handler: Handler,
@@ -72,23 +30,6 @@ function get(
   registerRoute("GET", path, handler, ...routeMiddlewares);
 }
 
-/**
- * Registers a POST route with optional route-specific middlewares.
- *
- * Perfect for handling data submissions, form uploads, or creating records.
- *
- * @example
- * ```ts
- * server.post("/users", async (req) => {
- *   const data = await req.json();
- *   return new Response("User created", { status: 201 });
- * });
- * ```
- *
- * @param path The URL path (e.g., "/api/data").
- * @param handler Function to process the request.
- * @param routeMiddlewares Optional middlewares to run only for this route.
- */
 function post(
   path: string,
   handler: Handler,
@@ -97,15 +38,6 @@ function post(
   registerRoute("POST", path, handler, ...routeMiddlewares);
 }
 
-/**
- * Registers a PUT route with optional route-specific middlewares.
- *
- * Common for updating existing resources or creating them if they don't exist.
- *
- * @param path The URL path.
- * @param handler Function to process the request.
- * @param routeMiddlewares Optional middlewares to run only for this route.
- */
 function put(
   path: string,
   handler: Handler,
@@ -114,15 +46,6 @@ function put(
   registerRoute("PUT", path, handler, ...routeMiddlewares);
 }
 
-/**
- * Registers a DELETE route with optional route-specific middlewares.
- *
- * Use this to handle resource deletion requests.
- *
- * @param path The URL path.
- * @param handler Function to process the request.
- * @param routeMiddlewares Optional middlewares to run only for this route.
- */
 function delete_(
   path: string,
   handler: Handler,
@@ -131,32 +54,10 @@ function delete_(
   registerRoute("DELETE", path, handler, ...routeMiddlewares);
 }
 
-/**
- * Extracts parameter names from a path string (e.g., "/users/:id" -> ["id"]).
- * @param path The URL path string.
- * @returns An array of parameter names.
- */
 function extractParamNames(path: string): string[] {
   return Array.from(path.matchAll(/:([a-zA-Z0-9_]+)/g), (m) => m[1]);
 }
 
-/**
- * Stats the HTTP server and begins listening for incoming connections.
- *
- * Fastro provides an optimized server engine with:
- * - **Internal LRU Caching**: Dramatically speeds up repeat requests.
- * - **Fast Root Path**: Zero-overhead handling for the "/" homepage.
- * - **Automatic Query Handling**: Parses URLs only when necessary.
- * - **Smart Response Conversion**: Return strings directly for simplicity.
- *
- * @example
- * ```ts
- * await server.serve({ port: 8000 });
- * ```
- *
- * @param options Server configuration including port, hostname, and cache settings.
- * @returns A Promise that resolves when the server is ready.
- */
 function serve(
   options: Deno.ServeTcpOptions & { handler?: undefined; cacheSize?: number },
 ) {
@@ -168,22 +69,18 @@ function serve(
     {
       routeIndex: number;
       params: Record<string, string>;
+      query: Record<string, string>;
     } | null
   >();
   const MAX_CACHE_SIZE = options.cacheSize ?? 10000;
 
-  const toResponse = async (
-    res: Response | Promise<Response> | string | Promise<string>,
-  ) => {
-    const resolved = await res;
-    return typeof resolved === "string" ? new Response(resolved) : resolved;
+  const toResponse = (res: unknown): Response | Promise<Response> => {
+    if (res instanceof Promise) return res.then(toResponse);
+    if (typeof res === "string") return new Response(res);
+    if (res instanceof Response) return res;
+    return res as Response;
   };
 
-  /**
-   * Parses query parameters from URLSearchParams into a record object.
-   * @param searchParams The URLSearchParams to parse.
-   * @returns A record of query key-value pairs.
-   */
   const parseQuery = (
     searchParams: URLSearchParams,
   ): Record<string, string> => {
@@ -194,162 +91,174 @@ function serve(
     return query;
   };
 
-  /**
-   * The main request handler that processes incoming requests, applies middlewares, and routes to the appropriate handler.
-   * @param req The incoming Request object.
-   * @param info The handler info containing remote address.
-   * @returns A Response or Promise<Response>.
-   */
+  const rootNext = () => {
+    throw new Error("next() called in root route");
+  };
+
   const handler = (
     req: Request,
     info: Deno.ServeHandlerInfo,
   ): Response | Promise<Response> => {
     const method = req.method;
     const urlStr = req.url;
-    const url = new URL(req.url);
-    const initialContext: Context = {
+
+    // Fast detection of root path
+    const thirdSlash = urlStr.indexOf("/", 8);
+    const hasQuery = urlStr.includes("?", thirdSlash);
+    const isRoot = !hasQuery && urlStr.length === thirdSlash + 1;
+
+    // 1. Optimized GET / match
+    if (
+      isRoot && method === "GET" &&
+      rootRoute && middlewares.length === 0 &&
+      rootRoute.middlewares.length === 0
+    ) {
+      const ctx: Context = {
+        params: {},
+        query: {},
+        remoteAddr: info.remoteAddr,
+        get url() {
+          return new URL(urlStr);
+        },
+      };
+      const res = rootRoute.handler(req, ctx, rootNext);
+      if (typeof res === "string") return new Response(res);
+      if (res instanceof Response) return res;
+      return toResponse(res);
+    }
+
+    const cacheKey = method + ":" + urlStr;
+    const cached = matchCache.get(cacheKey);
+
+    // 2. Early cache return (no global middlewares)
+    if (cached !== undefined && middlewares.length === 0) {
+      if (cached === null) return new Response("Not found", { status: 404 });
+      const route = routes[cached.routeIndex];
+      if (route.middlewares.length === 0) {
+        const ctx: Context = {
+          params: cached.params,
+          query: cached.query,
+          remoteAddr: info.remoteAddr,
+          get url() {
+            return new URL(urlStr);
+          },
+        };
+        const res = route.handler(req, ctx, () => {
+          return tryRoute(cached.routeIndex + 1, ctx, undefined);
+        });
+        if (typeof res === "string") return new Response(res);
+        if (res instanceof Response) return res;
+        return toResponse(res);
+      }
+    }
+
+    // 3. Regular path
+    const url = hasQuery ? new URL(urlStr) : undefined;
+    const ctx: Context = {
       params: {},
-      query: {},
+      query: (url && url.search.length > 1) ? parseQuery(url.searchParams) : {},
       remoteAddr: info.remoteAddr,
-      url,
+      get url() {
+        return url || new URL(urlStr);
+      },
     };
 
-    return applyMiddlewares(req, initialContext, () => {
-      const continueToRoutes = () => {
-        // Check cache first
-        const cached = matchCache.get(urlStr);
-
-        // Only parse URL when needed for uncached routes or cache hits needing query
-        const hasQuery = url.search.length > 1;
-        const query = hasQuery ? parseQuery(url.searchParams) : {};
-
-        if (cached !== undefined) {
-          if (cached === null) {
-            return new Response("Not found", { status: 404 });
-          }
-          const route = routes[cached.routeIndex];
-          const context: Context = {
-            ...initialContext,
-            params: cached.params,
-            query,
-          };
-          return applyMiddlewares(
+    const runFinal = () => {
+      if (cached !== undefined) {
+        if (cached === null) return new Response("Not found", { status: 404 });
+        const route = routes[cached.routeIndex];
+        ctx.params = cached.params;
+        const handler = () =>
+          toResponse(route.handler(
             req,
-            context,
-            () =>
-              toResponse(
-                route.handler(req, context, () =>
-                  tryRoute(cached.routeIndex + 1)),
-              ),
-            route.middlewares,
-          );
-        }
+            ctx,
+            () => tryRoute(cached.routeIndex + 1, ctx, url),
+          ));
 
-        // Pattern matching for uncached routes
-        function tryRoute(i: number): Response | Promise<Response> {
-          if (i >= routes.length) {
-            if (matchCache.size < MAX_CACHE_SIZE) {
-              matchCache.set(urlStr, null);
+        if (route.middlewares.length === 0) return handler();
+        return applyMiddlewares(req, ctx, handler, route.middlewares);
+      }
+      return tryRoute(0, ctx, url);
+    };
+
+    if (middlewares.length === 0) return runFinal();
+    return applyMiddlewares(req, ctx, runFinal, middlewares);
+    function tryRoute(
+      i: number,
+      context: Context,
+      u: URL | undefined,
+    ): Response | Promise<Response> {
+      for (let j = i; j < routes.length; j++) {
+        const route = routes[j];
+        if (method === route.method) {
+          const match = route.pattern.exec(urlStr);
+          if (match) {
+            const params: Record<string, string> = {};
+            if (route.paramNames.length) {
+              const groups = match.pathname.groups;
+              for (const name of route.paramNames) {
+                params[name] = groups?.[name] ?? "";
+              }
             }
-            return new Response("Not found", { status: 404 });
-          }
+            context.params = params;
 
-          const route = routes[i];
-          if (method === route.method) {
-            const match = route.pattern.exec(urlStr);
-            if (match) {
-              const params: Record<string, string> = {};
-              if (route.paramNames.length) {
-                for (const name of route.paramNames) {
-                  params[name] = match.pathname.groups?.[name] ?? "";
-                }
+            if (i === 0 && !matchCache.has(cacheKey)) {
+              if (matchCache.size >= MAX_CACHE_SIZE) {
+                matchCache.delete(matchCache.keys().next().value!);
               }
-              const context: Context = {
-                ...initialContext,
+              matchCache.set(cacheKey, {
+                routeIndex: j,
                 params,
-                query,
-                url,
-              };
+                query: context.query,
+              });
+            }
 
-              if (!matchCache.has(urlStr)) {
-                if (matchCache.size >= MAX_CACHE_SIZE) {
-                  const firstKey = matchCache.keys().next().value!;
-                  matchCache.delete(firstKey);
-                }
-                matchCache.set(urlStr, {
-                  routeIndex: i,
-                  params,
-                });
-              }
-
-              return applyMiddlewares(
+            if (route.middlewares.length === 0) {
+              return toResponse(route.handler(
                 req,
                 context,
-                () =>
-                  toResponse(
-                    route.handler(req, context, () => tryRoute(i + 1)),
-                  ),
-                route.middlewares,
-              );
+                () => tryRoute(j + 1, context, u),
+              ));
             }
+
+            return applyMiddlewares(
+              req,
+              context,
+              () =>
+                toResponse(route.handler(
+                  req,
+                  context,
+                  () => tryRoute(j + 1, context, u),
+                )),
+              route.middlewares,
+            );
           }
-          return tryRoute(i + 1);
         }
-
-        return tryRoute(0);
-      };
-
-      if (
-        rootRoute && method === "GET" && urlStr.endsWith("/") &&
-        !urlStr.includes("?")
-      ) {
-        const context: Context = {
-          ...initialContext,
-          params: {},
-          query: {},
-          url,
-        };
-        return applyMiddlewares(
-          req,
-          context,
-          () => toResponse(rootRoute.handler(req, context, continueToRoutes)),
-          rootRoute.middlewares,
-        );
       }
-
-      return continueToRoutes();
-    }, middlewares);
+      if (i === 0 && !matchCache.has(cacheKey)) {
+        if (matchCache.size >= MAX_CACHE_SIZE) {
+          matchCache.delete(matchCache.keys().next().value!);
+        }
+        matchCache.set(cacheKey, null);
+      }
+      return new Response("Not found", { status: 404 });
+    }
   };
 
-  /**
-   * Applies a list of middlewares sequentially, then calls the final handler.
-   * Uses a dispatch mechanism for async support.
-   * @param req The incoming Request object.
-   * @param context The context object.
-   * @param finalHandler The handler to call after all middlewares.
-   * @param middlewareList The list of middlewares to apply.
-   * @returns A Response or Promise<Response>.
-   */
   function applyMiddlewares(
     req: Request,
     context: Context,
     finalHandler: () => Response | Promise<Response>,
-    middlewareList: Middleware[],
+    list: Middleware[],
   ): Response | Promise<Response> {
-    if (middlewareList.length === 0) {
-      return finalHandler();
-    }
-
     let index = 0;
     const dispatch = (): Response | Promise<Response> => {
-      if (index >= middlewareList.length) {
-        return finalHandler();
-      }
-      const middleware = middlewareList[index++];
-      return middleware(req, context, dispatch);
+      if (index >= list.length) return finalHandler();
+      return list[index++](req, context, dispatch);
     };
     return dispatch();
   }
+
   const serverInstance = Deno.serve({ ...options, handler });
   return {
     ...serverInstance,
@@ -357,20 +266,11 @@ function serve(
   };
 }
 
-/**
- * Internal helper to clear all routes and middlewares.
- * Primarily used for resetting state between test cases.
- */
 export function _resetForTests() {
   routes.length = 0;
   middlewares.length = 0;
 }
 
-/**
- * Internal helper to retrieve Currently registered routes.
- * Primarily used for assertions in the test suite.
- * @returns The array of registered route configurations.
- */
 export function _getRoutesForTests() {
   return routes;
 }

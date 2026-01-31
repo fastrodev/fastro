@@ -1,0 +1,485 @@
+import server, { _resetForTests } from "./server.ts";
+import { Context, Next } from "./types.ts";
+import { assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts";
+
+Deno.test("Coverage - ctx.url lazy init", async () => {
+  _resetForTests();
+  server.get("/ctx", (_req: Request, ctx: Context) => {
+    const url1 = ctx.url;
+    const url2 = ctx.url;
+    assertEquals(url1, url2);
+    return "ok";
+  });
+  const s = server.serve({ port: 3111 });
+  const res = await fetch("http://localhost:3111/ctx");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - ctx.params lazy init", async () => {
+  _resetForTests();
+  server.get("/params/:id", (_req: Request, ctx: Context) => {
+    const p1 = ctx.params;
+    const p2 = ctx.params;
+    assertEquals(p1.id, "123");
+    assertEquals(p1, p2);
+    return "ok";
+  });
+  const s = server.serve({ port: 3112 });
+  const res = await fetch("http://localhost:3112/params/123");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - cache hit", async () => {
+  _resetForTests();
+  server.get("/cache", () => "cached");
+  const s = server.serve({ port: 3113 });
+  await (await fetch("http://localhost:3113/cache")).text();
+  const res = await fetch("http://localhost:3113/cache");
+  assertEquals(await res.text(), "cached");
+  s.close();
+});
+
+Deno.test("Coverage - tryRoute with query", async () => {
+  _resetForTests();
+  server.get("/query", (req: Request, ctx: Context) => ctx.query.a);
+  const s = server.serve({ port: 3114 });
+  const res = await fetch("http://localhost:3114/query?a=ok");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - tryRoute fallthrough", async () => {
+  _resetForTests();
+  server.get("/a", (_req: Request, _ctx: Context, next: Next | undefined) => {
+    return next ? (next() as any) : "fail";
+  });
+  server.get("/a", () => "b");
+  const s = server.serve({ port: 3115 });
+  const res = await fetch("http://localhost:3115/a");
+  assertEquals(await res.text(), "b");
+  s.close();
+});
+
+Deno.test("Coverage - PUT and DELETE", async () => {
+  _resetForTests();
+  server.put("/u", () => "put");
+  server.delete("/d", () => "delete");
+  const s = server.serve({ port: 3116 });
+  const res1 = await fetch("http://localhost:3116/u", { method: "PUT" });
+  assertEquals(await res1.text(), "put");
+  const res2 = await fetch("http://localhost:3116/d", { method: "DELETE" });
+  assertEquals(await res2.text(), "delete");
+  s.close();
+});
+
+Deno.test("Coverage - root with global middleware", async () => {
+  _resetForTests();
+  server.use((req, ctx, next) => next ? (next() as any) : "fail");
+  server.get("/", () => "root");
+  const s = server.serve({ port: 3117 });
+  const res = await fetch("http://localhost:3117/");
+  assertEquals(await res.text(), "root");
+  s.close();
+});
+
+Deno.test("Coverage - root with route middleware", async () => {
+  _resetForTests();
+  server.get(
+    "/",
+    () => "root",
+    (req, ctx, next) => next ? (next() as any) : "fail",
+  );
+  const s = server.serve({ port: 3118 });
+  const res = await fetch("http://localhost:3118/");
+  assertEquals(await res.text(), "root");
+  s.close();
+});
+
+Deno.test("Coverage - root not GET", async () => {
+  _resetForTests();
+  server.post("/", () => "root post");
+  const s = server.serve({ port: 3119 });
+  const res = await fetch("http://localhost:3119/", { method: "POST" });
+  assertEquals(await res.text(), "root post");
+  s.close();
+});
+
+Deno.test("Coverage - 404 cache evicted", async () => {
+  _resetForTests();
+  const s = server.serve({ port: 3120, cacheSize: 1 });
+  await (await fetch("http://localhost:3120/404a")).text();
+  await (await fetch("http://localhost:3120/404b")).text();
+  const res = await fetch("http://localhost:3120/404b");
+  assertEquals(res.status, 404);
+  await res.text();
+  s.close();
+});
+
+Deno.test("Coverage - cache hit with route middlewares", async () => {
+  _resetForTests();
+  server.get(
+    "/route-mw",
+    () => "ok",
+    (_req, _ctx, next) => next ? (next() as any) : "fail",
+  );
+  const s = server.serve({ port: 3121 });
+  await (await fetch("http://localhost:3121/route-mw")).text();
+  const res = await fetch("http://localhost:3121/route-mw");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - 404 cache eviction", async () => {
+  _resetForTests();
+  const s = server.serve({ port: 3122, cacheSize: 1 });
+  await (await fetch("http://localhost:3122/404a")).text();
+  await (await fetch("http://localhost:3122/404b")).text();
+  await (await fetch("http://localhost:3122/404c")).text();
+  const res = await fetch("http://localhost:3122/404c");
+  assertEquals(res.status, 404);
+  await res.text();
+  s.close();
+});
+
+Deno.test("Coverage - fast path async", async () => {
+  _resetForTests();
+  server.get("/", () => Promise.resolve("root"));
+  const s = server.serve({ port: 3125 });
+  const res = await fetch("http://localhost:3125/");
+  assertEquals(await res.text(), "root");
+  s.close();
+});
+
+Deno.test("Coverage - cache hit async", async () => {
+  _resetForTests();
+  server.get("/async-cache", () => Promise.resolve("async"));
+  const s = server.serve({ port: 3126 });
+  await (await fetch("http://localhost:3126/async-cache")).text();
+  const res = await fetch("http://localhost:3126/async-cache");
+  assertEquals(await res.text(), "async");
+  s.close();
+});
+
+Deno.test("Coverage - cache hit with route middlewares async", async () => {
+  _resetForTests();
+  server.get(
+    "/route-mw-async",
+    () => Promise.resolve("async"),
+    (_req, _ctx, next) => next ? (next() as any) : "fail",
+  );
+  const s = server.serve({ port: 3127 });
+  await (await fetch("http://localhost:3127/route-mw-async")).text();
+  const res = await fetch("http://localhost:3127/route-mw-async");
+  assertEquals(await res.text(), "async");
+  s.close();
+});
+
+Deno.test("Coverage - toResponse other", async () => {
+  _resetForTests();
+  // @ts-ignore
+  server.get("/other", () => 42 as any);
+  const s = server.serve({ port: 3128 });
+  const res = await fetch("http://localhost:3128/other");
+  assertEquals(res.status, 500);
+  assertEquals(await res.text(), "Internal Server Error");
+  s.close();
+});
+
+Deno.test("Coverage - fast path other return", async () => {
+  _resetForTests();
+  // @ts-ignore
+  server.get("/", () => 42 as any);
+  const s = server.serve({ port: 3129 });
+  const res = await fetch("http://localhost:3129/");
+  assertEquals(res.status, 500);
+  assertEquals(await res.text(), "Internal Server Error");
+  s.close();
+});
+
+Deno.test("Coverage - cache hit other return", async () => {
+  _resetForTests();
+  // @ts-ignore
+  server.get("/other-cache", () => 42 as any);
+  const s = server.serve({ port: 3130 });
+  await (await fetch("http://localhost:3130/other-cache")).text();
+  const res = await fetch("http://localhost:3130/other-cache");
+  assertEquals(res.status, 500);
+  assertEquals(await res.text(), "Internal Server Error");
+  s.close();
+});
+
+Deno.test("Coverage - fast path ctx.url", async () => {
+  _resetForTests();
+  server.get("/", (req, ctx) => ctx.url.pathname);
+  const s = server.serve({ port: 3131 });
+  const res = await fetch("http://localhost:3131/");
+  assertEquals(await res.text(), "/");
+  s.close();
+});
+
+Deno.test("Coverage - cache hit ctx.url", async () => {
+  _resetForTests();
+  server.get("/cache-url", (req, ctx) => ctx.url.pathname);
+  const s = server.serve({ port: 3132 });
+  await (await fetch("http://localhost:3132/cache-url")).text();
+  const res = await fetch("http://localhost:3132/cache-url");
+  assertEquals(await res.text(), "/cache-url");
+  s.close();
+});
+
+Deno.test("Coverage - regular ctx.url", async () => {
+  _resetForTests();
+  server.get("/regular-url", (req, ctx) => ctx.url.pathname);
+  const s = server.serve({ port: 3133 });
+  const res = await fetch("http://localhost:3133/regular-url");
+  assertEquals(await res.text(), "/regular-url");
+  s.close();
+});
+
+Deno.test("Coverage - root next call", async () => {
+  _resetForTests();
+  // @ts-ignore
+  server.get("/", (req, ctx, next) => {
+    // @ts-ignore
+    next();
+  });
+  const s = server.serve({ port: 3134 });
+  const res = await fetch("http://localhost:3134/");
+  assertEquals(res.status, 500);
+  assertEquals(await res.text(), "Internal Server Error");
+  s.close();
+});
+
+Deno.test("Coverage - cache hit with middlewares in runFinal", async () => {
+  _resetForTests();
+  server.use((req, ctx, next) => next ? (next() as any) : "fail");
+  server.get("/final-cache", () => "ok");
+  const s = server.serve({ port: 3135 });
+  await (await fetch("http://localhost:3135/final-cache")).text();
+  const res = await fetch("http://localhost:3135/final-cache");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - cache hit with route middlewares in runFinal", async () => {
+  _resetForTests();
+  server.get(
+    "/final-route-cache",
+    () => "ok",
+    (req, ctx, next) => next ? (next() as any) : "fail",
+  );
+  const s = server.serve({ port: 3136 });
+  await (await fetch("http://localhost:3136/final-route-cache")).text();
+  const res = await fetch("http://localhost:3136/final-route-cache");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - 404 cache limit eviction", async () => {
+  _resetForTests();
+  const s = server.serve({ port: 3137, cacheSize: 1 });
+  // First 404
+  await (await fetch("http://localhost:3137/404-1")).text();
+  // Second 404 should evict first
+  await (await fetch("http://localhost:3137/404-2")).text();
+  const res = await fetch("http://localhost:3137/404-2");
+  assertEquals(res.status, 404);
+  await res.text();
+  s.close();
+});
+
+Deno.test("Coverage - URL lazy getter no query", async () => {
+  _resetForTests();
+  server.get("/no-query", (req, ctx) => {
+    return ctx.url.pathname;
+  });
+  const s = server.serve({ port: 3138 });
+  const res = await fetch("http://localhost:3138/no-query");
+  assertEquals(await res.text(), "/no-query");
+  s.close();
+});
+
+Deno.test("Coverage - param names missing in groups", async () => {
+  _resetForTests();
+  // Simulate a pattern that has a group but doesn't match the expected name?
+  // Actually, URLPattern always provides the names.
+  // But let's try to hit the ?? "" branch.
+  server.get("/:id", (req, ctx) => ctx.params.id || "empty");
+  const s = server.serve({ port: 3139 });
+  // This probably won't hit it because URLPattern is reliable.
+  const res = await fetch("http://localhost:3139/123");
+  assertEquals(await res.text(), "123");
+  s.close();
+});
+
+Deno.test("Coverage - toResponse fallback", async () => {
+  _resetForTests();
+  // @ts-ignore
+  server.get("/fallback", () => ({}) as any);
+  const s = server.serve({ port: 3140 });
+  const res = await fetch("http://localhost:3140/fallback");
+  // Deno's serve will likely fail because it's not a Response
+  assertEquals(res.status, 500);
+  await res.text();
+  s.close();
+});
+
+Deno.test("Coverage - cache hit with middlewares in runFinal - Response", async () => {
+  _resetForTests();
+  server.use((req, ctx, next) => next ? (next() as any) : "fail");
+  server.get("/final-cache-res", () => new Response("ok"));
+  const s = server.serve({ port: 3141 });
+  await (await fetch("http://localhost:3141/final-cache-res")).text();
+  const res = await fetch("http://localhost:3141/final-cache-res");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - cache hit with middlewares in runFinal - Promise", async () => {
+  _resetForTests();
+  server.use((req, ctx, next) => next ? (next() as any) : "fail");
+  server.get("/final-cache-promise", () => Promise.resolve("ok"));
+  const s = server.serve({ port: 3142 });
+  await (await fetch("http://localhost:3142/final-cache-promise")).text();
+  const res = await fetch("http://localhost:3142/final-cache-promise");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - cache hit with route middlewares in runFinal - Response", async () => {
+  _resetForTests();
+  server.get(
+    "/final-route-cache-res",
+    () => new Response("ok"),
+    (req, ctx, next) => next ? (next() as any) : "fail",
+  );
+  const s = server.serve({ port: 3143 });
+  await (await fetch("http://localhost:3143/final-route-cache-res")).text();
+  const res = await fetch("http://localhost:3143/final-route-cache-res");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - cache hit with route middlewares in runFinal - Promise", async () => {
+  _resetForTests();
+  server.get(
+    "/final-route-cache-promise",
+    () => Promise.resolve("ok"),
+    (req, ctx, next) => next ? (next() as any) : "fail",
+  );
+  const s = server.serve({ port: 3144 });
+  await (await fetch("http://localhost:3144/final-route-cache-promise")).text();
+  const res = await fetch("http://localhost:3144/final-route-cache-promise");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - URL lazy getter with query", async () => {
+  _resetForTests();
+  server.get("/with-query", (req, ctx) => {
+    return ctx.url.search;
+  });
+  const s = server.serve({ port: 3145 });
+  const res = await fetch("http://localhost:3145/with-query?a=1");
+  assertEquals(await res.text(), "?a=1");
+  s.close();
+});
+
+Deno.test("Coverage - tryRoute with route middlewares - Response", async () => {
+  _resetForTests();
+  server.get(
+    "/route-mw-res",
+    () => new Response("ok"),
+    (req, ctx, next) => next ? (next() as any) : "fail",
+  );
+  const s = server.serve({ port: 3146 });
+  const res = await fetch("http://localhost:3146/route-mw-res");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - tryRoute with route middlewares - Promise", async () => {
+  _resetForTests();
+  server.get(
+    "/route-mw-promise",
+    () => Promise.resolve("ok"),
+    (req, ctx, next) => next ? (next() as any) : "fail",
+  );
+  const s = server.serve({ port: 3147 });
+  const res = await fetch("http://localhost:3147/route-mw-promise");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - tryRoute with route middlewares - cached Response", async () => {
+  _resetForTests();
+  server.get(
+    "/route-mw-cached-res",
+    () => new Response("ok"),
+    (req, ctx, next) => next ? (next() as any) : "fail",
+  );
+  const s = server.serve({ port: 3148 });
+  await (await fetch("http://localhost:3148/route-mw-cached-res")).text();
+  const res = await fetch("http://localhost:3148/route-mw-cached-res");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - tryRoute with route middlewares - cached Promise", async () => {
+  _resetForTests();
+  server.get(
+    "/route-mw-cached-promise",
+    () => Promise.resolve("ok"),
+    (req, ctx, next) => next ? (next() as any) : "fail",
+  );
+  const s = server.serve({ port: 3149 });
+  await (await fetch("http://localhost:3149/route-mw-cached-promise")).text();
+  const res = await fetch("http://localhost:3149/route-mw-cached-promise");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - URL lazy getter regular path", async () => {
+  _resetForTests();
+  server.get("/url-regular-new", (req, ctx) => ctx.url.pathname);
+  const s = server.serve({ port: 3150 });
+  const res = await fetch("http://localhost:3150/url-regular-new");
+  assertEquals(await res.text(), "/url-regular-new");
+  s.close();
+});
+
+Deno.test("Coverage - promise nested", async () => {
+  _resetForTests();
+  // @ts-ignore
+  server.get("/promise-nested", () => Promise.resolve(Promise.resolve("ok")));
+  const s = server.serve({ port: 3151 });
+  const res = await fetch("http://localhost:3151/promise-nested");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - cached 404 with global middleware", async () => {
+  _resetForTests();
+  server.use((req, ctx, next) => next ? (next() as any) : "fail");
+  const s = server.serve({ port: 3152 });
+  await fetch("http://localhost:3152/404").then((r) => r.text());
+  const res = await fetch("http://localhost:3152/404");
+  assertEquals(res.status, 404);
+  await res.text();
+  s.close();
+});
+
+Deno.test("Coverage - tryRoute with route middleware first hit", async () => {
+  _resetForTests();
+  server.get(
+    "/route-mw-first",
+    () => "ok",
+    (req, ctx, next) => next ? (next() as any) : "fail",
+  );
+  const s = server.serve({ port: 3153 });
+  const res = await fetch("http://localhost:3153/route-mw-first");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});

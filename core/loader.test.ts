@@ -25,15 +25,9 @@ async function writeModule(dirName: string, code: string) {
 }
 
 async function _removeModule(dirName: string) {
-  // only remove directories that this test created
-  if (!createdDirs.has(dirName)) return;
-  const dirUrl = new URL(`${dirName}/`, modulesDir);
-  try {
-    await Deno.remove(dirUrl, { recursive: true });
-    createdDirs.delete(dirName);
-  } catch {
-    // ignore
-  }
+  // disabled cleanup here to allow coverage reporter to find files.
+  // cleanup is handled via the coverage task in deno.json
+  return;
 }
 
 // New function to clean up temporary folders by prefix
