@@ -18,6 +18,14 @@ yarn-error.log*
 .DS_Store
 .DS_Store?
 ._*
+
+# Coverage
+cov_profile/
+cov_temp/
+*.lcov
+
+# Backups
+modules_backup_*
 .Spotlight-V100
 .Trashes
 ehthumbs.db
@@ -69,3 +77,4 @@ cov_profile/
 coverage.lcov
 node_modules/*
 .deno/*
+coverage.lcov
