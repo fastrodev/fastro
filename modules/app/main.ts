@@ -127,19 +127,31 @@ async function renderMD_Content(content: string, path: string) {
         color: var(--color-fg-default);
         font-weight: 600;
       }
+      .edit-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 1.5rem;
+      }
       .edit-link {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         color: var(--color-fg-muted);
         text-decoration: none;
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
         transition: color 0.2s ease;
-        margin-bottom: 2rem;
       }
       .edit-link:hover {
         color: var(--color-accent-fg);
         text-decoration: underline;
+      }
+      @media (max-width: 600px) {
+        .edit-container {
+          margin-bottom: 1rem;
+        }
+        .edit-link {
+          font-size: 0.8rem;
+        }
       }
       #menu-toggle {
         display: flex;
@@ -211,13 +223,14 @@ async function renderMD_Content(content: string, path: string) {
           <a href="/">Home</a>
           <a href="/DOCS.md">Docs</a>
           <a href="/MIDDLEWARES.md">Middlewares</a>
+          <a href="/SHOWCASE.md">Showcase</a>
           <a href="/BENCHMARK.md">Benchmarks</a>
           <a href="/CONTRIBUTING.md">Contributing</a>
         </nav>
       </div>
     </header>
     <main class="container">
-      <div style="display: flex; justify-content: flex-end;">
+      <div class="edit-container">
         <a href="https://github.com/fastrodev/fastro/edit/main/${path}" 
            target="_blank" 
            class="edit-link">
@@ -259,6 +272,7 @@ async function renderMD(path: string) {
 app.get("/", () => renderMD("README.md"));
 app.get("/DOCS.md", () => renderMD("DOCS.md"));
 app.get("/MIDDLEWARES.md", () => renderMD("MIDDLEWARES.md"));
+app.get("/SHOWCASE.md", () => renderMD("SHOWCASE.md"));
 app.get("/BENCHMARK.md", () => renderMD("BENCHMARK.md"));
 app.get("/CONTRIBUTING.md", () => renderMD("CONTRIBUTING.md"));
 app.get("/middlewares/logger.ts", () => renderCode("middlewares/logger.ts"));

@@ -128,7 +128,7 @@ app.use((req, ctx, next) => {
 
 ### Route-Specific Middleware
 
-Pass middleware functions before the final handler.
+Pass middleware functions after the final handler.
 
 ```ts
 const checkAuth = (req, ctx, next) => {
@@ -137,7 +137,7 @@ const checkAuth = (req, ctx, next) => {
     : new Response("Forbidden", { status: 403 });
 };
 
-app.get("/admin", checkAuth, () => "Sensitive Info");
+app.get("/admin", () => "Sensitive Info", checkAuth);
 ```
 
 ---
