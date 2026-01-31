@@ -37,9 +37,10 @@
   "nodeModulesDir": "auto",
   "tasks": {
     "dev": "deno run -A --watch --env modules/app/main.ts 3000",
-    "start": "deno run -A --env main.ts 3000",
+    "start": "deno run -A --env modules/app/main.ts 3000",
     "test": "bash ./scripts/test.sh",
     "cov": "bash ./scripts/test.sh --coverage",
-    "bench": "./run_bench.sh"
+    "bench": "./run_bench.sh",
+    "build": "echo 'Building...'"
   }
 }

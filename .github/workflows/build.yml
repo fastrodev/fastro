@@ -24,12 +24,12 @@ jobs:
         run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} deno task test
 
       - name: Generate report
-        run: deno task coverage
+        run: deno task cov
 
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         with:
-          path-to-lcov: ./cov.lcov
+          path-to-lcov: ./coverage.lcov
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Build
@@ -40,3 +40,4 @@ jobs:
         with:
           project: fastro
           entrypoint: modules/app/main.ts
+          import-map: deno.json
