@@ -1,0 +1,66 @@
+# Deno
+deno.lock
+.deno/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Operating System
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+*.js.map
+
+public/js/
+public/css/
+
+.build_done
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Misc
+*.bak
+*.cache
+.cache/
+
+modules/order/data.json
+modules/test*
+modules/module*

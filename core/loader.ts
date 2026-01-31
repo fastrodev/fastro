@@ -1,9 +1,25 @@
 import type { Middleware } from "./types.ts";
 
 /**
- * Automatically imports and registers middleware modules
- * from the ../modules/ directory.
- * @param app
+ * Scans the `modules/` directory and automatically registers middleware files.
+ *
+ * This powerful feature allows you to structure your app into directories.
+ * Any directory under `modules/` with a `mod.ts` file will be automatically loaded.
+ *
+ * Special Rules:
+ * - `index` directory is loaded first.
+ * - `profile` directory is loaded last.
+ * - Others are loaded alphabetically.
+ *
+ * Each `mod.ts` should either `export default` a middleware or export a
+ * named middleware matching the directory name.
+ *
+ * @example
+ * ```ts
+ * await autoRegisterModules(server);
+ * ```
+ *
+ * @param app The app instance (server) to register middlewares on.
  */
 export async function autoRegisterModules(
   app: { use: (middleware: Middleware) => void },

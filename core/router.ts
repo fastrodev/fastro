@@ -15,9 +15,14 @@ async function toResponse(
 }
 
 /**
- * Creates a route middleware to handle defined routes.
- * @param routes An array of Route objects defining the routes to handle, including method, path, handler, and optional middlewares.
- * @returns A Middleware function that processes requests by matching routes, extracting parameters, and applying handlers and middlewares.
+ * Converts a set of route definitions into a unified middleware.
+ *
+ * This is the engine behind `createRouter`. It handles the matching of
+ * incoming requests against the routes you define, manages parameters,
+ * and maintains a high-performance matching cache.
+ *
+ * @param routes An array of route objects to handle.
+ * @returns A Fastro-compatible middleware function.
  */
 export function build(routes: Route[]): Middleware {
   const cache = new Map<
@@ -120,15 +125,30 @@ export function matchPath(
 /**
  * A fluent builder for creating routes.
  */
-export class RouteBuilder {
+export /**
+ * Utility class for creating modular, chainable route groups.
+ *
+ * RouteBuilders allow you to define a set of routes in a standalone way
+ * and then "plug" them into your main application as a single middleware.
+ *
+ * @example
+ * ```ts
+ * const router = createRouter()
+ *   .get("/users", () => "All Users")
+ *   .get("/users/:id", (req, ctx) => `User ${ctx.params.id}`);
+ *
+ * server.use(router.build());
+ * ```
+ */
+class RouteBuilder {
   private routes: Route[] = [];
 
   /**
-   * Registers a GET route.
-   * @param path The route path.
-   * @param handler The handler function.
-   * @param middlewares Optional middlewares.
-   * @returns The builder for chaining.
+   * Registers a GET route in this router.
+   *
+   * @param path The URL path.
+   * @param handler Function to process the request.
+   * @param middlewares Optional middlewares for this specific route.
    */
   get(path: string, handler: Handler, ...middlewares: Middleware[]): this {
     this.routes.push({ method: "GET", path, handler, middlewares });
@@ -136,11 +156,11 @@ export class RouteBuilder {
   }
 
   /**
-   * Registers a POST route.
-   * @param path The route path.
-   * @param handler The handler function.
-   * @param middlewares Optional middlewares.
-   * @returns The builder for chaining.
+   * Registers a POST route in this router.
+   *
+   * @param path The URL path.
+   * @param handler Function to process the request.
+   * @param middlewares Optional middlewares for this specific route.
    */
   post(path: string, handler: Handler, ...middlewares: Middleware[]): this {
     this.routes.push({ method: "POST", path, handler, middlewares });
@@ -148,11 +168,7 @@ export class RouteBuilder {
   }
 
   /**
-   * Registers a PUT route.
-   * @param path The route path.
-   * @param handler The handler function.
-   * @param middlewares Optional middlewares.
-   * @returns The builder for chaining.
+   * Registers a PUT route in this router.
    */
   put(path: string, handler: Handler, ...middlewares: Middleware[]): this {
     this.routes.push({ method: "PUT", path, handler, middlewares });
@@ -160,11 +176,7 @@ export class RouteBuilder {
   }
 
   /**
-   * Registers a DELETE route.
-   * @param path The route path.
-   * @param handler The handler function.
-   * @param middlewares Optional middlewares.
-   * @returns The builder for chaining.
+   * Registers a DELETE route in this router.
    */
   delete(path: string, handler: Handler, ...middlewares: Middleware[]): this {
     this.routes.push({ method: "DELETE", path, handler, middlewares });
@@ -172,11 +184,7 @@ export class RouteBuilder {
   }
 
   /**
-   * Registers a PATCH route.
-   * @param path The route path.
-   * @param handler The handler function.
-   * @param middlewares Optional middlewares.
-   * @returns The builder for chaining.
+   * Registers a PATCH route in this router.
    */
   patch(path: string, handler: Handler, ...middlewares: Middleware[]): this {
     this.routes.push({ method: "PATCH", path, handler, middlewares });
@@ -184,11 +192,7 @@ export class RouteBuilder {
   }
 
   /**
-   * Registers a HEAD route.
-   * @param path The route path.
-   * @param handler The handler function.
-   * @param middlewares Optional middlewares.
-   * @returns The builder for chaining.
+   * Registers a HEAD route in this router.
    */
   head(path: string, handler: Handler, ...middlewares: Middleware[]): this {
     this.routes.push({ method: "HEAD", path, handler, middlewares });
@@ -196,11 +200,7 @@ export class RouteBuilder {
   }
 
   /**
-   * Registers an OPTIONS route.
-   * @param path The route path.
-   * @param handler The handler function.
-   * @param middlewares Optional middlewares.
-   * @returns The builder for chaining.
+   * Registers an OPTIONS route in this router.
    */
   options(path: string, handler: Handler, ...middlewares: Middleware[]): this {
     this.routes.push({ method: "OPTIONS", path, handler, middlewares });
@@ -208,8 +208,8 @@ export class RouteBuilder {
   }
 
   /**
-   * Builds the middleware from the registered routes.
-   * @returns A Middleware function.
+   * Compiles defined routes into a single Fastro middleware.
+   * Call this when you're finished defining routes in the builder.
    */
   build(): Middleware {
     return build(this.routes);
@@ -217,8 +217,16 @@ export class RouteBuilder {
 }
 
 /**
- * Creates a new RouteBuilder instance.
- * @returns A RouteBuilder for registering routes.
+ * Creates a new RouteBuilder instance for modular routing.
+ *
+ * This is the entry point for creating grouped routes that can be
+ * exported or used as middleware.
+ *
+ * @example
+ * ```ts
+ * const api = createRouter().get("/ping", () => "pong");
+ * server.use(api.build());
+ * ```
  */
 export function createRouter(): RouteBuilder {
   return new RouteBuilder();

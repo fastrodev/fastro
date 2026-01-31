@@ -8,7 +8,19 @@ const middlewares: Middleware[] = [];
 
 /**
  * Adds a global middleware that applies to all routes.
- * @param middleware The middleware function to add.
+ *
+ * Global middlewares are executed for every request before the route handler.
+ * They are perfect for logging, authentication, or injecting common functionality.
+ *
+ * @example
+ * ```ts
+ * server.use((req, ctx, next) => {
+ *   console.log(`${req.method} ${req.url}`);
+ *   return next();
+ * });
+ * ```
+ *
+ * @param middleware The middleware function to register globally.
  */
 function use(middleware: Middleware) {
   middlewares.push(middleware);
@@ -39,9 +51,18 @@ function registerRoute(
 
 /**
  * Registers a GET route with optional route-specific middlewares.
- * @param path The URL path for the route (supports dynamic parameters like :id).
- * @param handler The handler function to process the request.
- * @param routeMiddlewares Optional middlewares specific to this route.
+ *
+ * Use this to handle GET requests for a specific path. You can return
+ * a standard Response, a string, or a Promise of either.
+ *
+ * @example
+ * ```ts
+ * server.get("/", () => "Hello World");
+ * ```
+ *
+ * @param path The URL path (e.g., "/users/:id").
+ * @param handler Function to process the request.
+ * @param routeMiddlewares Optional middlewares to run only for this route.
  */
 function get(
   path: string,
@@ -53,9 +74,20 @@ function get(
 
 /**
  * Registers a POST route with optional route-specific middlewares.
- * @param path The URL path for the route (supports dynamic parameters like :id).
- * @param handler The handler function to process the request.
- * @param routeMiddlewares Optional middlewares specific to this route.
+ *
+ * Perfect for handling data submissions, form uploads, or creating records.
+ *
+ * @example
+ * ```ts
+ * server.post("/users", async (req) => {
+ *   const data = await req.json();
+ *   return new Response("User created", { status: 201 });
+ * });
+ * ```
+ *
+ * @param path The URL path (e.g., "/api/data").
+ * @param handler Function to process the request.
+ * @param routeMiddlewares Optional middlewares to run only for this route.
  */
 function post(
   path: string,
@@ -67,9 +99,12 @@ function post(
 
 /**
  * Registers a PUT route with optional route-specific middlewares.
- * @param path The URL path for the route (supports dynamic parameters like :id).
- * @param handler The handler function to process the request.
- * @param routeMiddlewares Optional middlewares specific to this route.
+ *
+ * Common for updating existing resources or creating them if they don't exist.
+ *
+ * @param path The URL path.
+ * @param handler Function to process the request.
+ * @param routeMiddlewares Optional middlewares to run only for this route.
  */
 function put(
   path: string,
@@ -81,9 +116,12 @@ function put(
 
 /**
  * Registers a DELETE route with optional route-specific middlewares.
- * @param path The URL path for the route (supports dynamic parameters like :id).
- * @param handler The handler function to process the request.
- * @param routeMiddlewares Optional middlewares specific to this route.
+ *
+ * Use this to handle resource deletion requests.
+ *
+ * @param path The URL path.
+ * @param handler Function to process the request.
+ * @param routeMiddlewares Optional middlewares to run only for this route.
  */
 function delete_(
   path: string,
@@ -103,22 +141,21 @@ function extractParamNames(path: string): string[] {
 }
 
 /**
- * Starts the HTTP server with optimized route matching, caching, and middleware support.
+ * Stats the HTTP server and begins listening for incoming connections.
  *
- * This function initializes a Deno server with the following optimizations:
- * - Route caching: Uses an LRU cache (configurable size, default 10,000) to store matched routes and pre-computed contexts, avoiding repeated pattern matching for the same URLs.
- * - Fast path for root route: Directly handles GET requests to "/" without query params for maximum performance.
- * - Middleware application: Applies global and route-specific middlewares using an optimized dispatch mechanism.
- * - Query parsing: Conditionally parses query parameters only when present, with zero-copy reuse.
- * - 404 caching: Caches not-found responses to reduce repeated processing.
+ * Fastro provides an optimized server engine with:
+ * - **Internal LRU Caching**: Dramatically speeds up repeat requests.
+ * - **Fast Root Path**: Zero-overhead handling for the "/" homepage.
+ * - **Automatic Query Handling**: Parses URLs only when necessary.
+ * - **Smart Response Conversion**: Return strings directly for simplicity.
  *
- * Routes are evaluated in order: fast path root, cached routes, dynamic routes.
+ * @example
+ * ```ts
+ * await server.serve({ port: 8000 });
+ * ```
  *
- * @param options Configuration options for the server.
- * - Inherits from Deno.ServeTcpOptions (e.g., port, hostname).
- * - handler: Must be undefined (handled internally).
- * - cacheSize: Optional number to set the maximum route cache size (default: 10,000).
- * @returns A Promise that resolves to a Deno.Server instance when the server starts successfully.
+ * @param options Server configuration including port, hostname, and cache settings.
+ * @returns A Promise that resolves when the server is ready.
  */
 function serve(
   options: Deno.ServeTcpOptions & { handler?: undefined; cacheSize?: number },
@@ -310,7 +347,8 @@ function serve(
 }
 
 /**
- * Resets the routes and middlewares arrays for testing purposes.
+ * Internal helper to clear all routes and middlewares.
+ * Primarily used for resetting state between test cases.
  */
 export function _resetForTests() {
   routes.length = 0;
@@ -318,8 +356,9 @@ export function _resetForTests() {
 }
 
 /**
- * Returns the current routes array for testing purposes.
- * @returns The array of registered routes.
+ * Internal helper to retrieve Currently registered routes.
+ * Primarily used for assertions in the test suite.
+ * @returns The array of registered route configurations.
  */
 export function _getRoutesForTests() {
   return routes;
