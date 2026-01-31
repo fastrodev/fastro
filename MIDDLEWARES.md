@@ -1,0 +1,38 @@
+# 🧩 Fastro Middlewares
+
+Welcome to the Fastro middleware collection! This page lists all available
+middlewares created by the community.
+
+**Want to add your middleware?** Please follow the instructions in the
+[Contributing Guide](/CONTRIBUTING.md) and add your middleware to this list via
+a Pull Request.
+
+---
+
+## 🛠️ Official Middlewares
+
+These middlewares are maintained by the Fastro core team.
+
+| Name             | Description                         | Source   |
+| :--------------- | :---------------------------------- | :------- |
+| **Logger**       | Standard request/response logging.  | Built-in |
+| **Static Cache** | Intelligent LRU caching for routes. | Built-in |
+
+---
+
+## 🤝 Community Middlewares
+
+Add your awesome middlewares here!
+
+| Name                   | Description                                    | Author                                     | Link                                                                      |
+| :--------------------- | :--------------------------------------------- | :----------------------------------------- | :------------------------------------------------------------------------ |
+| **Simple Logger**      | A basic request logger that tracks start time. | [@fastrodev](https://github.com/fastrodev) | [View Source](/middlewares/logger.ts)                                     |
+| **Example Middleware** | A starter template for your own logic.         | [@fastrodev](https://github.com/fastrodev) | [View Source](/CONTRIBUTING.md#3-practical-example-request-logger--state) |
+
+---
+
+### How to add your middleware here:
+
+1. Create your middleware logic.
+2. Submit a PR adding your middleware to the `middlewares/` directory.
+3. Add a new row to the table above with your details.

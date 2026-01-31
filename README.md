@@ -1,72 +1,80 @@
-# ⚡ Fastro
+# ⚡ Fastro Framework
 
-### **High-performance, minimalist web framework for Deno.**
+### **The Ultra-Fast, Minimalist Web Framework for Deno.**
 
-Fastro bridges the gap between raw Deno performance and framework-level
-developer experience. Built for speed and simplicity, it features a robust
+Fastro bridges the gap between raw Deno performance and elite developer
+experience. Built for speed, security, and simplicity, it features a robust
 middleware engine, intelligent LRU caching, and a zero-boilerplate API.
 
 ---
 
 ## 🚀 Why Fastro?
 
-- **Native Speed**: Benchmark-proven to maintain **>95% of raw Deno
-  performance**.
-- **Effortless API**: Return raw `string`, `JSON`, or `Response` directly—no
-  more wrapping everything in `.send()`.
-- **Minimalist Footprint**: Tiny core with zero external dependencies (built
-  solely on Deno standards).
-- **Scale with Ease**: Automatic directory-based module loading keeps your
-  codebase clean as you grow.
-- **Built for Production**: 100% core test coverage and first-class TypeScript
-  support.
+- **🏎️ Maximum Throughput**: Benchmark-proven to maintain **>95% of raw Deno
+  performance**. Stop choosing between DX and speed.
+- **✨ Intuitive API**: Return `string`, `JSON`, or `Response` directly. No more
+  `.send()` or `.json()` boilerplate.
+- **📦 Lean & Secure**: Zero external dependencies. Built strictly on top-tier
+  Deno standards.
+- **🏗️ Organized Scaling**: Advanced directory-based module loading keeps your
+  project clean as you grow.
+- **🛡️ Rock-Solid Core**: 100% test coverage and first-class TypeScript support
+  ensure your app stays stable.
+
+---
+
+## 📖 Documentation
+
+Master Fastro in minutes with our [comprehensive guide](DOCS.md), covering
+everything from routing to deep-level middleware.
 
 ---
 
 ## ✨ Features
 
-- ⚡ **Blazing Fast**: Optimized route matching and LRU caching for maximum
-  throughput.
-- 🧩 **Flexible Middleware**: Global, router-level, and route-specific
-  middleware with a familiar async/await flow.
-- 📂 **Auto Module Loading**: Effortlessly register routes and middlewares from
-  your directory structure.
-- 🔒 **Type-Safe by Design**: Leverage TypeScript to catch errors at compile
-  time.
-- 🧪 **Verified Reliability**: 100% unit test coverage ensures your core logic
-  stays stable.
-- 📊 **Benchmark-First Culture**: Includes built-in tools to verify results
-  against native Deno.
+- **⚡ Blazing Fast Routing**: Optimized pattern matching with intelligent LRU
+  caching for high-traffic apps.
+- **🧩 Flexible Middleware**: Seamless global, router, and route-level
+  middleware with an async/await flow you already know.
+- **📂 Auto-Loading Modules**: Register entire directories of functionality with
+  a single command.
+- **🔒 Type-Safe by Default**: Enjoy deep IDE integration and compile-time
+  safety.
+- **📊 Benchmark-First**: Built-in verification tools to ensure your app stays
+  as fast as native Deno.
 
 ---
 
 ## 🏁 Quick Start
 
+Build and serve your first app in seconds:
+
 ```ts
-import server from "./mod.ts";
+import app from "./mod.ts";
 
-// Simple string response - Fastro handles the heavy lifting
-server.get("/", () => "Welcome to Fastro!");
+// Simple string response
+app.get("/", () => "Welcome to Fastro!");
 
-// Modern async handlers
-server.get("/user/:id", async (req, ctx) => {
-  return { id: ctx.params.id, status: "active" }; // Automatically sent as JSON
+// Automatic JSON serialization
+app.get("/user/:id", async (req, ctx) => {
+  return { id: ctx.params.id, status: "active" };
 });
 
 // Powerful, predictable middleware
-server.use((req, ctx, next) => {
+app.use((req, ctx, next) => {
   ctx.startTime = Date.now();
   return next();
 });
 
-await server.serve({ port: 8000 });
+await app.serve({ port: 8000 });
 ```
 
 ---
 
-## 📊 Performance Benchmarks
+## 📊 Performance That Matters
 
-Conducted using **Grafana k6** with 100 concurrent virtual users for 10 seconds.
+Don't take our word for it. Benchmarks conducted using **Grafana k6** (100 VUs,
+10s):
 
 | Metric                  | Native Deno   | Fastro Framework  |
 | :---------------------- | :------------ | :---------------- |
@@ -74,14 +82,16 @@ Conducted using **Grafana k6** with 100 concurrent virtual users for 10 seconds.
 | **Average Latency**     | 1.23 ms       | **1.29 ms**       |
 | **95th Percentile**     | 2.37 ms       | **2.29 ms**       |
 
-> _Fastro maintains industry-leading performance while providing a complete
-> developer-friendly abstraction._
+> _"Fastro provides a complete developer-friendly abstraction without
+> sacrificing the performance advantages of Deno."_
+
+Check the [detailed benchmark report](BENCHMARK.md).
 
 ---
 
 ## 🛠️ Development
 
-### Tasks
+Get involved or test it yourself:
 
 ```bash
 # Run the test suite
@@ -93,3 +103,15 @@ deno task cov
 # Run local performance benchmark
 deno task bench
 ```
+
+---
+
+## 🤝 Community & Contributing
+
+Fastro thrives on your ideas! Whether you're fixing a bug, suggesting a feature,
+or writing a custom middleware, we welcome your contributions.
+
+- **Explore our [Middleware Collection](/MIDDLEWARES.md)** and add yours!
+- **Check out our [Contributing Guide](CONTRIBUTING.md)** for details on
+  creating middlewares and development workflows.
+- Have a question? [Open an issue](https://github.com/fastrodev/fastro/issues).
