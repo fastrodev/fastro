@@ -21,11 +21,13 @@ applications.
 
 ## 🚀 Getting Started
 
-To create a basic server, import the default export from `mod.ts`.
+To create a basic server, import the default export from `mod.ts` and create a
+new instance.
 
 ```ts
-import app from "./mod.ts";
+import Fastro from "./mod.ts";
 
+const app = new Fastro();
 app.get("/", () => "Hello Fastro!");
 
 await app.serve({ port: 8000 });
@@ -180,8 +182,9 @@ project/
 ### Registration
 
 ```ts
-import app, { autoRegisterModules } from "./mod.ts";
+import Fastro, { autoRegisterModules } from "./mod.ts";
 
+const app = new Fastro();
 await autoRegisterModules(app);
 await app.serve();
 ```

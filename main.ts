@@ -1,4 +1,6 @@
-import app from "./mod.ts";
+import App from "./mod.ts";
+
+const app = new App();
 
 app.get("/", () => {
   return new Response("Hello world!");

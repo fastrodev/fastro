@@ -23,13 +23,6 @@ middleware engine, intelligent LRU caching, and a zero-boilerplate API.
 
 ---
 
-## 📖 Documentation
-
-Master Fastro in minutes with our [comprehensive guide](DOCS.md), covering
-everything from routing to deep-level middleware.
-
----
-
 ## ✨ Features
 
 - **⚡ Blazing Fast Routing**: Optimized pattern matching with intelligent LRU
@@ -45,12 +38,32 @@ everything from routing to deep-level middleware.
 
 ---
 
+## 📊 Performance That Matters
+
+Don't take our word for it. Benchmarks conducted using **Grafana k6** (100 VUs,
+10s):
+
+| Metric                  | Native Deno   | Fastro Framework  |
+| :---------------------- | :------------ | :---------------- |
+| **Requests per Second** | ~81,900 req/s | **~77,600 req/s** |
+| **Average Latency**     | 1.14 ms       | **1.21 ms**       |
+| **95th Percentile**     | 2.13 ms       | **2.20 ms**       |
+
+> _"Fastro provides a complete developer-friendly abstraction without
+> sacrificing the performance advantages of Deno."_
+
+Check the [detailed benchmark report](BENCHMARK.md).
+
+---
+
 ## 🏁 Quick Start
 
 Build and serve your first app in seconds:
 
 ```ts
-import app from "./mod.ts";
+import Fastro from "./mod.ts";
+
+const app = new Fastro();
 
 // Simple string response
 app.get("/", () => "Welcome to Fastro!");
@@ -71,21 +84,10 @@ await app.serve({ port: 8000 });
 
 ---
 
-## 📊 Performance That Matters
+## 📖 Documentation
 
-Don't take our word for it. Benchmarks conducted using **Grafana k6** (100 VUs,
-10s):
-
-| Metric                  | Native Deno   | Fastro Framework  |
-| :---------------------- | :------------ | :---------------- |
-| **Requests per Second** | ~76,000 req/s | **~72,800 req/s** |
-| **Average Latency**     | 1.23 ms       | **1.29 ms**       |
-| **95th Percentile**     | 2.37 ms       | **2.29 ms**       |
-
-> _"Fastro provides a complete developer-friendly abstraction without
-> sacrificing the performance advantages of Deno."_
-
-Check the [detailed benchmark report](BENCHMARK.md).
+Master Fastro in minutes with our [comprehensive guide](DOCS.md), covering
+everything from routing to deep-level middleware.
 
 ---
 

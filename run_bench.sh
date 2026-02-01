@@ -67,5 +67,14 @@ run_bench "Fastro"
 kill_port
 
 rm k6_output.txt
+
+echo "" >> $MD_FILE
+echo "## Prerequisites" >> $MD_FILE
+echo "To run this benchmark locally, ensure you have:" >> $MD_FILE
+echo "1. [Deno](https://deno.land/) installed." >> $MD_FILE
+echo "2. [k6](https://k6.io/) binary placed in the root directory as \`./k6\`." >> $MD_FILE
+echo "3. Port $PORT available." >> $MD_FILE
+echo "4. Execute the script: \`bash run_bench.sh\`." >> $MD_FILE
+
 echo ""
 echo "Benchmark complete. Results saved to $MD_FILE"

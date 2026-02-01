@@ -1,0 +1,399 @@
+import { CSS, render } from "@deno/gfm";
+
+// Add support for syntax highlighting
+import "npm:prismjs@1.29.0/components/prism-typescript.js";
+import "npm:prismjs@1.29.0/components/prism-bash.js";
+import "npm:prismjs@1.29.0/components/prism-json.js";
+
+export async function renderCode(path: string) {
+  const url = new URL(`../../${path}`, import.meta.url);
+  const content = await Deno.readTextFile(url);
+  const md = `\`\`\`typescript\n// ${path}\n\n${content}\n\`\`\``;
+  return renderMD_Content(md, path);
+}
+
+// deno-lint-ignore require-await
+export async function renderMD_Content(content: string, path: string) {
+  let markdown = content;
+  let title = "";
+  let description = "High-performance, minimalist web framework for Deno.";
+  let date = "";
+  let author = "";
+  let image =
+    "https://repository-images.githubusercontent.com/264308713/45a53a9a-141e-4204-8f0b-4867c05cbc0d";
+
+  // 1. Process Frontmatter
+  if (markdown.startsWith("---")) {
+    const endIdx = markdown.indexOf("---", 3);
+    if (endIdx !== -1) {
+      const frontmatter = markdown.slice(3, endIdx);
+      markdown = markdown.slice(endIdx + 3).trim();
+
+      const titleMatch = frontmatter.match(/title:\s*["']?(.*?)["']?$/m);
+      if (titleMatch) title = titleMatch[1].trim();
+
+      const descMatch = frontmatter.match(/description:\s*["']?(.*?)["']?$/m);
+      if (descMatch) description = descMatch[1].trim();
+
+      const dateMatch = frontmatter.match(/date:\s*(.*?)$/m);
+      if (dateMatch) date = dateMatch[1].trim();
+
+      const authorMatch = frontmatter.match(/author:\s*["']?(.*?)["']?$/m);
+      if (authorMatch) author = authorMatch[1].trim();
+
+      const imageMatch = frontmatter.match(/image:\s*["']?(.*?)["']?$/m);
+      if (imageMatch) image = imageMatch[1].trim();
+    }
+  }
+
+  // 2. Extract Title from H1 if not in frontmatter and remove it from markdown
+  const h1Match = markdown.match(/^#\s+(.*)/m);
+  if (h1Match) {
+    if (!title) title = h1Match[1].trim();
+    // Remove the H1 line to avoid duplication in the body
+    markdown = markdown.replace(/^#\s+.*\r?\n?/, "").trim();
+  }
+
+  // 3. Render Body
+  const body = path === "blog"
+    ? markdown
+    : render(markdown, { allowMath: true });
+
+  // Fallback for document title
+  const docTitle = title || `Fastro - ${path}`;
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${docTitle}</title>
+    <meta name="description" content="${description}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="${docTitle}">
+    <meta property="og:description" content="${description}">
+    <meta property="og:image" content="${image}">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="${docTitle}">
+    <meta property="twitter:description" content="${description}">
+    <meta property="twitter:image" content="${image}">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              canvas: {
+                default: 'var(--color-canvas-default)',
+                subtle: 'var(--color-canvas-subtle)',
+              },
+              fg: {
+                default: 'var(--color-fg-default)',
+                muted: 'var(--color-fg-muted)',
+              },
+              border: {
+                default: 'var(--color-border-default)',
+              },
+              accent: {
+                fg: 'var(--color-accent-fg)',
+              }
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      :root {
+        --content-max-width: 720px;
+      }
+      body {
+        margin: 0;
+        background-color: var(--color-canvas-default);
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      /* Hamburger Animation */
+      #menu-toggle.open span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+      }
+      #menu-toggle.open span:nth-child(2) {
+        opacity: 0;
+      }
+      #menu-toggle.open span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+      }
+      /* Mobile Menu Transition */
+      #nav-links {
+        transition: all 0.3s ease-in-out;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+      }
+      #nav-links.active {
+        max-height: 400px;
+        opacity: 1;
+        padding-bottom: 1.5rem;
+        padding-top: 0.5rem;
+      }
+      @media (min-width: 768px) {
+        #nav-links {
+          max-height: none;
+          opacity: 1;
+          overflow: visible;
+          display: flex !important;
+        }
+      }
+      /* Style for current page link */
+      nav a.current-page {
+        color: var(--color-fg-default) !important;
+        font-weight: 600;
+      }
+      .edit-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 1.5rem;
+      }
+      .edit-link {
+        font-size: 0.85rem;
+        color: var(--color-fg-muted);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        transition: color 0.2s ease;
+      }
+      .edit-link:hover {
+        color: var(--color-accent-fg);
+        text-decoration: underline;
+      }
+      .post-meta {
+        font-size: 0.9rem;
+        color: var(--color-fg-muted);
+        margin-bottom: 2.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        opacity: 0.8;
+      }
+      /* Global link reset */
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      .nav-link {
+        font-weight: 500;
+        color: var(--color-fg-muted);
+        font-size: 0.95rem;
+        transition: color 0.2s ease;
+        white-space: nowrap;
+      }
+      .nav-link:hover {
+        color: var(--color-accent-fg);
+      }
+      /* GFM Link Style */
+      .markdown-body a {
+        color: var(--color-accent-fg);
+        text-decoration: none;
+      }
+      .markdown-body a:hover {
+        text-decoration: underline;
+      }
+      @media (max-width: 600px) {
+        .edit-container {
+          margin-bottom: 1rem;
+        }
+        .edit-link {
+          font-size: 0.8rem;
+        }
+      }
+      ${CSS}
+    </style>
+  </head>
+  <body data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
+    <header class="border-b border-border-default bg-canvas-default/70 sticky top-0 z-[100] backdrop-blur-md">
+      <div class="max-w-[720px] mx-auto flex flex-col md:flex-row md:justify-between md:items-center py-4 px-6 md:px-4">
+        <div class="flex justify-between items-center w-full md:w-auto">
+          <a href="/" class="text-2xl font-black text-fg-default no-underline hover:no-underline tracking-tighter">Fastro</a>
+          <button id="menu-toggle" aria-label="Toggle Menu" class="flex flex-col justify-between w-6 h-5 bg-transparent border-none cursor-pointer p-0 md:hidden group">
+            <span class="w-6 h-[2px] bg-fg-default rounded-full transition-all duration-300 origin-center"></span>
+            <span class="w-6 h-[2px] bg-fg-default rounded-full transition-all duration-300"></span>
+            <span class="w-6 h-[2px] bg-fg-default rounded-full transition-all duration-300 origin-center"></span>
+          </button>
+        </div>
+        <nav id="nav-links" class="hidden md:flex flex-col md:flex-row w-full md:w-auto gap-5 md:gap-7 items-start md:items-center">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/DOCS.md" class="nav-link">Docs</a>
+          <a href="/MIDDLEWARES.md" class="nav-link">Middlewares</a>
+          <a href="/SHOWCASE.md" class="nav-link">Showcase</a>
+          <a href="/BENCHMARK.md" class="nav-link">Benchmarks</a>
+          <a href="/blog" class="nav-link">Blog</a>
+        </nav>
+      </div>
+    </header>
+    <main class="max-w-[720px] mx-auto p-6 md:p-8 flex-1 w-full box-border text-[var(--color-fg-default)]">
+      ${
+    path !== "blog"
+      ? `<div class="edit-container">
+        <a href="https://github.com/fastrodev/fastro/edit/main/${path}" 
+           target="_blank" 
+           class="edit-link">
+          <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+          Edit this page
+        </a>
+      </div>`
+      : ""
+  }
+      
+      ${
+    path !== "blog" && title
+      ? `<h1 class="text-[2.5rem] font-extrabold leading-tight mb-4 text-fg-default">${title}</h1>`
+      : ""
+  }
+
+      ${
+    (date || author) && path !== "blog"
+      ? `<div class="post-meta">
+          ${
+        author
+          ? `<span class="font-medium text-fg-default">${author}</span>`
+          : ""
+      }
+          ${
+        author && date ? `<span class="opacity-40 px-1">&middot;</span>` : ""
+      }
+          ${date ? `<span>${date}</span>` : ""}
+        </div>`
+      : ""
+  }
+
+      <div class="${path !== "blog" ? "markdown-body" : ""}">
+        ${body}
+      </div>
+    </main>
+    <footer class="mt-auto">
+      <div class="max-w-[720px] mx-auto px-6 md:px-4 py-8 text-center text-[0.85rem] text-fg-muted border-t border-border-default">
+        <div class="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-1 opacity-70">
+          <span><a href="/LICENSE" class="hover:text-accent-fg transition-colors">MIT Licensed</a></span>
+          <span class="hidden md:inline mx-2 opacity-30">|</span>
+          <span>Made with ☕ by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-accent-fg transition-colors">Fastrodev</a></span>
+        </div>
+      </div>
+    </footer>
+    <script>
+      const menuToggle = document.getElementById('menu-toggle');
+      const navLinks = document.getElementById('nav-links');
+      const currentPath = "${path === "README.md" ? "/" : "/" + path}";
+      
+      // Set active link
+      document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+          link.classList.add('current-page');
+        }
+      });
+
+      menuToggle.addEventListener('click', () => {
+        const isActive = navLinks.classList.contains('active');
+        if (isActive) {
+          navLinks.classList.remove('active');
+          setTimeout(() => {
+            if (!navLinks.classList.contains('active')) {
+              navLinks.classList.add('hidden');
+            }
+          }, 300);
+        } else {
+          navLinks.classList.remove('hidden');
+          setTimeout(() => {
+            navLinks.classList.add('active');
+          }, 10);
+        }
+        menuToggle.classList.toggle('open');
+      });
+    </script>
+  </body>
+</html>`;
+  return new Response(html, {
+    headers: {
+      "content-type": "text/html",
+      "cache-control": "no-cache, no-store, must-revalidate",
+      "pragma": "no-cache",
+      "expires": "0",
+    },
+  });
+}
+
+export async function renderMD(path: string) {
+  const url = new URL(`../../${path}`, import.meta.url);
+  const content = await Deno.readTextFile(url);
+  return renderMD_Content(content, path);
+}
+
+export async function renderBlog() {
+  const postsDir = new URL("../../posts/", import.meta.url);
+  let html = `<h1 class="text-3xl font-bold mb-4">Fastro Blog</h1>
+  <p class="text-fg-muted mb-8 text-lg">Updates and insights from the Fastro team.</p>
+  <div class="space-y-4">`;
+
+  const entries: string[] = [];
+  for await (const entry of Deno.readDir(postsDir)) {
+    if (entry.isFile && entry.name.endsWith(".md")) {
+      entries.push(entry.name);
+    }
+  }
+
+  entries.sort().reverse();
+
+  for (const name of entries) {
+    const postUrl = new URL(`../../posts/${name}`, import.meta.url);
+    const content = await Deno.readTextFile(postUrl);
+    let title = name.replace(".md", "").replace(/-/g, " ");
+    let date = "";
+
+    if (content.startsWith("---")) {
+      const endIdx = content.indexOf("---", 3);
+      if (endIdx !== -1) {
+        const frontmatter = content.slice(3, endIdx);
+        const titleMatch = frontmatter.match(/title:\s*["']?(.*?)["']?$/m);
+        if (titleMatch) title = titleMatch[1];
+        const dateMatch = frontmatter.match(/date:\s*(.*?)$/m);
+        if (dateMatch) date = dateMatch[1];
+      }
+    }
+
+    const link = `/blog/${name.replace(".md", "")}`;
+    html += `
+      <a href="${link}" class="group block p-6 border border-border-default rounded-2xl hover:border-accent-fg hover:bg-canvas-subtle transition-all duration-300 no-underline shadow-sm hover:shadow-md">
+        <div class="flex items-baseline flex-nowrap w-full overflow-hidden gap-4">
+          <span class="text-xl font-bold text-fg-default group-hover:text-accent-fg transition-colors truncate tracking-tight">
+            ${title}
+          </span>
+          ${
+      date
+        ? `<span class="text-fg-muted text-sm shrink-0 flex items-center gap-2 whitespace-nowrap opacity-60">
+              <span class="opacity-30 select-none text-xs">&bullet;</span>
+              ${date}
+            </span>`
+        : ""
+    }
+        </div>
+      </a>`;
+  }
+
+  html += `</div>`;
+
+  return renderMD_Content(html, "blog");
+}
