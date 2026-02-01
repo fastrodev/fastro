@@ -460,14 +460,14 @@ export async function renderBlog() {
 
     const link = `/blog/${name.replace(".md", "")}`;
     html += `
-      <a href="${link}" class="group block p-5 md:p-6 border border-border-default rounded-2xl hover:border-accent-fg hover:bg-canvas-subtle transition-all duration-300 no-underline shadow-sm hover:shadow-md">
-        <div class="flex flex-col md:flex-row md:items-baseline justify-between w-full gap-3 md:gap-4">
-          <span class="text-xl font-bold text-fg-default group-hover:text-accent-fg transition-colors tracking-tight line-clamp-2">
+      <a href="${link}" class="relative group block p-5 md:p-6 border border-border-default rounded-2xl hover:border-accent-fg hover:bg-canvas-subtle transition-all duration-300 no-underline shadow-sm hover:shadow-md">
+        <div class="flex flex-row md:items-baseline justify-between w-full gap-3 md:gap-4">
+          <span class="text-xl font-bold text-fg-default group-hover:text-accent-fg transition-colors tracking-tight line-clamp-2 pr-20 md:pr-0">
             ${title}
           </span>
           ${
       date
-        ? `<span class="text-fg-muted text-[0.7rem] md:text-sm shrink-0 flex items-center gap-2 whitespace-nowrap opacity-60 md:opacity-40 self-end md:self-auto uppercase tracking-wider font-semibold">
+        ? `<span class="text-fg-muted text-[0.7rem] md:text-sm shrink-0 flex items-center gap-2 whitespace-nowrap opacity-60 md:opacity-40 absolute bottom-5 right-5 md:static uppercase tracking-wider font-semibold">
               ${date}
             </span>`
         : ""
