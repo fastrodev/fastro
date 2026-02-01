@@ -5,24 +5,20 @@ import "npm:prismjs@1.29.0/components/prism-typescript.js";
 import "npm:prismjs@1.29.0/components/prism-bash.js";
 import "npm:prismjs@1.29.0/components/prism-json.js";
 
-// Fetch the latest version from GitHub releases
+// Fetch the latest version from local version.json
 let cachedVersion: string | null = null;
 async function getVersion() {
   if (cachedVersion) return cachedVersion;
   try {
-    const res = await fetch(
-      "https://api.github.com/repos/fastrodev/fastro/releases/latest",
-      { headers: { "User-Agent": "Fastro-Docs" } },
-    );
-    if (res.ok) {
-      const { tag_name } = await res.json();
-      if (tag_name) {
-        cachedVersion = tag_name;
-        return cachedVersion;
-      }
+    const url = new URL("../../version.json", import.meta.url);
+    const content = await Deno.readTextFile(url);
+    const { version } = JSON.parse(content);
+    if (version) {
+      cachedVersion = version;
+      return cachedVersion;
     }
   } catch (_) {
-    // Fallback to hardcoded version in case of error
+    // Fallback in case of error
   }
   return "v1.0.0";
 }
@@ -151,13 +147,13 @@ export async function renderMD_Content(content: string, path: string) {
       }
       /* Hamburger Animation */
       #menu-toggle.open span:nth-child(1) {
-        transform: rotate(45deg) translate(6px, 6px);
+        transform: translateY(9px) rotate(45deg);
       }
       #menu-toggle.open span:nth-child(2) {
         opacity: 0;
       }
       #menu-toggle.open span:nth-child(3) {
-        transform: rotate(-45deg) translate(6px, -6px);
+        transform: translateY(-9px) rotate(-45deg);
       }
       /* Mobile Menu Transition */
       #nav-links {
@@ -165,18 +161,21 @@ export async function renderMD_Content(content: string, path: string) {
         max-height: 0;
         overflow: hidden;
         opacity: 0;
+        display: flex;
+        flex-direction: column;
       }
       #nav-links.active {
-        max-height: 400px;
+        max-height: 500px;
         opacity: 1;
         padding-bottom: 1.5rem;
-        padding-top: 0.5rem;
+        padding-top: 1rem;
       }
       @media (min-width: 768px) {
         #nav-links {
           max-height: none;
           opacity: 1;
           overflow: visible;
+          flex-direction: row;
           display: flex !important;
         }
       }
@@ -260,13 +259,13 @@ export async function renderMD_Content(content: string, path: string) {
             <span class="w-6 h-[2px] bg-fg-default rounded-full transition-all duration-300 origin-center"></span>
           </button>
         </div>
-        <nav id="nav-links" class="hidden md:flex flex-col md:flex-row w-full md:w-auto gap-5 md:gap-7 items-start md:items-center">
-          <a href="/" class="nav-link">Home</a>
-          <a href="/DOCS.md" class="nav-link">Docs</a>
-          <a href="/MIDDLEWARES.md" class="nav-link">Middlewares</a>
-          <a href="/SHOWCASE.md" class="nav-link">Showcase</a>
-          <a href="/BENCHMARK.md" class="nav-link">Benchmarks</a>
-          <a href="/blog" class="nav-link">Blog</a>
+        <nav id="nav-links" class="flex flex-col md:flex-row hidden md:flex w-full md:w-auto gap-5 md:gap-7 items-start md:items-center overflow-hidden">
+          <a href="/" class="nav-link py-1 md:py-0">Home</a>
+          <a href="/DOCS.md" class="nav-link py-1 md:py-0">Docs</a>
+          <a href="/MIDDLEWARES.md" class="nav-link py-1 md:py-0">Middlewares</a>
+          <a href="/SHOWCASE.md" class="nav-link py-1 md:py-0">Showcase</a>
+          <a href="/BENCHMARK.md" class="nav-link py-1 md:py-0">Benchmarks</a>
+          <a href="/blog" class="nav-link py-1 md:py-0">Blog</a>
         </nav>
       </div>
     </header>
