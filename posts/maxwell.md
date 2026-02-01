@@ -9,9 +9,7 @@ author: "Fastro Science"
 
 > **Note:** This article serves as a live demonstration of how the framework renders complex mathematical equations and vector calculus symbols perfectly using GFM and KaTeX.
 
-Imagine throwing a pebble into a calm pond. Ripples spread out across the water.
-In the 1800s, James Clerk Maxwell discovered that light is just like those
-ripples—but instead of water, the "waves" are made of electricity and magnetism.
+Imagine throwing a pebble into a calm pond and watching the ripples spread across the water. In the 1800s, James Clerk Maxwell discovered that light is just like those ripples—but instead of water, the "waves" are made of electricity and magnetism dancing through the void. This was more than just a mathematical triumph; it was the first strong indication that what we call a "vacuum" is not actually empty. Maxwell’s equations revealed that even the most perfect silence of space possesses mysterious properties that allow light to exist, travel, and illuminate the universe.
 
 ## 1. The Divine Dance: Electricity & Magnetism
 
