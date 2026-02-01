@@ -26,7 +26,7 @@ Add your awesome middlewares here!
 
 | Name                   | Description                                    | Author                                     | Link                                                                      |
 | :--------------------- | :--------------------------------------------- | :----------------------------------------- | :------------------------------------------------------------------------ |
-| **Simple Logger**      | A basic request logger that tracks start time. | [@fastrodev](https://github.com/fastrodev) | [View Source](/middlewares/logger.ts)                                     |
+| **Simple Logger**      | A basic request logger that tracks start time. | [@fastrodev](https://github.com/fastrodev) | [View Source](/middlewares/logger/logger.ts)                              |
 | **Example Middleware** | A starter template for your own logic.         | [@fastrodev](https://github.com/fastrodev) | [View Source](/CONTRIBUTING.md#3-practical-example-request-logger--state) |
 
 ---

@@ -73,9 +73,10 @@ export async function renderMD_Content(content: string, path: string) {
   }
 
   // 3. Render Body
+  const isMD = path.endsWith(".md") || path === "blog";
   const body = path === "blog"
     ? markdown
-    : render(markdown, { allowMath: true });
+    : render(markdown, { allowMath: isMD });
 
   // Fallback for document title
   const docTitle = title || `Fastro - ${path}`;
@@ -309,17 +310,18 @@ export async function renderMD_Content(content: string, path: string) {
         ${body}
       </div>
     </main>
-    <footer class="mt-auto">
-      <div class="max-w-[720px] mx-auto px-6 md:px-4 py-8 text-center text-[0.85rem] text-fg-muted border-t border-border-default">
-        <div class="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-1 opacity-70">
-          <span><a href="/LICENSE" class="hover:text-accent-fg transition-colors">MIT Licensed</a></span>
-          <span class="hidden md:inline mx-2 opacity-30">|</span>
-          <span><a href="https://github.com/fastrodev/fastro" target="_blank" class="hover:text-accent-fg transition-colors flex items-center gap-1.5 justify-center">
-            <svg height="1.1rem" width="1.1rem" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
-            GitHub
-          </a></span>
-          <span class="hidden md:inline mx-2 opacity-30">|</span>
-          <span>Made with ☕ by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-accent-fg transition-colors">Fastrodev</a></span>
+    <footer class="mt-auto border-t border-border-default">
+      <div class="max-w-[720px] mx-auto px-6 md:px-4 py-4 text-[0.85rem] text-fg-muted">
+        <div class="flex flex-row justify-between items-center gap-2 md:gap-1 opacity-70">
+        <span>Made with ☕ by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-accent-fg transition-colors">Fastrodev</a></span>  
+        <div class="flex items-center gap-2 md:gap-1">
+            <span><a href="/LICENSE" class="hover:text-accent-fg transition-colors">MIT Licensed</a></span>
+            <span class="hidden md:inline mx-2 opacity-30">|</span>
+            <span><a href="https://github.com/fastrodev/fastro" target="_blank" class="hover:text-accent-fg transition-colors flex items-center gap-1.5 justify-center">
+              <svg height="1.1rem" width="1.1rem" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+              GitHub
+            </a></span>
+          </div>         
         </div>
       </div>
     </footer>
@@ -356,56 +358,7 @@ export async function renderMD_Content(content: string, path: string) {
   </body>
 </html>`;
 
-  // Safe minification: Compact HTML, CSS, and JS while preserving code blocks
-  const parts = html.split(
-    /(<pre[\s\S]*?<\/pre>|<code[\s\S]*?<\/code>|<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>)/g,
-  );
-  const compactHtml = parts
-    .map((part, i) => {
-      if (i % 2 === 1) {
-        // Minify Script blocks
-        if (part.startsWith("<script")) {
-          return part.replace(
-            /(<script[\s\S]*?>)([\s\S]*?)(<\/script>)/gi,
-            (_, start, content, end) => {
-              const minified = content
-                .replace(/\/\*[\s\S]*?\*\//g, "") // Remove block comments
-                .replace(/\/\/\s+.*?\n/g, " ") // Remove single line comments
-                .replace(/\s+/g, " ") // Collapse whitespace
-                .trim();
-              return `${start}${minified}${end}`;
-            },
-          );
-        }
-        // Minify Style blocks
-        if (part.startsWith("<style")) {
-          return part.replace(
-            /(<style[\s\S]*?>)([\s\S]*?)(<\/style>)/gi,
-            (_, start, content, end) => {
-              const minified = content
-                .replace(/\/\*[\s\S]*?\*\//g, "") // Remove comments
-                .replace(/\n\s+/g, " ") // Remove newlines and indentation
-                .replace(/\s+/g, " ") // Collapse whitespace
-                .replace(/\s*([{}:;,])\s*/g, "$1") // Remove spaces around symbols
-                .replace(/;\}/g, "}") // Remove trailing semicolon
-                .trim();
-              return `${start}${minified}${end}`;
-            },
-          );
-        }
-        return part; // Return pre/code blocks unchanged
-      }
-      return part
-        .replace(/<!--[\s\S]*?-->/g, "") // Remove HTML comments
-        .replace(/\s+/g, " ") // Collapse whitespaces
-        .replace(/>\s+</g, "><") // Remove space between tags
-        .replace(/\s*([{}:;])\s*/g, "$1") // Remove spaces around symbols in inline styles if any
-        .trim();
-    })
-    .join("")
-    .trim();
-
-  return new Response(compactHtml, {
+  return new Response(html, {
     headers: {
       "content-type": "text/html",
       "cache-control": "no-cache, no-store, must-revalidate",
@@ -455,15 +408,14 @@ export async function renderBlog() {
 
     const link = `/blog/${name.replace(".md", "")}`;
     html += `
-      <a href="${link}" class="group block p-6 border border-border-default rounded-2xl hover:border-accent-fg hover:bg-canvas-subtle transition-all duration-300 no-underline shadow-sm hover:shadow-md">
-        <div class="flex items-baseline flex-nowrap w-full overflow-hidden gap-4">
-          <span class="text-xl font-bold text-fg-default group-hover:text-accent-fg transition-colors truncate tracking-tight">
+      <a href="${link}" class="group block p-5 md:p-6 border border-border-default rounded-2xl hover:border-accent-fg hover:bg-canvas-subtle transition-all duration-300 no-underline shadow-sm hover:shadow-md">
+        <div class="flex flex-col md:flex-row md:items-baseline justify-between w-full gap-3 md:gap-4">
+          <span class="text-xl font-bold text-fg-default group-hover:text-accent-fg transition-colors tracking-tight line-clamp-2">
             ${title}
           </span>
           ${
       date
-        ? `<span class="text-fg-muted text-sm shrink-0 flex items-center gap-2 whitespace-nowrap opacity-60">
-              <span class="opacity-30 select-none text-xs">&bullet;</span>
+        ? `<span class="text-fg-muted text-[0.7rem] md:text-sm shrink-0 flex items-center gap-2 whitespace-nowrap opacity-60 md:opacity-40 self-end md:self-auto uppercase tracking-wider font-semibold">
               ${date}
             </span>`
         : ""

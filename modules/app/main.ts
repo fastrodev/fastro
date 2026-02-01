@@ -13,7 +13,10 @@ app.get("/CONTRIBUTING.md", () => renderMD("CONTRIBUTING.md"));
 app.get("/blog", () => renderBlog());
 app.get("/blog/:post", (_req, ctx) => renderMD(`posts/${ctx.params.post}.md`));
 
-app.get("/middlewares/logger.ts", () => renderCode("middlewares/logger.ts"));
+app.get(
+  "/middlewares/logger/logger.ts",
+  () => renderCode("middlewares/logger/logger.ts"),
+);
 app.get("/LICENSE", () => renderCode("LICENSE"));
 
 app.serve({ port: parseInt(Deno.args[0]) || 8000 });
