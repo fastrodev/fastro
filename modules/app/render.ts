@@ -74,9 +74,7 @@ export async function renderMD_Content(content: string, path: string) {
 
   // 3. Render Body
   // const isMD = path.endsWith(".md") || path === "blog";
-  const body = path === "blog"
-    ? markdown
-    : render(markdown, { allowMath: true });
+  const body = path === "blog" ? markdown : render(markdown);
 
   // Fallback for document title
   const docTitle = title || `Fastro - ${path}`;
@@ -104,13 +102,20 @@ export async function renderMD_Content(content: string, path: string) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
-      onload="renderMathInElement(document.body, {
-        delimiters: [
-          {left: '$$', right: '$$', display: true},
-          {left: '$', right: '$', display: false},
-        ],
-        throwOnError : false
-      });"></script>
+      onload="
+        const mdBody = document.querySelector('.markdown-body');
+        if (mdBody) {
+          renderMathInElement(mdBody, {
+            delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+            ],
+            ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            ignoredClasses: ['katex-ignore', 'prism-code', 'language-typescript', 'language-bash', 'language-json'],
+            throwOnError : false
+          });
+        }
+      "></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -319,19 +324,6 @@ export async function renderMD_Content(content: string, path: string) {
     </header>
     <main class="max-w-[720px] mx-auto p-6 md:p-8 flex-1 w-full box-border text-[var(--color-fg-default)]">
       ${
-    path !== "blog"
-      ? `<div class="edit-container">
-        <a href="https://github.com/fastrodev/fastro/edit/main/${path}" 
-           target="_blank" 
-           class="edit-link">
-          <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-          Edit this page
-        </a>
-      </div>`
-      : ""
-  }
-      
-      ${
     path !== "blog" && title
       ? `<h1 class="text-[2.5rem] font-extrabold leading-tight mb-4 text-fg-default">${title}</h1>`
       : ""
@@ -358,6 +350,19 @@ export async function renderMD_Content(content: string, path: string) {
   }" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
         ${body}
       </div>
+
+      ${
+    path !== "blog"
+      ? `<div class="flex justify-end mt-12 mb-0">
+            <a href="https://github.com/fastrodev/fastro/edit/main/${path}" 
+               target="_blank" 
+               class="edit-link text-[0.8rem] opacity-60 hover:opacity-100 transition-opacity">
+              <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              Edit this page
+            </a>
+          </div>`
+      : ""
+  }
     </main>
     <footer class="mt-auto border-t border-border-default">
       <div class="max-w-[720px] mx-auto px-6 md:px-4 py-4 text-[0.85rem] text-fg-muted">
