@@ -13,10 +13,9 @@ a Pull Request.
 
 These middlewares are maintained by the Fastro core team.
 
-| Name             | Description                         | Source   |
-| :--------------- | :---------------------------------- | :------- |
-| **Logger**       | Standard request/response logging.  | Built-in |
-| **Static Cache** | Intelligent LRU caching for routes. | Built-in |
+| Name       | Description                        | Source                                  |
+| :--------- | :--------------------------------- | :-------------------------------------- |
+| **Logger** | Standard request/response logging. | [Source](/middlewares/logger/logger.ts) |
 
 ---
 
@@ -24,10 +23,9 @@ These middlewares are maintained by the Fastro core team.
 
 Add your awesome middlewares here!
 
-| Name                   | Description                                    | Author                                     | Link                                                                      |
-| :--------------------- | :--------------------------------------------- | :----------------------------------------- | :------------------------------------------------------------------------ |
-| **Simple Logger**      | A basic request logger that tracks start time. | [@fastrodev](https://github.com/fastrodev) | [View Source](/middlewares/logger/logger.ts)                              |
-| **Example Middleware** | A starter template for your own logic.         | [@fastrodev](https://github.com/fastrodev) | [View Source](/CONTRIBUTING.md#3-practical-example-request-logger--state) |
+| Name                   | Description                            | Author                                     | Link                                                                      |
+| :--------------------- | :------------------------------------- | :----------------------------------------- | :------------------------------------------------------------------------ |
+| **Example Middleware** | A starter template for your own logic. | [@fastrodev](https://github.com/fastrodev) | [View Source](/CONTRIBUTING.md#3-practical-example-request-logger--state) |
 
 ---
 
