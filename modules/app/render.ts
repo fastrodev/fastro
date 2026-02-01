@@ -350,29 +350,22 @@ export async function renderMD_Content(content: string, path: string) {
   }" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
         ${body}
       </div>
-
-      ${
-    path !== "blog"
-      ? `<div class="flex justify-end mt-12 mb-0">
-            <a href="https://github.com/fastrodev/fastro/edit/main/${path}" 
-               target="_blank" 
-               class="edit-link text-[0.8rem] opacity-60 hover:opacity-100 transition-opacity">
-              <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-              Edit this page
-            </a>
-          </div>`
-      : ""
-  }
     </main>
     <footer class="mt-auto border-t border-border-default">
-      <div class="max-w-[720px] mx-auto px-6 md:px-4 py-4 text-[0.85rem] text-fg-muted">
+      <div class="max-w-[720px] mx-auto px-6 md:px-4 py-4 text-[0.75rem] text-fg-muted">
         <div class="flex flex-row justify-between items-center gap-2 md:gap-1 opacity-70">
-        <span>Made with ☕ by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-accent-fg transition-colors">Fastrodev</a></span>  
-        <div class="flex items-center gap-2 md:gap-1">
-            <span><a href="https://github.com/fastrodev/fastro" target="_blank" class="hover:text-accent-fg transition-colors flex items-center gap-1.5 justify-center">
-              <svg height="1.1rem" width="1.1rem" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
-              GitHub
-            </a></span>
+          <span>Made with ☕ by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-accent-fg transition-colors">Fastrodev</a></span>  
+          <div class="flex items-center gap-4 md:gap-6">
+            ${
+    path !== "blog"
+      ? `<a href="https://github.com/fastrodev/fastro/edit/main/${path}" 
+               target="_blank" 
+               class="hover:text-accent-fg transition-colors flex items-center gap-1.5">
+                <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                <span>Edit this page</span>
+              </a>`
+      : ""
+  }
           </div>         
         </div>
       </div>
@@ -460,14 +453,14 @@ export async function renderBlog() {
 
     const link = `/blog/${name.replace(".md", "")}`;
     html += `
-      <a href="${link}" class="group block p-5 md:p-6 border border-border-default rounded-2xl hover:border-accent-fg hover:bg-canvas-subtle transition-all duration-300 no-underline shadow-sm hover:shadow-md">
-        <div class="flex flex-col md:flex-row md:items-baseline justify-between w-full gap-3 md:gap-4">
-          <span class="text-xl font-bold text-fg-default group-hover:text-accent-fg transition-colors tracking-tight line-clamp-2">
+      <a href="${link}" class="relative group block p-5 md:p-6 border border-border-default rounded-2xl hover:border-accent-fg hover:bg-canvas-subtle transition-all duration-300 no-underline shadow-sm hover:shadow-md">
+        <div class="flex flex-row md:items-baseline justify-between w-full gap-3 md:gap-4">
+          <span class="text-xl font-bold text-fg-default group-hover:text-accent-fg transition-colors tracking-tight line-clamp-2 pr-20 md:pr-0">
             ${title}
           </span>
           ${
       date
-        ? `<span class="text-fg-muted text-[0.7rem] md:text-sm shrink-0 flex items-center gap-2 whitespace-nowrap opacity-60 md:opacity-40 self-end md:self-auto uppercase tracking-wider font-semibold">
+        ? `<span class="text-fg-muted text-[0.7rem] md:text-sm shrink-0 flex items-center gap-2 whitespace-nowrap opacity-60 md:opacity-40 absolute bottom-5 right-5 md:static uppercase tracking-wider font-semibold">
               ${date}
             </span>`
         : ""
