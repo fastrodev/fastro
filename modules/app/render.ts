@@ -421,47 +421,55 @@ export async function renderMD(path: string) {
 
 export async function renderBlog() {
   const postsDir = new URL("../../posts/", import.meta.url);
+  const posts: { title: string; date: string; link: string }[] = [];
+
+  for await (const entry of Deno.readDir(postsDir)) {
+    if (entry.isFile && entry.name.endsWith(".md")) {
+      const name = entry.name;
+      const postUrl = new URL(`../../posts/${name}`, import.meta.url);
+      const content = await Deno.readTextFile(postUrl);
+      let title = name.replace(".md", "").replace(/-/g, " ");
+      let date = "";
+
+      if (content.startsWith("---")) {
+        const endIdx = content.indexOf("---", 3);
+        if (endIdx !== -1) {
+          const frontmatter = content.slice(3, endIdx);
+          const titleMatch = frontmatter.match(/title:\s*["']?(.*?)["']?$/m);
+          if (titleMatch) title = titleMatch[1].trim();
+          const dateMatch = frontmatter.match(/date:\s*(.*?)$/m);
+          if (dateMatch) date = dateMatch[1].trim();
+        }
+      }
+
+      posts.push({
+        title,
+        date,
+        link: `/blog/${name.replace(".md", "")}`,
+      });
+    }
+  }
+
+  // Sort by date DESC
+  posts.sort((a, b) => {
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+
   let html = `<h1 class="text-3xl font-bold mb-4">Fastro Blog</h1>
   <p class="text-fg-muted mb-8 text-lg">Updates and insights from the Fastro team.</p>
   <div class="space-y-4">`;
 
-  const entries: string[] = [];
-  for await (const entry of Deno.readDir(postsDir)) {
-    if (entry.isFile && entry.name.endsWith(".md")) {
-      entries.push(entry.name);
-    }
-  }
-
-  entries.sort().reverse();
-
-  for (const name of entries) {
-    const postUrl = new URL(`../../posts/${name}`, import.meta.url);
-    const content = await Deno.readTextFile(postUrl);
-    let title = name.replace(".md", "").replace(/-/g, " ");
-    let date = "";
-
-    if (content.startsWith("---")) {
-      const endIdx = content.indexOf("---", 3);
-      if (endIdx !== -1) {
-        const frontmatter = content.slice(3, endIdx);
-        const titleMatch = frontmatter.match(/title:\s*["']?(.*?)["']?$/m);
-        if (titleMatch) title = titleMatch[1];
-        const dateMatch = frontmatter.match(/date:\s*(.*?)$/m);
-        if (dateMatch) date = dateMatch[1];
-      }
-    }
-
-    const link = `/blog/${name.replace(".md", "")}`;
+  for (const post of posts) {
     html += `
-      <a href="${link}" class="relative group block p-5 md:p-6 border border-border-default rounded-2xl hover:border-accent-fg hover:bg-canvas-subtle transition-all duration-300 no-underline shadow-sm hover:shadow-md">
+      <a href="${post.link}" class="relative group block p-5 md:p-6 border border-border-default rounded-2xl hover:border-accent-fg hover:bg-canvas-subtle transition-all duration-300 no-underline shadow-sm hover:shadow-md">
         <div class="flex flex-row md:items-baseline justify-between w-full gap-3 md:gap-4">
           <span class="text-xl font-bold text-fg-default group-hover:text-accent-fg transition-colors tracking-tight line-clamp-2 pr-20 md:pr-0">
-            ${title}
+            ${post.title}
           </span>
           ${
-      date
+      post.date
         ? `<span class="text-fg-muted text-[0.7rem] md:text-sm shrink-0 flex items-center gap-2 whitespace-nowrap opacity-60 md:opacity-40 absolute bottom-5 right-5 md:static uppercase tracking-wider font-semibold">
-              ${date}
+              ${post.date}
             </span>`
         : ""
     }
