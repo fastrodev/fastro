@@ -722,3 +722,82 @@ Deno.test("createRouteMiddleware - fallthrough to next matching route in same bu
   const res2 = await middleware(req, ctx, next);
   assertEquals(await res2.text(), "Second Match");
 });
+
+Deno.test("createRouteMiddleware - handles object return", async () => {
+  const handler: Handler = () => ({ hello: "world" });
+  const routes: Route[] = [{ method: "GET", path: "/json", handler }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/json");
+  const ctx: Context = {
+    url: new URL(req.url),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
+
+  const response = await middleware(req, ctx, next);
+  assertEquals(await (response as Response).json(), { hello: "world" });
+});
+
+Deno.test("createRouteMiddleware - handles async object return", async () => {
+  const handler: Handler = async () => {
+    await new Promise((r) => setTimeout(r, 1));
+    return { async: "json" };
+  };
+  const routes: Route[] = [{ method: "GET", path: "/async-json", handler }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/async-json");
+  const ctx: Context = {
+    url: new URL(req.url),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
+
+  const response = await middleware(req, ctx, next);
+  assertEquals(await (response as Response).json(), { async: "json" });
+});
+
+Deno.test("createRouteMiddleware - cache hit without middlewares", async () => {
+  const handler: Handler = () => new Response("OK");
+  const routes: Route[] = [{ method: "GET", path: "/cache-no-mw", handler }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost/cache-no-mw");
+  const ctx: Context = {
+    url: new URL(req.url),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
+
+  // First call - miss
+  await middleware(req, ctx, next);
+  // Second call - hit
+  const res = await middleware(req, ctx, next);
+  assertEquals(await res.text(), "OK");
+});
+
+Deno.test("createRouteMiddleware - cache size limit", async () => {
+  const routes: Route[] = [{
+    method: "GET",
+    path: "/test",
+    handler: () => "OK",
+  }];
+  const middleware = build(routes);
+  const next = () => new Response("Next");
+
+  // Fill cache with many entries
+  for (let i = 0; i < 1005; i++) {
+    const req = new Request(`http://localhost/test?i=${i}`);
+    const ctx: Context = {
+      url: new URL(req.url),
+      params: {},
+      query: {},
+      remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+    };
+    await middleware(req, ctx, next);
+  }
+});
