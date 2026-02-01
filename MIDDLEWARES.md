@@ -7,7 +7,6 @@ middlewares created by the community.
 [Contributing Guide](/CONTRIBUTING.md) and add your middleware to this list via
 a Pull Request.
 
----
 
 ## 🛠️ Official Middlewares
 
@@ -17,7 +16,6 @@ These middlewares are maintained by the Fastro core team.
 | :--------- | :--------------------------------- | :-------------------------------------- |
 | **Logger** | Standard request/response logging. | [Source](/middlewares/logger/logger.ts) |
 
----
 
 ## 🤝 Community Middlewares
 
@@ -27,7 +25,6 @@ Add your awesome middlewares here!
 | :--------------------- | :------------------------------------- | :----------------------------------------- | :------------------------------------------------------------------------ |
 | **Example Middleware** | A starter template for your own logic. | [@fastrodev](https://github.com/fastrodev) | [View Source](/CONTRIBUTING.md#3-practical-example-request-logger--state) |
 
----
 
 ### How to add your middleware here:
 

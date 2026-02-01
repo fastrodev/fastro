@@ -6,8 +6,6 @@ Fastro is the bridge between **raw Deno performance** and **elite developer
 experience**. Stop compromising between speed and simplicity. Build secure,
 scalable APIs with zero boilerplate and maximum throughput.
 
----
-
 ## 🚀 Why Fastro?
 
 - **💨 Near-Native Performance**: Benchmark-proven to maintain **>90% of raw
@@ -21,7 +19,6 @@ scalable APIs with zero boilerplate and maximum throughput.
 - **💎 Rock-Solid Core**: 100% test coverage and deep TypeScript integration
   ensure your app stays stable from dev to production.
 
----
 
 ## ✨ Features
 
@@ -36,7 +33,6 @@ scalable APIs with zero boilerplate and maximum throughput.
 - **Benchmark-First**: Built-in verification tools to ensure your application
   remains as fast as native Deno.
 
----
 
 ## 📊 Performance That Matters
 
@@ -54,7 +50,6 @@ Don't take our word for it. Benchmarks conducted using **Grafana k6** (100 VUs,
 
 Check the [detailed benchmark report](BENCHMARK.md).
 
----
 
 ## 🛠️ Quick Start
 
@@ -82,14 +77,12 @@ app.use((req, ctx, next) => {
 await app.serve({ port: 8000 });
 ```
 
----
 
 ## 📖 Documentation
 
 Master Fastro in minutes with our [comprehensive guide](DOCS.md), covering
 everything from routing to deep-level middleware.
 
----
 
 ## 🏗️ Development
 
@@ -106,7 +99,6 @@ deno task cov
 deno task bench
 ```
 
----
 
 ## 🤝 Community & Contributing
 

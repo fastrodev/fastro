@@ -17,13 +17,13 @@
   "[javascript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
-  "[markdown]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
-  },
   "css.customData": [
     ".vscode/tailwind.json"
   ],
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features"
+  },
+  "[markdown]": {
+    "editor.formatOnSave": false
   }
 }

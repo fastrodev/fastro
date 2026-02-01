@@ -1,4 +1,4 @@
-import { CSS, render } from "@deno/gfm";
+import { CSS, KATEX_CSS, render } from "@deno/gfm";
 
 // Add support for syntax highlighting
 import "npm:prismjs@1.29.0/components/prism-typescript.js";
@@ -73,10 +73,10 @@ export async function renderMD_Content(content: string, path: string) {
   }
 
   // 3. Render Body
-  const isMD = path.endsWith(".md") || path === "blog";
+  // const isMD = path.endsWith(".md") || path === "blog";
   const body = path === "blog"
     ? markdown
-    : render(markdown, { allowMath: isMD });
+    : render(markdown, { allowMath: true });
 
   // Fallback for document title
   const docTitle = title || `Fastro - ${path}`;
@@ -102,6 +102,15 @@ export async function renderMD_Content(content: string, path: string) {
     <meta property="twitter:image" content="${image}">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+      onload="renderMathInElement(document.body, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+        ],
+        throwOnError : false
+      });"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -206,7 +215,9 @@ export async function renderMD_Content(content: string, path: string) {
       .post-meta {
         font-size: 0.9rem;
         color: var(--color-fg-muted);
-        margin-bottom: 2.5rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -244,6 +255,42 @@ export async function renderMD_Content(content: string, path: string) {
         }
       }
       ${CSS}
+      ${KATEX_CSS}
+
+      /* Custom Markdown Overrides */
+      .markdown-body hr {
+        height: 0 !important;
+        margin: 2rem 0 !important;
+        border: 0 !important;
+        border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted)) !important;
+        opacity: 0.5 !important;
+      }
+      @media (max-width: 768px) {
+        .markdown-body hr {
+          margin: 2.5rem 0 !important;
+        }
+      }
+
+      /* Custom Scrollbar Styles */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--color-border-default);
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--color-fg-muted);
+      }
+      /* Firefox support */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-border-default) transparent;
+      }
     </style>
   </head>
   <body data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
@@ -306,7 +353,9 @@ export async function renderMD_Content(content: string, path: string) {
       : ""
   }
 
-      <div class="${path !== "blog" ? "markdown-body" : ""}">
+      <div class="${
+    path !== "blog" ? "markdown-body" : ""
+  }" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
         ${body}
       </div>
     </main>
@@ -315,8 +364,6 @@ export async function renderMD_Content(content: string, path: string) {
         <div class="flex flex-row justify-between items-center gap-2 md:gap-1 opacity-70">
         <span>Made with ☕ by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-accent-fg transition-colors">Fastrodev</a></span>  
         <div class="flex items-center gap-2 md:gap-1">
-            <span><a href="/LICENSE" class="hover:text-accent-fg transition-colors">MIT Licensed</a></span>
-            <span class="hidden md:inline mx-2 opacity-30">|</span>
             <span><a href="https://github.com/fastrodev/fastro" target="_blank" class="hover:text-accent-fg transition-colors flex items-center gap-1.5 justify-center">
               <svg height="1.1rem" width="1.1rem" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
               GitHub

@@ -7,7 +7,6 @@ apps, and websites powered by the Fastro framework.
 [Contributing Guide](/CONTRIBUTING.md) and add your project to this list via a
 Pull Request.
 
----
 
 ## 🌟 Featured Projects
 
@@ -19,7 +18,6 @@ These projects demonstrate the power and speed of Fastro.
 | **Fastro Blog** | A modern, markdown-based blog engine with $\LaTeX$ and syntax highlighting. | [View Blog](/blog)                                                       |
 | **Simple API**  | A minimalist REST API example showing raw Deno performance.                 | [Example](/CONTRIBUTING.md)                                              |
 
----
 
 ## 🏗️ Community Projects
 
@@ -29,7 +27,6 @@ Have you built something with Fastro? Add it here!
 | :------------------- | :----------------------------------------------------- | :----------------------------------------------- | :---------------------- |
 | **Your Awesome App** | Briefly describe what your app does and why it's cool. | [@yourusername](https://github.com/yourusername) | [Live Demo / Source](#) |
 
----
 
 ### How to add your project:
 
