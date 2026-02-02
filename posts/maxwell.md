@@ -133,24 +133,28 @@ Using his 4th equation, Maxwell realized he could replace the magnetic part $(\n
 \nabla^2 \mathbf{E} = \mu_0 \epsilon_0 \frac{\partial^2 \mathbf{E}}{\partial t^2}
 ```
 
-### Step 3: Extracting the Speed Limit
+### Step 3: Discovering the Speed Limit
 
-In physics, a wave equation has a very specific "recipe" that works for everything from sound in air to ripples in water:
+In physics, every wave (whether it's sound in air or a ripple on a pond) follows a universal "recipe" called the **Wave Equation**:
+
 ```math
-\text{How the field curves in Space} = \left( \frac{1}{v^2} \right) \times \text{How it vibrates in Time}
+\underbrace{\nabla^2 \mathbf{E}}_{\text{Curvature in Space}} = \underbrace{\left( \frac{1}{v^2} \right)}_{\text{The Speed Factor}} \times \underbrace{\frac{\partial^2 \mathbf{E}}{\partial t^2}}_{\text{Acceleration in Time}}
 ```
 
-**The Logical Sequence:**
-1.  **The Universal Template:** Maxwell noticed that his derived equation ($\nabla^2 \mathbf{E} = \mu_0 \epsilon_0 \frac{\partial^2 \mathbf{E}}{\partial t^2}$) matched this universal recipe perfectly. This was his smoking gun: electricity wasn't just "static" or "flowing"—it was **waving**.
-2.  **The "Stiffness" of Reality:** The term $\mu_0 \epsilon_0$ behaves like the "drag" or "inertia" of empty space. If space were "stiffer" or more resistant to fields, these constants would be larger, and the wave would move slower. 
-3.  **The Speed Identity:** By comparing the two formulas, he realized that $\frac{1}{v^2}$ must be exactly equal to $\mu_0 \epsilon_0$. This allowed him to isolate the velocity ($v$) mathematically.
-4.  **The Moment of Truth:** 
-    ```math
-    \frac{1}{v^2} = \mu_0 \epsilon_0 \implies v = \frac{1}{\sqrt{\mu_0 \epsilon_0}}
-    ```
-    When he plugged in the values for $\mu_0$ (magnetism constant) and $\epsilon_0$ (electricity constant) measured from simple laboratory experiments, the result was a number that matched the known speed of light almost perfectly.
+**The Logical Sequence of Discovery:**
 
-**The Conclusion:** Maxwell realized that light isn't a separate "thing" created by a special source—it is simply the speed at which the universe allows electric and magnetic information to travel through the void.
+1.  **The Perfect Match:** Maxwell looked at his derived equation ($\nabla^2 \mathbf{E} = \mu_0 \epsilon_0 \frac{\partial^2 \mathbf{E}}{\partial t^2}$) and saw that it was a perfect twin of the universal wave recipe. There was no longer any doubt: electricity and magnetism don't just "sit" there—they **propagate as a wave**.
+2.  **The Hidden Identity:** By comparing his result to the universal formula, Maxwell realized that the "Speed Factor" ($1/v^2$) in nature's recipe was exactly filled by the two constants of space ($\mu_0 \epsilon_0$). 
+    - This meant the speed ($v$) was not arbitrary; it was dictated by the electrical and magnetic "stiffness" of the vacuum itself.
+3.  **The Moment of Truth:** He isolated the $v$ and performed the final calculation:
+    ```math
+    v = \frac{1}{\sqrt{\mu_0 \epsilon_0}}
+    ```
+4.  **The Shocking Result:** When he plugged in the values for $\mu_0$ and $\epsilon_0$ (which physicists had measured in small labs using batteries and magnets), the result was **310,740,000 meters per second**. 
+
+Maxwell knew from astronomical observations that the speed of light was roughly **300,000,000 meters per second**. The similarity was too perfect to be a coincidence. He had just discovered that light is not its own "substance"—it is the result of electricity and magnetism leap-frogging through the void at the maximum speed the fabric of space allowed.
+
+**The Conclusion:** Light is an electromagnetic wave. This single calculation unified optics, electricity, and magnetism into one single field of science.
 
 ## The Final Revelation
 

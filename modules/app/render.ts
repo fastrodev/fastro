@@ -74,6 +74,7 @@ export async function renderMD_Content(content: string, path: string) {
 
   // 3. Render Body
   const isMD = path.endsWith(".md") || path === "blog";
+  const isBlogPost = path.startsWith("posts/");
   const body = path === "blog"
     ? markdown
     : render(markdown, { allowMath: isMD });
@@ -303,6 +304,64 @@ export async function renderMD_Content(content: string, path: string) {
         scrollbar-width: thin;
         scrollbar-color: var(--color-border-default) transparent;
       }
+
+      /* Consonant Design: Medium-inspired Typography */
+      :root {
+        --font-serif: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+        --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      }
+
+      .blog-post-header {
+        font-family: var(--font-sans);
+      }
+
+      .blog-post-content {
+        font-family: var(--font-serif) !important;
+        font-size: 1.15rem !important;
+        font-weight: 400 !important;
+        line-height: 1.75 !important;
+        color: var(--color-fg-default) !important;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+
+      .blog-post-content p {
+        margin-bottom: 2rem !important;
+      }
+
+      .blog-post-content h2, 
+      .blog-post-content h3 {
+        font-family: var(--font-serif) !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.015em !important;
+        margin-top: 2.5rem !important;
+        margin-bottom: 0.8rem !important;
+        line-height: 1.2 !important;
+        color: var(--color-fg-default) !important;
+      }
+      
+      .blog-post-content h2 { font-size: 1.85rem !important; }
+      .blog-post-content h3 { font-size: 1.5rem !important; }
+
+      .blog-post-content blockquote {
+        font-family: var(--font-serif) !important;
+        font-style: italic;
+        font-size: 1.2rem;
+        border-left: 2px solid var(--color-fg-default) !important;
+        padding-left: 1.25rem !important;
+        margin: 2rem 0 !important;
+        color: var(--color-fg-muted);
+        line-height: 1.6 !important;
+      }
+
+      .blog-post-content code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+        font-size: 0.85em !important;
+        background: var(--color-canvas-subtle);
+        padding: 0.2em 0.4em;
+        border-radius: 4px;
+      }
     </style>
   </head>
   <body data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
@@ -332,28 +391,31 @@ export async function renderMD_Content(content: string, path: string) {
     <main class="max-w-[720px] mx-auto p-6 md:p-8 flex-1 w-full box-border text-[var(--color-fg-default)]">
       ${
     path !== "blog" && title
-      ? `<h1 class="text-[2.5rem] font-extrabold leading-tight mb-4 text-fg-default">${title}</h1>`
+      ? `<h1 class="${
+        isBlogPost
+          ? "blog-post-header text-[2.25rem] md:text-[3rem] font-black !leading-[1.1] tracking-tighter"
+          : "text-[2.25rem] font-bold leading-tight"
+      } mb-6 text-fg-default">${title}</h1>`
       : ""
   }
 
       ${
     (date || author) && path !== "blog"
-      ? `<div class="post-meta">
+      ? `<div class="post-meta ${
+        isBlogPost ? "mb-10 opacity-100 font-sans text-[0.95rem] !gap-4" : ""
+      }">
           ${
         author
           ? `<span class="font-medium text-fg-default">${author}</span>`
           : ""
       }
-          ${
-        author && date ? `<span class="opacity-40 px-1">&middot;</span>` : ""
-      }
-          ${date ? `<span>${date}</span>` : ""}
+          ${date ? `<span class="text-fg-muted opacity-60">${date}</span>` : ""}
         </div>`
       : ""
   }
 
-      <div class="${
-    path !== "blog" ? "markdown-body" : ""
+      <div class="${path !== "blog" ? "markdown-body" : ""} ${
+    isBlogPost ? "blog-post-content" : ""
   }" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
         ${body}
       </div>
