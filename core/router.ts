@@ -114,6 +114,13 @@ export function build(routes: Route[]): Middleware {
   };
 }
 
+/**
+ * Matches a request path against a route path pattern.
+ *
+ * @param routePath The path pattern defined for the route (e.g., /users/:id).
+ * @param requestPath The actual request pathname to match.
+ * @returns An object containing parsed parameters if matched, or null if not matched.
+ */
 export function matchPath(
   routePath: string,
   requestPath: string,
@@ -187,6 +194,10 @@ class RouteBuilder {
 
   /**
    * Registers a PUT route in this router.
+   *
+   * @param path The URL path.
+   * @param handler Function to process the request.
+   * @param middlewares Optional middlewares for this specific route.
    */
   put(path: string, handler: Handler, ...middlewares: Middleware[]): this {
     this.routes.push({ method: "PUT", path, handler, middlewares });
@@ -195,6 +206,10 @@ class RouteBuilder {
 
   /**
    * Registers a DELETE route in this router.
+   *
+   * @param path The URL path.
+   * @param handler Function to process the request.
+   * @param middlewares Optional middlewares for this specific route.
    */
   delete(path: string, handler: Handler, ...middlewares: Middleware[]): this {
     this.routes.push({ method: "DELETE", path, handler, middlewares });
@@ -203,6 +218,10 @@ class RouteBuilder {
 
   /**
    * Registers a PATCH route in this router.
+   *
+   * @param path The URL path.
+   * @param handler Function to process the request.
+   * @param middlewares Optional middlewares for this specific route.
    */
   patch(path: string, handler: Handler, ...middlewares: Middleware[]): this {
     this.routes.push({ method: "PATCH", path, handler, middlewares });
@@ -211,6 +230,10 @@ class RouteBuilder {
 
   /**
    * Registers a HEAD route in this router.
+   *
+   * @param path The URL path.
+   * @param handler Function to process the request.
+   * @param middlewares Optional middlewares for this specific route.
    */
   head(path: string, handler: Handler, ...middlewares: Middleware[]): this {
     this.routes.push({ method: "HEAD", path, handler, middlewares });
@@ -219,6 +242,10 @@ class RouteBuilder {
 
   /**
    * Registers an OPTIONS route in this router.
+   *
+   * @param path The URL path.
+   * @param handler Function to process the request.
+   * @param middlewares Optional middlewares for this specific route.
    */
   options(path: string, handler: Handler, ...middlewares: Middleware[]): this {
     this.routes.push({ method: "OPTIONS", path, handler, middlewares });
@@ -228,6 +255,8 @@ class RouteBuilder {
   /**
    * Compiles defined routes into a single Fastro middleware.
    * Call this when you're finished defining routes in the builder.
+   *
+   * @returns A Fastro-compatible middleware function.
    */
   build(): Middleware {
     return build(this.routes);

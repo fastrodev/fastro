@@ -1,33 +1,62 @@
 import React from "npm:react@^19.2.4";
 
+/**
+ * Options for rendering a React component to a string.
+ */
 export type RenderToStringOptions = {
+  /** Prefix for generated IDs */
   identifierPrefix?: string;
+  /** Signal to abort the rendering process */
   signal?: AbortSignal;
+  /** Provider for nonce strings to be used in script tags */
   nonceProvider?: () => string;
+  /** Callback for error handling during rendering */
   onError?: (error: unknown) => void;
 };
 
+/**
+ * Enhanced options for rendering, including page metadata and component props.
+ */
 export type RenderOptions = {
+  /** The entry point module for the application */
   module?: string;
+  /** Whether to include the <!DOCTYPE html> declaration */
   includeDoctype?: boolean;
+  /** Whether to include the <head> element */
   includeHead?: boolean;
+  /** Custom HTML content to be inserted into the <head> */
   head?: string;
+  /** Page title */
   title?: string;
+  /** Initial props to be passed to the React component */
   initialProps?: Record<string, unknown>;
 } & RenderToStringOptions;
 
+/**
+ * Function type for rendering a React component.
+ */
 export type RenderFunction = (
   component: React.ReactElement,
   options?: RenderOptions,
 ) => string;
 
+/**
+ * Options for setting a cookie.
+ */
 export type CookieOptions = {
+  /** Path scope of the cookie */
   path?: string;
+  /** Domain scope of the cookie */
   domain?: string;
+  /** Maximum age of the cookie in seconds */
   maxAge?: number;
+  /** Expiration date of the cookie */
   expires?: Date;
+  /** Whether the cookie should only be sent over HTTPS */
   secure?: boolean;
+  /** Whether the cookie is inaccessible to client-side scripts */
   httpOnly?: boolean;
+  /** SameSite attribute for CSRF protection */
   sameSite?: "Lax" | "Strict" | "None";
 };
 
@@ -89,10 +118,18 @@ export type Middleware = (
   next: Next,
 ) => Response | Promise<Response>;
 
+/**
+ * Defines a route's structure and behavior.
+ */
 export interface Route {
+  /** HTTP method (GET, POST, etc.) */
   method: string;
+  /** URL pattern for matching */
   pattern: URLPattern;
+  /** Route handler function */
   handler: Handler;
+  /** Names of URL parameters extracted from the pattern */
   paramNames: string[];
+  /** Route-specific middlewares */
   middlewares: Middleware[];
 }

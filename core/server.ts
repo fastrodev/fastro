@@ -134,6 +134,11 @@ function tryRoute(
   return new Response("Not found", { status: 404 });
 }
 
+/**
+ * Adds a global middleware to the application.
+ *
+ * @param middleware The middleware function to be added.
+ */
 function use(middleware: Middleware) {
   middlewares.push(middleware);
 }
@@ -162,6 +167,13 @@ function registerRoute(
   }
 }
 
+/**
+ * Registers a GET route.
+ *
+ * @param path The URL pattern or string path for the route.
+ * @param handler The handler function for the route.
+ * @param routeMiddlewares Optional middlewares specific to this route.
+ */
 function get(
   path: string | URLPattern,
   handler: Handler,
@@ -170,6 +182,13 @@ function get(
   registerRoute("GET", path, handler, ...routeMiddlewares);
 }
 
+/**
+ * Registers a POST route.
+ *
+ * @param path The URL pattern or string path for the route.
+ * @param handler The handler function for the route.
+ * @param routeMiddlewares Optional middlewares specific to this route.
+ */
 function post(
   path: string | URLPattern,
   handler: Handler,
@@ -178,6 +197,13 @@ function post(
   registerRoute("POST", path, handler, ...routeMiddlewares);
 }
 
+/**
+ * Registers a PUT route.
+ *
+ * @param path The URL pattern or string path for the route.
+ * @param handler The handler function for the route.
+ * @param routeMiddlewares Optional middlewares specific to this route.
+ */
 function put(
   path: string | URLPattern,
   handler: Handler,
@@ -186,6 +212,13 @@ function put(
   registerRoute("PUT", path, handler, ...routeMiddlewares);
 }
 
+/**
+ * Registers a DELETE route.
+ *
+ * @param path The URL pattern or string path for the route.
+ * @param handler The handler function for the route.
+ * @param routeMiddlewares Optional middlewares specific to this route.
+ */
 function delete_(
   path: string | URLPattern,
   handler: Handler,
@@ -202,6 +235,12 @@ function extractParamNames(path: string | URLPattern): string[] {
   return Array.from(p.matchAll(/:([a-zA-Z0-9_]+)/g), (m) => m[1]);
 }
 
+/**
+ * Starts the HTTP server with the provided options.
+ *
+ * @param options Server configuration including port, hostname, and cache size.
+ * @returns An object representing the server instance with a close method.
+ */
 function serve(
   options: Deno.ServeTcpOptions & { handler?: undefined; cacheSize?: number },
 ) {
@@ -286,7 +325,7 @@ function serve(
 
     if (cached !== undefined && !hasGlobalMiddlewares) {
       if (cached === null) return new Response("Not found", { status: 404 });
-      
+
       // Move to end (LRU)
       matchCache.delete(cacheKey);
       matchCache.set(cacheKey, cached);
@@ -339,7 +378,7 @@ function serve(
     const runFinal = () => {
       if (cached !== undefined) {
         if (cached === null) return new Response("Not found", { status: 404 });
-        
+
         // Move to end (LRU)
         matchCache.delete(cacheKey);
         matchCache.set(cacheKey, cached);
@@ -402,12 +441,18 @@ function serve(
   return { ...serverInstance, close: () => serverInstance.shutdown() };
 }
 
+/**
+ * Internal utility for resetting routes and middlewares during testing.
+ */
 export function _resetForTests() {
   routes.length = 0;
   middlewares.length = 0;
   routePaths.length = 0;
 }
 
+/**
+ * Internal utility for retrieving registered routes during testing.
+ */
 export function _getRoutesForTests() {
   return routes;
 }
