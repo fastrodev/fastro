@@ -1,5 +1,7 @@
 # ⚡️ Fastro
 
+![Fastro](https://repository-images.githubusercontent.com/264308713/45a53a9a-141e-4204-8f0b-4867c05cbc0d)
+
 ### **The High-Performance Web Framework for the Modern TypeScript Era.**
 
 Fastro is the bridge between **raw Deno performance** and **elite developer
