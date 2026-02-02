@@ -74,7 +74,9 @@ export async function renderMD_Content(content: string, path: string) {
 
   // 3. Render Body
   // const isMD = path.endsWith(".md") || path === "blog";
-  const body = path === "blog" ? markdown : render(markdown);
+  const body = path === "blog"
+    ? markdown
+    : render(markdown, { allowMath: true });
 
   // Fallback for document title
   const docTitle = title || `Fastro - ${path}`;
