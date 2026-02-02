@@ -1,11 +1,11 @@
 # Fastro Performance Benchmark
 
-Generated on: Sun Feb  1 10:32:24 WIB 2026
+Generated on: Tue Feb  3 05:44:53 WIB 2026
 
 | Framework | Requests/sec | Avg Latency | p(95) Latency | % of Native |
 | :--- | :--- | :--- | :--- | :--- |
-| Native Deno | 81906.976776 | 1.14ms | 2.13ms | 100% |
-| Fastro | 77654.560745 | 1.21ms | 2.2ms | 94.81% |
+| Native Deno | 71258.244474 | 1.31ms | 2.51ms | 100% |
+| Fastro | 67407.897452 | 1.39ms | 2.68ms | 94.60% |
 
 ## Prerequisites
 To run this benchmark locally, ensure you have:
