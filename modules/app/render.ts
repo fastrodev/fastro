@@ -30,6 +30,7 @@ export async function renderCode(path: string) {
   return renderMD_Content(md, path);
 }
 
+// adjust agar katex di fungsi ini tidak memproses template literal di dalam kode pemrograman (template literal menggunakan backtick `...`)
 export async function renderMD_Content(content: string, path: string) {
   const version = await getVersion();
   let markdown = content;
@@ -75,9 +76,48 @@ export async function renderMD_Content(content: string, path: string) {
   // 3. Render Body
   const isMD = path.endsWith(".md") || path === "blog";
   const isBlogPost = path.startsWith("posts/");
-  const body = path === "blog"
-    ? markdown
-    : render(markdown, { allowMath: isMD });
+
+  let htmlBody = "";
+  if (isMD) {
+    const mathBlocks: string[] = [];
+    const codeBlocks: string[] = [];
+    let mathCounter = 0;
+    let codeCounter = 0;
+
+    // A. Protect all code snippets (inline and block) from math regex
+    // We use a prefix that GFM/Markdown won't mangle with its own syntax
+    let md = markdown.replace(/(`{1,}[\s\S]*?`{1,})/g, (match) => {
+      codeBlocks.push(match);
+      return `CODEBLOCKPLACEHOLDER${codeCounter++}X`;
+    });
+
+    // B. Protect math blocks from GFM mangling (no underscores or backslashes seen by GFM)
+    md = md.replace(/(\$\$[\s\S]*?\$\$|\$[^\$\s][^\$\n]*?\$)/g, (match) => {
+      mathBlocks.push(match);
+      return `MATHBLOCKPLACEHOLDER${mathCounter++}X`;
+    });
+
+    // C. Restore code blocks so GFM can render them properly
+    md = md.replace(
+      /CODEBLOCKPLACEHOLDER(\d+)X/g,
+      (_, id) => codeBlocks[parseInt(id)],
+    );
+
+    // D. Render Markdown - math is "dead text" placeholders now
+    htmlBody = path === "blog" ? md : render(md, { allowMath: false });
+
+    // E. Restore original math blocks into the final HTML for client-side KaTeX
+    htmlBody = htmlBody.replace(
+      /MATHBLOCKPLACEHOLDER(\d+)X/g,
+      (_, id) => mathBlocks[parseInt(id)],
+    );
+  } else {
+    htmlBody = path === "blog"
+      ? markdown
+      : render(markdown, { allowMath: false });
+  }
+
+  const body = htmlBody;
 
   // Fallback for document title
   const docTitle = title || `Fastro - ${path}`;
@@ -117,8 +157,15 @@ export async function renderMD_Content(content: string, path: string) {
               {left: '$', right: '$', display: false},
             ],
             ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            ignoredClasses: ['katex-ignore', 'prism-code', 'language-typescript', 'language-bash', 'language-json'],
+            ignoredClasses: ['katex-ignore', 'prism-code', 'language-typescript', 'language-bash', 'language-json', 'language-javascript', 'language-js', 'token'],
             throwOnError : false
+          });
+          mdBody.querySelectorAll('pre > code.language-math').forEach(el => {
+            const math = el.textContent;
+            const div = document.createElement('div');
+            div.className = 'my-6 overflow-x-auto';
+            katex.render(math, div, { displayMode: true, throwOnError: false });
+            el.parentElement.replaceWith(div);
           });
         }
       "></script>`
@@ -268,7 +315,6 @@ export async function renderMD_Content(content: string, path: string) {
         }
       }
       ${CSS}
-      ${KATEX_CSS}
 
       /* Custom Markdown Overrides */
       .markdown-body hr {
@@ -439,6 +485,35 @@ export async function renderMD_Content(content: string, path: string) {
         </div>
       </div>
     </footer>
+    ${
+    isMD
+      ? `
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+      onload="
+        const mdBody = document.querySelector('.markdown-body') || document.querySelector('.blog-post-content');
+        if (mdBody) {
+          renderMathInElement(mdBody, {
+            delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+            ],
+            ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            ignoredClasses: ['katex-ignore', 'prism-code', 'language-typescript', 'language-bash', 'language-json', 'language-javascript', 'language-js', 'token'],
+            throwOnError : false
+          });
+          mdBody.querySelectorAll('pre > code.language-math').forEach(el => {
+            const math = el.textContent;
+            const div = document.createElement('div');
+            div.className = 'my-6 overflow-x-auto';
+            katex.render(math, div, { displayMode: true, throwOnError: false });
+            el.parentElement.replaceWith(div);
+          });
+        }
+      "></script>`
+      : ""
+  }
     <script>
       const menuToggle = document.getElementById('menu-toggle');
       const navLinks = document.getElementById('nav-links');

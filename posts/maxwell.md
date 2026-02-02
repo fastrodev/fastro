@@ -33,9 +33,9 @@ Maxwell wrote down four famous equations to describe this dance. While playing w
 
 He then plugged these constants into his formula:
 
-```math
+$$
 v = \frac{1}{\sqrt{\mu_0 \epsilon_0}}
-```
+$$
 
 ## 3. The "Aha!" Moment
 
@@ -76,24 +76,24 @@ To understand the math, we first need to understand the "secret language" of the
 To find the speed of light, Maxwell first had to unify everything we knew about electricity and magnetism into four pillars. In a vacuum, these equations describe how fields behave when there are no wires or magnets nearby:
 
 1. **Gauss's Law**: (No "Hoses") In empty space, electric fields just glide through. There are no "charges" here to act as a source or a sink.
-   ```math
-   \nabla \cdot \mathbf{E} = 0
-   ```
+$$
+\nabla \cdot \mathbf{E} = 0
+$$
    > **The Logical Condition:** This becomes zero only in a **Vacuum**. In the presence of matter, electric fields are created by charges (like electrons). But Maxwell was analyzing deep space, where the charge density ($\rho$) is exactly zero. Because there is no "hose" pumping new energy into the field, the spreading (divergence) must be zero.
 2. **Gauss's Law for Magnetism**: (No "Drains") Magnetic fields always form perfect loops. You will never find a "North pole" hose that doesn't have a "South pole" drain attached to it.
-   ```math
-   \nabla \cdot \mathbf{B} = 0
-   ```
+$$
+\nabla \cdot \mathbf{B} = 0
+$$
    > **The Universal Condition:** This is zero **everywhere**, not just in a vacuum. It represents the fact that "Magnetic Monopoles" do not exist. You can never have a North pole without a South pole. Since every line that leaves a point must eventually return to it, the net "spread" is always zero. It is impossible to create a magnetic "leak."
 3. **Faraday's Law**: (The Pulse-Twister) When a magnetic field **pulses** (vibrates), it automatically creates a **twister** (swirl) of electricity around it.
-   ```math
-   \nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}
-   ```
+$$
+\nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}
+$$
    > **The Clean Energy Condition:** This law shows that you don't need a battery or a wire to create electricity. A moving magnet is enough. In the void of space, this ensures that any "magnetic pulse" traveling from a distant star automatically generates an electric companion.
 4. **Ampère-Maxwell Law**: (The Reverse Pulse-Twister) When an electric field **pulses**, it creates a **twister of magnetism**. This was Maxwell's stroke of genius.
-   ```math
-   \nabla \times \mathbf{B} = \mu_0 \epsilon_0 \frac{\partial \mathbf{E}}{\partial t}
-   ```
+$$
+\nabla \times \mathbf{B} = \mu_0 \epsilon_0 \frac{\partial \mathbf{E}}{\partial t}
+$$
    > **Where did the $\mu_0 \epsilon_0$ come from?** 
    > - **The Magnetic Constant ($\mu_0$):** This was already part of Ampère's original law. It describes the "conversion rate" of how much magnetism you get from a moving electrical charge.
    > - **The Electric Constant ($\epsilon_0$):** Maxwell realized that a changing electric field ($\frac{\partial \mathbf{E}}{\partial t}$) acts like a "ghost current." Since this hidden current lives in space, it must be multiplied by the density/capacity of space itself ($\epsilon_0$).
@@ -103,9 +103,9 @@ To find the speed of light, Maxwell first had to unify everything we knew about 
 
 Maxwell’s goal was to see if an electric field could propagate through empty space without any wires or charges. To do this, he performed a "stress test" on the electric field by taking the **curl of the curl**:
 
-```math
+$$
 \nabla \times (\nabla \times \mathbf{E}) = \nabla \times \left( -\frac{\partial \mathbf{B}}{\partial t} \right)
-```
+$$
 
 **The Logical Sequence:**
 1.  **Faraday's Discovery:** We already know from Faraday that a changing magnetic field creates a "swirl" (curl) of electricity ($\nabla \times \mathbf{E}$).
@@ -117,9 +117,9 @@ Maxwell’s goal was to see if an electric field could propagate through empty s
 
 Using his 4th equation, Maxwell realized he could replace the magnetic part $(\nabla \times \mathbf{B})$ with something that only involves the electric field. 
 
-```math
+$$
 \underbrace{-\nabla^2 \mathbf{E}}_{\text{From Math Identity}} = \underbrace{-\frac{\partial}{\partial t}}_{\text{From Faraday's Law}} \underbrace{\left( \mu_0 \epsilon_0 \frac{\partial \mathbf{E}}{\partial t} \right)}_{\text{Substitute for } \nabla \times \mathbf{B}}
-```
+$$
 
 **The Logical Sequence:**
 1.  **The "Math Mirror":** You might be wondering why both sides are suddenly negative. 
@@ -129,17 +129,17 @@ Using his 4th equation, Maxwell realized he could replace the magnetic part $(\n
 3.  **The Cancellation:** Because both sides have a minus, they cancel out perfectly. It’s like a double negative in a sentence; it becomes a positive statement.
 4.  **The Pure Wave:** This proves that the electric field pushes *itself* forward as a positive wave:
 
-```math
+$$
 \nabla^2 \mathbf{E} = \mu_0 \epsilon_0 \frac{\partial^2 \mathbf{E}}{\partial t^2}
-```
+$$
 
 ### Step 3: Discovering the Speed Limit
 
 In physics, every wave (whether it's sound in air or a ripple on a pond) follows a universal "recipe" called the **Wave Equation**:
 
-```math
+$$
 \underbrace{\nabla^2 \mathbf{E}}_{\text{Curvature in Space}} = \underbrace{\left( \frac{1}{v^2} \right)}_{\text{The Speed Factor}} \times \underbrace{\frac{\partial^2 \mathbf{E}}{\partial t^2}}_{\text{Acceleration in Time}}
-```
+$$
 
 **The Logical Sequence of Discovery:**
 
@@ -147,9 +147,7 @@ In physics, every wave (whether it's sound in air or a ripple on a pond) follows
 2.  **The Hidden Identity:** By comparing his result to the universal formula, Maxwell realized that the "Speed Factor" ($1/v^2$) in nature's recipe was exactly filled by the two constants of space ($\mu_0 \epsilon_0$). 
     - This meant the speed ($v$) was not arbitrary; it was dictated by the electrical and magnetic "stiffness" of the vacuum itself.
 3.  **The Moment of Truth:** He isolated the $v$ and performed the final calculation:
-    ```math
-    v = \frac{1}{\sqrt{\mu_0 \epsilon_0}}
-    ```
+$v = \frac{1}{\sqrt{\mu_0 \epsilon_0}}$
 4.  **The Shocking Result:** When he plugged in the values for $\mu_0$ and $\epsilon_0$ (which physicists had measured in small labs using batteries and magnets), the result was **310,740,000 meters per second**. 
 
 Maxwell knew from astronomical observations that the speed of light was roughly **300,000,000 meters per second**. The similarity was too perfect to be a coincidence. He had just discovered that light is not its own "substance"—it is the result of electricity and magnetism leap-frogging through the void at the maximum speed the fabric of space allowed.
@@ -161,4 +159,3 @@ Maxwell knew from astronomical observations that the speed of light was roughly 
 If the vacuum were truly "nothing," it wouldn't have properties like $\mu_0$ or $\epsilon_0$. The fact that light has a fixed speed limit proves that even "empty" space has a texture—an invisible fabric that dictates how energy must move.
 
 This leaves us with one haunting question: **If the void can have properties, is it really a void at all?**
-
