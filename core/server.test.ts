@@ -1581,3 +1581,53 @@ Deno.test("Coverage - toResponse JSON support", async () => {
   assertEquals(res.headers.get("content-type"), "application/json");
   s.close();
 });
+
+Deno.test("Coverage - Catch-all route (*)", async () => {
+  _resetForTests();
+  server.get("/static/*", () => "static");
+  const s = server.serve({ port: 3221 });
+  const res = await fetch("http://localhost:3221/static/any/path");
+  assertEquals(await res.text(), "static");
+  s.close();
+});
+
+Deno.test("Coverage - URLPattern with empty pathname", async () => {
+  _resetForTests();
+  // @ts-ignore: Simulate edge case
+  const pattern = {
+    exec: () => ({ pathname: { groups: {} } }),
+  } as unknown as URLPattern;
+  server.get(pattern, () => "match");
+  const s = server.serve({ port: 3222 });
+  const res = await fetch("http://localhost:3222/any");
+  assertEquals(await res.text(), "match");
+  s.close();
+});
+
+Deno.test("Coverage - toResponse with null and undefined", async () => {
+  _resetForTests();
+  // @ts-ignore: testing
+  server.get("/null", () => null);
+  // @ts-ignore: testing
+  server.get("/undef", () => undefined);
+  const s = server.serve({ port: 3223 });
+
+  const res1 = await fetch("http://localhost:3223/null");
+  await res1.body?.cancel();
+
+  const res2 = await fetch("http://localhost:3223/undef");
+  await res2.body?.cancel();
+
+  s.close();
+});
+
+Deno.test("Coverage - extractParamNames with URLPattern having no pathname", async () => {
+  _resetForTests();
+  // @ts-ignore: force URLPattern-like object without pathname
+  const pattern = {} as URLPattern;
+  server.get(pattern, () => "ok");
+  const s = server.serve({ port: 3224 });
+  const res = await fetch("http://localhost:3224/");
+  await res.text();
+  s.close();
+});

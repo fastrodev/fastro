@@ -220,6 +220,7 @@ function serve(
     const escape = (s: string) => s.replace(/[.*+?^${}()|[\\]\\]/g, "\\$&");
     const parts = pStr.split("/").map((p: string) => {
       if (!p) return "";
+      if (p === "*") return "(.*)";
       if (p[0] === ":") return `(?<${p.slice(1)}>[^/]+)`;
       return escape(p);
     });

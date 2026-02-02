@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Not Found</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --fg: #1a1a1a;
+            --muted: #666666;
+            --accent: #007bff;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0d1117;
+                --fg: #c9d1d9;
+                --muted: #8b949e;
+                --accent: #58a6ff;
+            }
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--fg);
+            display: grid;
+            place-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 { font-size: 5rem; margin: 0; font-weight: 800; }
+        p { color: var(--muted); font-size: 1.25rem; margin: 0.5rem 0 2rem; }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            border: 1px solid var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: opacity 0.2s;
+        }
+        a:hover { opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>404</h1>
+        <p>Not Found</p>
+        <a href="/">Back Home</a>
+    </div>
+</body>
+</html>

@@ -1,7 +1,12 @@
 import App from "../../mod.ts";
-import { renderBlog, renderCode, renderMD } from "./render.ts";
+import { logger } from "../../middlewares/logger/mod.ts";
+import { staticFiles } from "../../middlewares/static/static.ts";
+import { renderBlog, renderCode, renderMD, renderStatic } from "./render.ts";
 
 const app = new App();
+
+app.use(logger);
+app.use(staticFiles("/static", "./public"));
 
 app.get("/", () => renderMD("README.md"));
 app.get("/DOCS.md", () => renderMD("DOCS.md"));
@@ -19,4 +24,11 @@ app.get(
 );
 app.get("/LICENSE", () => renderCode("LICENSE"));
 
-app.serve({ port: parseInt(Deno.args[0]) || 8000 });
+// Fallback for 404 / Not Found - acts as SPA fallback
+app.get("*", () => renderStatic("public/index.html"));
+
+if (import.meta.main) {
+  app.serve({ port: parseInt(Deno.args[0]) || 8000 });
+}
+
+export { app };

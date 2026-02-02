@@ -24,10 +24,14 @@ async function getVersion() {
 }
 
 export async function renderCode(path: string) {
-  const url = new URL(`../../${path}`, import.meta.url);
-  const content = await Deno.readTextFile(url);
-  const md = `\`\`\`typescript\n// ${path}\n\n${content}\n\`\`\``;
-  return renderMD_Content(md, path);
+  try {
+    const url = new URL(`../../${path}`, import.meta.url);
+    const content = await Deno.readTextFile(url);
+    const md = `\`\`\`typescript\n// ${path}\n\n${content}\n\`\`\``;
+    return renderMD_Content(md, path);
+  } catch (_) {
+    return renderStatic("public/index.html");
+  }
 }
 
 // adjust agar katex di fungsi ini tidak memproses template literal di dalam kode pemrograman (template literal menggunakan backtick `...`)
@@ -632,9 +636,13 @@ export async function renderMD_Content(content: string, path: string) {
 }
 
 export async function renderMD(path: string) {
-  const url = new URL(`../../${path}`, import.meta.url);
-  const content = await Deno.readTextFile(url);
-  return renderMD_Content(content, path);
+  try {
+    const url = new URL(`../../${path}`, import.meta.url);
+    const content = await Deno.readTextFile(url);
+    return renderMD_Content(content, path);
+  } catch (_) {
+    return renderStatic("public/index.html");
+  }
 }
 
 export async function renderBlog() {
@@ -700,4 +708,16 @@ export async function renderBlog() {
   html += `</div>`;
 
   return renderMD_Content(html, "blog");
+}
+
+export async function renderStatic(path: string) {
+  try {
+    const url = new URL(`../../${path}`, import.meta.url);
+    const content = await Deno.readTextFile(url);
+    return new Response(content, {
+      headers: { "Content-Type": "text/html" },
+    });
+  } catch (_) {
+    return new Response("Not found", { status: 404 });
+  }
 }
