@@ -73,10 +73,10 @@ export async function renderMD_Content(content: string, path: string) {
   }
 
   // 3. Render Body
-  // const isMD = path.endsWith(".md") || path === "blog";
+  const isMD = path.endsWith(".md") || path === "blog";
   const body = path === "blog"
     ? markdown
-    : render(markdown, { allowMath: true });
+    : render(markdown, { allowMath: isMD });
 
   // Fallback for document title
   const docTitle = title || `Fastro - ${path}`;
@@ -101,6 +101,9 @@ export async function renderMD_Content(content: string, path: string) {
     <meta property="twitter:description" content="${description}">
     <meta property="twitter:image" content="${image}">
 
+    ${
+    isMD
+      ? `
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
@@ -117,7 +120,9 @@ export async function renderMD_Content(content: string, path: string) {
             throwOnError : false
           });
         }
-      "></script>
+      "></script>`
+      : ""
+  }
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {

@@ -69,9 +69,9 @@ dance across the universe.
 
 To understand the math, we first need to understand the "secret language" of these symbols using a simple water analogy:
 
-- **The Dot ($ \nabla \cdot $):** **The Spreader.** Imagine an underwater hose. If you turn it on, water flows *out* from that point. If you stick a vacuum in, it flows *in*. This symbol asks: "Is energy being "born" or "dying" right here?"
-- **The Cross ($ \nabla \times $):** **The Twister.** Imagine stirring a cup of coffee. You create a circular motion. This symbol asks: "Is the energy "swirling" or "looping" around this point?"
-- **The Change ($ \frac{\partial}{\partial t} $):** **The Pulse.** Imagine a heart beating or a string vibrating. It stays in one spot, but its strength grows and shrinks. This symbol asks: "How fast is the field "vibrating" as time ticks by?"
+- **The Dot ($\nabla \cdot$):** **The Spreader.** Imagine an underwater hose. If you turn it on, water flows *out* from that point. If you stick a vacuum in, it flows *in*. This symbol asks: "Is energy being "born" or "dying" right here?"
+- **The Cross ($\nabla \times$):** **The Twister.** Imagine stirring a cup of coffee. You create a circular motion. This symbol asks: "Is the energy "swirling" or "looping" around this point?"
+- **The Change ($\frac{\partial}{\partial t}$):** **The Pulse.** Imagine a heart beating or a string vibrating. It stays in one spot, but its strength grows and shrinks. This symbol asks: "How fast is the field "vibrating" as time ticks by?"
 
 To find the speed of light, Maxwell first had to unify everything we knew about electricity and magnetism into four pillars. In a vacuum, these equations describe how fields behave when there are no wires or magnets nearby:
 
@@ -123,9 +123,9 @@ Using his 4th equation, Maxwell realized he could replace the magnetic part $(\n
 
 **The Logical Sequence:**
 1.  **The "Math Mirror":** You might be wondering why both sides are suddenly negative. 
-    - **The Left Minus:** There's a rule in math (vector calculus) that says when you "twist a twist," you get a negative result ($ \nabla \times \nabla \times \mathbf{E} = -\nabla^2 \mathbf{E} $).
+    - **The Left Minus:** There's a rule in math (vector calculus) that says when you "twist a twist," you get a negative result ($\nabla \times \nabla \times \mathbf{E} = -\nabla^2 \mathbf{E}$).
     - **The Right Minus:** This comes directly from **Faraday's Law** (the negative sign from Lenz's Law we discussed earlier).
-2.  **The Master Key:** Maxwell looked at his **4th Pillar** which explicitly says $(\nabla \times \mathbf{B} = \mu_0 \epsilon_0 \frac{\partial \mathbf{E}}{\partial t})$. He swapped the magnetic swirl for this electric pulse.
+2.  **The Master Key:** Maxwell looked at his **4th Pillar** which explicitly says ($\nabla \times \mathbf{B} = \mu_0 \epsilon_0 \frac{\partial \mathbf{E}}{\partial t}$). He swapped the magnetic swirl for this electric pulse.
 3.  **The Cancellation:** Because both sides have a minus, they cancel out perfectly. It’s like a double negative in a sentence; it becomes a positive statement.
 4.  **The Pure Wave:** This proves that the electric field pushes *itself* forward as a positive wave:
 
