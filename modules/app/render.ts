@@ -273,7 +273,7 @@ export async function renderMD_Content(content: string, path: string) {
         text-decoration: underline;
       }
       .post-meta {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         color: var(--color-fg-muted);
         margin-bottom: 1.5rem;
         padding-bottom: 1.5rem;
@@ -363,17 +363,30 @@ export async function renderMD_Content(content: string, path: string) {
 
       .blog-post-content {
         font-family: var(--font-serif) !important;
-        font-size: 1.15rem !important;
+        font-size: 0.95rem !important;
         font-weight: 400 !important;
-        line-height: 1.75 !important;
+        line-height: 1.6 !important;
         color: var(--color-fg-default) !important;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-rendering: optimizeLegibility;
       }
 
+      @media (min-width: 768px) {
+        .blog-post-content {
+          font-size: 1.15rem !important;
+          line-height: 1.75 !important;
+        }
+      }
+
       .blog-post-content p {
-        margin-bottom: 2rem !important;
+        margin-bottom: 1.5rem !important;
+      }
+
+      @media (min-width: 768px) {
+        .blog-post-content p {
+          margin-bottom: 2rem !important;
+        }
       }
 
       .blog-post-content h2, 
@@ -381,24 +394,42 @@ export async function renderMD_Content(content: string, path: string) {
         font-family: var(--font-serif) !important;
         font-weight: 700 !important;
         letter-spacing: -0.015em !important;
-        margin-top: 2.5rem !important;
-        margin-bottom: 0.8rem !important;
+        margin-top: 2rem !important;
+        margin-bottom: 0.75rem !important;
         line-height: 1.2 !important;
         color: var(--color-fg-default) !important;
       }
       
-      .blog-post-content h2 { font-size: 1.85rem !important; }
-      .blog-post-content h3 { font-size: 1.5rem !important; }
+      .blog-post-content h2 { font-size: 1.25rem !important; }
+      .blog-post-content h3 { font-size: 1.15rem !important; }
+
+      @media (min-width: 768px) {
+        .blog-post-content h2 { font-size: 1.85rem !important; }
+        .blog-post-content h3 { font-size: 1.5rem !important; }
+        .blog-post-content h2, .blog-post-content h3 {
+          margin-top: 2.5rem !important;
+          margin-bottom: 0.8rem !important;
+        }
+      }
 
       .blog-post-content blockquote {
         font-family: var(--font-serif) !important;
         font-style: italic;
-        font-size: 1.2rem;
+        font-size: 1rem;
         border-left: 2px solid var(--color-fg-default) !important;
-        padding-left: 1.25rem !important;
-        margin: 2rem 0 !important;
+        padding-left: 1.1rem !important;
+        margin: 1.5rem 0 !important;
         color: var(--color-fg-muted);
-        line-height: 1.6 !important;
+        line-height: 1.5 !important;
+      }
+
+      @media (min-width: 768px) {
+        .blog-post-content blockquote {
+          font-size: 1.2rem;
+          padding-left: 1.25rem !important;
+          margin: 2rem 0 !important;
+          line-height: 1.6 !important;
+        }
       }
 
       .blog-post-content code {
@@ -407,6 +438,17 @@ export async function renderMD_Content(content: string, path: string) {
         background: var(--color-canvas-subtle);
         padding: 0.2em 0.4em;
         border-radius: 4px;
+      }
+
+      /* Smooth Image Loading */
+      .markdown-body img,
+      .blog-post-content img {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
+      .markdown-body img.loaded,
+      .blog-post-content img.loaded {
+        opacity: 1;
       }
     </style>
   </head>
@@ -439,8 +481,8 @@ export async function renderMD_Content(content: string, path: string) {
     title
       ? `<h1 class="${
         isBlogPost
-          ? "blog-post-header text-[2.25rem] md:text-[3rem] font-black !leading-[1.1] tracking-tighter"
-          : "text-[2.25rem] font-bold leading-tight"
+          ? "blog-post-header text-[1.5rem] md:text-[3rem] font-black !leading-[1.1] tracking-tighter"
+          : "text-[1.4rem] md:text-[2.25rem] font-bold leading-tight"
       } mb-8 text-fg-default">${title}</h1>`
       : ""
   }
@@ -469,7 +511,7 @@ export async function renderMD_Content(content: string, path: string) {
     <footer class="mt-auto border-t border-border-default">
       <div class="max-w-[720px] mx-auto px-6 md:px-4 py-4 text-[0.75rem] text-fg-muted">
         <div class="flex flex-row justify-between items-center gap-2 md:gap-1 opacity-70">
-          <span>Made with ☕ by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-accent-fg transition-colors">Fastrodev</a></span>  
+          <span>Made with⚡by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-accent-fg transition-colors">Fastrodev</a></span>  
           <div class="flex items-center gap-4 md:gap-6">
             ${
     path !== "blog"
@@ -542,6 +584,38 @@ export async function renderMD_Content(content: string, path: string) {
           }, 10);
         }
         menuToggle.classList.toggle('open');
+      });
+
+      // Handle smooth image loading
+      const observerOptions = {
+        root: null,
+        rootMargin: '50px',
+        threshold: 0.1
+      };
+
+      const handleImage = (img) => {
+        if (img.complete) {
+          img.classList.add('loaded');
+        } else {
+          img.addEventListener('load', () => {
+            img.classList.add('loaded');
+          }, { once: true });
+        }
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            handleImage(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.markdown-body img, .blog-post-content img').forEach(img => {
+        observer.observe(img);
+        // Fallback for images already in view or cached
+        if (img.complete) handleImage(img);
       });
     </script>
   </body>
