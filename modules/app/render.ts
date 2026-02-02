@@ -1,4 +1,4 @@
-import { CSS, KATEX_CSS, render } from "@deno/gfm";
+import { CSS, render } from "@deno/gfm";
 
 // Add support for syntax highlighting
 import "npm:prismjs@1.29.0/components/prism-typescript.js";
