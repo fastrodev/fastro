@@ -390,19 +390,19 @@ export async function renderMD_Content(content: string, path: string) {
     </header>
     <main class="max-w-[720px] mx-auto p-6 md:p-8 flex-1 w-full box-border text-[var(--color-fg-default)]">
       ${
-    path !== "blog" && title
+    title
       ? `<h1 class="${
         isBlogPost
           ? "blog-post-header text-[2.25rem] md:text-[3rem] font-black !leading-[1.1] tracking-tighter"
           : "text-[2.25rem] font-bold leading-tight"
-      } mb-6 text-fg-default">${title}</h1>`
+      } mb-8 text-fg-default">${title}</h1>`
       : ""
   }
 
       ${
     (date || author) && path !== "blog"
       ? `<div class="post-meta ${
-        isBlogPost ? "mb-10 opacity-100 font-sans text-[0.95rem] !gap-4" : ""
+        isBlogPost ? "mb-12 opacity-100 font-sans text-[0.95rem] !gap-4" : ""
       }">
           ${
         author
@@ -524,9 +524,11 @@ export async function renderBlog() {
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 
-  let html = `<h1 class="text-3xl font-bold mb-4">Fastro Blog</h1>
-  <p class="text-fg-muted mb-8 text-lg">Updates and insights from the Fastro team.</p>
-  <div class="space-y-4">`;
+  let html = `# Fastro Blog
+
+  <p class="text-fg-muted mb-10 text-lg opacity-80">Updates and insights from the Fastro team.</p>
+
+  <div class="space-y-4 mt-8">`;
 
   for (const post of posts) {
     html += `
