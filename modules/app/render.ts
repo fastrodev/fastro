@@ -448,7 +448,7 @@ export async function renderMD_Content(content: string, path: string) {
       ${
     (date || author) && path !== "blog"
       ? `<div class="post-meta ${
-        isBlogPost ? "mb-12 opacity-100 font-sans text-[0.95rem] !gap-4" : ""
+        isBlogPost ? "mb-8 opacity-100 font-sans text-[0.95rem] !gap-4" : ""
       }">
           ${
         author
