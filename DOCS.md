@@ -13,7 +13,8 @@ applications.
 - [⚡ Responses](#-responses)
 - [🧩 Middleware](#-middleware)
 - [🏗️ Modular Routing (Router)](#️-modular-routing-router)
-- [📂 Automatic Module Loading](#-automatic-module-loading)
+- [📁 Static Files](#-static-files)
+- [📦 Automatic Module Loading](#-automatic-module-loading)
 - [🛠️ Context (`ctx`)](#️-context-ctx)
 - [🏎️ Performance Features](#️-performance-features)
 
@@ -162,7 +163,51 @@ app.use(api.build());
 
 ---
 
-## 📂 Automatic Module Loading
+## 📁 Static Files
+
+Fastro provides an optimized official middleware for serving static assets with
+production-grade features like LRU caching and SPA support.
+
+### Basic Usage
+
+```ts
+import Fastro from "./mod.ts";
+import { staticFiles } from "./middlewares/static/static.ts";
+
+const app = new Fastro();
+
+// Serve files from the 'public' folder at the '/static' URL prefix
+app.use(staticFiles("/static", "./public"));
+
+await app.serve();
+```
+
+### Options
+
+| Option        | Type      | Default      | Description                                |
+| :------------ | :-------- | :----------- | :----------------------------------------- |
+| `spaFallback` | `boolean` | `false`      | Serves index file for missing paths (SPA). |
+| `indexFile`   | `string`  | `index.html` | The default file to serve for directories. |
+
+### Single Page Application (SPA) Support
+
+For React, Vue, or Svelte apps, enable `spaFallback` to ensure client-side
+routing works correctly after a page refresh.
+
+```ts
+app.use(staticFiles("/", "./dist", { spaFallback: true }));
+```
+
+### Performance & Caching
+
+- **Production Mode**: When `ENV=production`, Fastro enables an **LRU Cache**
+  (limit: 100 files) and sets `Cache-Control` headers for maximum speed.
+- **Development Mode**: Cache is disabled with `no-cache` headers to ensure you
+  always see your latest changes.
+
+---
+
+## 📦 Automatic Module Loading
 
 Automatically scale your application by turning folders into modules.
 
