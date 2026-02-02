@@ -1,5 +1,13 @@
 import { Context, Middleware } from "../../mod.ts";
 
+/**
+ * Middleware for serving static files from a directory.
+ *
+ * @param urlPrefix The URL prefix that should trigger static file serving.
+ * @param dirPath The local directory path containing the static files.
+ * @param options Optional configuration including SPA fallback and index file.
+ * @returns A middleware function to handle static file requests.
+ */
 export function staticFiles(
   urlPrefix: string,
   dirPath: string,

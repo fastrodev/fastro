@@ -23,6 +23,12 @@ async function getVersion() {
   return "v1.0.0";
 }
 
+/**
+ * Renders the content of a source code file with syntax highlighting.
+ *
+ * @param path The relative path to the source file.
+ * @returns A promise that resolves to a rendered HTML string.
+ */
 export async function renderCode(path: string) {
   try {
     const url = new URL(`../../${path}`, import.meta.url);
@@ -34,7 +40,13 @@ export async function renderCode(path: string) {
   }
 }
 
-// adjust agar katex di fungsi ini tidak memproses template literal di dalam kode pemrograman (template literal menggunakan backtick `...`)
+/**
+ * Renders markdown content to HTML with support for frontmatter, GFM, and math.
+ *
+ * @param content The raw markdown content.
+ * @param path The path or identifier for the content.
+ * @returns A promise that resolves to a rendered HTML string.
+ */
 export async function renderMD_Content(content: string, path: string) {
   const version = await getVersion();
   let markdown = content;
@@ -635,6 +647,12 @@ export async function renderMD_Content(content: string, path: string) {
   });
 }
 
+/**
+ * Renders a markdown file from the repository to HTML.
+ *
+ * @param path The relative path to the markdown file.
+ * @returns A promise that resolves to a rendered HTML string.
+ */
 export async function renderMD(path: string) {
   try {
     const url = new URL(`../../${path}`, import.meta.url);
@@ -645,6 +663,11 @@ export async function renderMD(path: string) {
   }
 }
 
+/**
+ * Renders the blog index page listing all markdown posts.
+ *
+ * @returns A promise that resolves to a rendered HTML string.
+ */
 export async function renderBlog() {
   const postsDir = new URL("../../posts/", import.meta.url);
   const posts: { title: string; date: string; link: string }[] = [];
@@ -710,6 +733,12 @@ export async function renderBlog() {
   return renderMD_Content(html, "blog");
 }
 
+/**
+ * Serving the static public main html file.
+ *
+ * @param path The path to the index.html file.
+ * @returns A promise that resolves to a Response object with HTML content.
+ */
 export async function renderStatic(path: string) {
   try {
     const url = new URL(`../../${path}`, import.meta.url);
