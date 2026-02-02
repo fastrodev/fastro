@@ -68,6 +68,9 @@ export function staticFiles(
     if (isProduction) {
       const cached = fileCache!.get(cacheKey);
       if (cached && cached.expiry > now) {
+        // Move to end (LRU)
+        fileCache!.delete(cacheKey);
+        fileCache!.set(cacheKey, cached);
         return new Response(new Uint8Array(cached.content), {
           headers: {
             "Content-Type": cached.contentType,
@@ -90,15 +93,15 @@ export function staticFiles(
       const contentType = contentTypes[ext] || "application/octet-stream";
 
       // Cache management: LRU eviction if needed (only if production)
-      if (isProduction && fileCache!.size >= MAX_FILE_CACHE_SIZE) {
-        const oldestKey = fileCache!.keys().next().value;
-        if (oldestKey) {
-          fileCache!.delete(oldestKey);
-        }
-      }
-
-      // Cache the file content (only if production)
       if (isProduction) {
+        if (fileCache!.size >= MAX_FILE_CACHE_SIZE) {
+          const oldestKey = fileCache!.keys().next().value;
+          if (oldestKey) {
+            fileCache!.delete(oldestKey);
+          }
+        }
+        // Cache the file content (Ensure it's at the end)
+        fileCache!.delete(cacheKey);
         fileCache!.set(cacheKey, {
           content: file,
           contentType,
@@ -122,6 +125,9 @@ export function staticFiles(
         if (isProduction) {
           const cached = fileCache!.get(fallbackKey);
           if (cached && cached.expiry > now) {
+            // Move to end (LRU)
+            fileCache!.delete(fallbackKey);
+            fileCache!.set(fallbackKey, cached);
             return new Response(new Uint8Array(cached.content), {
               headers: {
                 "Content-Type": "text/html",
@@ -141,6 +147,7 @@ export function staticFiles(
               const oldestKey = fileCache!.keys().next().value;
               if (oldestKey) fileCache!.delete(oldestKey);
             }
+            fileCache!.delete(fallbackKey);
             fileCache!.set(fallbackKey, {
               content: html,
               contentType: "text/html",
