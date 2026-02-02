@@ -15,6 +15,7 @@ These middlewares are maintained by the Fastro core team.
 | Name       | Description                        | Source                                  |
 | :--------- | :--------------------------------- | :-------------------------------------- |
 | **Logger** | Standard request/response logging. | [Source](/middlewares/logger/logger.ts) |
+| **Static** | Serve static files and SPA support.| [Source](/middlewares/static/static.ts) |
 
 
 ## 🤝 Community Middlewares

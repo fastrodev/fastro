@@ -41,7 +41,7 @@ trap cleanup EXIT
 if [[ "${1-}" == "--coverage" ]]; then
   rm -rf cov_profile
   # run all core and middleware tests
-  deno test --allow-net --allow-read --allow-write --coverage=cov_profile core/ middlewares/
+  deno test --allow-net --allow-read --allow-write --allow-env --coverage=cov_profile core/ middlewares/
   # generate lcov
   deno coverage cov_profile --lcov --include=core --include=middlewares --exclude=modules --exclude="modules/**" > cov_profile/raw_lcov.info
   awk 'BEGIN{skip=0} /^SF:/{ if ($0 ~ "/modules/") { skip=1 } else { skip=0; print } next } { if (!skip) print }' cov_profile/raw_lcov.info > cov_profile/lcov.info
@@ -50,5 +50,5 @@ if [[ "${1-}" == "--coverage" ]]; then
   rm -rf cov_profile
 else
   # run all core and middleware tests
-  deno test --allow-net --allow-read --allow-write core/ middlewares/
+  deno test --allow-net --allow-read --allow-write --allow-env core/ middlewares/
 fi
