@@ -2,6 +2,7 @@ import App from "../../mod.ts";
 import { logger } from "../../middlewares/logger/mod.ts";
 import { staticFiles } from "../../middlewares/static/static.ts";
 import { renderBlog, renderCode, renderMD, renderStatic } from "./render.ts";
+import { registerCodeRoutes } from "./code.ts";
 
 const app = new App();
 
@@ -18,10 +19,8 @@ app.get("/CONTRIBUTING.md", () => renderMD("CONTRIBUTING.md"));
 app.get("/blog", () => renderBlog());
 app.get("/blog/:post", (_req, ctx) => renderMD(`posts/${ctx.params.post}.md`));
 
-app.get(
-  "/middlewares/logger/logger.ts",
-  () => renderCode("middlewares/logger/logger.ts"),
-);
+registerCodeRoutes(app);
+
 app.get("/LICENSE", () => renderCode("LICENSE"));
 
 // Fallback for 404 / Not Found - acts as SPA fallback

@@ -61,9 +61,15 @@ Deno.test("Main App - Code and Static", async () => {
     assertEquals(res1.status, 200);
     await res1.body?.cancel();
 
-    const res2 = await fetch("http://localhost:3336/static/index.html");
-    // We check either 200 or 404 (if file missing) but the route should be hit
+    const res2 = await fetch(
+      "http://localhost:3336/middlewares/static/static.ts",
+    );
+    assertEquals(res2.status, 200);
     await res2.body?.cancel();
+
+    const res3 = await fetch("http://localhost:3336/static/index.html");
+    // We check either 200 or 404 (if file missing) but the route should be hit
+    await res3.body?.cancel();
   } finally {
     s.close();
   }
