@@ -57,7 +57,10 @@ export function build(routes: Route[]): Middleware {
         if (match) {
           // Only cache if it's the first match and no complex fallthrough is expected
           // or just cache the first match for simplicity
-          if (index === 0 && cache.size < MAX_CACHE_SIZE) {
+          if (index === 0) {
+            if (cache.size >= MAX_CACHE_SIZE) {
+              cache.delete(cache.keys().next().value!);
+            }
             cache.set(cacheKey, { params: match.params, routeIndex: i });
           }
 
@@ -75,7 +78,10 @@ export function build(routes: Route[]): Middleware {
         }
       }
 
-      if (index === 0 && cache.size < MAX_CACHE_SIZE) {
+      if (index === 0) {
+        if (cache.size >= MAX_CACHE_SIZE) {
+          cache.delete(cache.keys().next().value!);
+        }
         cache.set(cacheKey, null);
       }
       return next();
@@ -85,6 +91,10 @@ export function build(routes: Route[]): Middleware {
     const cached = cache.get(cacheKey);
     if (cached !== undefined) {
       if (cached === null) return next();
+
+      // Move to end (LRU)
+      cache.delete(cacheKey);
+      cache.set(cacheKey, cached);
 
       const route = routes[cached.routeIndex];
       ctx.params = { ...cached.params };

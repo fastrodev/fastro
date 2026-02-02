@@ -286,6 +286,11 @@ function serve(
 
     if (cached !== undefined && !hasGlobalMiddlewares) {
       if (cached === null) return new Response("Not found", { status: 404 });
+      
+      // Move to end (LRU)
+      matchCache.delete(cacheKey);
+      matchCache.set(cacheKey, cached);
+
       const route = routes[cached.routeIndex];
       if (route.middlewares.length === 0) {
         const cachedCtx = {
@@ -334,6 +339,11 @@ function serve(
     const runFinal = () => {
       if (cached !== undefined) {
         if (cached === null) return new Response("Not found", { status: 404 });
+        
+        // Move to end (LRU)
+        matchCache.delete(cacheKey);
+        matchCache.set(cacheKey, cached);
+
         const route = routes[cached.routeIndex];
         ctx.params = cached.params;
         const next = () =>
