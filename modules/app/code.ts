@@ -16,6 +16,10 @@ export function registerCodeRoutes(app: App) {
     () => renderCode("middlewares/logger/logger.ts"),
   );
   app.get(
+    "/middlewares/bodyparser/bodyparser.ts",
+    () => renderCode("middlewares/bodyparser/bodyparser.ts"),
+  );
+  app.get(
     "/native.ts",
     () => renderCode("native.ts"),
   );
