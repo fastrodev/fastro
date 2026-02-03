@@ -1,22 +1,23 @@
-# ⚡Fastro Framework
+# ⚡ Fastro Framework
 
 [![build](https://github.com/fastrodev/fastro/actions/workflows/build.yml/badge.svg)](https://github.com/fastrodev/fastro/actions/workflows/build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/fastrodev/fastro/badge.svg?branch=main)](https://coveralls.io/github/fastrodev/fastro?branch=main)
 
 ![Fastro](https://repository-images.githubusercontent.com/264308713/45a53a9a-141e-4204-8f0b-4867c05cbc0d)
 
-## High-Performance Web Framework for Deno
+## The Fast, Simple, and Scalable Web Framework for Deno
 
-Fastro is the bridge between **raw Deno performance** and **elite developer experience**. Build secure, scalable APIs with zero boilerplate and maximum throughput.
+Fastro is engineered for developers who refuse to compromise. It combines **extreme performance** with an **elegant API**, allowing you to build high-throughput microservices and web applications without the friction of traditional frameworks.
 
-### 🚀 Key Features
-- **💨 Near-Native**: Reaches or exceeds raw Deno performance (~68k+ req/s).
-- **✨ Zero-Boilerplate**: Return `string`, `JSON`, or `Response` directly.
-- **🛡️ Lean**: Zero external dependencies, built on Deno standards.
-- **🏗️ Scaling**: Directory-based module loading for large-scale apps.
-- **💎 Solid**: 100% test coverage and deep TypeScript integration.
+### ✨ Why Fastro?
 
-## 🛠️ Quick Start
+- **🚀 Blazing Fast**: Optimized to reach near-native Deno speeds. [Compare the results](BENCHMARK.md).
+- **🛠️ Zero Friction**: Return JSON, strings, or Responses directly. No boilerplate, just code.
+- **📦 Ultra Lightweight**: Zero external dependencies. Built entirely on Deno standards.
+- **🏗️ Built to Scale**: Organized directory-based module loading for complex applications.
+- **🛡️ Rock Solid**: 100% test coverage and first-class TypeScript support.
+
+## 🏁 Quick Start
 
 ```ts
 import Fastro from "https://deno.land/x/fastro/mod.ts";
@@ -37,15 +38,10 @@ app.use((req, ctx, next) => {
 await app.serve({ port: 8000 });
 ```
 
-## 📊 Performance
+## 📚 Resources
 
-| Metric | Native Deno | Fastro |
-| :--- | :--- | :--- |
-| **Requests/s** | ~63,000+ | **~68,000+** |
-| **Latency** | ~1.49 ms | **~1.36 ms** |
-
-## 📖 Useful Links
-- [Documentation](DOCS.md) - Full guide and API reference.
-- [Benchmarks](BENCHMARK.md) - Detailed performance reports.
-- [Middlewares](MIDDLEWARES.md) - Official and community collection.
-- [Contributing](CONTRIBUTING.md) - Join the development.
+- [**Get Started**](DOCS.md) - Comprehensive documentation and API reference.
+- [**Benchmarks**](BENCHMARK.md) - See how Fastro crushes performance tests.
+- [**Middleware**](MIDDLEWARES.md) - Explore the ecosystem and official plugins.
+- [**Showcase**](SHOWCASE.md) - See what others are building with Fastro.
+- [**Contribute**](CONTRIBUTING.md) - Help us build the future of Deno web development.
