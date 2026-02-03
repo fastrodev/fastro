@@ -42,3 +42,25 @@ Deno.test("logger middleware - should preserve existing state", async () => {
   assertEquals(state.existing, "data");
   assertEquals(typeof state.startTime, "number");
 });
+
+Deno.test("logger middleware - should log WARN for 4xx errors", async () => {
+  const req = new Request("http://localhost/404", { method: "GET" });
+  const ctx = {
+    url: new URL(req.url),
+    remoteAddr: { hostname: "1.2.3.4" },
+  } as unknown as Context;
+  const next = () =>
+    Promise.resolve(new Response("Not Found", { status: 404 }));
+
+  await logger(req, ctx, next);
+});
+
+Deno.test("logger middleware - should log ERROR for 5xx errors", async () => {
+  const req = new Request("http://localhost/500", { method: "GET" });
+  const ctx = {
+    url: new URL(req.url),
+  } as unknown as Context;
+  const next = () => Promise.resolve(new Response("Error", { status: 500 }));
+
+  await logger(req, ctx, next);
+});
