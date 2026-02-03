@@ -116,10 +116,15 @@ $$
 
 ### Step 2: Connecting the Dancers
 
-Using his 4th equation, Maxwell realized he could replace the magnetic part $(\nabla \times \mathbf{B})$ with something that only involves the electric field. 
+Using his 4th equation, Maxwell realized he could replace the magnetic part $(\nabla \times \mathbf{B})$ with something that only involves the electric field.
+
+To simplify the math, he used a standard vector identity:
+$$\nabla \times (\nabla \times \mathbf{E}) = \nabla(\nabla \cdot \mathbf{E}) - \nabla^2 \mathbf{E}$$
+
+Because Gauss's Law states that $\nabla \cdot \mathbf{E} = 0$ in a vacuum, the first term vanishes, leaving:
 
 $$
-\underbrace{-\nabla^2 \mathbf{E}}_{\text{From Math Identity}} = \underbrace{-\frac{\partial}{\partial t}}_{\text{From Faraday's Law}} \underbrace{\left( \mu_0 \epsilon_0 \frac{\partial \mathbf{E}}{\partial t} \right)}_{\text{Substitute for } \nabla \times \mathbf{B}}
+\underbrace{-\nabla^2 \mathbf{E}}_{\text{From Vector Identity}} = \underbrace{-\frac{\partial}{\partial t}}_{\text{From Faraday's Law}} \underbrace{\left( \mu_0 \epsilon_0 \frac{\partial \mathbf{E}}{\partial t} \right)}_{\text{Substitute for } \nabla \times \mathbf{B}}
 $$
 
 After canceling the negative signs and combining the time derivatives, he arrived at a surprisingly clean result:

@@ -504,7 +504,6 @@ export async function renderMD_Content(content: string, path: string) {
           </button>
         </div>
         <nav id="nav-links" class="flex flex-col md:flex-row hidden md:flex w-full md:w-auto gap-5 md:gap-7 items-start md:items-center overflow-hidden">
-          <a href="/" class="nav-link py-1 md:py-0">Home</a>
           <a href="/DOCS.md" class="nav-link py-1 md:py-0">Docs</a>
           <a href="/MIDDLEWARES.md" class="nav-link py-1 md:py-0">Middlewares</a>
           <a href="/SHOWCASE.md" class="nav-link py-1 md:py-0">Showcase</a>
@@ -544,8 +543,8 @@ export async function renderMD_Content(content: string, path: string) {
   }${body}</div>
     </main>
     <footer class="mt-auto border-t border-border-default">
-      <div class="max-w-[720px] mx-auto px-6 md:px-4 py-4 text-[0.75rem] text-fg-muted">
-        <div class="flex flex-row justify-between items-center gap-2 md:gap-1 opacity-70">
+      <div class="max-w-[720px] mx-auto px-6 md:px-4 py-8 text-[0.9rem] md:text-base text-fg-muted">
+        <div class="flex flex-row justify-between items-center gap-2 md:gap-1 opacity-80">
           <span>Made with <span class="monochrome">⚡</span> by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-accent-fg transition-colors">Fastrodev</a></span>  
           <div class="flex items-center gap-4 md:gap-6">
             ${
