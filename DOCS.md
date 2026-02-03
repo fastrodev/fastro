@@ -12,6 +12,7 @@ applications.
 - [🧩 Middleware](#-middleware)
 - [🏗️ Modular Routing (Router)](#️-modular-routing-router)
 - [📁 Static Files](#-static-files)
+- [📥 Body Parser](#-body-parser)
 - [📦 Automatic Module Loading](#-automatic-module-loading)
 - [🛠️ Context (`ctx`)](#️-context-ctx)
 - [🏎️ Performance Features](#️-performance-features)
@@ -163,7 +164,7 @@ production-grade features like LRU caching and SPA support.
 
 ```ts
 import Fastro from "./mod.ts";
-import { staticFiles } from "./middlewares/static/static.ts";
+import { staticFiles } from "./middlewares/static/mod.ts";
 
 const app = new Fastro();
 
@@ -195,6 +196,36 @@ app.use(staticFiles("/", "./dist", { spaFallback: true }));
   (limit: 100 files) and sets `Cache-Control` headers for maximum speed.
 - **Development Mode**: Cache is disabled with `no-cache` headers to ensure you
   always see your latest changes.
+
+
+## 📥 Body Parser
+
+The official `bodyParser` middleware parses incoming request bodies (POST, PUT, PATCH) based on the `Content-Type` header.
+
+### Usage
+
+```ts
+import Fastro from "./mod.ts";
+import { bodyParser } from "./middlewares/bodyparser/mod.ts";
+
+const app = new Fastro();
+app.use(bodyParser);
+
+app.post("/submit", (req, ctx) => {
+  const { json, formData, text } = ctx.state;
+  return { received: json || text || "data" };
+});
+
+await app.serve();
+```
+
+### Supported Types
+
+- `application/json`: Accessible via `ctx.state.json`.
+- `multipart/form-data`: Accessible via `ctx.state.formData`.
+- `application/x-www-form-urlencoded`: Accessible via `ctx.state.formData`.
+- `text/*`: Accessible via `ctx.state.text`.
+- Others: Accessible as raw `Uint8Array` via `ctx.state.bytes`.
 
 
 ## 📦 Automatic Module Loading

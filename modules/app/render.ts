@@ -286,7 +286,6 @@ export async function renderMD_Content(content: string, path: string) {
       }
       .edit-link:hover {
         color: var(--color-accent-fg);
-        text-decoration: underline;
       }
       .post-meta {
         font-size: 0.8rem;
@@ -301,6 +300,9 @@ export async function renderMD_Content(content: string, path: string) {
         text-decoration: none;
         color: inherit;
       }
+      a:hover {
+        text-decoration: none !important;
+      }
       .nav-link {
         font-weight: 500;
         color: var(--color-fg-muted);
@@ -311,13 +313,17 @@ export async function renderMD_Content(content: string, path: string) {
       .nav-link:hover {
         color: var(--color-accent-fg);
       }
+      .monochrome {
+        color: transparent;
+        text-shadow: 0 0 0 var(--color-fg-default);
+      }
       /* GFM Link Style */
       .markdown-body a {
         color: var(--color-accent-fg);
         text-decoration: none;
       }
       .markdown-body a:hover {
-        text-decoration: underline;
+        text-decoration: none !important;
       }
       @media (max-width: 600px) {
         .edit-container {
@@ -487,8 +493,8 @@ export async function renderMD_Content(content: string, path: string) {
     <header class="border-b border-border-default bg-canvas-default/70 sticky top-0 z-[100] backdrop-blur-md">
       <div class="max-w-[720px] mx-auto flex flex-col md:flex-row md:justify-between md:items-center py-4 px-6 md:px-4">
         <div class="flex justify-between items-center w-full md:w-auto">
-          <div class="flex items-center gap-1">
-            <a href="/" class="text-2xl font-black text-fg-default no-underline hover:no-underline tracking-tighter">⚡</a>
+          <div class="flex items-center gap-1.5">
+            <a href="/" class="text-2xl font-black text-fg-default no-underline hover:no-underline tracking-tighter"><span class="monochrome">⚡</span></a>
             <span class="text-[0.65rem] font-bold px-1.5 py-px rounded bg-fg-default text-canvas-default uppercase tracking-wider select-none">${version}</span>
           </div>
           <button id="menu-toggle" aria-label="Toggle Menu" class="flex flex-col justify-between w-6 h-5 bg-transparent border-none cursor-pointer p-0 md:hidden group">
@@ -540,7 +546,7 @@ export async function renderMD_Content(content: string, path: string) {
     <footer class="mt-auto border-t border-border-default">
       <div class="max-w-[720px] mx-auto px-6 md:px-4 py-4 text-[0.75rem] text-fg-muted">
         <div class="flex flex-row justify-between items-center gap-2 md:gap-1 opacity-70">
-          <span>Made with⚡by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-accent-fg transition-colors">Fastrodev</a></span>  
+          <span>Made with <span class="monochrome">⚡</span> by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-accent-fg transition-colors">Fastrodev</a></span>  
           <div class="flex items-center gap-4 md:gap-6">
             ${
     path !== "blog"
@@ -725,7 +731,7 @@ export async function renderBlog() {
 
   for (const post of posts) {
     html += `
-      <a href="${post.link}" class="relative group block p-5 md:p-6 border border-border-default rounded-2xl hover:border-accent-fg hover:bg-canvas-subtle transition-all duration-300 no-underline shadow-sm hover:shadow-md">
+      <a href="${post.link}" class="relative group block p-5 md:p-6 border border-border-default rounded-2xl hover:border-accent-fg hover:bg-canvas-subtle transition-all duration-300 no-underline hover:no-underline shadow-sm hover:shadow-md">
         <div class="flex flex-row md:items-baseline justify-between w-full gap-3 md:gap-4">
           <span class="text-xl font-bold text-fg-default group-hover:text-accent-fg transition-colors tracking-tight line-clamp-2 pr-20 md:pr-0">
             ${post.title}
