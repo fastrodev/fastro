@@ -13,8 +13,8 @@ scalable APIs with zero boilerplate and maximum throughput.
 
 ## 🚀 Why Fastro?
 
-- **💨 Near-Native Performance**: Benchmark-proven to maintain **>90% of raw
-  Deno performance**. Stop choosing between DX and speed.
+- **💨 Near-Native Performance**: Benchmark-proven to maintain **>93% of raw
+  Deno performance** even in complex scenarios. Stop choosing between DX and speed.
 - **✨ Zero-Boilerplate API**: Return `string`, `JSON`, or `Response` directly.
   No more `.send()` or `.json()` boilerplate.
 - **🛡️ Lean & Secure**: Zero external dependencies. Built strictly on top-tier
@@ -42,16 +42,18 @@ scalable APIs with zero boilerplate and maximum throughput.
 ## 📊 Performance That Matters
 
 Don't take our word for it. Benchmarks conducted using **Grafana k6** (100 VUs,
-10s):
+10s) for the root endpoint:
 
 | Metric                  | Native Deno   | Fastro Framework  |
 | :---------------------- | :------------ | :---------------- |
-| **Requests per Second** | ~81,900 req/s | **~77,600 req/s** |
-| **Average Latency**     | 1.14 ms       | **1.21 ms**       |
-| **95th Percentile**     | 2.13 ms       | **2.20 ms**       |
+| **Requests per Second** | ~53,700 req/s | **~55,300 req/s** |
+| **Average Latency**     | 1.74 ms       | **1.69 ms**       |
+| **95th Percentile**     | 3.04 ms       | **3.13 ms**       |
 
 > _"Fastro provides a complete developer-friendly abstraction without
 > sacrificing the performance advantages of Deno."_
+
+Fastro maintains high efficiency across multiple scenarios, including URL parameters (**102%**), Middleware (**94%**), and JSON POST (**93%**).
 
 Check the [detailed benchmark report](BENCHMARK.md).
 

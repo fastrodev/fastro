@@ -20,16 +20,22 @@ echo "# Fastro Performance Benchmark" > $MD_FILE
 echo "" >> $MD_FILE
 echo "Generated on: $(date)" >> $MD_FILE
 echo "" >> $MD_FILE
-echo "| Framework | Requests/sec | Avg Latency | p(95) Latency | % of Native |" >> $MD_FILE
-echo "| :--- | :--- | :--- | :--- | :--- |" >> $MD_FILE
+echo "| Scenario | Framework | Requests/sec | Avg Latency | p(95) Latency | % of Native |" >> $MD_FILE
+echo "| :--- | :--- | :--- | :--- | :--- | :--- |" >> $MD_FILE
 
-NATIVE_RPS=0
+# Global variables to store native RPS for each scenario
+declare -A NATIVE_RESULTS
 
 # Helper to run k6 and extract metrics
 run_bench() {
-    NAME=$1
-    echo "Running $NAME..."
-    ./k6 run --no-color k6_bench.js > k6_output.txt 2>&1
+    SCENARIO=$1
+    NAME=$2
+    TARGET=$3
+    METHOD=$4
+    if [ -z "$METHOD" ]; then METHOD="GET"; fi
+
+    echo "Running $NAME [$SCENARIO]..."
+    ENDPOINT=$TARGET METHOD=$METHOD ./k6 run --no-color k6_bench.js > k6_output.txt 2>&1
     
     # Extract metrics
     RPS=$(grep "http_reqs" k6_output.txt | awk '{print $3}' | sed 's/\/s//')
@@ -38,15 +44,15 @@ run_bench() {
     
     PERCENT="-"
     if [ "$NAME" == "Native Deno" ]; then
-        NATIVE_RPS=$RPS
+        NATIVE_RESULTS["$SCENARIO"]=$RPS
         PERCENT="100%"
     else
         # Calculate percentage using awk
-        PERCENT=$(awk "BEGIN {printf \"%.2f%%\", ($RPS / $NATIVE_RPS) * 100}")
+        N_RPS=${NATIVE_RESULTS["$SCENARIO"]}
+        PERCENT=$(awk "BEGIN {printf \"%.2f%%\", ($RPS / $N_RPS) * 100}")
     fi
 
-    echo "| $NAME | $RPS | $AVG | $P95 | $PERCENT |" >> $MD_FILE
-    cat k6_output.txt
+    echo "| $SCENARIO | $NAME | $RPS | $AVG | $P95 | $PERCENT |" >> $MD_FILE
 }
 
 echo "--- Benchmarking Native Deno ---"
@@ -54,7 +60,11 @@ deno run -A native.ts &
 SERVER_PID=$!
 sleep 5 # Wait for server to start
 
-run_bench "Native Deno"
+run_bench "Root" "Native Deno" "/" "GET"
+run_bench "URL Params" "Native Deno" "/user/123" "GET"
+run_bench "Query Params" "Native Deno" "/query?name=fastro" "GET"
+run_bench "Middleware" "Native Deno" "/middleware" "GET"
+run_bench "JSON POST" "Native Deno" "/json" "POST"
 kill_port
 
 echo ""
@@ -63,7 +73,11 @@ deno run -A main.ts $PORT &
 SERVER_PID=$!
 sleep 5 # Wait for server to start
 
-run_bench "Fastro"
+run_bench "Root" "Fastro" "/" "GET"
+run_bench "URL Params" "Fastro" "/user/123" "GET"
+run_bench "Query Params" "Fastro" "/query?name=fastro" "GET"
+run_bench "Middleware" "Fastro" "/middleware" "GET"
+run_bench "JSON POST" "Fastro" "/json" "POST"
 kill_port
 
 rm k6_output.txt
