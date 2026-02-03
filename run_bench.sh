@@ -16,12 +16,12 @@ kill_port() {
 kill_port
 
 # Clear/Create Markdown File
-echo "# Fastro Performance Benchmark" > $MD_FILE
+echo "# 🏁 Fastro Performance Benchmark" > $MD_FILE
 echo "" >> $MD_FILE
 echo "Generated on: $(date)" >> $MD_FILE
 echo "" >> $MD_FILE
-echo "| Scenario | Framework | Requests/sec | Avg Latency | p(95) Latency | % of Native |" >> $MD_FILE
-echo "| :--- | :--- | :--- | :--- | :--- | :--- |" >> $MD_FILE
+echo "| Scenario | Framework | Requests/sec | Avg Latency | p(95) Latency | % of Native | Source |" >> $MD_FILE
+echo "| :--- | :--- | :--- | :--- | :--- | :--- | :--- |" >> $MD_FILE
 
 # Global variables to store native RPS for each scenario
 declare -A NATIVE_RESULTS
@@ -43,16 +43,19 @@ run_bench() {
     P95=$(grep "http_req_duration" k6_output.txt | grep -o "p(95)=[^ ]*" | cut -d= -f2)
     
     PERCENT="-"
+    SOURCE_LINK="-"
     if [ "$NAME" == "Native Deno" ]; then
         NATIVE_RESULTS["$SCENARIO"]=$RPS
         PERCENT="100%"
+        SOURCE_LINK="[native.ts](native.ts)"
     else
         # Calculate percentage using awk
         N_RPS=${NATIVE_RESULTS["$SCENARIO"]}
         PERCENT=$(awk "BEGIN {printf \"%.2f%%\", ($RPS / $N_RPS) * 100}")
+        SOURCE_LINK="[main.ts](main.ts)"
     fi
 
-    echo "| $SCENARIO | $NAME | $RPS | $AVG | $P95 | $PERCENT |" >> $MD_FILE
+    echo "| $SCENARIO | $NAME | $RPS | $AVG | $P95 | $PERCENT | $SOURCE_LINK |" >> $MD_FILE
 }
 
 echo "--- Benchmarking Native Deno ---"
