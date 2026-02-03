@@ -291,9 +291,6 @@ export async function renderMD_Content(content: string, path: string) {
       .post-meta {
         font-size: 0.8rem;
         color: var(--color-fg-muted);
-        margin-bottom: 1.5rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -333,6 +330,22 @@ export async function renderMD_Content(content: string, path: string) {
       ${CSS}
 
       /* Custom Markdown Overrides */
+      .markdown-body h1, .markdown-body h2, .markdown-body h3 {
+        padding-bottom: 0.3em;
+        border-bottom: 1px solid var(--color-border-default);
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      .markdown-body > h1:first-child {
+        margin-top: 0 !important;
+      }
+      .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+        padding-bottom: 0.2rem;
+        border-bottom: 1px solid var(--color-border-default);
+        margin-top: 1.25rem;
+        margin-bottom: 1rem;
+        opacity: 0.9;
+      }
       .markdown-body hr {
         height: 0 !important;
         margin: 2rem 0 !important;
@@ -374,7 +387,7 @@ export async function renderMD_Content(content: string, path: string) {
       }
 
       .blog-post-header {
-        font-family: var(--font-sans);
+        font-family: var(--font-sans) !important;
       }
 
       .blog-post-content {
@@ -410,10 +423,12 @@ export async function renderMD_Content(content: string, path: string) {
         font-family: var(--font-serif) !important;
         font-weight: 700 !important;
         letter-spacing: -0.015em !important;
-        margin-top: 2rem !important;
-        margin-bottom: 0.75rem !important;
+        margin-top: 2.5rem !important;
+        margin-bottom: 1.25rem !important;
         line-height: 1.2 !important;
         color: var(--color-fg-default) !important;
+        border-bottom: 1px solid var(--color-border-default);
+        padding-bottom: 0.3em;
       }
       
       .blog-post-content h2 { font-size: 1.25rem !important; }
@@ -493,36 +508,34 @@ export async function renderMD_Content(content: string, path: string) {
       </div>
     </header>
     <main class="max-w-[720px] mx-auto p-6 md:p-8 flex-1 w-full box-border text-[var(--color-fg-default)]">
-      ${
+      <div class="markdown-body ${
+    isBlogPost ? "blog-post-content" : ""
+  }" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">${
     title
       ? `<h1 class="${
         isBlogPost
-          ? "blog-post-header text-[1.5rem] md:text-[3rem] font-black !leading-[1.1] tracking-tighter"
-          : "text-[1.4rem] md:text-[2.25rem] font-bold leading-tight"
-      } mb-8 text-fg-default">${title}</h1>`
+          ? "blog-post-header text-[2.25rem] md:text-[3.25rem] !font-black !leading-[1.1] tracking-tight mb-5 !border-b-0 !pb-0"
+          : "text-[1.75rem] md:text-[2rem] font-semibold tracking-tight text-fg-default flex items-center gap-3 mb-4"
+      }">${title}</h1>`
       : ""
-  }
-
-      ${
+  }${
     (date || author) && path !== "blog"
       ? `<div class="post-meta ${
-        isBlogPost ? "mb-8 opacity-100 font-sans text-[0.95rem] !gap-4" : ""
+        isBlogPost
+          ? "mb-10 opacity-100 font-sans text-[0.9rem] !gap-6 pb-3 border-b border-border-default"
+          : "mb-4 pb-4 border-b border-border-default"
       }">
           ${
         author
-          ? `<span class="font-medium text-fg-default">${author}</span>`
+          ? `<span class="font-semibold text-fg-default">${author}</span>`
           : ""
       }
-          ${date ? `<span class="text-fg-muted opacity-60">${date}</span>` : ""}
+          ${
+        date ? `<span class="text-fg-muted opacity-50 ml-1">${date}</span>` : ""
+      }
         </div>`
       : ""
-  }
-
-      <div class="${path !== "blog" ? "markdown-body" : ""} ${
-    isBlogPost ? "blog-post-content" : ""
-  }" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
-        ${body}
-      </div>
+  }${body}</div>
     </main>
     <footer class="mt-auto border-t border-border-default">
       <div class="max-w-[720px] mx-auto px-6 md:px-4 py-4 text-[0.75rem] text-fg-muted">
@@ -704,7 +717,7 @@ export async function renderBlog() {
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 
-  let html = `# Fastro Blog
+  let html = `# 📝 Fastro Blog
 
   <p class="text-fg-muted mb-10 text-lg opacity-80">Updates and insights from the Fastro team.</p>
 

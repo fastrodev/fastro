@@ -15,4 +15,12 @@ export function registerCodeRoutes(app: App) {
     "/middlewares/logger/logger.ts",
     () => renderCode("middlewares/logger/logger.ts"),
   );
+  app.get(
+    "/native.ts",
+    () => renderCode("native.ts"),
+  );
+  app.get(
+    "/main.ts",
+    () => renderCode("main.ts"),
+  );
 }

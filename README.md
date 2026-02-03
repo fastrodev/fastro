@@ -5,7 +5,7 @@
 
 ![Fastro](https://repository-images.githubusercontent.com/264308713/45a53a9a-141e-4204-8f0b-4867c05cbc0d)
 
-### **The High-Performance Web Framework for the Modern TypeScript Era.**
+## The High-Performance Web Framework for the Modern TypeScript Era
 
 Fastro is the bridge between **raw Deno performance** and **elite developer
 experience**. Stop compromising between speed and simplicity. Build secure,
@@ -13,8 +13,9 @@ scalable APIs with zero boilerplate and maximum throughput.
 
 ## 🚀 Why Fastro?
 
-- **💨 Near-Native Performance**: Benchmark-proven to maintain **>93% of raw
-  Deno performance** even in complex scenarios. Stop choosing between DX and speed.
+- **💨 Near-Native Performance**: Benchmark-proven to maintain **exceptional
+  efficiency**, often reaching or exceeding raw Deno performance. Stop choosing
+  between DX and speed.
 - **✨ Zero-Boilerplate API**: Return `string`, `JSON`, or `Response` directly.
   No more `.send()` or `.json()` boilerplate.
 - **🛡️ Lean & Secure**: Zero external dependencies. Built strictly on top-tier
@@ -41,19 +42,21 @@ scalable APIs with zero boilerplate and maximum throughput.
 
 ## 📊 Performance That Matters
 
-Don't take our word for it. Benchmarks conducted using **Grafana k6** (100 VUs,
-10s) for the root endpoint:
+Benchmarks vary by environment, and results may fluctuate depending on system resources and load during execution. Fastro consistently delivers near-native speeds and high efficiency.
 
-| Metric                  | Native Deno   | Fastro Framework  |
-| :---------------------- | :------------ | :---------------- |
-| **Requests per Second** | ~53,700 req/s | **~55,300 req/s** |
-| **Average Latency**     | 1.74 ms       | **1.69 ms**       |
-| **95th Percentile**     | 3.04 ms       | **3.13 ms**       |
+Below are typical results using **Grafana k6** (100 VUs, 10s) for the root endpoint:
+
+| Metric                  | Native Deno    | Fastro Framework   |
+| :---------------------- | :------------- | :----------------- |
+| **Requests per Second** | ~63,000+ req/s | **~68,000+ req/s** |
+| **Average Latency**     | ~1.49 ms       | **~1.36 ms**       |
+| **95th Percentile**     | ~2.79 ms       | **~2.55 ms**       |
 
 > _"Fastro provides a complete developer-friendly abstraction without
 > sacrificing the performance advantages of Deno."_
 
-Fastro maintains high efficiency across multiple scenarios, including URL parameters (**102%**), Middleware (**94%**), and JSON POST (**93%**).
+Fastro typically maintains **93-118%** efficiency compared to native Deno across
+multiple scenarios, including URL parameters, Middleware, and JSON POST.
 
 Check the [detailed benchmark report](BENCHMARK.md).
 

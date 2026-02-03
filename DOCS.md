@@ -4,8 +4,6 @@ Fastro is a high-performance, minimalist web framework for Deno. This
 documentation covers everything you need to build scalable, high-speed
 applications.
 
----
-
 ## 📑 Table of Contents
 
 - [🚀 Getting Started](#-getting-started)
@@ -17,8 +15,6 @@ applications.
 - [📦 Automatic Module Loading](#-automatic-module-loading)
 - [🛠️ Context (`ctx`)](#️-context-ctx)
 - [🏎️ Performance Features](#️-performance-features)
-
----
 
 ## 🚀 Getting Started
 
@@ -44,7 +40,6 @@ The `.serve()` method accepts the standard `Deno.serve` options plus an optional
 | `port`      | `number` | `8000`  | The port to listen on.                          |
 | `cacheSize` | `number` | `10000` | Max entries for the route matching cache (LRU). |
 
----
 
 ## 🛣️ Routing
 
@@ -92,7 +87,6 @@ app.get(pattern, (req, ctx) => {
 });
 ```
 
----
 
 ## ⚡ Responses
 
@@ -113,7 +107,6 @@ app.get("/api/data", async () => {
 });
 ```
 
----
 
 ## 🧩 Middleware
 
@@ -143,7 +136,6 @@ const checkAuth = (req, ctx, next) => {
 app.get("/admin", () => "Sensitive Info", checkAuth);
 ```
 
----
 
 ## 🏗️ Modular Routing (Router)
 
@@ -161,7 +153,6 @@ const api = createRouter()
 app.use(api.build());
 ```
 
----
 
 ## 📁 Static Files
 
@@ -205,7 +196,6 @@ app.use(staticFiles("/", "./dist", { spaFallback: true }));
 - **Development Mode**: Cache is disabled with `no-cache` headers to ensure you
   always see your latest changes.
 
----
 
 ## 📦 Automatic Module Loading
 
@@ -247,7 +237,6 @@ export default (req, ctx, next) => {
 };
 ```
 
----
 
 ## 🛠️ Context (`ctx`)
 
@@ -275,7 +264,6 @@ app.get("/", (req, ctx) => {
 });
 ```
 
----
 
 ## 🏎️ Performance Features
 
