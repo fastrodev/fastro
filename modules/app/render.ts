@@ -54,6 +54,7 @@ export async function renderMD_Content(content: string, path: string) {
   let description = "High-performance, minimalist web framework for Deno.";
   let date = "";
   let author = "";
+  let tags: string[] = [];
   let image =
     "https://repository-images.githubusercontent.com/264308713/45a53a9a-141e-4204-8f0b-4867c05cbc0d";
 
@@ -75,6 +76,12 @@ export async function renderMD_Content(content: string, path: string) {
 
       const authorMatch = frontmatter.match(/author:\s*["']?(.*?)["']?$/m);
       if (authorMatch) author = authorMatch[1].trim();
+
+      const tagsMatch = frontmatter.match(/tags:\s*\[?(.*?)\]?$/m);
+      if (tagsMatch) {
+        tags = tagsMatch[1].split(",").map((t) => t.trim().replace(/['"]/g, ""))
+          .filter(Boolean);
+      }
 
       const imageMatch = frontmatter.match(/image:\s*["']?(.*?)["']?$/m);
       if (imageMatch) image = imageMatch[1].trim();
@@ -214,6 +221,7 @@ export async function renderMD_Content(content: string, path: string) {
     </script>
 
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap');
       :root {
         --content-max-width: 720px;
       }
@@ -285,14 +293,12 @@ export async function renderMD_Content(content: string, path: string) {
         transition: color 0.2s ease;
       }
       .edit-link:hover {
-        color: var(--color-accent-fg);
+        color: var(--color-fg-default);
       }
       .post-meta {
-        font-size: 0.8rem;
         color: var(--color-fg-muted);
         display: flex;
         align-items: center;
-        gap: 0.5rem;
         opacity: 0.8;
       }
       /* Global link reset */
@@ -311,15 +317,29 @@ export async function renderMD_Content(content: string, path: string) {
         white-space: nowrap;
       }
       .nav-link:hover {
-        color: var(--color-accent-fg);
+        color: var(--color-fg-default);
       }
-      /* GFM Link Style */
+      .brand-logo {
+        font-family: 'Inter', sans-serif;
+        font-weight: 800;
+        letter-spacing: -0.05em;
+        font-variant-ligatures: none;
+      }
+      .brand-version {
+        font-family: 'Inter', sans-serif;
+        font-weight: 800;
+      }
+      /* GFM Link Style - Neutral */
       .markdown-body a {
-        color: var(--color-accent-fg);
-        text-decoration: none;
+        color: var(--color-fg-default);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+        text-decoration-color: var(--color-border-default);
+        transition: all 0.2s ease;
       }
       .markdown-body a:hover {
-        text-decoration: none !important;
+        text-decoration-color: var(--color-fg-muted) !important;
       }
       @media (max-width: 600px) {
         .edit-container {
@@ -490,8 +510,8 @@ export async function renderMD_Content(content: string, path: string) {
       <div class="max-w-[720px] mx-auto flex flex-col md:flex-row md:justify-between md:items-center py-4 px-6 md:px-8">
         <div class="flex justify-between items-center w-full md:w-auto">
           <div class="flex items-center gap-x-2">
-            <a href="/" class="text-2xl font-black text-fg-default no-underline hover:no-underline tracking-tighter">FASTRO</a>
-            <span class="text-[0.65rem] font-bold px-1.5 py-px rounded bg-fg-default text-canvas-default uppercase tracking-wider select-none">${version}</span>
+            <a href="/" class="brand-logo text-2xl text-fg-default no-underline hover:no-underline">FASTRO</a>
+            <span class="brand-version text-[0.65rem] px-1.5 py-px rounded bg-fg-default text-canvas-default uppercase tracking-wider select-none">${version}</span>
           </div>
           <button id="menu-toggle" aria-label="Toggle Menu" class="flex flex-col justify-between w-6 h-5 bg-transparent border-none cursor-pointer p-0 md:hidden group">
             <span class="w-6 h-[2px] bg-fg-default rounded-full transition-all duration-300 origin-center"></span>
@@ -520,19 +540,36 @@ export async function renderMD_Content(content: string, path: string) {
       }">${title}</h1>`
       : ""
   }${
-    (date || author) && path !== "blog"
+    (date || author || (tags && tags.length > 0)) && path !== "blog"
       ? `<div class="post-meta ${
         isBlogPost
-          ? "mb-10 opacity-100 font-sans text-[0.9rem] !gap-6 pb-3 border-b border-border-default"
-          : "mb-4 pb-4 border-b border-border-default"
+          ? "mb-10 opacity-100 font-sans text-sm md:text-[0.9rem] flex flex-wrap items-center gap-y-3 pb-5 md:pb-3 border-b border-border-default"
+          : "mb-4 pb-4 border-b border-border-default flex flex-wrap items-center gap-2"
       }">
-          ${
+          <div class="flex items-center gap-x-3 gap-y-1 flex-wrap">
+            ${
         author
-          ? `<span class="font-semibold text-fg-default">${author}</span>`
+          ? `<span class="font-semibold text-fg-default whitespace-nowrap">${author}</span>`
           : ""
       }
+            ${
+        date
+          ? `<span class="text-fg-muted opacity-50 whitespace-nowrap md:ml-2">${date}</span>`
+          : ""
+      }
+          </div>
           ${
-        date ? `<span class="text-fg-muted opacity-50 ml-1">${date}</span>` : ""
+        tags && tags.length > 0
+          ? `<div class="flex flex-wrap gap-2 ml-auto">
+                ${
+            tags.slice(0, 2).map((tag) =>
+              `<a href="/blog?search=${
+                encodeURIComponent(tag)
+              }" class="text-[0.65rem] md:text-[0.7rem] px-2.5 py-1 rounded-full bg-canvas-subtle border border-border-default !text-fg-muted font-medium uppercase tracking-wider hover:!text-fg-default hover:border-fg-muted transition-colors !no-underline">${tag}</a>`
+            ).join("")
+          }
+              </div>`
+          : ""
       }
         </div>`
       : ""
@@ -541,13 +578,13 @@ export async function renderMD_Content(content: string, path: string) {
     <footer class="mt-auto border-t border-border-default">
       <div class="max-w-[720px] mx-auto px-6 md:px-8 py-4 text-[0.85rem] md:text-base text-fg-muted">
         <div class="flex flex-row justify-between items-center gap-4 opacity-80">
-          <span class="whitespace-nowrap">Made by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-accent-fg transition-colors">Fastrodev</a></span>  
+          <span class="whitespace-nowrap">Made by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-fg-default transition-colors">Fastrodev</a></span>  
           <div class="flex items-center gap-4 md:gap-6">
             ${
     path !== "blog"
       ? `<a href="https://github.com/fastrodev/fastro/edit/main/${path}" 
                target="_blank" 
-               class="hover:text-accent-fg transition-colors flex items-center gap-1.5 whitespace-nowrap">
+               class="hover:text-fg-default transition-colors flex items-center gap-1.5 whitespace-nowrap">
                 <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                 <span class="hidden md:inline">Edit this page</span>
                 <span class="md:hidden">Edit</span>
@@ -679,13 +716,17 @@ export async function renderMD(path: string) {
 }
 
 /**
- * Renders the blog index page listing all markdown posts.
+ * Renders the blog index page listing all markdown posts with pagination and search.
  *
+ * @param page The current page number.
+ * @param search The search query string.
  * @returns A promise that resolves to a rendered HTML string.
  */
-export async function renderBlog() {
+export async function renderBlog(page: number = 1, search: string = "") {
   const postsDir = new URL("../../posts/", import.meta.url);
-  const posts: { title: string; date: string; link: string }[] = [];
+  const posts: { title: string; date: string; link: string; tags: string[] }[] =
+    [];
+  const query = search.toLowerCase().trim();
 
   for await (const entry of Deno.readDir(postsDir)) {
     if (entry.isFile && entry.name.endsWith(".md")) {
@@ -694,6 +735,7 @@ export async function renderBlog() {
       const content = await Deno.readTextFile(postUrl);
       let title = name.replace(".md", "").replace(/-/g, " ");
       let date = "";
+      let tags: string[] = [];
 
       if (content.startsWith("---")) {
         const endIdx = content.indexOf("---", 3);
@@ -703,12 +745,29 @@ export async function renderBlog() {
           if (titleMatch) title = titleMatch[1].trim();
           const dateMatch = frontmatter.match(/date:\s*(.*?)$/m);
           if (dateMatch) date = dateMatch[1].trim();
+          const tagsMatch = frontmatter.match(/tags:\s*\[?(.*?)\]?$/m);
+          if (tagsMatch) {
+            tags = tagsMatch[1].split(",").map((t) =>
+              t.trim().replace(/['"]/g, "")
+            ).filter(Boolean);
+          }
         }
+      }
+
+      // Filter by search query if provided
+      if (
+        query &&
+        !title.toLowerCase().includes(query) &&
+        !content.toLowerCase().includes(query) &&
+        !tags.some((t) => t.toLowerCase().includes(query))
+      ) {
+        continue;
       }
 
       posts.push({
         title,
         date,
+        tags,
         link: `/blog/${name.replace(".md", "")}`,
       });
     }
@@ -719,31 +778,107 @@ export async function renderBlog() {
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 
+  const pageSize = 4;
+  const totalPages = Math.ceil(posts.length / pageSize);
+  const currentPage = Math.min(Math.max(1, page), totalPages || 1);
+  const start = (currentPage - 1) * pageSize;
+  const end = start + pageSize;
+  const paginatedPosts = posts.slice(start, end);
+
   let html = `# Fastro Blog
 
-  <p class="text-fg-muted mb-10 text-lg opacity-80">Updates and insights from the Fastro team.</p>
+  <p class="text-fg-muted mb-8 text-lg opacity-80">Updates and insights from the Fastro team.</p>
 
-  <div class="space-y-4 mt-8">`;
+  <form action="/blog" method="GET" class="relative mb-10 group">
+    <input 
+      type="text" 
+      name="search" 
+      value="${search}" 
+      placeholder="Search posts..." 
+      class="w-full px-5 py-4 bg-canvas-subtle border border-border-default rounded-2xl focus:outline-none focus:border-accent-fg transition-all duration-300 text-fg-default placeholder:text-fg-muted/50"
+    >
+    <button type="submit" class="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-fg-muted hover:text-accent-fg transition-colors">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+    </button>
+  </form>
 
-  for (const post of posts) {
+  <div class="space-y-4">`;
+
+  if (paginatedPosts.length === 0) {
     html += `
-      <a href="${post.link}" class="relative group block p-5 md:p-6 border border-border-default rounded-2xl hover:border-accent-fg hover:bg-canvas-subtle transition-all duration-300 no-underline hover:no-underline shadow-sm hover:shadow-md">
-        <div class="flex flex-row md:items-baseline justify-between w-full gap-3 md:gap-4">
-          <span class="text-xl font-bold text-fg-default group-hover:text-accent-fg transition-colors tracking-tight line-clamp-2 pr-20 md:pr-0">
-            ${post.title}
-          </span>
+      <div class="py-20 text-center border border-dashed border-border-default rounded-2xl">
+        <p class="text-fg-muted text-lg">No posts found for "${search}"</p>
+        <a href="/blog" class="!text-fg-default font-medium hover:underline mt-2 inline-block">Clear search</a>
+      </div>`;
+  }
+
+  for (const post of paginatedPosts) {
+    html += `
+      <div onclick="if(!event.target.closest('a')) location.href='${post.link}'" class="relative group block p-5 md:p-6 border border-border-default rounded-2xl hover:border-fg-muted hover:bg-canvas-subtle transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer">
+        <div class="flex flex-col md:flex-row md:items-baseline justify-between w-full gap-3 md:gap-4">
+          <div class="flex flex-col gap-2">
+            <a href="${post.link}" class="text-xl font-bold !text-fg-default transition-colors tracking-tight line-clamp-2 md:line-clamp-none !no-underline hover:!no-underline">
+              ${post.title}
+            </a>
+            ${
+      post.tags && post.tags.length > 0
+        ? `<div class="flex flex-wrap gap-2">
+                ${
+          post.tags.slice(0, 2).map((tag) =>
+            `<a href="/blog?search=${
+              encodeURIComponent(tag)
+            }" class="text-[0.65rem] px-2 py-0.5 rounded-full bg-canvas-subtle border border-border-default !text-fg-muted font-medium uppercase tracking-wider hover:!text-fg-default hover:border-fg-muted transition-colors z-20 relative !no-underline">${tag}</a>`
+          ).join("")
+        }
+              </div>`
+        : ""
+    }
+          </div>
           ${
       post.date
-        ? `<span class="text-fg-muted text-[0.7rem] md:text-sm shrink-0 flex items-center gap-2 whitespace-nowrap opacity-60 md:opacity-40 absolute bottom-5 right-5 md:static uppercase tracking-wider font-semibold">
+        ? `<span class="text-fg-muted text-[0.7rem] md:text-sm shrink-0 flex items-center gap-2 whitespace-nowrap opacity-100 md:opacity-40 absolute bottom-4 right-4 md:static uppercase tracking-wider font-semibold z-10 bg-canvas-default group-hover:bg-canvas-subtle pl-4 pr-0 py-1 md:p-0 rounded-md md:rounded-none">
               ${post.date}
             </span>`
         : ""
     }
         </div>
-      </a>`;
+      </div>`;
   }
 
-  html += `</div>`;
+  html += `</div>
+
+  ${
+    totalPages > 1
+      ? `
+  <div class="grid grid-cols-3 items-center mt-12 pt-8 border-t border-border-default">
+    <div class="flex justify-start">
+      ${
+        currentPage > 1
+          ? `<a href="/blog?page=${currentPage - 1}${
+            search ? `&search=${encodeURIComponent(search)}` : ""
+          }" class="px-5 py-2.5 rounded-xl border border-border-default hover:border-fg-muted hover:bg-canvas-subtle transition-all font-medium text-sm flex items-center gap-2 group whitespace-nowrap !text-fg-default !no-underline">
+              <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+              Previous
+            </a>`
+          : ""
+      }
+    </div>
+    <span class="text-sm font-semibold text-fg-muted opacity-60 tracking-widest uppercase text-center whitespace-nowrap">Page ${currentPage} of ${totalPages}</span>
+    <div class="flex justify-end">
+      ${
+        currentPage < totalPages
+          ? `<a href="/blog?page=${currentPage + 1}${
+            search ? `&search=${encodeURIComponent(search)}` : ""
+          }" class="px-5 py-2.5 rounded-xl border border-border-default hover:border-fg-muted hover:bg-canvas-subtle transition-all font-medium text-sm flex items-center gap-2 group whitespace-nowrap !text-fg-default !no-underline">
+              Next
+              <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>`
+          : ""
+      }
+    </div>
+  </div>`
+      : ""
+  }`;
 
   return renderMD_Content(html, "blog");
 }

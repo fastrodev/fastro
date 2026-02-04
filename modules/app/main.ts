@@ -16,7 +16,12 @@ app.get("/SHOWCASE.md", () => renderMD("SHOWCASE.md"));
 app.get("/BENCHMARK.md", () => renderMD("BENCHMARK.md"));
 app.get("/CONTRIBUTING.md", () => renderMD("CONTRIBUTING.md"));
 
-app.get("/blog", () => renderBlog());
+app.get("/blog", (req) => {
+  const url = new URL(req.url);
+  const page = parseInt(url.searchParams.get("page") || "1");
+  const search = url.searchParams.get("search") || "";
+  return renderBlog(page, search);
+});
 app.get("/blog/:post", (_req, ctx) => renderMD(`posts/${ctx.params.post}.md`));
 
 registerCodeRoutes(app);
