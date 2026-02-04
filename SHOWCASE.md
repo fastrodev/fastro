@@ -1,4 +1,4 @@
-# 🚀 Fastro Showcase
+# Fastro Showcase
 
 See what the community is building with Fastro! This gallery features projects,
 apps, and websites powered by the Fastro framework.
@@ -8,7 +8,7 @@ apps, and websites powered by the Fastro framework.
 Pull Request.
 
 
-## 🌟 Featured Projects
+## Featured Projects
 
 These projects demonstrate the power and speed of Fastro.
 
@@ -19,7 +19,7 @@ These projects demonstrate the power and speed of Fastro.
 | **Simple API**  | A minimalist REST API example showing raw Deno performance.                 | [Example](/CONTRIBUTING.md)                                              |
 
 
-## 🏗️ Community Projects
+## Community Projects
 
 Have you built something with Fastro? Add it here!
 

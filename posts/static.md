@@ -9,7 +9,7 @@ author: "Fastro Team"
 
 Serving static assets efficiently is a cornerstone of web development. Today, we're introducing the `staticFiles` middleware for Fastro—a robust solution designed for performance and reliability.
 
-## 🚀 Key Features
+## Key Features
 
 The new static middleware isn't just a simple file server. It's built with modern production requirements in mind:
 
@@ -20,7 +20,7 @@ The new static middleware isn't just a simple file server. It's built with moder
 - **Auto MIME Mapping**: Support for a wide range of extensions out of the box, from standard `.html` and `.js` to modern web fonts (`.woff2`, `.ttf`).
 - **Cache Control**: Intelligent headers based on the environment, ensuring browsers cache assets effectively in production while allowing developers to see changes instantly in development.
 
-## 🛡️ Engineering Excellence: 100% Coverage
+## Engineering Excellence: 100% Coverage
 
 Software reliability is non-negotiable at Fastro. To ensure the `staticFiles` middleware works flawlessly under all conditions, we've implemented a comprehensive test suite.
 
@@ -32,7 +32,7 @@ Using the `Deno.test` runner and `@std/testing/time`'s `FakeTime`, we've achieve
 - **LRU Eviction**: Simulating heavy load to confirm that the cache respects its 100-file limit.
 - **Security & Method Handling**: Verifying that only `GET` requests are served and prefixes are strictly enforced.
 
-## 💻 How to Use
+## How to Use
 
 Adding static file support to your Fastro app is now easier than ever:
 
@@ -48,7 +48,7 @@ app.use(staticFiles("/static", "./public", { spaFallback: true }));
 await app.serve();
 ```
 
-## 📈 Conclusion
+## Conclusion
 
 With the addition of the static middleware and our commitment to 100% test coverage, Fastro continues to provide a solid foundation for building high-performance web applications.
 

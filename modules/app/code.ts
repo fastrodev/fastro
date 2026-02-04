@@ -20,6 +20,14 @@ export function registerCodeRoutes(app: App) {
     () => renderCode("middlewares/bodyparser/bodyparser.ts"),
   );
   app.get(
+    "/middlewares/cors/cors.ts",
+    () => renderCode("middlewares/cors/cors.ts"),
+  );
+  app.get(
+    "/core/loader.ts",
+    () => renderCode("core/loader.ts"),
+  );
+  app.get(
     "/native.ts",
     () => renderCode("native.ts"),
   );

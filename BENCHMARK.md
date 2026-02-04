@@ -1,4 +1,4 @@
-# 🏁 Fastro Performance Benchmark
+# Fastro Performance Benchmark
 
 Generated on: Tue Feb  3 15:38:24 WIB 2026
 
