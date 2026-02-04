@@ -14,6 +14,7 @@ applications.
 - [Static Files](#static-files)
 - [Body Parser](#body-parser)
 - [CORS](#cors)
+- [Deno KV](#deno-kv)
 - [Automatic Module Loading](#automatic-module-loading)
 - [Context (ctx)](#context-ctx)
 - [Performance Features](#performance-features)
@@ -106,6 +107,35 @@ await app.serve();
 ```
 
 For detailed configuration (origins, headers, methods), see the [CORS guide](/blog/cors).
+
+
+## Deno KV
+
+Fastro provides seamless integration with Deno KV, allowing you to persist data with minimal setup.
+
+### Usage
+
+```ts
+import Fastro from "https://deno.land/x/fastro/mod.ts";
+import { kvMiddleware } from "https://deno.land/x/fastro/middlewares/kv/mod.ts";
+
+const app = new Fastro();
+
+// Enable KV globally
+app.use(kvMiddleware);
+
+app.get("/", async (req, ctx) => {
+  // Access the KV instance via ctx.kv
+  const result = await ctx.kv.get(["visits"]);
+  const count = (result.value ?? 0) + 1;
+  await ctx.kv.set(["visits"], count);
+  return `Visits: ${count}`;
+});
+
+await app.serve();
+```
+
+> **Note**: You must run Deno with the `--unstable-kv` flag to use this feature.
 
 
 ## Responses

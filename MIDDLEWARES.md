@@ -16,6 +16,7 @@ These middlewares are maintained by the Fastro core team.
 | :--------- | :--------------------------------- | :-------------------------------------- |
 | **Logger** | Standard request/response logging. | [Source](/middlewares/logger/logger.ts)    |
 | **CORS**   | Handle Cross-Origin Resource Sharing. | [Source](/middlewares/cors/cors.ts) |
+| **KV**     | Deno KV store integration. | [Source](/middlewares/kv/kv.ts) |
 | **Static** | Serve static files and SPA support.| [Source](/middlewares/static/static.ts)    |
 | **BodyParser**| Parse request body (JSON, Form, etc.) | [Source](/middlewares/bodyparser/bodyparser.ts) |
 
