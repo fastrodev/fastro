@@ -80,6 +80,10 @@ export type Context = {
   setCookie?: (name: string, value: string, opts?: CookieOptions) => void;
   /** Full URL object of the request */
   url: URL;
+  /** Deno KV instance, if the KV middleware is used */
+  kv?: Deno.Kv;
+  /** General purpose state object for middlewares */
+  state?: Record<string, any>;
   /** Dynamic properties for middleware data passing */
   [key: string]: unknown;
 };

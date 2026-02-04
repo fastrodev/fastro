@@ -16,7 +16,9 @@ A middleware is a function that receives the `Request`, the Fastro `Context`
 handler, you must return `next()`.
 
 ```typescript
-export function myMiddleware(req: Request, ctx: any, next: any) {
+import { Context, Next } from "./core/types.ts";
+
+export function myMiddleware(req: Request, ctx: Context, next: Next) {
   console.log(`${req.method} ${ctx.url.pathname}`);
 
   // Perform logic here...
@@ -47,7 +49,9 @@ app.serve();
 Here is a simple logger that also attaches a timestamp to the request state:
 
 ```typescript
-export function logger(req: Request, ctx: any, next: any) {
+import { Context, Next } from "./core/types.ts";
+
+export function logger(req: Request, ctx: Context, next: Next) {
   const start = Date.now();
 
   // Attach data to the shared context state

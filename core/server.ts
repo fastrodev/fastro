@@ -9,7 +9,7 @@ function toResponse(res: unknown): Response | Promise<Response> {
   if (typeof res === "string") return new Response(res);
   if (res instanceof Promise) return (res as Promise<unknown>).then(toResponse);
   if (res !== null && typeof res === "object") return Response.json(res);
-  return res as Response;
+  return new Response("Internal Server Error", { status: 500 });
 }
 
 function applyMiddlewares(
