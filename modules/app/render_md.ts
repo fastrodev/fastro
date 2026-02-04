@@ -490,7 +490,7 @@ export async function renderMD_Content(content: string, path: string) {
         </nav>
       </div>
     </header>
-    <main class="max-w-[720px] mx-auto p-6 md:p-8 flex-1 w-full box-border text-[var(--color-fg-default)]">
+    <main class="max-w-[720px] mx-auto p-6 md:py-6 md:px-8 flex-1 w-full box-border text-[var(--color-fg-default)]">
       <div class="markdown-body ${
     isBlogPost ? "blog-post-content" : ""
   }" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">${

@@ -1,4 +1,4 @@
-import type { Middleware, Next } from "../../core/types.ts";
+import type { Middleware } from "../../core/types.ts";
 
 /**
  * JWT middleware options
