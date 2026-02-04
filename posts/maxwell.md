@@ -117,22 +117,23 @@ $$
 
 ### Step 2: Connecting the Dancers
 
-Using his 4th equation, Maxwell realized he could replace the magnetic part $(\nabla \times \mathbf{B})$ with something that only involves the electric field.
+Maxwell now needed to connect the electric and magnetic fields into a single equation. He started with the curl of Faraday's Law:
+$$\nabla \times (\nabla \times \mathbf{E}) = \nabla \times \left( -\frac{\partial \mathbf{B}}{\partial t} \right)$$
 
-To simplify the math, he used a standard vector identity:
+To solve the **left side**, he used a standard vector identity:
 $$\nabla \times (\nabla \times \mathbf{E}) = \nabla(\nabla \cdot \mathbf{E}) - \nabla^2 \mathbf{E}$$
 
-Because Gauss's Law states that $\nabla \cdot \mathbf{E} = 0$ in a vacuum, the first term vanishes, leaving:
+Because Gauss's Law states that $\nabla \cdot \mathbf{E} = 0$ in a vacuum, the first term $\nabla(0)$ vanishes. This means the complex "curl of a curl" simply becomes $-\nabla^2 \mathbf{E}$.
 
+To solve the **right side**, he swapped the order of space and time $(\nabla \times \frac{\partial}{\partial t} \to \frac{\partial}{\partial t} \nabla \times)$ and used the Ampère-Maxwell Law to replace $\nabla \times \mathbf{B}$.
+
+Combined, it looks like this:
 $$
-\underbrace{-\nabla^2 \mathbf{E}}_{\text{From Vector Identity}} = \underbrace{-\frac{\partial}{\partial t}}_{\text{From Faraday's Law}} \underbrace{\left( \mu_0 \epsilon_0 \frac{\partial \mathbf{E}}{\partial t} \right)}_{\text{Substitute for } \nabla \times \mathbf{B}}
+\underbrace{-\nabla^2 \mathbf{E}}_{\text{Simplified Left Side}} = \underbrace{-\mu_0 \epsilon_0 \frac{\partial^2 \mathbf{E}}{\partial t^2}}_{\text{Simplified Right Side}}
 $$
 
-After canceling the negative signs and combining the time derivatives, he arrived at a surprisingly clean result:
-
-$$
-\nabla^2 \mathbf{E} = \mu_0 \epsilon_0 \frac{\partial^2 \mathbf{E}}{\partial t^2}
-$$
+After canceling the negative signs, he arrived at a surprisingly clean result:
+$$\nabla^2 \mathbf{E} = \mu_0 \epsilon_0 \frac{\partial^2 \mathbf{E}}{\partial t^2}$$
 
 This was the pivotal moment. Maxwell had successfully eliminated the magnetic field from the equation. He was left with a pure statement about how an electric field behaves in the void. But there was a problem: **What did this mathematical "sentence" actually mean?**
 
@@ -155,10 +156,15 @@ If we translate these symbols into plain English, the logic becomes clear:
 **The Cause and Effect:** d'Alembert's secret was realizing that the **sharper the bend** in space, the **faster it accelerates** back to normal. The ratio between these two is the square of the speed ($v^2$).
 
 #### Matching the Patterns:
-Maxwell placed his result side-by-side with d'Alembert's template and the similarity was undeniable:
+Maxwell compared his result with d'Alembert's template. Since light moves in three dimensions, he used the 3D generalization of the wave equation. 
+
+In 1D, d'Alembert used $\frac{\partial^2 f}{\partial x^2}$. But in 3D, we use the **Laplacian** ($\nabla^2$), which is simply the sum of derivatives in all directions:
+$$\nabla^2 = \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2} + \frac{\partial^2}{\partial z^2}$$
+
+So, the $\partial x^2$ isn't gone; it's now part of a bigger team ($\nabla^2$) that accounts for waves traveling in any direction, not just along a single string.
 
 1.  **Maxwell's Result:** $\nabla^2 \mathbf{E} = (\mu_0 \epsilon_0) \frac{\partial^2 \mathbf{E}}{\partial t^2}$
-2.  **d'Alembert's Template:** $\nabla^2 f = (\frac{1}{v^2}) \frac{\partial^2 f}{\partial t^2}$
+2.  **d'Alembert's Template:** $\nabla^2 f = \left( \frac{1}{v^2} \right) \frac{\partial^2 f}{\partial t^2}$
 
 Wait—they were identical! The symbol $\nabla^2$ was just the 3D version of d'Alembert's 1D curvature. By plucking the "string" of the electric field, Maxwell had inadvertently triggered the same mathematical wave behavior discovered a century earlier.
 
