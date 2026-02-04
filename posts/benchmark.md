@@ -3,6 +3,7 @@ title: "Benchmark Analysis: Fastro vs Native Deno"
 description: "A detailed analysis of the v1.0.0 performance benchmarks across multiple scenarios, from simple routing to JSON POST and middleware overhead."
 date: 2026-02-03
 author: "Fastro Team"
+tags: ["benchmark", "performance", "deno"]
 ---
 
 # Benchmark Analysis: Fastro vs Native Deno

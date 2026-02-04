@@ -5,13 +5,13 @@ Deno.test("main.ts - CLI execution", async () => {
     args: [
       "run",
       "-A",
-      "modules/app/main.ts",
+      `${Deno.cwd()}/modules/app/main.ts`,
       "3338",
     ],
     stdout: "piped",
     stderr: "piped",
     env: {
-      DENO_V8_COVERAGE: "coverage",
+      DENO_V8_COVERAGE: "cov_cli",
     },
   });
 
@@ -28,6 +28,36 @@ Deno.test("main.ts - CLI execution", async () => {
     process.kill();
     await process.status;
     await process.stdout.cancel(); // Close streams
+    await process.stderr.cancel();
+  }
+});
+
+Deno.test("main.ts - CLI execution (default port branch)", async () => {
+  const command = new Deno.Command(Deno.execPath(), {
+    args: [
+      "run",
+      "-A",
+      `${Deno.cwd()}/modules/app/main.ts`,
+    ],
+    stdout: "piped",
+    stderr: "piped",
+    env: {
+      DENO_V8_COVERAGE: "cov_cli",
+    },
+  });
+
+  const process = command.spawn();
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  try {
+    try {
+      process.kill();
+    } catch (_e) {
+      // Already terminated
+    }
+    await process.status;
+  } finally {
+    await process.stdout.cancel();
     await process.stderr.cancel();
   }
 });

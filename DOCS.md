@@ -279,45 +279,80 @@ await app.serve();
 
 ## Automatic Module Loading
 
-Automatically scale your application by turning folders into modules.
+Automatically scale your application by turning folders into self-contained modules. This is the recommended pattern for large-scale applications where you want to keep your `main.ts` clean and your features isolated.
 
-### Setup
+### The pattern
 
-Place your modules in a `modules/` directory at the root:
+Fastro scans a top-level `modules/` directory and looks for `mod.ts` files inside each sub-folder. Each module is treated as a middleware.
 
 ```
 project/
   modules/
-    auth/
+    index/       # Loaded FIRST
       mod.ts
-    api/
+    auth/        # Loaded alphabetically
+      mod.ts
+    api/         # Loaded alphabetically
+      mod.ts
+    profile/     # Loaded LAST
       mod.ts
 ```
 
-### Registration
+### Loading Order
+
+Fastro follows a specific priority when loading modules to ensure configuration or prerequisite middlewares run first:
+1. **`index/`**: Always loaded first. Ideal for initializing database connections or global error handlers.
+2. **Standard Folders**: Loaded alphabetically.
+3. **`profile/`**: Always loaded last. Useful for fallback 404 handlers or final logging.
+
+### Implementation Example
+
+To enable this feature, simply call `autoRegisterModules` before serving your app:
 
 ```ts
 import Fastro, { autoRegisterModules } from "./mod.ts";
 
 const app = new Fastro();
+
+// This will scan /modules and apply them as middlewares
 await autoRegisterModules(app);
+
 await app.serve();
 ```
 
 ### Module Authoring
 
-Fastro looks for a **default export** or a named export matching the folder
-name.
+Each `mod.ts` must export a middleware. You can use a **default export** or a **named export** that matches the folder name.
+
+#### Case A: Using Router (Recommended)
+This allows your module to define its own encapsulated routes.
 
 ```ts
-// modules/ping/mod.ts
-export default (req, ctx, next) => {
-  console.log("Ping module loaded!");
+// modules/auth/mod.ts
+import { createRouter } from "../../mod.ts";
+
+export default createRouter()
+  .post("/login", () => "logged in")
+  .get("/logout", () => "logged out")
+  .build(); // .build() returns a middleware
+```
+
+#### Case B: Custom Middleware
+Useful for folder-specific logic like logging or auth-checking specific to that segment.
+
+```ts
+// modules/logger/mod.ts
+export const logger = (req, ctx, next) => {
+  console.log(`[Module Log] ${req.method} ${ctx.url.pathname}`);
   return next();
 };
 ```
 
-For a deeper dive into module patterns, check our [Modules Guide](/blog/modules).
+### Why use this?
+
+1.  **Isolation**: Changes in the `auth` module don't affect the `api` module.
+2.  **Clean main.ts**: Your entry point stays minimalist even as your app grows to hundreds of routes.
+3.  **Predictability**: The loading order ensures that your global middlewares (in `index/`) always run before your specific business logic.
 
 
 ## Context (ctx)

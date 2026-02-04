@@ -524,7 +524,7 @@ export async function renderMD_Content(content: string, path: string) {
         tags && tags.length > 0
           ? `<div class="flex flex-wrap gap-2 ml-auto">
                 ${
-            tags.slice(0, 2).map((tag) =>
+            tags.slice(0, 3).map((tag) =>
               `<a href="/blog?search=${
                 encodeURIComponent(tag)
               }" class="text-[0.65rem] md:text-[0.7rem] px-2.5 py-1 rounded-full bg-canvas-subtle border border-border-default !text-fg-muted font-medium uppercase tracking-wider hover:!text-fg-default hover:border-fg-muted transition-colors !no-underline">${tag}</a>`
