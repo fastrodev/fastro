@@ -3,6 +3,7 @@ title: "Securing Your API with CORS Middleware"
 description: "A comprehensive guide on how to configure Cross-Origin Resource Sharing (CORS) in Fastro to safely allow cross-domain requests."
 date: 2026-02-04
 author: "Fastro Team"
+tags: ["middleware", "security"]
 ---
 
 CORS (Cross-Origin Resource Sharing) is a crucial security mechanism for modern web applications. By default, browsers block scripts from making requests to a different domain than the one that served the page. Fastro provides a flexible and high-performance CORS middleware to manage these permissions easily.

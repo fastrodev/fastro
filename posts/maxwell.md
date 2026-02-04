@@ -1,7 +1,7 @@
 ---
 title: "How Maxwell Discovered the Constant for Light"
 description: "A look into how James Clerk Maxwell derived the speed of light from the fundamental constants of electricity and magnetism."
-date: 2026-02-02
+date: 2026-02-01
 author: "Fastro Science"
 image: "https://storage.googleapis.com/replix-394315-file/uploads/maxwell.jpg'
 ---
