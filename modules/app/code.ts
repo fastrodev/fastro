@@ -24,6 +24,10 @@ export function registerCodeRoutes(app: App) {
     () => renderCode("middlewares/cors/cors.ts"),
   );
   app.get(
+    "/middlewares/kv/kv.ts",
+    () => renderCode("middlewares/kv/kv.ts"),
+  );
+  app.get(
     "/core/loader.ts",
     () => renderCode("core/loader.ts"),
   );
