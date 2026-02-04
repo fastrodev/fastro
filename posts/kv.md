@@ -3,7 +3,7 @@ title: "Persistent Storage made Easy: Fastro + Deno KV"
 description: "Learn how to use the official Deno KV middleware for Fastro to build persistent applications with zero configuration."
 date: 2026-02-04
 author: "Fastro Team"
-tags: ["database", "deno-kv"]
+tags: ["database", "deno-kv", "middleware"]
 ---
 
 Deno KV is a revolutionary key-value database built directly into the Deno runtime. It provides a simple, ACID-compliant storage solution that works seamlessly across local development and Deno Deploy.

@@ -4,6 +4,7 @@ description: "A look into how James Clerk Maxwell derived the speed of light fro
 date: 2026-02-01
 author: "Fastro Science"
 image: "https://storage.googleapis.com/replix-394315-file/uploads/maxwell.jpg'
+tags: ["science", "katex", "math"]
 ---
 
 > **Note:** This article serves as a live demonstration of how the framework renders complex mathematical equations and vector calculus symbols perfectly using GFM and KaTeX.

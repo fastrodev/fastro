@@ -35,20 +35,24 @@ if [ -d modules ]; then
 fi
 mkdir -p modules
 
+# Ensure app module is available for its own tests
+if [ -d "${MODULES_BACKUP}/app" ]; then
+  cp -r "${MODULES_BACKUP}/app" modules/
+fi
+
 # Ensure cleanup runs on exit
 trap cleanup EXIT
 
 if [[ "${1-}" == "--coverage" ]]; then
-  rm -rf cov_profile
-  # run all core and middleware tests
-  deno test --unstable-kv --allow-net --allow-read --allow-write --allow-env --coverage=cov_profile core/ middlewares/
+  rm -rf cov_profile cov_cli
+  # run all core, middleware and app tests
+  deno test --unstable-kv -A --coverage=cov_profile core/ middlewares/ modules/app/
   # generate lcov
-  deno coverage cov_profile --lcov --include=core --include=middlewares --exclude=modules --exclude="modules/**" > cov_profile/raw_lcov.info
-  awk 'BEGIN{skip=0} /^SF:/{ if ($0 ~ "/modules/") { skip=1 } else { skip=0; print } next } { if (!skip) print }' cov_profile/raw_lcov.info > cov_profile/lcov.info
+  deno coverage cov_profile cov_cli --lcov --include=core --include=middlewares --include=modules/app > cov_profile/lcov.info
   cp cov_profile/lcov.info coverage.lcov
-  deno coverage cov_profile --include=core --include=middlewares --exclude=modules --exclude="modules/**" || true
-  rm -rf cov_profile
+  deno coverage cov_profile cov_cli --include=core --include=middlewares --include=modules/app || true
+  rm -rf cov_profile cov_cli
 else
-  # run all core and middleware tests
-  deno test --unstable-kv --allow-net --allow-read --allow-write --allow-env core/ middlewares/
+  # run all core, middleware and app tests
+  deno test --unstable-kv -A core/ middlewares/ modules/app/
 fi

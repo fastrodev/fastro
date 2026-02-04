@@ -31,8 +31,18 @@ app.get("/LICENSE", () => renderCode("LICENSE"));
 // Fallback for 404 / Not Found - acts as SPA fallback
 app.get("*", () => renderStatic("public/index.html"));
 
-if (import.meta.main) {
-  app.serve({ port: parseInt(Deno.args[0]) || 8000 });
+export function start(port?: number) {
+  return app.serve({ port: port ?? 8000 });
 }
+
+/** entry point for CLI */
+export function handleMain(isMain: boolean, args: string[]) {
+  if (isMain) {
+    const port = args[0] ? parseInt(args[0]) : undefined;
+    return start(port);
+  }
+}
+
+handleMain(import.meta.main, Deno.args);
 
 export { app };
