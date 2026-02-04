@@ -313,10 +313,6 @@ export async function renderMD_Content(content: string, path: string) {
       .nav-link:hover {
         color: var(--color-accent-fg);
       }
-      .monochrome {
-        color: transparent;
-        text-shadow: 0 0 0 var(--color-fg-default);
-      }
       /* GFM Link Style */
       .markdown-body a {
         color: var(--color-accent-fg);
@@ -493,8 +489,8 @@ export async function renderMD_Content(content: string, path: string) {
     <header class="border-b border-border-default bg-canvas-default/70 sticky top-0 z-[100] backdrop-blur-md">
       <div class="max-w-[720px] mx-auto flex flex-col md:flex-row md:justify-between md:items-center py-4 px-6 md:px-8">
         <div class="flex justify-between items-center w-full md:w-auto">
-          <div class="flex items-center gap-1.5">
-            <a href="/" class="text-2xl font-black text-fg-default no-underline hover:no-underline tracking-tighter"><span class="monochrome">⚡</span></a>
+          <div class="flex items-center gap-x-2">
+            <a href="/" class="text-2xl font-black text-fg-default no-underline hover:no-underline tracking-tighter">FASTRO</a>
             <span class="text-[0.65rem] font-bold px-1.5 py-px rounded bg-fg-default text-canvas-default uppercase tracking-wider select-none">${version}</span>
           </div>
           <button id="menu-toggle" aria-label="Toggle Menu" class="flex flex-col justify-between w-6 h-5 bg-transparent border-none cursor-pointer p-0 md:hidden group">
@@ -723,7 +719,7 @@ export async function renderBlog() {
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 
-  let html = `# 📝 Fastro Blog
+  let html = `# Fastro Blog
 
   <p class="text-fg-muted mb-10 text-lg opacity-80">Updates and insights from the Fastro team.</p>
 
