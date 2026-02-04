@@ -19,6 +19,7 @@ These middlewares are maintained by the Fastro core team.
 | **KV**     | Deno KV store integration. | [Source](/middlewares/kv/kv.ts) |
 | **Static** | Serve static files and SPA support.| [Source](/middlewares/static/static.ts)    |
 | **BodyParser**| Parse request body (JSON, Form, etc.) | [Source](/middlewares/bodyparser/bodyparser.ts) |
+| **JWT**    | JSON Web Token authentication. | [Source](/middlewares/jwt/jwt.ts) |
 
 
 ## Modules as Middleware

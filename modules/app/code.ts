@@ -28,6 +28,10 @@ export function registerCodeRoutes(app: App) {
     () => renderCode("middlewares/kv/kv.ts"),
   );
   app.get(
+    "/middlewares/jwt/jwt.ts",
+    () => renderCode("middlewares/jwt/jwt.ts"),
+  );
+  app.get(
     "/core/loader.ts",
     () => renderCode("core/loader.ts"),
   );
