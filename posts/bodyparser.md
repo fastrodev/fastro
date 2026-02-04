@@ -11,7 +11,7 @@ Handling request bodies is a fundamental task for any modern web API. Whether yo
 
 Today we are excited to introduce the official `bodyParser` middleware for Fastro.
 
-## 🚀 Versatile Content Support
+## Versatile Content Support
 
 The `bodyParser` middleware is designed to be a "set and forget" solution. It automatically detects the `Content-Type` header and parses the body into the most appropriate format, storing it in `ctx.state` for easy access:
 
@@ -19,7 +19,7 @@ The `bodyParser` middleware is designed to be a "set and forget" solution. It au
 - **Form Handling**: Supports both `multipart/form-data` and `application/x-www-form-urlencoded`, populating `ctx.state.formData`.
 - **Text & Binary**: Handles `text/*` formats as strings and falls back to raw `Uint8Array` (bytes) for unknown or binary types.
 
-## 🛡️ Built for Performance and Security
+## Built for Performance and Security
 
 Efficiency is at the core of Fastro. The `bodyParser` middleware includes several optimizations to keep your server running at peak performance:
 
@@ -27,13 +27,13 @@ Efficiency is at the core of Fastro. The `bodyParser` middleware includes severa
 - **Idempotent Parsing**: Modern applications often use multiple middlewares. Our body parser implements a `_parsed` flag to ensure the body is never processed twice, saving valuable CPU cycles.
 - **Fail-Safe Mechanism**: If parsing fails (e.g., malformed JSON), the middleware captures the error in `ctx.state.bodyError` instead of crashing your server, allowing your handlers to decide how to respond to the client.
 
-## 💎 100% Unit Test Coverage
+## 100% Unit Test Coverage
 
 Following our standard for core features, the `bodyParser` middleware was developed with a test-driven mindset. We have achieved **100% branch and line coverage**, ensuring that every conditional check and every parsing logic path is verified.
 
 We tested everything from standard JSON payloads to edge cases requiring raw byte handling and even simulated environment-specific quirks in request headers.
 
-## 💻 Implementation Example
+## Implementation Example
 
 Integrating the body parser into your app is straightforward. Because it's a middleware, you can apply it globally or just to specific route groups:
 
@@ -61,7 +61,7 @@ app.post("/api/user", (req, ctx) => {
 await app.serve();
 ```
 
-## 🏁 Conclusion
+## Conclusion
 
 The addition of the `bodyParser` middleware further simplifies the development of complex APIs on Fastro. By providing a secure, efficient, and fully tested way to handle incoming data, we continue our mission to make Fastro the best bridge between Deno's power and a top-tier developer experience.
 

@@ -1,23 +1,24 @@
-# 📖 Fastro Documentation
+# Fastro Documentation
 
 Fastro is a high-performance, minimalist web framework for Deno. This
 documentation covers everything you need to build scalable, high-speed
 applications.
 
-## 📑 Table of Contents
+## Table of Contents
 
-- [🚀 Getting Started](#-getting-started)
-- [🛣️ Routing](#️-routing)
-- [⚡ Responses](#-responses)
-- [🧩 Middleware](#-middleware)
-- [🏗️ Modular Routing (Router)](#️-modular-routing-router)
-- [📁 Static Files](#-static-files)
-- [📥 Body Parser](#-body-parser)
-- [📦 Automatic Module Loading](#-automatic-module-loading)
-- [🛠️ Context (`ctx`)](#️-context-ctx)
-- [🏎️ Performance Features](#️-performance-features)
+- [Getting Started](#getting-started)
+- [Routing](#routing)
+- [Responses](#responses)
+- [Middleware](#middleware)
+- [Modular Routing (Router)](#modular-routing-router)
+- [Static Files](#static-files)
+- [Body Parser](#body-parser)
+- [CORS](#cors)
+- [Automatic Module Loading](#automatic-module-loading)
+- [Context (ctx)](#context-ctx)
+- [Performance Features](#performance-features)
 
-## 🚀 Getting Started
+## Getting Started
 
 To create a basic server, import the default export from `mod.ts` and create a
 new instance.
@@ -42,7 +43,7 @@ The `.serve()` method accepts the standard `Deno.serve` options plus an optional
 | `cacheSize` | `number` | `10000` | Max entries for the route matching cache (LRU). |
 
 
-## 🛣️ Routing
+## Routing
 
 Fastro supports standard HTTP methods: `get()`, `post()`, `put()`, and
 `delete()`.
@@ -89,7 +90,25 @@ app.get(pattern, (req, ctx) => {
 ```
 
 
-## ⚡ Responses
+## CORS
+
+Fastro provides an official middleware to handle Cross-Origin Resource Sharing.
+
+```ts
+import Fastro from "https://deno.land/x/fastro/mod.ts";
+import { corsMiddleware } from "https://deno.land/x/fastro/middlewares/cors/mod.ts";
+
+const app = new Fastro();
+app.use(corsMiddleware);
+
+app.get("/", () => "CORS enabled!");
+await app.serve();
+```
+
+For detailed configuration (origins, headers, methods), see the [CORS guide](/blog/cors).
+
+
+## Responses
 
 Handlers in Fastro are highly flexible. You can return:
 
@@ -109,7 +128,7 @@ app.get("/api/data", async () => {
 ```
 
 
-## 🧩 Middleware
+## Middleware
 
 Middlewares execute in the order they are registered. Signature:
 `(req, ctx, next)`.
@@ -138,7 +157,7 @@ app.get("/admin", () => "Sensitive Info", checkAuth);
 ```
 
 
-## 🏗️ Modular Routing (Router)
+## Modular Routing (Router)
 
 The `createRouter` utility helps you group related routes into a single
 middleware.
@@ -155,7 +174,7 @@ app.use(api.build());
 ```
 
 
-## 📁 Static Files
+## Static Files
 
 Fastro provides an optimized official middleware for serving static assets with
 production-grade features like LRU caching and SPA support.
@@ -198,7 +217,7 @@ app.use(staticFiles("/", "./dist", { spaFallback: true }));
   always see your latest changes.
 
 
-## 📥 Body Parser
+## Body Parser
 
 The official `bodyParser` middleware parses incoming request bodies (POST, PUT, PATCH) based on the `Content-Type` header.
 
@@ -228,7 +247,7 @@ await app.serve();
 - Others: Accessible as raw `Uint8Array` via `ctx.state.bytes`.
 
 
-## 📦 Automatic Module Loading
+## Automatic Module Loading
 
 Automatically scale your application by turning folders into modules.
 
@@ -268,8 +287,10 @@ export default (req, ctx, next) => {
 };
 ```
 
+For a deeper dive into module patterns, check our [Modules Guide](/blog/modules).
 
-## 🛠️ Context (`ctx`)
+
+## Context (ctx)
 
 The `ctx` object is the "brain" of the request lifecycle. Property list:
 
@@ -296,7 +317,7 @@ app.get("/", (req, ctx) => {
 ```
 
 
-## 🏎️ Performance Features
+## Performance Features
 
 1. **Intelligent LRU Cache**: Fastro remembers which route matches which URL,
    minimizing regex execution.
