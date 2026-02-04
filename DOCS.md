@@ -14,6 +14,7 @@ applications.
 - [Static Files](#static-files)
 - [Body Parser](#body-parser)
 - [CORS](#cors)
+- [JWT](#jwt)
 - [Deno KV](#deno-kv)
 - [Automatic Module Loading](#automatic-module-loading)
 - [Context (ctx)](#context-ctx)
@@ -107,6 +108,40 @@ await app.serve();
 ```
 
 For detailed configuration (origins, headers, methods), see the [CORS guide](/blog/cors).
+
+
+## JWT
+
+Fastro includes an official JWT (JSON Web Token) middleware for secure authentication using the native Web Crypto API.
+
+### Usage
+
+```ts
+import Fastro from "https://deno.land/x/fastro/mod.ts";
+import { jwt } from "https://deno.land/x/fastro/middlewares/jwt/mod.ts";
+
+const app = new Fastro();
+const SECRET = "your-secret-key";
+
+// Enable JWT globally
+app.use(jwt({ secret: SECRET }));
+
+app.get("/", (req, ctx) => {
+  // Decoded payload is stored in ctx.state.user
+  const user = ctx.state.user;
+  return `Hello, ${user.name}!`;
+});
+
+await app.serve();
+```
+
+### Options
+
+| Option   | Type     | Description                                |
+| :------- | :------- | :----------------------------------------- |
+| `secret` | `string` | The secret key to sign and verify tokens. |
+
+For more advanced usage like token creation and expiration, see the [JWT guide](/blog/jwt).
 
 
 ## Deno KV
