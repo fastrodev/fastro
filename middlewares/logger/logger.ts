@@ -10,7 +10,7 @@ export async function logger(req: Request, ctx: Context, next: Next) {
   if (!ctx.state) {
     ctx.state = {};
   }
-  (ctx.state as Record<string, unknown>).startTime = start;
+  ctx.state.startTime = start;
 
   const res = await next();
   const duration = Date.now() - start;

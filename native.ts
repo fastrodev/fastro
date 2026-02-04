@@ -16,8 +16,9 @@ Deno.serve({
       }
       if (url.pathname === "/middleware") {
         // Simple middleware simulation
-        (req as any).user = "fastro";
-        return new Response(`Hello ${(req as any).user}`);
+        const extendedReq = req as Request & { user: string };
+        extendedReq.user = "fastro";
+        return new Response(`Hello ${extendedReq.user}`);
       }
     }
 

@@ -14,7 +14,10 @@ async function toResponse(
     | string
     | Promise<string>
     | Record<string, unknown>
-    | Promise<Record<string, unknown>>,
+    | Promise<Record<string, unknown>>
+    | void
+    | null
+    | undefined,
 ): Promise<Response> {
   const resolved = await res;
   if (resolved instanceof Response) return resolved;
