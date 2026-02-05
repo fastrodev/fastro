@@ -648,7 +648,7 @@ Deno.test("Render Middleware - HMR pending reload on connect", {
   const s = fastro.serve({ port: 3626 });
   try {
     // Activate middleware to start watcher
-    await fetch("http://localhost:3626/");
+    await (await fetch("http://localhost:3626/")).text();
 
     // Wait for watcher to initialize and create its base mtime
     await new Promise((r) => setTimeout(r, 1000));
@@ -727,7 +727,7 @@ Deno.test("Render Middleware - HMR cooldown branch", {
   const s = fastro.serve({ port: 3627 });
   try {
     // activate
-    await fetch("http://localhost:3627/");
+    await (await fetch("http://localhost:3627/")).text();
     await new Promise((r) => setTimeout(r, 600));
 
     // First change
@@ -911,7 +911,7 @@ Deno.test("Render Middleware - HMR client states and errors", {
 
   try {
     // start watcher
-    await fetch("http://localhost:3629/");
+    await (await fetch("http://localhost:3629/")).text();
     await new Promise((r) => setTimeout(r, 600));
 
     const ws1 = new WebSocket("ws://localhost:3629/hmr");
@@ -969,7 +969,7 @@ Deno.test("Render Middleware - HMR watcher stat error", {
       Deno.removeSync("./.build_done");
     } catch (_) { /* ignored */ }
 
-    await fetch("http://localhost:3630/");
+    await (await fetch("http://localhost:3630/")).text();
     await new Promise((r) => setTimeout(r, 1000));
 
     // File should have been recreated
@@ -992,7 +992,7 @@ Deno.test("Render Middleware - Chaos WebSocket", {
   fastro.use(createRenderMiddleware());
   const s = fastro.serve({ port: 3631 });
   try {
-    await fetch("http://localhost:3631/");
+    await (await fetch("http://localhost:3631/")).text();
     await new Promise((r) => setTimeout(r, 600));
 
     const ws = new WebSocket("ws://localhost:3631/hmr");
@@ -1022,7 +1022,7 @@ Deno.test(
     fastro.use(createRenderMiddleware());
     const s = fastro.serve({ port: 3632 });
     try {
-      await fetch("http://localhost:3632/");
+      await (await fetch("http://localhost:3632/")).text();
       await new Promise((r) => setTimeout(r, 600));
 
       // Remove file so next interval tick fails
@@ -1049,7 +1049,9 @@ Deno.test("Render Middleware - Coverage completion", {
 
     // 2. Hit cid = -1 branch
     // @ts-ignore: access private set
-    const _hmrClientsSet = await fetch("http://localhost:3633/").then(() => {
+    const _hmrClientsSet = await fetch("http://localhost:3633/").then((r) =>
+      r.text()
+    ).then(() => {
       // Find the set in the middleware? No, it's a module level variable.
       // I can just import it if I export it, but it's not exported.
       // Wait, _resetWatcherForTests clears it, so I know where it is.
