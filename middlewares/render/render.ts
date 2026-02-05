@@ -341,7 +341,9 @@ export async function _watchTickForTests() {
   }
 }
 
-export function _setLastMtimeForTests(v: number) { lastMtime = v; }
+export function _setLastMtimeForTests(v: number) {
+  lastMtime = v;
+}
 // Initialize watcher state without starting intervals; useful for tests.
 export async function _initWatcherForTests() {
   try {
@@ -461,6 +463,16 @@ const createRenderToString = (_context: Context) => {
   };
 };
 
+const createRender = (context: Context) => {
+  const renderToStringFn = createRenderToString(context);
+  return (component: React.ReactElement, options?: RenderOptions) => {
+    const html = renderToStringFn(component, options);
+    return new Response(html, {
+      headers: { "Content-Type": "text/html" },
+    });
+  };
+};
+
 export const createRenderMiddleware = (
   options: { pwa?: boolean; pwaConfig?: PWAConfig } = {},
 ) => {
@@ -512,7 +524,15 @@ export const createRenderMiddleware = (
 
     startComponentsWatcher();
 
-    if (req.url?.endsWith("/hmr")) {
+    const isHmrRequest = (() => {
+      try {
+        return new URL(req.url).pathname === "/hmr";
+      } catch (_e) {
+        return typeof req.url === "string" && req.url.endsWith("/hmr");
+      }
+    })();
+
+    if (isHmrRequest) {
       const { socket, response } = Deno.upgradeWebSocket(req);
       hmrClients.add(socket);
       const cid = __nextHmrClientId++;
@@ -549,6 +569,9 @@ export const createRenderMiddleware = (
     context.pwaConfig = options.pwaConfig;
     if (!context.renderToString) {
       context.renderToString = createRenderToString(context);
+    }
+    if (!context.render) {
+      context.render = createRender(context);
     }
     return next();
   };

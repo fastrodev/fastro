@@ -9,7 +9,7 @@ cleanup() {
   echo "Cleaning up..."
   # 1. Remove any test-generated content in the temporary modules dir
   if [ -d modules ]; then
-    rm -rf modules/test_* modules/a modules/index modules/profile modules/modules_backup_*
+    rm -rf modules/test_* modules/a modules/profile modules/modules_backup_*
   fi
   
   # 2. Restore the original modules dir if we backed it up
@@ -26,7 +26,7 @@ cleanup() {
 }
 
 # Initial cleanup of any crumbs from previous failed runs
-rm -rf modules/test_* modules/a modules/index modules/profile modules/modules_backup_*
+rm -rf modules/test_* modules/a modules/profile modules/modules_backup_*
 
 # Temporarily move real modules/ out of the way
 MODULES_BACKUP="modules_backup_$(date +%s%N)"
@@ -35,9 +35,9 @@ if [ -d modules ]; then
 fi
 mkdir -p modules
 
-# Ensure app module is available for its own tests
-if [ -d "${MODULES_BACKUP}/app" ]; then
-  cp -r "${MODULES_BACKUP}/app" modules/
+# Ensure index module is available for its own tests
+if [ -d "${MODULES_BACKUP}/index" ]; then
+  cp -r "${MODULES_BACKUP}/index" modules/
 fi
 
 # Ensure cleanup runs on exit
@@ -45,14 +45,14 @@ trap cleanup EXIT
 
 if [[ "${1-}" == "--coverage" ]]; then
   rm -rf cov_profile cov_cli
-  # run all core, middleware and app tests
-  deno test --unstable-kv -A --coverage=cov_profile core/ middlewares/ modules/app/
+  # run all core, middleware and index tests
+  deno test --unstable-kv -A --coverage=cov_profile core/ middlewares/ modules/index/
   # generate lcov
-  deno coverage cov_profile cov_cli --lcov --include=core --include=middlewares --include=modules/app > cov_profile/lcov.info
+  deno coverage cov_profile cov_cli --lcov --include=core --include=middlewares --include=modules/index > cov_profile/lcov.info
   cp cov_profile/lcov.info coverage.lcov
-  deno coverage cov_profile cov_cli --include=core --include=middlewares --include=modules/app || true
+  deno coverage cov_profile cov_cli --include=core --include=middlewares --include=modules/index || true
   rm -rf cov_profile cov_cli
 else
-  # run all core, middleware and app tests
-  deno test --unstable-kv -A core/ middlewares/ modules/app/
+  # run all core, middleware and index tests
+  deno test --unstable-kv -A core/ middlewares/ modules/index/
 fi

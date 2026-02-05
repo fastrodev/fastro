@@ -73,11 +73,25 @@ export type Context = {
   /** Remote address information of the client */
   remoteAddr: { transport: string; hostname?: string; port?: number };
   /** Utility to render a React component to a string */
-  renderToString?: RenderFunction;
+  renderToString?: (
+    component: React.ReactElement,
+    options?: RenderOptions,
+  ) => string;
+  /** Utility to render a React component and return a Response */
+  render?: (
+    component: React.ReactElement,
+    options?: RenderOptions,
+  ) => Response;
   /** Incoming cookies as a key-value record */
   cookies?: Record<string, string>;
   /** Helper to set a cookie in the response */
   setCookie?: (name: string, value: string, opts?: CookieOptions) => void;
+  /** Whether PWA is enabled */
+  pwa?: boolean;
+  /** Whether PWA is enabled (alias) */
+  pwaEnabled?: boolean;
+  /** PWA configuration */
+  pwaConfig?: unknown;
   /** Full URL object of the request */
   url: URL;
   /** Deno KV instance, if the KV middleware is used */

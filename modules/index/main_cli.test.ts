@@ -5,7 +5,7 @@ Deno.test("main.ts - CLI execution", async () => {
     args: [
       "run",
       "-A",
-      `${Deno.cwd()}/modules/app/main.ts`,
+      `${Deno.cwd()}/modules/index/main.ts`,
       "3338",
     ],
     stdout: "piped",
@@ -37,7 +37,7 @@ Deno.test("main.ts - CLI execution (default port branch)", async () => {
     args: [
       "run",
       "-A",
-      `${Deno.cwd()}/modules/app/main.ts`,
+      `${Deno.cwd()}/modules/index/main.ts`,
     ],
     stdout: "piped",
     stderr: "piped",
