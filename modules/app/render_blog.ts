@@ -135,7 +135,7 @@ export async function renderBlog(page: number = 1, search: string = "") {
   ${
     totalPages > 1
       ? `
-  <div class="grid grid-cols-3 items-center mt-12 pt-8 border-t border-border-default">
+  <div class="grid grid-cols-3 items-center mt-12">
     <div class="flex justify-start">
       ${
         currentPage > 1
