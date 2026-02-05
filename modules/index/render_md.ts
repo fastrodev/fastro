@@ -23,7 +23,7 @@ export async function renderMD_Content(content: string, path: string) {
   let author = "";
   let tags: string[] = [];
   let image =
-    "https://repository-images.githubusercontent.com/264308713/45a53a9a-141e-4204-8f0b-4867c05cbc0d";
+    "https://repository-images.githubusercontent.com/264308713/1b83bd0f-b9d9-466d-9e63-f947c1a67281";
 
   // 1. Process Frontmatter
   if (markdown.startsWith("---")) {

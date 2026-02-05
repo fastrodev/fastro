@@ -24,7 +24,7 @@ async function writeModule(dirName: string, code: string) {
   return { dirUrl, modUrl };
 }
 
-async function _removeModule(dirName: string) {
+function _removeModule(_dirName: string) {
   // disabled cleanup here to allow coverage reporter to find files.
   // cleanup is handled via the coverage task in deno.json
   return;
