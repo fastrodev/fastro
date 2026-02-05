@@ -7,27 +7,28 @@ export function createKvMiddleware(path?: string): Middleware {
       // Support an in-memory KV for tests when path === ":memory:"
       if (path === ":memory:") {
         const map = new Map<string, unknown>();
-        const memKv: Partial<Deno.Kv> = {
-          async get(key: unknown) {
+        const memKv = {
+          get: (key: unknown) => {
             const k = JSON.stringify(key);
-            if (!map.has(k)) return { key, value: null } as any;
-            return { key, value: map.get(k) } as any;
+            const value = map.has(k) ? map.get(k) : null;
+            return Promise.resolve({ key, value });
           },
-          async set(key: unknown, value: unknown) {
+          set: (key: unknown, value: unknown) => {
             const k = JSON.stringify(key);
             map.set(k, value);
-            return { key } as any;
+            return Promise.resolve({ key });
           },
-          async delete(key: unknown) {
+          delete: (key: unknown) => {
             const k = JSON.stringify(key);
             map.delete(k);
-            return { key } as any;
+            return Promise.resolve({ key });
           },
-          async close() {
+          close: () => {
             map.clear();
+            return Promise.resolve();
           },
-        };
-        kvPromise = Promise.resolve(memKv as Deno.Kv);
+        } as unknown as Deno.Kv;
+        kvPromise = Promise.resolve(memKv);
       } else {
         if (typeof Deno.openKv !== "function") {
           console.warn(

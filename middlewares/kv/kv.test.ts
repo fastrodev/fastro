@@ -20,15 +20,18 @@ Deno.test("kvMiddleware - sets kv in context", async () => {
   // Exercise set/get/delete for in-memory KV
   // @ts-ignore: memory KV may be a partial implementation
   await kv.set(["test-key"], { hello: "world" });
-  // @ts-ignore
+  // @ts-ignore: mem KV implementation is partial and not fully typed
   const res = await kv.get(["test-key"]);
-  // @ts-ignore
-  assertEquals(res.value && (res.value as any).hello, "world");
-  // @ts-ignore
+  // @ts-ignore: res.value typing is unknown for in-memory KV
+  assertEquals(
+    res.value && (res.value as Record<string, unknown>).hello,
+    "world",
+  );
+  // @ts-ignore: mem KV implementation is partial and not fully typed
   await kv.delete(["test-key"]);
-  // @ts-ignore
+  // @ts-ignore: mem KV implementation is partial and not fully typed
   const res2 = await kv.get(["test-key"]);
-  // @ts-ignore
+  // @ts-ignore: res2.value typing is unknown for in-memory KV
   assertEquals(res2.value, null);
 
   // Clean up
@@ -50,11 +53,11 @@ Deno.test("kvMiddleware - reuses cached kv promise", async () => {
 
   assertEquals(kv1 === kv2, true);
   // Exercise methods on reused kv
-  // @ts-ignore
+  // @ts-ignore: mem KV is Partial<Deno.Kv> for tests
   await kv1.set(["reused"], 123);
-  // @ts-ignore
+  // @ts-ignore: mem KV is Partial<Deno.Kv> for tests
   const r = await kv2.get(["reused"]);
-  // @ts-ignore
+  // @ts-ignore: returned value typing is not strict for in-memory KV
   assertEquals(r.value, 123);
 
   // Clean up
@@ -97,22 +100,16 @@ Deno.test("kvMiddleware - uses Deno.openKv when available", async () => {
   const originalOpenKv = Deno.openKv;
   try {
     let calledWith: string | undefined = undefined;
-    const mockKv = {
-      async get(k: unknown) {
-        return { key: k, value: null };
-      },
-      async set(k: unknown, v: unknown) {
-        return { key: k };
-      },
-      async delete(k: unknown) {
-        return { key: k };
-      },
-      async close() {},
-    } as any;
-    Deno.openKv = async (p?: string) => {
+    const mockKv: Deno.Kv = {
+      get: (k: unknown) => Promise.resolve({ key: k, value: null }),
+      set: (k: unknown, _v: unknown) => Promise.resolve({ key: k }),
+      delete: (k: unknown) => Promise.resolve({ key: k }),
+      close: () => Promise.resolve(),
+    } as unknown as Deno.Kv;
+    Deno.openKv = ((p?: string) => {
       calledWith = p;
-      return mockKv;
-    };
+      return Promise.resolve(mockKv);
+    }) as typeof Deno.openKv;
 
     const middleware = createKvMiddleware("my-db");
     const req = new Request("http://localhost");

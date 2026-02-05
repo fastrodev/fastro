@@ -83,9 +83,11 @@ export type Context = {
   /** Deno KV instance, if the KV middleware is used */
   kv?: Deno.Kv;
   /** General purpose state object for middlewares */
-  state?: Record<string, any>;
+  // deno-lint-ignore no-explicit-any
+  state?: any;
   /** Dynamic properties for middleware data passing */
-  [key: string]: unknown;
+  // deno-lint-ignore no-explicit-any
+  [key: string]: any;
 };
 
 /**

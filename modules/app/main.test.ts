@@ -14,7 +14,7 @@ Deno.test("Main App - Home route", async () => {
   }
 });
 
-Deno.test("Main App - handleMain branches", async () => {
+Deno.test("Main App - handleMain branches", () => {
   // Case: not main
   handleMain(false, []);
 
@@ -35,7 +35,7 @@ Deno.test("Main App - handleMain branches", async () => {
   }
 });
 
-Deno.test("Main App - start function default port", async () => {
+Deno.test("Main App - start function default port", () => {
   try {
     const s = start();
     s.close();

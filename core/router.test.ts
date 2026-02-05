@@ -874,7 +874,7 @@ Deno.test("createRouteMiddleware - handles null return", async () => {
 });
 
 Deno.test("createRouteMiddleware - handles array return", async () => {
-  // @ts-ignore
+  // @ts-ignore: testing non-standard handler return type
   const handler: Handler = () => [1, 2, 3];
   const middleware = build([{ method: "GET", path: "/array", handler }]);
   const res = await middleware(new Request("http://localhost/array"), { params: {} } as Context, () => new Response());
@@ -916,7 +916,7 @@ Deno.test("createRouteMiddleware - POST cache hit", async () => {
 });
 
 Deno.test("createRouteMiddleware - handles number return", async () => {
-  // @ts-ignore
+  // @ts-ignore: testing non-standard handler return type
   const handler: Handler = () => 123;
   const middleware = build([{ method: "GET", path: "/number", handler }]);
   const res = await middleware(new Request("http://localhost/number"), { params: {} } as Context, () => new Response());

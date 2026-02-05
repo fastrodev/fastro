@@ -14,7 +14,7 @@ import {
   createRenderMiddleware,
   generatePWAScript,
 } from "./render.ts";
-import Fastro from "../../mod.ts";
+import Fastro, { Context } from "../../mod.ts";
 import { _resetForTests } from "../../core/server.ts";
 
 Deno.env.set("ENV", "production");
@@ -59,7 +59,7 @@ Deno.test("Render Middleware - generatePWAScript with .sw_version changes hash",
 Deno.test("Render Middleware - generatePWAScript catch serverOverride", () => {
   try {
     Deno.removeSync(".sw_version");
-  } catch (_) {}
+  } catch (_) { /* ignored */ }
   const script = generatePWAScript();
   assertExists(script);
 });
@@ -189,7 +189,7 @@ Deno.test("Render Middleware - admin bump-sw", async () => {
     s.close();
     try {
       Deno.removeSync(".sw_version");
-    } catch (_) {}
+    } catch (_) { /* ignored */ }
   }
 });
 
@@ -236,8 +236,8 @@ Deno.test("Render Middleware - isSwRequest fallback", async () => {
   const req = {
     url: "/sw.js", // No base, will throw in new URL(req.url)
     method: "GET",
-  } as any;
-  const ctx = {} as any;
+  } as unknown as Request;
+  const ctx = {} as unknown as Context
   const next = () => Promise.resolve(new Response());
   const res = await middleware(req, ctx, next);
   assertEquals(res.status, 200);
@@ -299,7 +299,7 @@ Deno.test("Render Middleware - components watcher coverage", {
     Deno.env.set("ENV", "production");
     try {
       Deno.removeSync("./.build_done");
-    } catch (_) {}
+    } catch (_) { /* ignored */ }
   }
 });
 
@@ -359,21 +359,21 @@ Deno.test("Render Middleware - HMR heartbeat error coverage", {
   const originalSetInterval = globalThis.setInterval;
 
   // @ts-ignore: mock
-  globalThis.setInterval = (cb: any, ms: number) => {
+  globalThis.setInterval = (cb: unknown, ms: number) => {
     if (ms === 10000) {
-      setTimeout(cb, 100);
+      setTimeout(cb as () => void, 100);
       return 123;
     }
-    return originalSetInterval(cb, ms);
+    return originalSetInterval(cb as () => void, ms);
   };
 
   // @ts-ignore: mock
   Deno.upgradeWebSocket = (req: Request) => {
     const { socket, response } = originalUpgrade(req);
     const originalSend = socket.send.bind(socket);
-    socket.send = (data: any) => {
+    socket.send = (data: unknown) => {
       if (data === "heartbeat") throw new Error("mock fail");
-      return originalSend(data);
+      return originalSend(data as string);
     };
     return { socket, response };
   };
@@ -417,7 +417,7 @@ Deno.test("Render Middleware - renderToString component error", {
   fastro.get("/", (_req, ctx) => {
     try {
       return ctx.renderToString!(
-        React.createElement(ThrowingComponent as any),
+        React.createElement(ThrowingComponent as unknown as React.ComponentType),
         {
           onError: () => {},
         },
@@ -484,8 +484,8 @@ Deno.test("Render Middleware - pwa sw.js production context", async () => {
 Deno.test("Render Middleware - URL parse error coverage", async () => {
   _resetForTests();
   const middleware = createRenderMiddleware();
-  const req = { url: null, method: "GET" } as any;
-  const ctx = {} as any;
+  const req = { url: null, method: "GET" } as unknown as Request;
+  const ctx = {} as unknown as Context;
   const next = () => Promise.resolve(new Response("ok"));
   const res = await middleware(req, ctx, next);
   assertEquals(await res.text(), "ok");
@@ -499,7 +499,7 @@ Deno.test("Render Middleware - components watcher no file initially", {
   _resetWatcherForTests();
   try {
     Deno.removeSync("./.build_done");
-  } catch (_) {}
+  } catch (_) { /* ignored */ }
   Deno.env.delete("ENV");
   const fastro = new Fastro();
   fastro.use(createRenderMiddleware());
@@ -519,7 +519,7 @@ Deno.test("Render Middleware - components watcher no file initially", {
     Deno.env.set("ENV", "production");
     try {
       Deno.removeSync("./.build_done");
-    } catch (_) {}
+    } catch (_) { /* ignored */ }
   }
 });
 
@@ -565,7 +565,7 @@ Deno.test("Render Middleware - HMR client reload delivery", {
     Deno.env.set("ENV", "production");
     try {
       Deno.removeSync("./.build_done");
-    } catch (_) {}
+    } catch (_) { /* ignored */ }
   }
 });
 
@@ -624,7 +624,7 @@ Deno.test("Render Middleware - hmr closed/error client coverage", {
     Deno.env.set("ENV", "production");
     try {
       Deno.removeSync("./.build_done");
-    } catch (_) {}
+    } catch (_) { /* ignored */ }
   }
 });
 
@@ -639,7 +639,7 @@ Deno.test("Render Middleware - HMR pending reload on connect", {
   // Ensure file doesn't exist initially
   try {
     Deno.removeSync("./.build_done");
-  } catch (_) {}
+  } catch (_) { /* ignored */ }
 
   const fastro = new Fastro();
   fastro.use(createRenderMiddleware());
@@ -658,7 +658,7 @@ Deno.test("Render Middleware - HMR pending reload on connect", {
     await new Promise((r) => setTimeout(r, 1500));
 
     const ws = new WebSocket("ws://localhost:3626/hmr");
-    let receivedReload = false;
+    let _receivedReload = false;
     const reloadPromise = new Promise<void>((resolve, reject) => {
       const t = setTimeout(() => {
         ws.close();
@@ -666,7 +666,7 @@ Deno.test("Render Middleware - HMR pending reload on connect", {
       }, 5000);
       ws.onmessage = (e) => {
         if (e.data === "reload") {
-          receivedReload = true;
+          _receivedReload = true;
           clearTimeout(t);
           resolve();
         }
@@ -681,12 +681,12 @@ Deno.test("Render Middleware - HMR pending reload on connect", {
     _resetWatcherForTests();
     try {
       Deno.removeSync("./.build_done");
-    } catch (_) {}
+    } catch (_) { /* ignored */ }
   }
 });
 
 Deno.test("Render Middleware - context PWA props", async () => {
-  const context = {} as any;
+  const context = {} as unknown as Context;
   const middleware = createRenderMiddleware({ pwa: true });
   const req = new Request("http://localhost/");
   await middleware(req, context, () => Promise.resolve(new Response()));
@@ -694,20 +694,20 @@ Deno.test("Render Middleware - context PWA props", async () => {
   assertEquals(context.pwaEnabled, true);
 });
 
-Deno.test("Render Middleware - renderToString caching", async () => {
+Deno.test("Render Middleware - renderToString caching", () => {
   _resetForTests();
   const mockContext = {
-    renderToString: undefined as any,
+    renderToString: undefined as unknown as (element: React.ReactElement, options?: Record<string, unknown>) => string,
     response: { headers: new Headers() },
-  } as any;
+  } as unknown as Context;
   const req = new Request("http://localhost/");
   const middleware = createRenderMiddleware();
   middleware(req, mockContext, () => new Response("next"));
 
   // Create a stable element
   const element = React.createElement("div", null, "Cached");
-  const first = mockContext.renderToString(element);
-  const second = mockContext.renderToString(element);
+  const first = mockContext.renderToString!(element);
+  const second = mockContext.renderToString!(element);
   if (first !== second) throw new Error("Cache mismatch");
   if (!first.includes("Cached")) throw new Error("Content missing");
 });
@@ -737,7 +737,7 @@ Deno.test("Render Middleware - HMR cooldown branch", {
     _resetWatcherForTests();
     try {
       Deno.removeSync("./.build_done");
-    } catch (_) {}
+    } catch (_) { /* ignored */ }
   }
 });
 
@@ -747,11 +747,11 @@ Deno.test("Render Middleware - generatePWAScript error in middleware branch", as
     pwa: true,
     pwaConfig: {
       // @ts-ignore: trigger error
-      manifest: 123 as any,
+      manifest: 123 as unknown,
     },
   });
   const req = new Request("http://localhost/sw.js");
-  const mockContext = {} as any;
+  const mockContext = {} as unknown as Context;
   const next = () => {
     return new Response("next");
   };
@@ -762,12 +762,13 @@ Deno.test("Render Middleware - generatePWAScript error in middleware branch", as
   }
 });
 
-Deno.test("Render Middleware - renderToString production mode full", async () => {
+Deno.test("Render Middleware - renderToString production mode full", () => {
   _resetForTests();
   Deno.env.set("ENV", "production");
   const mockContext = {
     response: { headers: new Headers() },
-  } as any;
+    renderToString: undefined as unknown as (element: React.ReactElement, options?: Record<string, unknown>) => string,
+  } as unknown as Context;
   const req = new Request("http://localhost/");
   const middleware = createRenderMiddleware({
     pwa: true,
@@ -778,7 +779,7 @@ Deno.test("Render Middleware - renderToString production mode full", async () =>
   try {
     const element = React.createElement("div", null, "Prod");
     // Test with initialProps and module
-    const html = mockContext.renderToString(element, {
+    const html = mockContext.renderToString!(element, {
       initialProps: { data: 1 },
       module: "test-module",
     });
@@ -795,8 +796,8 @@ Deno.test("Render Middleware - isSwRequest URL throw fallback", async () => {
   _resetForTests();
   const middleware = createRenderMiddleware({ pwa: true });
   // req.url is not a valid URL
-  const req = { url: "invalid-url/sw.js" } as any;
-  const mockContext = {} as any;
+  const req = { url: "invalid-url/sw.js" } as unknown as Request;
+  const mockContext = {} as unknown as Context;
   const res = await middleware(req, mockContext, () => new Response("next"));
   if (!(res instanceof Response)) throw new Error("Result should be Response");
 });
@@ -809,16 +810,16 @@ Deno.test("Render Middleware - force HMR branches coverage", async () => {
   try {
     // Set initial lastMtime, mock stat to return a larger mtime and call the watcher tick directly
     _setLastMtimeForTests(1000);
-    // @ts-ignore
-    Deno.stat = async (p: string) => {
-      if (p === "./.build_done") return { mtime: { getTime: () => 2000 } } as any;
+    // @ts-ignore: mock stat for watcher tick test
+    Deno.stat = (p: string) => {
+      if (p === "./.build_done") return Promise.resolve({ mtime: { getTime: () => 2000 } } as unknown as Deno.FileInfo);
       return originalStat(p);
     };
 
     // Inject a client that is OPEN but whose send will throw (exercises send catch)
-    const badSend = { readyState: 1, send: () => { throw new Error('send fail'); } } as any;
+    const badSend = { readyState: 1, send: () => { throw new Error('send fail'); } } as unknown as WebSocket;
     // Inject a closed client to hit the else delete branch
-    const closedClient = { readyState: 0, send: () => {} } as any;
+    const closedClient = { readyState: 0, send: () => {} } as unknown as WebSocket;
 
     _getHmrClientsForTests().add(badSend);
     _getHmrClientsForTests().add(closedClient);
@@ -841,8 +842,8 @@ Deno.test("Render Middleware - trigger startComponentsWatcher catches", async ()
   const originalStat = Deno.stat;
   try {
     // Make stat throw to hit the secondary catch without starting intervals
-    // @ts-ignore
-    Deno.stat = async (p: string) => { if (p === "./.build_done") throw new Error("stat fail"); return originalStat(p); };
+    // @ts-ignore: mock stat failure
+    Deno.stat = (p: string) => { if (p === "./.build_done") return Promise.reject(new Error("stat fail")); return originalStat(p); };
 
     await _initWatcherForTests();
   } finally {
@@ -851,22 +852,23 @@ Deno.test("Render Middleware - trigger startComponentsWatcher catches", async ()
   }
 });
 
-Deno.test("Render Middleware - renderToString extra options", async () => {
+Deno.test("Render Middleware - renderToString extra options", () => {
   _resetForTests();
   const mockContext = {
     response: { headers: new Headers() },
-  } as any;
+    renderToString: undefined as unknown as (element: React.ReactElement, options?: Record<string, unknown>) => string,
+  } as unknown as Context;
   const req = new Request("http://localhost/");
   const middleware = createRenderMiddleware();
   middleware(req, mockContext, () => new Response("next"));
 
   const element = React.createElement("div", null, "Extra");
-  let errorCaught = false;
-  const html = mockContext.renderToString(element, {
+  let _errorCaught = false;
+  const html = mockContext.renderToString!(element, {
     identifierPrefix: "pre-",
     nonceProvider: () => "nonce-123",
     onError: () => {
-      errorCaught = true;
+      _errorCaught = true;
     },
   });
   if (!html.includes("Extra")) throw new Error("Content missing");
@@ -923,7 +925,7 @@ Deno.test("Render Middleware - HMR client states and errors", {
     _resetWatcherForTests();
     try {
       Deno.removeSync("./.build_done");
-    } catch (_) {}
+    } catch (_) { /* ignored */ }
   }
 });
 
@@ -939,7 +941,7 @@ Deno.test("Render Middleware - HMR watcher stat error", {
     // Delete file to trigger catch blocks in startComponentsWatcher
     try {
       Deno.removeSync("./.build_done");
-    } catch (_) {}
+    } catch (_) { /* ignored */ }
 
     await fetch("http://localhost:3630/");
     await new Promise((r) => setTimeout(r, 1000));
@@ -951,7 +953,7 @@ Deno.test("Render Middleware - HMR watcher stat error", {
     _resetWatcherForTests();
     try {
       Deno.removeSync("./.build_done");
-    } catch (_) {}
+    } catch (_) { /* ignored */ }
   }
 });
 
@@ -1021,7 +1023,7 @@ Deno.test("Render Middleware - Coverage completion", {
 
     // 2. Hit cid = -1 branch
     // @ts-ignore: access private set
-    const hmrClientsSet = await fetch("http://localhost:3633/").then(() => {
+    const _hmrClientsSet = await fetch("http://localhost:3633/").then(() => {
       // Find the set in the middleware? No, it's a module level variable.
       // I can just import it if I export it, but it's not exported.
       // Wait, _resetWatcherForTests clears it, so I know where it is.
@@ -1050,21 +1052,24 @@ Deno.test("Render Middleware - generatePWAScript branch coverage", () => {
   // Hit default assets branch
   generatePWAScript({ assets: undefined });
   // Hit non-array assets branch
-  // @ts-ignore
+  // @ts-ignore: testing invalid input
   generatePWAScript({ assets: "not-array" });
 });
 
 Deno.test("Render Middleware - createRenderToString branch coverage", () => {
   const middleware = createRenderMiddleware();
-  const mockContext = { response: { headers: new Headers() } } as any;
+  const mockContext = {
+    response: { headers: new Headers() },
+    renderToString: undefined as unknown as (element: React.ReactElement, options?: Record<string, unknown>) => string,
+  } as unknown as Context;
   middleware(
     new Request("http://localhost/"),
-    mockContext,
-    () => new Response("ok"),
+    mockContext as unknown as Context,
+    () => Promise.resolve(new Response("ok")),
   );
 
   // Hit branches in renderOptions
-  mockContext.renderToString(React.createElement("div"), {
+  mockContext.renderToString!(React.createElement("div"), {
     identifierPrefix: "x",
     signal: new AbortController().signal,
     nonceProvider: () => "n",
@@ -1078,7 +1083,7 @@ Deno.test("Render Middleware - createRenderToString branch coverage", () => {
   });
 
   // Hit includeHead: false
-  mockContext.renderToString(React.createElement("div"), {
+  mockContext.renderToString!(React.createElement("div"), {
     includeHead: false,
   });
 });
@@ -1097,54 +1102,54 @@ Deno.test("Render Middleware - Ultimate Coverage v10", {
     // 1. Success path for generatePWAScript and render
     generatePWAScript();
     generatePWAScript({});
-    createRenderMiddleware()({} as any, {} as any, () => Promise.resolve(new Response()));
+    createRenderMiddleware()({} as unknown as Request, {} as unknown as Context, () => Promise.resolve(new Response()));
 
     // 2. Early catches in startComponentsWatcher
     _resetWatcherForTests();
     Deno.env.set("ENV", "development");
-    // @ts-ignore
+    // @ts-ignore: mock write failure
     Deno.writeTextFile = () => Promise.reject(new Error("fail"));
-    // @ts-ignore
+    // @ts-ignore: mock stat failure
     Deno.stat = () => Promise.reject(new Error("fail"));
     const mw = createRenderMiddleware();
-    await mw(new Request("http://localhost/"), {} as any, () => new Response("ok"));
+    await mw(new Request("http://localhost/"), {} as unknown as Context, () => new Response("ok"));
 
     // 3. Stat returns mtime null branch
     _resetWatcherForTests();
-    // @ts-ignore
-    Deno.stat = async (p: string) => {
-      if (p === "./.build_done") return { mtime: null } as any;
+    // @ts-ignore: mock stat returning null mtime
+    Deno.stat = (p: string) => {
+      if (p === "./.build_done") return Promise.resolve({ mtime: null } as unknown as Deno.FileInfo);
       return originalStat(p);
     };
-    await mw(new Request("http://localhost/"), {} as any, () => new Response("ok"));
+    await mw(new Request("http://localhost/"), {} as unknown as Context, () => new Response("ok"));
     await new Promise(r => setTimeout(r, 600));
 
     // 4. Reload flow with varied stages
     _resetWatcherForTests();
     let mtimeVal = 1000;
-    // @ts-ignore
-    Deno.stat = async (p: string) => {
+    // @ts-ignore: mock stat with increasing mtime
+    Deno.stat = (p: string) => {
       if (p === "./.build_done") {
         const val = mtimeVal;
         mtimeVal += 1000; // Auto-increment every call to ensure change is detected
-        return { mtime: { getTime: () => val } } as any;
+        return Promise.resolve({ mtime: { getTime: () => val } } as unknown as Deno.FileInfo);
       }
       return originalStat(p);
     };
-    // @ts-ignore
+    // @ts-ignore: restoring original writer
     Deno.writeTextFile = originalWriteAsync;
 
     // Set ENV and start watcher via middleware call
     Deno.env.set("ENV", "development");
     const mw2 = createRenderMiddleware();
-    await mw2(new Request("http://localhost/"), {} as any, () => new Response("ok"));
+    await mw2(new Request("http://localhost/"), {} as unknown as Context, () => new Response("ok"));
 
     // Inject a client that will fail to send AND trigger console failure
     const mockClient = {
       readyState: 1, // WebSocket.OPEN
       send: () => { throw new Error("send fail"); }
     };
-    _getHmrClientsForTests().add(mockClient as any);
+    _getHmrClientsForTests().add(mockClient as unknown as WebSocket);
 
     // Make console fail everywhere
     console.log = () => { throw new Error("console.log fail"); };
@@ -1159,7 +1164,7 @@ Deno.test("Render Middleware - Ultimate Coverage v10", {
     _getHmrClientsForTests().clear();
 
     // 5. Interval outer catch
-    // @ts-ignore
+    // @ts-ignore: mock stat failure
     Deno.stat = () => Promise.reject(new Error("stat fail"));
     await new Promise(r => setTimeout(r, 600));
 
@@ -1169,7 +1174,7 @@ Deno.test("Render Middleware - Ultimate Coverage v10", {
 
   } finally {
     Deno.writeTextFileSync = originalWrite;
-    // @ts-ignore
+    // @ts-ignore: restoring original writer
     Deno.writeTextFile = originalWriteAsync;
     Deno.stat = originalStat;
     console.log = originalLog;
@@ -1184,12 +1189,12 @@ Deno.test("Render Middleware - watchTick rethrow coverage", async () => {
   const originalStat = Deno.stat;
   try {
     Deno.env.set("ENV", "coverage-throw");
-    // @ts-ignore
-    Deno.stat = async (p: string) => { if (p === "./.build_done") throw new Error("stat fail"); return originalStat(p); };
+    // @ts-ignore: mock stat failure
+    Deno.stat = (p: string) => { if (p === "./.build_done") return Promise.reject(new Error("stat fail")); return originalStat(p); };
     let threw = false;
     try {
       await _watchTickForTests();
-    } catch (e) {
+    } catch (_e) {
       threw = true;
     }
     assertEquals(threw, true);
@@ -1209,11 +1214,11 @@ Deno.test("Render Middleware - startComponentsWatcher inner catch coverage", {
   try {
     Deno.env.set("ENV", "coverage-throw");
     // Make stat throw so immediate tick rethrows and is caught by startComponentsWatcher's try/catch
-    // @ts-ignore
-    Deno.stat = async (p: string) => { if (p === "./.build_done") throw new Error("stat fail"); return originalStat(p); };
+    // @ts-ignore: mock stat failure
+    Deno.stat = (p: string) => { if (p === "./.build_done") return Promise.reject(new Error("stat fail")); return originalStat(p); };
     const mw = createRenderMiddleware();
     // Should not throw because startComponentsWatcher swallows the immediate tick throw
-    await mw(new Request("http://localhost/"), {} as any, () => new Response("ok"));
+    await mw(new Request("http://localhost/"), {} as unknown as Context, () => new Response("ok"));
     // Allow background IIFE to run and complete its initial operations
     await new Promise((r) => setTimeout(r, 200));
   } finally {
@@ -1231,13 +1236,13 @@ Deno.test("Render Middleware - initWatcher mtime branches", {
   const originalStat = Deno.stat;
   try {
     // Case: stat returns an object with mtime
-    // @ts-ignore
-    Deno.stat = async (p: string) => ({ mtime: { getTime: () => 12345 } } as any);
+    // @ts-ignore: mock stat success
+    Deno.stat = (_p: string) => Promise.resolve({ mtime: { getTime: () => 12345 } } as unknown as Deno.FileInfo);
     await _initWatcherForTests();
 
     // Case: stat returns an object with null/undefined mtime
-    // @ts-ignore
-    Deno.stat = async (p: string) => ({ mtime: null } as any);
+    // @ts-ignore: mock stat null mtime
+    Deno.stat = (_p: string) => Promise.resolve({ mtime: null } as unknown as Deno.FileInfo);
     await _initWatcherForTests();
     // allow any stray async ops to finish
     await new Promise((r) => setTimeout(r, 50));
