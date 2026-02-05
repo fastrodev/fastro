@@ -15,7 +15,8 @@ Fastro is engineered for developers who refuse to compromise. It combines **extr
 - **Zero Friction**: Return [JSON, strings, or Responses](DOCS.md#responses) directly. No boilerplate, just code.
 - **Ultra Lightweight**: Zero external dependencies. Built entirely on [Deno standards](https://deno.land).
 - **Built to Scale**: [Automatic module loading](DOCS.md#automatic-module-loading) for complex applications.
-- **Rock Solid**: [100% test coverage](https://coveralls.io/github/fastrodev/fastro?branch=main) and [first-class TypeScript support](https://www.typescriptlang.org/).
+- **AI-Driven Optimization**: Since v1, we've extensively leveraged AI to fine-tune performance and achieve a rigorous [100% test coverage](https://coveralls.io/github/fastrodev/fastro?branch=main).
+- **Rock Solid**: First-class TypeScript support and production-ready stability.
 
 ## Quick Start
 
