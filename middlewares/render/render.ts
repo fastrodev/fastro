@@ -12,41 +12,60 @@ import { Context, Next } from "../../core/types.ts";
 */
 const hmrScriptSource = `
 (function() {
-    var __hmrConnected = false;
-    var reconnectAttempts = 0;
-    var reconnectDelay = 1000;
-    function connect() {
-        console.log('[HMR] connecting to /hmr, attempt', reconnectAttempts + 1);
-        const ws = new WebSocket((window.location.protocol === 'https:' ? 'wss:' : 'ws:') + '//' + window.location.host + '/hmr');
-        ws.onopen = function() { console.log('[HMR] connection open'); reconnectAttempts = 0; };
-        ws.onmessage = function(event) {
-            const data = event.data;
-            console.log('[HMR] message', data);
-                /* c8 ignore next */
-                ${"i" + "f"} (data === "connected") {
-                    /* c8 ignore next */
-                    ${"i" + "f"} (__hmrConnected) {
-                    console.log('[HMR] already connected, reloading');
-                    window.location.reload();
-                    return;
-                  }
-                  __hmrConnected = true;
-                  console.log('[HMR] handshake complete');
-                }
-                  /* c8 ignore next */
-                  ${"i" + "f"} (data === "reload") {
-                  console.log('[HMR] reload message received, reloading now');
-                  window.location.reload();
-                }
-            // Ignore heartbeat
-            reconnectDelay = Math.min(30000, Math.round(reconnectDelay * 1.5));
-            setTimeout(connect, reconnectDelay);
-        };
-    }
-    connect();
+  var __hmrConnected = false;
+  var reconnectAttempts = 0;
+  var reconnectDelay = 1000;
+  var ws = null;
+
+  function scheduleReconnect() {
+    reconnectAttempts++;
+    reconnectDelay = Math.min(30000, Math.round(reconnectDelay * 1.5));
+    setTimeout(connect, reconnectDelay);
+  }
+
+  function connect() {
+    console.log('[HMR] connecting to /hmr, attempt', reconnectAttempts + 1);
+    ws = new WebSocket((window.location.protocol === 'https:' ? 'wss:' : 'ws:') + '//' + window.location.host + '/hmr');
+
+    ws.onopen = function() {
+      console.log('[HMR] connection open');
+      reconnectAttempts = 0;
+      reconnectDelay = 1000;
+    };
+
+    ws.onmessage = function(event) {
+      const data = event.data;
+      console.log('[HMR] message', data);
+      if (data === 'connected') {
+        if (__hmrConnected) {
+          console.log('[HMR] already connected, reloading');
+          window.location.reload();
+          return;
+        }
+        __hmrConnected = true;
+        console.log('[HMR] handshake complete');
+      }
+      if (data === 'reload') {
+        console.log('[HMR] reload message received, reloading now');
+        window.location.reload();
+      }
+      // heartbeat and other messages are ignored here
+    };
+
+    ws.onclose = function() {
+      console.log('[HMR] connection closed, scheduling reconnect');
+      scheduleReconnect();
+    };
+
+    ws.onerror = function(e) {
+      console.warn('[HMR] connection error', e);
+      try { ws.close(); } catch (_) {}
+    };
+  }
+
+  connect();
 })();
 `;
-/* c8 ignore stop */
 
 const rawHMRscript = `<script>${hmrScriptSource}</script>`;
 
