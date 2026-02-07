@@ -39,5 +39,5 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: fastro
-          entrypoint: modules/index/main.ts
+          entrypoint: app/main.ts
           import-map: deno.json

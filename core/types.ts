@@ -39,6 +39,13 @@ export type RenderFunction = (
   component: React.ReactElement,
   options?: RenderOptions,
 ) => string;
+// Keep a single canonical render-to-string function type. We no longer
+// expose a separate `render` that returns a Response — callers should use
+// `renderToString` and wrap the result in a `Response` when needed.
+export type RenderToStringFunction = (
+  component: React.ReactElement,
+  options?: RenderOptions,
+) => string;
 
 /**
  * Options for setting a cookie.
@@ -73,15 +80,7 @@ export type Context = {
   /** Remote address information of the client */
   remoteAddr: { transport: string; hostname?: string; port?: number };
   /** Utility to render a React component to a string */
-  renderToString?: (
-    component: React.ReactElement,
-    options?: RenderOptions,
-  ) => string;
-  /** Utility to render a React component and return a Response */
-  render?: (
-    component: React.ReactElement,
-    options?: RenderOptions,
-  ) => Response;
+  renderToString?: RenderToStringFunction;
   /** Incoming cookies as a key-value record */
   cookies?: Record<string, string>;
   /** Helper to set a cookie in the response */
@@ -152,4 +151,21 @@ export interface Route {
   paramNames: string[];
   /** Route-specific middlewares */
   middlewares: Middleware[];
+}
+
+/**
+ * Interface for a router that can register routes.
+ */
+export interface Router {
+  get(path: string, handler: Handler, ...middlewares: Middleware[]): unknown;
+  post(path: string, handler: Handler, ...middlewares: Middleware[]): unknown;
+  put(path: string, handler: Handler, ...middlewares: Middleware[]): unknown;
+  delete(path: string, handler: Handler, ...middlewares: Middleware[]): unknown;
+  patch?(path: string, handler: Handler, ...middlewares: Middleware[]): unknown;
+  head?(path: string, handler: Handler, ...middlewares: Middleware[]): unknown;
+  options?(
+    path: string,
+    handler: Handler,
+    ...middlewares: Middleware[]
+  ): unknown;
 }

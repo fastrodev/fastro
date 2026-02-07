@@ -482,10 +482,10 @@ export async function renderMD_Content(content: string, path: string) {
           </button>
         </div>
         <nav id="nav-links" class="flex flex-col md:flex-row hidden md:flex w-full md:w-auto gap-5 md:gap-7 items-start md:items-center overflow-hidden">
-          <a href="/DOCS.md" class="nav-link py-1 md:py-0">Docs</a>
+          <a href="/SHOWCASE.md" class="nav-link py-1 md:py-0">Showcase</a> 
           <a href="/MIDDLEWARES.md" class="nav-link py-1 md:py-0">Middlewares</a>
-          <a href="/SHOWCASE.md" class="nav-link py-1 md:py-0">Showcase</a>
           <a href="/BENCHMARK.md" class="nav-link py-1 md:py-0">Benchmarks</a>
+          <a href="/DOCS.md" class="nav-link py-1 md:py-0">Docs</a>
           <a href="/blog" class="nav-link py-1 md:py-0">Blog</a>
         </nav>
       </div>

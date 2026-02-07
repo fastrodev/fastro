@@ -17,17 +17,21 @@ const Page = (props: { title: string }) => {
 
 // 1. Full Render (dengan Head, HMR, dan Doctype)
 app.get("/", (_req, ctx) => {
-  return ctx.render!(<Page title="Full Render" />, {
+  // kasih warning di middleware jika harus install createRenderMiddleware dulu.
+  // sebelum pake ctx.renderToString
+  const html = ctx.renderToString!(<Page title="Full Render" />, {
     title: "Fastro Render Demo",
     includeDoctype: true,
   });
+  return new Response(html, { headers: { "Content-Type": "text/html" } });
 });
 
 // 2. Render Murni (Hanya HTML komponen saja)
 app.get("/murni", (_req, ctx) => {
-  return ctx.render!(<Page title="Render Murni" />, {
+  const html = ctx.renderToString!(<Page title="Render Murni" />, {
     includeHead: false,
   });
+  return new Response(html, { headers: { "Content-Type": "text/html" } });
 });
 
 console.log("Server started at http://localhost:8000");

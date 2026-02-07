@@ -227,6 +227,51 @@ function delete_(
   registerRoute("DELETE", path, handler, ...routeMiddlewares);
 }
 
+/**
+ * Registers a PATCH route.
+ *
+ * @param path The URL pattern or string path for the route.
+ * @param handler The handler function for the route.
+ * @param routeMiddlewares Optional middlewares specific to this route.
+ */
+function patch(
+  path: string | URLPattern,
+  handler: Handler,
+  ...routeMiddlewares: Middleware[]
+) {
+  registerRoute("PATCH", path, handler, ...routeMiddlewares);
+}
+
+/**
+ * Registers a HEAD route.
+ *
+ * @param path The URL pattern or string path for the route.
+ * @param handler The handler function for the route.
+ * @param routeMiddlewares Optional middlewares specific to this route.
+ */
+function head(
+  path: string | URLPattern,
+  handler: Handler,
+  ...routeMiddlewares: Middleware[]
+) {
+  registerRoute("HEAD", path, handler, ...routeMiddlewares);
+}
+
+/**
+ * Registers an OPTIONS route.
+ *
+ * @param path The URL pattern or string path for the route.
+ * @param handler The handler function for the route.
+ * @param routeMiddlewares Optional middlewares specific to this route.
+ */
+function options_(
+  path: string | URLPattern,
+  handler: Handler,
+  ...routeMiddlewares: Middleware[]
+) {
+  registerRoute("OPTIONS", path, handler, ...routeMiddlewares);
+}
+
 function extractParamNames(path: string | URLPattern): string[] {
   const p = typeof path === "string"
     ? path
@@ -309,6 +354,15 @@ function serve(
             get url() {
               return new URL(urlStr);
             },
+            renderToString: Object.assign(
+              (_component: unknown, _opts?: unknown) => {
+                console.warn(
+                  "renderToString called but createRenderMiddleware is not installed. Install it with app.use(createRenderMiddleware()) to enable rendering.",
+                );
+                return "<!-- renderToString: render middleware not installed -->";
+              },
+              { __is_stub: true },
+            ) as unknown,
           } as unknown as Context, rootNext);
         if (res instanceof Response) return res;
         if (typeof res === "string") return new Response(res);
@@ -339,6 +393,15 @@ function serve(
           get url() {
             return new URL(urlStr);
           },
+          renderToString: Object.assign(
+            (_component: unknown, _opts?: unknown) => {
+              console.warn(
+                "renderToString called but createRenderMiddleware is not installed. Install it with app.use(createRenderMiddleware()) to enable rendering.",
+              );
+              return "<!-- renderToString: render middleware not installed -->";
+            },
+            { __is_stub: true },
+          ) as unknown,
         } as unknown as Context;
         const res = route.handler(req, cachedCtx, () =>
           tryRoute(
@@ -373,6 +436,16 @@ function serve(
       get url() {
         return url || new URL(urlStr);
       },
+      // Default stub: warn when called so developers know to install render middleware.
+      renderToString: Object.assign(
+        (_component: unknown, _opts?: unknown) => {
+          console.warn(
+            "renderToString called but createRenderMiddleware is not installed. Install it with app.use(createRenderMiddleware()) to enable rendering.",
+          );
+          return "<!-- renderToString: render middleware not installed -->";
+        },
+        { __is_stub: true },
+      ) as unknown,
     } as unknown as Context;
 
     const runFinal = () => {
@@ -457,5 +530,15 @@ export function _getRoutesForTests() {
   return routes;
 }
 
-const server = { get, post, put, delete: delete_, use, serve };
+const server = {
+  get,
+  post,
+  put,
+  delete: delete_,
+  patch,
+  head,
+  options: options_,
+  use,
+  serve,
+};
 export default server;

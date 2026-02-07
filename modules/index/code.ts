@@ -1,12 +1,12 @@
-import type App from "../../mod.ts";
+import { Router } from "../../core/types.ts";
 import { renderCode } from "./render.ts";
 
 /**
  * Registers routes for viewing core framework source code.
  *
- * @param app The main application instance.
+ * @param app The main application instance or router.
  */
-export function registerCodeRoutes(app: App) {
+export function registerCodeRoutes(app: Router) {
   app.get(
     "/middlewares/static/static.ts",
     () => renderCode("middlewares/static/static.ts"),

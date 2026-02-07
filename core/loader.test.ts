@@ -3,7 +3,7 @@ import { Middleware } from "../mod.ts";
 import { assertSpyCalls, stub } from "@std/testing/mock";
 import { assert, assertEquals } from "@std/assert";
 
-const modulesDir = new URL("../modules/", import.meta.url);
+const modulesDir = new URL("../modules_test_tmp/", import.meta.url);
 
 const createdDirs = new Set<string>();
 
@@ -89,7 +89,7 @@ Deno.test("autoRegisterModules behavior", async (t) => {
     const warnStub = stub(console, "warn", () => {});
 
     try {
-      await autoRegisterModules(app);
+      await autoRegisterModules(app, modulesDir);
 
       assertEquals(used.length, 1);
       assertEquals(typeof used[0], "function");
@@ -128,7 +128,7 @@ Deno.test("autoRegisterModules behavior", async (t) => {
       const warnStub = stub(console, "warn", () => {});
 
       try {
-        await autoRegisterModules(app);
+        await autoRegisterModules(app, modulesDir);
 
         assertEquals(used.length, 1);
         assertEquals(typeof used[0], "function");
@@ -169,7 +169,7 @@ Deno.test("autoRegisterModules behavior", async (t) => {
     const warnStub = stub(console, "warn", () => {});
 
     try {
-      await autoRegisterModules(app);
+      await autoRegisterModules(app, modulesDir);
 
       assertEquals(used.length, 0);
       assertSpyCalls(logStub, 0);
@@ -209,7 +209,7 @@ Deno.test("autoRegisterModules behavior", async (t) => {
     const warnStub = stub(console, "warn", () => {});
 
     try {
-      await autoRegisterModules(app);
+      await autoRegisterModules(app, modulesDir);
 
       assertEquals(used.length, 0);
       // No log or warn is expected for import errors
@@ -241,7 +241,7 @@ Deno.test("autoRegisterModules behavior", async (t) => {
     const warnStub = stub(console, "warn", () => {});
 
     try {
-      await autoRegisterModules(app);
+      await autoRegisterModules(app, modulesDir);
 
       assertEquals(used.length, 2);
       assertSpyCalls(logStub, 2);
@@ -279,7 +279,7 @@ Deno.test("autoRegisterModules behavior", async (t) => {
     const logStub = stub(console, "log", () => {});
 
     try {
-      await autoRegisterModules(app);
+      await autoRegisterModules(app, modulesDir);
 
       const msgs = logStub.calls.map((c) => c.args[0] as string);
       // Expected order: index, a, b, profile (a and b order depends on randName)
@@ -313,7 +313,7 @@ Deno.test("autoRegisterModules behavior", async (t) => {
     const errorStub = stub(console, "error", () => {});
 
     try {
-      await autoRegisterModules(app);
+      await autoRegisterModules(app, modulesDir);
       // Should not call console.error for missing mod.ts if it matches ERR_MODULE_NOT_FOUND
       // Note: In Deno, we might need to adjust the loader if it doesn't use ERR_MODULE_NOT_FOUND
     } finally {
@@ -332,7 +332,7 @@ Deno.test("autoRegisterModules behavior", async (t) => {
     const errorStub = stub(console, "error", () => {});
 
     try {
-      await autoRegisterModules(app);
+      await autoRegisterModules(app, modulesDir);
       assertSpyCalls(errorStub, 1);
       assert(
         (errorStub.calls[0].args[0] as string).includes(
@@ -362,7 +362,7 @@ Deno.test("autoRegisterModules behavior", async (t) => {
     const logStub = stub(console, "log", () => {});
 
     try {
-      await autoRegisterModules(app);
+      await autoRegisterModules(app, modulesDir);
       assertSpyCalls(logStub, 0);
     } finally {
       readDirStub.restore();
@@ -395,7 +395,7 @@ Deno.test("autoRegisterModules behavior", async (t) => {
         for (const name of names) {
           await writeModule(name, "export default () => {}");
         }
-        await autoRegisterModules(app);
+        await autoRegisterModules(app, modulesDir);
       } finally {
         readDirStub.restore();
         for (const name of names) {
@@ -405,4 +405,52 @@ Deno.test("autoRegisterModules behavior", async (t) => {
     }
     logStub.restore();
   });
+});
+
+Deno.test("autoRegisterModules - default modulesDir param uses real path safely (no dirs)", async () => {
+  // Stub readDir to return no directories so import is not attempted
+  const originalReadDir = Deno.readDir;
+  const readDirStub = stub(Deno, "readDir", () => {
+    return (async function* () {})();
+  });
+
+  const used: unknown[] = [];
+  const app = {
+    use(mw: unknown) {
+      used.push(mw);
+    },
+  };
+
+  try {
+    await autoRegisterModules(app);
+    // Expect no registrations and no throws
+    assertEquals(used.length, 0);
+  } finally {
+    readDirStub.restore();
+    Deno.readDir = originalReadDir;
+  }
+});
+
+Deno.test("autoRegisterModules - default modulesDir param uses real path safely (no dirs)", async () => {
+  // Stub readDir to return no directories so import is not attempted
+  const originalReadDir = Deno.readDir;
+  const readDirStub = stub(Deno, "readDir", () => {
+    return (async function* () {})();
+  });
+
+  const used: unknown[] = [];
+  const app = {
+    use(mw: unknown) {
+      used.push(mw);
+    },
+  };
+
+  try {
+    await autoRegisterModules(app);
+    // Expect no registrations and no throws
+    assertEquals(used.length, 0);
+  } finally {
+    readDirStub.restore();
+    Deno.readDir = originalReadDir;
+  }
 });

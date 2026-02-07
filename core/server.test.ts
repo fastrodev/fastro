@@ -1631,3 +1631,27 @@ Deno.test("Coverage - extractParamNames with URLPattern having no pathname", asy
   await res.text();
   s.close();
 });
+
+Deno.test("Coverage - server patch, head, options", async () => {
+  _resetForTests();
+  server.patch("/patch", () => "patched");
+  server.head("/head", () => "headed");
+  server.options("/options", () => "optioned");
+  const s = server.serve({ port: 3225 });
+
+  const resPatch = await fetch("http://localhost:3225/patch", {
+    method: "PATCH",
+  });
+  assertEquals(await resPatch.text(), "patched");
+
+  const resHead = await fetch("http://localhost:3225/head", {
+    method: "HEAD",
+  });
+  assertEquals(resHead.status, 200);
+
+  const resOptions = await fetch("http://localhost:3225/options", {
+    method: "OPTIONS",
+  });
+  assertEquals(await resOptions.text(), "optioned");
+  s.close();
+});
