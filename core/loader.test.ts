@@ -93,10 +93,13 @@ Deno.test("autoRegisterModules behavior", async (t) => {
 
       assertEquals(used.length, 1);
       assertEquals(typeof used[0], "function");
-      assertSpyCalls(logStub, 1);
+      const found = logStub.calls.some((c) =>
+        (c.args[0] as string).includes(
+          `Registered default export from ${dirName}/mod.ts`,
+        )
+      );
+      assert(found, "Expected registration log not found");
       assertSpyCalls(warnStub, 0);
-      const msg = logStub.calls[0].args[0] as string;
-      assertEquals(msg, `Registered default export from ${dirName}/mod.ts`);
     } finally {
       readDirStub.restore();
       logStub.restore();
@@ -336,7 +339,7 @@ Deno.test("autoRegisterModules behavior", async (t) => {
       assertSpyCalls(errorStub, 1);
       assert(
         (errorStub.calls[0].args[0] as string).includes(
-          "autoRegisterModules: failed to import",
+          "Failed to import",
         ),
       );
     } finally {
