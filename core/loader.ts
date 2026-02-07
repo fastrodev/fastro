@@ -28,11 +28,15 @@ export async function autoRegisterModules(
         console.log(`[Loader] Found modules directory at CWD: ${modulesDir}`);
       } else {
         modulesDir = new URL("../modules/", import.meta.url);
-        console.log(`[Loader] Not a directory, falling back to import.meta.url: ${modulesDir}`);
+        console.log(
+          `[Loader] Not a directory, falling back to import.meta.url: ${modulesDir}`,
+        );
       }
     } catch (err) {
       modulesDir = new URL("../modules/", import.meta.url);
-      console.log(`[Loader] Stat failed, falling back to import.meta.url: ${modulesDir}`);
+      console.log(
+        `[Loader] Stat failed, falling back to import.meta.url: ${modulesDir}`,
+      );
       console.log(`[Loader] Stat error: ${err}`);
     }
   }
@@ -46,9 +50,16 @@ export async function autoRegisterModules(
         entries.push(entry);
       }
     }
-    console.log(`[Loader] Found ${entries.length} module(s): ${entries.map(e => e.name).join(", ")}`);
+    console.log(
+      `[Loader] Found ${entries.length} module(s): ${
+        entries.map((e) => e.name).join(", ")
+      }`,
+    );
   } catch (err) {
-    console.error(`[Loader] autoRegisterModules: failed to read ${modulesDir}:`, err);
+    console.error(
+      `[Loader] autoRegisterModules: failed to read ${modulesDir}:`,
+      err,
+    );
     return;
   }
 
@@ -83,7 +94,9 @@ export async function autoRegisterModules(
         console.log(`[Loader] Registered default export from ${entry.name}`);
       } else if (mod[entry.name]) {
         app.use(mod[entry.name]);
-        console.log(`[Loader] Registered ${entry.name} export from ${entry.name}`);
+        console.log(
+          `[Loader] Registered ${entry.name} export from ${entry.name}`,
+        );
       } else {
         console.warn(`[Loader] No valid export found in ${entry.name}/mod.ts`);
       }
