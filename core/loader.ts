@@ -1,10 +1,7 @@
 /* c8 ignore file */
-import { join } from "@std/path";
+import { join } from "@std/path"; // Gunakan toFileUrl dari std
 import type { Middleware } from "./types.ts";
 
-/**
- * Automatically register modules from a directory.
- */
 export async function autoRegisterModules(
   app: { use: (middleware: Middleware) => void },
   modulesDirParam?: URL | string,
@@ -19,54 +16,26 @@ export async function autoRegisterModules(
   debug(`[Loader] Current working directory: ${cwd}`);
   debug(`[Loader] import.meta.url: ${import.meta.url}`);
 
-  let modulesDir: URL | string;
+  let modulesPath: string;
+
+  // 1. Tentukan Path Fisik untuk Deno.readDir (butuh string path)
   if (modulesDirParam) {
-    modulesDir = modulesDirParam;
-    debug(`[Loader] Using provided modulesDirParam: ${modulesDir}`);
+    modulesPath = modulesDirParam instanceof URL
+      ? modulesDirParam.pathname
+      : modulesDirParam;
   } else {
-    // Try to find modules folder relative to CWD first
-    const pathFromCwd = join(cwd, "modules");
-    debug(`[Loader] Checking directory at: ${pathFromCwd}`);
-    try {
-      const stats = Deno.statSync(pathFromCwd);
-      if (stats.isDirectory) {
-        modulesDir = pathFromCwd;
-        debug(`[Loader] Found modules directory at CWD: ${modulesDir}`);
-      } else {
-        modulesDir = new URL("../modules/", import.meta.url);
-        debug(
-          `[Loader] Not a directory, falling back to import.meta.url: ${modulesDir}`,
-        );
-      }
-    } catch (err) {
-      modulesDir = new URL("../modules/", import.meta.url);
-      debug(
-        `[Loader] Stat failed, falling back to import.meta.url: ${modulesDir}`,
-      );
-      debug(`[Loader] Stat error: ${err}`);
-    }
+    // Default: cari folder 'modules' di root proyek
+    modulesPath = join(cwd, "modules");
   }
 
-  const toFileUrl = (value: string | URL) => {
-    if (value instanceof URL) return value;
-    if (value.startsWith("file://")) return new URL(value);
-    return new URL(value, `file://${cwd}/`);
-  };
-
-  const ensureTrailingSlash = (url: URL) => {
-    if (url.pathname.endsWith("/")) return url;
-    const base = `${url.protocol}//${url.host}`;
-    return new URL(`${url.pathname}/`, base);
-  };
-
-  const modulesDirUrl = ensureTrailingSlash(toFileUrl(modulesDir));
-  debug(`[Loader] Resolved modules base URL: ${modulesDirUrl.href}`);
+  // 2. Gunakan import.meta.url sebagai basis URL untuk Dynamic Import
+  // Ini kunci utama agar jalan di Deploy
+  const baseModuleUrl = new URL("../modules/", import.meta.url);
 
   const entries: Deno.DirEntry[] = [];
-
   try {
-    debug(`[Loader] Reading directory entries from: ${modulesDir}`);
-    for await (const entry of Deno.readDir(modulesDir)) {
+    debug(`[Loader] Reading directory entries from: ${modulesPath}`);
+    for await (const entry of Deno.readDir(modulesPath)) {
       if (entry.isDirectory) {
         entries.push(entry);
       }
@@ -78,70 +47,49 @@ export async function autoRegisterModules(
     );
   } catch (err) {
     console.error(
-      `[Loader] autoRegisterModules: failed to read ${modulesDir}:`,
+      `[Loader] autoRegisterModules: failed to read ${modulesPath}:`,
       err,
     );
     return;
   }
 
+  // Sorting logic tetap sama...
   entries.sort((a, b) => {
     if (a.name === "index") return -1;
     if (b.name === "index") return 1;
-    if (a.name === "profile") return 1;
-    if (b.name === "profile") return -1;
     return a.name.localeCompare(b.name);
   });
 
   for (const entry of entries) {
-    const canonicalPath = new URL(`${entry.name}/mod.ts`, modulesDirUrl).href;
-    const fallbackPath =
-      new URL(`../modules/${entry.name}/mod.ts`, import.meta.url).href;
-    const candidates = canonicalPath === fallbackPath
-      ? [canonicalPath]
-      : [canonicalPath, fallbackPath];
+    // 3. Bangun URL Import menggunakan URL API yang berbasis import.meta.url
+    // Jangan pakai "file:///src" + cwd
+    const candidate = new URL(`./${entry.name}/mod.ts`, baseModuleUrl).href;
 
-    let registered = false;
-    for (const candidate of candidates) {
-      debug(`[Loader] Importing module: ${candidate}`);
-      try {
-        const mod = await import(candidate);
+    debug(`[Loader] Importing module: ${candidate}`);
+    try {
+      const mod = await import(candidate);
 
-        if (mod.default) {
-          app.use(mod.default);
-          console.log(`Registered default export from ${entry.name}/mod.ts`);
-        } else if (mod[entry.name]) {
-          app.use(mod[entry.name]);
-          console.log(
-            `Registered ${entry.name} export from ${entry.name}/mod.ts`,
-          );
-        } else {
-          console.warn(
-            `No valid export found in ${entry.name}/mod.ts to register.`,
-          );
-        }
-
-        registered = true;
-        break;
-      } catch (err) {
-        const error = err as Error & { code?: string };
-        if (
-          error.code === "ERR_MODULE_NOT_FOUND" ||
-          error.message?.includes("Module not found")
-        ) {
-          debug(`[Loader] Module not found: ${candidate}`);
-          continue;
-        }
-
-        console.error(`[Loader] Failed to import ${candidate}:`, err);
-        registered = true;
-        break;
+      if (mod.default) {
+        app.use(mod.default);
+        console.log(`✅ Registered default export from ${entry.name}/mod.ts`);
+      } else if (mod[entry.name]) {
+        app.use(mod[entry.name]);
+        console.log(
+          `✅ Registered ${entry.name} export from ${entry.name}/mod.ts`,
+        );
+      } else {
+        console.warn(`⚠️ No valid export found in ${entry.name}/mod.ts`);
       }
-    }
-
-    if (!registered) {
-      debug(`
-        [Loader] Skipping registration for ${entry.name}; no path matched
-      `.trim());
+    } catch (err) {
+      const error = err as Error & { code?: string };
+      if (
+        error.code === "ERR_MODULE_NOT_FOUND" ||
+        error.message?.includes("Module not found")
+      ) {
+        debug(`[Loader] Module not found: ${candidate}`);
+      } else {
+        console.error(`[Loader] Failed to import ${candidate}:`, err);
+      }
     }
   }
 }
