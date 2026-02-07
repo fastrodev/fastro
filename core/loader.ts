@@ -79,7 +79,11 @@ export async function autoRegisterModules(
 
   for (const entry of entries) {
     let modPath: string;
-    if (typeof modulesDir === "string") {
+    if (!modulesDirParam) {
+      // For the default case, use a relative path string.
+      // This is often more reliable on Deno Deploy than absolute file:/// URLs.
+      modPath = `../modules/${entry.name}/mod.ts`;
+    } else if (typeof modulesDir === "string") {
       const maybeDir = modulesDir.endsWith("/") ? modulesDir : modulesDir + "/";
       const full = maybeDir + entry.name + "/mod.ts";
       if (full.startsWith("/")) {
@@ -110,7 +114,10 @@ export async function autoRegisterModules(
       }
     } catch (err) {
       const e = err as Error & { code?: string };
-      if (e.code === "ERR_MODULE_NOT_FOUND") {
+      if (
+        e.code === "ERR_MODULE_NOT_FOUND" ||
+        e.message?.includes("Module not found")
+      ) {
         debug(`[Loader] Module not found: ${modPath}`);
         continue;
       }
