@@ -47,26 +47,26 @@ export async function autoRegisterModules(
     return false;
   };
 
-  // Helper: register middleware from a dynamically-imported module object
-  const registerFromModule = (
-    entryName: string,
-    mod: Record<string, unknown>,
-  ) => {
-    if (mod.default && typeof mod.default === "function") {
-      app.use(mod.default as unknown as Middleware);
-      console.log(`✅ Registered default export from ${entryName}`);
-      return true;
-    }
+  // // Helper: register middleware from a dynamically-imported module object
+  // const registerFromModule = (
+  //   entryName: string,
+  //   mod: Record<string, unknown>,
+  // ) => {
+  //   if (mod.default && typeof mod.default === "function") {
+  //     app.use(mod.default as unknown as Middleware);
+  //     console.log(`✅ Registered default export from ${entryName}`);
+  //     return true;
+  //   }
 
-    if (mod[entryName] && typeof mod[entryName] === "function") {
-      app.use(mod[entryName] as unknown as Middleware);
-      console.log(`✅ Registered named export: ${entryName}`);
-      return true;
-    }
+  //   if (mod[entryName] && typeof mod[entryName] === "function") {
+  //     app.use(mod[entryName] as unknown as Middleware);
+  //     console.log(`✅ Registered named export: ${entryName}`);
+  //     return true;
+  //   }
 
-    console.warn(`No valid export found in ${entryName}/mod.ts to register.`);
-    return false;
-  };
+  //   console.warn(`No valid export found in ${entryName}/mod.ts to register.`);
+  //   return false;
+  // };
 
   // If running in Deno Deploy Classic, prefer a statically-generated manifest
   // so the deploy bundler (eszip) includes modules. The manifest is generated
