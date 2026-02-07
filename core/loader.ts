@@ -2,10 +2,6 @@
 import { join } from "@std/path";
 import type { Middleware } from "./types.ts";
 
-/**
- * Otomatis meregistrasi modul dari direktori tertentu.
- * Dioptimalkan untuk lingkungan Deno Deploy.
- */
 export async function autoRegisterModules(
   app: { use: (middleware: Middleware) => void },
   modulesDirParam?: string,
@@ -13,78 +9,144 @@ export async function autoRegisterModules(
   const isDeploy = Deno.env.get("DENO_DEPLOYMENT_ID") !== undefined;
   const isDebug = Deno.env.get("FASTRO_LOG_LOADER") === "true";
   const debug = (...args: unknown[]) => {
-    if (isDeploy || isDebug) console.log(...args);
+    if (isDeploy || isDebug) console.debug(...args);
   };
 
   const cwd = Deno.cwd();
   debug(`[Loader] Current working directory: ${cwd}`);
   debug(`[Loader] import.meta.url: ${import.meta.url}`);
 
-  // 1. Tentukan path fisik untuk Deno.readDir (menggunakan string path)
-  // Di Deno Deploy, folder project biasanya ada di /src
+  // Helper: sort names (index first, profile last when present)
+  const sortNames = (names: string[]) => {
+    return names.sort((a, b) => {
+      if (a === "index") return -1;
+      if (b === "index") return 1;
+      if (a === "profile") return 1;
+      if (b === "profile") return -1;
+      return a.localeCompare(b);
+    });
+  };
+
+  // Helper: register middleware from a namespace object (manifest export)
+  const registerFromNamespace = (name: string, ns: Record<string, unknown>) => {
+    const def = ns.default as unknown;
+    if (typeof def === "function") {
+      app.use(def as unknown as Middleware);
+      console.log(`Registered default export from ${name}/mod.ts (manifest)`);
+      return true;
+    }
+
+    const named = ns[name];
+    if (typeof named === "function") {
+      app.use(named as unknown as Middleware);
+      console.log(`Registered ${name} export from ${name}/mod.ts (manifest)`);
+      return true;
+    }
+
+    console.warn(`[Loader] No valid export found in manifest for ${name}`);
+    return false;
+  };
+
+  // Helper: register middleware from a dynamically-imported module object
+  const registerFromModule = (
+    entryName: string,
+    mod: Record<string, unknown>,
+  ) => {
+    if (mod.default && typeof mod.default === "function") {
+      app.use(mod.default as unknown as Middleware);
+      console.log(`✅ Registered default export from ${entryName}`);
+      return true;
+    }
+
+    if (mod[entryName] && typeof mod[entryName] === "function") {
+      app.use(mod[entryName] as unknown as Middleware);
+      console.log(`✅ Registered named export: ${entryName}`);
+      return true;
+    }
+
+    console.warn(`No valid export found in ${entryName}/mod.ts to register.`);
+    return false;
+  };
+
+  // If running in Deno Deploy Classic, prefer a statically-generated manifest
+  // so the deploy bundler (eszip) includes modules. The manifest is generated
+  // at build time by `scripts/generate_manifest.ts` and exported from
+  // `modules/manifest.ts`.
+  if (isDeploy) {
+    try {
+      const manifest = await import("../modules/manifest.ts");
+      const names = sortNames(Object.keys(manifest));
+      for (const name of names) {
+        const ns = (manifest as Record<string, unknown>)[name] as
+          | Record<string, unknown>
+          | undefined;
+        if (!ns) {
+          console.warn(`[Loader] manifest export ${name} is empty or invalid`);
+          continue;
+        }
+        registerFromNamespace(name, ns);
+      }
+
+      // Manifest-based registration done — skip runtime dynamic imports which
+      // are not reliably supported on Deploy Classic.
+      return;
+    } catch (err) {
+      const e = err instanceof Error ? err : new Error(String(err));
+      debug(
+        `[Loader] No manifest found or failed to import manifest: ${e.message}`,
+      );
+      // fallthrough to filesystem-based dynamic loading (useful for local dev/tests)
+    }
+  }
+
+  // Gunakan path fisik untuk Deno.readDir
   const modulesPath = modulesDirParam || join(cwd, "modules");
-  debug(`[Loader] Reading directory entries from: ${modulesPath}`);
 
   const entries: Deno.DirEntry[] = [];
   try {
     for await (const entry of Deno.readDir(modulesPath)) {
-      if (entry.isDirectory) {
-        entries.push(entry);
-      }
+      if (entry.isDirectory) entries.push(entry);
     }
   } catch (err) {
-    console.error(`[Loader] Failed to read directory ${modulesPath}:`, err);
+    const e = err instanceof Error ? err : new Error(String(err));
+    console.error(`[Loader] Failed to read ${modulesPath}:`, e);
     return;
   }
 
-  // Sorting: index diutamakan, profile terakhir
+  // Sorting logic
   entries.sort((a, b) => {
     if (a.name === "index") return -1;
     if (b.name === "index") return 1;
-    if (a.name === "profile") return 1;
-    if (b.name === "profile") return -1;
     return a.name.localeCompare(b.name);
   });
 
   debug(`[Loader] Found modules: ${entries.map((e) => e.name).join(", ")}`);
 
   for (const entry of entries) {
-    /**
-     * 2. SOLUSI UTAMA: Gunakan URL relatif terhadap file loader ini.
-     * Jika loader.ts ada di /src/core/loader.ts, maka kita naik satu level
-     * untuk mencapai /src/modules/.
-     */
-    const candidate =
+    // KUNCI: Gunakan URL relatif terhadap file ini (loader.ts)
+    // Jika loader.ts ada di /src/core/, maka ../modules/ tepat sasaran
+    const moduleUrl =
       new URL(`../modules/${entry.name}/mod.ts`, import.meta.url).href;
 
-    debug(`[Loader] Importing module: ${candidate}`);
+    debug(`[Loader] Importing module: ${moduleUrl}`);
 
     try {
-      // Dynamic import menggunakan URL specifier yang valid
-      const mod = await import(candidate);
+      const mod = await import(moduleUrl);
 
       if (mod.default) {
         app.use(mod.default);
-        debug(`[Loader] ✅ Registered default export: ${entry.name}`);
+        console.log(`✅ Registered default export from ${entry.name}`);
       } else if (mod[entry.name]) {
         app.use(mod[entry.name]);
-        debug(`[Loader] ✅ Registered named export: ${entry.name}`);
-      } else {
-        console.warn(
-          `[Loader] ⚠️ No valid export found in ${entry.name}/mod.ts`,
-        );
+        console.log(`✅ Registered named export: ${entry.name}`);
       }
     } catch (err) {
-      const error = err as Error & { code?: string };
-      // Cek jika modul memang tidak ada
-      if (
-        error.code === "ERR_MODULE_NOT_FOUND" ||
-        error.message?.includes("Module not found")
-      ) {
-        debug(`[Loader] ❌ Module not found at: ${candidate}`);
-      } else {
-        console.error(`[Loader] 🚨 Error importing ${candidate}:`, err);
-      }
+      const e = err instanceof Error ? err : new Error(String(err));
+      // Jika masih 'Module not found', berarti file tidak masuk ke bundle Deploy
+      console.error(
+        `❌ [Loader] Failed to import ${entry.name} at ${moduleUrl}:`,
+        e.message,
+      );
     }
   }
 }

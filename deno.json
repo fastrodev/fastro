@@ -46,6 +46,7 @@
     "lint": "deno lint",
     "cov": "bash ./scripts/test.sh --coverage",
     "bench": "./run_bench.sh",
+    "gen-manifest": "deno run -A scripts/generate_manifest.ts",
     "build": "echo 'Building...'"
   }
 }
