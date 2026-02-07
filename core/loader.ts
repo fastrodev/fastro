@@ -9,48 +9,54 @@ export async function autoRegisterModules(
   app: { use: (middleware: Middleware) => void },
   modulesDirParam?: URL | string,
 ) {
+  const isDeploy = Deno.env.get("DENO_DEPLOYMENT_ID") !== undefined;
+  const isDebug = Deno.env.get("FASTRO_LOG_LOADER") === "true";
+  const debug = (...args: unknown[]) => {
+    if (isDeploy || isDebug) console.log(...args);
+  };
+
   const cwd = Deno.cwd();
-  console.log(`[Loader] Current working directory: ${cwd}`);
-  console.log(`[Loader] import.meta.url: ${import.meta.url}`);
+  debug(`[Loader] Current working directory: ${cwd}`);
+  debug(`[Loader] import.meta.url: ${import.meta.url}`);
 
   let modulesDir: URL | string;
   if (modulesDirParam) {
     modulesDir = modulesDirParam;
-    console.log(`[Loader] Using provided modulesDirParam: ${modulesDir}`);
+    debug(`[Loader] Using provided modulesDirParam: ${modulesDir}`);
   } else {
     // Try to find modules folder relative to CWD first
     const pathFromCwd = join(cwd, "modules");
-    console.log(`[Loader] Checking directory at: ${pathFromCwd}`);
+    debug(`[Loader] Checking directory at: ${pathFromCwd}`);
     try {
       const stats = Deno.statSync(pathFromCwd);
       if (stats.isDirectory) {
         modulesDir = pathFromCwd;
-        console.log(`[Loader] Found modules directory at CWD: ${modulesDir}`);
+        debug(`[Loader] Found modules directory at CWD: ${modulesDir}`);
       } else {
         modulesDir = new URL("../modules/", import.meta.url);
-        console.log(
+        debug(
           `[Loader] Not a directory, falling back to import.meta.url: ${modulesDir}`,
         );
       }
     } catch (err) {
       modulesDir = new URL("../modules/", import.meta.url);
-      console.log(
+      debug(
         `[Loader] Stat failed, falling back to import.meta.url: ${modulesDir}`,
       );
-      console.log(`[Loader] Stat error: ${err}`);
+      debug(`[Loader] Stat error: ${err}`);
     }
   }
 
   const entries: Deno.DirEntry[] = [];
 
   try {
-    console.log(`[Loader] Reading directory entries from: ${modulesDir}`);
+    debug(`[Loader] Reading directory entries from: ${modulesDir}`);
     for await (const entry of Deno.readDir(modulesDir)) {
       if (entry.isDirectory) {
         entries.push(entry);
       }
     }
-    console.log(
+    debug(
       `[Loader] Found ${entries.length} module(s): ${
         entries.map((e) => e.name).join(", ")
       }`,
@@ -85,25 +91,27 @@ export async function autoRegisterModules(
       modPath = new URL(`${entry.name}/mod.ts`, modulesDir).href;
     }
 
-    console.log(`[Loader] Importing module: ${modPath}`);
+    debug(`[Loader] Importing module: ${modPath}`);
     try {
       const mod = await import(modPath);
 
       if (mod.default) {
         app.use(mod.default);
-        console.log(`[Loader] Registered default export from ${entry.name}`);
+        console.log(`Registered default export from ${entry.name}/mod.ts`);
       } else if (mod[entry.name]) {
         app.use(mod[entry.name]);
         console.log(
-          `[Loader] Registered ${entry.name} export from ${entry.name}`,
+          `Registered ${entry.name} export from ${entry.name}/mod.ts`,
         );
       } else {
-        console.warn(`[Loader] No valid export found in ${entry.name}/mod.ts`);
+        console.warn(
+          `No valid export found in ${entry.name}/mod.ts to register.`,
+        );
       }
     } catch (err) {
       const e = err as Error & { code?: string };
       if (e.code === "ERR_MODULE_NOT_FOUND") {
-        console.warn(`[Loader] Module not found: ${modPath}`);
+        debug(`[Loader] Module not found: ${modPath}`);
         continue;
       }
       console.error(`[Loader] Failed to import ${modPath}:`, err);
