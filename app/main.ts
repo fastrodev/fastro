@@ -1,8 +1,7 @@
-import App from "../mod.ts";
+import App, { autoRegisterModules } from "../mod.ts";
 import { logger } from "../middlewares/logger/mod.ts";
 import { staticFiles } from "../middlewares/static/static.ts";
 import { createRenderMiddleware } from "../middlewares/render/mod.ts";
-import index from "../modules/index/mod.ts";
 
 const app = new App();
 
@@ -14,7 +13,14 @@ app.use(staticFiles("/js", "./public/js"));
 
 // Keep legacy static mapping for assets under /static
 app.use(staticFiles("/static", "./public"));
-app.use(index);
+
+// Auto-register modules. On Deno Deploy classic the working directory is `/src`,
+// so pass an explicit modules directory URL in that environment.
+if (Deno.env.get("DENO_DEPLOYMENT_ID")) {
+  await autoRegisterModules(app, new URL("file:///src/modules/"));
+} else {
+  await autoRegisterModules(app);
+}
 
 // SHOW CURRENT DIRECTORY FOR DEBUGGING PURPOSES
 console.log("Current working directory:", Deno.cwd());
