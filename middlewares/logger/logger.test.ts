@@ -1,4 +1,5 @@
-import { assertEquals } from "@std/assert";
+import { assert, assertEquals } from "@std/assert";
+import { stub } from "@std/testing/mock";
 import { logger } from "./logger.ts";
 import { Context } from "../../core/types.ts";
 
@@ -52,7 +53,15 @@ Deno.test("logger middleware - should log WARN for 4xx errors", async () => {
   const next = () =>
     Promise.resolve(new Response("Not Found", { status: 404 }));
 
-  await logger(req, ctx, next);
+  const logStub = stub(console, "log", () => {});
+  try {
+    await logger(req, ctx, next);
+    const msg = logStub.calls.at(-1)?.args[0] as string;
+    assert(msg.includes("\x1b[33mWARN"), "Expected WARN color to appear");
+    assert(msg.includes("\x1b[90m"), "Timestamp should be dimmed");
+  } finally {
+    logStub.restore();
+  }
 });
 
 Deno.test("logger middleware - should log ERROR for 5xx errors", async () => {
@@ -62,5 +71,25 @@ Deno.test("logger middleware - should log ERROR for 5xx errors", async () => {
   } as unknown as Context;
   const next = () => Promise.resolve(new Response("Error", { status: 500 }));
 
-  await logger(req, ctx, next);
+  const logStub = stub(console, "log", () => {});
+  try {
+    await logger(req, ctx, next);
+    const msg = logStub.calls.at(-1)?.args[0] as string;
+    assert(msg.includes("\x1b[31mERROR"));
+  } finally {
+    logStub.restore();
+  }
+});
+
+Deno.test("logger middleware - colors PUT/DELETE as blue", async () => {
+  const req = new Request("http://localhost/patch", { method: "PATCH" });
+  const ctx = { url: new URL(req.url) } as unknown as Context;
+  const logStub = stub(console, "log", () => {});
+  try {
+    await logger(req, ctx, () => Promise.resolve(new Response("ok")));
+    const msg = logStub.calls.at(-1)?.args[0] as string;
+    assert(msg.includes("\x1b[34mPATCH"));
+  } finally {
+    logStub.restore();
+  }
 });
