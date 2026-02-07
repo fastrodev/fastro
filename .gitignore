@@ -78,3 +78,4 @@ node_modules/*
 cov.json
 cov_profile_render/*
 .sw_version
+coverage_profile/

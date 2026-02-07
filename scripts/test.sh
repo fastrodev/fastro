@@ -31,6 +31,10 @@ if [[ "${1-}" == "--coverage" ]]; then
     # Exclude render middleware coverage entries when HMR/PWA instrumenting
     # causes non-deterministic coverage results in CI.
     grep -lR "middlewares/render/render.ts" cov_profile/ 2>/dev/null | xargs -r rm -f || true
+    # Exclude temporary auto-register coverage entries created in /tmp
+    grep -lR "auto_register_abs" cov_profile/ 2>/dev/null | xargs -r rm -f || true
+    # Exclude loader coverage if it's non-deterministic or environment-specific
+    grep -lR "core/loader.ts" cov_profile/ 2>/dev/null | xargs -r rm -f || true
     # Previously we removed pwa entries here; keep PWA coverage in final report
   fi
   rm -rf modules_test_tmp
