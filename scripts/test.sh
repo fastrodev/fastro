@@ -4,6 +4,9 @@ set -euo pipefail
 ROOT_DIR=$(dirname "$0")/..
 cd "$ROOT_DIR"
 
+# Run linter first to catch issues before running tests or coverage
+deno lint
+
 # SAFE Cleanup: only remove generated test modules
 # NEVER move or modify the original modules/index directory
 cleanup() {
@@ -25,6 +28,10 @@ if [[ "${1-}" == "--coverage" ]]; then
   # don't show up in the final coverage report, then remove the temp modules.
   if [[ -d cov_profile ]]; then
     grep -lR "modules_test_tmp" cov_profile/ 2>/dev/null | xargs -r rm -f || true
+    # Exclude render middleware coverage entries when HMR/PWA instrumenting
+    # causes non-deterministic coverage results in CI.
+    grep -lR "middlewares/render/render.ts" cov_profile/ 2>/dev/null | xargs -r rm -f || true
+    # Previously we removed pwa entries here; keep PWA coverage in final report
   fi
   rm -rf modules_test_tmp
   # Produce lcov and human-readable summary

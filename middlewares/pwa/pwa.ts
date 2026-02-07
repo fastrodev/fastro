@@ -294,14 +294,27 @@ export function _coverAllForTests() {
 
     // exercise notifyClients-like loop safely (no self.clients in test env)
     try {
-      const clients: any[] = [{ postMessage: (_: unknown) => {} }, {}];
+      const clients: unknown[] = [{ postMessage: (_: unknown) => {} }, {}];
       for (const c of clients) {
         try {
-          if (c && typeof c.postMessage === "function") c.postMessage({});
-        } catch (_) {}
+          if (
+            c &&
+            typeof (c as { postMessage?: unknown }).postMessage === "function"
+          ) {
+            try {
+              (c as { postMessage: (m: unknown) => void }).postMessage({});
+            } catch (_err) {
+              // ignore client postMessage errors during tests
+            }
+          }
+        } catch (_err) {
+          // ignore iteration errors
+        }
       }
-    } catch (_) {}
-  } catch (_) {}
+    } catch (_err) {
+      // ignore global notify errors in test environment
+    }
+  } catch (_err) { /* ignore */ }
 }
 
 if (Deno.env.get("FASTRO_COVERAGE") === "1") {

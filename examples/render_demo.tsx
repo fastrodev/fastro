@@ -3,7 +3,6 @@ import { createRenderMiddleware } from "../middlewares/render/mod.ts";
 
 const app = new Fastro();
 
-// Use render middleware
 app.use(createRenderMiddleware());
 
 const Page = (props: { title: string }) => {
@@ -15,10 +14,7 @@ const Page = (props: { title: string }) => {
   );
 };
 
-// 1. Full Render (dengan Head, HMR, dan Doctype)
 app.get("/", (_req, ctx) => {
-  // kasih warning di middleware jika harus install createRenderMiddleware dulu.
-  // sebelum pake ctx.renderToString
   const html = ctx.renderToString!(<Page title="Full Render" />, {
     title: "Fastro Render Demo",
     includeDoctype: true,
@@ -26,11 +22,8 @@ app.get("/", (_req, ctx) => {
   return new Response(html, { headers: { "Content-Type": "text/html" } });
 });
 
-// 2. Render Murni (Hanya HTML komponen saja)
-app.get("/murni", (_req, ctx) => {
-  const html = ctx.renderToString!(<Page title="Render Murni" />, {
-    includeHead: false,
-  });
+app.get("/ssr", (_req, ctx) => {
+  const html = ctx.renderToString!(<h1>Hello World</h1>);
   return new Response(html, { headers: { "Content-Type": "text/html" } });
 });
 

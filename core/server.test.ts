@@ -259,6 +259,57 @@ Deno.test("Coverage - root next call", async () => {
   s.close();
 });
 
+Deno.test("Coverage - root handler can call ctx.renderToString stub", async () => {
+  _resetForTests();
+  server.get("/render-stub", (_req, ctx) => {
+    // call the renderToString stub exposed on the context
+    return (ctx as unknown as { renderToString?: (c: unknown) => string })
+      .renderToString?.("x") as string;
+  });
+  const s = server.serve({ port: 3134 });
+  const res = await fetch("http://localhost:3134/render-stub");
+  const text = await res.text();
+  // should return the stub HTML
+  if (!text.includes("render middleware not installed")) {
+    throw new Error("stub not called");
+  }
+  s.close();
+});
+
+Deno.test("Coverage - fast-root handler with ctx.renderToString stub", async () => {
+  _resetForTests();
+  // Register root route that expects ctx and calls renderToString
+  server.get("/", (_req, ctx) => {
+    return (ctx as unknown as { renderToString?: (c: unknown) => string })
+      .renderToString?.("x") as string;
+  });
+  const s = server.serve({ port: 3215 });
+  const res = await fetch("http://localhost:3215/");
+  const text = await res.text();
+  if (!text.includes("render middleware not installed")) {
+    throw new Error("fast-root stub not called");
+  }
+  s.close();
+});
+
+Deno.test("Coverage - cached route uses cachedCtx.renderToString stub", async () => {
+  _resetForTests();
+  server.get("/cache-render", (_req, ctx) => {
+    return (ctx as unknown as { renderToString?: (c: unknown) => string })
+      .renderToString?.("x") as string;
+  });
+  const s = server.serve({ port: 3135 });
+  // prime the cache
+  await (await fetch("http://localhost:3135/cache-render")).text();
+  // second request should hit cached branch and still call the stub
+  const res = await fetch("http://localhost:3135/cache-render");
+  const text = await res.text();
+  if (!text.includes("render middleware not installed")) {
+    throw new Error("cached stub not called");
+  }
+  s.close();
+});
+
 Deno.test("Coverage - cache hit with middlewares in runFinal", async () => {
   _resetForTests();
   server.use((_req, _ctx, next) =>

@@ -5,6 +5,7 @@
 [![build](https://github.com/fastrodev/fastro/actions/workflows/build.yml/badge.svg)](https://github.com/fastrodev/fastro/actions/workflows/build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/fastrodev/fastro/badge.svg?branch=main)](https://coveralls.io/github/fastrodev/fastro?branch=main)
 
+
 Fastro is engineered for developers who refuse to compromise. It combines **extreme performance** with an **elegant API**, allowing you to build high-throughput microservices and web applications without the friction of traditional frameworks.
 
 ### Why Fastro?
@@ -20,7 +21,7 @@ Fastro is engineered for developers who refuse to compromise. It combines **extr
 
 Create a high-performance server with zero friction:
 
-```typescript
+```ts
 import Fastro from "https://deno.land/x/fastro/mod.ts";
 
 const app = new Fastro();
@@ -36,31 +37,6 @@ app.use((req, ctx, next) => {
 
 await app.serve({ port: 8000 });
 ```
-
-
-### Rendering with React & esbuild
-
-Fastro makes full-stack development feel native to Deno:
-
-```tsx
-// Simple React SSR with esbuild
-app.get("/", (req, ctx) => {
-  // Use `renderToString` and wrap result in a Response
-  const html = ctx.renderToString!(<MyReactComponent />);
-  return new Response(html, { headers: { "Content-Type": "text/html" } });
-});
-
-```
-
-
-### Performance & Reliability Comparison
-
-| Feature | Fastro | Others |
-| --- | --- | --- |
-| **Throughput** | **~50,000 req/s** | < 45,000 req/s |
-| **Test Coverage** | **100.0%** | ~80% |
-| **Core Dependencies** | **0 (None)** | Multiple |
-| **Rendering** | **React + esbuild** | Custom/Complex |
 
 ## Resources
 

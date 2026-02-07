@@ -6,6 +6,9 @@ import { renderStatic } from "./render_static.ts";
 import "npm:prismjs@1.29.0/components/prism-typescript.js";
 import "npm:prismjs@1.29.0/components/prism-bash.js";
 import "npm:prismjs@1.29.0/components/prism-json.js";
+import "npm:prismjs@1.29.0/components/prism-jsx.js";
+import "npm:prismjs@1.29.0/components/prism-tsx.js";
+import "npm:prismjs@1.29.0/components/prism-javascript.js";
 
 /**
  * Renders markdown content to HTML with support for frontmatter, GFM, and math.

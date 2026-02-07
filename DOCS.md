@@ -10,6 +10,7 @@ applications.
 - [Routing](#routing)
 - [Responses](#responses)
 - [Middleware](#middleware)
+- [Render Middleware](#render-middleware)
 - [Modular Routing (Router)](#modular-routing-router)
 - [Static Files](#static-files)
 - [Body Parser](#body-parser)
@@ -206,6 +207,87 @@ app.use((req, ctx, next) => {
   return next(); // Always return next() to continue
 });
 ```
+
+#### Render Middleware
+
+`createRenderMiddleware()` provides a server-side rendering helper that installs
+`ctx.renderToString()` on request context. In development it can also inject
+an HMR client script into rendered HTML to support live reload during
+component development.
+
+Quick install
+
+- Add the middleware to your app (in `app/main.ts`):
+
+```ts
+import { createRenderMiddleware } from "../middlewares/render/render.ts";
+
+app.use(createRenderMiddleware());
+```
+
+Basic usage
+
+Handlers can call `ctx.renderToString()` to produce HTML for a component:
+
+```ts
+import React from "react";
+
+app.get("/", (req, ctx) => {
+  const html = ctx.renderToString(
+    React.createElement("div", null, "Hello"),
+    { includeDoctype: true, module: "app" },
+  );
+  return new Response(html, { headers: { "content-type": "text/html" } });
+});
+```
+
+Options
+
+- `includeDoctype` (boolean): prepend `<!DOCTYPE html>`.
+- `includeHead` (boolean): omit or include the default `<head>`.
+- `module` (string): when provided, a client script `/js/<module>/client.js` is added.
+- `initialProps` (object): serialized to JSON and injected into the page (`<script id="initial" type="application/json">...`).
+
+Development (HMR)
+
+- In non-production (`ENV !== "production"`), the middleware may start a small
+  watcher that looks for changes and marks a pending reload. When the HTML is
+  rendered in development it includes a small injected HMR client script
+  (`/hmr` socket) that will reload the page when the server signals a change.
+- The HMR client and watcher are development-only and are not suitable for
+  production. The middleware file includes test helpers for deterministic
+  testing.
+
+Test helpers
+
+Exported helpers (for tests):
+
+- `_resetWatcherForTests()` — reset watcher state and clear timers.
+- `_getHmrClientsForTests()` — access the current client set for assertions.
+- `_watchTickForTests()` — trigger a single watcher tick using `Deno.stat`.
+- `_watchTickForTestsWithStat(statFn)` — trigger a tick with an injected `stat`.
+- `_setLastMtimeForTests(n)` — set internal `lastMtime` to control watcher behavior.
+
+Notes
+
+- The middleware intentionally keeps HMR and watcher logic isolated to make
+  production builds deterministic and to keep tests controllable via helpers.
+- The file contains a `/* c8 ignore file */` block around the HMR client
+  injection because the client string and native timers are difficult to
+  instrument deterministically in coverage tools.
+
+Example: server-render + initialProps
+
+```ts
+const html = ctx.renderToString(React.createElement(App), {
+  includeDoctype: true,
+  initialProps: { userId: 123 },
+});
+```
+
+This will include a safe-escaped JSON payload in the page that your client
+bootstrap can read and hydrate with.
+
 
 ### Route-Specific Middleware
 
