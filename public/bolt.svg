@@ -1,0 +1,11 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- dibuat oleh fastrodev -->
+  <path 
+    d="M60 5 L30 55 H48 L40 95 L70 45 H52 L60 5 Z" 
+    fill="currentColor" 
+    stroke="currentColor" 
+    stroke-width="4" 
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+</svg>
