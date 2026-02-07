@@ -21,8 +21,18 @@ export async function logger(req: Request, ctx: Context, next: Next) {
   const timestamp = new Date().toISOString();
   const level = status >= 500 ? "ERROR" : status >= 400 ? "WARN" : "INFO";
 
+  const colorize = (text: string, code: number) =>
+    `\x1b[${code}m${text}\x1b[0m`;
+  const levelColor = level === "ERROR" ? 31 : level === "WARN" ? 33 : 32;
+  const methodColor = method === "GET" ? 36 : method === "POST" ? 35 : 34;
+
   console.log(
-    `[${timestamp}] ${level} ${method} ${path} ${status} ${duration}ms - ${ip}`,
+    `${colorize(`[${timestamp}]`, 90)} ${colorize(level, levelColor)} ${
+      colorize(
+        method,
+        methodColor,
+      )
+    } ${path} ${status} ${duration}ms - ${ip}`,
   );
 
   return res;

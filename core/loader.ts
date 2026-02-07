@@ -47,6 +47,21 @@ export async function autoRegisterModules(
     }
   }
 
+  const toFileUrl = (value: string | URL) => {
+    if (value instanceof URL) return value;
+    if (value.startsWith("file://")) return new URL(value);
+    return new URL(value, `file://${cwd}/`);
+  };
+
+  const ensureTrailingSlash = (url: URL) => {
+    if (url.pathname.endsWith("/")) return url;
+    const base = `${url.protocol}//${url.host}`;
+    return new URL(`${url.pathname}/`, base);
+  };
+
+  const modulesDirUrl = ensureTrailingSlash(toFileUrl(modulesDir));
+  debug(`[Loader] Resolved modules base URL: ${modulesDirUrl.href}`);
+
   const entries: Deno.DirEntry[] = [];
 
   try {
@@ -78,50 +93,55 @@ export async function autoRegisterModules(
   });
 
   for (const entry of entries) {
-    let modPath: string;
-    if (!modulesDirParam) {
-      // For the default case, use a relative path string.
-      // This is often more reliable on Deno Deploy than absolute file:/// URLs.
-      modPath = `../modules/${entry.name}/mod.ts`;
-    } else if (typeof modulesDir === "string") {
-      const maybeDir = modulesDir.endsWith("/") ? modulesDir : modulesDir + "/";
-      const full = maybeDir + entry.name + "/mod.ts";
-      if (full.startsWith("/")) {
-        modPath = new URL("file://" + full).href;
-      } else {
-        modPath = new URL(full, `file://${cwd}/`).href;
+    const canonicalPath = new URL(`${entry.name}/mod.ts`, modulesDirUrl).href;
+    const fallbackPath =
+      new URL(`../modules/${entry.name}/mod.ts`, import.meta.url).href;
+    const candidates = canonicalPath === fallbackPath
+      ? [canonicalPath]
+      : [canonicalPath, fallbackPath];
+
+    let registered = false;
+    for (const candidate of candidates) {
+      debug(`[Loader] Importing module: ${candidate}`);
+      try {
+        const mod = await import(candidate);
+
+        if (mod.default) {
+          app.use(mod.default);
+          console.log(`Registered default export from ${entry.name}/mod.ts`);
+        } else if (mod[entry.name]) {
+          app.use(mod[entry.name]);
+          console.log(
+            `Registered ${entry.name} export from ${entry.name}/mod.ts`,
+          );
+        } else {
+          console.warn(
+            `No valid export found in ${entry.name}/mod.ts to register.`,
+          );
+        }
+
+        registered = true;
+        break;
+      } catch (err) {
+        const error = err as Error & { code?: string };
+        if (
+          error.code === "ERR_MODULE_NOT_FOUND" ||
+          error.message?.includes("Module not found")
+        ) {
+          debug(`[Loader] Module not found: ${candidate}`);
+          continue;
+        }
+
+        console.error(`[Loader] Failed to import ${candidate}:`, err);
+        registered = true;
+        break;
       }
-    } else {
-      modPath = new URL(`${entry.name}/mod.ts`, modulesDir).href;
     }
 
-    debug(`[Loader] Importing module: ${modPath}`);
-    try {
-      const mod = await import(modPath);
-
-      if (mod.default) {
-        app.use(mod.default);
-        console.log(`Registered default export from ${entry.name}/mod.ts`);
-      } else if (mod[entry.name]) {
-        app.use(mod[entry.name]);
-        console.log(
-          `Registered ${entry.name} export from ${entry.name}/mod.ts`,
-        );
-      } else {
-        console.warn(
-          `No valid export found in ${entry.name}/mod.ts to register.`,
-        );
-      }
-    } catch (err) {
-      const e = err as Error & { code?: string };
-      if (
-        e.code === "ERR_MODULE_NOT_FOUND" ||
-        e.message?.includes("Module not found")
-      ) {
-        debug(`[Loader] Module not found: ${modPath}`);
-        continue;
-      }
-      console.error(`[Loader] Failed to import ${modPath}:`, err);
+    if (!registered) {
+      debug(`
+        [Loader] Skipping registration for ${entry.name}; no path matched
+      `.trim());
     }
   }
 }
