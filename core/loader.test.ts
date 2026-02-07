@@ -431,6 +431,73 @@ Deno.test("autoRegisterModules - default modulesDir param uses real path safely 
   }
 });
 
+Deno.test("autoRegisterModules accepts string path param (absolute)", async () => {
+  // Create a fresh temp directory to avoid interference with other tests
+  const tmp = await Deno.makeTempDir({ prefix: "auto_register_abs_" });
+  const dirName = "mod_abs";
+  const modDir = `${tmp}/${dirName}`;
+  await Deno.mkdir(modDir, { recursive: true });
+  await Deno.writeTextFile(
+    `${modDir}/mod.ts`,
+    `export default function mw() {}`,
+  );
+
+  const used: unknown[] = [];
+  const app: App = {
+    use(mw: unknown) {
+      used.push(mw);
+    },
+  };
+
+  const logStub = stub(console, "log", () => {});
+
+  try {
+    // pass absolute filesystem path as string
+    await autoRegisterModules(app, tmp);
+
+    assertEquals(used.length, 1);
+    assertSpyCalls(logStub, 1);
+  } finally {
+    logStub.restore();
+  }
+});
+
+Deno.test("autoRegisterModules accepts string path param (relative)", async () => {
+  // Create a modules directory relative to the current working directory
+  // (this matches how the loader resolves relative string paths).
+  const relPath = "../modules_test_tmp_rel/";
+  try {
+    await Deno.mkdir(relPath, { recursive: true });
+  } catch {
+    // ignore
+  }
+
+  const dirName = "mod_rel";
+  const modDirPath = `${relPath}${dirName}`;
+  await Deno.mkdir(modDirPath, { recursive: true });
+  const modPath = `${modDirPath}/mod.ts`;
+  await Deno.writeTextFile(modPath, `export default function mw() {}`);
+
+  const used: unknown[] = [];
+  const app: App = {
+    use(mw: unknown) {
+      used.push(mw);
+    },
+  };
+
+  const logStub = stub(console, "log", () => {});
+
+  try {
+    // pass relative path string (resolved against the current working directory in loader)
+    await autoRegisterModules(app, "../modules_test_tmp_rel/");
+
+    assertEquals(used.length, 1);
+    assertSpyCalls(logStub, 1);
+  } finally {
+    logStub.restore();
+  }
+});
+
 Deno.test("autoRegisterModules - default modulesDir param uses real path safely (no dirs)", async () => {
   // Stub readDir to return no directories so import is not attempted
   const originalReadDir = Deno.readDir;

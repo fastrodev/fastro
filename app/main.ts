@@ -14,18 +14,8 @@ app.use(staticFiles("/js", "./public/js"));
 // Keep legacy static mapping for assets under /static
 app.use(staticFiles("/static", "./public"));
 
-// Auto-register modules. On Deno Deploy classic the working directory is `/src`,
-// so pass an explicit modules directory URL in that environment.
-if (Deno.env.get("DENO_DEPLOYMENT_ID")) {
-  await autoRegisterModules(app, new URL("file:///src/modules/"));
-} else {
-  await autoRegisterModules(app);
-}
-
-// SHOW CURRENT DIRECTORY FOR DEBUGGING PURPOSES
-console.log("Current working directory:", Deno.cwd());
-
-// await autoRegisterModules(app);
+// Auto-register modules.
+await autoRegisterModules(app);
 
 // If running on Deno Deploy (classic), avoid binding to an explicit TCP port.
 // Deno Deploy expects the process to use the platform's HTTP handler. Detect
