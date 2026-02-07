@@ -23,8 +23,9 @@ import type { Middleware } from "./types.ts";
  */
 export async function autoRegisterModules(
   app: { use: (middleware: Middleware) => void },
+  modulesDirParam?: URL,
 ) {
-  const modulesDir = new URL("../modules/", import.meta.url);
+  const modulesDir = modulesDirParam ?? new URL("../modules/", import.meta.url);
   const entries: Deno.DirEntry[] = [];
 
   for await (const entry of Deno.readDir(modulesDir)) {

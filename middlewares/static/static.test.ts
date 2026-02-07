@@ -438,3 +438,112 @@ Deno.test("staticFiles - file without extension", async () => {
     await Deno.remove(tempDir, { recursive: true });
   }
 });
+
+Deno.test("staticFiles - content types mapping and case insensitivity", async () => {
+  const tempDir = await Deno.makeTempDir();
+  await Deno.writeTextFile(`${tempDir}/app.js`, "console.log(1);");
+  await Deno.writeTextFile(`${tempDir}/style.CSS`, "body{};");
+  await Deno.writeTextFile(`${tempDir}/img.PNG`, "pngdata");
+  try {
+    const middleware = staticFiles("/", tempDir);
+
+    const respJs = await middleware(
+      new Request("http://localhost/app.js"),
+      {} as Context,
+      () => Promise.resolve(new Response("next")),
+    );
+    assertEquals(respJs.headers.get("Content-Type"), "application/javascript");
+
+    const respCss = await middleware(
+      new Request("http://localhost/style.CSS"),
+      {} as Context,
+      () => Promise.resolve(new Response("next")),
+    );
+    assertEquals(respCss.headers.get("Content-Type"), "text/css");
+
+    const respPng = await middleware(
+      new Request("http://localhost/img.PNG"),
+      {} as Context,
+      () => Promise.resolve(new Response("next")),
+    );
+    assertEquals(respPng.headers.get("Content-Type"), "image/png");
+  } finally {
+    await Deno.remove(tempDir, { recursive: true });
+  }
+});
+
+Deno.test("staticFiles - non-production cache-control header", async () => {
+  const tempDir = await Deno.makeTempDir();
+  const filePath = `${tempDir}/nocache.txt`;
+  await Deno.writeTextFile(filePath, "v1");
+  try {
+    // Ensure ENV is not set to production
+    const originalEnv = Deno.env.get("ENV");
+    if (originalEnv) Deno.env.delete("ENV");
+
+    const middleware = staticFiles("/", tempDir);
+    const resp = await middleware(
+      new Request("http://localhost/nocache.txt"),
+      {} as Context,
+      () => Promise.resolve(new Response("next")),
+    );
+    assertEquals(
+      resp.headers.get("Cache-Control"),
+      "no-cache, no-store, must-revalidate",
+    );
+
+    if (originalEnv) Deno.env.set("ENV", originalEnv);
+  } finally {
+    await Deno.remove(tempDir, { recursive: true });
+  }
+});
+
+Deno.test("staticFiles - many mime types", async () => {
+  const tempDir = await Deno.makeTempDir();
+  const files: Array<[string, string]> = [
+    ["data.json", "{}"],
+    ["vec.svg", "<svg></svg>"],
+    ["icon.ico", "ico"],
+    ["font.woff", "f"],
+    ["font2.woff2", "f2"],
+    ["font3.ttf", "t"],
+    ["font4.eot", "e"],
+    ["anim.gif", "g"],
+    ["photo.jpg", "j"],
+    ["photo2.jpeg", "j2"],
+  ];
+
+  try {
+    for (const [name, content] of files) {
+      await Deno.writeTextFile(`${tempDir}/${name}`, content);
+    }
+
+    const middleware = staticFiles("/", tempDir);
+
+    const expectMap: Record<string, string> = {
+      ".json": "application/json",
+      ".svg": "image/svg+xml",
+      ".ico": "image/x-icon",
+      ".woff": "font/woff",
+      ".woff2": "font/woff2",
+      ".ttf": "font/ttf",
+      ".eot": "application/vnd.ms-fontobject",
+      ".gif": "image/gif",
+      ".jpg": "image/jpeg",
+      ".jpeg": "image/jpeg",
+    };
+
+    for (const [name] of files) {
+      const resp = await middleware(
+        new Request(`http://localhost/${name}`),
+        {} as Context,
+        () => Promise.resolve(new Response("next")),
+      );
+      const dot = name.lastIndexOf(".");
+      const ext = dot >= 0 ? name.substring(dot) : "";
+      assertEquals(resp.headers.get("Content-Type"), expectMap[ext]);
+    }
+  } finally {
+    await Deno.remove(tempDir, { recursive: true });
+  }
+});

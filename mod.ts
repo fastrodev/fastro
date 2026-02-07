@@ -18,6 +18,12 @@ export default class Fastro {
   put = server.put;
   /** Registers a DELETE route. */
   delete = server.delete;
+  /** Registers a PATCH route. */
+  patch = server.patch;
+  /** Registers a HEAD route. */
+  head = server.head;
+  /** Registers an OPTIONS route. */
+  options = server.options;
   /** Registers a global middleware. */
   use = server.use;
   /** Starts the HTTP server. */

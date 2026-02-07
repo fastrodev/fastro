@@ -30,7 +30,8 @@ async function build(modulePath?: string, spa?: boolean) {
       format: "esm",
       bundle: true,
       sourcemap: true,
-      minify: true,
+      // Only minify in production to make dev builds readable (non-minified)
+      minify: Deno.env.get("ENV") === "production",
 
       // Target & Platform
       platform: "browser",
@@ -44,7 +45,9 @@ async function build(modulePath?: string, spa?: boolean) {
         ".svg": "dataurl",
       },
       jsx: "automatic",
-      jsxFactory: "React.createElement",
+      // Use the automatic JSX runtime (recommended for React 17+).
+      // Do not set `jsxFactory` when using the automatic runtime — it can
+      // produce incorrect element factories and runtime errors in production.
       jsxFragment: "React.Fragment",
     });
     return esbuildRes;

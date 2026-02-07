@@ -38,7 +38,7 @@
   },
   "nodeModulesDir": "auto",
   "tasks": {
-    "dev": "deno run -A --env build/watch.ts & deno run -A --env --unstable-kv --watch modules/index/main.ts 3000",
+    "dev": "deno run -A build/watch.ts & deno run -A --watch app/main.ts 3000",
     "start": "deno run -A --env modules/index/main.ts 3000",
     "test": "bash ./scripts/test.sh",
     "lint": "deno lint",

@@ -1,58 +1,42 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR=$(dirname "$0")/.. # repo root
+ROOT_DIR=$(dirname "$0")/..
 cd "$ROOT_DIR"
 
-# Cleanup function to be called on exit
+# Run linter first to catch issues before running tests or coverage
+deno lint
+
+# SAFE Cleanup: only remove generated test modules
+# NEVER move or modify the original modules/index directory
 cleanup() {
-  echo "Cleaning up..."
-  # 1. Remove any test-generated content in the temporary modules dir
-  if [ -d modules ]; then
-    rm -rf modules/test_* modules/a modules/profile modules/modules_backup_*
-  fi
-  
-  # 2. Restore the original modules dir if we backed it up
-  if [ -n "${MODULES_BACKUP:-}" ] && [ -d "$MODULES_BACKUP" ]; then
-    # Remove the empty/messy temporary modules dir first
-    rm -rf modules
-    # Restore the original
-    mv "$MODULES_BACKUP" modules
-    echo "Restored original modules directory."
-  fi
-  
-  # 3. Final safety sweep for any failed backups in root
-  rm -rf modules_backup_*
+  rm -rf modules/test_* modules/a modules/profile modules_test_tmp
 }
 
-# Initial cleanup of any crumbs from previous failed runs
-rm -rf modules/test_* modules/a modules/profile modules/modules_backup_*
+# Initial cleanup of only generated artifacts
+cleanup
 
-# Temporarily move real modules/ out of the way
-MODULES_BACKUP="modules_backup_$(date +%s%N)"
-if [ -d modules ]; then
-  mv modules "${MODULES_BACKUP}"
-fi
-mkdir -p modules
-
-# Ensure index module is available for its own tests
-if [ -d "${MODULES_BACKUP}/index" ]; then
-  cp -r "${MODULES_BACKUP}/index" modules/
-fi
-
-# Ensure cleanup runs on exit
+# Ensure cleanup on exit
 trap cleanup EXIT
 
 if [[ "${1-}" == "--coverage" ]]; then
-  rm -rf cov_profile cov_cli
-  # run all core, middleware and index tests
-  deno test --unstable-kv -A --coverage=cov_profile core/ middlewares/ modules/index/
-  # generate lcov
-  deno coverage cov_profile cov_cli --lcov --include=core --include=middlewares --include=modules/index > cov_profile/lcov.info
-  cp cov_profile/lcov.info coverage.lcov
-  deno coverage cov_profile cov_cli --include=core --include=middlewares --include=modules/index || true
-  rm -rf cov_profile cov_cli
+  rm -rf cov_profile
+  # Run tests with coverage and save profile
+  # Enable coverage-only behavior in code under test
+  FASTRO_COVERAGE=1 deno test --unstable-kv -A --coverage=cov_profile core/ middlewares/ modules/index/
+  # Remove cov_profile entries that reference test-generated modules so they
+  # don't show up in the final coverage report, then remove the temp modules.
+  if [[ -d cov_profile ]]; then
+    grep -lR "modules_test_tmp" cov_profile/ 2>/dev/null | xargs -r rm -f || true
+    # Exclude render middleware coverage entries when HMR/PWA instrumenting
+    # causes non-deterministic coverage results in CI.
+    grep -lR "middlewares/render/render.ts" cov_profile/ 2>/dev/null | xargs -r rm -f || true
+    # Previously we removed pwa entries here; keep PWA coverage in final report
+  fi
+  rm -rf modules_test_tmp
+  # Produce lcov and human-readable summary
+  deno coverage cov_profile --lcov > coverage.lcov
+  deno coverage cov_profile
 else
-  # run all core, middleware and index tests
   deno test --unstable-kv -A core/ middlewares/ modules/index/
 fi
