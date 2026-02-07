@@ -22,8 +22,8 @@ await autoRegisterModules(app);
 // specifying a port. Locally, keep the old behavior and allow passing a port
 // as the first CLI argument (default 8000).
 if (Deno.env.get("DENO_DEPLOYMENT_ID")) {
-	// Let the runtime handle incoming requests (no explicit port binding).
-	app.serve({});
+  // Let the runtime handle incoming requests (no explicit port binding).
+  app.serve({});
 } else {
-	app.serve({ port: Deno.args[0] ? parseInt(Deno.args[0]) : 8000 });
+  app.serve({ port: Deno.args[0] ? parseInt(Deno.args[0]) : 8000 });
 }
