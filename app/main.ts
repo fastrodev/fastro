@@ -16,6 +16,9 @@ app.use(staticFiles("/js", "./public/js"));
 app.use(staticFiles("/static", "./public"));
 app.use(index);
 
+// SHOW CURRENT DIRECTORY FOR DEBUGGING PURPOSES
+console.log("Current working directory:", Deno.cwd());
+
 // await autoRegisterModules(app);
 
 // If running on Deno Deploy (classic), avoid binding to an explicit TCP port.
