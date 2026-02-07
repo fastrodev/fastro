@@ -47,6 +47,6 @@
     "cov": "bash ./scripts/test.sh --coverage",
     "bench": "./run_bench.sh",
     "gen-manifest": "deno run -A scripts/generate_manifest.ts",
-    "build": "echo 'Building...'"
+    "build": "echo 'Build is performed in CI (use CI to generate client bundles)'"
   }
 }
