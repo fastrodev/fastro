@@ -1,7 +1,8 @@
-import App, { autoRegisterModules } from "../mod.ts";
+import App from "../mod.ts";
 import { logger } from "../middlewares/logger/mod.ts";
 import { staticFiles } from "../middlewares/static/static.ts";
 import { createRenderMiddleware } from "../middlewares/render/mod.ts";
+import index from "../modules/index/mod.ts";
 
 const app = new App();
 
@@ -13,8 +14,9 @@ app.use(staticFiles("/js", "./public/js"));
 
 // Keep legacy static mapping for assets under /static
 app.use(staticFiles("/static", "./public"));
+app.use(index);
 
-await autoRegisterModules(app);
+// await autoRegisterModules(app);
 
 // If running on Deno Deploy (classic), avoid binding to an explicit TCP port.
 // Deno Deploy expects the process to use the platform's HTTP handler. Detect
