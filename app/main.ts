@@ -16,4 +16,14 @@ app.use(staticFiles("/static", "./public"));
 
 await autoRegisterModules(app);
 
-app.serve({ port: Deno.args[0] ? parseInt(Deno.args[0]) : 8000 });
+// If running on Deno Deploy (classic), avoid binding to an explicit TCP port.
+// Deno Deploy expects the process to use the platform's HTTP handler. Detect
+// deployment via the `DENO_DEPLOYMENT_ID` env var and call `serve` without
+// specifying a port. Locally, keep the old behavior and allow passing a port
+// as the first CLI argument (default 8000).
+if (Deno.env.get("DENO_DEPLOYMENT_ID")) {
+	// Let the runtime handle incoming requests (no explicit port binding).
+	app.serve({});
+} else {
+	app.serve({ port: Deno.args[0] ? parseInt(Deno.args[0]) : 8000 });
+}
