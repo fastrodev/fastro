@@ -61,6 +61,12 @@ export async function autoRegisterModules(
         ? manifestPathParam.href
         : String(manifestPathParam);
 
+      // Resolve relative paths to absolute URLs for Deno Deploy compatibility
+      if (!specifier.startsWith("file://") && !specifier.startsWith("https://")) {
+        specifier = import.meta.resolve(specifier);
+        console.log("[Loader] Resolved specifier to:", specifier);
+      }
+
       console.info(`[Loader] Importing manifest from: ${specifier}`);
 
       console.log("[Loader] About to import specifier:", specifier);
