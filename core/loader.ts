@@ -14,10 +14,23 @@ export type App = { use: (middleware: Middleware) => void };
  * @returns The sorted array (same instance)
  */
 export function sortComparator(a: string, b: string) {
-  const weight = (s: string) => s === "index" ? -1 : s === "profile" ? 1 : 0;
+  function weight(s: string) {
+    if (s === "index") {
+      return -1;
+    }
+    if (s === "profile") {
+      return 1;
+    }
+    return 0;
+  }
+
   const wa = weight(a);
   const wb = weight(b);
-  if (wa !== wb) return wa - wb;
+
+  if (wa !== wb) {
+    return wa - wb;
+  }
+
   return a.localeCompare(b);
 }
 
