@@ -38,7 +38,7 @@ run_bench() {
     if [ -z "$METHOD" ]; then METHOD="GET"; fi
 
     echo "  ↳ Measuring $SCENARIO..."
-    ENDPOINT=$TARGET METHOD=$METHOD ./k6 run --no-color k6_bench.js > k6_output.txt 2>&1
+    ENDPOINT=$TARGET METHOD=$METHOD ./k6 run --no-color scripts/k6_bench.js > k6_output.txt 2>&1
     
     # Extract metrics
     RPS_RAW=$(grep "http_reqs" k6_output.txt | awk '{print $3}' | sed 's/\/s//')
@@ -103,7 +103,7 @@ echo "To run this benchmark locally, ensure you have:" >> $MD_FILE
 echo "1. [Deno](https://deno.land/) installed." >> $MD_FILE
 echo "2. [k6](https://k6.io/) binary placed in the root directory as \`./k6\`." >> $MD_FILE
 echo "3. Port $PORT available." >> $MD_FILE
-echo "4. Execute the script: \`bash run_bench.sh\`." >> $MD_FILE
+echo "4. Execute the script: \`bash scripts/run_bench.sh\`." >> $MD_FILE
 
 echo "" >> $MD_FILE
 echo "## Methodology" >> $MD_FILE
@@ -112,4 +112,3 @@ echo "" >> $MD_FILE
 echo "For a deeper analysis, see [blog/benchmark](blog/benchmark)." >> $MD_FILE
 echo "" >> $MD_FILE
 echo "✅ Benchmark complete! Results saved to $MD_FILE"
-

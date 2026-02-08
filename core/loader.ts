@@ -1,10 +1,14 @@
-/* c8 ignore file */
 import { join } from "@std/path";
 import type { Middleware } from "./types.ts";
 
 export async function autoRegisterModules(
   app: { use: (middleware: Middleware) => void },
   modulesDirParam?: string,
+  // When true, skip attempting to import the static `manifest.ts` and
+  // force the non-production fallback. This is intended for tests that
+  // need to exercise the fallback path without interfering with the
+  // module cache. Default: false.
+  skipStaticManifest = false,
 ) {
   const isDeploy = Deno.env.get("DENO_DEPLOYMENT_ID") !== undefined;
   const isDebug = Deno.env.get("FASTRO_LOG_LOADER") === "true";
@@ -47,65 +51,47 @@ export async function autoRegisterModules(
     return false;
   };
 
-  // // Helper: register middleware from a dynamically-imported module object
-  // const registerFromModule = (
-  //   entryName: string,
-  //   mod: Record<string, unknown>,
-  // ) => {
-  //   if (mod.default && typeof mod.default === "function") {
-  //     app.use(mod.default as unknown as Middleware);
-  //     console.log(`✅ Registered default export from ${entryName}`);
-  //     return true;
-  //   }
+  const isProd = isDeploy || Deno.env.get("FASTRO_ENV") === "production";
 
-  //   if (mod[entryName] && typeof mod[entryName] === "function") {
-  //     app.use(mod[entryName] as unknown as Middleware);
-  //     console.log(`✅ Registered named export: ${entryName}`);
-  //     return true;
-  //   }
-
-  //   console.warn(`No valid export found in ${entryName}/mod.ts to register.`);
-  //   return false;
-  // };
-
-  // If running in Deno Deploy Classic, prefer a statically-generated manifest
-  // so the deploy bundler (eszip) includes modules. The manifest is generated
-  // at build time by `scripts/generate_manifest.ts` and exported from
-  // `modules/manifest.ts`.
-  if (isDeploy) {
-    try {
-      const manifest = await import("../modules/manifest.ts");
-      const names = sortNames(Object.keys(manifest));
-      for (const name of names) {
-        const ns = (manifest as Record<string, unknown>)[name] as
-          | Record<string, unknown>
-          | undefined;
-        if (!ns) {
-          console.warn(`[Loader] manifest export ${name} is empty or invalid`);
-          continue;
-        }
-        registerFromNamespace(name, ns);
+  // Try to load a static manifest first (this is required in production).
+  try {
+    if (skipStaticManifest) throw new Error("skipStaticManifest");
+    const manifest = await import("../manifest.ts");
+    const names = sortNames(Object.keys(manifest));
+    for (const name of names) {
+      const ns = (manifest as Record<string, unknown>)[name] as
+        | Record<string, unknown>
+        | undefined;
+      if (!ns) {
+        console.warn(`[Loader] manifest export ${name} is empty or invalid`);
+        continue;
       }
-
-      // Manifest-based registration done — skip runtime dynamic imports which
-      // are not reliably supported on Deploy Classic.
-      return;
-    } catch (err) {
-      const e = err instanceof Error ? err : new Error(String(err));
-      debug(
-        `[Loader] No manifest found or failed to import manifest: ${e.message}`,
-      );
-      // fallthrough to filesystem-based dynamic loading (useful for local dev/tests)
+      registerFromNamespace(name, ns);
     }
+    return;
+  } catch (err) {
+    const e = err instanceof Error ? err : new Error(String(err));
+    debug(
+      `[Loader] No manifest found or failed to import manifest: ${e.message}`,
+    );
+    if (isProd) {
+      console.error(
+        "[Loader] Manifest missing in production. Please generate manifest.ts at repository root during build.",
+      );
+      throw e;
+    }
+    // Non-prod: fallthrough to in-memory generation
   }
 
-  // Gunakan path fisik untuk Deno.readDir
+  // Non-production fallback: build manifest in-memory (no writes).
+  debug("[Loader] Building manifest in-memory (non-production)");
+
   const modulesPath = modulesDirParam || join(cwd, "modules");
 
-  const entries: Deno.DirEntry[] = [];
+  const names: string[] = [];
   try {
     for await (const entry of Deno.readDir(modulesPath)) {
-      if (entry.isDirectory) entries.push(entry);
+      if (entry.isDirectory) names.push(entry.name);
     }
   } catch (err) {
     const e = err instanceof Error ? err : new Error(String(err));
@@ -113,38 +99,20 @@ export async function autoRegisterModules(
     return;
   }
 
-  // Sorting logic
-  entries.sort((a, b) => {
-    if (a.name === "index") return -1;
-    if (b.name === "index") return 1;
-    return a.name.localeCompare(b.name);
-  });
+  const sorted = sortNames(names);
+  debug(`[Loader] Found modules: ${sorted.join(", ")}`);
 
-  debug(`[Loader] Found modules: ${entries.map((e) => e.name).join(", ")}`);
-
-  for (const entry of entries) {
-    // KUNCI: Gunakan URL relatif terhadap file ini (loader.ts)
-    // Jika loader.ts ada di /src/core/, maka ../modules/ tepat sasaran
+  for (const name of sorted) {
     const moduleUrl =
-      new URL(`../modules/${entry.name}/mod.ts`, import.meta.url).href;
-
+      new URL(`../modules/${name}/mod.ts`, import.meta.url).href;
     debug(`[Loader] Importing module: ${moduleUrl}`);
-
     try {
       const mod = await import(moduleUrl);
-
-      if (mod.default) {
-        app.use(mod.default);
-        console.log(`✅ Registered default export from ${entry.name}`);
-      } else if (mod[entry.name]) {
-        app.use(mod[entry.name]);
-        console.log(`✅ Registered named export: ${entry.name}`);
-      }
+      registerFromNamespace(name, mod as Record<string, unknown>);
     } catch (err) {
       const e = err instanceof Error ? err : new Error(String(err));
-      // Jika masih 'Module not found', berarti file tidak masuk ke bundle Deploy
       console.error(
-        `❌ [Loader] Failed to import ${entry.name} at ${moduleUrl}:`,
+        `❌ [Loader] Failed to import ${name} at ${moduleUrl}:`,
         e.message,
       );
     }

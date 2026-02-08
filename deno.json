@@ -40,13 +40,13 @@
   },
   "nodeModulesDir": "auto",
   "tasks": {
-    "dev": "deno run -A build/watch.ts & deno run -A --watch app/main.ts 3000",
+    "dev": "FASTRO_ENV=development deno run -A scripts/generate_manifest.ts && FASTRO_ENV=development deno run -A build/watch.ts & FASTRO_ENV=development deno run -A --watch app/main.ts 3000",
     "start": "deno run -A --env modules/index/main.ts 3000",
     "test": "bash ./scripts/test.sh",
     "lint": "deno lint",
     "cov": "bash ./scripts/test.sh --coverage",
-    "bench": "./run_bench.sh",
+    "bench": "bash ./scripts/run_bench.sh",
     "gen-manifest": "deno run -A scripts/generate_manifest.ts",
-    "build": "echo 'Build is performed in CI (use CI to generate client bundles)'"
+    "build": "FASTRO_ENV=production deno run -A scripts/generate_manifest.ts && echo 'Build is performed in CI (manifest generated) - use CI to generate client bundles'"
   }
 }

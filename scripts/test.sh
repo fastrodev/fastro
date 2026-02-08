@@ -23,19 +23,23 @@ if [[ "${1-}" == "--coverage" ]]; then
   rm -rf cov_profile
   # Run tests with coverage and save profile
   # Enable coverage-only behavior in code under test
-  FASTRO_COVERAGE=1 deno test --unstable-kv -A --coverage=cov_profile core/ middlewares/ modules/index/
+  # Run coverage for core and middlewares only. Modules should be tested
+  # but excluded from coverage (they will be run separately below).
+  FASTRO_COVERAGE=1 deno test --unstable-kv -A --coverage=cov_profile core/ middlewares/
+  # Run module tests without collecting coverage so their transpiled sources
+  # don't end up in the coverage profile.
+  deno test --unstable-kv -A modules/
   # Remove cov_profile entries that reference test-generated modules so they
   # don't show up in the final coverage report, then remove the temp modules.
   if [[ -d cov_profile ]]; then
     grep -lR "modules_test_tmp" cov_profile/ 2>/dev/null | xargs -r rm -f || true
     # Exclude render middleware coverage entries when HMR/PWA instrumenting
     # causes non-deterministic coverage results in CI.
-    grep -lR "middlewares/render/render.ts" cov_profile/ 2>/dev/null | xargs -r rm -f || true
-    # Exclude temporary auto-register coverage entries created in /tmp
     grep -lR "auto_register_abs" cov_profile/ 2>/dev/null | xargs -r rm -f || true
-    # Exclude loader coverage if it's non-deterministic or environment-specific
-    grep -lR "core/loader.ts" cov_profile/ 2>/dev/null | xargs -r rm -f || true
-    # Previously we removed pwa entries here; keep PWA coverage in final report
+    # Exclude any modules/ entries from coverage (modules are tested separately)
+    grep -lR "/modules/" cov_profile/ 2>/dev/null | xargs -r rm -f || true
+    # Exclude any temporary child scripts created during tests (tmp/)
+    grep -lR "tmp/" cov_profile/ 2>/dev/null | xargs -r rm -f || true
   fi
   rm -rf modules_test_tmp
   # Produce lcov and human-readable summary
