@@ -15,7 +15,7 @@ app.use(staticFiles("/js", "./public/js"));
 app.use(staticFiles("/static", "./public"));
 
 // Auto-register modules.
-await autoRegisterModules(app);
+autoRegisterModules(app);
 
 // If running on Deno Deploy (classic), avoid binding to an explicit TCP port.
 // Deno Deploy expects the process to use the platform's HTTP handler. Detect
