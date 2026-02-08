@@ -17,6 +17,7 @@ These projects demonstrate the power and speed of Fastro.
 | **Fastro Docs** | The official documentation site you are currently browsing.                 | [View Source](https://github.com/fastrodev/fastro/tree/main/modules/index) |
 | **Fastro Blog** | A modern, markdown-based blog engine with $\LaTeX$ and syntax highlighting. | [View Blog](/blog)                                                       |
 | **Simple API**  | A minimalist REST API example showing raw Deno performance.                 | [Example](/CONTRIBUTING.md)                                              |
+| **Fastro SSR**  | A server-side rendering example using React/TSX and Fastro's SSR module.   | [View SSR](/ssr)  |
 
 
 ## Community Projects
