@@ -12,9 +12,9 @@ export const sortNames = (names: string[]) => {
 
 export async function autoRegisterModules(
   app: { use: (middleware: Middleware) => void },
-  // Gunakan default value yang berbasis relative path untuk menghindari masalah dengan file:// URL di Deno Deploy
+  // Gunakan default value yang berbasis absolute path untuk Deno Deploy
   manifestPathParam: string | URL | Record<string, unknown> =
-    "../manifest.ts",
+    "file://" + Deno.cwd() + "/manifest.ts",
 ) {
   console.log("[Loader] autoRegisterModules called with param:", manifestPathParam);
 
