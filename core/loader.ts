@@ -1,6 +1,9 @@
 import type { Middleware } from "./types.ts";
 import * as manifest from "../manifest.ts";
 
+// Lightweight alias for the app shape expected by the loader.
+export type App = { use: (middleware: Middleware) => void };
+
 /**
  * Sort module names for deterministic registration order.
  * - `index` is sorted first
@@ -10,14 +13,17 @@ import * as manifest from "../manifest.ts";
  * @param names - Array of module names to sort
  * @returns The sorted array (same instance)
  */
-export const sortNames = (names: string[]) =>
-  names.sort((a, b) => {
-    if (a === "index") return -1;
-    if (b === "index") return 1;
-    if (a === "profile") return 1;
-    if (b === "profile") return -1;
-    return a.localeCompare(b);
-  });
+export function sortComparator(a: string, b: string) {
+  if (a === "index") return -1;
+  if (b === "index") return 1;
+  if (a === "profile") return 1;
+  if (b === "profile") return -1;
+  return a.localeCompare(b);
+}
+
+export function sortNames(names: string[]) {
+  return names.sort(sortComparator);
+}
 
 /**
  * Auto-register modules declared in `manifest.ts` on the provided app.
@@ -27,36 +33,68 @@ export const sortNames = (names: string[]) =>
  *
  * @param app - The application object exposing a `use(middleware)` method
  */
-export function autoRegisterModules(app: { use: (middleware: Middleware) => void }) {
-  const registerFromNamespace = (name: string, ns: Record<string, unknown>) => {
-    const def = ns.default as unknown;
-    if (typeof def === "function") {
-      app.use(def as unknown as Middleware);
-      console.info(`✅ Registered default export from ${name}/mod.ts`);
-      return true;
-    }
-
-    const named = ns[name];
-    if (typeof named === "function") {
-      app.use(named as unknown as Middleware);
-      console.info(`✅ Registered ${name} export from ${name}/mod.ts`);
-      return true;
-    }
-    return false;
-  };
-
+export function autoRegisterModules(app: App) {
+  // Reuse the core registration logic via the injectable helper so tests
+  // can provide a synthetic manifest object and exercise all branches.
   try {
-    const names = sortNames(Object.keys(manifest));
-    for (const name of names) {
-      const ns = (manifest as Record<string, unknown>)[name];
-      if (ns && typeof ns === "object") {
-        registerFromNamespace(name, ns as Record<string, unknown>);
-      }
-    }
+    autoRegisterModulesFrom(manifest as unknown as Record<string, unknown>, app);
   } catch (err) {
     console.error(
       "❌ [Loader] Failed reading manifest:",
       (err as Error).message,
     );
   }
+}
+
+/**
+ * Auto-register modules from an explicit manifest object.
+ *
+ * This helper contains the real registration logic and is exported so tests
+ * can pass a synthetic manifest to exercise all internal branches.
+ */
+export function autoRegisterModulesFrom(
+  manifestObj: Record<string, unknown>,
+  app: App,
+) {
+  const names = sortNames(Object.keys(manifestObj));
+  for (const name of names) {
+    const ns = manifestObj[name];
+    if (isNamespaceObject(ns)) {
+      registerFromNamespace(name, ns as Record<string, unknown>, app);
+    }
+  }
+}
+
+/**
+ * Exported helper to register a single namespace. Exported for testing.
+ */
+export function registerFromNamespace(
+  name: string,
+  ns: Record<string, unknown>,
+  app: App,
+) {
+  const candidate = getRegistrationCandidate(name, ns);
+  if (!candidate) return false;
+  app.use(candidate as unknown as Middleware);
+  if (candidate === ns.default) {
+    console.info(`✅ Registered default export from ${name}/mod.ts`);
+  } else {
+    console.info(`✅ Registered ${name} export from ${name}/mod.ts`);
+  }
+  return true;
+}
+
+export function isNamespaceObject(v: unknown): v is Record<string, unknown> {
+  return !!v && typeof v === "object";
+}
+
+export function getRegistrationCandidate(
+  name: string,
+  ns: Record<string, unknown>,
+) {
+  const def = ns.default as unknown;
+  if (typeof def === "function") return def;
+  const named = ns[name];
+  if (typeof named === "function") return named;
+  return null;
 }
