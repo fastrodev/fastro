@@ -13,7 +13,7 @@ export const sortNames = (names: string[]) => {
 export async function autoRegisterModules(
   app: { use: (middleware: Middleware) => void },
   // Gunakan default value yang berbasis URL absolut
-  manifestPathParam: string | URL =
+  manifestPathParam: string | URL | Record<string, unknown> =
     new URL("../manifest.ts", import.meta.url).href,
 ) {
   const registerFromNamespace = (name: string, ns: Record<string, unknown>) => {
@@ -36,24 +36,63 @@ export async function autoRegisterModules(
   };
 
   try {
-    // Pastikan path dikonversi ke string URL yang valid
-    const specifier = manifestPathParam instanceof URL
-      ? manifestPathParam.href
-      : manifestPathParam;
+    console.log("[Loader] autoRegisterModules start", {
+      manifestParamType: typeof manifestPathParam,
+    });
 
-    console.log(`[Loader] Importing manifest from: ${specifier}`);
+    // manifestPathParam may be: a manifest object, a URL, or a string specifier
+    let manifest: Record<string, unknown> | undefined;
+    let specifier: string | undefined;
 
-    const manifest = await import(specifier);
+    if (manifestPathParam && typeof manifestPathParam === "object" &&
+      !(manifestPathParam instanceof URL)) {
+      manifest = manifestPathParam as Record<string, unknown>;
+      console.info(`[Loader] Using provided manifest object; keys=` +
+        Object.keys(manifest).join(", "));
+    } else {
+      specifier = manifestPathParam instanceof URL
+        ? manifestPathParam.href
+        : String(manifestPathParam);
+
+      console.info(`[Loader] Importing manifest from: ${specifier}`);
+
+      try {
+        const imported = await import(specifier);
+        manifest = imported as Record<string, unknown>;
+        console.info(`[Loader] Imported manifest keys=` +
+          Object.keys(manifest).join(", "));
+      } catch (impErr) {
+        console.error(`❌ [Loader] Failed to import manifest from ${specifier}`,
+          impErr);
+        throw impErr;
+      }
+    }
+
+    if (!manifest) {
+      console.warn("[Loader] No manifest available after import/resolve");
+      return;
+    }
+
     const names = sortNames(Object.keys(manifest));
+    console.info(`[Loader] Sorted manifest names=` + names.join(", "));
 
     for (const name of names) {
-      const ns = (manifest as Record<string, unknown>)[name] as
-        | Record<string, unknown>
-        | undefined;
-      if (ns) registerFromNamespace(name, ns);
+      const ns = manifest[name] as Record<string, unknown> | undefined;
+      console.debug(`[Loader] Processing namespace ${name}; present=${!!ns}`);
+      try {
+        if (ns) {
+          const ok = registerFromNamespace(name, ns);
+          console.info(`[Loader] registerFromNamespace result for ${name}: ${ok}`);
+        } else {
+          console.warn(`[Loader] Namespace ${name} is undefined`);
+        }
+      } catch (regErr) {
+        console.error(`[Loader] Error registering namespace ${name}:`, regErr);
+      }
     }
   } catch (err) {
-    // JANGAN di-silent agar Anda bisa melihat error di dashboard Deno Deploy
-    console.error(`❌ [Loader] Critical error loading manifest:`, err);
+    // Log full error with stack so Deno Deploy shows the cause
+    console.error(`❌ [Loader] Critical error loading/processing manifest:`, err);
+    throw err;
   }
 }
