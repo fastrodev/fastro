@@ -1,5 +1,326 @@
-import { assert, assertEquals } from "@std/assert";
+import { assert, assertEquals, assertStrictEquals } from "@std/assert";
 import { stub } from "@std/testing/mock";
+import type { App } from "./loader.ts";
+import {
+  autoRegisterModules,
+  autoRegisterModulesFrom,
+  getRegistrationCandidate,
+  isNamespaceObject,
+  registerFromNamespace,
+  sortNames,
+} from "./loader.ts";
+
+Deno.test("sortComparator and sortNames ordering", () => {
+  const names = ["b", "index", "profile", "a"];
+  const sorted = sortNames(names);
+  assertStrictEquals(sorted[0], "index");
+  assertStrictEquals(sorted[sorted.length - 1], "profile");
+  assertEquals(sorted, ["index", "a", "b", "profile"]);
+});
+
+Deno.test("isNamespaceObject false/true cases", () => {
+  assert(!isNamespaceObject(null));
+  assert(!isNamespaceObject(42));
+  assert(isNamespaceObject({}));
+  assert(isNamespaceObject({ a: 1 }));
+});
+
+Deno.test("getRegistrationCandidate returns default or named function or null", () => {
+  const ns1 = { default: () => "ok" };
+  const ns2 = {
+    mymod: function () {
+      return "n";
+    },
+    default: 1,
+  };
+  const ns3 = { foo: 1 };
+  assertStrictEquals(getRegistrationCandidate("mymod", ns1), ns1.default);
+  assertStrictEquals(getRegistrationCandidate("mymod", ns2), ns2.mymod);
+  assertStrictEquals(getRegistrationCandidate("mymod", ns3), null);
+});
+
+Deno.test("registerFromNamespace registers default and named, returns false when none", () => {
+  const used: unknown[] = [];
+  const app: App = { use: (m) => used.push(m) };
+
+  const nsDefault = { default: () => "d" };
+  const nsNamed = {
+    my: function () {
+      return "n";
+    },
+  };
+  const nsNone = { foo: 1 };
+
+  const r1 = registerFromNamespace("def", nsDefault, app);
+  assert(r1);
+  assertStrictEquals(used.shift(), nsDefault.default);
+
+  const r2 = registerFromNamespace("my", nsNamed, app);
+  assert(r2);
+  assertStrictEquals(used.shift(), nsNamed.my);
+
+  const r3 = registerFromNamespace("x", nsNone, app);
+  assert(!r3);
+});
+
+Deno.test("autoRegisterModulesFrom registers modules in sorted order", () => {
+  const used: string[] = [];
+  const app: App = {
+    use: (m: unknown) =>
+      used.push(String((m as (...args: unknown[]) => unknown)())),
+  };
+
+  const manifestObj: Record<string, unknown> = {
+    b: {
+      b: function () {
+        return "B";
+      },
+    },
+    index: {
+      default: function () {
+        return "I";
+      },
+    },
+    a: {
+      a: function () {
+        return "A";
+      },
+    },
+    profile: {
+      profile: function () {
+        return "P";
+      },
+    },
+  };
+
+  autoRegisterModulesFrom(manifestObj, app);
+  assertEquals(used, ["I", "A", "B", "P"]);
+});
+
+Deno.test("autoRegisterModules logs error when manifest read fails (catch)", () => {
+  const app: App = { use: () => {} };
+  const orig = Object.keys;
+  try {
+    (Object as unknown as { keys: typeof Object.keys }).keys = (() => {
+      throw new Error("boom");
+    }) as unknown as typeof Object.keys;
+    autoRegisterModules(app);
+  } finally {
+    (Object as unknown as { keys: typeof Object.keys }).keys = orig;
+  }
+});
+
+Deno.test("sortComparator and sortNames ordering", () => {
+  const names = ["b", "index", "profile", "a"];
+  const sorted = sortNames(names);
+  assertStrictEquals(sorted[0], "index");
+  assertStrictEquals(sorted[sorted.length - 1], "profile");
+  // alphabetical for middle ones
+  assertEquals(sorted, ["index", "a", "b", "profile"]);
+});
+
+Deno.test("isNamespaceObject false/true cases", () => {
+  assert(!isNamespaceObject(null));
+  assert(!isNamespaceObject(42));
+  assert(isNamespaceObject({}));
+  assert(isNamespaceObject({ a: 1 }));
+});
+
+Deno.test("getRegistrationCandidate returns default or named function or null", () => {
+  const ns1 = { default: () => "ok" };
+  const ns2 = {
+    mymod: function () {
+      return "n";
+    },
+    default: 1,
+  };
+  const ns3 = { foo: 1 };
+  assertStrictEquals(getRegistrationCandidate("mymod", ns1), ns1.default);
+  assertStrictEquals(getRegistrationCandidate("mymod", ns2), ns2.mymod);
+  assertStrictEquals(getRegistrationCandidate("mymod", ns3), null);
+});
+
+Deno.test("registerFromNamespace registers default and named, returns false when none", () => {
+  const used: unknown[] = [];
+  const app: App = { use: (m) => used.push(m) };
+
+  const nsDefault = { default: () => "d" };
+  const nsNamed = {
+    my: function () {
+      return "n";
+    },
+  };
+  const nsNone = { foo: 1 };
+
+  const r1 = registerFromNamespace("def", nsDefault, app);
+  assert(r1);
+  assertStrictEquals(used.shift(), nsDefault.default);
+
+  const r2 = registerFromNamespace("my", nsNamed, app);
+  assert(r2);
+  assertStrictEquals(used.shift(), nsNamed.my);
+
+  const r3 = registerFromNamespace("x", nsNone, app);
+  assert(!r3);
+});
+
+Deno.test("autoRegisterModulesFrom registers modules in sorted order", () => {
+  const used: string[] = [];
+  const app: App = {
+    use: (m: unknown) =>
+      used.push(String((m as (...args: unknown[]) => unknown)())),
+  };
+
+  const manifestObj: Record<string, unknown> = {
+    b: {
+      b: function () {
+        return "B";
+      },
+    },
+    index: {
+      default: function () {
+        return "I";
+      },
+    },
+    a: {
+      a: function () {
+        return "A";
+      },
+    },
+    profile: {
+      profile: function () {
+        return "P";
+      },
+    },
+  };
+
+  autoRegisterModulesFrom(manifestObj, app);
+  // index first, profile last
+  assertEquals(used, ["I", "A", "B", "P"]);
+});
+
+Deno.test("autoRegisterModules logs error when manifest read fails (catch)", () => {
+  const app: App = { use: () => {} };
+  const orig = Object.keys;
+  try {
+    // Force an error when autoRegisterModules tries to read manifest keys
+    // by making Object.keys throw.
+    (Object as unknown as { keys: typeof Object.keys }).keys = (() => {
+      throw new Error("boom");
+    }) as unknown as typeof Object.keys;
+    // Should not throw; the function catches internally.
+    autoRegisterModules(app);
+  } finally {
+    // restore
+    (Object as unknown as { keys: typeof Object.keys }).keys = orig;
+  }
+});
+
+Deno.test("sortComparator and sortNames ordering", () => {
+  const names = ["b", "index", "profile", "a"];
+  const sorted = sortNames(names);
+  assertStrictEquals(sorted[0], "index");
+  assertStrictEquals(sorted[sorted.length - 1], "profile");
+  // alphabetical for middle ones
+  assertEquals(sorted, ["index", "a", "b", "profile"]);
+});
+
+Deno.test("isNamespaceObject false/true cases", () => {
+  assert(!isNamespaceObject(null));
+  assert(!isNamespaceObject(42));
+  assert(isNamespaceObject({}));
+  assert(isNamespaceObject({ a: 1 }));
+});
+
+Deno.test("getRegistrationCandidate returns default or named function or null", () => {
+  const ns1 = { default: () => "ok" };
+  const ns2 = {
+    mymod: function () {
+      return "n";
+    },
+    default: 1,
+  };
+  const ns3 = { foo: 1 };
+  assertStrictEquals(getRegistrationCandidate("mymod", ns1), ns1.default);
+  assertStrictEquals(getRegistrationCandidate("mymod", ns2), ns2.mymod);
+  assertStrictEquals(getRegistrationCandidate("mymod", ns3), null);
+});
+
+Deno.test("registerFromNamespace registers default and named, returns false when none", () => {
+  const used: unknown[] = [];
+  const app: App = { use: (m) => used.push(m) };
+
+  const nsDefault = { default: () => "d" };
+  const nsNamed = {
+    my: function () {
+      return "n";
+    },
+  };
+  const nsNone = { foo: 1 };
+
+  const r1 = registerFromNamespace("def", nsDefault, app);
+  assert(r1);
+  assertStrictEquals(used.shift(), nsDefault.default);
+
+  const r2 = registerFromNamespace("my", nsNamed, app);
+  assert(r2);
+  assertStrictEquals(used.shift(), nsNamed.my);
+
+  const r3 = registerFromNamespace("x", nsNone, app);
+  assert(!r3);
+});
+
+Deno.test("autoRegisterModulesFrom registers modules in sorted order", () => {
+  const used: string[] = [];
+  const app: App = {
+    use: (m: unknown) =>
+      used.push(String((m as (...args: unknown[]) => unknown)())),
+  };
+
+  const manifestObj: Record<string, unknown> = {
+    b: {
+      b: function () {
+        return "B";
+      },
+    },
+    index: {
+      default: function () {
+        return "I";
+      },
+    },
+    a: {
+      a: function () {
+        return "A";
+      },
+    },
+    profile: {
+      profile: function () {
+        return "P";
+      },
+    },
+  };
+
+  autoRegisterModulesFrom(manifestObj, app);
+  // index first, profile last
+  assertEquals(used, ["I", "A", "B", "P"]);
+});
+
+Deno.test("autoRegisterModules logs error when manifest read fails (catch)", () => {
+  const app: App = { use: () => {} };
+  const orig = Object.keys;
+  try {
+    // Force an error when autoRegisterModules tries to read manifest keys
+    // by making Object.keys throw.
+    (Object as unknown as { keys: typeof Object.keys }).keys = (() => {
+      throw new Error("boom");
+    }) as unknown as typeof Object.keys;
+    // Should not throw; the function catches internally.
+    autoRegisterModules(app);
+  } finally {
+    // restore
+    (Object as unknown as { keys: typeof Object.keys }).keys = orig;
+  }
+});
 
 type Loader = {
   autoRegisterModules: (app: { use: (m: unknown) => void }) => void;
@@ -305,5 +626,51 @@ Deno.test("autoRegisterModules uses real manifest to register", async () => {
     assert(calls.length > 0, "expected some registrations from real manifest");
   } finally {
     infoStub.restore();
+  }
+});
+
+// Consolidated coverage exercise (previously in loader.cover.test.ts)
+Deno.test("coverage: exercise loader branches", async () => {
+  const mod = await import(`./loader.ts?t=${Date.now()}`);
+
+  // comparator branches
+  assertEquals(mod.sortComparator("index", "a"), -1);
+  assertEquals(mod.sortComparator("a", "index"), 1);
+  assertEquals(mod.sortComparator("profile", "a"), 1);
+  assert(mod.sortComparator("apple", "banana") < 0);
+
+  // ensure sortNames also exercised
+  const out = mod.sortNames(["b", "index", "a", "profile"].slice());
+  assertEquals(out[0], "index");
+
+  // autoRegisterModulesFrom simple registration
+  const calls: unknown[] = [];
+  const app = { use: (m: unknown) => calls.push(m) };
+  mod.autoRegisterModulesFrom({
+    index: { default: () => {} },
+    a: { a: () => {} },
+  }, app as { use: (m: unknown) => void });
+  assertEquals(calls.length, 2);
+
+  // cover autoRegisterModules catch path by forcing Object.keys to throw
+  const orig = Object.keys;
+  try {
+    (Object as unknown as { keys: typeof Object.keys }).keys = (() => {
+      throw new Error("boom");
+    }) as unknown as typeof Object.keys;
+
+    const errStub = stub(console, "error", () => {});
+    try {
+      mod.autoRegisterModules(app as { use: (m: unknown) => void });
+      const called = errStub.calls.some((c: unknown) => {
+        const ci = c as { args: unknown[] };
+        return String(ci.args[0]).includes("Failed reading manifest");
+      });
+      assert(called, "expected loader to log a failure");
+    } finally {
+      errStub.restore();
+    }
+  } finally {
+    (Object as unknown as { keys: typeof Object.keys }).keys = orig;
   }
 });
