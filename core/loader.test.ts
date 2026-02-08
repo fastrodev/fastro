@@ -56,7 +56,11 @@ Deno.test("coverage: registerFromNamespace returns false for non-function candid
   const candidate = getRegistrationCandidate("x", ns);
   assertStrictEquals(candidate, null);
 
-  const ok = registerFromNamespace("x", ns, app as { use: (m: unknown) => void });
+  const ok = registerFromNamespace(
+    "x",
+    ns,
+    app as { use: (m: unknown) => void },
+  );
   assertEquals(ok, false);
 });
 
@@ -484,7 +488,7 @@ Deno.test("skips non-object and null namespaces and prefers default export", asy
 // is exercised by monkeypatching `autoRegisterModulesFrom` in another test.
 
 Deno.test("autoRegisterModulesFrom covers all registration branches", async () => {
-    const { autoRegisterModulesFrom } = await import(`./loader.ts`);
+  const { autoRegisterModulesFrom } = await import(`./loader.ts`);
 
   // 1) default export function
   {
@@ -721,70 +725,76 @@ Deno.test("coverage: exercise loader branches", async () => {
     (Object as unknown as { keys: typeof Object.keys }).keys = orig;
   }
 });
-  Deno.test("sortComparator tie and alphabetical fallback (extra)", async () => {
-    const { sortComparator } = await import(`./loader.ts`);
-    // identical names should compare equal
-    assertEquals(sortComparator("same", "same"), 0);
-    // alphabetical fallback for two non-special names
-    assert(sortComparator("apple", "zebra") < 0);
-  });
+Deno.test("sortComparator tie and alphabetical fallback (extra)", async () => {
+  const { sortComparator } = await import(`./loader.ts`);
+  // identical names should compare equal
+  assertEquals(sortComparator("same", "same"), 0);
+  // alphabetical fallback for two non-special names
+  assert(sortComparator("apple", "zebra") < 0);
+});
 
-  Deno.test("sortComparator profile tie case", async () => {
-    const { sortComparator } = await import(`./loader.ts`);
-    // profile vs profile should be equal
-    assertEquals(sortComparator("profile", "profile"), 0);
-  });
+Deno.test("sortComparator profile tie case", async () => {
+  const { sortComparator } = await import(`./loader.ts`);
+  // profile vs profile should be equal
+  assertEquals(sortComparator("profile", "profile"), 0);
+});
 
-  Deno.test("getRegistrationCandidate returns named when default not function (extra)", async () => {
-    const { getRegistrationCandidate } = await import(`./loader.ts`);
-    const ns = { default: 123, foo: () => "ok" } as Record<string, unknown>;
-    const c = getRegistrationCandidate("foo", ns);
-    assertStrictEquals(c, ns.foo);
-  });
+Deno.test("getRegistrationCandidate returns named when default not function (extra)", async () => {
+  const { getRegistrationCandidate } = await import(`./loader.ts`);
+  const ns = { default: 123, foo: () => "ok" } as Record<string, unknown>;
+  const c = getRegistrationCandidate("foo", ns);
+  assertStrictEquals(c, ns.foo);
+});
 
-  Deno.test("sortComparator full permutation matrix", async () => {
-    const { sortComparator } = await import(`./loader.ts`);
-    const names = ["index", "profile", "apple"];
-    const results: Record<string, number> = {};
-    for (const a of names) {
-      for (const b of names) {
-        const k = `${a}|${b}`;
-        results[k] = sortComparator(a, b);
-      }
+Deno.test("sortComparator full permutation matrix", async () => {
+  const { sortComparator } = await import(`./loader.ts`);
+  const names = ["index", "profile", "apple"];
+  const results: Record<string, number> = {};
+  for (const a of names) {
+    for (const b of names) {
+      const k = `${a}|${b}`;
+      results[k] = sortComparator(a, b);
     }
+  }
 
-    // explicit expectations derived from weight: index=-1, profile=1, apple=0
-    // index vs profile => -2, profile vs index => 2
-    assertEquals(results[`index|profile`], -2);
-    assertEquals(results[`profile|index`], 2);
+  // explicit expectations derived from weight: index=-1, profile=1, apple=0
+  // index vs profile => -2, profile vs index => 2
+  assertEquals(results[`index|profile`], -2);
+  assertEquals(results[`profile|index`], 2);
 
-    // index vs apple => -1, apple vs index => 1
-    assertEquals(results[`index|apple`], -1);
-    assertEquals(results[`apple|index`], 1);
+  // index vs apple => -1, apple vs index => 1
+  assertEquals(results[`index|apple`], -1);
+  assertEquals(results[`apple|index`], 1);
 
-    // profile vs apple => 1, apple vs profile => -1
-    assertEquals(results[`profile|apple`], 1);
-    assertEquals(results[`apple|profile`], -1);
+  // profile vs apple => 1, apple vs profile => -1
+  assertEquals(results[`profile|apple`], 1);
+  assertEquals(results[`apple|profile`], -1);
 
-    // identical names equal
-    assertEquals(results[`apple|apple`], 0);
-  });
+  // identical names equal
+  assertEquals(results[`apple|apple`], 0);
+});
 
-  Deno.test("registerFromNamespace fresh import candidate branches", async () => {
-    const { registerFromNamespace, getRegistrationCandidate } = await import(
-      `./loader.ts`
-    );
+Deno.test("registerFromNamespace fresh import candidate branches", async () => {
+  const { registerFromNamespace, getRegistrationCandidate } = await import(
+    `./loader.ts`
+  );
 
-    // candidate null path
-    const nsNone = { foo: 1 } as Record<string, unknown>;
-    const app = { use: (_: unknown) => {} };
-    assertStrictEquals(getRegistrationCandidate("x", nsNone), null);
-    assertEquals(registerFromNamespace("x", nsNone, app as { use: (m: unknown) => void }), false);
+  // candidate null path
+  const nsNone = { foo: 1 } as Record<string, unknown>;
+  const app = { use: (_: unknown) => {} };
+  assertStrictEquals(getRegistrationCandidate("x", nsNone), null);
+  assertEquals(
+    registerFromNamespace("x", nsNone, app as { use: (m: unknown) => void }),
+    false,
+  );
 
-    // candidate default path
-    const nsDef = { default: () => "d" } as Record<string, unknown>;
-    const calls: unknown[] = [];
-    const app2 = { use: (m: unknown) => calls.push(m) };
-    assertEquals(registerFromNamespace("def", nsDef, app2 as { use: (m: unknown) => void }), true);
-    assertEquals(calls.length, 1);
-  });
+  // candidate default path
+  const nsDef = { default: () => "d" } as Record<string, unknown>;
+  const calls: unknown[] = [];
+  const app2 = { use: (m: unknown) => calls.push(m) };
+  assertEquals(
+    registerFromNamespace("def", nsDef, app2 as { use: (m: unknown) => void }),
+    true,
+  );
+  assertEquals(calls.length, 1);
+});
