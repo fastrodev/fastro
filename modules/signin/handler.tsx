@@ -1,5 +1,8 @@
 import { Handler } from "../../core/types.ts";
 import App from "./App.tsx";
+import { createToken } from "../../middlewares/jwt/mod.ts";
+
+const JWT_SECRET = Deno.env.get("JWT_SECRET") || "fastro-secret";
 
 export const signinHandler: Handler = async (req, ctx) => {
   if (req.method === "POST") {
@@ -42,17 +45,18 @@ export const signinHandler: Handler = async (req, ctx) => {
     const safeData = { identifier };
 
     if (authenticated && !error) {
-      // On success: set an HttpOnly cookie and redirect to dashboard
+      // On success: create JWT, set an HttpOnly cookie and redirect to dashboard
       try {
+        const token = await createToken({ user: identifier }, JWT_SECRET);
         if (typeof ctx.setCookie === "function") {
-          ctx.setCookie("user", identifier, {
+          ctx.setCookie("token", token, {
             httpOnly: true,
             path: "/",
             maxAge: 60 * 60 * 24,
           });
         }
       } catch (e) {
-        console.error("Failed to set cookie:", e);
+        console.error("Failed to set cookie or token:", e);
       }
       return new Response(null, {
         status: 303,

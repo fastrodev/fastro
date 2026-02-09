@@ -1,14 +1,25 @@
 import { Handler } from "../../core/types.ts";
 import App from "./App.tsx";
+import { verifyToken } from "../../middlewares/jwt/mod.ts";
 
-export const dashboardHandler: Handler = (req, ctx) => {
-  // Read user from cookie
-  const user = ctx.cookies?.user as string | undefined;
+const JWT_SECRET = Deno.env.get("JWT_SECRET") || "fastro-secret";
+
+export const dashboardHandler: Handler = async (req, ctx) => {
+  // Read JWT token from cookie
+  const token = ctx.cookies?.token as string | undefined;
+  let user: string | undefined;
+
+  if (token) {
+    const payload = await verifyToken<{ user: string }>(token, JWT_SECRET);
+    if (payload) {
+      user = payload.user;
+    }
+  }
 
   if (req.method === "POST") {
     // signout route: clear cookie and redirect
     if (typeof ctx.setCookie === "function") {
-      ctx.setCookie("user", "", { path: "/", maxAge: 0 });
+      ctx.setCookie("token", "", { path: "/", maxAge: 0 });
     }
     return new Response(null, {
       status: 303,

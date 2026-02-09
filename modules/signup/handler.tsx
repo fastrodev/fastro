@@ -1,5 +1,8 @@
 import { Handler } from "../../core/types.ts";
 import App from "./App.tsx";
+import { createToken } from "../../middlewares/jwt/mod.ts";
+
+const JWT_SECRET = Deno.env.get("JWT_SECRET") || "fastro-secret";
 
 export const signupHandler: Handler = async (req, ctx) => {
   if (req.method === "POST") {
@@ -34,11 +37,24 @@ export const signupHandler: Handler = async (req, ctx) => {
     // Do not include raw password in the initial props used for hydration.
     const safeData = { identifier };
 
-    // On successful signup, redirect the user to the signin page.
+    // On successful signup, create JWT and redirect the user to dashboard.
     if (!error) {
+      try {
+        const token = await createToken({ user: identifier }, JWT_SECRET);
+        if (typeof ctx.setCookie === "function") {
+          ctx.setCookie("token", token, {
+            httpOnly: true,
+            path: "/",
+            maxAge: 60 * 60 * 24,
+          });
+        }
+      } catch (e) {
+        console.error("Failed to set JWT cookie:", e);
+      }
+
       return new Response(null, {
         status: 303,
-        headers: { Location: "/signin" },
+        headers: { Location: "/dashboard" },
       });
     }
 
