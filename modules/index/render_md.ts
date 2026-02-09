@@ -1,4 +1,4 @@
-import { CSS, render } from "@deno/gfm";
+import { CSS, render } from "jsr:@deno/gfm@^0.11.0";
 import { getVersion } from "./utils.ts";
 import { renderStatic } from "./render_static.ts";
 
