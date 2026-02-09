@@ -106,11 +106,24 @@ Deno.test("registerFromNamespace registers default and named, returns false when
 
   const r1 = registerFromNamespace("def", nsDefault, app);
   assert(r1);
-  assertStrictEquals(used.shift(), nsDefault.default);
+  {
+    const reg = used.shift() as (...args: unknown[]) => unknown;
+    assertStrictEquals(
+      reg({}, { state: {} }, () => undefined),
+      nsDefault.default(),
+    );
+  }
 
   const r2 = registerFromNamespace("my", nsNamed, app);
   assert(r2);
-  assertStrictEquals(used.shift(), nsNamed.my);
+  assertStrictEquals(
+    (used.shift() as (...args: unknown[]) => unknown)(
+      {},
+      { state: {} },
+      () => undefined,
+    ),
+    nsNamed.my(),
+  );
 
   const r3 = registerFromNamespace("x", nsNone, app);
   assert(!r3);
@@ -119,8 +132,11 @@ Deno.test("registerFromNamespace registers default and named, returns false when
 Deno.test("autoRegisterModulesFrom registers modules in sorted order", () => {
   const used: string[] = [];
   const app: App = {
-    use: (m: unknown) =>
-      used.push(String((m as (...args: unknown[]) => unknown)())),
+    use: (m: unknown) => {
+      const fn = m as (...args: unknown[]) => unknown;
+      const res = fn({}, { state: {} }, () => undefined);
+      used.push(String(res));
+    },
   };
 
   const manifestObj: Record<string, unknown> = {
@@ -207,11 +223,24 @@ Deno.test("registerFromNamespace registers default and named, returns false when
 
   const r1 = registerFromNamespace("def", nsDefault, app);
   assert(r1);
-  assertStrictEquals(used.shift(), nsDefault.default);
+  {
+    const reg = used.shift() as (...args: unknown[]) => unknown;
+    assertStrictEquals(
+      reg({}, { state: {} }, () => undefined),
+      nsDefault.default(),
+    );
+  }
 
   const r2 = registerFromNamespace("my", nsNamed, app);
   assert(r2);
-  assertStrictEquals(used.shift(), nsNamed.my);
+  assertStrictEquals(
+    (used.shift() as (...args: unknown[]) => unknown)(
+      {},
+      { state: {} },
+      () => undefined,
+    ),
+    nsNamed.my(),
+  );
 
   const r3 = registerFromNamespace("x", nsNone, app);
   assert(!r3);
@@ -220,8 +249,11 @@ Deno.test("registerFromNamespace registers default and named, returns false when
 Deno.test("autoRegisterModulesFrom registers modules in sorted order", () => {
   const used: string[] = [];
   const app: App = {
-    use: (m: unknown) =>
-      used.push(String((m as (...args: unknown[]) => unknown)())),
+    use: (m: unknown) => {
+      const fn = m as (...args: unknown[]) => unknown;
+      const res = fn({}, { state: {} }, () => undefined);
+      used.push(String(res));
+    },
   };
 
   const manifestObj: Record<string, unknown> = {
@@ -269,6 +301,169 @@ Deno.test("autoRegisterModules logs error when manifest read fails (catch)", () 
   }
 });
 
+Deno.test("registerFromNamespace restores ctx.state.module when next is called", () => {
+  const ns = {
+    default: (
+      _req: unknown,
+      ctx: { state?: Record<string, unknown> },
+      next: () => unknown,
+    ) => {
+      // inside candidate the module should be set to the registration name
+      if (ctx.state?.module !== "mymod") return "bad-module";
+      return next();
+    },
+  } as Record<string, unknown>;
+
+  const used: unknown[] = [];
+  const app: App = { use: (m) => used.push(m) };
+
+  const ok = registerFromNamespace("mymod", ns, app);
+  assert(ok);
+
+  const wrapped = used.shift() as (...args: unknown[]) => unknown;
+  const ctx = { state: {} } as { state: Record<string, unknown> };
+  const res = wrapped({}, ctx, () => "NEXT");
+
+  assertStrictEquals(res, "NEXT");
+  assertStrictEquals(ctx.state.module, undefined);
+});
+
+Deno.test("registerFromNamespace restores ctx.state.module when candidate throws", () => {
+  const ns = {
+    default: () => {
+      throw new Error("boom");
+    },
+  } as Record<string, unknown>;
+
+  const used: unknown[] = [];
+  const app: App = { use: (m) => used.push(m) };
+
+  const ok = registerFromNamespace("thrower", ns, app);
+  assert(ok);
+
+  const wrapped = used.shift() as (...args: unknown[]) => unknown;
+  const ctx = { state: { module: "prev" } } as {
+    state: Record<string, unknown>;
+  };
+  try {
+    wrapped({}, ctx, () => undefined);
+  } catch (_e) {
+    // expected
+  }
+  // module should be restored even when candidate throws
+  assertStrictEquals(ctx.state.module, "prev");
+});
+
+Deno.test("registerFromNamespace restores ctx.state.module for async candidate awaiting next", async () => {
+  const ns = {
+    default: async (
+      _req: unknown,
+      ctx: { state?: Record<string, unknown> },
+      next: () => Promise<string>,
+    ) => {
+      // inside candidate the module should be set
+      if (ctx.state?.module !== "asyncmod") return "bad";
+      const r = await next();
+      return `DONE:${r}`;
+    },
+  } as Record<string, unknown>;
+
+  const used: unknown[] = [];
+  const app: App = { use: (m) => used.push(m) };
+
+  const ok = registerFromNamespace("asyncmod", ns, app);
+  assert(ok);
+
+  const wrapped = used.shift() as (...args: unknown[]) => unknown;
+  const ctx = { state: {} } as { state: Record<string, unknown> };
+  const result =
+    await (wrapped({}, ctx, () => Promise.resolve("ok")) as Promise<string>);
+
+  assertStrictEquals(result, "DONE:ok");
+  assertStrictEquals(ctx.state.module, undefined);
+});
+
+Deno.test("registerFromNamespace restores ctx.state.module when candidate returns resolved promise", async () => {
+  const ns = {
+    default: () => Promise.resolve("ok"),
+  } as Record<string, unknown>;
+
+  const used: unknown[] = [];
+  const app: App = { use: (m) => used.push(m) };
+
+  const ok = registerFromNamespace("promisemod", ns, app);
+  assert(ok);
+
+  const wrapped = used.shift() as (...args: unknown[]) => unknown;
+  const ctx = { state: { module: "prev" } } as {
+    state: Record<string, unknown>;
+  };
+  const res =
+    await (wrapped({}, ctx, () => Promise.resolve("next")) as Promise<string>);
+
+  assertStrictEquals(res, "ok");
+  assertStrictEquals(ctx.state.module, "prev");
+});
+
+Deno.test("registerFromNamespace restores ctx.state.module when candidate returns rejected promise", async () => {
+  const ns = {
+    default: () => Promise.reject(new Error("boom")),
+  } as Record<string, unknown>;
+
+  const used: unknown[] = [];
+  const app: App = { use: (m) => used.push(m) };
+
+  const ok = registerFromNamespace("rejectmod", ns, app);
+  assert(ok);
+
+  const wrapped = used.shift() as (...args: unknown[]) => unknown;
+  const ctx = { state: { module: "prev" } } as {
+    state: Record<string, unknown>;
+  };
+
+  let threw = false;
+  try {
+    await (wrapped({}, ctx, () => Promise.resolve("next")) as Promise<unknown>);
+  } catch (_e) {
+    threw = true;
+  }
+
+  assert(threw, "expected candidate to reject");
+  assertStrictEquals(ctx.state.module, "prev");
+});
+
+Deno.test("registerFromNamespace initializes missing ctx.state and restores module", () => {
+  const ns = {
+    default: (
+      _req: unknown,
+      ctx: { state?: Record<string, unknown> },
+      next: () => string,
+    ) => {
+      if (ctx.state?.module !== "newmod") return "bad";
+      return next();
+    },
+  } as Record<string, unknown>;
+
+  const used: unknown[] = [];
+  const app: App = { use: (m) => used.push(m) };
+
+  const ok = registerFromNamespace("newmod", ns, app);
+  assert(ok);
+
+  const wrapped = used.shift() as (...args: unknown[]) => unknown;
+  const ctx = {} as { state?: Record<string, unknown> };
+
+  const res = wrapped(
+    {},
+    ctx as unknown as { state: Record<string, unknown> },
+    () => "NEXT",
+  );
+  assertStrictEquals(res, "NEXT");
+  // ctx.state should exist and module should be restored/absent
+  assert(ctx.state);
+  assertStrictEquals(ctx.state.module, undefined);
+});
+
 Deno.test("sortComparator and sortNames ordering", () => {
   const names = ["b", "index", "profile", "a"];
   const sorted = sortNames(names);
@@ -313,11 +508,24 @@ Deno.test("registerFromNamespace registers default and named, returns false when
 
   const r1 = registerFromNamespace("def", nsDefault, app);
   assert(r1);
-  assertStrictEquals(used.shift(), nsDefault.default);
+  {
+    const reg = used.shift() as (...args: unknown[]) => unknown;
+    assertStrictEquals(
+      reg({}, { state: {} }, () => undefined),
+      nsDefault.default(),
+    );
+  }
 
   const r2 = registerFromNamespace("my", nsNamed, app);
   assert(r2);
-  assertStrictEquals(used.shift(), nsNamed.my);
+  assertStrictEquals(
+    (used.shift() as (...args: unknown[]) => unknown)(
+      {},
+      { state: {} },
+      () => undefined,
+    ),
+    nsNamed.my(),
+  );
 
   const r3 = registerFromNamespace("x", nsNone, app);
   assert(!r3);
@@ -326,8 +534,11 @@ Deno.test("registerFromNamespace registers default and named, returns false when
 Deno.test("autoRegisterModulesFrom registers modules in sorted order", () => {
   const used: string[] = [];
   const app: App = {
-    use: (m: unknown) =>
-      used.push(String((m as (...args: unknown[]) => unknown)())),
+    use: (m: unknown) => {
+      const fn = m as (...args: unknown[]) => unknown;
+      const res = fn({}, { state: {} }, () => undefined);
+      used.push(String(res));
+    },
   };
 
   const manifestObj: Record<string, unknown> = {
