@@ -31,7 +31,7 @@ export const dashboardHandler: Handler = async (req, ctx) => {
   if (!user) {
     return new Response(null, {
       status: 303,
-      headers: { Location: "/signin" },
+      headers: { Location: "/signin?msg=auth_required" },
     });
   }
 

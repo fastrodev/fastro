@@ -5,6 +5,12 @@ import { createToken } from "../../middlewares/jwt/mod.ts";
 const JWT_SECRET = Deno.env.get("JWT_SECRET") || "fastro-secret";
 
 export const signinHandler: Handler = async (req, ctx) => {
+  const msg = ctx.query?.msg;
+  let initialHelpMessage: string | null = null;
+  if (msg === "auth_required") {
+    initialHelpMessage = "Please sign in to access the dashboard.";
+  }
+
   if (req.method === "POST") {
     const s = ctx.state as Record<string, unknown> | undefined;
     const form = s?.formData as FormData | undefined;
@@ -27,7 +33,7 @@ export const signinHandler: Handler = async (req, ctx) => {
           const res = await ctx.kv.get(["user", identifier]);
           const stored = res.value as { password?: string } | null;
           if (!stored) {
-            error = "Belum terdaftar. Silakan daftar terlebih dahulu.";
+            error = "User not found. Please sign up first.";
           } else if (stored.password !== password) {
             error = "Invalid credentials";
           } else {
@@ -81,9 +87,10 @@ export const signinHandler: Handler = async (req, ctx) => {
     return new Response(html, { headers: { "Content-Type": "text/html" } });
   }
 
-  const html = ctx.renderToString!(<App />, {
+  const html = ctx.renderToString!(<App error={initialHelpMessage} />, {
     includeDoctype: true,
     title: "Sign In",
+    initialProps: { error: initialHelpMessage },
   });
 
   return new Response(html, { headers: { "Content-Type": "text/html" } });

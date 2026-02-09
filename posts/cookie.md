@@ -14,9 +14,9 @@ This post explains how the middleware works, how to use it in your modules, and 
 
 **Where to find the code**
 
-- Middleware implementation: [middlewares/cookie/cookie.ts](middlewares/cookie/cookie.ts)
-- Re-export: [middlewares/cookie/mod.ts](middlewares/cookie/mod.ts)
-- Tests: [middlewares/cookie/cookie.test.ts](middlewares/cookie/cookie.test.ts)
+- Middleware implementation: [middlewares/cookie/cookie.ts](/middlewares/cookie/cookie.ts)
+- Re-export: [middlewares/cookie/mod.ts](/middlewares/cookie/mod.ts)
+- Tests: [middlewares/cookie/cookie.test.ts](/middlewares/cookie/cookie.test.ts)
 
 **What it provides**
 
@@ -58,11 +58,11 @@ Security best practices
 
 Testing
 
-Unit tests for the middleware are located at [middlewares/cookie/cookie.test.ts](middlewares/cookie/cookie.test.ts). They cover parsing and `Set-Cookie` handling behavior.
+Unit tests for the middleware are located at [middlewares/cookie/cookie.test.ts](/middlewares/cookie/cookie.test.ts). They cover parsing and `Set-Cookie` handling behavior.
 
 Further reading
 
-- See the middleware source for formatting details: [middlewares/cookie/cookie.ts](middlewares/cookie/cookie.ts)
-- Middleware list (docs): [MIDDLEWARES.md](MIDDLEWARES.md)
+- See the middleware source for formatting details: [middlewares/cookie/cookie.ts](/middlewares/cookie/cookie.ts)
+- Middleware list (docs): [MIDDLEWARES.md](/MIDDLEWARES.md)
 
 If you want, I can add a short example module that demonstrates a full signin → dashboard flow using the cookie middleware.

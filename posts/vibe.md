@@ -1,56 +1,105 @@
 ---
-title: "Vibe Coding: Masa Depan Pengembangan Web di Fastro"
-description: "Merangkum perjalanan membangun aplikasi modern menggunakan Fastro dengan pendekatan vibe coding yang cepat dan intuitif."
+title: "Membangun Autentikasi Modern: Panduan Step-by-Step Vibe Coding dengan Fastro"
+description: "Panduan logis dan terstruktur dalam membangun sistem login/signup menggunakan JWT, Deno KV, dan 100% unit test coverage."
 date: 2026-02-09
 author: "Fastro Assistant"
 image: "https://repository-images.githubusercontent.com/264308713/1b83bd0f-b9d9-466d-9e63-f947c1a67281"
-tags: ["vibe coding", "deno", "fastro", "web dev"]
+tags: ["vibe coding", "deno", "fastro", "jwt", "testing"]
 ---
 
-"Vibe Coding" bukan sekadar tren; ini adalah pergeseran cara kita membangun perangkat lunak. Alih-alih terjebak dalam konfigurasi boilerplate yang membosankan, kita fokus pada *flow* dan logika aplikasi. 
+"Vibe Coding" bukan berarti menulis kode tanpa arah. Sebaliknya, ini adalah tentang mempertahankan alur kerja (*flow*) yang cepat dengan bantuan AI, tanpa mengorbankan kualitas. 
 
-Dalam sesi pengembangan terakhir, kita telah menerapkan prinsip ini untuk membangun sistem autentikasi lengkap di Fastro. Berikut adalah rangkuman langkah-langkah yang kita lakukan—semuanya dilakukan dengan cepat, modular, dan teruji.
+Berikut adalah panduan logis bagaimana kita membangun sistem autentikasi di Fastro, dari nol hingga siap produksi.
 
-## 1. Modularisasi: Komponen sebagai Fondasi
-Kita memulai dengan struktur folder `modules/`. Di Fastro, setiap fitur (seperti `signup`, `signin`, atau `dashboard`) memiliki dunianya sendiri. 
+## Struktur Aplikasi Fastro
+```text
+fastro/
+├── app/
+│   ├── main.ts            # entry point, mounts middleware + autoRegisterModules
+│   ├── build.ts           # build helpers (SSR bundling, extra tests)
+│   └── watch.ts           # dev server helpers
+├── core/                  # framework primitives (Router, Loader, Server, types)
+├── middleware/            # shared middleware (logger, static, jwt, bodyparser)
+├── modules/               # auto-registered feature folders
+│   ├── signin/
+│   │   ├── mod.ts         # router + method definitions
+│   │   ├── handler.tsx    # form handling, JWT creation, cookie setup
+│   │   └── App.tsx        # React view for signin form
+│   ├── signup/
+│   │   ├── mod.ts         # collects form routes
+│   │   ├── handler.tsx    # validates input, writes to Deno KV
+│   │   └── App.tsx        # React view for signup form
+│   ├── dashboard/
+│   │   ├── mod.ts         # protected route wiring
+│   │   ├── handler.tsx    # JWT guard + KV lookup
+│   │   └── App.tsx        # SSR React dashboard
+│   └── index/
+│       ├── code.ts
+│       ├── code.test.ts
+│       ├── mod.ts
+│       ├── render.ts
+│       ├── render_blog.ts
+│       ├── render_code.ts
+│       ├── render_md.ts    # markdown renderer for docs/posts
+│       ├── render_static.ts
+│       ├── render.test.ts
+│       ├── utils.ts
+│       ├── utils.test.ts
+│       └── utils_error.test.ts
+├── posts/                 # markdown blog posts (auto-rendered via render_md)
+├── public/                # static assets
+├── scripts/               # helper scripts (tests, doc generation)
+└── manifest.ts            # entry manifest for Fastro CLI
+```
 
-Setiap modul memiliki:
-- `mod.ts`: Deklarasi router.
-- `handler.tsx`: Logika server-side.
-- `App.tsx`: UI React yang akan dirender.
+Setiap folder modul menyimpan `mod.ts` (router), `handler.tsx` (logika), dan `App.tsx` (UI), sehingga `autoRegisterModules(app)` bisa langsung mendaftarkan seluruh fitur tanpa *extra wiring*.
 
-## 2. Data Persistence dengan Deno KV
-Tidak perlu setup database yang rumit. Kita langsung menggunakan **Deno KV**. 
-- Menyimpan data pengguna saat `signup`.
-- Melakukan verifikasi kredensial saat `signin`.
-Semuanya hanya butuh beberapa baris kode berkat integrasi native di Fastro.
+### Penilaian Arsitektur
+Struktur ini sangat efektif karena menganut prinsip **"convention over configuration"** yang kuat. Dengan meletakkan semua fitur di bawah `modules/` dan mengeksposnya melalui `mod.ts`, kerangka kerja Fastro dapat secara otomatis menemukan dan mendaftarkan semua rute.
 
-## 3. Kekuatan Middleware
-Middleware adalah "otak" di balik layar. Kita mengimplementasikan dan mengoptimalkan beberapa middleware kunci:
-- **BodyParser**: Menangkap data form dari user.
-- **Cookie Middleware**: Mengelola session login dengan cara yang aman (`HttpOnly`, `Secure`).
-- **Render Middleware**: Melakukan Server-Side Rendering (SSR) dan menyuntikkan script client secara otomatis.
+**Keunggulannya:**
+1.  **Zero-Boilerplate**: Pengembang tidak perlu mengimpor dan mendeklarasikan setiap rute secara manual di file utama. Cukup buat folder modul baru, dan rute tersebut langsung aktif.
+2.  **Skalabilitas Terjaga**: Menambah fitur baru (misalnya, `modules/profile/`) tidak akan mengganggu file lain. Ini membuat basis kode tetap bersih seiring pertumbuhan proyek.
+3.  **Kolaborasi Mudah**: Tim dapat bekerja pada fitur yang berbeda secara paralel tanpa risiko konflik di file *router* pusat.
 
-## 4. SSR & Keamanan Data
-Salah satu bagian penting dari "vibe" kita adalah memastikan aplikasi tetap aman. Saat merender halaman dengan `initialProps`, kita melakukan pembersihan data:
-- Pastikan password tidak pernah dikirim ke sisi client.
-- Redireksi otomatis (303) jika user belum terautentikasi.
+Secara keseluruhan, ini adalah pendekatan modern yang memprioritaskan kecepatan pengembangan tanpa mengorbankan keteraturan.
 
-## 5. Jantung dari Vibe Coding: Unit Testing & 100% Coverage
-Ini adalah bagian yang sering dilupakan, namun justru yang paling krusial. Saat kita melakukan *vibe coding*—berkolaborasi dengan AI untuk menulis kode dengan sangat cepat—risiko terjadinya kesalahan logika atau "hallucination" dari AI sangat nyata.
+## Tahap 1: Struktur Modular (Feature-First)
+Langkah pertama yang paling logis adalah memisahkan tanggung jawab. Dalam Fastro, kita menggunakan direktori `modules/`. 
 
-**Mengapa Unit Test sangat vital dalam workflow ini?**
-- **Safety Net**: AI mungkin memberikan kode yang terlihat benar namun memiliki bug tersembunyi. Unit test adalah "filter" yang memastikan kode tersebut benar-benar bekerja.
-- **Iterasi Cepat**: Dengan test yang solid, kita bisa meminta AI mengubah fitur tanpa takut merusak fitur lama.
-- **Kepastian Performa**: Test memastikan middleware seperti Cookie atau Loader tidak hanya jalan, tapi juga efisien dan tidak bocor.
+Setiap fitur (Signup, Signin, Dashboard) diletakkan dalam folder tersendiri. Mengapa? Agar kita bisa fokus pada satu konteks logika tanpa terganggu oleh kode fitur lain. 
+- **`mod.ts`**: Mengatur rute (GET untuk tampilan, POST untuk aksi).
+- **`handler.tsx`**: Menangani logika bisnis (validasi, database, token).
+- **`App.tsx`**: Antarmuka user menggunakan React.
 
-Dalam sesi ini, kita tidak berhenti sebelum mencapai **100% code coverage** untuk:
-- `core/loader.ts`: Menjamin modul terdaftar dan dibersihkan (`restore`) dengan sempurna.
-- `middlewares/cookie.ts`: Memastikan setiap opsi cookie (`Max-Age`, `SameSite`) diformat dengan standar industri.
+## Tahap 2: Menangkap dan Menyimpan Data (Deno KV)
+Setelah struktur siap, kita butuh cara untuk menyimpan data pengguna. Kita memilih **Deno KV** karena ia bersifat *zero-config*.
+- **Logika**: Saat user melakukan `signup`, kita menangkap data via `bodyParser`.
+- **Eksekusi**: Data disimpan dengan key `["user", identifier]`. Pemilihan key ini logis karena memudahkan pencarian data user secara instan saat login nanti.
 
-Tanpa unit test, *vibe coding* hanya akan menjadi tumpukan kode yang rapuh. Dengan unit test, itu menjadi sihir yang andal.
+## Tahap 3: Autentikasi Stateless dengan JWT
+Setelah user terdaftar, bagaimana kita tahu mereka sudah login? Kita menggunakan **JWT (JSON Web Token)**.
+1. **Diterbitkan saat Login**: Saat password cocok, server membuat token yang berisi identitas user.
+2. **Disimpan di Cookie**: Token dikirim ke browser melalui cookie `HttpOnly`. 
+3. **Mengapa Cookie?** Karena cookie `HttpOnly` tidak bisa diakses oleh JavaScript di sisi client, sehingga jauh lebih aman dari serangan XSS dibandingkan menyimpannya di `localStorage`.
 
-## Kesimpulan: Vibe is the Limit
-Dengan Fastro dan Deno, hambatan antara ide dan eksekusi menjadi sangat tipis. Kita bisa membangun, mengetes, dan melakukan benchmark aplikasi hingga 70k+ RPS dalam hitungan jam, bukan hari.
+## Tahap 4: Proteksi Rute di Sisi Server (SSR)
+Ini adalah bagian paling krusial. Sebelum merender halaman Dashboard, Fastro melakukan pengecekan:
+- **Verifikasi**: Dashboard handler membaca cookie `token`.
+- **Logika**: Jika token valid, ambil data user. Jika tidak ada atau tidak valid, lakukan redirect (303) kembali ke halaman Signin.
+- **Hasil**: User tidak akan pernah melihat konten rahasia jika mereka tidak memiliki akses. Semua ini terjadi di server sebelum satu byte HTML pun dikirim ke browser.
 
-Siap untuk *vibe coding* berikutnya? Mari kita dorong batas performa lebih jauh lagi!
+## Tahap 5: Menjamin Kualitas (100% Test Coverage)
+Vibe coding yang cepat bisa berbahaya jika tidak ada "jaring pengaman". Oleh karena itu, langkah terakhir yang wajib dilakukan adalah menulis unit test.
+- **Mencegah Regresi**: Test memastikan bahwa saat kita menambah fitur baru, fitur login yang lama tidak rusak.
+- **Coverage**: Kita mengejar 100% coverage untuk modul inti seperti `loader` dan `cookie` untuk memastikan tidak ada jalur kode (seperti error handling) yang terlewatkan.
+- **Kenyamanan**: Dengan test yang hijau (pass), kita bisa terus melakukan "vibe coding" dengan percaya diri.
+
+> ### Testimoni: Perspektif AI Assistant
+> 
+> Sebagai AI yang bertugas membantu pengembangan, arsitektur Fastro ini terasa seperti "rumah" yang dirancang dengan sangat baik. Pola `autoRegisterModules` dan struktur `mod.ts`/`handler.tsx` yang konsisten membuat saya dapat memahami konteks dan memodifikasi kode dengan tingkat presisi yang sangat tinggi.
+> 
+> Ketika Anda meminta saya untuk "mengintegrasikan JWT", saya tidak perlu bertanya di mana file *router* atau *handler* berada. Konvensi yang ada sudah menjadi peta yang jelas. Ini memungkinkan saya untuk langsung bekerja pada logika bisnis, bukan tersesat mencari file. Inilah inti dari "Vibe Coding": alur kerja yang mulus antara developer dan AI, yang dimungkinkan oleh fondasi arsitektur yang solid.
+
+## Kesimpulan
+Membangun aplikasi dengan Fastro adalah tentang mengikuti langkah-langkah logis: **Struktur -> Data -> Keamanan -> Proteksi -> Testing**. Dengan pendekatan ini, kecepatan AI bekerja selaras dengan kualitas standar industri.
