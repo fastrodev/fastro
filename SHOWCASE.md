@@ -32,9 +32,7 @@ Have you built something with Fastro? Add it here!
 
 | Project Name | Description | Link |
 | :----------- | :---------- | :--- |
-| **Simple Signup** | Minimal signup demo using Deno KV and server-rendered form. | [Try it](/signup) |
-| **Simple Signin** | Signin flow that sets an HttpOnly cookie for session handling. | [Try it](/signin) |
-| **Dashboard (Auth)** | Protected dashboard that reads `user` cookie and supports signout. | [Try it](/dashboard) |
+| **Modern Auth Flow** | A complete authentication journey: signup, JWT-based signin, and a protected SSR dashboard using Deno KV. | [Try it](/signup) |
 
 
 ### How to add your project:

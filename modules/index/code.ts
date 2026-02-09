@@ -12,13 +12,20 @@ export function registerCodeRoutes(app: Router) {
     "middlewares/logger/logger.ts",
     "middlewares/bodyparser/bodyparser.ts",
     "middlewares/cookie/cookie.ts",
+    "middlewares/cookie/mod.ts",
+    "middlewares/cookie/cookie.test.ts",
     "middlewares/render/render.ts",
     "middlewares/cors/cors.ts",
     "middlewares/kv/kv.ts",
     "middlewares/jwt/jwt.ts",
     "core/loader.ts",
+    "core/types.ts",
+    "core/router.ts",
+    "core/server.ts",
     "native.ts",
     "main.ts",
+    "app/main.ts",
+    "MIDDLEWARES.md",
   ];
 
   for (const path of files) {

@@ -28,7 +28,7 @@ export function App(props: Props) {
           <form method="POST" action="/signin">
             <div style={{ marginBottom: 8 }}>
               <label>
-                Email / No. Handphone:
+                Email / Phone Number:
                 <br />
                 <input name="identifier" />
               </label>
@@ -43,7 +43,7 @@ export function App(props: Props) {
             <button type="submit">Sign in</button>
             <div style={{ marginTop: 12 }}>
               <small>
-                Belum punya akun? <a href="/signup">Daftar di sini</a>.
+                Don't have an account? <a href="/signup">Sign up here</a>.
               </small>
             </div>
           </form>
