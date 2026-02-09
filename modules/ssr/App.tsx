@@ -1,4 +1,4 @@
-import React from "react";
+import React from "npm:react@^19.2.4";
 
 export type AppProps = {
   name?: string;
