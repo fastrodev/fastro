@@ -7,40 +7,21 @@ import { renderCode } from "./render.ts";
  * @param app The main application instance or router.
  */
 export function registerCodeRoutes(app: Router) {
-  app.get(
-    "/middlewares/static/static.ts",
-    () => renderCode("middlewares/static/static.ts"),
-  );
-  app.get(
-    "/middlewares/logger/logger.ts",
-    () => renderCode("middlewares/logger/logger.ts"),
-  );
-  app.get(
-    "/middlewares/bodyparser/bodyparser.ts",
-    () => renderCode("middlewares/bodyparser/bodyparser.ts"),
-  );
-  app.get(
-    "/middlewares/cors/cors.ts",
-    () => renderCode("middlewares/cors/cors.ts"),
-  );
-  app.get(
-    "/middlewares/kv/kv.ts",
-    () => renderCode("middlewares/kv/kv.ts"),
-  );
-  app.get(
-    "/middlewares/jwt/jwt.ts",
-    () => renderCode("middlewares/jwt/jwt.ts"),
-  );
-  app.get(
-    "/core/loader.ts",
-    () => renderCode("core/loader.ts"),
-  );
-  app.get(
-    "/native.ts",
-    () => renderCode("native.ts"),
-  );
-  app.get(
-    "/main.ts",
-    () => renderCode("main.ts"),
-  );
+  const files = [
+    "middlewares/static/static.ts",
+    "middlewares/logger/logger.ts",
+    "middlewares/bodyparser/bodyparser.ts",
+    "middlewares/cookie/cookie.ts",
+    "middlewares/render/render.ts",
+    "middlewares/cors/cors.ts",
+    "middlewares/kv/kv.ts",
+    "middlewares/jwt/jwt.ts",
+    "core/loader.ts",
+    "native.ts",
+    "main.ts",
+  ];
+
+  for (const path of files) {
+    app.get(`/${path}`, () => renderCode(path));
+  }
 }

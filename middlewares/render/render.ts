@@ -239,7 +239,7 @@ type RenderOptions = {
 const createRenderToString = (_context: Context) => {
   return (component: React.ReactElement, opts: RenderOptions = {}) => {
     const {
-      module,
+      module: moduleFromOpts,
       identifierPrefix,
       signal,
       nonceProvider,
@@ -280,10 +280,17 @@ const createRenderToString = (_context: Context) => {
       }</script>`
       : "";
 
+    // Prefer explicit option, otherwise fall back to the module name stored
+    // on the context by the loader (autoRegisterModules) or other middleware.
+    const resolvedModule = moduleFromOpts ?? ((_context && _context.state &&
+        typeof _context.state.module === "string")
+      ? _context.state.module
+      : undefined);
+
     const isProd = Deno.env.get("ENV") === "production";
     const timestamp = !isProd ? `?t=${Date.now()}` : "";
-    const clientScript = module
-      ? `<script src="/js/${module}/client.js${timestamp}" defer></script>`
+    const clientScript = resolvedModule
+      ? `<script src="/js/${resolvedModule}/client.js${timestamp}" defer></script>`
       : "";
     const hmrScript = !isProd ? rawHMRscript : "";
 

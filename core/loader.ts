@@ -50,7 +50,10 @@ export function autoRegisterModules(app: App) {
   // Reuse the core registration logic via the injectable helper so tests
   // can provide a synthetic manifest object and exercise all branches.
   try {
-    autoRegisterModulesFrom(manifest as unknown as Record<string, unknown>, app);
+    autoRegisterModulesFrom(
+      manifest as unknown as Record<string, unknown>,
+      app,
+    );
   } catch (err) {
     console.error(
       "❌ [Loader] Failed reading manifest:",
@@ -88,7 +91,64 @@ export function registerFromNamespace(
 ) {
   const candidate = getRegistrationCandidate(name, ns);
   if (!candidate) return false;
-  app.use(candidate as unknown as Middleware);
+
+  // Wrap the candidate middleware so auto-registered modules automatically
+  // expose their module name on `ctx.state.module`. This allows render
+  // middleware and handlers to infer the module (folder) without requiring
+  // each module to manually set the value.
+  const wrapped: Middleware = (req, ctx, next) => {
+    if (!ctx.state) ctx.state = {};
+    const prevModule = ctx.state.module;
+
+    // Set module for this module's middleware so handlers/renderers
+    // can rely on it while this middleware runs. If the module does not
+    // handle the request and calls `next()`, restore the previous value.
+    ctx.state.module = name;
+
+    let restored = false;
+    const restore = () => {
+      if (restored) return;
+      restored = true;
+      if (prevModule === undefined) {
+        delete ctx.state.module;
+      } else {
+        ctx.state.module = prevModule;
+      }
+    };
+
+    const wrappedNext = () => {
+      restore();
+      return next();
+    };
+
+    try {
+      const res = (candidate as unknown as Middleware)(req, ctx, wrappedNext) as
+        | Response
+        | Promise<Response>;
+
+      // If candidate returned a promise, ensure we restore when it settles.
+      if (res && typeof (res as Promise<Response>).then === "function") {
+        return (res as Promise<Response>).then((v) => {
+          restore();
+          return v;
+        }, (err) => {
+          restore();
+          throw err;
+        });
+      }
+
+      // Synchronous result — ensure restoration in case wrappedNext wasn't used.
+      restore();
+      return res;
+    } catch (err) {
+      // Ensure restoration on synchronous throw
+      restore();
+      throw err;
+    }
+  };
+
+  app.use(wrapped as unknown as Middleware);
+
   if (candidate === ns.default) {
     console.info(`✅ Registered default export from ${name}/mod.ts`);
   } else {

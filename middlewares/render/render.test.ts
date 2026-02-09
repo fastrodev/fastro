@@ -41,6 +41,80 @@ Deno.test("render middleware sets renderToString and returns doctype when reques
   _resetWatcherForTests();
 });
 
+Deno.test("startComponentsWatcher returns early in production and does not create .build_done", () => {
+  Deno.env.set("ENV", "production");
+  _resetWatcherForTests();
+  // Ensure file is absent before calling
+  try {
+    Deno.removeSync("./.build_done");
+  } catch (_e) {
+    // ignore
+  }
+
+  // Should return early and not create the file
+  startComponentsWatcher({ startInterval: false, immediate: false });
+
+  let exists = true;
+  try {
+    Deno.statSync("./.build_done");
+  } catch (_e) {
+    exists = false;
+  }
+  // in production the watcher should not create the file
+  assert(!exists);
+  _resetWatcherForTests();
+});
+
+Deno.test("development rendering includes client script, timestamp and HMR", () => {
+  Deno.env.set("ENV", "development");
+  const ctx: Context = {
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp" },
+    url: new URL("http://localhost/"),
+  };
+
+  const mw = createRenderMiddleware();
+  mw(new Request("http://localhost/"), ctx, () => new Response("next"));
+
+  const html = ctx.renderToString!(React.createElement("div", null, "x"), {
+    includeHead: true,
+    includeDoctype: false,
+    module: "app",
+  });
+
+  // Should include client script for the provided module
+  assertStringIncludes(html, "/js/app/client.js");
+  // In development the timestamp query should be present
+  assertStringIncludes(html, "?t=");
+  // HMR client script should be injected in non-production
+  assertStringIncludes(html, "HMR");
+  _resetWatcherForTests();
+});
+
+Deno.test("middleware replaces stub renderToString with real implementation", () => {
+  Deno.env.set("ENV", "development");
+  const ctx: Context = {
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp" },
+    url: new URL("http://localhost/"),
+  };
+
+  // create a stub function that signals it's a stub via property
+  const stub = (() => "stub") as unknown as (c: React.ReactElement) => string;
+  // @ts-ignore attach marker used by middleware to detect stub
+  (stub as unknown as { __is_stub?: boolean }).__is_stub = true;
+  ctx.renderToString = stub as unknown as (c: React.ReactElement) => string;
+
+  const mw = createRenderMiddleware();
+  mw(new Request("http://localhost/"), ctx, () => new Response("next"));
+
+  // middleware should have replaced the stub implementation
+  assert(ctx.renderToString !== stub);
+  _resetWatcherForTests();
+});
+
 Deno.test("watcher deletes clients with non-OPEN readyState", async () => {
   Deno.env.set("ENV", "coverage");
   _resetWatcherForTests();

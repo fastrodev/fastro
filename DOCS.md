@@ -16,6 +16,7 @@ applications.
 - [Body Parser](#body-parser)
 - [CORS](#cors)
 - [JWT](#jwt)
+- [Cookie](#cookie)
 - [Deno KV](#deno-kv)
 - [Automatic Module Loading](#automatic-module-loading)
 - [Context (ctx)](#context-ctx)
@@ -109,6 +110,39 @@ await app.serve();
 ```
 
 For detailed configuration (origins, headers, methods), see the [CORS guide](/blog/cors).
+
+
+## Cookie
+
+Fastro provides a lightweight cookie middleware that parses incoming `Cookie` headers and exposes them on the request `ctx` as `ctx.cookies`. It also collects `Set-Cookie` values when handlers call `ctx.setCookie()` and appends them to the response.
+
+### Usage
+
+```ts
+import Fastro from "./mod.ts";
+import { cookieMiddleware } from "./middlewares/cookie/mod.ts";
+
+const app = new Fastro();
+app.use(cookieMiddleware);
+
+app.get("/dashboard", (req, ctx) => {
+  const user = ctx.cookies?.user;
+  if (!user) return new Response(null, { status: 303, headers: { Location: "/signin" } });
+  return `Welcome ${user}`;
+});
+
+app.post("/signin", (req, ctx) => {
+  // after validating credentials
+  ctx.setCookie("user", "alice@example.com", { httpOnly: true, path: "/", maxAge: 60 * 60 * 24 });
+  return new Response(null, { status: 303, headers: { Location: "/dashboard" } });
+});
+```
+
+### Notes
+
+- Use `HttpOnly` for session cookies to prevent access from client-side JavaScript.
+- Set `Secure` in production when serving over HTTPS and adjust `SameSite` as appropriate.
+- Do not store raw passwords or secrets in cookies; prefer opaque session ids or signed tokens.
 
 
 ## JWT

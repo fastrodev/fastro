@@ -28,6 +28,14 @@ Have you built something with Fastro? Add it here!
 | :------------------- | :----------------------------------------------------- | :----------------------------------------------- | :---------------------- |
 | **Your Awesome App** | Briefly describe what your app does and why it's cool. | [@yourusername](https://github.com/yourusername) | [Live Demo / Source](#) |
 
+## Demo Examples
+
+| Project Name | Description | Link |
+| :----------- | :---------- | :--- |
+| **Simple Signup** | Minimal signup demo using Deno KV and server-rendered form. | [Try it](/signup) |
+| **Simple Signin** | Signin flow that sets an HttpOnly cookie for session handling. | [Try it](/signin) |
+| **Dashboard (Auth)** | Protected dashboard that reads `user` cookie and supports signout. | [Try it](/dashboard) |
+
 
 ### How to add your project:
 
