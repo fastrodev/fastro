@@ -118,7 +118,10 @@ Deno.test({
         },
       );
       assertEquals(dashboardNoAuthRes.status, 303);
-      assertEquals(dashboardNoAuthRes.headers.get("Location"), "/signin");
+      assertEquals(
+        dashboardNoAuthRes.headers.get("Location"),
+        "/signin?msg=auth_required",
+      );
       await dashboardNoAuthRes.body?.cancel();
     } finally {
       s.close();
