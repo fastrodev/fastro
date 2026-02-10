@@ -1,8 +1,3 @@
-import postcss from "npm:postcss@^8.5.6";
-import tailwindcss from "npm:@tailwindcss/postcss@^4.1.18";
-import autoprefixer from "npm:autoprefixer@^10.4.23";
-import cssnano from "npm:cssnano@^7.1.2";
-
 import { Context } from "../../core/types.ts";
 
 function render(content: string) {
@@ -16,6 +11,20 @@ function render(content: string) {
 }
 
 async function processCss(staticDir: string) {
+  // Dynamic imports to avoid loading Node-heavy libraries in production (Deno Deploy)
+  // which might crash due to TTY/process dependencies.
+  const [
+    { default: postcss },
+    { default: tailwindcss },
+    { default: autoprefixer },
+    { default: cssnano },
+  ] = await Promise.all([
+    import("npm:postcss@^8.5.6"),
+    import("npm:@tailwindcss/postcss@^4.1.18"),
+    import("npm:autoprefixer@^10.4.23"),
+    import("npm:cssnano@^7.1.2"),
+  ]);
+
   const plugins = [
     autoprefixer,
     tailwindcss,

@@ -67,7 +67,10 @@ Deno.test("tailwind middleware serves css in development when tailwind.css exist
     assert(ct && ct.includes("text/css"), "Content-type should be text/css");
     const body = await res.text();
     assert(body.length > 0, "Body should not be empty");
-    assert(body.includes("color:red") || body.includes("color:#f00"), "Body should contain the expected style");
+    assert(
+      body.includes("color:red") || body.includes("color:#f00"),
+      "Body should contain the expected style",
+    );
   } finally {
     if (originalEnv) Deno.env.set("ENV", originalEnv);
     if (originalFastro) Deno.env.set("FASTRO_ENV", originalFastro);
