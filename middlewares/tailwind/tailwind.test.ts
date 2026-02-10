@@ -16,92 +16,63 @@ Deno.test("tailwind middleware calls next when path doesn't match", async () => 
   assert(res instanceof Response);
 });
 
-Deno.test("tailwind middleware serves css when tailwind.css exists", async () => {
+Deno.test("tailwind middleware calls next in production", async () => {
+  const originalEnv = Deno.env.get("ENV");
   try {
-    // Use production prebuilt CSS path to avoid invoking postcss/native binaries
     Deno.env.set("ENV", "production");
-    const publicDir = Deno.cwd() + "/public/css";
-    await Deno.mkdir(publicDir, { recursive: true });
-    const prebuiltPath = publicDir + "/styles.css";
+    const mw = tailwind("/styles.css", "/test_static");
+    let nextCalled = false;
+    const next = () => {
+      nextCalled = true;
+      return Promise.resolve(new Response("next-from-test"));
+    };
+
+    const req = new Request("http://localhost/styles.css");
+    const res = await mw(req, {} as unknown as Context, next);
+
+    assert(nextCalled, "next() should be called in production");
+    const text = await res.text();
+    assertEquals(text, "next-from-test");
+  } finally {
+    if (originalEnv) Deno.env.set("ENV", originalEnv);
+    else Deno.env.delete("ENV");
+  }
+});
+
+Deno.test("tailwind middleware serves css in development when tailwind.css exists", async () => {
+  const originalEnv = Deno.env.get("ENV");
+  const originalFastro = Deno.env.get("FASTRO_ENV");
+  try {
+    Deno.env.delete("ENV");
+    Deno.env.delete("FASTRO_ENV");
+    const staticDir = "/test_static_dev";
+    const cssPath = Deno.cwd() + staticDir + "/css";
+    await Deno.mkdir(cssPath, { recursive: true });
     await Deno.writeTextFile(
-      prebuiltPath,
-      "/* prebuilt css */ body{color:#123456}",
+      cssPath + "/tailwind.css",
+      "/* dev css */ body{color:red}",
     );
 
-    const mw = tailwind("/styles.css", "/test_static");
-    const req = new Request("http://localhost/styles.css");
+    const mw = tailwind("/styles-dev.css", staticDir);
+    const req = new Request("http://localhost/styles-dev.css");
     const res = await mw(
-      req as Request,
+      req,
       {} as unknown as Context,
       () => Promise.resolve(new Response("no")),
     );
 
     assert(res instanceof Response);
     assertEquals(res.status, 200);
-    const ct = res.headers.get("Content-Type") ||
-      res.headers.get("content-type");
-    assert(ct && ct.indexOf("text/css") === 0, "response should be CSS");
+    const ct = res.headers.get("Content-Type");
+    assert(ct && ct.includes("text/css"), "Content-type should be text/css");
     const body = await res.text();
-    assert(
-      body.includes("prebuilt css") || body.length > 0,
-      "response body should contain prebuilt css",
-    );
-
-    // test cache
-    const res2 = await mw(
-      req as Request,
-      {} as unknown as Context,
-      () => Promise.resolve(new Response("no")),
-    );
-    const body2 = await res2.text();
-    assertEquals(body2, body);
+    assert(body.length > 0, "Body should not be empty");
+    assert(body.includes("color:red") || body.includes("color:#f00"), "Body should contain the expected style");
   } finally {
-    // cleanup
+    if (originalEnv) Deno.env.set("ENV", originalEnv);
+    if (originalFastro) Deno.env.set("FASTRO_ENV", originalFastro);
     try {
-      const prebuiltPath = Deno.cwd() + "/public/css/styles.css";
-      await Deno.remove(prebuiltPath).catch(() => {});
-      // attempt to remove the css folder if empty
-      await Deno.remove(Deno.cwd() + "/public/css").catch(() => {});
-    } catch (e) {
-      console.warn("cleanup public failed", e);
-    }
-    try {
-      Deno.env.delete("ENV");
-    } catch (e) {
-      console.warn("cleanup env failed", e);
-    }
-  }
-});
-
-Deno.test("tailwind middleware falls back to development mode when prebuilt file is missing", async () => {
-  try {
-    Deno.env.set("ENV", "production");
-    const staticDir = "/test_static_fallback";
-    const cssPath = Deno.cwd() + staticDir + "/css";
-    await Deno.mkdir(cssPath, { recursive: true });
-    await Deno.writeTextFile(
-      cssPath + "/tailwind.css",
-      ".fallback { color: blue; }",
-    );
-
-    const mw = tailwind("/styles-fallback.css", staticDir);
-    const req = new Request("http://localhost/styles-fallback.css");
-
-    const res = await mw(
-      req as Request,
-      {} as unknown as Context,
-      () => Promise.resolve(new Response("no")),
-    );
-
-    assertEquals(res.status, 200);
-    const body = await res.text();
-    assert(body.length > 0);
-  } finally {
-    Deno.env.delete("ENV");
-    try {
-      await Deno.remove(Deno.cwd() + "/test_static_fallback", {
-        recursive: true,
-      });
+      await Deno.remove(Deno.cwd() + "/test_static_dev", { recursive: true });
     } catch (_) {
       // ignore
     }

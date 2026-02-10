@@ -36,17 +36,17 @@ async function processCss(staticDir: string) {
 }
 
 export function tailwind(pathname = "/styles.css", staticDir = "/static") {
-  if (Deno.env.get("ENV") === "production") {
+  const isProd = Deno.env.get("FASTRO_ENV") === "production" ||
+    Deno.env.get("ENV") === "production";
+
+  if (isProd) {
     return (
-      req: Request,
+      _req: Request,
       _context: Context,
       next: () => Response | Promise<Response>,
-    ) => {
-      const url = new URL(req.url);
-      if (url.pathname !== pathname) return next();
-      return next();
-    };
+    ) => next();
   }
+
   const cache = new Map<string, string>();
   return async (
     req: Request,
