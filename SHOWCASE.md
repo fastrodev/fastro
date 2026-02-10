@@ -11,7 +11,7 @@ Pull Request.
 
 | Project Name | Description | Link |
 | :----------- | :---------- | :--- |
-| **Modern Auth Flow** | A complete authentication journey: signup, JWT-based signin, and a protected SSR dashboard using Deno KV. | [Try it](/signin) |
+| **Modern Auth Flow** | A complete authentication journey: signup, JWT-based signin, and a protected SSR dashboard using Deno KV. | [Demo](/signin) |
 
 
 ## Community Projects
