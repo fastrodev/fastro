@@ -3,7 +3,7 @@ title: "Mastering Static Files: Middleware and 100% Test Coverage"
 description: "Exploring the new Fastro static middleware: featuring production-grade LRU caching, SPA fallback, and how we achieved 100% unit test coverage."
 date: 2026-02-02
 author: "Fastro Team"
-tags: ["middleware", "static", "caching"]
+tags: ["middleware", "performance"]
 ---
 
 # Mastering Static Files: Middleware and 100% Test Coverage

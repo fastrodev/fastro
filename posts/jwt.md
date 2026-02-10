@@ -3,7 +3,7 @@ title: "JWT Authentication Middleware in Fastro"
 description: "Learn how to secure your Fastro applications using JSON Web Tokens (JWT) with zero external dependencies."
 date: 2026-02-04
 author: "Fastro Team"
-tags: ["middleware", "security", "jwt", "authentication"]
+tags: ["middleware", "tutorial"]
 ---
 
 Security is a top priority for any web application. Fastro now includes a built-in JWT (JSON Web Token) middleware that allows you to secure your routes using the Web Crypto API, ensuring high performance and zero external dependencies.

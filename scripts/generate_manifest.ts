@@ -16,19 +16,24 @@ function toIdentifier(name: string) {
   return id;
 }
 
-async function main() {
+export async function generateManifest() {
   try {
-    const names: string[] = [];
+    // Collect module names while ignoring test/temp modules and duplicates.
+    const namesSet = new Set<string>();
+    // Ignore common temporary/test module names that clutter manifests during
+    // coverage or test runs (e.g. module1, module2, spa_test, watch_test_module).
+    const IGNORE_RE =
+      /^(module\d+|spa_test|watch_test_module|\.git|node_modules)$/;
     for await (const entry of Deno.readDir(modulesDir)) {
-      if (
-        entry.isDirectory && !entry.name.startsWith("test_") &&
-        entry.name !== "manifest.ts"
-      ) {
-        names.push(entry.name);
-      }
+      if (!entry.isDirectory) continue;
+      const n = entry.name;
+      if (n === "manifest.ts") continue;
+      if (n.startsWith("test_")) continue;
+      if (IGNORE_RE.test(n)) continue;
+      namesSet.add(n);
     }
 
-    names.sort((a, b) => {
+    const names = Array.from(namesSet).sort((a, b) => {
       if (a === "index") return -1;
       if (b === "index") return 1;
       return a.localeCompare(b);
@@ -60,8 +65,8 @@ async function main() {
     console.log("Manifest generation complete.");
   } catch (err) {
     console.error("Failed to generate manifest:", err);
-    Deno.exit(1);
+    throw err;
   }
 }
 
-if (import.meta.main) await main();
+if (import.meta.main) await generateManifest();

@@ -35,10 +35,18 @@ export const dashboardHandler: Handler = async (req, ctx) => {
     });
   }
 
-  const html = ctx.renderToString!(<App user={user} />, {
+  let name: string | undefined;
+  if (ctx.kv) {
+    const res = await ctx.kv.get(["user", user]);
+    if (res?.value) {
+      name = (res.value as Record<string, unknown>).name as string;
+    }
+  }
+
+  const html = ctx.renderToString!(<App user={user} name={name} />, {
     includeDoctype: true,
     title: "Dashboard",
-    initialProps: { user },
+    initialProps: { user, name },
   });
 
   return new Response(html, { headers: { "Content-Type": "text/html" } });

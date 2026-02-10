@@ -247,3 +247,41 @@ Deno.test("JWT Middleware - invalid token", async () => {
     s.close();
   }
 });
+
+Deno.test("JWT Middleware - token in cookie", async () => {
+  _resetForTests();
+  const fastro = new Fastro();
+  fastro.use(jwt({ secret: SECRET }));
+  fastro.get("/", (_req, ctx) => ctx.state?.user ?? {});
+
+  const s = fastro.serve({ port: 3510 });
+  try {
+    const token = await createToken({ id: 42 }, SECRET);
+    const res = await fetch("http://localhost:3510/", {
+      headers: { "Cookie": `other=1; token=${encodeURIComponent(token)};` },
+    });
+    assertEquals(res.status, 200);
+    const data = await res.json();
+    assertEquals(data.id, 42);
+  } finally {
+    s.close();
+  }
+});
+
+Deno.test("JWT Middleware - cookie without token should 401", async () => {
+  _resetForTests();
+  const fastro = new Fastro();
+  fastro.use(jwt({ secret: SECRET }));
+  fastro.get("/", () => "ok");
+
+  const s = fastro.serve({ port: 3511 });
+  try {
+    const res = await fetch("http://localhost:3511/", {
+      headers: { "Cookie": "session=abc;" },
+    });
+    assertEquals(res.status, 401);
+    assertEquals(await res.text(), "Unauthorized");
+  } finally {
+    s.close();
+  }
+});

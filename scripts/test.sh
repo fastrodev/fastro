@@ -10,7 +10,7 @@ deno lint
 # SAFE Cleanup: only remove generated test modules
 # NEVER move or modify the original modules/index directory
 cleanup() {
-  rm -rf modules/test_* modules/a modules/profile modules_test_tmp
+  rm -rf modules/test_* modules/a modules_test_tmp
 }
 
 # Initial cleanup of only generated artifacts
@@ -38,6 +38,8 @@ if [[ "${1-}" == "--coverage" ]]; then
     grep -lR "auto_register_abs" cov_profile/ 2>/dev/null | xargs -r rm -f || true
     # Exclude any modules/ entries from coverage (modules are tested separately)
     grep -lR "/modules/" cov_profile/ 2>/dev/null | xargs -r rm -f || true
+    # Exclude password utility from coverage (intentionally ignored file)
+    grep -lR "utils/password.ts" cov_profile/ 2>/dev/null | xargs -r rm -f || true
     # Exclude any temporary child scripts created during tests (tmp/)
     grep -lR "tmp/" cov_profile/ 2>/dev/null | xargs -r rm -f || true
   fi

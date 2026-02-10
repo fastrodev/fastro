@@ -3,7 +3,7 @@ title: "Understanding Fastro Modules: Manual vs. Automatic Loading"
 description: "Master the architecture of Fastro by learning how to create, organize, and register modules for scalable applications."
 date: 2026-02-04
 author: "Fastro Team"
-tags: ["architecture", "modules", "routing"]
+tags: ["general", "tutorial"]
 ---
 
 As your application grows, keeping all your routes and logic in a single file becomes unmanageable. Fastro's **Module System** is designed to help you split your application into clean, isolated components that can be loaded manually or automatically.

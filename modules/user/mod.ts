@@ -1,10 +1,9 @@
 import { createRouter } from "../../core/router.ts";
-import { dashboardHandler } from "./handler.tsx";
+import { userHandler } from "./handler.tsx";
 import { kvMiddleware } from "../../middlewares/kv/mod.ts";
 
 const r = createRouter();
 
-r.get("/dashboard", dashboardHandler, kvMiddleware);
-r.post("/signout", dashboardHandler);
+r.get("/u/:username", userHandler, kvMiddleware);
 
 export default r.build();

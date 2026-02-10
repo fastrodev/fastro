@@ -10,23 +10,29 @@ Deno.test({
   fn: async () => {
     _resetForTests();
 
-    // Mock KV if not available
+    // Always mock KV for this integration test to ensure isolation and
+    // deterministic behavior under coverage and CI (avoid relying on host KV).
     const originalOpenKv = Deno.openKv;
-    if (typeof Deno.openKv !== "function") {
-      const mockKv = {
-        get: (key: string[]) => {
-          if (key[0] === "user" && key[1] === "testuser") {
-            return Promise.resolve({ value: { password: "testpass" } });
-          }
-          return Promise.resolve({ value: null });
-        },
-        set: () => Promise.resolve({ ok: true }),
-        delete: () => Promise.resolve({ ok: true }),
-        close: () => {},
-      };
-      // @ts-ignore: mocking Deno.openKv
-      Deno.openKv = () => Promise.resolve(mockKv);
-    }
+    const store = new Map<string, unknown>();
+    const mockKv = {
+      get: (key: string[]) => {
+        const k = JSON.stringify(key);
+        return Promise.resolve({ value: store.get(k) ?? null });
+      },
+      set: (key: string[], value: unknown) => {
+        const k = JSON.stringify(key);
+        store.set(k, value);
+        return Promise.resolve({ ok: true });
+      },
+      delete: (key: string[]) => {
+        const k = JSON.stringify(key);
+        store.delete(k);
+        return Promise.resolve({ ok: true });
+      },
+      close: () => {},
+    };
+    // @ts-ignore: mocking Deno.openKv
+    Deno.openKv = () => Promise.resolve(mockKv);
 
     // Mock ctx.renderToString
     server.use((_req, ctx, next) => {
@@ -45,7 +51,7 @@ Deno.test({
     try {
       // 1. Signup
       const signupForm = new FormData();
-      signupForm.append("identifier", "testuser");
+      signupForm.append("identifier", "testuser@example.com");
       signupForm.append("password", "testpass");
 
       const signupRes = await fetch("http://localhost:8100/signup", {
@@ -71,13 +77,13 @@ Deno.test({
       assertEquals(dashboardRes.status, 200);
       const dashboardText = await dashboardRes.text();
       assert(
-        dashboardText.includes("testuser"),
+        dashboardText.includes("testuser@example.com"),
         "Dashboard should show username",
       );
 
       // 3. Signin
       const signinForm = new FormData();
-      signinForm.append("identifier", "testuser");
+      signinForm.append("identifier", "testuser@example.com");
       signinForm.append("password", "testpass");
 
       const signinRes = await fetch("http://localhost:8100/signin", {
@@ -110,7 +116,23 @@ Deno.test({
       );
       await signoutRes.body?.cancel();
 
-      // 5. Dashboard without cookie (should redirect)
+      // 5. Signup with invalid identifier
+      const invalidSignupForm = new FormData();
+      invalidSignupForm.append("identifier", "invalid_id");
+      invalidSignupForm.append("password", "pass");
+      const invalidRes = await fetch("http://localhost:8100/signup", {
+        method: "POST",
+        body: invalidSignupForm,
+      });
+      const invalidText = await invalidRes.text();
+      assert(
+        invalidText.includes(
+          "Identifier must be a valid email or phone number",
+        ),
+        "Should show error for invalid identifier",
+      );
+
+      // 6. Dashboard without cookie (should redirect)
       const dashboardNoAuthRes = await fetch(
         "http://localhost:8100/dashboard",
         {

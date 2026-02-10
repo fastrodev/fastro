@@ -40,23 +40,32 @@ export function build(routes: Route[]): Middleware {
     string,
     { params: Record<string, string>; routeIndex: number } | null
   >();
-  const MAX_CACHE_SIZE = 1000;
+  // module-level MAX_CACHE_SIZE is controllable in tests via setMaxCacheSize
+  // declared further below
 
   return (
     req: Request,
     ctx: Context,
     next: () => Response | Promise<Response>,
   ) => {
-    const url = new URL(req.url);
+    const urlStr = req.url;
+    const qIdx = urlStr.indexOf("?");
+    const thirdSlash = urlStr.indexOf("/", 8);
+    const pathname = thirdSlash === -1
+      ? "/"
+      : (qIdx === -1
+        ? urlStr.slice(thirdSlash)
+        : urlStr.slice(thirdSlash, qIdx));
+
     const method = req.method;
-    const cacheKey = `${method}:${url.pathname}`;
+    const cacheKey = `${method}:${pathname}`;
 
     function tryRoute(index: number): Response | Promise<Response> {
       for (let i = index; i < routes.length; i++) {
         const route = routes[i];
         if (route.method !== method) continue;
 
-        const match = matchPath(route.path, url.pathname);
+        const match = matchPath(route.path, pathname);
         if (match) {
           // Only cache if it's the first match and no complex fallthrough is expected
           // or just cache the first match for simplicity
@@ -141,7 +150,11 @@ export function matchPath(
 
     if (routePart.startsWith(":")) {
       if (!requestPart) return null; // Don't match empty segments for parameters
-      params[routePart.slice(1)] = requestPart;
+      try {
+        params[routePart.slice(1)] = decodeURIComponent(requestPart);
+      } catch {
+        params[routePart.slice(1)] = requestPart;
+      }
     } else if (routePart !== requestPart) {
       return null;
     }
@@ -280,4 +293,11 @@ class RouteBuilder {
  */
 export function createRouter(): RouteBuilder {
   return new RouteBuilder();
+}
+
+// Allow tests to adjust cache size for coverage/eviction testing.
+export let MAX_CACHE_SIZE = 1000;
+
+export function setMaxCacheSize(n: number) {
+  MAX_CACHE_SIZE = Math.max(0, Math.floor(n));
 }

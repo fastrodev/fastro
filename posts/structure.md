@@ -3,7 +3,7 @@ title: "Project Structure: Organizing Your Fastro Application"
 description: "Learn the recommended project layout for Fastro applications, from simple scripts to scalable multi-module architectures."
 date: 2026-02-04
 author: "Fastro Team"
-tags: ["architecture", "best-practices", "tutorial"]
+tags: ["general", "tutorial"]
 ---
 
 Fastro is built on the principle of "simple enough for a script, robust enough for an enterprise app." Because it has zero dependencies and uses standard Web APIs, you have total freedom in how you organize your code. However, following a standard structure makes your application easier to maintain and collaborate on.
