@@ -1,0 +1,15 @@
+{
+  "name": "fastro-merchant",
+  "private": true,
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "autoprefixer": "^10.4.23",
+    "cssnano": "^7.1.2",
+    "postcss": "^8.5.6",
+    "postcss-cli": "^10.1.0",
+    "tailwind-scrollbar": "^4.0.2"
+  },
+  "scripts": {
+    "build:css": "postcss ./static/css/tailwind.css -o ./public/css/app.css --env production"
+  }
+}
