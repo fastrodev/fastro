@@ -38,6 +38,36 @@ async function processCss(staticDir: string) {
 }
 
 export function tailwind(pathname = "/styles.css", staticDir = "/static") {
+  const isProd = Deno.env.get("FASTRO_ENV") === "production" ||
+    Deno.env.get("ENV") === "production";
+
+  if (isProd) {
+    const fileName = pathname.split("/").pop() || "app.css";
+    const prebuiltPath = Deno.cwd() + "/public/css/" + fileName;
+    try {
+      const prebuilt = Deno.readTextFileSync(prebuiltPath);
+      return (
+        req: Request,
+        _context: Context,
+        next: () => Response | Promise<Response>,
+      ) => {
+        const url = new URL(req.url);
+        if (url.pathname !== pathname) return next();
+        return new Response(prebuilt, {
+          status: 200,
+          headers: {
+            "Content-Type": "text/css",
+            "Cache-Control": "public, max-age=31536000, immutable",
+          },
+        });
+      };
+    } catch (_err) {
+      console.warn(
+        `Prebuilt Tailwind CSS not found at ${prebuiltPath}, falling back to on-the-fly processing.`,
+      );
+    }
+  }
+
   const cache = new Map<string, string>();
   return async (
     req: Request,
@@ -49,26 +79,6 @@ export function tailwind(pathname = "/styles.css", staticDir = "/static") {
 
     const cached = cache.get(pathname);
     if (cached) return render(cached);
-
-    const isProd = Deno.env.get("ENV") === "production";
-    if (isProd) {
-      const fileName = pathname.split("/").pop() || "app.css";
-      const prebuiltPath = Deno.cwd() + "/public/css/" + fileName;
-      try {
-        const prebuilt = Deno.readTextFileSync(prebuiltPath);
-        return new Response(prebuilt, {
-          status: 200,
-          headers: {
-            "Content-Type": "text/css",
-            "Cache-Control": "public, max-age=31536000, immutable",
-          },
-        });
-      } catch (_err) {
-        console.warn(
-          `Prebuilt Tailwind CSS not found at ${prebuiltPath}, processing on-the-fly.`,
-        );
-      }
-    }
 
     const result = await processCss(staticDir);
     if (result) {
