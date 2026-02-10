@@ -51,3 +51,14 @@ export const dashboardHandler: Handler = async (req, ctx) => {
 
   return new Response(html, { headers: { "Content-Type": "text/html" } });
 };
+
+// Dedicated GET signout handler for links that use GET
+export const signoutHandler: Handler = (_req, ctx) => {
+  if (typeof ctx.setCookie === "function") {
+    ctx.setCookie("token", "", { path: "/", maxAge: 0 });
+  }
+  return new Response(null, {
+    status: 303,
+    headers: { Location: "/signin" },
+  });
+};

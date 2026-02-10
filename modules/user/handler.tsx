@@ -1,5 +1,8 @@
 import { Handler } from "../../core/types.ts";
 import App from "./App.tsx";
+import { verifyToken } from "../../middlewares/jwt/jwt.ts";
+
+const JWT_SECRET = Deno.env.get("JWT_SECRET") || "fastro-secret";
 
 export const userHandler: Handler = async (_req, ctx) => {
   const username = ctx.params.username;
@@ -26,12 +29,37 @@ export const userHandler: Handler = async (_req, ctx) => {
     notFound = true;
   }
 
+  // Pass current authenticated user (if any) from ctx.state.user to the render
+  // Check cookie for token and verify it to determine authenticated user
+  let currentUser: string | undefined = undefined;
+  try {
+    const cookieHeader = _req.headers.get("cookie");
+    if (cookieHeader) {
+      const m = cookieHeader.match(/(?:^|;\s*)token=([^;]+)/);
+      if (m) {
+        const token = decodeURIComponent(m[1]);
+        const payload = await verifyToken<{ user: string }>(token, JWT_SECRET);
+        if (payload && typeof payload.user === "string") {
+          currentUser = payload.user;
+        }
+      }
+    }
+  } catch (_e) {
+    // ignore token verification errors and treat as unauthenticated
+  }
+
   const html = ctx.renderToString!(
-    <App username={username} name={name} bio={bio} notFound={notFound} />,
+    <App
+      username={username}
+      name={name}
+      bio={bio}
+      notFound={notFound}
+      currentUser={currentUser}
+    />,
     {
       includeDoctype: true,
       title: notFound ? "User Not Found" : `${name || username}'s Profile`,
-      initialProps: { username, name, bio, notFound },
+      initialProps: { username, name, bio, notFound, currentUser },
     },
   );
 

@@ -5,21 +5,16 @@ type Props = {
   msg?: string;
 };
 
+import Header from "../shared/Header.tsx";
+import Footer from "../shared/Footer.tsx";
+
 export function App({ user, name, bio, msg }: Props) {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", padding: 20 }}>
+      <Header user={user} />
       <h1>User Profile</h1>
-      <nav style={{ marginBottom: 20 }}>
-        <a href="/dashboard" style={{ marginRight: 10 }}>Home</a>
-        <a href="/profile" style={{ marginRight: 10 }}>Profile</a>
-        <a href="/password">Change Password</a>
-      </nav>
 
       {msg && <p style={{ color: "green" }}>{msg}</p>}
-
-      <p>
-        <a href={`/u/${user}`}>View your public profile</a>
-      </p>
 
       <form method="POST" action="/profile">
         <div style={{ marginBottom: 10 }}>
@@ -57,11 +52,7 @@ export function App({ user, name, bio, msg }: Props) {
         <button type="submit">Update Profile</button>
       </form>
 
-      <hr style={{ margin: "20px 0" }} />
-
-      <form method="POST" action="/signout">
-        <button type="submit">Sign out</button>
-      </form>
+      <Footer />
     </div>
   );
 }
