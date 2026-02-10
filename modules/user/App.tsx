@@ -3,9 +3,13 @@ type Props = {
   name?: string;
   bio?: string;
   notFound?: boolean;
+  currentUser?: string | undefined;
 };
 
-export function App({ username, name, bio, notFound }: Props) {
+import Header from "../shared/Header.tsx";
+import Footer from "../shared/Footer.tsx";
+
+export function App({ username, name, bio, notFound, currentUser }: Props) {
   if (notFound) {
     return (
       <div style={{ fontFamily: "system-ui, sans-serif", padding: 20 }}>
@@ -18,6 +22,7 @@ export function App({ username, name, bio, notFound }: Props) {
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", padding: 20 }}>
+      {currentUser ? <Header user={currentUser} /> : null}
       <h1>{name || username}'s Profile</h1>
       <p>
         <strong>Username:</strong> {username}
@@ -33,8 +38,8 @@ export function App({ username, name, bio, notFound }: Props) {
           <span style={{ whiteSpace: "pre-wrap" }}>{bio}</span>
         </p>
       )}
-      <hr style={{ margin: "20px 0" }} />
-      <a href="/dashboard">Back to Dashboard</a>
+
+      <Footer />
     </div>
   );
 }

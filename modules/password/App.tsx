@@ -4,16 +4,14 @@ type Props = {
   msg?: string | null;
 };
 
+import Header from "../shared/Header.tsx";
+import Footer from "../shared/Footer.tsx";
+
 export function App({ identifier, error, msg }: Props) {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", padding: 20 }}>
+      <Header user={identifier} />
       <h1>Update Password</h1>
-
-      <nav style={{ marginBottom: 20 }}>
-        <a href="/dashboard" style={{ marginRight: 10 }}>Home</a>
-        <a href="/profile" style={{ marginRight: 10 }}>Profile</a>
-        <a href="/password">Change Password</a>
-      </nav>
 
       {msg && <p style={{ color: "green" }}>{msg}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -82,6 +80,7 @@ export function App({ identifier, error, msg }: Props) {
 
         <button type="submit">Update Password</button>
       </form>
+      <Footer />
     </div>
   );
 }

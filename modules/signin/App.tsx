@@ -4,6 +4,8 @@ type Props = {
   data?: { identifier?: string } | null;
 };
 
+import Footer from "../shared/Footer.tsx";
+
 export function App(props: Props) {
   const { submitted, error, data } = props;
 
@@ -48,6 +50,7 @@ export function App(props: Props) {
             </div>
           </form>
         )}
+      <Footer />
     </div>
   );
 }

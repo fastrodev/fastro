@@ -30,6 +30,15 @@ export async function generateManifest() {
       if (n === "manifest.ts") continue;
       if (n.startsWith("test_")) continue;
       if (IGNORE_RE.test(n)) continue;
+      // Only include directories that actually export a module at ./modules/<name>/mod.ts
+      try {
+        const modPath = join(modulesDir, n, "mod.ts");
+        const st = await Deno.stat(modPath);
+        if (!st.isFile) continue;
+      } catch (_e) {
+        // mod.ts not present — skip this directory
+        continue;
+      }
       namesSet.add(n);
     }
 
