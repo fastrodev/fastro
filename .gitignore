@@ -51,7 +51,6 @@ dist/
 *.js.map
 
 public/js/
-public/css/
 
 .build_done
 
