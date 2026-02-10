@@ -4,7 +4,7 @@ description: "Panduan logis dan terstruktur dalam membangun sistem login/signup 
 date: 2026-02-09
 author: "Fastro Assistant"
 image: "https://repository-images.githubusercontent.com/264308713/1b83bd0f-b9d9-466d-9e63-f947c1a67281"
-tags: ["vibe coding", "deno", "fastro", "jwt", "testing"]
+tags: ["general", "tutorial"]
 ---
 
 "Vibe Coding" bukan berarti menulis kode tanpa arah. Sebaliknya, ini adalah tentang mempertahankan alur kerja (*flow*) yang cepat dengan bantuan AI, tanpa mengorbankan kualitas. 

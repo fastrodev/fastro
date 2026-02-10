@@ -1,4 +1,5 @@
 import { build, createClient, deleteClient, getModulesWithApp } from "./mod.ts";
+import { generateManifest } from "../scripts/generate_manifest.ts";
 
 const recentlyBuilt = new Map<string, number>();
 const BUILD_COOLDOWN_MS = 200;
@@ -106,6 +107,7 @@ export async function startWatcher() {
   // i think we need to detect all changes now, not just first one
   const pendingAffectedModules = new Set<string>();
   let pendingComponentsChanged = false;
+  let pendingModulesChanged = false;
 
   for await (const event of watcher) {
     if (
@@ -137,6 +139,11 @@ export async function startWatcher() {
           }
           hasRelevantChange = true;
         }
+        // mark any modules/ root change so manifest can be regenerated
+        if (p.match(/(?:[/\\]|^)modules(?:[/\\])/)) {
+          pendingModulesChanged = true;
+          hasRelevantChange = true;
+        }
         if (
           p.match(/(?:[/\\]|^)components(?:[/\\])/) ||
           p.match(/(?:[/\\]|^)app(?:[/\\])/) ||
@@ -153,6 +160,15 @@ export async function startWatcher() {
       rebuildTimeout = setTimeout(async () => {
         isRebuilding = true;
         try {
+          // Regenerate manifest when there are any changes under modules
+          try {
+            if (pendingModulesChanged || pendingAffectedModules.size > 0) {
+              await generateManifest();
+            }
+          } catch (e) {
+            console.warn("generateManifest failed:", e);
+          }
+
           if (pendingComponentsChanged || pendingAffectedModules.size === 0) {
             await rebuild();
           } else {
@@ -163,6 +179,7 @@ export async function startWatcher() {
           rebuildTimeout = undefined;
           pendingAffectedModules.clear();
           pendingComponentsChanged = false;
+          pendingModulesChanged = false;
         }
       }, 100);
     }
@@ -170,6 +187,12 @@ export async function startWatcher() {
 }
 
 if (import.meta.main) {
+  // Ensure manifest exists before initial rebuild
+  try {
+    await generateManifest();
+  } catch (e) {
+    console.warn("generateManifest (initial) failed:", e);
+  }
   await rebuild();
   await startWatcher();
 }

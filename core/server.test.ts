@@ -1,5 +1,7 @@
 import { assert, assertEquals, assertRejects } from "@std/assert";
 import server, { _getRoutesForTests, _resetForTests } from "./server.ts";
+// test-only helper for internal handler retrieval (typed to satisfy linter)
+// no test-only globals
 import type { Context, Next } from "./types.ts";
 
 Deno.test("Coverage - ctx.url lazy init", async () => {
@@ -292,6 +294,76 @@ Deno.test("Coverage - fast-root handler with ctx.renderToString stub", async () 
   s.close();
 });
 
+Deno.test("Coverage - fast-root second clause forced", async () => {
+  _resetForTests();
+  // root handler with zero args (rh0) to avoid ctx creation
+  server.get("/", () => "forced-root");
+  const s = server.serve({ port: 3220 });
+  const res = await fetch("http://localhost:3220/", {
+    headers: { "x-test-force-fast-root": "1" },
+  });
+  assertEquals(await res.text(), "forced-root");
+  s.close();
+});
+
+Deno.test("Coverage - fast-root left clause forced", async () => {
+  _resetForTests();
+  // root handler with zero args (rh0) to exercise left OR clause
+  server.get("/", () => "forced-root-left");
+  const s = server.serve({ port: 3222 });
+  const res = await fetch("http://localhost:3222/", {
+    headers: { "x-test-force-fast-root-left": "1" },
+  });
+  assertEquals(await res.text(), "forced-root-left");
+  s.close();
+});
+
+Deno.test("Coverage - request without trailing slash (no thirdSlash)", async () => {
+  _resetForTests();
+  server.get("/", () => "no-third");
+  const s = server.serve({ port: 3333 });
+  const res = await fetch("http://localhost:3333");
+  assertEquals(await res.text(), "no-third");
+  s.close();
+});
+
+Deno.test("Coverage - pathname computation comprehensive", async () => {
+  _resetForTests();
+  server.get("/", () => "root");
+  server.get("/path", () => "path");
+  const s = server.serve({ port: 3337 });
+
+  // 1. thirdSlash !== -1, qIdx === -1 (standard path)
+  const res1 = await fetch("http://localhost:3337/path");
+  assertEquals(await res1.text(), "path");
+
+  // 2. thirdSlash !== -1, qIdx !== -1 (path + query)
+  const res2 = await fetch("http://localhost:3337/path?a=1");
+  assertEquals(await res2.text(), "path");
+
+  // 3. thirdSlash === -1 (should fall back to "/")
+  // Note: Most fetch implementations normalize http://localhost:port to http://localhost:port/
+  // But we can try to force a request with no trailing slash if possible.
+  const res3 = await fetch("http://localhost:3337");
+  assertEquals(await res3.text(), "root");
+
+  s.close();
+});
+
+Deno.test("Coverage - fast-root second clause forced with ctx", async () => {
+  _resetForTests();
+  // root handler that expects ctx (rh0 = false) but does not access ctx.url
+  server.get("/", (_req: Request, _ctx) => "forced-root-ctx");
+  const s = server.serve({ port: 3221 });
+  const res = await fetch("http://localhost:3221/", {
+    headers: { "x-test-force-fast-root": "1" },
+  });
+
+  // direct handler invocation removed to avoid adding test-only hooks
+  assertEquals(await res.text(), "forced-root-ctx");
+  s.close();
+});
+
 Deno.test("Coverage - cached route uses cachedCtx.renderToString stub", async () => {
   _resetForTests();
   server.get("/cache-render", (_req, ctx) => {
@@ -351,6 +423,34 @@ Deno.test("Coverage - 404 cache limit eviction", async () => {
   s.close();
 });
 
+Deno.test("Coverage - fast-root with credentials in URL", async () => {
+  _resetForTests();
+  server.get("/", () => "cred-root");
+  const s = server.serve({ port: 3400 });
+  const res = await fetch("http://user:pass@localhost:3400/");
+  assertEquals(await res.text(), "cred-root");
+  s.close();
+});
+
+Deno.test("Coverage - fast-root pathname else branch (longer path)", async () => {
+  _resetForTests();
+  server.get("/long/path", () => "long");
+  const s = server.serve({ port: 3401 });
+  const res = await fetch("http://localhost:3401/long/path");
+  assertEquals(await res.text(), "long");
+  s.close();
+});
+
+Deno.test("Coverage - explicit url length equals thirdSlash+1 case", async () => {
+  _resetForTests();
+  // create a single-segment path to exercise pathname length handling
+  server.get("/x", () => "single-trailing");
+  const s = server.serve({ port: 3402 });
+  const res = await fetch("http://localhost:3402/x");
+  assertEquals(await res.text(), "single-trailing");
+  s.close();
+});
+
 Deno.test("Coverage - URL lazy getter no query", async () => {
   _resetForTests();
   server.get("/no-query", (_req, ctx) => {
@@ -359,6 +459,53 @@ Deno.test("Coverage - URL lazy getter no query", async () => {
   const s = server.serve({ port: 3138 });
   const res = await fetch("http://localhost:3138/no-query");
   assertEquals(await res.text(), "/no-query");
+  s.close();
+});
+
+Deno.test("Coverage - registerRoute with URLPattern", async () => {
+  _resetForTests();
+  server.get(new URLPattern({ pathname: "/urlpattern" }), () => "up");
+  const s = server.serve({ port: 3340 });
+  const res = await fetch("http://localhost:3340/urlpattern");
+  assertEquals(await res.text(), "up");
+  s.close();
+});
+
+Deno.test("Coverage - routeRegex escaping and wildcard", async () => {
+  _resetForTests();
+  server.get("/a.b", () => "escaped");
+  server.get("/wild/*", () => "wildcard");
+  const s = server.serve({ port: 3341 });
+  const r1 = await fetch("http://localhost:3341/a.b");
+  assertEquals(await r1.text(), "escaped");
+  const r2 = await fetch("http://localhost:3341/wild/anything/here");
+  assertEquals(await r2.text(), "wildcard");
+  s.close();
+});
+
+Deno.test("Coverage - middleware async + handler Promise", async () => {
+  _resetForTests();
+  server.get(
+    "/mw-async",
+    () => Promise.resolve("ok"),
+    async (_req, _ctx, next) => {
+      const out = next ? await (next() as unknown as Promise<unknown>) : "fail";
+      if (out instanceof Response) return out;
+      if (typeof out === "string") return new Response(out);
+      return new Response("Internal Server Error", { status: 500 });
+    },
+  );
+  server.get(
+    "/res-mw",
+    () => new Response("resp"),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3342 });
+  const r1 = await fetch("http://localhost:3342/mw-async");
+  assertEquals(await r1.text(), "ok");
+  const r2 = await fetch("http://localhost:3342/res-mw");
+  assertEquals(await r2.text(), "resp");
   s.close();
 });
 
@@ -726,6 +873,30 @@ Deno.test("Coverage - matchCache hit eviction", async () => {
   const s = server.serve({ port: 3193, cacheSize: 1 });
   await (await fetch("http://localhost:3193/a")).text();
   await (await fetch("http://localhost:3193/b")).text();
+  s.close();
+});
+
+Deno.test("Coverage - server - param decoding success", async () => {
+  _resetForTests();
+  server.get(
+    "/u/:username",
+    (_req: Request, ctx: Context) => ctx.params.username,
+  );
+  const s = server.serve({ port: 3300 });
+  const res = await fetch("http://localhost:3300/u/yanu%40fastro.dev");
+  assertEquals(await res.text(), "yanu@fastro.dev");
+  s.close();
+});
+
+Deno.test("Coverage - server - raw @ param preserved", async () => {
+  _resetForTests();
+  server.get(
+    "/u2/:username",
+    (_req: Request, ctx: Context) => ctx.params.username,
+  );
+  const s = server.serve({ port: 3301 });
+  const res = await fetch("http://localhost:3301/u2/yanu@fastro.dev");
+  assertEquals(await res.text(), "yanu@fastro.dev");
   s.close();
 });
 
@@ -1704,5 +1875,174 @@ Deno.test("Coverage - server patch, head, options", async () => {
     method: "OPTIONS",
   });
   assertEquals(await resOptions.text(), "optioned");
+  s.close();
+});
+
+Deno.test("Coverage - server - invalid parameter decoding", async () => {
+  _resetForTests();
+  server.get("/u/:name", (_req, ctx) => ctx.params.name);
+  const s = server.serve({ port: 3326 });
+  const res = await fetch("http://localhost:3326/u/%E0%A4%A");
+  assertEquals(await res.text(), "%E0%A4%A");
+  s.close();
+});
+
+Deno.test("Coverage - server - toResponse fallthrough", async () => {
+  _resetForTests();
+  // @ts-ignore: testing invalid return
+  server.get("/err", () => undefined);
+  const s = server.serve({ port: 3327 });
+  const res = await fetch("http://localhost:3327/err");
+  assertEquals(res.status, 500);
+  await res.body?.cancel();
+  s.close();
+});
+
+Deno.test("Coverage - server - stub renderToString warning", async () => {
+  _resetForTests();
+  let warned = false;
+  const originalWarn = console.warn;
+  console.warn = () => {
+    warned = true;
+  };
+
+  server.get("/", (_req, ctx) => {
+    // @ts-ignore: checking stub implementation
+    return ctx.renderToString("test");
+  });
+
+  const s = server.serve({ port: 3328 });
+  const res = await fetch("http://localhost:3328/");
+  assert(
+    (await res.text()).includes(
+      "renderToString: render middleware not installed",
+    ),
+  );
+  assert(warned);
+
+  console.warn = originalWarn;
+  s.close();
+});
+
+Deno.test("Coverage - server - cache eviction", async () => {
+  _resetForTests();
+  server.get("/test/:id", () => "ok");
+  const s = server.serve({ port: 3329 });
+
+  // Fill cache
+  for (let i = 0; i < 1001; i++) {
+    const res = await fetch(`http://localhost:3329/test/${i}`);
+    await res.body?.cancel();
+  }
+
+  s.close();
+});
+
+Deno.test("Coverage - direct internals and registrations", async () => {
+  _resetForTests();
+  // register one route per method to ensure registration branches are hit
+  server.get("/mget", () => "g");
+  server.post("/mpost", () => "p");
+  server.put("/mput", () => "u");
+  server.delete("/mdelete", () => "d");
+  server.patch("/mpatch", () => "pt");
+  server.head("/mhead", () => "h");
+  server.options("/moptions", () => "o");
+
+  // also register using URLPattern to hit the alternate branch
+  server.get(
+    new URLPattern({ pathname: "/up" }) as unknown as URLPattern,
+    () => "up",
+  );
+
+  const s = server.serve({ port: 3330 });
+  // smoke requests to ensure routes are wired and consume bodies
+  await (await fetch("http://localhost:3330/mget")).text();
+  await (await fetch("http://localhost:3330/mpost", { method: "POST" })).text();
+  await (await fetch("http://localhost:3330/mput", { method: "PUT" })).text();
+  await (await fetch("http://localhost:3330/mdelete", { method: "DELETE" }))
+    .text();
+  await (await fetch("http://localhost:3330/mpatch", { method: "PATCH" }))
+    .text();
+  await (await fetch("http://localhost:3330/mhead", { method: "HEAD" })).text();
+  await (await fetch("http://localhost:3330/moptions", { method: "OPTIONS" }))
+    .text();
+  await (await fetch("http://localhost:3330/up")).text();
+
+  s.close();
+});
+
+Deno.test("Coverage - pathname derivation - origin only no trailing slash", async () => {
+  _resetForTests();
+  server.get("/", () => "root");
+  const s = server.serve({ port: 3505 });
+
+  const conn = await Deno.connect({ port: 3505 });
+  // Host header is empty string
+  const request = "GET / HTTP/1.1\r\nHost: \r\nConnection: close\r\n\r\n";
+  await conn.write(new TextEncoder().encode(request));
+
+  const buf = new Uint8Array(1024);
+  await conn.read(buf);
+  conn.close();
+  s.close();
+});
+
+Deno.test("Coverage - pathname derivation - origin with query no trailing slash", async () => {
+  _resetForTests();
+  server.get("/", () => "root");
+  const s = server.serve({ port: 3506 });
+
+  const conn = await Deno.connect({ port: 3506 });
+  const request =
+    "GET http://localhost:3506?a=1 HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n";
+  await conn.write(new TextEncoder().encode(request));
+
+  const buf = new Uint8Array(1024);
+  await conn.read(buf);
+  conn.close();
+  s.close();
+});
+
+Deno.test("Coverage - pathname derivation - path with query", async () => {
+  _resetForTests();
+  server.get("/p", () => "p");
+  const s = server.serve({ port: 3507 });
+  const res = await fetch("http://localhost:3507/p?a=1");
+  assertEquals(await res.text(), "p");
+  s.close();
+});
+
+Deno.test("Coverage - pathname derivation - complete scenario", async () => {
+  _resetForTests();
+  // Add a middleware to disable fastRoot and force regular path calculation coverage
+  server.use((_req, _ctx, next) => next ? next() : new Response("ok"));
+  server.get("/", () => "root");
+  server.get("/p", () => "p");
+  const s = server.serve({ port: 3510 });
+
+  // 1. Hit thirdSlash === -1 by using an empty Host header resulting in http:///
+  const conn1 = await Deno.connect({ port: 3510 });
+  await conn1.write(
+    new TextEncoder().encode(
+      "GET / HTTP/1.1\r\nHost: \r\nConnection: close\r\n\r\n",
+    ),
+  );
+  const buf1 = new Uint8Array(1024);
+  await conn1.read(buf1);
+  conn1.close();
+
+  // 2. Hit thirdSlash !== -1 and qIdx === -1
+  const r2 = await fetch("http://localhost:3510/");
+  assertEquals(await r2.text(), "root");
+
+  // 3. Hit thirdSlash !== -1 and qIdx !== -1
+  const r3 = await fetch("http://localhost:3510/?a=1");
+  assertEquals(await r3.text(), "root");
+
+  // 4. Hit sub-branch with longer path
+  const r4 = await fetch("http://localhost:3510/p");
+  assertEquals(await r4.text(), "p");
+
   s.close();
 });

@@ -12,6 +12,7 @@ export async function renderBlog(page: number = 1, search: string = "") {
   const posts: { title: string; date: string; link: string; tags: string[] }[] =
     [];
   const query = search.toLowerCase().trim();
+  const allTags = new Set<string>();
 
   for await (const entry of Deno.readDir(postsDir)) {
     if (entry.isFile && entry.name.endsWith(".md")) {
@@ -35,6 +36,7 @@ export async function renderBlog(page: number = 1, search: string = "") {
             tags = tagsMatch[1].split(",").map((t) =>
               t.trim().replace(/['"]/g, "")
             ).filter(Boolean);
+            tags.forEach((t) => allTags.add(t));
           }
         }
       }
@@ -86,6 +88,21 @@ export async function renderBlog(page: number = 1, search: string = "") {
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
     </button>
   </form>
+
+  <div class="flex flex-wrap gap-2 mb-10 -mt-4">
+    ${
+    Array.from(allTags).sort().map((tag) => {
+      const isActive = query === tag.toLowerCase();
+      return `<a href="${
+        isActive ? "/blog" : `/blog?search=${encodeURIComponent(tag)}`
+      }" class="text-[0.65rem] md:text-xs px-3 py-1 rounded-full border ${
+        isActive
+          ? "bg-fg-default border-fg-default !text-canvas-default"
+          : "bg-canvas-subtle border-border-default !text-fg-muted hover:border-fg-muted hover:!text-fg-default"
+      } font-semibold uppercase tracking-wider transition-all duration-200 !no-underline">${tag}</a>`;
+    }).join("")
+  }
+  </div>
 
   <div class="space-y-4">`;
 

@@ -1,13 +1,26 @@
 import { Handler } from "../../core/types.ts";
 import App from "./App.tsx";
 import { createToken } from "../../middlewares/jwt/mod.ts";
+import { hashPassword } from "../../utils/password.ts";
 
 const JWT_SECRET = Deno.env.get("JWT_SECRET") || "fastro-secret";
 
 export const signupHandler: Handler = async (req, ctx) => {
   if (req.method === "POST") {
     const s = ctx.state as Record<string, unknown> | undefined;
-    const form = s?.formData as FormData | undefined;
+    let form = s?.formData as FormData | undefined;
+    // Fallback: if no body parsing middleware installed, read form directly
+    if (!form) {
+      try {
+        // Attempt to read form data from the Request directly
+        // and store it in ctx.state for consistency.
+        const fd = await req.formData();
+        form = fd;
+        if (s) s.formData = fd;
+      } catch {
+        // ignore; will be handled below as missing form
+      }
+    }
     let error: string | null = null;
     let identifier = "";
     let password = "";
@@ -17,19 +30,35 @@ export const signupHandler: Handler = async (req, ctx) => {
     } else {
       identifier = String(form.get("identifier") ?? "").trim();
       password = String(form.get("password") ?? "");
-      if (!identifier || !password) error = "Both fields are required";
+      if (!identifier || !password) {
+        error = "Both fields are required";
+      } else {
+        const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
+        // Basic phone validation: optional +, then 7-15 digits
+        const isPhone = /^\+?\d{7,15}$/.test(identifier);
+        if (!isEmail && !isPhone) {
+          error = "Identifier must be a valid email or phone number";
+        }
+      }
     }
 
     if (!error) {
       try {
         if (ctx.kv) {
-          await ctx.kv.set(["user", identifier], {
-            password,
-            createdAt: Date.now(),
-          });
+          const existing = await ctx.kv.get(["user", identifier]);
+          if (existing.value) {
+            error = "User already exists";
+          } else {
+            const { salt, hash } = await hashPassword(password);
+            await ctx.kv.set(["user", identifier], {
+              hash,
+              salt,
+              createdAt: Date.now(),
+            });
+          }
         }
       } catch (e) {
-        console.error("KV set failed:", e);
+        console.error("KV operation failed:", e);
         error = "Failed to save user";
       }
     }
@@ -46,6 +75,8 @@ export const signupHandler: Handler = async (req, ctx) => {
             httpOnly: true,
             path: "/",
             maxAge: 60 * 60 * 24,
+            sameSite: "Lax",
+            secure: Deno.env.get("ENV") === "production",
           });
         }
       } catch (e) {

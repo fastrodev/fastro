@@ -1,5 +1,11 @@
 import { assertEquals } from "@std/assert";
-import { build, createRouter, matchPath, type Route } from "./router.ts";
+import {
+  build,
+  createRouter,
+  matchPath,
+  type Route,
+  setMaxCacheSize,
+} from "./router.ts";
 import { Context, Handler, Middleware } from "./types.ts";
 
 Deno.test("matchPath - exact match without params", () => {
@@ -40,6 +46,21 @@ Deno.test("matchPath - no match for root vs non-root", () => {
 Deno.test("matchPath - param with special characters", () => {
   const result = matchPath("/file/:name", "/file/test-file.txt");
   assertEquals(result, { params: { name: "test-file.txt" } });
+});
+
+Deno.test("matchPath - percent-encoded param decodes", () => {
+  const result = matchPath("/u/:name", "/u/yanu%40fastro.dev");
+  assertEquals(result, { params: { name: "yanu@fastro.dev" } });
+});
+
+Deno.test("matchPath - raw @ character preserved", () => {
+  const result = matchPath("/u/:name", "/u/yanu@fastro.dev");
+  assertEquals(result, { params: { name: "yanu@fastro.dev" } });
+});
+
+Deno.test("matchPath - percent-encoded invalid sequence falls back to raw", () => {
+  const result = matchPath("/u/:name", "/u/invalid%ZZ");
+  assertEquals(result, { params: { name: "invalid%ZZ" } });
 });
 
 Deno.test("matchPath - empty route and request", () => {
@@ -586,6 +607,31 @@ Deno.test("createRouteMiddleware - cache hit with handler calling next", async (
   assertEquals(await (res as Response).text(), "Second");
 });
 
+Deno.test("createRouteMiddleware - triggers cache eviction when capacity exceeded", async () => {
+  const handler: Handler = (_req, _ctx) => new Response(_ctx.params!.id);
+  const routes = [{ method: "GET", path: "/p/:id", handler }];
+  const middleware = build(routes);
+
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+
+  const next = () => new Response("Next");
+
+  // MAX_CACHE_SIZE is 1000 in implementation; exercise one more to force eviction
+  for (let i = 0; i <= 1000; i++) {
+    const req = new Request(`http://localhost/p/${i}`);
+    const res = await middleware(req, { ...ctx, params: {} }, next);
+    // last iteration should still return the correct id
+    if (i === 1000) {
+      assertEquals(await (res as Response).text(), "1000");
+    }
+  }
+});
+
 Deno.test("build - empty routes", async () => {
   const middleware = build([]);
   const res = await middleware(
@@ -799,6 +845,23 @@ Deno.test("createRouteMiddleware - handles object return", async () => {
   assertEquals(await (response as Response).json(), { hello: "world" });
 });
 
+Deno.test("createRouteMiddleware - handles request with no path (origin only)", async () => {
+  const mockHandler: Handler = () => new Response("ROOT");
+  const routes = [{ method: "GET", path: "/", handler: mockHandler }];
+  const middleware = build(routes);
+  const req = new Request("http://localhost");
+  const ctx: Context = {
+    url: new URL("http://localhost"),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
+
+  const response = await middleware(req, ctx, next);
+  assertEquals(await response.text(), "ROOT");
+});
+
 Deno.test("createRouteMiddleware - handles async object return", async () => {
   const handler: Handler = async () => {
     await new Promise((r) => setTimeout(r, 1));
@@ -987,6 +1050,58 @@ Deno.test("createRouteMiddleware - handles number return", async () => {
   );
   assertEquals(await (res as Response).json(), 123);
 });
+
+Deno.test("createRouteMiddleware - handles request with query string (single segment)", async () => {
+  const handler: Handler = () => new Response("QOK");
+  const middleware = build([{ method: "GET", path: "/search", handler }]);
+  const res = await middleware(
+    new Request("http://localhost/search?q=1"),
+    { params: {} } as Context,
+    () => new Response(),
+  );
+  assertEquals(await (res as Response).text(), "QOK");
+});
+
+Deno.test("createRouteMiddleware - handles request with query string (multi segment)", async () => {
+  const handler: Handler = () => new Response("QOK2");
+  const middleware = build([{ method: "GET", path: "/a/b", handler }]);
+  const res = await middleware(
+    new Request("http://localhost/a/b?x=1&y=2"),
+    { params: {} } as Context,
+    () => new Response(),
+  );
+  assertEquals(await (res as Response).text(), "QOK2");
+});
+
+Deno.test("createRouteMiddleware - handles undefined return", async () => {
+  // @ts-ignore: testing non-standard handler return type
+  const handler: Handler = () => undefined;
+  const middleware = build([{ method: "GET", path: "/undef", handler }]);
+  try {
+    await middleware(
+      new Request("http://localhost/undef"),
+      { params: {} } as Context,
+      () => new Response(),
+    );
+    throw new Error("Expected middleware to throw");
+  } catch (e) {
+    // Response.json(undefined) is not serializable and should throw TypeError
+    assertEquals(e instanceof TypeError, true);
+  }
+});
+
+Deno.test("createRouteMiddleware - handles boolean return", async () => {
+  // @ts-ignore: testing non-standard handler return type
+  const handler: Handler = () => true;
+  const middleware = build([{ method: "GET", path: "/bool", handler }]);
+  const res = await middleware(
+    new Request("http://localhost/bool"),
+    { params: {} } as Context,
+    () => new Response(),
+  );
+  assertEquals(await (res as Response).json(), true);
+});
+
 Deno.test("createRouteMiddleware - 404 cache LRU eviction", async () => {
   const middleware = build([]);
   const next = () => new Response("Next");
@@ -996,4 +1111,195 @@ Deno.test("createRouteMiddleware - 404 cache LRU eviction", async () => {
     const req = new Request(`http://localhost/404-${i}`);
     await middleware(req, { params: {} } as Context, next);
   }
+});
+
+Deno.test("createRouteMiddleware - small cache eviction covers both branches", async () => {
+  // Use a small cache size to deterministically hit both eviction checks.
+  setMaxCacheSize(3);
+
+  // 1) Matching route eviction
+  const handler: Handler = (_req, _ctx) => new Response(_ctx.params!.id);
+  const routes = [{ method: "GET", path: "/ev/:id", handler }];
+  const middleware = build(routes);
+  const ctx = { params: {} } as Context;
+  const next = () => new Response();
+
+  for (let i = 0; i <= 3; i++) {
+    const req = new Request(`http://localhost/ev/${i}`);
+    const res = await middleware(req, { ...ctx, params: {} }, next);
+    if (i === 3) {
+      assertEquals(await (res as Response).text(), "3");
+    }
+  }
+
+  // 2) Non-matching route eviction (cache null branch)
+  const none = build([]);
+  for (let i = 0; i <= 3; i++) {
+    const req = new Request(`http://localhost/ev-none-${i}`);
+    await none(req, { params: {} } as Context, () => new Response());
+  }
+
+  // restore default
+  setMaxCacheSize(1000);
+});
+
+Deno.test("matchPath - handles invalid encoding", () => {
+  const result = matchPath("/u/:name", "/u/%E0%A4%A");
+  assertEquals(result, { params: { name: "%E0%A4%A" } });
+});
+
+Deno.test("matchPath - param cannot be empty", () => {
+  const result = matchPath("/u/:name", "/u/");
+  assertEquals(result, null);
+});
+
+Deno.test("createRouteBuilder - handles fallthrough with next", async () => {
+  const r = createRouter();
+  r.get(
+    "/fall/:id",
+    (
+      _req: Request,
+      ctx: Context,
+      next: (() => Response | Promise<Response>) | undefined,
+    ) => {
+      if (ctx.params?.id === "1") return "First";
+      return next ? next() : "Fail";
+    },
+  );
+  r.get("/fall/:id", () => "Second");
+
+  const middleware = r.build();
+
+  const res1 = await middleware(
+    new Request("http://localhost/fall/1"),
+    { params: {} } as Context,
+    () => new Response(),
+  );
+  assertEquals(await (res1 as Response).text(), "First");
+
+  const res2 = await middleware(
+    new Request("http://localhost/fall/2"),
+    { params: {} } as Context,
+    () => new Response(),
+  );
+  assertEquals(await (res2 as Response).text(), "Second");
+
+  // Test cache hit fallthrough
+  const res3 = await middleware(
+    new Request("http://localhost/fall/2"),
+    { params: {} } as Context,
+    () => new Response(),
+  );
+  assertEquals(await (res3 as Response).text(), "Second");
+});
+
+Deno.test("createRouteMiddleware - cache hit LRU move", async () => {
+  const handler: Handler = () => "OK";
+  const middleware = build([{ method: "GET", path: "/test", handler }]);
+  const req = new Request("http://localhost/test");
+  const ctx = { params: {} } as Context;
+  const next = () => new Response();
+
+  await middleware(req, ctx, next); // cache
+  await middleware(req, ctx, next); // hit & move
+});
+
+// Targeted: exercise tryRoute when called with index > 0 where a match exists
+// but the prior route's handler calls next, ensuring the inner tryRoute loop
+// executes the branch where `index !== 0` (no caching) and falls through.
+Deno.test("createRouteMiddleware - tryRoute called with index>0 (no cache set)", async () => {
+  const handler1: Handler = (_req, _ctx, next) => next!();
+  const handler2: Handler = () => new Response("Inner");
+  const routes: Route[] = [
+    { method: "GET", path: "/chain", handler: handler1 },
+    { method: "GET", path: "/chain", handler: handler2 },
+  ];
+  const middleware = build(routes);
+
+  const req = new Request("http://localhost/chain");
+  const ctx: Context = {
+    url: new URL(req.url),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Outer");
+
+  const res = await middleware(req, ctx, next);
+  assertEquals(await (res as Response).text(), "Inner");
+});
+
+Deno.test("createRouteMiddleware - origin-only URL with query (no slash)", async () => {
+  const handler: Handler = () => new Response("ROOTQ");
+  const routes = [{ method: "GET", path: "/", handler }];
+  const middleware = build(routes);
+
+  const res = await middleware(
+    new Request("http://localhost?x=1"),
+    { params: {} } as Context,
+    () => new Response(),
+  );
+  assertEquals(await (res as Response).text(), "ROOTQ");
+});
+
+Deno.test("createRouteMiddleware - non-http URL (about:blank) hits origin branch", async () => {
+  const handler: Handler = () => new Response("BLANK");
+  const middleware = build([{ method: "GET", path: "/", handler }]);
+
+  const res = await middleware(
+    new Request("about:blank"),
+    { params: {} } as Context,
+    () => new Response(),
+  );
+
+  assertEquals(await (res as Response).text(), "BLANK");
+});
+
+Deno.test("createRouteMiddleware - force eviction for matching routes (explicit)", async () => {
+  const handler: Handler = (_req, _ctx) => new Response(_ctx.params!.id);
+  const routes = [{ method: "GET", path: "/force/:id", handler }];
+  const middleware = build(routes);
+  const ctx = { params: {} } as Context;
+  const next = () => new Response();
+
+  // Fill the cache with MAX_CACHE_SIZE entries for matching routes
+  for (let i = 0; i <= 1000; i++) {
+    const req = new Request(`http://localhost/force/${i}`);
+    const res = await middleware(req, { ...ctx, params: {} }, next);
+    if (i === 1000) {
+      assertEquals(await (res as Response).text(), "1000");
+    }
+  }
+});
+
+Deno.test("createRouteMiddleware - force eviction for non-matching routes (explicit)", async () => {
+  const middleware = build([]);
+  const next = () => new Response("Next");
+
+  // Fill the cache with MAX_CACHE_SIZE 404 entries then add one more to evict
+  for (let i = 0; i <= 1000; i++) {
+    const req = new Request(`http://localhost/force-404-${i}`);
+    await middleware(req, { params: {} } as Context, next);
+  }
+});
+
+Deno.test("matchPath - handles double slashes in route and request", () => {
+  const result = matchPath("/a//b", "/a//b");
+  assertEquals(result, { params: {} });
+});
+
+Deno.test("createRouteMiddleware - handles URL with credentials", async () => {
+  const handler: Handler = () => new Response("Creds");
+  const middleware = build([{ method: "GET", path: "/test", handler }]);
+  const req = new Request("http://user:pass@localhost/test");
+  const ctx: Context = {
+    url: new URL(req.url),
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp", hostname: "127.0.0.1", port: 8000 },
+  };
+  const next = () => new Response("Next");
+
+  const res = await middleware(req, ctx, next);
+  assertEquals(await res.text(), "Creds");
 });

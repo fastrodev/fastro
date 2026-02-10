@@ -20,7 +20,10 @@ function base64urlEncode(data: Uint8Array): string {
  * Decodes a base64url string to Uint8Array
  */
 function base64urlDecode(s: string): Uint8Array {
-  const base64 = s.replace(/-/g, "+").replace(/_/g, "/");
+  let base64 = s.replace(/-/g, "+").replace(/_/g, "/");
+  // pad to multiple of 4
+  const pad = (4 - (base64.length % 4)) % 4;
+  if (pad) base64 += "=".repeat(pad);
   const binString = atob(base64);
   const data = new Uint8Array(binString.length);
   for (let i = 0; i < binString.length; i++) {
@@ -113,12 +116,22 @@ export async function verifyToken<T = Record<string, unknown>>(
  */
 export function jwt(options: JwtOptions): Middleware {
   return async (req, ctx, next) => {
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return new Response("Unauthorized", { status: 401 });
+    // Try Authorization header first, then fallback to `Cookie: token=...`
+    let token: string | null = null;
+    const authHeader = req.headers.get("authorization");
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring(7);
+    } else {
+      const cookieHeader = req.headers.get("cookie");
+      if (cookieHeader) {
+        const m = cookieHeader.match(/(?:^|;\s*)token=([^;]+)/);
+        if (m) token = decodeURIComponent(m[1]);
+      }
     }
 
-    const token = authHeader.substring(7);
+    if (!token) {
+      return new Response("Unauthorized", { status: 401 });
+    }
     const payload = await verifyToken(token, options.secret);
 
     if (!payload) {

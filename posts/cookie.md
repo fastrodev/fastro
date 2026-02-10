@@ -3,7 +3,7 @@ title: "Understanding Cookie Middleware in Fastro"
 description: "How Fastro's cookie middleware works, usage patterns, and security best practices."
 date: 2026-02-09
 author: "Fastro Team"
-tags: ["middleware", "cookie", "security"]
+tags: ["middleware"]
 ---
 
 # Understanding Cookie Middleware in Fastro

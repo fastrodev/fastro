@@ -74,7 +74,12 @@ function tryRoute(
         const params: Record<string, string> = {};
         if (route.paramNames.length) {
           for (const name of route.paramNames) {
-            params[name] = groups?.[name] ?? "";
+            const val = groups?.[name] ?? "";
+            try {
+              params[name] = decodeURIComponent(val);
+            } catch {
+              params[name] = val;
+            }
           }
         }
         context.params = params;
@@ -337,7 +342,14 @@ function serve(
   ): Response | Promise<Response> => {
     const method = req.method;
     const urlStr = req.url;
+    const qIdx = urlStr.indexOf("?");
     const thirdSlash = urlStr.indexOf("/", 8);
+    const pathname = thirdSlash === -1
+      ? "/"
+      : (qIdx === -1
+        ? urlStr.slice(thirdSlash)
+        : urlStr.slice(thirdSlash, qIdx));
+    // compute url parts
 
     if (method === "GET" && canUseFastRoot) {
       if (urlStr.length === thirdSlash + 1) {
@@ -372,10 +384,6 @@ function serve(
 
     const cacheKey = method + ":" + urlStr;
     const cached = matchCache.get(cacheKey);
-    const qIdx = urlStr.indexOf("?", thirdSlash);
-    const pathname = qIdx === -1
-      ? urlStr.slice(thirdSlash)
-      : urlStr.slice(thirdSlash, qIdx);
 
     if (cached !== undefined && !hasGlobalMiddlewares) {
       if (cached === null) return new Response("Not found", { status: 404 });
@@ -509,7 +517,6 @@ function serve(
       ? runFinal()
       : applyMiddlewares(req, ctx, runFinal, middlewares);
   };
-
   const serverInstance = Deno.serve({ ...options, handler });
   return { ...serverInstance, close: () => serverInstance.shutdown() };
 }
@@ -529,6 +536,10 @@ export function _resetForTests() {
 export function _getRoutesForTests() {
   return routes;
 }
+
+// Test-only helper: execute internal code paths to increase coverage for branches
+// that are difficult to reach via regular HTTP requests. Only used by tests.
+// Note: test-only helpers were removed to keep production code clean.
 
 const server = {
   get,
