@@ -4,14 +4,13 @@ type Props = {
   data?: { identifier?: string; password?: string } | null;
 };
 
-import Footer from "../shared/Footer.tsx";
+import Page from "../shared/Page.tsx";
 
 export function App(props: Props) {
   const { submitted, error, data } = props;
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", padding: 20 }}>
-      <h1>Sign Up</h1>
+    <Page title="Sign Up">
       {error && (
         <div style={{ color: "#900", marginBottom: 12 }}>Error: {error}</div>
       )}
@@ -29,21 +28,31 @@ export function App(props: Props) {
         : (
           <>
             <form method="POST" action="/signup">
-              <div style={{ marginBottom: 8 }}>
-                <label>
-                  Email / No. Handphone:
-                  <br />
-                  <input name="identifier" />
+              <div className="mb-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Email / Phone Number
+                  <input
+                    name="identifier"
+                    className="mt-1 block w-full max-w-md px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
                 </label>
               </div>
-              <div style={{ marginBottom: 8 }}>
-                <label>
-                  Password:
-                  <br />
-                  <input name="password" type="password" />
+              <div className="mb-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Password
+                  <input
+                    name="password"
+                    type="password"
+                    className="mt-1 block w-full max-w-md px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
                 </label>
               </div>
-              <button type="submit">Sign up</button>
+              <button
+                type="submit"
+                className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                Sign up
+              </button>
             </form>
 
             <div style={{ marginTop: 12 }}>
@@ -53,8 +62,7 @@ export function App(props: Props) {
             </div>
           </>
         )}
-      <Footer />
-    </div>
+    </Page>
   );
 }
 

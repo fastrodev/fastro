@@ -4,15 +4,11 @@ type Props = {
   msg?: string | null;
 };
 
-import Header from "../shared/Header.tsx";
-import Footer from "../shared/Footer.tsx";
+import Page from "../shared/Page.tsx";
 
 export function App({ identifier, error, msg }: Props) {
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", padding: 20 }}>
-      <Header user={identifier} />
-      <h1>Update Password</h1>
-
+    <Page user={identifier} title="Update Password">
       {msg && <p style={{ color: "green" }}>{msg}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
@@ -32,56 +28,60 @@ export function App({ identifier, error, msg }: Props) {
           )
           : (
             <div style={{ marginBottom: 10 }}>
-              <label>
-                Identifier (email or phone):<br />
+              <label className="block text-sm font-medium text-gray-700">
+                Identifier (email or phone)
                 <input
                   type="text"
                   name="identifier"
                   defaultValue={identifier}
                   placeholder="you@example.com"
-                  style={{ width: "100%", maxWidth: "360px" }}
+                  className="mt-1 block w-full max-w-md px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </label>
             </div>
           )}
 
         <div style={{ marginBottom: 10 }}>
-          <label>
-            Current Password:<br />
+          <label className="block text-sm font-medium text-gray-700">
+            Current Password
             <input
               type="password"
               name="current_password"
-              style={{ width: "100%", maxWidth: "360px" }}
+              className="mt-1 block w-full max-w-md px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </label>
         </div>
 
         <div style={{ marginBottom: 10 }}>
-          <label>
-            New Password:<br />
+          <label className="block text-sm font-medium text-gray-700">
+            New Password
             <input
               type="password"
               name="password"
-              style={{ width: "100%", maxWidth: "360px" }}
+              className="mt-1 block w-full max-w-md px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </label>
         </div>
 
         <div style={{ marginBottom: 10 }}>
-          <label>
-            Confirm New Password:<br />
+          <label className="block text-sm font-medium text-gray-700">
+            Confirm New Password
             <input
               type="password"
               name="password_confirm"
-              style={{ width: "100%", maxWidth: "360px" }}
+              className="mt-1 block w-full max-w-md px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </label>
         </div>
 
-        <button type="submit">Update Password</button>
+        <button
+          type="submit"
+          className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          Update Password
+        </button>
       </form>
-      <Footer />
-    </div>
+    </Page>
   );
 }
 

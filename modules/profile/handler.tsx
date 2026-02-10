@@ -89,6 +89,12 @@ export const profileHandler: Handler = async (req, ctx) => {
       includeDoctype: true,
       title: "User Profile",
       initialProps: { user, name, bio, msg },
+      head: `<head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Fastro App</title>
+          <link rel="stylesheet" href="/css/app.css">
+      </head>`,
     },
   );
 

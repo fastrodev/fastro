@@ -317,6 +317,11 @@ export async function renderMD_Content(content: string, path: string) {
       ${CSS}
 
       /* Custom Markdown Overrides */
+      .markdown-body h1, .markdown-body h2, .markdown-body h3,
+      .markdown-body h4, .markdown-body h5, .markdown-body h6,
+      .blog-post-content h1, .blog-post-content h2, .blog-post-content h3 {
+        scroll-margin-top: 5rem;
+      }
       .markdown-body h1, .markdown-body h2, .markdown-body h3 {
         padding-bottom: 0.3em;
         border-bottom: 1px solid var(--color-border-default);
@@ -651,6 +656,37 @@ export async function renderMD_Content(content: string, path: string) {
         if (img.complete) handleImage(img);
       });
     </script>
+    ${
+    path === "DOCS.md"
+      ? `
+    <button id="scroll-to-top" 
+      class="fixed bottom-6 right-6 p-3 rounded-full bg-fg-default text-canvas-default shadow-lg opacity-0 translate-y-10 pointer-events-none transition-all duration-300 z-[110] hover:scale-110 active:scale-95 cursor-pointer"
+      aria-label="Scroll to top">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      </svg>
+    </button>
+    <script>
+      (function() {
+        const scrollBtn = document.getElementById('scroll-to-top');
+        if (scrollBtn) {
+          window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+              scrollBtn.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+              scrollBtn.classList.add('opacity-100', 'translate-y-0');
+            } else {
+              scrollBtn.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+              scrollBtn.classList.remove('opacity-100', 'translate-y-0');
+            }
+          });
+          scrollBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        }
+      })();
+    </script>`
+      : ""
+  }
   </body>
 </html>`;
 

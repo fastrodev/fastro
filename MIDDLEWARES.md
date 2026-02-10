@@ -22,6 +22,7 @@ These middlewares are maintained by the Fastro core team.
 | **Cookie** | Parse incoming cookies and manage `Set-Cookie` headers. | [Source](/middlewares/cookie/cookie.ts) |
 | **Render** | Server-side rendering helper with optional HMR client injection (dev only). | [Source](/middlewares/render/render.ts) |
 | **JWT**    | JSON Web Token authentication. | [Source](/middlewares/jwt/jwt.ts) |
+| **Tailwind** | On-the-fly Tailwind/PostCSS processor that serves compiled CSS (useful in dev or on-the-fly builds). Configurable pathname and static directory. | [Source](/middlewares/tailwind/tailwind.ts) |
 
 
 ## Modules as Middleware

@@ -11,6 +11,7 @@ applications.
 - [Responses](#responses)
 - [Middleware](#middleware)
 - [Render Middleware](#render-middleware)
+- [Tailwind Middleware](#tailwind-middleware)
 - [Modular Routing (Router)](#modular-routing-router)
 - [Static Files](#static-files)
 - [Body Parser](#body-parser)
@@ -321,6 +322,29 @@ const html = ctx.renderToString(React.createElement(App), {
 
 This will include a safe-escaped JSON payload in the page that your client
 bootstrap can read and hydrate with.
+
+### Tailwind Middleware
+
+Fastro provides an optional Tailwind/PostCSS middleware to serve compiled CSS.
+It can compile Tailwind on-the-fly during development or serve a prebuilt
+file in production.
+
+Quick usage
+
+```ts
+import { tailwind } from "../middlewares/tailwind/tailwind.ts";
+
+// Serve CSS at /styles.css using ./static/css/tailwind.css as source
+app.use(tailwind('/styles.css', '/static'));
+```
+
+Behavior
+
+- Development: compiles `<staticDir>/css/tailwind.css` with PostCSS + Tailwind and returns the CSS.
+- Production: attempts to serve `./public/css/<filename>` (where `<filename>` is the last segment of the pathname) with long cache headers; falls back to processing if missing.
+
+See also: [Tailwind middleware blog post](/blog/tailwind) and
+[Source](/middlewares/tailwind/tailwind.ts).
 
 
 ### Route-Specific Middleware
