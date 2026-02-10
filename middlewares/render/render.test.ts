@@ -93,7 +93,9 @@ Deno.test("development rendering includes client script, timestamp and HMR", () 
 });
 
 Deno.test("middleware replaces stub renderToString with real implementation", () => {
-  Deno.env.set("ENV", "development");
+  // Run this test in coverage mode to avoid starting the async
+  // components watcher (which can spawn un-awaited Deno.stat ops).
+  Deno.env.set("ENV", "coverage");
   const ctx: Context = {
     params: {},
     query: {},
