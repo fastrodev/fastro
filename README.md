@@ -19,6 +19,8 @@ Fastro is engineered for developers who refuse to compromise. It combines **extr
 
 ## Quick Start
 
+![Fastro Start](https://storage.googleapis.com/replix-394315-file/uploads/start.jpg)
+
 Create a high-performance server with zero friction:
 
 ```ts
@@ -39,6 +41,8 @@ await app.serve({ port: 8000 });
 ```
 
 ## Resources
+
+![Fastro Resources](https://storage.googleapis.com/replix-394315-file/uploads/resources.jpg)
 
 - [**Get Started**](DOCS.md) - Comprehensive documentation and API reference.
 - [**Showcase**](SHOWCASE.md) - See what others are building with Fastro.

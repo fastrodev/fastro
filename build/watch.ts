@@ -88,6 +88,7 @@ export async function startWatcher() {
     "./app",
     "./core",
     "./middlewares",
+    "./public",
   ];
 
   const existingPaths = [];
@@ -132,10 +133,26 @@ export async function startWatcher() {
 
         const m = p.match(/(?:[/\\]|^)modules(?:[/\\])([^/\\]+)/);
         if (m && m[1]) {
-          pendingAffectedModules.add(m[1]);
+          const modName = m[1];
+          pendingAffectedModules.add(modName);
           // 'index' module aggregates other modules (profile, product, etc), so it needs rebuild too
-          if (m[1] !== "index") {
+          if (modName !== "index") {
             pendingAffectedModules.add("index");
+          }
+          // If the changed module folder doesn't contain an App.tsx or spa.tsx
+          // it's likely a shared/components module — treat as component change
+          // so we trigger a full rebuild instead of attempting to rebuild the
+          // module itself (which would be skipped later).
+          try {
+            const statApp = await Deno.stat(`./modules/${modName}/App.tsx`)
+              .catch(() => null);
+            const statSpa = await Deno.stat(`./modules/${modName}/spa.tsx`)
+              .catch(() => null);
+            if (!(statApp && statApp.isFile) && !(statSpa && statSpa.isFile)) {
+              pendingComponentsChanged = true;
+            }
+          } catch (_) {
+            // ignore
           }
           hasRelevantChange = true;
         }
@@ -148,8 +165,12 @@ export async function startWatcher() {
           p.match(/(?:[/\\]|^)components(?:[/\\])/) ||
           p.match(/(?:[/\\]|^)app(?:[/\\])/) ||
           p.match(/(?:[/\\]|^)core(?:[/\\])/) ||
-          p.match(/(?:[/\\]|^)middlewares(?:[/\\])/)
+          p.match(/(?:[/\\]|^)middlewares(?:[/\\])/) ||
+          p.match(/(?:[/\\]|^)public(?:[/\\])/)
         ) {
+          // Treat changes under `public` as component-level changes so that
+          // edits which affect built client artifacts still trigger a full
+          // rebuild when appropriate.
           pendingComponentsChanged = true;
           hasRelevantChange = true;
         }

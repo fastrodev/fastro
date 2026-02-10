@@ -96,6 +96,12 @@ export const signupHandler: Handler = async (req, ctx) => {
         title: "Signup",
         initialProps: { submitted: !error, error, data: safeData },
         module: "signup",
+        head: `<head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Fastro App</title>
+          <link rel="stylesheet" href="/css/app.css">
+      </head>`,
       },
     );
 
@@ -105,6 +111,12 @@ export const signupHandler: Handler = async (req, ctx) => {
   const html = ctx.renderToString!(<App />, {
     includeDoctype: true,
     title: "Signup",
+    head: `<head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Fastro App</title>
+          <link rel="stylesheet" href="/css/app.css">
+      </head>`,
   });
 
   return new Response(html, { headers: { "Content-Type": "text/html" } });

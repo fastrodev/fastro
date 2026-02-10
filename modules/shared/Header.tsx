@@ -4,85 +4,94 @@ type Props = {
 
 import Logo from "./Logo.tsx";
 
-export default function Header({ user: _user }: Props) {
+export default function Header({ user }: Props) {
   return (
-    <header
-      className="header-container"
-      style={{
-        marginBottom: 20,
-        borderBottom: "1px solid #eee",
-        paddingBottom: 10,
-      }}
-    >
+    <header className="header-container border-b border-gray-200">
       <style
         dangerouslySetInnerHTML={{
           __html: `
-        .header-container { position: relative; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+        .header-container {
+          --space-v: 12px;
+          --space-h: 16px;
+          position: relative;
+          font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+          padding: var(--space-v) var(--space-h);
+        }
         .header-nav { display: flex; gap: 12px; align-items: center; }
-        .nav-link { text-decoration: none; color: #111827; font-weight: 500; padding: 6px 8px; border-radius: 6px; display: inline-block; font-size: 15px; }
+        .site-title { font-weight: 700; font-size: 18px; color: #111827; margin-left: 8px; letter-spacing: 0.4px; }
+        .nav-link { text-decoration: none; color: #111827; font-weight: 500; padding: 8px 12px; border-radius: 6px; display: inline-block; font-size: 15px; margin: 0; }
         .nav-link:hover { background: #f7f7fb; text-decoration: none; }
-        .menu-button { display: none; background: none; border: none; font-size: 20px; padding: 6px; cursor: pointer; }
+        .menu-button { display: none; background: none; border: none; font-size: 20px; padding: 6px; cursor: pointer; margin-left: 8px; }
         @media (max-width: 640px) {
-          .header-container { padding: 8px 0; }
-          /* Make the mobile nav full viewport width and fixed under the header */
+          /* remove extra outer horizontal padding on mobile */
+          .header-container { padding: var(--space-v) 0; }
+          /* Mobile: full-width panel under header. top is computed by JS when opened. */
           .header-nav {
             display: none !important;
             flex-direction: column;
             position: fixed;
-            top: 56px;
+            top: 0;
             left: 0;
             right: 0;
             width: 100vw;
             max-width: none;
             margin: 0;
             background: #fff;
-            padding: 8px 12px;
+            padding: 8px 0;
             border-bottom: 1px solid #eee;
             box-shadow: 0 6px 18px rgba(0,0,0,0.06);
             z-index: 600;
             align-items: stretch;
           }
-          .header-nav .nav-link { display: block; padding: 12px 16px; margin: 0; border-bottom: 1px solid #f5f5f5; text-align: left; }
+          .header-nav .nav-link { display: block; padding: 12px 16px; border-bottom: 1px solid #f5f5f5; text-align: left; }
           .header-nav .nav-link:last-child { border-bottom: none; }
           /* Ensure buttons styled like links */
           .header-nav button.nav-link { background: transparent; border: none; padding: 12px 16px; margin: 0; width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer; }
           .menu-button { display: inline-block; }
           .nav-open { display: flex !important; }
+           /* Make the header inner container full-width on small screens so
+             logo and menu sit flush with the viewport edges (small padding).
+           */
+          .header-container > div { max-width: 100%; width: 100%; padding-left: 8px; padding-right: 8px; margin: 0; box-sizing: border-box; }
         }
       `,
         }}
       />
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 flex justify-between items-center w-full">
         <div style={{ display: "flex", alignItems: "center" }}>
-          <a href="/" style={{ display: "inline-block", marginRight: 12 }}>
+          <a
+            href="/"
+            className="inline-flex items-center mr-3 no-underline"
+          >
             <Logo height={28} />
+            <span className="site-title">FASTRO</span>
           </a>
         </div>
 
         <div style={{ display: "flex", alignItems: "center" }}>
-          <nav id="header-nav" className="header-nav">
-            <a className="nav-link" href="/dashboard">Dashboard</a>
-            <a className="nav-link" href="/profile">Profile</a>
-            <a className="nav-link" href="/password">Change Password</a>
-            <a className="nav-link" href="/signout">Sign out</a>
-          </nav>
+          {user
+            ? (
+              <>
+                <nav id="header-nav" className="header-nav">
+                  <a className="nav-link" href="/dashboard">Dashboard</a>
+                  <a className="nav-link" href="/profile">Profile</a>
+                  <a className="nav-link" href="/password">Change Password</a>
+                  <a className="nav-link" href="/signout">Sign out</a>
+                </nav>
 
-          <button
-            type="button"
-            id="menu-btn"
-            className="menu-button"
-            aria-controls="header-nav"
-            aria-expanded="false"
-          >
-            ☰
-          </button>
+                <button
+                  type="button"
+                  id="menu-btn"
+                  className="menu-button"
+                  aria-controls="header-nav"
+                  aria-expanded="false"
+                >
+                  ☰
+                </button>
+              </>
+            )
+            : null}
         </div>
       </div>
 

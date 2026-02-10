@@ -47,6 +47,8 @@ export const dashboardHandler: Handler = async (req, ctx) => {
     includeDoctype: true,
     title: "Dashboard",
     initialProps: { user, name },
+    head:
+      `<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Fastro App</title><link rel="stylesheet" href="/css/app.css"></head>`,
   });
 
   return new Response(html, { headers: { "Content-Type": "text/html" } });

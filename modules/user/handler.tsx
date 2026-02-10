@@ -60,6 +60,12 @@ export const userHandler: Handler = async (_req, ctx) => {
       includeDoctype: true,
       title: notFound ? "User Not Found" : `${name || username}'s Profile`,
       initialProps: { username, name, bio, notFound, currentUser },
+      head: `<head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Fastro App</title>
+          <link rel="stylesheet" href="/css/app.css">
+      </head>`,
     },
   );
 

@@ -89,6 +89,12 @@ export const passwordHandler: Handler = async (req, ctx) => {
         title: "Update Password",
         initialProps: { identifier, error, msg },
         module: "password",
+        head: `<head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Fastro App</title>
+          <link rel="stylesheet" href="/css/app.css">
+      </head>`,
       },
     );
 
@@ -101,6 +107,12 @@ export const passwordHandler: Handler = async (req, ctx) => {
       includeDoctype: true,
       title: "Update Password",
       initialProps: { identifier: currentIdentifier },
+      head: `<head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Fastro App</title>
+          <link rel="stylesheet" href="/css/app.css">
+      </head>`,
     },
   );
 

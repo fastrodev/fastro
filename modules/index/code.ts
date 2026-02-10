@@ -26,6 +26,9 @@ export function registerCodeRoutes(app: Router) {
     "main.ts",
     "app/main.ts",
     "MIDDLEWARES.md",
+    "middlewares/tailwind/tailwind.ts",
+    "middlewares/tailwind/tailwind.test.ts",
+    "posts/tailwind.md",
   ];
 
   for (const path of files) {
