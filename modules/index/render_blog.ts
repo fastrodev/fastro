@@ -9,8 +9,13 @@ import { renderMD_Content } from "./render_md.ts";
  */
 export async function renderBlog(page: number = 1, search: string = "") {
   const postsDir = new URL("../../posts/", import.meta.url);
-  const posts: { title: string; date: string; link: string; tags: string[] }[] =
-    [];
+  const posts: {
+    title: string;
+    date: string;
+    link: string;
+    tags: string[];
+    image?: string;
+  }[] = [];
   const query = search.toLowerCase().trim();
   const allTags = new Set<string>();
 
@@ -22,6 +27,7 @@ export async function renderBlog(page: number = 1, search: string = "") {
       let title = name.replace(".md", "").replace(/-/g, " ");
       let date = "";
       let tags: string[] = [];
+      let image = "";
 
       if (content.startsWith("---")) {
         const endIdx = content.indexOf("---", 3);
@@ -31,6 +37,8 @@ export async function renderBlog(page: number = 1, search: string = "") {
           if (titleMatch) title = titleMatch[1].trim();
           const dateMatch = frontmatter.match(/date:\s*(.*?)$/m);
           if (dateMatch) date = dateMatch[1].trim();
+          const imageMatch = frontmatter.match(/image:\s*["']?(.*?)["']?$/m);
+          if (imageMatch) image = imageMatch[1].trim();
           const tagsMatch = frontmatter.match(/tags:\s*\[?(.*?)\]?$/m);
           if (tagsMatch) {
             tags = tagsMatch[1].split(",").map((t) =>
@@ -55,6 +63,7 @@ export async function renderBlog(page: number = 1, search: string = "") {
         title,
         date,
         tags,
+        image,
         link: `/blog/${name.replace(".md", "")}`,
       });
     }
@@ -114,9 +123,23 @@ export async function renderBlog(page: number = 1, search: string = "") {
       </div>`;
   }
 
-  for (const post of paginatedPosts) {
+  const defaultImage =
+    "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&auto=format&fit=crop&q=60";
+
+  for (let i = 0; i < paginatedPosts.length; i++) {
+    const post = paginatedPosts[i];
+    const isLatest = currentPage === 1 && i === 0;
     html += `
       <div onclick="if(!event.target.closest('a')) location.href='${post.link}'" class="relative group block p-5 md:p-6 border border-border-default rounded-2xl hover:border-fg-muted hover:bg-canvas-subtle transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer">
+        ${
+      isLatest
+        ? `<div class="mb-4 overflow-hidden rounded-xl border border-border-default h-48 md:h-64">
+              <img src="${
+          post.image || defaultImage
+        }" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>`
+        : ""
+    }
         <div class="flex flex-col md:flex-row md:items-baseline justify-between w-full gap-3 md:gap-4">
           <div class="flex flex-col gap-2">
             <a href="${post.link}" class="text-xl font-bold !text-fg-default transition-colors tracking-tight line-clamp-2 md:line-clamp-none !no-underline hover:!no-underline">

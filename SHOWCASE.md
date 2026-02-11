@@ -17,7 +17,7 @@ Explore interactive demos built with Fastro—where speed meets simplicity. Dive
 | Project Name | Description | Price | Link |
 | :----------- | :---------- | :---- | :--- |
 | **Modern Auth Flow** | A complete authentication journey: signup, JWT-based signin, and a protected SSR dashboard using Deno KV. | Free | [Demo](/signin) |
-| **Pro Boilerplate** | Fastro Pro Boilerplate: production-ready starter kit for serious projects. Original price: USD 149. Early Bird Discount: USD 69 for the first 20 buyers—act fast to secure your spot and help us build early testimonials! | USD 149 | [Powerkit](PRO.md) |
+| **Pro Boilerplate** | Fastro Pro Boilerplate: production-ready starter kit for serious projects. Original price: USD 149. Early Bird Discount: USD 69 for the first 20 buyers—act fast to secure your spot and help us build early testimonials! | USD 149 | [Powerkit](blog/powerkit) |
 
 
 ## Community Projects

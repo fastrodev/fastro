@@ -15,8 +15,10 @@ kill_port() {
 # Ensure no leaked processes at start
 kill_port
 
-# Clear/Create Markdown File
+ # Clear/Create Markdown File
 echo "# 🏁 Fastro Performance Benchmark" > $MD_FILE
+echo "" >> $MD_FILE
+echo "![k6 logo](https://upload.wikimedia.org/wikipedia/commons/e/ef/K6-logo.svg)" >> $MD_FILE
 echo "" >> $MD_FILE
 echo "Last update: $(date)" >> $MD_FILE
 echo "" >> $MD_FILE
