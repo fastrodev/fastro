@@ -140,14 +140,20 @@ export function matchPath(
   // Special-case: a route defined as "*" should act as a global fallback
   // that matches any request path (used for SPA fallbacks).
   if (routePath === "*") return { params: {} };
+
   const routeParts = routePath.split("/");
   const requestParts = requestPath.split("/");
 
-  if (routeParts.length !== requestParts.length) return null;
+  // Support for trailing wildcard glob: /path/*
+  const isWildcard = routeParts[routeParts.length - 1] === "*";
+
+  if (!isWildcard && routeParts.length !== requestParts.length) return null;
+  if (isWildcard && requestParts.length < routeParts.length - 1) return null;
 
   const params: Record<string, string> = {};
+  const limit = isWildcard ? routeParts.length - 1 : routeParts.length;
 
-  for (let i = 0; i < routeParts.length; i++) {
+  for (let i = 0; i < limit; i++) {
     const routePart = routeParts[i];
     const requestPart = requestParts[i];
 

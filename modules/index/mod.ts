@@ -1,4 +1,4 @@
-import { renderBlog, renderCode, renderMD, renderStatic } from "./render.ts";
+import { renderBlog, renderCode, renderMD } from "./render.ts";
 import { registerCodeRoutes } from "./code.ts";
 import { createRouter } from "../../core/router.ts";
 
@@ -23,8 +23,5 @@ r.get("/blog/:post", (_req, ctx) => renderMD(`posts/${ctx.params.post}.md`));
 registerCodeRoutes(r);
 
 r.get("/LICENSE", () => renderCode("LICENSE"));
-
-// Fallback for 404 / Not Found - acts as SPA fallback
-r.get("*", () => renderStatic("public/index.html"));
 
 export default r.build();

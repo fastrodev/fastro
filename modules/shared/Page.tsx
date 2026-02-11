@@ -65,10 +65,10 @@ export default function Page({ user, children, title }: Props) {
         }}
       />
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 page flex-1 w-full">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 page flex-1 w-full flex flex-col">
         {title
           ? (
-            <h1 className="text-2xl font-semibold leading-tight mt-0 mb-4">
+            <h1 className="text-xl sm:text-2xl font-bold leading-tight mt-0 mb-6 text-gray-900">
               {title}
             </h1>
           )

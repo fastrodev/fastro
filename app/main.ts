@@ -6,10 +6,12 @@ import { cookieMiddleware } from "../middlewares/cookie/mod.ts";
 import { tailwind } from "../middlewares/tailwind/mod.ts";
 
 const app = new App();
-autoRegisterModules(app);
+
 app.use(createRenderMiddleware());
 app.use(logger);
+
 app.use(cookieMiddleware);
 app.use(tailwind("/css/app.css"));
-app.use(staticFiles("/", "./public", { spaFallback: true }));
+autoRegisterModules(app);
+app.use(staticFiles("/", "./public"));
 app.serve({ port: Deno.args[0] ? parseInt(Deno.args[0]) : 8000 });

@@ -49,7 +49,3 @@ Examples and advanced usage
 
 - You can mount the middleware at a different path, e.g., `tailwind('/css/app.css')` and reference that path in templates.
 - Combine with a file watcher to recompile on file changes for faster dev feedback loops.
-
----
-
-If you'd like, I can add an example `tailwind.css` starter file in `public/` or `static/css/` and wire a simple `deno task` to build it.

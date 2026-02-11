@@ -1025,6 +1025,39 @@ Deno.test("matchPath - different parts same length", () => {
   assertEquals(result, null);
 });
 
+Deno.test("matchPath - trailing wildcard glob matches subpath", () => {
+  const result = matchPath("/api/*", "/api/v1/users");
+  assertEquals(result, { params: {} });
+});
+
+Deno.test("matchPath - trailing wildcard glob matches exactly", () => {
+  const result = matchPath("/api/*", "/api/");
+  assertEquals(result, { params: {} });
+});
+
+Deno.test("matchPath - trailing wildcard glob no match (too short)", () => {
+  const result = matchPath("/api/v1/*", "/api");
+  assertEquals(result, null);
+});
+
+Deno.test("matchPath - trailing wildcard glob no match (mismatch prefix)", () => {
+  const result = matchPath("/api/*", "/other/path");
+  assertEquals(result, null);
+});
+
+Deno.test("createRouteMiddleware - trailing wildcard glob handler", async () => {
+  const builder = createRouter();
+  builder.get("/static/*", () => new Response("Static"));
+  const middleware = builder.build();
+
+  const res = await middleware(
+    new Request("http://localhost/static/css/style.css"),
+    { params: {} } as Context,
+    () => new Response("Next"),
+  );
+  assertEquals(await res.text(), "Static");
+});
+
 Deno.test("createRouteMiddleware - multiple middlewares cache hit", async () => {
   let count = 0;
   const mw: Middleware = (_, __, next) => {

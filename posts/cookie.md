@@ -64,5 +64,3 @@ Further reading
 
 - See the middleware source for formatting details: [middlewares/cookie/cookie.ts](/middlewares/cookie/cookie.ts)
 - Middleware list (docs): [MIDDLEWARES.md](/MIDDLEWARES.md)
-
-If you want, I can add a short example module that demonstrates a full signin → dashboard flow using the cookie middleware.
