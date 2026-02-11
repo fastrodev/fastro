@@ -157,7 +157,7 @@ export async function renderBlog(page: number = 1, search: string = "") {
         : ""
     }
           <div class="flex-1 min-w-0 flex flex-col">
-            <div class="mb-1">
+            <div class="mb-4">
               <a href="${post.link}" class="text-xl font-bold !text-fg-default transition-colors tracking-tight line-clamp-2 md:line-clamp-none !no-underline hover:!no-underline leading-tight">
                 ${post.title}
               </a>
