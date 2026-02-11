@@ -174,11 +174,14 @@ export async function generateAll(baseUrl: string, outDir = "public") {
   await generateSitemap(baseUrl, `${outDir}/sitemap.xml`);
   await generateRSS(baseUrl, `${outDir}/rss.xml`);
   await generateJSONFeed(baseUrl, `${outDir}/feed.json`);
+  await generateRobots(baseUrl, `${outDir}/robots.txt`);
 }
 
 if (import.meta.main) {
   const base = Deno.args[0] ?? "http://localhost:8000";
   console.log(`Generating SEO assets for ${base} ...`);
   await generateAll(base);
-  console.log("Generated sitemap.xml, rss.xml, feed.json in public/");
+  console.log(
+    "Generated sitemap.xml, rss.xml, feed.json, robots.txt in public/",
+  );
 }
