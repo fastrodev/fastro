@@ -74,7 +74,7 @@ export async function renderBlog(page: number = 1, search: string = "") {
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 
-  const pageSize = 4;
+  const pageSize = 6;
   const totalPages = Math.ceil(posts.length / pageSize);
   const currentPage = Math.min(Math.max(1, page), totalPages || 1);
   const start = (currentPage - 1) * pageSize;
@@ -123,12 +123,18 @@ export async function renderBlog(page: number = 1, search: string = "") {
       </div>`;
   }
 
-  const defaultImage =
-    "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&auto=format&fit=crop&q=60";
+  const defaultImages = [
+    "https://storage.googleapis.com/replix-394315-file/uploads/start.jpg",
+    "https://storage.googleapis.com/replix-394315-file/uploads/resources.jpg",
+    "https://storage.googleapis.com/replix-394315-file/uploads/middleware.jpg",
+    "https://storage.googleapis.com/replix-394315-file/uploads/showcase.jpg",
+  ];
 
   for (let i = 0; i < paginatedPosts.length; i++) {
     const post = paginatedPosts[i];
     const isLatest = currentPage === 1 && i === 0;
+    const defaultImage =
+      defaultImages[Math.floor(Math.random() * defaultImages.length)];
     html += `
       <div onclick="if(!event.target.closest('a')) location.href='${post.link}'" class="relative group block p-5 md:p-6 border border-border-default rounded-2xl hover:border-fg-muted hover:bg-canvas-subtle transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer">
         ${
@@ -140,32 +146,46 @@ export async function renderBlog(page: number = 1, search: string = "") {
             </div>`
         : ""
     }
-        <div class="flex flex-col md:flex-row md:items-baseline justify-between w-full gap-3 md:gap-4">
-          <div class="flex flex-col gap-2">
-            <a href="${post.link}" class="text-xl font-bold !text-fg-default transition-colors tracking-tight line-clamp-2 md:line-clamp-none !no-underline hover:!no-underline">
-              ${post.title}
-            </a>
-            ${
+        <div class="flex items-stretch gap-4 md:gap-6">
+          ${
+      !isLatest
+        ? `<div class="shrink-0 w-20 h-20 sm:w-24 sm:h-24 overflow-hidden rounded-xl border border-border-default bg-canvas-subtle">
+              <img src="${
+          post.image || defaultImage
+        }" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>`
+        : ""
+    }
+          <div class="flex-1 min-w-0 flex flex-col">
+            <div class="mb-1">
+              <a href="${post.link}" class="text-xl font-bold !text-fg-default transition-colors tracking-tight line-clamp-2 md:line-clamp-none !no-underline hover:!no-underline leading-tight">
+                ${post.title}
+              </a>
+            </div>
+            
+            <div class="mt-auto flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
+              ${
       post.tags && post.tags.length > 0
         ? `<div class="flex flex-wrap gap-2">
-                ${
+                  ${
           post.tags.slice(0, 3).map((tag) =>
             `<a href="/blog?search=${
               encodeURIComponent(tag)
             }" class="text-[0.65rem] px-2 py-0.5 rounded-full bg-canvas-subtle border border-border-default !text-fg-muted font-medium uppercase tracking-wider hover:!text-fg-default hover:border-fg-muted transition-colors z-20 relative !no-underline">${tag}</a>`
           ).join("")
         }
-              </div>`
-        : ""
+                </div>`
+        : "<div></div>"
     }
-          </div>
-          ${
+              ${
       post.date
-        ? `<span class="text-fg-muted text-[0.7rem] md:text-sm shrink-0 flex items-center gap-2 whitespace-nowrap opacity-100 md:opacity-40 absolute bottom-4 right-4 md:static uppercase tracking-wider font-semibold z-10 bg-canvas-default group-hover:bg-canvas-subtle pl-4 pr-0 py-1 md:p-0 rounded-md md:rounded-none">
-              ${post.date}
-            </span>`
+        ? `<span class="text-fg-muted text-[0.7rem] md:text-sm uppercase tracking-wider font-semibold opacity-60 flex-shrink-0 ml-auto">
+                  ${post.date}
+                </span>`
         : ""
     }
+            </div>
+          </div>
         </div>
       </div>`;
   }
