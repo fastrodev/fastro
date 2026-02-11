@@ -4,7 +4,14 @@
   <title>Fastro</title>
   <link>https://fastro.dev</link>
   <description>Fastro blog and docs</description>
-  <lastBuildDate>Wed, 11 Feb 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Thu, 12 Feb 2026 00:00:00 GMT</lastBuildDate>
+  <item>
+    <title>Mengapa Cepat Saja Tidak Cukup? Analisis Benchmark Framework HTTP 2026</title>
+    <link>https://fastro.dev/blog/stddev</link>
+    <guid isPermaLink="true">https://fastro.dev/blog/stddev</guid>
+    <pubDate>Thu, 12 Feb 2026 00:00:00 GMT</pubDate>
+    <description>Analisis mengapa stabilitas (stddev) sama pentingnya dengan throughput (RPS) dalam benchmark framework HTTP 2026.</description>
+  </item>
   <item>
     <title>Fastro SaaS Ship Kit — Coming Soon!</title>
     <link>https://fastro.dev/blog/powerkit</link>
@@ -25,13 +32,6 @@
     <guid isPermaLink="true">https://fastro.dev/blog/benchmark</guid>
     <pubDate>Wed, 11 Feb 2026 00:00:00 GMT</pubDate>
     <description>A detailed analysis of the v1.0.0 performance benchmarks across multiple scenarios, from simple routing to JSON POST and middleware overhead.</description>
-  </item>
-  <item>
-    <title>Analisis Benchmark Framework 2026: Mengapa Cepat Saja Tidak Cukup?</title>
-    <link>https://fastro.dev/blog/stdev</link>
-    <guid isPermaLink="true">https://fastro.dev/blog/stdev</guid>
-    <pubDate>Wed, 11 Feb 2026 00:00:00 GMT</pubDate>
-    <description>Data terbaru menunjukkan bahwa di balik kecepatan tinggi, ada faktor stabilitas yang sering terabaikan. Memahami pentingnya Standard Deviation (Stddev) dalam performa framework.</description>
   </item>
   <item>
     <title>Tailwind Middleware for Fastro</title>

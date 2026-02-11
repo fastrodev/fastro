@@ -5,6 +5,13 @@
   "feed_url": "https://fastro.dev/feed.json",
   "items": [
     {
+      "id": "https://fastro.dev/blog/stddev",
+      "url": "https://fastro.dev/blog/stddev",
+      "title": "Mengapa Cepat Saja Tidak Cukup? Analisis Benchmark Framework HTTP 2026",
+      "content_text": "Analisis mengapa stabilitas (stddev) sama pentingnya dengan throughput (RPS) dalam benchmark framework HTTP 2026.",
+      "date_published": "2026-02-12"
+    },
+    {
       "id": "https://fastro.dev/blog/powerkit",
       "url": "https://fastro.dev/blog/powerkit",
       "title": "Fastro SaaS Ship Kit — Coming Soon!",
@@ -23,13 +30,6 @@
       "url": "https://fastro.dev/blog/benchmark",
       "title": "Benchmark Analysis: Fastro vs Native Deno",
       "content_text": "A detailed analysis of the v1.0.0 performance benchmarks across multiple scenarios, from simple routing to JSON POST and middleware overhead.",
-      "date_published": "2026-02-11"
-    },
-    {
-      "id": "https://fastro.dev/blog/stdev",
-      "url": "https://fastro.dev/blog/stdev",
-      "title": "Analisis Benchmark Framework 2026: Mengapa Cepat Saja Tidak Cukup?",
-      "content_text": "Data terbaru menunjukkan bahwa di balik kecepatan tinggi, ada faktor stabilitas yang sering terabaikan. Memahami pentingnya Standard Deviation (Stddev) dalam performa framework.",
       "date_published": "2026-02-11"
     },
     {
