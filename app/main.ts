@@ -7,10 +7,6 @@ import { tailwind } from "../middlewares/tailwind/mod.ts";
 
 const app = new App();
 
-// Serve SEO and other public root assets (sitemap.xml, rss.xml, feed.json, robots.txt, favicon, etc.)
-// Registered before the render middleware so these files are served directly from `public/`.
-app.use(staticFiles("/", "./public"));
-
 app.use(createRenderMiddleware());
 app.use(logger);
 
@@ -27,6 +23,10 @@ app.use(staticFiles("/static", "./public"));
 
 // Auto-register modules.
 autoRegisterModules(app);
+
+// Serve SEO and other public root assets (sitemap.xml, rss.xml, feed.json, robots.txt, favicon, etc.)
+// Registered before the render middleware so these files are served directly from `public/`.
+app.use(staticFiles("/", "./public"));
 
 // Alternatively, you can manually import and register modules like this:
 app.serve({ port: Deno.args[0] ? parseInt(Deno.args[0]) : 8000 });
