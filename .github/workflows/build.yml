@@ -66,6 +66,22 @@ jobs:
       - name: Run Build
         run: GITHUB_CLIENT_ID=${{ vars.GH_CLIENT_ID }} GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} deno run -A build/build.ts
 
+      - name: Generate SEO assets
+        run: |
+          deno run -A modules/index/seo.ts "${{ vars.SITE_BASE_URL || 'https://fastro.dev' }}"
+
+      - name: Commit generated SEO assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/sitemap.xml public/rss.xml public/feed.json || true
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: regenerate SEO assets"
+            git push
+          else
+            echo "No SEO asset changes to commit"
+          fi
+
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:

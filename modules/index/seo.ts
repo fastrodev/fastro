@@ -32,7 +32,10 @@ function parseFrontmatter(text: string) {
   return out;
 }
 
-async function collectPosts(postsDir = "posts", baseUrl = ""): Promise<PostMeta[]> {
+async function collectPosts(
+  postsDir = "posts",
+  baseUrl = "",
+): Promise<PostMeta[]> {
   const posts: PostMeta[] = [];
   try {
     for await (const entry of Deno.readDir(postsDir)) {
@@ -51,7 +54,9 @@ async function collectPosts(postsDir = "posts", baseUrl = ""): Promise<PostMeta[
   }
   // sort descending by date when available
   posts.sort((a, b) => {
-    if (a.date && b.date) return new Date(b.date).getTime() - new Date(a.date).getTime();
+    if (a.date && b.date) {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    }
     if (a.date) return -1;
     if (b.date) return 1;
     return 0;
@@ -61,10 +66,15 @@ async function collectPosts(postsDir = "posts", baseUrl = ""): Promise<PostMeta[
 
 function extractFirstParagraph(md: string) {
   const withoutFM = md.replace(/^---[\s\S]*?---\s*/, "");
-  const parts = withoutFM.split(/\r?\n\r?\n/).map(s => s.trim()).filter(Boolean);
+  const parts = withoutFM.split(/\r?\n\r?\n/).map((s) => s.trim()).filter(
+    Boolean,
+  );
   if (parts.length === 0) return undefined;
   // strip markdown links/images for a clean description
-  return parts[0].replace(/!\[[^\]]*\]\([^)]*\)/g, "").replace(/\[([^\]]+)\]\([^)]*\)/g, "$1");
+  return parts[0].replace(/!\[[^\]]*\]\([^)]*\)/g, "").replace(
+    /\[([^\]]+)\]\([^)]*\)/g,
+    "$1",
+  );
 }
 
 function guessDateFromFile(md: string) {
@@ -79,14 +89,23 @@ async function writeFile(path: string, content: string) {
   await Deno.writeTextFile(path, content);
 }
 
-export async function generateSitemap(baseUrl: string, outPath = "public/sitemap.xml") {
+export async function generateSitemap(
+  baseUrl: string,
+  outPath = "public/sitemap.xml",
+) {
   const posts = await collectPosts("posts", baseUrl);
-  const urls = [{ loc: baseUrl.replace(/\/$/, "") + "/", lastmod: undefined }, ...posts.map(p => ({ loc: p.url, lastmod: p.date }))];
-  const items = urls.map(u => {
-    const lastmod = u.lastmod ? `<lastmod>${new Date(u.lastmod).toISOString()}</lastmod>` : "";
+  const urls = [
+    { loc: baseUrl.replace(/\/$/, "") + "/", lastmod: undefined },
+    ...posts.map((p) => ({ loc: p.url, lastmod: p.date })),
+  ];
+  const items = urls.map((u) => {
+    const lastmod = u.lastmod
+      ? `<lastmod>${new Date(u.lastmod).toISOString()}</lastmod>`
+      : "";
     return `  <url>\n    <loc>${u.loc}</loc>\n    ${lastmod}\n  </url>`;
   }).join("\n");
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</urlset>`;
+  const xml =
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</urlset>`;
   await writeFile(outPath, xml);
 }
 
@@ -94,24 +113,38 @@ export async function generateRSS(baseUrl: string, outPath = "public/rss.xml") {
   const posts = await collectPosts("posts", baseUrl);
   const siteTitle = "Fastro";
   const siteDesc = "Fastro blog and docs";
-  const lastBuildDate = posts[0]?.date ? new Date(posts[0].date).toUTCString() : new Date().toUTCString();
-  const items = posts.map(p => {
-    const pubDate = p.date ? new Date(p.date).toUTCString() : new Date().toUTCString();
+  const lastBuildDate = posts[0]?.date
+    ? new Date(posts[0].date).toUTCString()
+    : new Date().toUTCString();
+  const items = posts.map((p) => {
+    const pubDate = p.date
+      ? new Date(p.date).toUTCString()
+      : new Date().toUTCString();
     const description = escapeXml(p.description ?? "");
-    return `  <item>\n    <title>${escapeXml(p.title ?? p.slug)}</title>\n    <link>${p.url}</link>\n    <guid isPermaLink="true">${p.url}</guid>\n    <pubDate>${pubDate}</pubDate>\n    <description>${description}</description>\n  </item>`;
+    return `  <item>\n    <title>${
+      escapeXml(p.title ?? p.slug)
+    }</title>\n    <link>${p.url}</link>\n    <guid isPermaLink="true">${p.url}</guid>\n    <pubDate>${pubDate}</pubDate>\n    <description>${description}</description>\n  </item>`;
   }).join("\n");
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n<channel>\n  <title>${escapeXml(siteTitle)}</title>\n  <link>${baseUrl}</link>\n  <description>${escapeXml(siteDesc)}</description>\n  <lastBuildDate>${lastBuildDate}</lastBuildDate>\n${items}\n</channel>\n</rss>`;
+  const xml =
+    `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n<channel>\n  <title>${
+      escapeXml(siteTitle)
+    }</title>\n  <link>${baseUrl}</link>\n  <description>${
+      escapeXml(siteDesc)
+    }</description>\n  <lastBuildDate>${lastBuildDate}</lastBuildDate>\n${items}\n</channel>\n</rss>`;
   await writeFile(outPath, xml);
 }
 
-export async function generateJSONFeed(baseUrl: string, outPath = "public/feed.json") {
+export async function generateJSONFeed(
+  baseUrl: string,
+  outPath = "public/feed.json",
+) {
   const posts = await collectPosts("posts", baseUrl);
   const feed = {
     version: "https://jsonfeed.org/version/1",
     title: "Fastro",
     home_page_url: baseUrl,
     feed_url: `${baseUrl.replace(/\/$/, "")}/feed.json`,
-    items: posts.map(p => ({
+    items: posts.map((p) => ({
       id: p.url,
       url: p.url,
       title: p.title,
@@ -122,14 +155,19 @@ export async function generateJSONFeed(baseUrl: string, outPath = "public/feed.j
   await writeFile(outPath, JSON.stringify(feed, null, 2));
 }
 
-export async function generateRobots(baseUrl: string, outPath = "public/robots.txt") {
+export async function generateRobots(
+  baseUrl: string,
+  outPath = "public/robots.txt",
+) {
   const site = baseUrl.replace(/\/$/, "");
-  const content = `# robots.txt for Fastro\nUser-agent: *\nAllow: /\n\nSitemap: ${site}/sitemap.xml\n`;
+  const content =
+    `# robots.txt for Fastro\nUser-agent: *\nAllow: /\n\nSitemap: ${site}/sitemap.xml\n`;
   await writeFile(outPath, content);
 }
 
 function escapeXml(s: string) {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&apos;");
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;").replace(/'/g, "&apos;");
 }
 
 export async function generateAll(baseUrl: string, outDir = "public") {
