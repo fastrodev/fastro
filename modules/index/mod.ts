@@ -10,6 +10,7 @@ r.get("/MIDDLEWARES.md", () => renderMD("MIDDLEWARES.md"));
 r.get("/SHOWCASE.md", () => renderMD("SHOWCASE.md"));
 r.get("/BENCHMARK.md", () => renderMD("BENCHMARK.md"));
 r.get("/CONTRIBUTING.md", () => renderMD("CONTRIBUTING.md"));
+r.get("/PRO.md", () => renderMD("PRO.md"));
 
 r.get("/blog", (req) => {
   const url = new URL(req.url);

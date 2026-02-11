@@ -37,7 +37,7 @@ await app.serve({ port: 8000 });
 Explore our comprehensive documentation, benchmarks, and community ecosystem.
 
 - [**Docs**](DOCS.md) – Comprehensive guide and API reference.
-- [**Middlewares**](MIDDLEWARES.md) – Official plugins and community ecosystem.
 - [**Showcase**](SHOWCASE.md) – Real-world examples built with Fastro.
+- [**Middlewares**](MIDDLEWARES.md) – Official plugins and community ecosystem.
 - [**Benchmarks**](BENCHMARK.md) – Performance comparisons and results.
 - [**Contribute**](CONTRIBUTING.md) – Join us in building the future of Deno.

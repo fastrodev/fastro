@@ -1,5 +1,7 @@
 # Fastro Showcase
 
+![Showcase](https://storage.googleapis.com/replix-394315-file/uploads/showcase.jpg)
+
 See what the community is building with Fastro! This gallery features projects,
 apps, and websites powered by the Fastro framework.
 
@@ -9,9 +11,13 @@ Pull Request.
 
 ## Demo Examples
 
-| Project Name | Description | Link |
-| :----------- | :---------- | :--- |
-| **Modern Auth Flow** | A complete authentication journey: signup, JWT-based signin, and a protected SSR dashboard using Deno KV. | [Demo](/signin) |
+Explore interactive demos built with Fastro—where speed meets simplicity. Dive in, experiment, and see how Fastro empowers modern web development!
+
+
+| Project Name | Description | Price | Link |
+| :----------- | :---------- | :---- | :--- |
+| **Modern Auth Flow** | A complete authentication journey: signup, JWT-based signin, and a protected SSR dashboard using Deno KV. | Free | [Demo](/signin) |
+| **Pro Boilerplate** | Fastro Pro Boilerplate: production-ready starter kit for serious projects. Early Bird Discount: USD 69 for the first 20 buyers—act fast to secure your spot and help us build early testimonials! | USD 69 | [Powerkit](PRO.md) |
 
 
 ## Community Projects

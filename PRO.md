@@ -1,57 +1,33 @@
-## **Stop Building Infrastructure. Start Shipping Products.**
-
-### **Save 50+ hours of development. Launch your SaaS on the world’s fastest Deno stack.**
-
-Building a SaaS is hard. Setting up Authentication, Stripe integrations, Database schemas, and SSR configurations is even harder. Why waste weeks on boilerplate when you can start with a foundation that’s already **perfect**?
-
-Introducing the **Fastro SaaS Ship Kit**—the premium, battle-tested boilerplate designed for developers who value their time as much as their performance.
-
+---
+title: Fastro SaaS Ship Kit — Coming Soon!
+description: "Premium boilerplate for launching SaaS on Fastro/Deno. Early Bird USD 69 for the first 20 buyers. Coming soon!"
+date: 2026-02-11
+author: "Fastro Team"
+tags: ["fastro", "deno", "boilerplate", "saas", "ship kit", "early bird", "coming soon"]
 ---
 
-### **Why Choose the Fastro Ship Kit?**
+![Boilerplate](https://storage.googleapis.com/replix-394315-file/uploads/boilerplate.jpg)
 
-#### ⚡ **God-Tier Performance**
+The Fastro Ship Kit is not ready yet, but will be available very soon.
 
-Built on Fastro Core—the #1 fastest framework in the Deno ecosystem. Your app won't just be fast; it will be "approaching the speed of light" fast.
+Stay tuned for updates and early access!
 
-#### 🛡️ **Zero-Risk Foundation**
 
-Fastro is the only framework with **100% Test Coverage** and **Zero 3rd-party dependencies** in its core. Your SaaS inherits this stability. No hidden bugs, no supply-chain vulnerabilities.
+## What to Expect
 
-#### 💰 **The "Full Battery" Included**
+- Premium boilerplate for launching SaaS on Fastro/Deno
+- Auth, Stripe, database, SSR, and modern UI included
+- Built for speed, reliability, and developer happiness
 
-* **Auth Ready**: Pre-configured social & email login (Clerk/Supabase).
-* **Stripe Integration**: Ready-to-use subscription flows and webhooks.
-* **Database-Agnostic**: First-class support for Deno KV, Postgres, and Neon.
-* **Modern UI**: Optimized React + Tailwind CSS + esbuild hydration.
 
----
+## 🚀 Early Bird Discount
 
-### **"It’s like hiring a Senior Engineer for the price of a coffee."**
+Early Bird: USD 69 for the first 20 buyers when launched. Get ready to secure your spot and help us build early testimonials!
 
-| Feature | Building Yourself | Fastro Ship Kit |
-| --- | --- | --- |
-| **Setup Time** | 2-4 Weeks | **5 Minutes** |
-| **Test Coverage** | Usually < 50% | **100% (Core)** |
-| **Performance** | Variable | **Top Tier (~50k req/s)** |
-| **Security** | Manual Audit | **Zero-Dependency Core** |
 
----
+## Frequently Asked Questions
 
-### **Ready to Launch?**
-
-Join the elite circle of developers shipping high-performance apps at record speed.
-
-## **$49**
-
-**One-time payment. Lifetime updates.**
-
-[ **Get Instant Access to the Repo →** ]
-
----
-
-### **Frequently Asked Questions**
-
-* **What do I get?** Access to a private GitHub repository with the full boilerplate and documentation.
-* **Can I use it for multiple projects?** Yes! The standard license allows use for unlimited personal and commercial projects.
-* **Is there support?** Yes, you get priority access to the Fastro private Discord community.
+- When will it be ready? Very soon! Follow Fastro for launch updates.
+- What do I get? Access to a private GitHub repository with full boilerplate and docs (when available).
+- Can I use it for multiple projects? Yes! Unlimited personal and commercial use.
+- Is there support? Priority access to the Fastro private Discord community.

@@ -1,5 +1,7 @@
 # Fastro Middlewares
 
+![Middleware](https://storage.googleapis.com/replix-394315-file/uploads/middleware.jpg)
+
 Welcome to the Fastro middleware collection! This page lists all available
 middlewares created by the community.
 
