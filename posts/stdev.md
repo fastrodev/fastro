@@ -25,7 +25,6 @@ Framework seperti **Bun**, **Stric**, dan **Hyper Express** memimpin dengan angk
 
 Di sini ada **Deno native**, **Fastro**, **Fast**, **NHttp**, dan **Hono** yang bermain di kisaran **48.000 - 54.000 RPS**. Meskipun secara *raw speed* kalah dari Bun, angka **Stddev** mereka jauh lebih kecil, yakni di kisaran **2.000 - 3.000**.
 
----
 
 ## 2. Memahami Standard Deviation (Stddev): Rahasia Latensi yang Stabil
 
@@ -34,7 +33,6 @@ Banyak orang bingung apa itu **Stddev**. Dalam benchmark, ini adalah ukuran **ko
 * **Stddev Tinggi (Fluktuatif):** Bayangkan sebuah mobil yang bisa lari 200 km/jam, tapi tiba-tiba ngerem mendadak ke 50 km/jam lalu gas pol lagi. Ini yang terjadi pada framework dengan Stddev tinggi (seperti Bun/Stric). Ada *jitter* atau ketidakteraturan. Dalam aplikasi nyata, ini bisa menyebabkan lonjakan latensi (*p99 spikes*) yang membuat pengguna merasakan aplikasi terkadang "lag".
 * **Stddev Rendah (Stabil):** Ibarat kereta cepat yang melaju konstan di 150 km/jam tanpa guncangan. Framework dengan Stddev rendah (seperti **Fastro** atau **Hono**) memberikan kepastian bahwa hampir setiap *request* akan diproses dengan waktu yang sama. Ini sangat krusial untuk menjaga *User Experience* yang mulus.
 
----
 
 ## 3. Bedah Posisi Fastro: Si "Goldilocks" di Ekosistem Deno
 
@@ -44,7 +42,6 @@ Jika kita melihat data secara fair, **Fastro** berada di posisi yang sangat meng
 * **Efisiensi Maksimal:** Dengan nilai *Relative* **63%**, Fastro memberikan performa yang sangat kompetitif tanpa harus mengorbankan stabilitas runtime Deno yang dikenal aman dan modern.
 * **Max Speed yang Solid:** Meskipun rata-ratanya 49k, Fastro mampu menyentuh **63.117 RPS** pada titik puncaknya.
 
----
 
 ## 4. Kesimpulan: Apakah Fastro Paling Layak Direkomendasikan?
 
