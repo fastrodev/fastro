@@ -6,27 +6,10 @@ import { cookieMiddleware } from "../middlewares/cookie/mod.ts";
 import { tailwind } from "../middlewares/tailwind/mod.ts";
 
 const app = new App();
-
+autoRegisterModules(app);
 app.use(createRenderMiddleware());
 app.use(logger);
-
-// Cookie helper (parses incoming cookies and allows setting cookies)
 app.use(cookieMiddleware);
-// Serve module client bundles from /js -> ./public/js so render middleware
-// can reference `/js/<module>/client.js`.
 app.use(tailwind("/css/app.css"));
-app.use(staticFiles("/css", "./public/css"));
-app.use(staticFiles("/js", "./public/js"));
-
-// Keep legacy static mapping for assets under /static
-app.use(staticFiles("/static", "./public"));
-
-// Auto-register modules.
-autoRegisterModules(app);
-
-// Serve SEO and other public root assets (sitemap.xml, rss.xml, feed.json, robots.txt, favicon, etc.)
-// Registered before the render middleware so these files are served directly from `public/`.
-app.use(staticFiles("/", "./public"));
-
-// Alternatively, you can manually import and register modules like this:
+app.use(staticFiles("/", "./public", { spaFallback: true }));
 app.serve({ port: Deno.args[0] ? parseInt(Deno.args[0]) : 8000 });

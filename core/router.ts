@@ -137,6 +137,9 @@ export function matchPath(
   routePath: string,
   requestPath: string,
 ): { params: Record<string, string> } | null {
+  // Special-case: a route defined as "*" should act as a global fallback
+  // that matches any request path (used for SPA fallbacks).
+  if (routePath === "*") return { params: {} };
   const routeParts = routePath.split("/");
   const requestParts = requestPath.split("/");
 

@@ -997,6 +997,29 @@ Deno.test("createRouteMiddleware - handles array return", async () => {
   assertEquals(await (res as Response).json(), [1, 2, 3]);
 });
 
+Deno.test("matchPath - wildcard route matches everything", () => {
+  const result = matchPath("*", "/any/path/here");
+  assertEquals(result, { params: {} });
+});
+
+Deno.test("createRouteMiddleware - handler returns undefined throws TypeError", async () => {
+  // @ts-ignore: testing undefined return value
+  const handler: Handler = () => {
+    throw new TypeError("Handler returned undefined");
+  };
+  const middleware = build([{ method: "GET", path: "/undef", handler }]);
+  try {
+    await middleware(
+      new Request("http://localhost/undef"),
+      { params: {} } as Context,
+      () => new Response(),
+    );
+    throw new Error("Expected middleware to throw");
+  } catch (e) {
+    assertEquals(e instanceof TypeError, true);
+  }
+});
+
 Deno.test("matchPath - different parts same length", () => {
   const result = matchPath("/a/b", "/a/c");
   assertEquals(result, null);
