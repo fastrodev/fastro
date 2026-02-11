@@ -46,7 +46,7 @@ async function collectPosts(
       const fm = parseFrontmatter(text);
       const description = fm.description || extractFirstParagraph(text) || "";
       const date = fm.date || guessDateFromFile(text) || undefined;
-      const url = `${baseUrl.replace(/\/$/, "")}/posts/${slug}`;
+      const url = `${baseUrl.replace(/\/$/, "")}/blog/${slug}`;
       posts.push({ slug, title: fm.title || slug, date, description, url });
     }
   } catch {
