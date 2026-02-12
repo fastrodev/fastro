@@ -46,7 +46,7 @@
   "nodeModulesDir": "auto",
   "tasks": {
     "dev": "FASTRO_ENV=development deno run -A build/watch.ts & FASTRO_ENV=development deno run -A --unstable-kv --watch app/main.ts 3000",
-    "start": "deno run -A --env modules/index/main.ts 3000",
+    "start": "ENV=production deno run -A --unstable-kv --watch app/main.ts 3000",
     "test": "bash ./scripts/test.sh",
     "lint": "deno lint",
     "cov": "bash ./scripts/test.sh --coverage",
