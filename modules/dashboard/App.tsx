@@ -4,8 +4,17 @@ type Props = {
 };
 
 import Page from "../shared/Page.tsx";
+import { useEffect, useState } from "react";
 
 export function App({ user, name }: Props) {
+  const [gitStatus, setGitStatus] = useState({ branch: "", status: "" });
+
+  useEffect(() => {
+    fetch("/api/git/status")
+      .then((res) => res.json())
+      .then((data) => setGitStatus(data));
+  }, []);
+
   return (
     <Page user={user} title="Dashboard">
       <div className="mb-6 p-5 sm:p-6 rounded-xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -35,13 +44,13 @@ export function App({ user, name }: Props) {
         <div className="flex flex-wrap gap-4 md:gap-8 border-t md:border-t-0 md:border-l border-gray-100 dark:border-gray-800 pt-6 md:pt-0 md:pl-8">
           <div className="flex flex-col">
             <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">
-              Status
+              Git Branch
             </span>
             <span className="flex items-center gap-1.5 mt-1">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse">
               </span>
               <span className="text-sm font-bold text-gray-700 dark:text-gray-200">
-                Git Linked
+                {gitStatus.branch || "Loading..."}
               </span>
             </span>
           </div>
@@ -64,10 +73,13 @@ export function App({ user, name }: Props) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-2">
-        <div className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow">
+      <div className="grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-2">
+        <a
+          href="/posts/new"
+          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
+        >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400">
+            <div className="p-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -88,13 +100,16 @@ export function App({ user, name }: Props) {
             Create New Post
           </h3>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Share your thoughts with the world by writing a new blog post.
+            Write and publish a new blog post.
           </p>
-        </div>
+        </a>
 
-        <div className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow">
+        <a
+          href="/posts"
+          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
+        >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-purple-50 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400">
+            <div className="p-2 bg-purple-50 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition-colors">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -115,13 +130,16 @@ export function App({ user, name }: Props) {
             Manage Posts
           </h3>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            View, edit, or delete your existing blog posts and drafts.
+            Edit or delete your existing posts.
           </p>
-        </div>
+        </a>
 
-        <div className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow">
+        <a
+          href="/analytics"
+          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
+        >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-pink-50 dark:bg-pink-900/30 rounded-lg text-pink-600 dark:text-pink-400">
+            <div className="p-2 bg-pink-50 dark:bg-pink-900/30 rounded-lg text-pink-600 dark:text-pink-400 group-hover:bg-pink-600 group-hover:text-white transition-colors">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -142,13 +160,16 @@ export function App({ user, name }: Props) {
             Post Statistics
           </h3>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Track views, engagement, and performance of your content.
+            Track views and engagement metrics.
           </p>
-        </div>
+        </a>
 
-        <div className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow">
+        <a
+          href="/git"
+          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
+        >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+            <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -166,17 +187,19 @@ export function App({ user, name }: Props) {
             <span className="text-sm font-medium text-gray-400">Git</span>
           </div>
           <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
-            GitHub Sync
+            Git Management
           </h3>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Commit and push your markdown changes or pull latest updates from
-            GitHub.
+            Manage repo and sync your changes.
           </p>
-        </div>
+        </a>
 
-        <div className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow">
+        <a
+          href="/media"
+          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
+        >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400">
+            <div className="p-2 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -197,13 +220,16 @@ export function App({ user, name }: Props) {
             Media Assets
           </h3>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Manage images and files used in your markdown posts.
+            Manage images and your media files.
           </p>
-        </div>
+        </a>
 
-        <div className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow">
+        <a
+          href="/settings"
+          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
+        >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-orange-50 dark:bg-orange-900/30 rounded-lg text-orange-600 dark:text-orange-400">
+            <div className="p-2 bg-orange-50 dark:bg-orange-900/30 rounded-lg text-orange-600 dark:text-orange-400 group-hover:bg-orange-600 group-hover:text-white transition-colors">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -230,9 +256,9 @@ export function App({ user, name }: Props) {
             Configurations
           </h3>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Setup your GitHub token, repository URL, and blog metadata.
+            Configure tokens and blog metadata.
           </p>
-        </div>
+        </a>
       </div>
     </Page>
   );

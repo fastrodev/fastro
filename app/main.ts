@@ -13,5 +13,8 @@ app.use(logger);
 app.use(cookieMiddleware);
 app.use(tailwind("/css/app.css"));
 autoRegisterModules(app);
-app.use(staticFiles("/", "./public"));
+// tambahkan fallback static file middleware
+app.use(
+  staticFiles("/", "./public", { spaFallback: true, indexFile: "index.html" }),
+);
 app.serve({ port: Deno.args[0] ? parseInt(Deno.args[0]) : 8000 });
