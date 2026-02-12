@@ -76,7 +76,7 @@ export default function Header({ user }: Props) {
         }}
       />
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 flex justify-between items-center w-full">
+      <div className="max-w-[720px] mx-auto px-6 md:px-8 flex justify-between items-center w-full">
         <div style={{ display: "flex", alignItems: "center" }}>
           <a
             href="/"

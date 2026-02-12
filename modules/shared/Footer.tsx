@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer className="mt-6 border-t border-gray-100 dark:border-gray-800 text-sm text-gray-500 dark:text-gray-400 w-full transition-colors">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+      <div className="max-w-[720px] mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
         <span>
           © {new Date().getFullYear()} Fastro
           <span className="hidden sm:inline">
