@@ -168,10 +168,10 @@ export async function renderBlog(page: number = 1, search: string = "") {
       post.tags && post.tags.length > 0
         ? `<div class="flex flex-wrap gap-2">
                   ${
-          post.tags.slice(0, 3).map((tag) =>
-            `<a href="/blog?search=${
-              encodeURIComponent(tag)
-            }" class="text-[0.65rem] px-2 py-0.5 rounded-full bg-canvas-subtle border border-border-default !text-fg-muted font-medium uppercase tracking-wider hover:!text-fg-default hover:border-fg-muted transition-colors z-20 relative !no-underline">${tag}</a>`
+          post.tags.slice(0, 3).map((tag, idx) =>
+            `<a href="/blog?search=${encodeURIComponent(tag)}" class="${
+              idx > 0 ? "hidden md:inline-block" : ""
+            } text-[0.65rem] px-2 py-0.5 rounded-full bg-canvas-subtle border border-border-default !text-fg-muted font-medium uppercase tracking-wider hover:!text-fg-default hover:border-fg-muted transition-colors z-20 relative !no-underline">${tag}</a>`
           ).join("")
         }
                 </div>`
