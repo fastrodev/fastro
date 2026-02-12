@@ -12,17 +12,17 @@
       "date_published": "2026-02-12"
     },
     {
-      "id": "https://fastro.dev/blog/powerkit",
-      "url": "https://fastro.dev/blog/powerkit",
-      "title": "Fastro SaaS Ship Kit — Coming Soon!",
-      "content_text": "Premium boilerplate for launching SaaS on Fastro/Deno. Early Bird USD 69 for the first 20 buyers. Coming soon!",
-      "date_published": "2026-02-11"
-    },
-    {
       "id": "https://fastro.dev/blog/how-this-blog-was-built",
       "url": "https://fastro.dev/blog/how-this-blog-was-built",
       "title": "Membangun Blog Performa Tinggi dengan Fastro dan Deno Deploy",
       "content_text": "Bagaimana kami membangun blog Fastro hanya menggunakan Deno, Fastro, dan Markdown—dihosting secara gratis di Deno Deploy tanpa database.",
+      "date_published": "2026-02-11"
+    },
+    {
+      "id": "https://fastro.dev/blog/powerkit",
+      "url": "https://fastro.dev/blog/powerkit",
+      "title": "Fastro SaaS Ship Kit — Coming Soon!",
+      "content_text": "Premium boilerplate for launching SaaS on Fastro/Deno. Early Bird USD 69 for the first 20 buyers. Coming soon!",
       "date_published": "2026-02-11"
     },
     {
@@ -40,17 +40,17 @@
       "date_published": "2026-02-10"
     },
     {
-      "id": "https://fastro.dev/blog/cookie",
-      "url": "https://fastro.dev/blog/cookie",
-      "title": "Understanding Cookie Middleware in Fastro",
-      "content_text": "How Fastro's cookie middleware works, usage patterns, and security best practices.",
-      "date_published": "2026-02-09"
-    },
-    {
       "id": "https://fastro.dev/blog/vibe",
       "url": "https://fastro.dev/blog/vibe",
       "title": "Membangun Autentikasi Modern: Panduan Step-by-Step Vibe Coding dengan Fastro",
       "content_text": "Panduan logis dan terstruktur dalam membangun sistem login/signup menggunakan JWT, Deno KV, dan 100% unit test coverage.",
+      "date_published": "2026-02-09"
+    },
+    {
+      "id": "https://fastro.dev/blog/cookie",
+      "url": "https://fastro.dev/blog/cookie",
+      "title": "Understanding Cookie Middleware in Fastro",
+      "content_text": "How Fastro's cookie middleware works, usage patterns, and security best practices.",
       "date_published": "2026-02-09"
     },
     {
@@ -61,17 +61,17 @@
       "date_published": "2026-02-07"
     },
     {
+      "id": "https://fastro.dev/blog/cors",
+      "url": "https://fastro.dev/blog/cors",
+      "title": "Securing Your API with CORS Middleware",
+      "content_text": "A comprehensive guide on how to configure Cross-Origin Resource Sharing (CORS) in Fastro to safely allow cross-domain requests.",
+      "date_published": "2026-02-04"
+    },
+    {
       "id": "https://fastro.dev/blog/jwt",
       "url": "https://fastro.dev/blog/jwt",
       "title": "JWT Authentication Middleware in Fastro",
       "content_text": "Learn how to secure your Fastro applications using JSON Web Tokens (JWT) with zero external dependencies.",
-      "date_published": "2026-02-04"
-    },
-    {
-      "id": "https://fastro.dev/blog/structure",
-      "url": "https://fastro.dev/blog/structure",
-      "title": "Project Structure: Organizing Your Fastro Application",
-      "content_text": "Learn the recommended project layout for Fastro applications, from simple scripts to scalable multi-module architectures.",
       "date_published": "2026-02-04"
     },
     {
@@ -82,17 +82,17 @@
       "date_published": "2026-02-04"
     },
     {
+      "id": "https://fastro.dev/blog/structure",
+      "url": "https://fastro.dev/blog/structure",
+      "title": "Project Structure: Organizing Your Fastro Application",
+      "content_text": "Learn the recommended project layout for Fastro applications, from simple scripts to scalable multi-module architectures.",
+      "date_published": "2026-02-04"
+    },
+    {
       "id": "https://fastro.dev/blog/modules",
       "url": "https://fastro.dev/blog/modules",
       "title": "Understanding Fastro Modules: Manual vs. Automatic Loading",
       "content_text": "Master the architecture of Fastro by learning how to create, organize, and register modules for scalable applications.",
-      "date_published": "2026-02-04"
-    },
-    {
-      "id": "https://fastro.dev/blog/cors",
-      "url": "https://fastro.dev/blog/cors",
-      "title": "Securing Your API with CORS Middleware",
-      "content_text": "A comprehensive guide on how to configure Cross-Origin Resource Sharing (CORS) in Fastro to safely allow cross-domain requests.",
       "date_published": "2026-02-04"
     },
     {
@@ -110,17 +110,17 @@
       "date_published": "2026-02-02"
     },
     {
-      "id": "https://fastro.dev/blog/maxwell",
-      "url": "https://fastro.dev/blog/maxwell",
-      "title": "How Maxwell Discovered the Constant for Light",
-      "content_text": "A look into how James Clerk Maxwell derived the speed of light from the fundamental constants of electricity and magnetism.",
-      "date_published": "2026-02-01"
-    },
-    {
       "id": "https://fastro.dev/blog/v1.0.0",
       "url": "https://fastro.dev/blog/v1.0.0",
       "title": "Fastro v1.0.0: High Performance by Design",
       "content_text": "A deep dive into the architecture and performance features of the new Fastro v1.0.0 release, featuring intelligent LRU caching and lazy parsing.",
+      "date_published": "2026-02-01"
+    },
+    {
+      "id": "https://fastro.dev/blog/maxwell",
+      "url": "https://fastro.dev/blog/maxwell",
+      "title": "How Maxwell Discovered the Constant for Light",
+      "content_text": "A look into how James Clerk Maxwell derived the speed of light from the fundamental constants of electricity and magnetism.",
       "date_published": "2026-02-01"
     }
   ]
