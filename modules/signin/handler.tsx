@@ -1,11 +1,26 @@
 import { Handler } from "../../core/types.ts";
 import App from "./App.tsx";
-import { createToken } from "../../middlewares/jwt/mod.ts";
+import { createToken, verifyToken } from "../../middlewares/jwt/mod.ts";
 import { hashPassword, verifyPassword } from "../../utils/password.ts";
 
 const JWT_SECRET = Deno.env.get("JWT_SECRET") || "fastro-secret";
 
 export const signinHandler: Handler = async (req, ctx) => {
+  const token = ctx.cookies?.token;
+  if (token) {
+    try {
+      const payload = await verifyToken(token, JWT_SECRET);
+      if (payload) {
+        return new Response(null, {
+          status: 303,
+          headers: { Location: "/dashboard" },
+        });
+      }
+    } catch {
+      // ignore invalid token and continue to signin page
+    }
+  }
+
   const msg = ctx.query?.msg;
   let initialHelpMessage: string | null = null;
   if (msg === "auth_required") {

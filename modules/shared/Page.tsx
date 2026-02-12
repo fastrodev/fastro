@@ -13,7 +13,7 @@ export default function Page({ user, children, title }: Props) {
   return (
     <div
       style={{ fontFamily: "system-ui, sans-serif" }}
-      className="min-h-screen flex flex-col w-full"
+      className="min-h-screen flex flex-col w-full bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-200"
     >
       {user ? <Header user={user} /> : <Header user={undefined} />}
 
@@ -68,7 +68,7 @@ export default function Page({ user, children, title }: Props) {
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 page flex-1 w-full flex flex-col">
         {title
           ? (
-            <h1 className="text-xl sm:text-2xl font-bold leading-tight mt-0 mb-6 text-gray-900">
+            <h1 className="text-xl sm:text-2xl font-bold leading-tight mt-0 mb-6 text-gray-900 dark:text-gray-100">
               {title}
             </h1>
           )

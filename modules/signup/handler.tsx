@@ -1,11 +1,26 @@
 import { Handler } from "../../core/types.ts";
 import App from "./App.tsx";
-import { createToken } from "../../middlewares/jwt/mod.ts";
+import { createToken, verifyToken } from "../../middlewares/jwt/mod.ts";
 import { hashPassword } from "../../utils/password.ts";
 
 const JWT_SECRET = Deno.env.get("JWT_SECRET") || "fastro-secret";
 
 export const signupHandler: Handler = async (req, ctx) => {
+  const token = ctx.cookies?.token;
+  if (token) {
+    try {
+      const payload = await verifyToken(token, JWT_SECRET);
+      if (payload) {
+        return new Response(null, {
+          status: 303,
+          headers: { Location: "/dashboard" },
+        });
+      }
+    } catch {
+      // ignore
+    }
+  }
+
   if (req.method === "POST") {
     const s = ctx.state as Record<string, unknown> | undefined;
     let form = s?.formData as FormData | undefined;

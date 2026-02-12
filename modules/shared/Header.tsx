@@ -6,7 +6,7 @@ import Logo from "./Logo.tsx";
 
 export default function Header({ user }: Props) {
   return (
-    <header className="header-container border-b border-gray-200">
+    <header className="header-container border-b border-gray-200 dark:border-gray-800 transition-colors">
       <style
         dangerouslySetInnerHTML={{
           __html: `
@@ -19,9 +19,17 @@ export default function Header({ user }: Props) {
         }
         .header-nav { display: flex; gap: 12px; align-items: center; }
         .site-title { font-weight: 700; font-size: 18px; color: #111827; margin-left: 8px; letter-spacing: 0.4px; }
-        .nav-link { text-decoration: none; color: #111827; font-weight: 500; padding: 8px 12px; border-radius: 6px; display: inline-block; font-size: 15px; margin: 0; }
-        .nav-link:hover { background: #f7f7fb; text-decoration: none; }
-        .menu-button { display: none; background: none; border: none; font-size: 20px; padding: 6px; cursor: pointer; margin-left: 8px; }
+        .nav-link { text-decoration: none; color: #374151; font-weight: 500; padding: 8px 12px; border-radius: 6px; display: inline-block; font-size: 15px; margin: 0; transition: all 0.2s; }
+        .nav-link:hover { background: #f7f7fb; text-decoration: none; color: #111827; }
+        .menu-button { display: none; background: none; border: none; font-size: 20px; padding: 6px; cursor: pointer; margin-left: 8px; color: #374151; }
+        
+        @media (prefers-color-scheme: dark) {
+          .site-title { color: #f9fafb; }
+          .nav-link { color: #d1d5db; }
+          .nav-link:hover { background: #1f2937; color: #f9fafb; }
+          .menu-button { color: #d1d5db; }
+        }
+
         @media (max-width: 640px) {
           /* remove extra outer horizontal padding on mobile */
           .header-container { padding: var(--space-v) 0; }
@@ -43,7 +51,17 @@ export default function Header({ user }: Props) {
             z-index: 600;
             align-items: stretch;
           }
+          @media (prefers-color-scheme: dark) {
+            .header-nav {
+              background: #030712;
+              border-bottom: 1px solid #1f2937;
+              box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+            }
+          }
           .header-nav .nav-link { display: block; padding: 12px 16px; border-bottom: 1px solid #f5f5f5; text-align: left; }
+          @media (prefers-color-scheme: dark) {
+            .header-nav .nav-link { border-bottom: 1px solid #111827; }
+          }
           .header-nav .nav-link:last-child { border-bottom: none; }
           /* Ensure buttons styled like links */
           .header-nav button.nav-link { background: transparent; border: none; padding: 12px 16px; margin: 0; width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer; }
@@ -62,7 +80,7 @@ export default function Header({ user }: Props) {
         <div style={{ display: "flex", alignItems: "center" }}>
           <a
             href="/"
-            className="inline-flex items-center mr-3 no-underline"
+            className="inline-flex items-center mr-3 no-underline text-gray-900 dark:text-gray-100"
           >
             <Logo height={28} />
             <span className="site-title">FASTRO</span>

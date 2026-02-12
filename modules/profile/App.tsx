@@ -12,19 +12,21 @@ export function App({ user, name, bio, msg }: Props) {
     <Page user={user} title={undefined}>
       <div className="flex-1 flex flex-col items-center justify-center py-12 sm:py-24">
         <div className="w-full max-w-md">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8 text-center">
             User Profile
           </h1>
 
           {msg && (
-            <div className="bg-green-50 border-l-4 border-green-400 p-4 mb-6">
-              <p className="text-sm text-green-700">{msg}</p>
+            <div className="bg-green-50 dark:bg-green-950/30 border-l-4 border-green-400 dark:border-green-600 p-4 mb-6">
+              <p className="text-sm text-green-700 dark:text-green-300">
+                {msg}
+              </p>
             </div>
           )}
 
           <form method="POST" action="/profile" className="w-full">
             <div className="mb-5">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Username
               </label>
               <input
@@ -32,11 +34,11 @@ export function App({ user, name, bio, msg }: Props) {
                 name="username"
                 defaultValue={user}
                 required
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               />
             </div>
             <div className="mb-5">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Full Name
               </label>
               <input
@@ -44,18 +46,18 @@ export function App({ user, name, bio, msg }: Props) {
                 name="name"
                 defaultValue={name}
                 required
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               />
             </div>
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Bio
               </label>
               <textarea
                 name="bio"
                 defaultValue={bio}
                 rows={4}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm resize-none"
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm resize-none bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               />
             </div>
             <div className="mt-8">
