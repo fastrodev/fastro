@@ -4,16 +4,35 @@ type Props = {
 };
 
 import Page from "../shared/Page.tsx";
+import Editor from "./Editor.tsx";
 import { useEffect, useState } from "react";
 
 export function App({ user, name }: Props) {
   const [gitStatus, setGitStatus] = useState({ branch: "", status: "" });
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     fetch("/api/git/status")
       .then((res) => res.json())
       .then((data) => setGitStatus(data));
   }, []);
+
+  if (isEditing) {
+    return (
+      <Page user={user} title="Create Post">
+        <Editor
+          initialTitle=""
+          initialContent=""
+          onClose={() => setIsEditing(false)}
+          onPublish={(t, c) => {
+            // TODO: implement publish logic (API call)
+            console.log("publish", t, c);
+            setIsEditing(false);
+          }}
+        />
+      </Page>
+    );
+  }
 
   return (
     <Page user={user} title="Dashboard">
@@ -74,9 +93,10 @@ export function App({ user, name }: Props) {
       </div>
 
       <div className="grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-2">
-        <a
-          href="/posts/new"
-          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
+        <button
+          type="button"
+          onClick={() => setIsEditing(true)}
+          className="p-6 text-left rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="p-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
@@ -102,7 +122,7 @@ export function App({ user, name }: Props) {
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Write and publish a new blog post.
           </p>
-        </a>
+        </button>
 
         <a
           href="/posts"

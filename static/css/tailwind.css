@@ -1,2 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap');
 @import "tailwindcss";
+
+/* custom scrollbar styles used by the editor */
+.custom-scrollbar {
+	scrollbar-width: thin;
+	scrollbar-color: rgba(100,116,139,0.3) transparent;
+}
+
+/* WebKit browsers */
+.custom-scrollbar::-webkit-scrollbar {
+	width: 12px;
+	height: 12px;
+	background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+	background: transparent;
+	border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+	background-color: rgba(100,116,139,0.3);
+	border-radius: 9999px;
+	border: 3px solid transparent;
+	background-clip: padding-box;
+}
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+	background-color: rgba(148,163,184,0.6);
+}
+
+/* dark mode tweaks */
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+	background-color: rgba(148,163,184,0.12);
+}
+.dark .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+	background-color: rgba(148,163,184,0.28);
+}
+
