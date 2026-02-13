@@ -18,6 +18,7 @@ Explore interactive demos built with Fastro—where speed meets simplicity. Dive
 | :----------- | :---------- | :---- | :--- |
 | **Git-Based Blog CMS** | A modern Headless CMS for git-based blogs with markdown management, GitHub sync, and analytics. | Free | [Blog](/signin) |
 | **Pro Boilerplate** | A production-ready starter kit for building professional web applications with clean architecture and advanced patterns. |  $149 | [Powerkit](blog/powerkit) |
+| **Simpul** | The Universal Demand Node. A marketplace where sellers actively hunt for real-time buyer needs. | Free | [Simpul](/SIMPUL.md) |
 
 
 ## Community Projects

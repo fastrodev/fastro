@@ -65,7 +65,7 @@ export default function Page({ user, children, title }: Props) {
         }}
       />
 
-      <main className="max-w-[720px] mx-auto px-6 md:px-8 py-6 page flex-1 w-full flex flex-col">
+      <main className="max-w-180 mx-auto px-6 md:px-8 py-6 page flex-1 w-full flex flex-col">
         {title
           ? (
             <h1 className="text-xl sm:text-2xl font-bold leading-tight mt-0 mb-6 text-gray-900 dark:text-gray-100">

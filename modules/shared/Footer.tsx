@@ -3,10 +3,14 @@ export default function Footer() {
     <footer className="mt-6 border-t border-gray-100 dark:border-gray-800 text-sm text-gray-500 dark:text-gray-400 w-full transition-colors">
       <div className="max-w-[720px] mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
         <span>
-          © {new Date().getFullYear()} Fastro
-          <span className="hidden sm:inline">
-            . A high-performance, open source web framework.
-          </span>
+          Made by{" "}
+          <a
+            href="https://github.com/fastrodev"
+            target="_blank"
+            className="font-medium hover:text-fg-default transition-colors"
+          >
+            FastroDev
+          </a>
         </span>
         <a
           href="https://github.com/fastrodev/fastro"
