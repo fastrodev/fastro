@@ -1,21 +1,27 @@
-import { renderBlog, renderCode, renderMD, renderStatic } from "./render.ts";
+import {
+  getCanonical,
+  renderBlog,
+  renderCode,
+  renderMD,
+  renderStatic,
+} from "./render.ts";
 import { registerCodeRoutes } from "./code.ts";
 import { createRouter } from "../../core/router.ts";
 import { kvMiddleware } from "../../middlewares/kv/mod.ts";
 
 const r = createRouter();
 
-r.get("/", (_req, ctx) => renderMD("README.md", ctx.kv), kvMiddleware);
+r.get("/", (req, ctx) => renderMD("README.md", ctx.kv, getCanonical(req)), kvMiddleware);
 
 r.get("/blog", (req, ctx) => {
   const url = new URL(req.url);
   const page = parseInt(url.searchParams.get("page") || "1");
   const search = url.searchParams.get("search") || "";
-  return renderBlog(page, search, ctx.kv);
+  return renderBlog(page, search, ctx.kv, getCanonical(req));
 }, kvMiddleware);
 r.get(
   "/blog/:post",
-  (_req, ctx) => renderMD(`posts/${ctx.params.post}.md`, ctx.kv),
+  (req, ctx) => renderMD(`posts/${ctx.params.post}.md`, ctx.kv, getCanonical(req)),
   kvMiddleware,
 );
 
@@ -56,12 +62,13 @@ async function findPageFile(name: string, preferExt?: string) {
   return null;
 }
 
-r.get("/:page", async (_req, ctx, next) => {
+r.get("/:page", async (req, ctx, next) => {
   const raw = ctx.params.page; // e.g. DOCS or DOCS.md or DOCS.html
   const m = raw.match(/^(.+?)(\.(md|html))?$/i);
   if (!m) return new Response("Not Found", { status: 404 });
   const name = m[1];
   const ext = m[2] ? m[2].toLowerCase() : null;
+  const canonical = getCanonical(req);
 
   if (!(await isPageAllowed(name))) {
     return next ? next() : new Response("Not Found", { status: 404 });
@@ -70,7 +77,7 @@ r.get("/:page", async (_req, ctx, next) => {
   // If extension specified, try that first (respect user's explicit request)
   if (ext === ".md") {
     const file = await findPageFile(name, ".md");
-    if (file) return renderMD(file, ctx.kv);
+    if (file) return renderMD(file, ctx.kv, canonical);
     const alt = await findPageFile(name, ".html");
     if (alt) return renderStatic(alt);
     return next ? next() : new Response("Not Found", { status: 404 });
@@ -80,13 +87,13 @@ r.get("/:page", async (_req, ctx, next) => {
     const file = await findPageFile(name, ".html");
     if (file) return renderStatic(file);
     const alt = await findPageFile(name, ".md");
-    if (alt) return renderMD(alt, ctx.kv);
+    if (alt) return renderMD(alt, ctx.kv, canonical);
     return next ? next() : new Response("Not Found", { status: 404 });
   }
 
   // No extension: prefer markdown, then html (case-insensitive)
   const mdFile = await findPageFile(name, ".md");
-  if (mdFile) return renderMD(mdFile, ctx.kv);
+  if (mdFile) return renderMD(mdFile, ctx.kv, canonical);
   const htmlFile = await findPageFile(name, ".html");
   if (htmlFile) return renderStatic(htmlFile);
   return next ? next() : new Response("Not Found", { status: 404 });
@@ -94,6 +101,10 @@ r.get("/:page", async (_req, ctx, next) => {
 
 registerCodeRoutes(r);
 
-r.get("/LICENSE", (_req, ctx) => renderCode("LICENSE", ctx.kv), kvMiddleware);
+r.get(
+  "/LICENSE",
+  (req, ctx) => renderCode("LICENSE", ctx.kv, getCanonical(req)),
+  kvMiddleware,
+);
 
 export default r.build();

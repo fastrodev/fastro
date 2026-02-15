@@ -16,12 +16,14 @@ import "npm:prismjs@1.29.0/components/prism-javascript.js";
  * @param content The raw markdown content.
  * @param path The path or identifier for the content.
  * @param kv Optional Deno KV instance.
+ * @param canonical Optional canonical URL for the page.
  * @returns A promise that resolves to a Response.
  */
 export async function renderMD_Content(
   content: string,
   path: string,
   kv?: Deno.Kv,
+  canonical?: string,
 ) {
   const version = await getVersion();
   const headerPages = await getHeaderPages(kv);
@@ -140,6 +142,7 @@ export async function renderMD_Content(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${docTitle}</title>
     <meta name="description" content="${description}">
+    ${canonical ? `<link rel="canonical" href="${canonical}">` : ""}
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -730,13 +733,18 @@ export async function renderMD_Content(
  *
  * @param path The relative path to the markdown file.
  * @param kv Optional Deno KV instance.
+ * @param canonical Optional canonical URL for the page.
  * @returns A promise that resolves to a Response.
  */
-export async function renderMD(path: string, kv?: Deno.Kv) {
+export async function renderMD(
+  path: string,
+  kv?: Deno.Kv,
+  canonical?: string,
+) {
   try {
     const url = new URL(`../../${path}`, import.meta.url);
     const content = await Deno.readTextFile(url);
-    return renderMD_Content(content, path, kv);
+    return renderMD_Content(content, path, kv, canonical);
   } catch (_) {
     return renderStatic("public/index.html");
   }

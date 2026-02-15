@@ -6,12 +6,14 @@ import { renderMD_Content } from "./render_md.ts";
  * @param page The current page number.
  * @param search The search query string.
  * @param kv Optional Deno KV instance.
+ * @param canonical Optional canonical URL for the page.
  * @returns A promise that resolves to a rendered HTML string.
  */
 export async function renderBlog(
   page: number = 1,
   search: string = "",
   kv?: Deno.Kv,
+  canonical?: string,
 ) {
   const postsDir = new URL("../../posts/", import.meta.url);
   const posts: {
@@ -230,5 +232,5 @@ export async function renderBlog(
       : ""
   }`;
 
-  return renderMD_Content(html, "blog", kv);
+  return renderMD_Content(html, "blog", kv, canonical);
 }

@@ -41,3 +41,33 @@ export async function getHeaderPages(kv?: Deno.Kv): Promise<string[]> {
   }
   return ["SHOWCASE.md", "MIDDLEWARES.md", "BENCHMARK.md", "DOCS.md"];
 }
+
+/**
+ * Generates a canonical URL for a given request.
+ * Normalizes the path by removing trailing slashes and common extensions.
+ */
+export function getCanonical(req: Request) {
+  const url = new URL(req.url);
+  // Use fastro.dev as the canonical host in production
+  const host = url.hostname === "localhost" ||
+      url.hostname.includes("127.0.0.1")
+    ? url.host
+    : "fastro.dev";
+  const protocol = url.hostname === "localhost" ||
+      url.hostname.includes("127.0.0.1")
+    ? url.protocol
+    : "https:";
+
+  // Normalize path: remove trailing slash, remove .md/.html extensions
+  let pathname = url.pathname;
+  if (pathname !== "/" && pathname.endsWith("/")) {
+    pathname = pathname.slice(0, -1);
+  }
+  if (pathname.endsWith(".md")) {
+    pathname = pathname.slice(0, -3);
+  } else if (pathname.endsWith(".html")) {
+    pathname = pathname.slice(0, -5);
+  }
+
+  return `${protocol}//${host}${pathname}`;
+}
