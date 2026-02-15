@@ -49,3 +49,4 @@ Add your awesome middlewares here!
 1. Create your middleware logic.
 2. Submit a PR adding your middleware to the `middlewares/` directory.
 3. Add a new row to the table above with your details.
+

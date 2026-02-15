@@ -1,5 +1,5 @@
 import { CSS, render } from "jsr:@deno/gfm@^0.11.0";
-import { getVersion } from "./utils.ts";
+import { getHeaderPages, getVersion } from "./utils.ts";
 import { renderStatic } from "./render_static.ts";
 
 // Add support for syntax highlighting
@@ -15,10 +15,33 @@ import "npm:prismjs@1.29.0/components/prism-javascript.js";
  *
  * @param content The raw markdown content.
  * @param path The path or identifier for the content.
+ * @param kv Optional Deno KV instance.
  * @returns A promise that resolves to a Response.
  */
-export async function renderMD_Content(content: string, path: string) {
+export async function renderMD_Content(
+  content: string,
+  path: string,
+  kv?: Deno.Kv,
+) {
   const version = await getVersion();
+  const headerPages = await getHeaderPages(kv);
+  const navItems = headerPages.map((p) => {
+    const label = p.split(".")[0].charAt(0).toUpperCase() +
+      p.split(".")[0].slice(1).toLowerCase();
+    const href = `/${p}`;
+    const isCurrent = path === p || path === `pages/${p}`;
+    return `<a href="${href}" class="nav-link py-1 md:py-0 ${
+      isCurrent ? "current-page" : ""
+    }">${label}</a>`;
+  }).join("\n          ");
+
+  // Add Blog link if it exists in the system
+  const blogLink = `<a href="/blog" class="nav-link py-1 md:py-0 ${
+    path === "blog" ? "current-page" : ""
+  }">Blog</a>`;
+
+  const finalNav = navItems + (navItems ? "\n          " : "") + blogLink;
+
   let markdown = content;
   let title = "";
   let description = "High-performance, minimalist web framework for Deno.";
@@ -490,11 +513,7 @@ export async function renderMD_Content(content: string, path: string) {
           </button>
         </div>
         <nav id="nav-links" class="flex flex-col md:flex-row hidden md:flex w-full md:w-auto gap-5 md:gap-7 items-start md:items-center overflow-hidden">
-          <a href="/SHOWCASE.md" class="nav-link py-1 md:py-0">Showcase</a> 
-          <a href="/MIDDLEWARES.md" class="nav-link py-1 md:py-0">Middlewares</a>
-          <a href="/BENCHMARK.md" class="nav-link py-1 md:py-0">Benchmarks</a>
-          <a href="/DOCS.md" class="nav-link py-1 md:py-0">Docs</a>
-          <a href="/blog" class="nav-link py-1 md:py-0">Blog</a>
+          ${finalNav}
         </nav>
       </div>
     </header>
@@ -511,7 +530,7 @@ export async function renderMD_Content(content: string, path: string) {
           } gap-3 mb-4`
       }">${title}${
         path === "blog"
-          ? `<a href="/signin" class="text-[0.7rem] md:text-xs font-semibold px-3 py-1.5 rounded-xl border border-border-default hover:border-fg-muted hover:bg-canvas-subtle transition-all !no-underline !text-fg-muted hover:!text-fg-default uppercase tracking-wider">Sign In</a>`
+          ? `<a href="/signin" class="text-[0.7rem] md:text-xs font-semibold px-3 py-1.5 rounded-xl border border-border-default hover:border-fg-muted hover:bg-canvas-subtle transition-all !no-underline !text-fg-muted hover:!text-fg-default uppercase tracking-wider">DASHBOARD</a>`
           : ""
       }</h1>`
       : ""
@@ -710,13 +729,14 @@ export async function renderMD_Content(content: string, path: string) {
  * Renders a markdown file from the repository to HTML.
  *
  * @param path The relative path to the markdown file.
+ * @param kv Optional Deno KV instance.
  * @returns A promise that resolves to a Response.
  */
-export async function renderMD(path: string) {
+export async function renderMD(path: string, kv?: Deno.Kv) {
   try {
     const url = new URL(`../../${path}`, import.meta.url);
     const content = await Deno.readTextFile(url);
-    return renderMD_Content(content, path);
+    return renderMD_Content(content, path, kv);
   } catch (_) {
     return renderStatic("public/index.html");
   }

@@ -2,7 +2,7 @@
 
 # Port to use
 PORT=3000
-MD_FILE="BENCHMARK.md"
+MD_FILE="pages/BENCHMARK.md"
 
 # Function to kill process on port
 kill_port() {

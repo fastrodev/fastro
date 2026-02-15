@@ -1,35 +1,163 @@
 type Props = {
   user?: string;
   name?: string;
+  isDeploy?: boolean;
 };
 
 import Page from "../shared/Page.tsx";
 import Editor from "./Editor.tsx";
+import ManagePosts from "./ManagePosts.tsx";
+import GitOverview from "./GitOverview.tsx";
+import Stats from "./Stats.tsx";
+import Media from "./Media.tsx";
+import Config from "./Config.tsx";
+import Toast from "../shared/Toast.tsx";
 import { useEffect, useState } from "react";
 
-export function App({ user, name }: Props) {
+export function App({ user, name, isDeploy }: Props) {
   const [gitStatus, setGitStatus] = useState({ branch: "", status: "" });
   const [isEditing, setIsEditing] = useState(false);
+  const [showManage, setShowManage] = useState(false);
+  const [showGit, setShowGit] = useState(false);
+  const [showStats, setShowStats] = useState(false);
+  const [showMedia, setShowMedia] = useState(false);
+  const [showConfig, setShowConfig] = useState(false);
+  const [toast, setToast] = useState<
+    { message: string; type: "success" | "error" | "info" } | null
+  >(null);
+
+  function handleMenuClick(setter: (v: boolean) => void) {
+    if (isDeploy) {
+      setToast({
+        message: "This feature is currently only available on localhost",
+        type: "info",
+      });
+      return;
+    }
+    setter(true);
+  }
 
   useEffect(() => {
+    if (isDeploy) return;
     fetch("/api/git/status")
       .then((res) => res.json())
       .then((data) => setGitStatus(data));
-  }, []);
+  }, [isDeploy]);
 
   if (isEditing) {
     return (
       <Page user={user} title="Create Post">
         <Editor
           initialTitle=""
-          initialContent=""
           onClose={() => setIsEditing(false)}
-          onPublish={(t, c) => {
-            // TODO: implement publish logic (API call)
-            console.log("publish", t, c);
-            setIsEditing(false);
+          onPublish={(f, c) => {
+            fetch("/api/posts", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ filename: f, content: c }),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.success) {
+                  setToast({ message: data.message, type: "success" });
+                } else {
+                  setToast({
+                    message: "Failed to publish post",
+                    type: "error",
+                  });
+                }
+              })
+              .catch((err) => {
+                console.error(err);
+                setToast({
+                  message: "An error occurred while publishing",
+                  type: "error",
+                });
+              });
           }}
         />
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
+      </Page>
+    );
+  }
+
+  if (showManage) {
+    return (
+      <Page user={user} title="Manage Posts">
+        <ManagePosts onClose={() => setShowManage(false)} />
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
+      </Page>
+    );
+  }
+
+  if (showGit) {
+    return (
+      <Page user={user} title="Git Management">
+        <GitOverview onClose={() => setShowGit(false)} />
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
+      </Page>
+    );
+  }
+
+  if (showStats) {
+    return (
+      <Page user={user} title="Post Statistics">
+        <Stats onClose={() => setShowStats(false)} />
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
+      </Page>
+    );
+  }
+
+  if (showMedia) {
+    return (
+      <Page user={user} title="Media Assets">
+        <Media onClose={() => setShowMedia(false)} />
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
+      </Page>
+    );
+  }
+
+  if (showConfig) {
+    return (
+      <Page user={user} title="Post Configuration">
+        <Config onClose={() => setShowConfig(false)} />
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
       </Page>
     );
   }
@@ -92,10 +220,10 @@ export function App({ user, name }: Props) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-2">
+      <div className="grid grid-cols-2 gap-4 sm:gap-6 mt-2">
         <button
           type="button"
-          onClick={() => setIsEditing(true)}
+          onClick={() => handleMenuClick(setIsEditing)}
           className="p-6 text-left rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
         >
           <div className="flex items-center justify-between mb-4">
@@ -124,9 +252,10 @@ export function App({ user, name }: Props) {
           </p>
         </button>
 
-        <a
-          href="/posts"
-          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
+        <button
+          type="button"
+          onClick={() => handleMenuClick(setShowManage)}
+          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group text-left"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="p-2 bg-purple-50 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition-colors">
@@ -152,11 +281,12 @@ export function App({ user, name }: Props) {
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Edit or delete your existing posts.
           </p>
-        </a>
+        </button>
 
-        <a
-          href="/analytics"
-          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
+        <button
+          type="button"
+          onClick={() => handleMenuClick(setShowStats)}
+          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group text-left"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="p-2 bg-pink-50 dark:bg-pink-900/30 rounded-lg text-pink-600 dark:text-pink-400 group-hover:bg-pink-600 group-hover:text-white transition-colors">
@@ -182,11 +312,12 @@ export function App({ user, name }: Props) {
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Track views and engagement metrics.
           </p>
-        </a>
+        </button>
 
-        <a
-          href="/git"
-          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
+        <button
+          type="button"
+          onClick={() => handleMenuClick(setShowGit)}
+          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group text-left"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors">
@@ -212,11 +343,12 @@ export function App({ user, name }: Props) {
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Manage repo and sync your changes.
           </p>
-        </a>
+        </button>
 
-        <a
-          href="/media"
-          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
+        <button
+          type="button"
+          onClick={() => handleMenuClick(setShowMedia)}
+          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group text-left"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="p-2 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
@@ -242,11 +374,12 @@ export function App({ user, name }: Props) {
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Manage images and your media files.
           </p>
-        </a>
+        </button>
 
-        <a
-          href="/settings"
-          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
+        <button
+          type="button"
+          onClick={() => handleMenuClick(setShowConfig)}
+          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group text-left"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="p-2 bg-orange-50 dark:bg-orange-900/30 rounded-lg text-orange-600 dark:text-orange-400 group-hover:bg-orange-600 group-hover:text-white transition-colors">
@@ -278,8 +411,15 @@ export function App({ user, name }: Props) {
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Configure tokens and blog metadata.
           </p>
-        </a>
+        </button>
       </div>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </Page>
   );
 }

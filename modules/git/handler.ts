@@ -30,11 +30,68 @@ export const gitStatusHandler: Handler = async (_req, ctx) => {
   if (!user) return new Response("Unauthorized", { status: 401 });
 
   const branchResult = await runGit(["branch", "--show-current"]);
-  const statusResult = await runGit(["status", "--short"]);
+  const statusResult = await runGit(["status", "--porcelain", "--branch"]);
+  const logResult = await runGit([
+    "log",
+    "--oneline",
+    "-5",
+    "--",
+    "posts/",
+    "public/img/",
+  ]);
+
+  const branch = branchResult.output.trim();
+  // Preserve leading spaces in porcelain lines so index/worktree columns remain
+  const rawLines = statusResult.output.split("\n").filter((l) => l !== "");
+
+  // Parse ahead count from branch header, e.g. "## main...origin/main [ahead 2]"
+  let ahead = 0;
+  if (rawLines.length > 0 && rawLines[0].startsWith("##")) {
+    const m = rawLines[0].match(/ahead\s+(\d+)/);
+    if (m) ahead = parseInt(m[1], 10);
+  }
+
+  // Count untracked (??) and staged files (index column != ' '), but only in posts/ or public/img/
+  const untrackedFiles: string[] = [];
+  const stagedFiles: string[] = [];
+  const log = logResult.output.split("\n").filter((l) => l !== "");
+
+  for (let i = 0; i < rawLines.length; i++) {
+    const line = rawLines[i];
+    if (line.startsWith("##")) continue;
+
+    // Porcelain format: XY <path> (where X is index status at position 0)
+    // For untracked files: line starts with "?? "
+    if (line.startsWith("?? ")) {
+      const path = line.slice(3);
+      if (path.startsWith("posts/") || path.startsWith("public/img/")) {
+        untrackedFiles.push(path);
+      }
+      continue;
+    }
+
+    // For other statuses, path starts at pos 3
+    if (line.length >= 3) {
+      const path = line.slice(3);
+      if (path.startsWith("posts/") || path.startsWith("public/img/")) {
+        const idx = line[0];
+        if (idx !== " ") stagedFiles.push(path);
+      }
+    }
+  }
 
   return Response.json({
-    branch: branchResult.output.trim(),
-    status: statusResult.output.trim(),
+    branch,
+    counts: {
+      untracked: untrackedFiles.length,
+      staged: stagedFiles.length,
+      ahead,
+    },
+    files: {
+      untracked: untrackedFiles,
+      staged: stagedFiles,
+    },
+    log,
   });
 };
 
@@ -56,8 +113,8 @@ export const gitSyncHandler: Handler = async (req, ctx) => {
 
   const body = await req.json();
   const message = body.message || `sync from dashboard by ${user}`;
-
-  await runGit(["add", "."]);
+  // Only add files under posts/ and public/img/ to avoid affecting other folders
+  await runGit(["add", "posts/", "public/img/"]);
   const commitResult = await runGit(["commit", "-m", message]);
 
   const branchResult = await runGit(["branch", "--show-current"]);
@@ -70,6 +127,46 @@ export const gitSyncHandler: Handler = async (req, ctx) => {
     push: pushResult.output || pushResult.error,
     code: pushResult.code,
   });
+};
+
+export const gitAddHandler: Handler = async (_req, ctx) => {
+  const user = await checkAuth(ctx.cookies?.token as string);
+  if (!user) return new Response("Unauthorized", { status: 401 });
+
+  // Add all files under posts/ and public/img/
+  const res = await runGit(["add", "posts/", "public/img/"]);
+  return Response.json({ output: res.output || res.error, code: res.code });
+};
+
+export const gitCommitHandler: Handler = async (req, ctx) => {
+  const user = await checkAuth(ctx.cookies?.token as string);
+  if (!user) return new Response("Unauthorized", { status: 401 });
+
+  const body = await req.json();
+  const message = body.message || `commit from dashboard by ${user}`;
+
+  const res = await runGit(["commit", "-m", message]);
+  return Response.json({ output: res.output || res.error, code: res.code });
+};
+
+export const gitPushHandler: Handler = async (_req, ctx) => {
+  const user = await checkAuth(ctx.cookies?.token as string);
+  if (!user) return new Response("Unauthorized", { status: 401 });
+
+  const branchResult = await runGit(["branch", "--show-current"]);
+  const branch = branchResult.output.trim();
+  const res = await runGit(["push", "origin", branch]);
+  return Response.json({ output: res.output || res.error, code: res.code });
+};
+
+export const gitUnstageHandler: Handler = async (_req, ctx) => {
+  const user = await checkAuth(ctx.cookies?.token as string);
+  if (!user) return new Response("Unauthorized", { status: 401 });
+
+  // Unstage files under posts/ and public/img/ only
+  // Use git reset HEAD <paths> to unstage
+  const res = await runGit(["reset", "HEAD", "--", "posts/", "public/img/"]);
+  return Response.json({ output: res.output || res.error, code: res.code });
 };
 
 export const gitCheckoutHandler: Handler = async (req, ctx) => {
@@ -86,4 +183,22 @@ export const gitCheckoutHandler: Handler = async (req, ctx) => {
     output: result.output || result.error,
     code: result.code,
   });
+};
+
+export const gitLogHandler: Handler = async (_req, ctx) => {
+  const user = await checkAuth(ctx.cookies?.token as string);
+  if (!user) return new Response("Unauthorized", { status: 401 });
+
+  const url = new URL(_req.url);
+  const limit = url.searchParams.get("limit") || "10";
+  const logResult = await runGit([
+    "log",
+    "--oneline",
+    `-${limit}`,
+    "--",
+    "posts/",
+    "public/img/",
+  ]);
+  const log = logResult.output.split("\n").filter((l) => l !== "");
+  return Response.json({ log });
 };

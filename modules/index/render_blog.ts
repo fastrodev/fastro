@@ -5,9 +5,14 @@ import { renderMD_Content } from "./render_md.ts";
  *
  * @param page The current page number.
  * @param search The search query string.
+ * @param kv Optional Deno KV instance.
  * @returns A promise that resolves to a rendered HTML string.
  */
-export async function renderBlog(page: number = 1, search: string = "") {
+export async function renderBlog(
+  page: number = 1,
+  search: string = "",
+  kv?: Deno.Kv,
+) {
   const postsDir = new URL("../../posts/", import.meta.url);
   const posts: {
     title: string;
@@ -225,5 +230,5 @@ export async function renderBlog(page: number = 1, search: string = "") {
       : ""
   }`;
 
-  return renderMD_Content(html, "blog");
+  return renderMD_Content(html, "blog", kv);
 }
