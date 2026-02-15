@@ -29,10 +29,13 @@ Kami baru saja mengintegrasikan fitur-fitur canggih untuk mempermudah manajemen 
 ### 1. Manajemen Navigasi Dinamis via Deno KV
 Dulu, menu navigasi di header bersifat statis. Sekarang, kami menggunakan **Deno KV** untuk menyimpan konfigurasi halaman. Melalui dashboard CMS, kami bisa menentukan hingga 4 halaman utama (dari folder `/pages`) yang berhak tampil di navigasi situs secara *real-time* tanpa perlu deploy ulang.
 
-### 2. Dashboard Media & Git Terintegrasi
-Kami telah menambahkan fitur untuk mengelola aset gambar langsung di folder `/public/img` dan memantau status Git:
+### 2. Manajemen Konten & Git Terintegrasi
+Kami telah menambahkan fitur untuk mengelola postingan dan aset media secara langsung melalui dashboard:
+- **Post Management**: Kita bisa membuat dan mengelola postingan Markdown langsung dari browser. Semua perubahan ini dikelola menggunakan perintah Git yang sudah terintegrasi melalui handler di sisi server (Git via API).
 - **Media Management**: Upload dan hapus aset gambar CMS langsung dari UI.
-- **Git Dashboard**: Pantau file yang baru ditambahkan (*untracked*), dimodifikasi, hingga yang dihapus (*deleted*). Kita bisa melakukan *Add*, *Commit*, dan *Push* langsung dari dashboard CMS.
+- **Git Dashboard**: Pantau file yang baru ditambahkan (*untracked*), dimodifikasi, hingga yang dihapus (*deleted*). Kita bisa melakukan *Add*, *Commit*, dan *Push* langsung dari dashboard tanpa perlu menyentuh terminal.
+
+> **Catatan**: Saat ini, fitur manajemen konten via Git ini hanya tersedia ketika aplikasi dijalankan di `localhost`. Di versi berikutnya, kami berencana mengintegrasikan fitur ini dengan **GitHub API** agar dapat berfungsi penuh di lingkungan **Deno Deploy**.
 
 ### 3. Keamanan & Environment Guard
 CMS ini dirancang dengan deteksi lingkungan yang cerdas. Fitur-fitur kritikal seperti operasi Git dan manajemen file sensitif secara otomatis diproteksi dengan *guard* saat berjalan di **Deno Deploy**, memastikan integritas sistem tetap terjaga di lingkungan produksi.
