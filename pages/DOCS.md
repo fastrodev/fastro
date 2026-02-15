@@ -1,5 +1,7 @@
 # Fastro Documentation
 
+![Fastro Start](https://storage.googleapis.com/replix-394315-file/uploads/start_h.jpg)
+
 Fastro is a high-performance, minimalist web framework for Deno. This
 documentation covers everything you need to build scalable, high-speed
 applications.
