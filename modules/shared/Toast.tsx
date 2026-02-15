@@ -26,9 +26,9 @@ export default function Toast(
     : "bg-indigo-500";
 
   const toastContent = (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[9999] transition-all duration-500 ease-out">
+    <div className="fixed inset-x-0 bottom-8 flex justify-center z-[9999] pointer-events-none px-4">
       <div
-        className={`${bgColor} text-white px-5 py-2.5 rounded-2xl shadow-xl flex items-center gap-3 backdrop-blur-lg bg-opacity-80 border border-white/10 ring-1 ring-black/5`}
+        className={`${bgColor} text-white px-5 py-2.5 rounded-2xl shadow-xl flex items-center gap-3 backdrop-blur-lg bg-opacity-80 border border-white/10 ring-1 ring-black/5 pointer-events-auto transition-all duration-500 ease-out`}
       >
         {type === "success" && (
           <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
@@ -66,7 +66,7 @@ export default function Toast(
     </div>
   );
 
-  if (!mounted) return toastContent;
+  if (!mounted) return null;
 
   return createPortal(toastContent, document.body);
 }
