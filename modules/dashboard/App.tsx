@@ -17,7 +17,9 @@ import Config from "./Config.tsx";
 import Toast from "../shared/Toast.tsx";
 import { useEffect, useState } from "react";
 
-export function App({ user, name, isDeploy, pagesCount, postsCount, storageCount }: Props) {
+export function App(
+  { user, name, isDeploy, pagesCount, postsCount, storageCount }: Props,
+) {
   const [gitStatus, setGitStatus] = useState({ branch: "", status: "" });
   const [isEditing, setIsEditing] = useState(false);
   const [showManage, setShowManage] = useState(false);
