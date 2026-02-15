@@ -63,7 +63,9 @@ async function collectPages(
   try {
     for await (const entry of Deno.readDir(pagesDir)) {
       if (!entry.isFile) continue;
-      if (!entry.name.endsWith(".md") && !entry.name.endsWith(".html")) continue;
+      if (!entry.name.endsWith(".md") && !entry.name.endsWith(".html")) {
+        continue;
+      }
       const slug = entry.name.replace(/\.(md|html)$/, "");
       // Skip problematic or internal pages if any
       const url = `${baseUrl.replace(/\/$/, "")}/${slug}`;

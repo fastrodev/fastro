@@ -11,7 +11,11 @@ import { kvMiddleware } from "../../middlewares/kv/mod.ts";
 
 const r = createRouter();
 
-r.get("/", (req, ctx) => renderMD("README.md", ctx.kv, getCanonical(req)), kvMiddleware);
+r.get(
+  "/",
+  (req, ctx) => renderMD("README.md", ctx.kv, getCanonical(req)),
+  kvMiddleware,
+);
 
 r.get("/blog", (req, ctx) => {
   const url = new URL(req.url);
@@ -21,7 +25,8 @@ r.get("/blog", (req, ctx) => {
 }, kvMiddleware);
 r.get(
   "/blog/:post",
-  (req, ctx) => renderMD(`posts/${ctx.params.post}.md`, ctx.kv, getCanonical(req)),
+  (req, ctx) =>
+    renderMD(`posts/${ctx.params.post}.md`, ctx.kv, getCanonical(req)),
   kvMiddleware,
 );
 
