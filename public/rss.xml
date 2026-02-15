@@ -4,20 +4,20 @@
   <title>Fastro</title>
   <link>https://fastro.dev</link>
   <description>Fastro blog and docs</description>
-  <lastBuildDate>Thu, 12 Feb 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Sun, 15 Feb 2026 00:00:00 GMT</lastBuildDate>
+  <item>
+    <title>Membangun Blog Performa Tinggi dengan Fastro, Deno Deploy, dan Deno KV</title>
+    <link>https://fastro.dev/blog/blog</link>
+    <guid isPermaLink="true">https://fastro.dev/blog/blog</guid>
+    <pubDate>Sun, 15 Feb 2026 00:00:00 GMT</pubDate>
+    <description>Bagaimana kami membangun blog Fastro hanya menggunakan Deno, Fastro, dan Markdown—dengan manajemen konten modern berbasis Deno KV.</description>
+  </item>
   <item>
     <title>Mengapa Cepat Saja Tidak Cukup? Analisis Benchmark Framework HTTP 2026</title>
     <link>https://fastro.dev/blog/stddev</link>
     <guid isPermaLink="true">https://fastro.dev/blog/stddev</guid>
     <pubDate>Thu, 12 Feb 2026 00:00:00 GMT</pubDate>
     <description>Analisis mengapa stabilitas (stddev) sama pentingnya dengan throughput (RPS) dalam benchmark framework HTTP 2026.</description>
-  </item>
-  <item>
-    <title>Membangun Blog Performa Tinggi dengan Fastro dan Deno Deploy</title>
-    <link>https://fastro.dev/blog/how-this-blog-was-built</link>
-    <guid isPermaLink="true">https://fastro.dev/blog/how-this-blog-was-built</guid>
-    <pubDate>Wed, 11 Feb 2026 00:00:00 GMT</pubDate>
-    <description>Bagaimana kami membangun blog Fastro hanya menggunakan Deno, Fastro, dan Markdown—dihosting secara gratis di Deno Deploy tanpa database.</description>
   </item>
   <item>
     <title>Fastro SaaS Ship Kit — Coming Soon!</title>

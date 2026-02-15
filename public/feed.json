@@ -5,18 +5,18 @@
   "feed_url": "https://fastro.dev/feed.json",
   "items": [
     {
+      "id": "https://fastro.dev/blog/blog",
+      "url": "https://fastro.dev/blog/blog",
+      "title": "Membangun Blog Performa Tinggi dengan Fastro, Deno Deploy, dan Deno KV",
+      "content_text": "Bagaimana kami membangun blog Fastro hanya menggunakan Deno, Fastro, dan Markdown—dengan manajemen konten modern berbasis Deno KV.",
+      "date_published": "2026-02-15"
+    },
+    {
       "id": "https://fastro.dev/blog/stddev",
       "url": "https://fastro.dev/blog/stddev",
       "title": "Mengapa Cepat Saja Tidak Cukup? Analisis Benchmark Framework HTTP 2026",
       "content_text": "Analisis mengapa stabilitas (stddev) sama pentingnya dengan throughput (RPS) dalam benchmark framework HTTP 2026.",
       "date_published": "2026-02-12"
-    },
-    {
-      "id": "https://fastro.dev/blog/how-this-blog-was-built",
-      "url": "https://fastro.dev/blog/how-this-blog-was-built",
-      "title": "Membangun Blog Performa Tinggi dengan Fastro dan Deno Deploy",
-      "content_text": "Bagaimana kami membangun blog Fastro hanya menggunakan Deno, Fastro, dan Markdown—dihosting secara gratis di Deno Deploy tanpa database.",
-      "date_published": "2026-02-11"
     },
     {
       "id": "https://fastro.dev/blog/powerkit",
