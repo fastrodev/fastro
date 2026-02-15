@@ -36,3 +36,4 @@ Have you built something with Fastro? Add it here!
 2. Open `SHOWCASE.md`.
 3. Add a new row to the **Community Projects** table.
 4. Submit a Pull Request!
+

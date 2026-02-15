@@ -4,16 +4,28 @@ type Props = {
   initialTitle?: string;
   initialContent?: string;
   onClose: () => void;
-  onPublish?: (title: string, content: string) => void;
+  onPublish?: (filename: string, content: string) => void;
 };
+
+const DEFAULT_CONTENT = `---
+title: "Post Title Here"
+description: "A brief description of your post."
+date: ${new Date().toISOString().split("T")[0]}
+author: "Fastro Team"
+tags: ["news"]
+image: ""
+---
+
+Start writing your post content here...
+`;
 
 export default function Editor({
   initialTitle = "",
-  initialContent = "",
+  initialContent = DEFAULT_CONTENT,
   onClose,
   onPublish,
 }: Props) {
-  const [title, _setTitle] = useState(initialTitle);
+  const [_title, _setTitle] = useState(initialTitle);
   const [content, setContent] = useState(initialContent);
   const [filename, setFilename] = useState("untitled-1.md");
   const [editingFilename, setEditingFilename] = useState(false);
@@ -45,7 +57,7 @@ export default function Editor({
   }, [editingFilename]);
 
   const handlePublish = () => {
-    if (onPublish) onPublish(title, content);
+    if (onPublish) onPublish(filename, content);
   };
 
   const handleFilenameBlur = () => {

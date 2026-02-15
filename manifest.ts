@@ -1,7 +1,9 @@
 export * as index from "./modules/index/mod.ts";
 export * as dashboard from "./modules/dashboard/mod.ts";
 export * as git from "./modules/git/mod.ts";
+export * as media from "./modules/media/mod.ts";
 export * as password from "./modules/password/mod.ts";
+export * as posts from "./modules/posts/mod.ts";
 export * as profile from "./modules/profile/mod.ts";
 export * as signin from "./modules/signin/mod.ts";
 export * as signup from "./modules/signup/mod.ts";

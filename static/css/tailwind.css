@@ -4,34 +4,31 @@
 /* custom scrollbar styles used by the editor */
 .custom-scrollbar {
 	scrollbar-width: thin;
-	scrollbar-color: rgba(100,116,139,0.3) transparent;
+	scrollbar-color: rgba(148,163,184,0.1) transparent;
 }
 
 /* WebKit browsers */
 .custom-scrollbar::-webkit-scrollbar {
-	width: 12px;
-	height: 12px;
-	background: transparent;
+	width: 6px;
+	height: 6px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
 	background: transparent;
-	border-radius: 9999px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-	background-color: rgba(100,116,139,0.3);
+	background-color: rgba(148,163,184,0.1);
 	border-radius: 9999px;
-	border: 3px solid transparent;
-	background-clip: padding-box;
+	transition: background-color 0.2s;
 }
 .custom-scrollbar:hover::-webkit-scrollbar-thumb {
-	background-color: rgba(148,163,184,0.6);
+	background-color: rgba(148,163,184,0.3);
 }
 
 /* dark mode tweaks */
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-	background-color: rgba(148,163,184,0.12);
+	background-color: rgba(255,255,255,0.05);
 }
 .dark .custom-scrollbar:hover::-webkit-scrollbar-thumb {
-	background-color: rgba(148,163,184,0.28);
+	background-color: rgba(255,255,255,0.15);
 }
 

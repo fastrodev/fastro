@@ -20,3 +20,24 @@ export async function getVersion() {
   }
   return "v1.0.0";
 }
+
+export async function getHeaderPages(kv?: Deno.Kv): Promise<string[]> {
+  try {
+    const k = kv ||
+      (typeof Deno.openKv === "function" ? await Deno.openKv() : null);
+    if (!k) return ["SHOWCASE.md", "MIDDLEWARES.md", "BENCHMARK.md", "DOCS.md"];
+    const res = await k.get<string[]>(["config", "headerPages"]);
+
+    // If we opened a temporary KV, close it
+    if (!kv && k && typeof k.close === "function") {
+      try {
+        await k.close();
+      } catch (_) { /* ignore */ }
+    }
+
+    if (res.value) return res.value;
+  } catch (_) {
+    // ignore
+  }
+  return ["SHOWCASE.md", "MIDDLEWARES.md", "BENCHMARK.md", "DOCS.md"];
+}
