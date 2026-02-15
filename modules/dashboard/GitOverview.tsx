@@ -178,9 +178,9 @@ export default function GitOverview({
   const c = counts || { untracked: 0, staged: 0, deleted: 0, ahead: 0 };
 
   return (
-    <div className="flex flex-col gap-6 p-2 sm:p-0">
+    <div className="flex flex-col gap-4 p-2 sm:p-0">
       {onClose && (
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-1 h-6 bg-indigo-500 rounded-full"></div>
             <p className="text-xs font-bold uppercase tracking-widest text-gray-400">
@@ -190,7 +190,7 @@ export default function GitOverview({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-all flex items-center gap-2"
+            className="px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-lg bg-white/60 dark:bg-gray-800/60 hover:bg-white/80 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-all border border-gray-200/50 dark:border-gray-700/30 flex items-center gap-2"
           >
             <svg
               className="w-3.5 h-3.5"
@@ -210,7 +210,7 @@ export default function GitOverview({
         </div>
       )}
       {/* Unified Header: Branch & Push Status */}
-      <div className="p-4 rounded-2xl bg-white/40 dark:bg-gray-900/40 border border-gray-100/10 dark:border-gray-800/50 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-5 rounded-2xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-6">
           <div className="flex flex-col">
             <div className="text-[10px] text-gray-500 uppercase font-bold tracking-widest leading-none">
@@ -319,9 +319,9 @@ export default function GitOverview({
         {/* Left Column: Untracked & Deleted & Staged stacked in 3 rows */}
         <div className="flex flex-col gap-6">
           {/* 1. Untracked / Modified */}
-          <div className="rounded-2xl bg-white/40 dark:bg-gray-900/40 border border-gray-100/10 dark:border-gray-800/50 overflow-hidden shadow-sm flex flex-col">
-            <div className="p-4 border-b border-gray-100/10 dark:border-gray-800/50 flex items-center justify-between bg-gray-50/5 dark:bg-gray-800/20">
-              <h3 className="font-bold flex items-center gap-2 text-gray-100 text-sm">
+          <div className="rounded-2xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm flex flex-col">
+            <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gray-50/5 dark:bg-gray-800/20">
+              <h3 className="font-bold flex items-center gap-2 text-gray-900 dark:text-gray-100 text-sm">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.5)]">
                 </span>
                 Untracked
@@ -330,14 +330,14 @@ export default function GitOverview({
                 </span>
               </h3>
             </div>
-            <div className="p-5 bg-black/[0.02] dark:bg-white/[0.02] min-h-[100px] max-h-[200px] overflow-y-auto custom-scrollbar">
+            <div className="p-5 bg-black/[0.01] dark:bg-white/[0.01] min-h-[100px] max-h-[200px] overflow-y-auto custom-scrollbar">
               {files.untracked.length > 0
                 ? (
                   <ul className="space-y-1">
                     {files.untracked.map((f) => (
                       <li
                         key={f}
-                        className="p-2.5 text-[11px] font-mono truncate rounded-lg bg-white/5 border border-white/5 text-gray-400 hover:text-gray-200 transition-colors"
+                        className="p-2.5 text-[11px] font-mono truncate rounded-lg bg-white/10 dark:bg-black/20 border border-gray-200/20 dark:border-gray-700/30 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
                       >
                         {f}
                       </li>
@@ -345,7 +345,7 @@ export default function GitOverview({
                   </ul>
                 )
                 : (
-                  <div className="h-full min-h-[80px] flex flex-col items-center justify-center p-4 text-center text-gray-600 text-[11px] italic">
+                  <div className="h-full min-h-[80px] flex flex-col items-center justify-center p-4 text-center text-gray-500 text-[11px] italic">
                     Clean
                   </div>
                 )}
@@ -353,9 +353,9 @@ export default function GitOverview({
           </div>
 
           {/* 2. Deleted (Not Staged) */}
-          <div className="rounded-2xl bg-white/40 dark:bg-gray-900/40 border border-gray-100/10 dark:border-gray-800/50 overflow-hidden shadow-sm flex flex-col">
-            <div className="p-4 border-b border-gray-100/10 dark:border-gray-800/50 flex items-center justify-between bg-gray-50/5 dark:bg-gray-800/20">
-              <h3 className="font-bold flex items-center gap-2 text-gray-100 text-sm">
+          <div className="rounded-2xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm flex flex-col">
+            <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gray-50/5 dark:bg-gray-800/20">
+              <h3 className="font-bold flex items-center gap-2 text-gray-900 dark:text-gray-100 text-sm">
                 <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0 shadow-[0_0_8px_rgba(244,63,94,0.5)]">
                 </span>
                 Deleted
@@ -364,14 +364,14 @@ export default function GitOverview({
                 </span>
               </h3>
             </div>
-            <div className="p-5 bg-black/[0.02] dark:bg-white/[0.02] min-h-[100px] max-h-[200px] overflow-y-auto custom-scrollbar">
+            <div className="p-5 bg-black/[0.01] dark:bg-white/[0.01] min-h-[100px] max-h-[200px] overflow-y-auto custom-scrollbar">
               {files.deleted.length > 0
                 ? (
                   <ul className="space-y-1">
                     {files.deleted.map((f) => (
                       <li
                         key={f}
-                        className="p-2.5 text-[11px] font-mono truncate rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400"
+                        className="p-2.5 text-[11px] font-mono truncate rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-500 dark:text-rose-400"
                       >
                         {f}
                       </li>
@@ -379,13 +379,13 @@ export default function GitOverview({
                   </ul>
                 )
                 : (
-                  <div className="h-full min-h-[80px] flex flex-col items-center justify-center p-4 text-center text-gray-600 text-[11px] italic">
+                  <div className="h-full min-h-[80px] flex flex-col items-center justify-center p-4 text-center text-gray-500 text-[11px] italic">
                     No deletions
                   </div>
                 )}
             </div>
             {(c.untracked > 0 || c.deleted > 0) && (
-              <div className="p-4 bg-gray-50/5 dark:bg-black/20 border-t border-gray-100/10 dark:border-gray-800/50 mt-auto">
+              <div className="p-4 bg-gray-50/5 dark:bg-black/20 border-t border-gray-100 dark:border-gray-800 mt-auto">
                 <button
                   type="button"
                   disabled={loading.add ||
@@ -400,9 +400,9 @@ export default function GitOverview({
           </div>
 
           {/* 3. Staged Files */}
-          <div className="rounded-2xl bg-white/40 dark:bg-gray-900/40 border border-gray-100/10 dark:border-gray-800/50 overflow-hidden shadow-sm flex flex-col">
-            <div className="p-4 border-b border-gray-100/10 dark:border-gray-800/50 flex items-center justify-between bg-gray-50/5 dark:bg-gray-800/20">
-              <h3 className="font-bold flex items-center gap-2 text-gray-100 text-sm whitespace-nowrap">
+          <div className="rounded-2xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm flex flex-col">
+            <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gray-50/5 dark:bg-gray-800/20">
+              <h3 className="font-bold flex items-center gap-2 text-gray-900 dark:text-gray-100 text-sm whitespace-nowrap">
                 <span className="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.5)]">
                 </span>
                 Staged
@@ -411,14 +411,14 @@ export default function GitOverview({
                 </span>
               </h3>
             </div>
-            <div className="p-5 bg-black/[0.02] dark:bg-white/[0.02] min-h-[140px] max-h-[300px] overflow-y-auto custom-scrollbar">
+            <div className="p-5 bg-black/[0.01] dark:bg-white/[0.01] min-h-[140px] max-h-[300px] overflow-y-auto custom-scrollbar">
               {files.staged.length > 0
                 ? (
                   <ul className="space-y-1">
                     {files.staged.map((f) => (
                       <li
                         key={f}
-                        className="p-2.5 text-[11px] font-mono truncate rounded-lg bg-white/5 border border-white/5 text-gray-400 hover:text-gray-200 transition-colors"
+                        className="p-2.5 text-[11px] font-mono truncate rounded-lg bg-white/10 dark:bg-black/20 border border-gray-200/20 dark:border-gray-700/30 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
                       >
                         {f}
                       </li>
@@ -426,12 +426,12 @@ export default function GitOverview({
                   </ul>
                 )
                 : (
-                  <div className="h-full min-h-[120px] flex flex-col items-center justify-center p-8 text-center text-gray-600 text-[11px] italic">
+                  <div className="h-full min-h-[120px] flex flex-col items-center justify-center p-8 text-center text-gray-500 text-[11px] italic">
                     Empty
                   </div>
                 )}
             </div>
-            <div className="p-4 bg-gray-50/5 dark:bg-black/20 border-t border-gray-100/10 dark:border-gray-800/50 grid grid-cols-2 gap-3 mt-auto">
+            <div className="p-4 bg-gray-50/5 dark:bg-black/20 border-t border-gray-100 dark:border-gray-800 grid grid-cols-2 gap-3 mt-auto">
               <button
                 type="button"
                 disabled={loading.commit || c.staged === 0}
@@ -453,32 +453,32 @@ export default function GitOverview({
         </div>
 
         {/* Right Column: Recent Activity (History) */}
-        <div className="rounded-2xl bg-white/40 dark:bg-gray-900/40 border border-gray-100/10 dark:border-gray-800/50 overflow-hidden shadow-sm flex flex-col h-full lg:sticky lg:top-6 lg:max-h-[calc(100vh-100px)]">
-          <div className="p-4 border-b border-gray-100/10 dark:border-gray-800/50 bg-gray-50/5 dark:bg-gray-800/20">
+        <div className="rounded-2xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm flex flex-col h-full lg:sticky lg:top-6 lg:max-h-[calc(100vh-100px)]">
+          <div className="p-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/5 dark:bg-gray-800/20">
             <h3 className="font-bold text-[10px] uppercase tracking-widest text-gray-500">
               Recent Activity
             </h3>
           </div>
-          <div className="p-5 flex-grow overflow-y-auto bg-black/[0.02] dark:bg-white/[0.02] custom-scrollbar">
+          <div className="p-5 flex-grow overflow-y-auto bg-black/[0.01] dark:bg-white/[0.01] custom-scrollbar">
             {log.length > 0
               ? (
                 <div className="flex flex-col gap-6">
-                  <ul className="space-y-6">
+                  <ul className="space-y-3">
                     {log.map((line, i) => {
                       const [hash, ...msgArr] = line.split(" ");
                       const msg = msgArr.join(" ");
                       return (
                         <li
                           key={i}
-                          className="group relative pl-6 border-l border-gray-100/10 dark:border-gray-800 hover:border-indigo-500/50 transition-colors"
+                          className="group relative pl-6 border-l border-gray-100/10 dark:border-white/5 hover:border-indigo-500/50 transition-colors"
                         >
                           <div className="absolute -left-1 w-2 h-2 rounded-full bg-gray-200 dark:bg-gray-800 group-hover:bg-indigo-500 transition-colors top-1">
                           </div>
-                          <div className="flex flex-col gap-1">
-                            <code className="text-[10px] font-mono text-indigo-400/80 tracking-tighter">
+                          <div className="flex flex-col gap-0.5">
+                            <code className="text-[10px] font-mono text-indigo-400 opacity-80 group-hover:opacity-100 tracking-tighter">
                               {hash}
                             </code>
-                            <span className="text-[12px] text-gray-500 dark:text-gray-400 group-hover:text-gray-200 transition-colors leading-relaxed">
+                            <span className="text-[12px] text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors leading-relaxed">
                               {msg}
                             </span>
                           </div>

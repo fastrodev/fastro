@@ -17,21 +17,30 @@ import Config from "./Config.tsx";
 import Toast from "../shared/Toast.tsx";
 import { useEffect, useState } from "react";
 
+type View =
+  | "dashboard"
+  | "editing"
+  | "manage"
+  | "git"
+  | "stats"
+  | "media"
+  | "config";
+
 export function App(
   { user, name, isDeploy, pagesCount, postsCount, storageCount }: Props,
 ) {
   const [gitStatus, setGitStatus] = useState({ branch: "", status: "" });
-  const [isEditing, setIsEditing] = useState(false);
-  const [showManage, setShowManage] = useState(false);
-  const [showGit, setShowGit] = useState(false);
-  const [showStats, setShowStats] = useState(false);
-  const [showMedia, setShowMedia] = useState(false);
-  const [showConfig, setShowConfig] = useState(false);
+  const [view, setView] = useState<View>(() => {
+    if (typeof window !== "undefined") {
+      return (localStorage.getItem("dashboard_view") as View) || "dashboard";
+    }
+    return "dashboard";
+  });
   const [toast, setToast] = useState<
     { message: string; type: "success" | "error" | "info" } | null
   >(null);
 
-  function handleMenuClick(setter: (v: boolean) => void) {
+  function handleMenuClick(targetView: View) {
     if (isDeploy) {
       setToast({
         message: "This feature is currently only available on localhost",
@@ -39,8 +48,12 @@ export function App(
       });
       return;
     }
-    setter(true);
+    setView(targetView);
   }
+
+  useEffect(() => {
+    localStorage.setItem("dashboard_view", view);
+  }, [view]);
 
   useEffect(() => {
     if (isDeploy) {
@@ -53,12 +66,12 @@ export function App(
       .catch(() => setGitStatus({ branch: "", status: "" }));
   }, [isDeploy]);
 
-  if (isEditing) {
+  if (view === "editing") {
     return (
       <Page user={user} title="Create Post">
         <Editor
           initialTitle=""
-          onClose={() => setIsEditing(false)}
+          onClose={() => setView("dashboard")}
           onPublish={(f, c) => {
             fetch("/api/posts", {
               method: "POST",
@@ -96,10 +109,10 @@ export function App(
     );
   }
 
-  if (showManage) {
+  if (view === "manage") {
     return (
       <Page user={user} title="Manage Posts">
-        <ManagePosts onClose={() => setShowManage(false)} />
+        <ManagePosts onClose={() => setView("dashboard")} />
         {toast && (
           <Toast
             message={toast.message}
@@ -111,10 +124,10 @@ export function App(
     );
   }
 
-  if (showGit) {
+  if (view === "git") {
     return (
       <Page user={user} title="Git Management">
-        <GitOverview onClose={() => setShowGit(false)} />
+        <GitOverview onClose={() => setView("dashboard")} />
         {toast && (
           <Toast
             message={toast.message}
@@ -126,10 +139,10 @@ export function App(
     );
   }
 
-  if (showStats) {
+  if (view === "stats") {
     return (
       <Page user={user} title="Post Statistics">
-        <Stats onClose={() => setShowStats(false)} />
+        <Stats onClose={() => setView("dashboard")} />
         {toast && (
           <Toast
             message={toast.message}
@@ -141,10 +154,10 @@ export function App(
     );
   }
 
-  if (showMedia) {
+  if (view === "media") {
     return (
       <Page user={user} title="Media Assets">
-        <Media onClose={() => setShowMedia(false)} />
+        <Media onClose={() => setView("dashboard")} />
         {toast && (
           <Toast
             message={toast.message}
@@ -156,10 +169,10 @@ export function App(
     );
   }
 
-  if (showConfig) {
+  if (view === "config") {
     return (
       <Page user={user} title="Post Configuration">
-        <Config onClose={() => setShowConfig(false)} />
+        <Config onClose={() => setView("dashboard")} />
         {toast && (
           <Toast
             message={toast.message}
@@ -240,7 +253,7 @@ export function App(
       <div className="grid grid-cols-2 gap-4 sm:gap-6 mt-2">
         <button
           type="button"
-          onClick={() => handleMenuClick(setIsEditing)}
+          onClick={() => handleMenuClick("editing")}
           className="p-6 text-left rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
         >
           <div className="flex items-center justify-between mb-4">
@@ -271,7 +284,7 @@ export function App(
 
         <button
           type="button"
-          onClick={() => handleMenuClick(setShowManage)}
+          onClick={() => handleMenuClick("manage")}
           className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group text-left"
         >
           <div className="flex items-center justify-between mb-4">
@@ -302,7 +315,7 @@ export function App(
 
         <button
           type="button"
-          onClick={() => handleMenuClick(setShowStats)}
+          onClick={() => handleMenuClick("stats")}
           className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group text-left"
         >
           <div className="flex items-center justify-between mb-4">
@@ -333,7 +346,7 @@ export function App(
 
         <button
           type="button"
-          onClick={() => handleMenuClick(setShowGit)}
+          onClick={() => handleMenuClick("git")}
           className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group text-left"
         >
           <div className="flex items-center justify-between mb-4">
@@ -364,7 +377,7 @@ export function App(
 
         <button
           type="button"
-          onClick={() => handleMenuClick(setShowMedia)}
+          onClick={() => handleMenuClick("media")}
           className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group text-left"
         >
           <div className="flex items-center justify-between mb-4">
@@ -395,7 +408,7 @@ export function App(
 
         <button
           type="button"
-          onClick={() => handleMenuClick(setShowConfig)}
+          onClick={() => handleMenuClick("config")}
           className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group text-left"
         >
           <div className="flex items-center justify-between mb-4">

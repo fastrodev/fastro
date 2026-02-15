@@ -27,7 +27,9 @@ export default function Editor({
 }: Props) {
   const [_title, _setTitle] = useState(initialTitle);
   const [content, setContent] = useState(initialContent);
-  const [filename, setFilename] = useState("untitled-1.md");
+  const [filename, setFilename] = useState(
+    initialTitle ? initialTitle : "untitled-1.md",
+  );
   const [editingFilename, setEditingFilename] = useState(false);
   const filenameInputRef = useRef<HTMLInputElement | null>(null);
   const contentRef = useRef<HTMLTextAreaElement | null>(null);
@@ -55,6 +57,14 @@ export default function Editor({
       filenameInputRef.current?.select();
     }
   }, [editingFilename]);
+
+  // Sync filename when initialTitle changes (e.g., opening a different post)
+  useEffect(() => {
+    if (!editingFilename) {
+      setFilename(initialTitle ? initialTitle : "untitled-1.md");
+    }
+    // only update when initialTitle changes or when editingFilename toggles
+  }, [initialTitle, editingFilename]);
 
   const handlePublish = () => {
     if (onPublish) onPublish(filename, content);

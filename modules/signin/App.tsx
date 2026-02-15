@@ -30,29 +30,6 @@ export function App(props: Props) {
         }}
       />
       <div className="relative flex-1 flex flex-col items-center justify-center py-12 px-4 overflow-hidden">
-        {/* Back to Home Link */}
-        <div className="absolute top-6 left-6 md:top-10 md:left-10 z-20">
-          <a
-            href="/"
-            className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-600 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 bg-white/50 dark:bg-gray-900/50 backdrop-blur-md rounded-full border border-gray-200/50 dark:border-gray-800/50 transition-all hover:shadow-lg active:scale-95"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2.5"
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-            <span>Back to home</span>
-          </a>
-        </div>
-
         {/* Artistic Background Blobs */}
         <div className="absolute top-1/4 -left-20 w-72 h-72 bg-indigo-500/20 rounded-full blur-3xl animate-blob">
         </div>
@@ -186,6 +163,29 @@ export function App(props: Props) {
                   </div>
                 </form>
               )}
+          </div>
+
+          {/* Back to Home Link */}
+          <div className="mt-8 text-center">
+            <a
+              href="/"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition-all active:scale-95"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2.5"
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+              <span>Back to home</span>
+            </a>
           </div>
         </div>
       </div>
