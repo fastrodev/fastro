@@ -6,11 +6,11 @@
   <description>Fastro blog and docs</description>
   <lastBuildDate>Sun, 15 Feb 2026 00:00:00 GMT</lastBuildDate>
   <item>
-    <title>Membangun Blog Performa Tinggi dengan Fastro, Deno Deploy, dan Deno KV</title>
-    <link>https://fastro.dev/blog/blog</link>
-    <guid isPermaLink="true">https://fastro.dev/blog/blog</guid>
+    <title>Membangun CMS Performa Tinggi dengan Fastro, Deno Deploy, dan Deno KV</title>
+    <link>https://fastro.dev/blog/cms</link>
+    <guid isPermaLink="true">https://fastro.dev/blog/cms</guid>
     <pubDate>Sun, 15 Feb 2026 00:00:00 GMT</pubDate>
-    <description>Bagaimana kami membangun blog Fastro hanya menggunakan Deno, Fastro, dan Markdown—dengan manajemen konten modern berbasis Deno KV.</description>
+    <description>Bagaimana kami membangun CMS Fastro hanya menggunakan Deno, Fastro, dan Markdown—dengan manajemen konten modern berbasis Deno KV.</description>
   </item>
   <item>
     <title>Mengapa Cepat Saja Tidak Cukup? Analisis Benchmark Framework HTTP 2026</title>
