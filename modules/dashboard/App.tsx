@@ -31,8 +31,17 @@ export function App(
 ) {
   const [gitStatus, setGitStatus] = useState({ branch: "", status: "" });
   const [view, setView] = useState<View>(() => {
-    if (typeof window !== "undefined") {
-      return (localStorage.getItem("dashboard_view") as View) || "dashboard";
+    try {
+      if (
+        typeof globalThis !== "undefined" &&
+        typeof (globalThis as unknown as { localStorage?: Storage })
+            .localStorage !== "undefined"
+      ) {
+        return (globalThis.localStorage.getItem("dashboard_view") as View) ||
+          "dashboard";
+      }
+    } catch (_e) {
+      // ignore - safer fallback for SSR environments
     }
     return "dashboard";
   });
@@ -52,7 +61,17 @@ export function App(
   }
 
   useEffect(() => {
-    localStorage.setItem("dashboard_view", view);
+    try {
+      if (
+        typeof globalThis !== "undefined" &&
+        typeof (globalThis as unknown as { localStorage?: Storage })
+            .localStorage !== "undefined"
+      ) {
+        globalThis.localStorage.setItem("dashboard_view", view);
+      }
+    } catch (_e) {
+      // ignore - no-op on server or when storage unavailable
+    }
   }, [view]);
 
   useEffect(() => {
