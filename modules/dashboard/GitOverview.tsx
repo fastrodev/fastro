@@ -1,8 +1,17 @@
 import { useEffect, useState } from "react";
 import Toast from "../shared/Toast.tsx";
 
-type Counts = { untracked: number; staged: number; ahead: number };
-type GitFiles = { untracked: string[]; staged: string[] };
+type Counts = {
+  untracked: number;
+  staged: number;
+  deleted: number;
+  ahead: number;
+};
+type GitFiles = {
+  untracked: string[];
+  staged: string[];
+  deleted: string[];
+};
 
 export default function GitOverview({
   branch: initialBranch,
@@ -15,9 +24,13 @@ export default function GitOverview({
 }) {
   const [branch, setBranch] = useState(initialBranch || "");
   const [counts, setCounts] = useState<Counts>(
-    initialCounts || { untracked: 0, staged: 0, ahead: 0 },
+    initialCounts || { untracked: 0, staged: 0, deleted: 0, ahead: 0 },
   );
-  const [files, setFiles] = useState<GitFiles>({ untracked: [], staged: [] });
+  const [files, setFiles] = useState<GitFiles>({
+    untracked: [],
+    staged: [],
+    deleted: [],
+  });
   const [log, setLog] = useState<string[]>([]);
   const [logLimit, setLogLimit] = useState(5);
   const [logLoading, setLogLoading] = useState(false);
@@ -162,7 +175,7 @@ export default function GitOverview({
     }
   }
 
-  const c = counts || { untracked: 0, staged: 0, ahead: 0 };
+  const c = counts || { untracked: 0, staged: 0, deleted: 0, ahead: 0 };
 
   return (
     <div className="flex flex-col gap-6 p-2 sm:p-0">
@@ -303,7 +316,7 @@ export default function GitOverview({
 
       {/* Main Layout: Changes & Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-start">
-        {/* Left Column: Untracked & Staged stacked in 2 rows */}
+        {/* Left Column: Untracked & Deleted & Staged stacked in 3 rows */}
         <div className="flex flex-col gap-6">
           {/* 1. Untracked / Modified */}
           <div className="rounded-2xl bg-white/40 dark:bg-gray-900/40 border border-gray-100/10 dark:border-gray-800/50 overflow-hidden shadow-sm flex flex-col">
@@ -317,7 +330,7 @@ export default function GitOverview({
                 </span>
               </h3>
             </div>
-            <div className="p-5 bg-black/[0.02] dark:bg-white/[0.02] min-h-[140px] max-h-[300px] overflow-y-auto custom-scrollbar">
+            <div className="p-5 bg-black/[0.02] dark:bg-white/[0.02] min-h-[100px] max-h-[200px] overflow-y-auto custom-scrollbar">
               {files.untracked.length > 0
                 ? (
                   <ul className="space-y-1">
@@ -332,37 +345,60 @@ export default function GitOverview({
                   </ul>
                 )
                 : (
-                  <div className="h-full min-h-[120px] flex flex-col items-center justify-center p-8 text-center text-gray-600 text-[11px] italic">
-                    <svg
-                      className="w-8 h-8 mb-2 opacity-10"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
+                  <div className="h-full min-h-[80px] flex flex-col items-center justify-center p-4 text-center text-gray-600 text-[11px] italic">
                     Clean
                   </div>
                 )}
             </div>
-            <div className="p-4 bg-gray-50/5 dark:bg-black/20 border-t border-gray-100/10 dark:border-gray-800/50 mt-auto">
-              <button
-                type="button"
-                disabled={loading.add || c.untracked === 0}
-                onClick={handleAdd}
-                className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-20 disabled:grayscale text-white font-bold transition-all text-xs uppercase tracking-widest shadow-lg shadow-emerald-900/20"
-              >
-                Add All
-              </button>
-            </div>
           </div>
 
-          {/* 2. Staged Files */}
+          {/* 2. Deleted (Not Staged) */}
+          <div className="rounded-2xl bg-white/40 dark:bg-gray-900/40 border border-gray-100/10 dark:border-gray-800/50 overflow-hidden shadow-sm flex flex-col">
+            <div className="p-4 border-b border-gray-100/10 dark:border-gray-800/50 flex items-center justify-between bg-gray-50/5 dark:bg-gray-800/20">
+              <h3 className="font-bold flex items-center gap-2 text-gray-100 text-sm">
+                <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0 shadow-[0_0_8px_rgba(244,63,94,0.5)]">
+                </span>
+                Deleted
+                <span className="px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-400 text-[10px] font-mono">
+                  {c.deleted}
+                </span>
+              </h3>
+            </div>
+            <div className="p-5 bg-black/[0.02] dark:bg-white/[0.02] min-h-[100px] max-h-[200px] overflow-y-auto custom-scrollbar">
+              {files.deleted.length > 0
+                ? (
+                  <ul className="space-y-1">
+                    {files.deleted.map((f) => (
+                      <li
+                        key={f}
+                        className="p-2.5 text-[11px] font-mono truncate rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400"
+                      >
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                )
+                : (
+                  <div className="h-full min-h-[80px] flex flex-col items-center justify-center p-4 text-center text-gray-600 text-[11px] italic">
+                    No deletions
+                  </div>
+                )}
+            </div>
+            {(c.untracked > 0 || c.deleted > 0) && (
+              <div className="p-4 bg-gray-50/5 dark:bg-black/20 border-t border-gray-100/10 dark:border-gray-800/50 mt-auto">
+                <button
+                  type="button"
+                  disabled={loading.add || (c.untracked === 0 && c.deleted === 0)}
+                  onClick={handleAdd}
+                  className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-20 disabled:grayscale text-white font-bold transition-all text-xs uppercase tracking-widest shadow-lg shadow-emerald-900/20"
+                >
+                  Add All Changes
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* 3. Staged Files */}
           <div className="rounded-2xl bg-white/40 dark:bg-gray-900/40 border border-gray-100/10 dark:border-gray-800/50 overflow-hidden shadow-sm flex flex-col">
             <div className="p-4 border-b border-gray-100/10 dark:border-gray-800/50 flex items-center justify-between bg-gray-50/5 dark:bg-gray-800/20">
               <h3 className="font-bold flex items-center gap-2 text-gray-100 text-sm whitespace-nowrap">
@@ -390,19 +426,6 @@ export default function GitOverview({
                 )
                 : (
                   <div className="h-full min-h-[120px] flex flex-col items-center justify-center p-8 text-center text-gray-600 text-[11px] italic">
-                    <svg
-                      className="w-8 h-8 mb-2 opacity-10"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                      />
-                    </svg>
                     Empty
                   </div>
                 )}

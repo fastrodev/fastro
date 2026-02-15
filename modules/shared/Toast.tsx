@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 type Props = {
   message: string;
@@ -10,7 +11,10 @@ type Props = {
 export default function Toast(
   { message, type, onClose, duration = 3000 }: Props,
 ) {
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
+    setMounted(true);
     const timer = setTimeout(onClose, duration);
     return () => clearTimeout(timer);
   }, [onClose, duration]);
@@ -21,8 +25,8 @@ export default function Toast(
     ? "bg-red-500"
     : "bg-indigo-500";
 
-  return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-out">
+  const toastContent = (
+    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[9999] transition-all duration-500 ease-out">
       <div
         className={`${bgColor} text-white px-5 py-2.5 rounded-2xl shadow-xl flex items-center gap-3 backdrop-blur-lg bg-opacity-80 border border-white/10 ring-1 ring-black/5`}
       >
@@ -61,4 +65,8 @@ export default function Toast(
       </div>
     </div>
   );
+
+  if (!mounted) return toastContent;
+
+  return createPortal(toastContent, document.body);
 }
