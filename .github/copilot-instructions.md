@@ -1,5 +1,9 @@
 # Fastro Project Instructions
 
+## General Guidelines
+- **Stability**: Do not modify existing code that is already working as intended unless explicitly requested by the user.
+- **Language**: Responses and code comments should primarily be in English.
+
 ## Architecture Pattern
 - **Entry Point**: Always use `app/main.ts` as the primary entry point for the application.
 - **Module Autoloading**: Use `autoRegisterModules(app)` in `main.ts` to automatically register modules located in the `modules/` directory.
@@ -7,6 +11,7 @@
     - Each module resides in its own folder under `modules/` (e.g., `modules/index/`).
     - The entry for a module is `mod.ts`.
     - `mod.ts` should define a `Router`, add routes to it, and `export default r.build()`.
+    - **Manifest Generation**: Run `deno task gen-manifest` after adding or removing modules to update `manifest.ts`.
 - **Global Middlewares**: Register global middlewares (like `logger`, `staticFiles`) in `app/main.ts` before calling `autoRegisterModules`.
 
 ## Coding Standards & APIs
