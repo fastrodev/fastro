@@ -1,6 +1,7 @@
 import { Handler } from "../../core/types.ts";
 import App from "./App.tsx";
 import { verifyToken } from "../../middlewares/jwt/mod.ts";
+import { join } from "@std/path";
 
 const JWT_SECRET = Deno.env.get("JWT_SECRET") || "fastro-secret";
 
@@ -42,15 +43,60 @@ export const dashboardHandler: Handler = async (req, ctx) => {
       name = (res.value as Record<string, unknown>).name as string;
     }
   }
-
   const isDeploy = !!Deno.env.get("DENO_DEPLOYMENT_ID");
 
+  // Compute counts for pages and posts directories (best-effort)
+  let pagesCount = 0;
+  let postsCount = 0;
+  let storageCount = 0;
+  try {
+    const pagesDir = join(Deno.cwd(), "pages");
+    for await (const entry of Deno.readDir(pagesDir)) {
+      if (entry.isFile) pagesCount++;
+    }
+  } catch {
+    // ignore
+  }
+
+  try {
+    const postsDir = join(Deno.cwd(), "posts");
+    for await (const entry of Deno.readDir(postsDir)) {
+      if (entry.isFile) postsCount++;
+    }
+  } catch {
+    // ignore
+  }
+
+  // Compute number of files in public/img for storage metric
+  try {
+    const imgDir = join(Deno.cwd(), "public", "img");
+    for await (const entry of Deno.readDir(imgDir)) {
+      if (entry.isFile) storageCount++;
+    }
+  } catch {
+    // ignore if folder missing or inaccessible
+  }
+
   const html = ctx.renderToString!(
-    <App user={user} name={name} isDeploy={isDeploy} />,
+    <App
+      user={user}
+      name={name}
+      isDeploy={isDeploy}
+      pagesCount={pagesCount}
+      postsCount={postsCount}
+      storageCount={storageCount}
+    />,
     {
       includeDoctype: true,
       title: "Dashboard",
-      initialProps: { user, name, isDeploy },
+      initialProps: {
+        user,
+        name,
+        isDeploy,
+        pagesCount,
+        postsCount,
+        storageCount,
+      },
       head:
         `<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Fastro App</title><link rel="stylesheet" href="/css/app.css"></head>`,
     },

@@ -2,6 +2,9 @@ type Props = {
   user?: string;
   name?: string;
   isDeploy?: boolean;
+  pagesCount?: number;
+  postsCount?: number;
+  storageCount?: number;
 };
 
 import Page from "../shared/Page.tsx";
@@ -14,7 +17,9 @@ import Config from "./Config.tsx";
 import Toast from "../shared/Toast.tsx";
 import { useEffect, useState } from "react";
 
-export function App({ user, name, isDeploy }: Props) {
+export function App(
+  { user, name, isDeploy, pagesCount, postsCount, storageCount }: Props,
+) {
   const [gitStatus, setGitStatus] = useState({ branch: "", status: "" });
   const [isEditing, setIsEditing] = useState(false);
   const [showManage, setShowManage] = useState(false);
@@ -38,10 +43,14 @@ export function App({ user, name, isDeploy }: Props) {
   }
 
   useEffect(() => {
-    if (isDeploy) return;
+    if (isDeploy) {
+      setGitStatus({ branch: "MAIN", status: "" });
+      return;
+    }
     fetch("/api/git/status")
       .then((res) => res.json())
-      .then((data) => setGitStatus(data));
+      .then((data) => setGitStatus(data))
+      .catch(() => setGitStatus({ branch: "", status: "" }));
   }, [isDeploy]);
 
   if (isEditing) {
@@ -206,7 +215,15 @@ export function App({ user, name, isDeploy }: Props) {
               Storage
             </span>
             <span className="text-sm font-bold text-gray-700 dark:text-gray-200 mt-1">
-              124.5 KB
+              {typeof storageCount === "number" ? storageCount : 0} Files
+            </span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">
+              Pages
+            </span>
+            <span className="text-sm font-bold text-gray-700 dark:text-gray-200 mt-1">
+              {typeof pagesCount === "number" ? pagesCount : 0} Total
             </span>
           </div>
           <div className="flex flex-col">
@@ -214,7 +231,7 @@ export function App({ user, name, isDeploy }: Props) {
               Posts
             </span>
             <span className="text-sm font-bold text-gray-700 dark:text-gray-200 mt-1">
-              12 Total
+              {typeof postsCount === "number" ? postsCount : 0} Total
             </span>
           </div>
         </div>
