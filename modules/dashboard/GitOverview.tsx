@@ -388,7 +388,8 @@ export default function GitOverview({
               <div className="p-4 bg-gray-50/5 dark:bg-black/20 border-t border-gray-100/10 dark:border-gray-800/50 mt-auto">
                 <button
                   type="button"
-                  disabled={loading.add || (c.untracked === 0 && c.deleted === 0)}
+                  disabled={loading.add ||
+                    (c.untracked === 0 && c.deleted === 0)}
                   onClick={handleAdd}
                   className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-20 disabled:grayscale text-white font-bold transition-all text-xs uppercase tracking-widest shadow-lg shadow-emerald-900/20"
                 >
