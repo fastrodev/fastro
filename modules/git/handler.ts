@@ -51,32 +51,40 @@ export const gitStatusHandler: Handler = async (_req, ctx) => {
     if (m) ahead = parseInt(m[1], 10);
   }
 
-  // Count untracked (??) and staged files (index column != ' '), but only in posts/ or public/img/
+  // Count untracked (??), staged (X), and deleted/modified but not staged ( Y)
   const untrackedFiles: string[] = [];
   const stagedFiles: string[] = [];
+  const deletedFiles: string[] = [];
   const log = logResult.output.split("\n").filter((l) => l !== "");
 
   for (let i = 0; i < rawLines.length; i++) {
     const line = rawLines[i];
     if (line.startsWith("##")) continue;
 
-    // Porcelain format: XY <path> (where X is index status at position 0)
-    // For untracked files: line starts with "?? "
-    if (line.startsWith("?? ")) {
-      const path = line.slice(3);
-      if (path.startsWith("posts/") || path.startsWith("public/img/")) {
-        untrackedFiles.push(path);
-      }
+    const pathPart = line.slice(3);
+    const path = pathPart.includes(" -> ")
+      ? pathPart.split(" -> ")[1]
+      : pathPart;
+
+    if (!path.startsWith("posts/") && !path.startsWith("public/img/")) continue;
+
+    const idx = line[0];
+    const work = line[1];
+
+    // Untracked
+    if (idx === "?" && work === "?") {
+      untrackedFiles.push(path);
       continue;
     }
 
-    // For other statuses, path starts at pos 3
-    if (line.length >= 3) {
-      const path = line.slice(3);
-      if (path.startsWith("posts/") || path.startsWith("public/img/")) {
-        const idx = line[0];
-        if (idx !== " ") stagedFiles.push(path);
-      }
+    // Staged
+    if (idx !== " " && idx !== "?") {
+      stagedFiles.push(path);
+    }
+
+    // Worktree changes (Deleted or Modified but not staged)
+    if (work === "D") {
+      deletedFiles.push(path);
     }
   }
 
@@ -85,11 +93,13 @@ export const gitStatusHandler: Handler = async (_req, ctx) => {
     counts: {
       untracked: untrackedFiles.length,
       staged: stagedFiles.length,
+      deleted: deletedFiles.length,
       ahead,
     },
     files: {
       untracked: untrackedFiles,
       staged: stagedFiles,
+      deleted: deletedFiles,
     },
     log,
   });
