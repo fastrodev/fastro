@@ -5,6 +5,13 @@
   "feed_url": "https://fastro.dev/feed.json",
   "items": [
     {
+      "id": "https://fastro.dev/blog/cms-en",
+      "url": "https://fastro.dev/blog/cms-en",
+      "title": "Building a High-Performance CMS with Fastro, Deno Deploy, and Deno KV",
+      "content_text": "How we built the Fastro CMS using only Deno, Fastro, and Markdown—powered by modern content management via Deno KV.",
+      "date_published": "2026-02-15"
+    },
+    {
       "id": "https://fastro.dev/blog/cms",
       "url": "https://fastro.dev/blog/cms",
       "title": "Membangun CMS Performa Tinggi dengan Fastro, Deno Deploy, dan Deno KV",

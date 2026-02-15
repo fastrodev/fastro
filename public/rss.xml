@@ -6,6 +6,13 @@
   <description>Fastro blog and docs</description>
   <lastBuildDate>Sun, 15 Feb 2026 00:00:00 GMT</lastBuildDate>
   <item>
+    <title>Building a High-Performance CMS with Fastro, Deno Deploy, and Deno KV</title>
+    <link>https://fastro.dev/blog/cms-en</link>
+    <guid isPermaLink="true">https://fastro.dev/blog/cms-en</guid>
+    <pubDate>Sun, 15 Feb 2026 00:00:00 GMT</pubDate>
+    <description>How we built the Fastro CMS using only Deno, Fastro, and Markdown—powered by modern content management via Deno KV.</description>
+  </item>
+  <item>
     <title>Membangun CMS Performa Tinggi dengan Fastro, Deno Deploy, dan Deno KV</title>
     <link>https://fastro.dev/blog/cms</link>
     <guid isPermaLink="true">https://fastro.dev/blog/cms</guid>
