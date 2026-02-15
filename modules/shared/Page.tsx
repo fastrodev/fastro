@@ -4,18 +4,24 @@ type Props = {
   user?: string | undefined;
   children?: ReactNode;
   title?: string;
+  hideHeader?: boolean;
+  hideFooter?: boolean;
 };
 
 import Header from "./Header.tsx";
 import Footer from "./Footer.tsx";
 
-export default function Page({ user, children, title }: Props) {
+export default function Page(
+  { user, children, title, hideHeader, hideFooter }: Props,
+) {
   return (
     <div
       style={{ fontFamily: "system-ui, sans-serif" }}
       className="min-h-screen flex flex-col w-full bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-200"
     >
-      {user ? <Header user={user} /> : <Header user={undefined} />}
+      {!hideHeader
+        ? (user ? <Header user={user} /> : <Header user={undefined} />)
+        : null}
 
       <style
         dangerouslySetInnerHTML={{
@@ -75,7 +81,7 @@ export default function Page({ user, children, title }: Props) {
           : null}
         {children}
       </main>
-      <Footer />
+      {!hideFooter ? <Footer /> : null}
     </div>
   );
 }

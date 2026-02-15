@@ -13,7 +13,7 @@ export function App(props: Props) {
   const [loading, setLoading] = useState(false);
 
   return (
-    <Page title={undefined}>
+    <Page title={undefined} hideHeader hideFooter>
       <div className="flex-1 flex flex-col items-center justify-center py-12 sm:py-24">
         <div className="w-full max-w-md">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8 text-center">
