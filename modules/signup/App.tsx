@@ -172,7 +172,7 @@ export function App(props: Props) {
           {/* Back to Home Link */}
           <div className="mt-8 text-center">
             <a
-              href="/"
+              href="/blog"
               className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition-all active:scale-95"
             >
               <svg
