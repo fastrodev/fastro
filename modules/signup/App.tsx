@@ -9,121 +9,188 @@ import Page from "../shared/Page.tsx";
 import Spinner from "../shared/Spinner.tsx";
 
 export function App(props: Props) {
-  const { submitted, error, data } = props;
+  const { submitted, error } = props;
   const [loading, setLoading] = useState(false);
 
   return (
-    <Page title={undefined} hideHeader hideFooter>
-      <div className="flex-1 flex flex-col items-center justify-center py-12 sm:py-24">
-        <div className="w-full max-w-md">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8 text-center">
-            Sign Up
-          </h1>
+    <Page title={undefined} hideHeader hideFooter fullWidth>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+          @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+          }
+          .animate-blob { animation: blob 7s infinite; }
+          .animation-delay-2000 { animation-delay: 2s; }
+          .animation-delay-4000 { animation-delay: 4s; }
+        `,
+        }}
+      />
+      <div className="relative flex-1 flex flex-col items-center justify-center py-12 px-4 overflow-hidden">
+        {/* Back to Home Link */}
+        <div className="absolute top-6 left-6 md:top-10 md:left-10 z-20">
+          <a
+            href="/"
+            className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-600 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 bg-white/50 dark:bg-gray-900/50 backdrop-blur-md rounded-full border border-gray-200/50 dark:border-gray-800/50 transition-all hover:shadow-lg active:scale-95"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2.5"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            <span>Back to home</span>
+          </a>
+        </div>
 
-          {error && (
-            <div className="bg-red-50 dark:bg-red-950/30 border-l-4 border-red-400 p-4 mb-6">
-              <div className="flex">
-                <div className="shrink-0">
-                  <svg
-                    className="h-5 w-5 text-red-400"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm text-red-700 dark:text-red-300">
-                    {error}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
+        {/* Artistic Background Blobs */}
+        <div className="absolute top-1/4 -right-20 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl animate-blob">
+        </div>
+        <div className="absolute bottom-1/4 -left-20 w-80 h-80 bg-emerald-500/20 rounded-full blur-3xl animate-blob animation-delay-2000">
+        </div>
 
-          {submitted
-            ? (
-              <div className="bg-white dark:bg-gray-900 shadow rounded-lg p-6 border border-green-100 dark:border-green-900/30">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                  Registration successful
-                </h2>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Here are the submitted values:
+        <div className="w-full max-w-md relative z-10 transition-all duration-500">
+          <div className="text-center mb-10">
+            <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-3">
+              Join Fastro
+            </h1>
+            <p className="text-gray-500 dark:text-gray-400">
+              Create your account to start managing content.
+            </p>
+          </div>
+
+          <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200 dark:border-gray-800 shadow-2xl rounded-3xl p-8 sm:p-10">
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 mb-8 flex items-center gap-3">
+                <svg
+                  className="h-5 w-5 text-red-500 shrink-0"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <p className="text-sm text-red-600 dark:text-red-400 font-medium">
+                  {error}
                 </p>
-                <pre className="bg-gray-50 dark:bg-gray-800 rounded-md p-4 text-sm overflow-auto font-mono text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-700">
-                  {JSON.stringify(data, null, 2)}
-                </pre>
-                <div className="mt-6">
+              </div>
+            )}
+
+            {submitted
+              ? (
+                <div className="text-center py-4">
+                  <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg
+                      className="w-8 h-8 text-emerald-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="3"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    Welcome aboard!
+                  </h2>
+                  <p className="text-gray-500 dark:text-gray-400 mb-8">
+                    Your account has been created successfully.
+                  </p>
                   <a
                     href="/signin"
-                    className="w-full inline-flex justify-center items-center px-4 py-2 bg-indigo-600 border border-transparent text-sm font-medium rounded-md text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+                    className="inline-flex items-center justify-center px-8 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl shadow-lg shadow-indigo-500/20 transition-all active:scale-[0.98]"
                   >
                     Go to Sign in
                   </a>
                 </div>
-              </div>
-            )
-            : (
-              <form
-                method="POST"
-                action="/signup"
-                className="w-full"
-                onSubmit={() => setLoading(true)}
-              >
-                <div className="mb-5">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Email / Phone Number
-                  </label>
-                  <input
-                    name="identifier"
-                    required
-                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                    placeholder="Enter email or phone"
-                  />
-                </div>
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Password
-                  </label>
-                  <input
-                    name="password"
-                    type="password"
-                    required
-                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                    placeholder="Create a password"
-                  />
-                </div>
-                <div className="flex items-center justify-between mt-6">
+              )
+              : (
+                <form
+                  method="POST"
+                  action="/signup"
+                  className="space-y-6"
+                  onSubmit={() => setLoading(true)}
+                >
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 ml-1">
+                      Email or Phone
+                    </label>
+                    <input
+                      name="identifier"
+                      required
+                      className="block w-full px-5 py-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white dark:focus:bg-gray-800 transition-all outline-none text-gray-900 dark:text-white"
+                      placeholder="Enter details"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 ml-1">
+                      Create Password
+                    </label>
+                    <input
+                      name="password"
+                      type="password"
+                      required
+                      className="block w-full px-5 py-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white dark:focus:bg-gray-800 transition-all outline-none text-gray-900 dark:text-white"
+                      placeholder="••••••••"
+                    />
+                  </div>
+
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full inline-flex justify-center items-center px-4 py-2 bg-indigo-600 border border-transparent text-sm font-medium rounded-md text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="group relative w-full flex items-center justify-center px-6 py-4 bg-indigo-600 hover:bg-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white font-bold rounded-2xl shadow-lg shadow-indigo-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {loading && (
-                      <span className="mr-2">
-                        <Spinner className="h-4 w-4" />
-                      </span>
+                    {loading ? <Spinner className="h-5 w-5" /> : (
+                      <>
+                        Sign up
+                        <svg
+                          className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M13 7l5 5m0 0l-5 5m5-5H6"
+                          />
+                        </svg>
+                      </>
                     )}
-                    Sign up
                   </button>
-                </div>
-                <div className="mt-8 pt-4 border-t border-gray-100 dark:border-gray-800">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                    Already have an account?{" "}
-                    <a
-                      href="/signin"
-                      className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
-                    >
-                      Sign in
-                    </a>
-                  </p>
-                </div>
-              </form>
-            )}
+
+                  <div className="pt-8 text-center border-t border-gray-100 dark:border-gray-800">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Already have an account?{" "}
+                      <a
+                        href="/signin"
+                        className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline"
+                      >
+                        Sign in
+                      </a>
+                    </p>
+                  </div>
+                </form>
+              )}
+          </div>
         </div>
       </div>
     </Page>
