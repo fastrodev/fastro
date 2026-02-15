@@ -1,0 +1,5 @@
+# robots.txt for Fastro
+User-agent: *
+Allow: /
+
+Sitemap: https://fastro.dev/sitemap.xml
