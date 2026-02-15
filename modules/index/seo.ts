@@ -45,23 +45,34 @@ async function collectPosts(
       const text = await Deno.readTextFile(path);
       const fm = parseFrontmatter(text);
       const description = fm.description || extractFirstParagraph(text) || "";
-      const date = fm.date || guessDateFromFile(text) || undefined;
+      const date = fm.date || undefined;
       const url = `${baseUrl.replace(/\/$/, "")}/blog/${slug}`;
       posts.push({ slug, title: fm.title || slug, date, description, url });
     }
   } catch {
-    // directory may not exist; return empty list
+    // ignore
   }
-  // sort descending by date when available
-  posts.sort((a, b) => {
-    if (a.date && b.date) {
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    }
-    if (a.date) return -1;
-    if (b.date) return 1;
-    return 0;
-  });
   return posts;
+}
+
+async function collectPages(
+  pagesDir = "pages",
+  baseUrl = "",
+): Promise<PostMeta[]> {
+  const pages: PostMeta[] = [];
+  try {
+    for await (const entry of Deno.readDir(pagesDir)) {
+      if (!entry.isFile) continue;
+      if (!entry.name.endsWith(".md") && !entry.name.endsWith(".html")) continue;
+      const slug = entry.name.replace(/\.(md|html)$/, "");
+      // Skip problematic or internal pages if any
+      const url = `${baseUrl.replace(/\/$/, "")}/${slug}`;
+      pages.push({ slug, url });
+    }
+  } catch {
+    // ignore
+  }
+  return pages;
 }
 
 function extractFirstParagraph(md: string) {
@@ -94,15 +105,30 @@ export async function generateSitemap(
   outPath = "public/sitemap.xml",
 ) {
   const posts = await collectPosts("posts", baseUrl);
+  const pages = await collectPages("pages", baseUrl);
+
+  // Sort posts by date DESC
+  posts.sort((a, b) => {
+    if (a.date && b.date) {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    }
+    if (a.date) return -1;
+    if (b.date) return 1;
+    return 0;
+  });
+
+  const base = baseUrl.replace(/\/$/, "");
   const urls = [
-    { loc: baseUrl.replace(/\/$/, "") + "/", lastmod: undefined },
+    { loc: base + "/", lastmod: undefined },
+    { loc: base + "/blog", lastmod: posts[0]?.date },
+    ...pages.map((p) => ({ loc: p.url, lastmod: undefined })),
     ...posts.map((p) => ({ loc: p.url, lastmod: p.date })),
   ];
   const items = urls.map((u) => {
     const lastmod = u.lastmod
-      ? `<lastmod>${new Date(u.lastmod).toISOString()}</lastmod>`
+      ? `\n    <lastmod>${new Date(u.lastmod).toISOString()}</lastmod>`
       : "";
-    return `  <url>\n    <loc>${u.loc}</loc>\n    ${lastmod}\n  </url>`;
+    return `  <url>\n    <loc>${u.loc}</loc>${lastmod}\n  </url>`;
   }).join("\n");
   const xml =
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</urlset>`;

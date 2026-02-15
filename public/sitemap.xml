@@ -2,14 +2,35 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://fastro.dev/</loc>
-    
   </url>
   <url>
-    <loc>https://fastro.dev/blog/cms-en</loc>
+    <loc>https://fastro.dev/blog</loc>
     <lastmod>2026-02-15T00:00:00.000Z</lastmod>
   </url>
   <url>
+    <loc>https://fastro.dev/DOCS</loc>
+  </url>
+  <url>
+    <loc>https://fastro.dev/SIMPUL</loc>
+  </url>
+  <url>
+    <loc>https://fastro.dev/BENCHMARK</loc>
+  </url>
+  <url>
+    <loc>https://fastro.dev/CONTRIBUTING</loc>
+  </url>
+  <url>
+    <loc>https://fastro.dev/MIDDLEWARES</loc>
+  </url>
+  <url>
+    <loc>https://fastro.dev/SHOWCASE</loc>
+  </url>
+  <url>
     <loc>https://fastro.dev/blog/cms</loc>
+    <lastmod>2026-02-15T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://fastro.dev/blog/cms-en</loc>
     <lastmod>2026-02-15T00:00:00.000Z</lastmod>
   </url>
   <url>
@@ -17,11 +38,11 @@
     <lastmod>2026-02-12T00:00:00.000Z</lastmod>
   </url>
   <url>
-    <loc>https://fastro.dev/blog/powerkit</loc>
+    <loc>https://fastro.dev/blog/benchmark</loc>
     <lastmod>2026-02-11T00:00:00.000Z</lastmod>
   </url>
   <url>
-    <loc>https://fastro.dev/blog/benchmark</loc>
+    <loc>https://fastro.dev/blog/powerkit</loc>
     <lastmod>2026-02-11T00:00:00.000Z</lastmod>
   </url>
   <url>
@@ -29,11 +50,11 @@
     <lastmod>2026-02-10T00:00:00.000Z</lastmod>
   </url>
   <url>
-    <loc>https://fastro.dev/blog/vibe</loc>
+    <loc>https://fastro.dev/blog/cookie</loc>
     <lastmod>2026-02-09T00:00:00.000Z</lastmod>
   </url>
   <url>
-    <loc>https://fastro.dev/blog/cookie</loc>
+    <loc>https://fastro.dev/blog/vibe</loc>
     <lastmod>2026-02-09T00:00:00.000Z</lastmod>
   </url>
   <url>
@@ -41,11 +62,15 @@
     <lastmod>2026-02-07T00:00:00.000Z</lastmod>
   </url>
   <url>
+    <loc>https://fastro.dev/blog/jwt</loc>
+    <lastmod>2026-02-04T00:00:00.000Z</lastmod>
+  </url>
+  <url>
     <loc>https://fastro.dev/blog/cors</loc>
     <lastmod>2026-02-04T00:00:00.000Z</lastmod>
   </url>
   <url>
-    <loc>https://fastro.dev/blog/jwt</loc>
+    <loc>https://fastro.dev/blog/modules</loc>
     <lastmod>2026-02-04T00:00:00.000Z</lastmod>
   </url>
   <url>
@@ -54,10 +79,6 @@
   </url>
   <url>
     <loc>https://fastro.dev/blog/structure</loc>
-    <lastmod>2026-02-04T00:00:00.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://fastro.dev/blog/modules</loc>
     <lastmod>2026-02-04T00:00:00.000Z</lastmod>
   </url>
   <url>
