@@ -41,5 +41,6 @@
 
 ## Goal
 - Maintain 100% code coverage for all new features and modules.
+- **Run `deno task cov` every time there is a new feature addition or change.**
 - When creating tests for modules, ensure they handle the `autoRegisterModules` pattern correctly.
 - Use `core/types.ts` for Router and App interfaces in module imports to avoid circular dependencies.

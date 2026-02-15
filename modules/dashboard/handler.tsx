@@ -48,6 +48,7 @@ export const dashboardHandler: Handler = async (req, ctx) => {
   // Compute counts for pages and posts directories (best-effort)
   let pagesCount = 0;
   let postsCount = 0;
+  let storageCount = 0;
   try {
     const pagesDir = join(Deno.cwd(), "pages");
     for await (const entry of Deno.readDir(pagesDir)) {
@@ -66,6 +67,16 @@ export const dashboardHandler: Handler = async (req, ctx) => {
     // ignore
   }
 
+  // Compute number of files in public/img for storage metric
+  try {
+    const imgDir = join(Deno.cwd(), "public", "img");
+    for await (const entry of Deno.readDir(imgDir)) {
+      if (entry.isFile) storageCount++;
+    }
+  } catch {
+    // ignore if folder missing or inaccessible
+  }
+
   const html = ctx.renderToString!(
     <App
       user={user}
@@ -73,11 +84,19 @@ export const dashboardHandler: Handler = async (req, ctx) => {
       isDeploy={isDeploy}
       pagesCount={pagesCount}
       postsCount={postsCount}
+      storageCount={storageCount}
     />,
     {
       includeDoctype: true,
       title: "Dashboard",
-      initialProps: { user, name, isDeploy, pagesCount, postsCount },
+      initialProps: {
+        user,
+        name,
+        isDeploy,
+        pagesCount,
+        postsCount,
+        storageCount,
+      },
       head:
         `<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Fastro App</title><link rel="stylesheet" href="/css/app.css"></head>`,
     },

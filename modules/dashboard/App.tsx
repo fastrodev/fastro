@@ -4,6 +4,7 @@ type Props = {
   isDeploy?: boolean;
   pagesCount?: number;
   postsCount?: number;
+  storageCount?: number;
 };
 
 import Page from "../shared/Page.tsx";
@@ -16,7 +17,7 @@ import Config from "./Config.tsx";
 import Toast from "../shared/Toast.tsx";
 import { useEffect, useState } from "react";
 
-export function App({ user, name, isDeploy, pagesCount, postsCount }: Props) {
+export function App({ user, name, isDeploy, pagesCount, postsCount, storageCount }: Props) {
   const [gitStatus, setGitStatus] = useState({ branch: "", status: "" });
   const [isEditing, setIsEditing] = useState(false);
   const [showManage, setShowManage] = useState(false);
@@ -212,7 +213,7 @@ export function App({ user, name, isDeploy, pagesCount, postsCount }: Props) {
               Storage
             </span>
             <span className="text-sm font-bold text-gray-700 dark:text-gray-200 mt-1">
-              124.5 KB
+              {typeof storageCount === "number" ? storageCount : 0} Files
             </span>
           </div>
           <div className="flex flex-col">
