@@ -1,6 +1,4 @@
 import React from "npm:react@^19.2.4";
-import Header from "../shared/Header.tsx";
-import Footer from "../shared/Footer.tsx";
 
 export type AppProps = {
   name?: string;
@@ -13,7 +11,6 @@ export const App = (props: AppProps) => {
 
   return (
     <div>
-      <Header />
       <main style={{ fontFamily: "system-ui, sans-serif", padding: "2rem" }}>
         <h1>Hello {name}!</h1>
         {serverTime && <p>Server time: {serverTime}</p>}
@@ -26,8 +23,6 @@ export const App = (props: AppProps) => {
           Built with <strong>esbuild</strong> via <strong>Deno</strong>.
         </p>
       </main>
-
-      <Footer />
     </div>
   );
 };

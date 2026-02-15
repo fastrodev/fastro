@@ -1,5 +1,5 @@
 import * as esbuild from "esbuild";
-import { denoPlugins } from "@luca/esbuild-deno-loader";
+import { denoPlugin } from "@deno/esbuild-plugin";
 
 async function build(modulePath?: string, spa?: boolean) {
   let path = `./.build_tmp/${modulePath}_Client.tsx`;
@@ -20,9 +20,9 @@ async function build(modulePath?: string, spa?: boolean) {
 
     // Esbuild build
     const esbuildRes = await esbuild.build({
-      plugins: denoPlugins({
+      plugins: [denoPlugin({
         configPath,
-      }),
+      })],
       entryPoints: [path],
       outfile: `./public/js/${modulePath}/client.js`,
 
