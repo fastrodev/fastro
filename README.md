@@ -15,8 +15,6 @@ Fastro combines **extreme performance** with an **elegant API**. Built for high-
 
 ## Quick Start
 
-![Fastro Start](https://storage.googleapis.com/replix-394315-file/uploads/start_h.jpg)
-
 Build a high-performance API in seconds with zero boilerplate.
 
 ```ts
@@ -31,8 +29,6 @@ await app.serve({ port: 8000 });
 ```
 
 ## Resources
-
-![Fastro Resources](https://storage.googleapis.com/replix-394315-file/uploads/module_h.jpg)
 
 Explore our comprehensive documentation, benchmarks, and community ecosystem.
 
