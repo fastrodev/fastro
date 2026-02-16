@@ -26,15 +26,15 @@
     <loc>https://fastro.dev/SHOWCASE</loc>
   </url>
   <url>
-<<<<<<< HEAD
-    <loc>https://fastro.dev/blog/comparison-en</loc>
+    <loc>https://fastro.dev/posts/comparison</loc>
     <lastmod>2026-02-16T00:00:00.000Z</lastmod>
   </url>
   <url>
-    <loc>https://fastro.dev/blog/cms-en</loc>
-=======
+    <loc>https://fastro.dev/posts/comparison-en</loc>
+    <lastmod>2026-02-16T00:00:00.000Z</lastmod>
+  </url>
+  <url>
     <loc>https://fastro.dev/posts/cms-en</loc>
->>>>>>> 70864893 (chore: add English comparison article and polish image styles)
     <lastmod>2026-02-15T00:00:00.000Z</lastmod>
   </url>
   <url>

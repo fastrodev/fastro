@@ -34,6 +34,13 @@
     <description>Premium boilerplate for launching SaaS on Fastro/Deno. Early Bird USD 69 for the first 20 buyers. Coming soon!</description>
   </item>
   <item>
+    <title>Arsitektur CMS: Mengapa Database Mulai Terasa Seperti Beban Warisan?</title>
+    <link>https://fastro.dev/posts/comparison</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/comparison</guid>
+    <pubDate>Mon, 16 Feb 2026 00:00:00 GMT</pubDate>
+    <description>Bedah arsitektur antara monolithic database dan static binary generation, serta mengapa Git-based CMS menjadi pilihan modern yang paling efisien.</description>
+  </item>
+  <item>
     <title>Securing Your API with CORS Middleware</title>
     <link>https://fastro.dev/posts/cors</link>
     <guid isPermaLink="true">https://fastro.dev/posts/cors</guid>
@@ -42,8 +49,8 @@
   </item>
   <item>
     <title>CMS Architecture: Why Databases Are Starting to Feel Like a Legacy Burden?</title>
-    <link>https://fastro.dev/blog/comparison-en</link>
-    <guid isPermaLink="true">https://fastro.dev/blog/comparison-en</guid>
+    <link>https://fastro.dev/posts/comparison-en</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/comparison-en</guid>
     <pubDate>Mon, 16 Feb 2026 00:00:00 GMT</pubDate>
     <description>An architectural breakdown between monolithic databases and static binary generation, and why Git-based CMS has become the most efficient modern choice.</description>
   </item>
