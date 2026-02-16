@@ -29,4 +29,4 @@ To run this benchmark locally, ensure you have:
 ## Methodology
 Benchmark results are collected using `k6` with 100 virtual users for 10 seconds per scenario. Results may vary depending on CPU load, memory usage, system configuration, and other environmental factors. For more representative numbers, run the benchmark multiple times on an idle machine.
 
-For a deeper analysis, see [blog/benchmark](blog/benchmark).
+For a deeper analysis, see [posts/benchmark](posts/benchmark).
