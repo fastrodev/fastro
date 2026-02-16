@@ -146,12 +146,12 @@ Deno.test("renderBlog - pagination variants", async () => {
 
   const res2 = await renderBlog(2);
   const text2 = await res2.text();
-  assertStringIncludes(text2, "Previous");
+  assertStringIncludes(text2, "Prev");
   assertStringIncludes(text2, "Next");
 
   const res3 = await renderBlog(3);
   const text3 = await res3.text();
-  assertStringIncludes(text3, "Previous");
+  assertStringIncludes(text3, "Prev");
 
   const res4 = await renderBlog(999); // Overflow
   assertEquals(res4.status, 200);
@@ -206,7 +206,7 @@ Deno.test("renderBlog - edge cases", async () => {
 
   const resEmpty = await renderBlog(1, "xyz123nonexistent");
   const textEmpty = await resEmpty.text();
-  assertStringIncludes(textEmpty, "No posts found");
+  assertStringIncludes(textEmpty, "No articles found");
 
   // Cleanup
   await Deno.remove("./posts/dummy-dir", { recursive: true });
@@ -374,7 +374,7 @@ Deno.test("renderBlog - pagination next", async () => {
 
     const res2 = await renderBlog(2);
     const html2 = await res2.text();
-    assertStringIncludes(html2, "Previous");
+    assertStringIncludes(html2, "Prev");
     assertStringIncludes(html2, "page=1");
   } finally {
     for (let i = 6; i <= 10; i++) {
