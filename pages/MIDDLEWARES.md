@@ -31,7 +31,7 @@ These middlewares are maintained by the Fastro core team.
 
 In Fastro, every module is a middleware. This allows for powerful patterns where you can group routes and logic into directories and load them dynamically.
 
-- Learn more about [Creating Modules](/blog/modules).
+- Learn more about [Creating Modules](/posts/modules).
 - See the [Module Loader](/core/loader.ts) source code.
 
 

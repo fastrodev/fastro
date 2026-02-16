@@ -24,7 +24,7 @@ r.get("/blog", (req, ctx) => {
   return renderBlog(page, search, ctx.kv, getCanonical(req));
 }, kvMiddleware);
 r.get(
-  "/blog/:post",
+  "/posts/:post",
   (req, ctx) =>
     renderMD(`posts/${ctx.params.post}.md`, ctx.kv, getCanonical(req)),
   kvMiddleware,

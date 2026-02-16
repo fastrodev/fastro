@@ -112,7 +112,7 @@ app.get("/", () => "CORS enabled!");
 await app.serve();
 ```
 
-For detailed configuration (origins, headers, methods), see the [CORS guide](/blog/cors).
+For detailed configuration (origins, headers, methods), see the [CORS guide](/posts/cors).
 
 
 ## Cookie
@@ -179,7 +179,7 @@ await app.serve();
 | :------- | :------- | :----------------------------------------- |
 | `secret` | `string` | The secret key to sign and verify tokens. |
 
-For more advanced usage like token creation and expiration, see the [JWT guide](/blog/jwt).
+For more advanced usage like token creation and expiration, see the [JWT guide](/posts/jwt).
 
 
 ## Deno KV
@@ -345,7 +345,7 @@ Behavior
 - Development: compiles `<staticDir>/css/tailwind.css` with PostCSS + Tailwind and returns the CSS.
 - Production: attempts to serve `./public/css/<filename>` (where `<filename>` is the last segment of the pathname) with long cache headers; falls back to processing if missing.
 
-See also: [Tailwind middleware blog post](/blog/tailwind) and
+See also: [Tailwind middleware blog post](/posts/tailwind) and
 [Source](/middlewares/tailwind/tailwind.ts).
 
 

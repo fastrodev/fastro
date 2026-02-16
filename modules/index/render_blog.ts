@@ -71,7 +71,7 @@ export async function renderBlog(
         date,
         tags,
         image,
-        link: `/blog/${name.replace(".md", "")}`,
+        link: `/posts/${name.replace(".md", "")}`,
       });
     }
   }
