@@ -41,6 +41,13 @@
     <description>A comprehensive guide on how to configure Cross-Origin Resource Sharing (CORS) in Fastro to safely allow cross-domain requests.</description>
   </item>
   <item>
+    <title>CMS Architecture: Why Databases Are Starting to Feel Like a Legacy Burden?</title>
+    <link>https://fastro.dev/blog/comparison-en</link>
+    <guid isPermaLink="true">https://fastro.dev/blog/comparison-en</guid>
+    <pubDate>Mon, 16 Feb 2026 00:00:00 GMT</pubDate>
+    <description>An architectural breakdown between monolithic databases and static binary generation, and why Git-based CMS has become the most efficient modern choice.</description>
+  </item>
+  <item>
     <title>Mengapa Cepat Saja Tidak Cukup? Analisis Benchmark Framework HTTP 2026</title>
     <link>https://fastro.dev/blog/stddev</link>
     <guid isPermaLink="true">https://fastro.dev/blog/stddev</guid>

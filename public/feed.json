@@ -40,6 +40,13 @@
       "date_published": "2026-02-04"
     },
     {
+      "id": "https://fastro.dev/blog/comparison-en",
+      "url": "https://fastro.dev/blog/comparison-en",
+      "title": "CMS Architecture: Why Databases Are Starting to Feel Like a Legacy Burden?",
+      "content_text": "An architectural breakdown between monolithic databases and static binary generation, and why Git-based CMS has become the most efficient modern choice.",
+      "date_published": "2026-02-16"
+    },
+    {
       "id": "https://fastro.dev/blog/stddev",
       "url": "https://fastro.dev/blog/stddev",
       "title": "Mengapa Cepat Saja Tidak Cukup? Analisis Benchmark Framework HTTP 2026",
