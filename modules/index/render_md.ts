@@ -222,7 +222,7 @@ export async function renderMD_Content(
           } gap-3 mb-4`
       }">${title}${
         path === "blog"
-          ? `<a href="/signin" class="text-[0.7rem] md:text-xs font-semibold px-3 py-1.5 rounded-xl border border-border-subtle hover:border-fg-muted/30 hover:bg-canvas-subtle transition-all !no-underline !text-fg-muted hover:!text-fg-default uppercase tracking-wider">DASHBOARD</a>`
+          ? `<a href="/signin" class="text-[0.7rem] md:text-xs font-semibold px-3 py-1.5 rounded-xl border border-border-default hover:border-fg-muted/50 hover:bg-canvas-subtle transition-all !no-underline !text-fg-default/70 hover:!text-fg-default uppercase tracking-wider">DASHBOARD</a>`
           : ""
       }</h1>`
       : ""
