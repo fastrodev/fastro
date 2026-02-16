@@ -674,6 +674,8 @@ a:hover {
   max-width: 100%;
   box-sizing: content-box;
   background-color: var(--color-canvas-default);
+  display: block;
+  border-radius: 0.5rem;
 }
 
 .markdown-body img[align=right] {
@@ -1078,6 +1080,8 @@ a:hover {
 .blog-post-content img {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
+  display: block;
+  border-radius: 0.5rem;
 }
 .markdown-body img.loaded,
 .blog-post-content img.loaded {
