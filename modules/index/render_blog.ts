@@ -232,5 +232,20 @@ export async function renderBlog(
       : ""
   }`;
 
-  return renderMD_Content(html, "blog", kv, canonical);
+  // Build rel=prev/next head links when applicable
+  let headExtras = "";
+  if (currentPage > 1) {
+    const prevUrl = `/blog?page=${currentPage - 1}${
+      search ? `&search=${encodeURIComponent(search)}` : ""
+    }`;
+    headExtras += `<link rel=\"prev\" href=\"${prevUrl}\">`;
+  }
+  if (currentPage < totalPages) {
+    const nextUrl = `/blog?page=${currentPage + 1}${
+      search ? `&search=${encodeURIComponent(search)}` : ""
+    }`;
+    headExtras += `<link rel=\"next\" href=\"${nextUrl}\">`;
+  }
+
+  return renderMD_Content(html, "blog", kv, canonical, headExtras);
 }

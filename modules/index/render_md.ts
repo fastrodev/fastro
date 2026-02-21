@@ -1,5 +1,12 @@
 import { CSS, render } from "jsr:@deno/gfm@^0.11.0";
 import { getHeaderPages, getVersion } from "./utils.ts";
+import {
+  defaultLocale,
+  locales,
+  ogImageHeight,
+  ogImageWidth,
+  twitterSite,
+} from "./site_config.ts";
 import { renderStatic } from "./render_static.ts";
 
 // Add support for syntax highlighting
@@ -24,6 +31,7 @@ export async function renderMD_Content(
   path: string,
   kv?: Deno.Kv,
   canonical?: string,
+  headExtras?: string,
 ) {
   const version = await getVersion();
   const headerPages = await getHeaderPages(kv);
@@ -49,9 +57,12 @@ export async function renderMD_Content(
   let description = "High-performance, minimalist web framework for Deno.";
   let date = "";
   let author = "";
+  let draft = false;
+  let noindex = false;
   let tags: string[] = [];
   let image =
     "https://repository-images.githubusercontent.com/264308713/1b83bd0f-b9d9-466d-9e63-f947c1a67281";
+  let breadcrumbFromFrontmatter: string[] | undefined;
 
   // 1. Process Frontmatter
   if (markdown.startsWith("---")) {
@@ -80,6 +91,32 @@ export async function renderMD_Content(
 
       const imageMatch = frontmatter.match(/image:\s*["']?(.*?)["']?$/m);
       if (imageMatch) image = imageMatch[1].trim();
+      const breadcrumbArrayMatch = frontmatter.match(
+        /breadcrumb:\s*\[(.*?)\]/m,
+      );
+      if (breadcrumbArrayMatch) {
+        breadcrumbFromFrontmatter = breadcrumbArrayMatch[1]
+          .split(",")
+          .map((s) => s.trim().replace(/['"]/g, ""))
+          .filter(Boolean);
+      } else {
+        const breadcrumbStrMatch = frontmatter.match(
+          /breadcrumb:\s*["']?(.*?)["']?$/m,
+        );
+        if (breadcrumbStrMatch) {
+          // allow delimiting with '>' or '/'
+          breadcrumbFromFrontmatter = breadcrumbStrMatch[1]
+            .split(/>|\//)
+            .map((s) => s.trim())
+            .filter(Boolean);
+        }
+      }
+      const noindexMatch = frontmatter.match(/noindex:\s*(true|false)/i);
+      if (noindexMatch) {
+        noindex = noindexMatch[1].toString().toLowerCase() === "true";
+      }
+      const draftMatch = frontmatter.match(/draft:\s*(true|false)/i);
+      if (draftMatch) draft = draftMatch[1].toString().toLowerCase() === "true";
     }
   }
 
@@ -135,6 +172,84 @@ export async function renderMD_Content(
   const body = htmlBody;
   const docTitle = title || `Fastro - ${path}`;
 
+  // JSON-LD Article for blog posts
+  let jsonLd = "";
+  if (isBlogPost) {
+    try {
+      const ld: Record<string, unknown> = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        headline: docTitle,
+        description: description,
+      };
+      if (image) ld.image = [image];
+      if (author) ld.author = { "@type": "Person", name: author };
+      if (date) {
+        const dt = new Date(date);
+        if (!Number.isNaN(dt.getTime())) ld.datePublished = dt.toISOString();
+      }
+      if (canonical) ld.mainEntityOfPage = canonical;
+      jsonLd = `<script type=\"application/ld+json\">${
+        JSON.stringify(ld)
+      }</script>`;
+    } catch {
+      jsonLd = "";
+    }
+  }
+
+  // BreadcrumbList JSON-LD (frontmatter overrides automatic URL-derived breadcrumbs)
+  let breadcrumbLd = "";
+  try {
+    const makeNice = (s: string) =>
+      s.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    const crumbs = breadcrumbFromFrontmatter ?? (() => {
+      const p = path.replace(/(?:\.md|\.html)$/, "");
+      const parts = p.split("/").filter(Boolean);
+      // if root or single page like blog, skip automatic breadcrumbs
+      if (parts.length === 0) return [] as string[];
+      return parts.map((seg) => makeNice(seg));
+    })();
+
+    if (crumbs && crumbs.length > 0) {
+      const list: Array<Record<string, unknown>> = [];
+      let position = 1;
+      const base = canonical ? canonical.replace(/\/$/, "") : "";
+      // ensure Home is first unless frontmatter already contains it
+      const firstCrumb = crumbs[0] || "";
+      if (firstCrumb.toLowerCase() !== "home") {
+        list.push({
+          "@type": "ListItem",
+          position: position++,
+          name: "Home",
+          item: base ? `${base}/` : "/",
+        });
+      }
+
+      let acc = "";
+      for (const c of crumbs) {
+        acc += `/${c.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+        const itemUrl = base ? `${base}${acc}` : acc;
+        list.push({
+          "@type": "ListItem",
+          position: position++,
+          name: c,
+          item: itemUrl,
+        });
+      }
+
+      const bl = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: list,
+      };
+      breadcrumbLd = `<script type=\"application/ld+json\">${
+        JSON.stringify(bl)
+      }</script>`;
+    }
+  } catch {
+    breadcrumbLd = "";
+  }
+
   const html = `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -143,22 +258,58 @@ export async function renderMD_Content(
     <title>${docTitle}</title>
     <meta name="description" content="${description}">
     ${canonical ? `<link rel="canonical" href="${canonical}">` : ""}
+    ${
+    locales && locales.length > 0
+      ? (() => {
+        // determine path portion for this resource
+        let urlPath = "/";
+        try {
+          if (canonical) {
+            const u = new URL(canonical);
+            urlPath = u.pathname.replace(/\/$/, "") || "/";
+          } else if (path === "README.md") {
+            urlPath = "/";
+          } else {
+            urlPath = "/" + path.replace(/\.(md|html)$/, "");
+          }
+        } catch {
+          urlPath = "/" + path.replace(/\.(md|html)$/, "");
+        }
+        const links = locales.map((l) => {
+          const href = `${l.url.replace(/\/$/, "")}${urlPath}`;
+          return `<link rel="alternate" hreflang="${l.lang}" href="${href}">`;
+        }).join("\n    ");
+        const defaultUrl =
+          (locales.find((l) => l.lang === defaultLocale) || locales[0]).url
+            .replace(/\/$/, "");
+        return `${links}\n    <link rel="alternate" hreflang="x-default" href="${defaultUrl}${urlPath}">`;
+      })()
+      : ""
+  }
+    ${(draft || noindex) ? `<meta name="robots" content="noindex">` : ""}
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="${docTitle}">
     <meta property="og:description" content="${description}">
     <meta property="og:image" content="${image}">
+    <meta property="og:image:width" content="${ogImageWidth}">
+    <meta property="og:image:height" content="${ogImageHeight}">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:title" content="${docTitle}">
     <meta property="twitter:description" content="${description}">
     <meta property="twitter:image" content="${image}">
+    ${twitterSite ? `<meta name="twitter:site" content="${twitterSite}">` : ""}
+
+    ${jsonLd}
+    ${breadcrumbLd}
 
     ${
     isMD
       ? `
+    ${headExtras ?? ""}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"

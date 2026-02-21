@@ -11,6 +11,7 @@
  */
 
 import { join } from "https://deno.land/std@0.201.0/path/mod.ts";
+import { defaultLocale, locales, twitterSite } from "./site_config.ts";
 
 type PostMeta = {
   slug: string;
@@ -18,6 +19,10 @@ type PostMeta = {
   date?: string;
   description?: string;
   url: string;
+  image?: string;
+  content_html?: string;
+  draft?: boolean;
+  noindex?: boolean;
 };
 
 function normalizeDate(d?: string) {
@@ -53,8 +58,25 @@ async function collectPosts(
       const fm = parseFrontmatter(text);
       const description = fm.description || extractFirstParagraph(text) || "";
       const date = normalizeDate(fm.date);
+      const image = fm.image || undefined;
+      const content_html = description ? `<p>${description}</p>` : undefined;
+      const draft = (fm.draft || "").toString().toLowerCase() === "true";
+      const noindex = (fm.noindex || "").toString().toLowerCase() === "true";
       const url = `${baseUrl.replace(/\/$/, "")}/posts/${slug}`;
-      posts.push({ slug, title: fm.title || slug, date, description, url });
+      // Exclude drafts and explicitly noindexed posts from feeds/sitemap
+      if (!draft && !noindex) {
+        posts.push({
+          slug,
+          title: fm.title || slug,
+          date,
+          description,
+          url,
+          image,
+          content_html,
+          draft,
+          noindex,
+        });
+      }
     }
   } catch {
     // ignore
@@ -120,20 +142,60 @@ export async function generateSitemap(
   });
 
   const base = baseUrl.replace(/\/$/, "");
-  const urls = [
-    { loc: base + "/", lastmod: undefined },
-    { loc: base + "/blog", lastmod: posts[0]?.date },
-    ...pages.map((p) => ({ loc: p.url, lastmod: undefined })),
-    ...posts.map((p) => ({ loc: p.url, lastmod: p.date })),
-  ];
-  const items = urls.map((u) => {
+  const homepage = { loc: base + "/", lastmod: undefined };
+  const blogIndex = { loc: base + "/blog", lastmod: posts[0]?.date };
+  // Add paginated blog index entries (page 2..N)
+  const pageSize = 6;
+  const totalPages = Math.max(1, Math.ceil(posts.length / pageSize));
+  const blogPages = [] as { loc: string; lastmod?: string }[];
+  for (let i = 2; i <= totalPages; i++) {
+    const idx = (i - 1) * pageSize;
+    blogPages.push({
+      loc: `${base}/blog?page=${i}`,
+      lastmod: posts[idx]?.date,
+    });
+  }
+  const pageUrls = pages.map((p) => ({ loc: p.url, lastmod: undefined }));
+  const postUrls = posts.map((p) => ({
+    loc: p.url,
+    lastmod: p.date,
+    image: p.image,
+  }));
+
+  const all = [homepage, blogIndex, ...blogPages, ...pageUrls, ...postUrls];
+
+  const hasLocales = locales && locales.length > 0;
+  const items = all.map((u) => {
     const lastmod = u.lastmod
       ? `\n    <lastmod>${new Date(u.lastmod).toISOString()}</lastmod>`
       : "";
-    return `  <url>\n    <loc>${u.loc}</loc>${lastmod}\n  </url>`;
+    const entry = u as { image?: string };
+    const imageTag = entry.image
+      ? `\n    <image:image>\n      <image:loc>${entry.image}</image:loc>\n    </image:image>`
+      : "";
+    let alternateTags = "";
+    if (hasLocales) {
+      // derive relative path from absolute u.loc
+      let relative = u.loc.replace(base, "");
+      if (!relative.startsWith("/")) relative = "/" + relative;
+      const links = locales.map((l) => {
+        const href = `${l.url.replace(/\/$/, "")}${relative}`;
+        return `\n    <xhtml:link rel="alternate" hreflang="${l.lang}" href="${href}" />`;
+      }).join("");
+      const defaultUrl = (locales.find((l) =>
+        l.lang === defaultLocale
+      ) || locales[0]).url.replace(/\/$/, "");
+      const xdef =
+        `\n    <xhtml:link rel="alternate" hreflang="x-default" href="${defaultUrl}${relative}" />`;
+      alternateTags = links + xdef;
+    }
+    return `  <url>\n    <loc>${u.loc}</loc>${lastmod}${alternateTags}${imageTag}\n  </url>`;
   }).join("\n");
+  const xhtmlNs = hasLocales
+    ? ' xmlns:xhtml="http://www.w3.org/1999/xhtml"'
+    : "";
   const xml =
-    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</urlset>`;
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"${xhtmlNs} xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${items}\n</urlset>`;
   await writeFile(outPath, xml);
 }
 
@@ -153,12 +215,13 @@ export async function generateRSS(baseUrl: string, outPath = "public/rss.xml") {
       escapeXml(p.title ?? p.slug)
     }</title>\n    <link>${p.url}</link>\n    <guid isPermaLink="true">${p.url}</guid>\n    <pubDate>${pubDate}</pubDate>\n    <description>${description}</description>\n  </item>`;
   }).join("\n");
+  const feedUrl = `${baseUrl.replace(/\/$/, "")}/rss.xml`;
   const xml =
-    `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n<channel>\n  <title>${
+    `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n<channel>\n  <title>${
       escapeXml(siteTitle)
     }</title>\n  <link>${baseUrl}</link>\n  <description>${
       escapeXml(siteDesc)
-    }</description>\n  <lastBuildDate>${lastBuildDate}</lastBuildDate>\n${items}\n</channel>\n</rss>`;
+    }</description>\n  <atom:link href="${feedUrl}" rel="self" type="application/rss+xml" />\n  <lastBuildDate>${lastBuildDate}</lastBuildDate>\n${items}\n</channel>\n</rss>`;
   await writeFile(outPath, xml);
 }
 
@@ -178,8 +241,19 @@ export async function generateJSONFeed(
       title: p.title,
       content_text: p.description,
       date_published: p.date,
+      content_html: p.content_html,
+      image: p.image,
     })),
   };
+  // attach feed-level author metadata when configured
+  if (twitterSite) {
+    // JSON Feed doesn't standardize a twitter field; include as an extension-friendly property
+    (feed as Record<string, unknown>).author = {
+      name: "Fastro",
+      url: baseUrl,
+      twitter: twitterSite,
+    };
+  }
   await writeFile(outPath, JSON.stringify(feed, null, 2));
 }
 
