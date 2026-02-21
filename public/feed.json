@@ -138,6 +138,13 @@
       "date_published": "2026-02-04T00:00:00.000Z"
     },
     {
+      "id": "https://fastro.dev/posts/stability-benchmark",
+      "url": "https://fastro.dev/posts/stability-benchmark",
+      "title": "Why Speed Isn't Everything: 2026 HTTP Framework Benchmark Analysis",
+      "content_text": "An analysis of why stability (stddev) is as crucial as throughput (RPS) in 2026 HTTP framework benchmarks.",
+      "date_published": "2026-02-21T00:00:00.000Z"
+    },
+    {
       "id": "https://fastro.dev/posts/comparison-en",
       "url": "https://fastro.dev/posts/comparison-en",
       "title": "CMS Architecture: Why Databases Are Starting to Feel Like a Legacy Burden?",

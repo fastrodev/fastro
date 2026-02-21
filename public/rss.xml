@@ -139,6 +139,13 @@
     <description>A comprehensive guide on how to configure Cross-Origin Resource Sharing (CORS) in Fastro to safely allow cross-domain requests.</description>
   </item>
   <item>
+    <title>Why Speed Isn&apos;t Everything: 2026 HTTP Framework Benchmark Analysis</title>
+    <link>https://fastro.dev/posts/stability-benchmark</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/stability-benchmark</guid>
+    <pubDate>Sat, 21 Feb 2026 00:00:00 GMT</pubDate>
+    <description>An analysis of why stability (stddev) is as crucial as throughput (RPS) in 2026 HTTP framework benchmarks.</description>
+  </item>
+  <item>
     <title>CMS Architecture: Why Databases Are Starting to Feel Like a Legacy Burden?</title>
     <link>https://fastro.dev/posts/comparison-en</link>
     <guid isPermaLink="true">https://fastro.dev/posts/comparison-en</guid>
