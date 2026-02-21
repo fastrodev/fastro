@@ -1,116 +1,257 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://fastro.dev/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/" />
   </url>
   <url>
     <loc>https://fastro.dev/blog</loc>
     <lastmod>2026-02-21T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/blog" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/blog" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/blog" />
+  </url>
+  <url>
+    <loc>https://fastro.dev/blog?page=2</loc>
+    <lastmod>2026-02-12T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/blog?page=2" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/blog?page=2" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/blog?page=2" />
+  </url>
+  <url>
+    <loc>https://fastro.dev/blog?page=3</loc>
+    <lastmod>2026-02-07T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/blog?page=3" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/blog?page=3" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/blog?page=3" />
+  </url>
+  <url>
+    <loc>https://fastro.dev/blog?page=4</loc>
+    <lastmod>2026-02-03T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/blog?page=4" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/blog?page=4" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/blog?page=4" />
   </url>
   <url>
     <loc>https://fastro.dev/CONTRIBUTING</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/CONTRIBUTING" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/CONTRIBUTING" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/CONTRIBUTING" />
   </url>
   <url>
     <loc>https://fastro.dev/BENCHMARK</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/BENCHMARK" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/BENCHMARK" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/BENCHMARK" />
   </url>
   <url>
     <loc>https://fastro.dev/DOCS</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/DOCS" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/DOCS" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/DOCS" />
   </url>
   <url>
     <loc>https://fastro.dev/MIDDLEWARES</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/MIDDLEWARES" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/MIDDLEWARES" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/MIDDLEWARES" />
   </url>
   <url>
     <loc>https://fastro.dev/SHOWCASE</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/SHOWCASE" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/SHOWCASE" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/SHOWCASE" />
   </url>
   <url>
     <loc>https://fastro.dev/SIMPUL</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/SIMPUL" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/SIMPUL" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/SIMPUL" />
   </url>
   <url>
     <loc>https://fastro.dev/posts/stability-benchmark</loc>
     <lastmod>2026-02-21T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/stability-benchmark" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/stability-benchmark" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/stability-benchmark" />
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=60</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://fastro.dev/posts/eclipse</loc>
     <lastmod>2026-02-18T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/eclipse" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/eclipse" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/eclipse" />
+    <image:image>
+      <image:loc>https://storage.googleapis.com/replix-394315-file/uploads/eclipse.jpg</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://fastro.dev/posts/comparison</loc>
     <lastmod>2026-02-16T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/comparison" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/comparison" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/comparison" />
+    <image:image>
+      <image:loc>https://storage.googleapis.com/replix-394315-file/uploads/comparison.jpg</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://fastro.dev/posts/comparison-en</loc>
     <lastmod>2026-02-16T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/comparison-en" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/comparison-en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/comparison-en" />
+    <image:image>
+      <image:loc>https://storage.googleapis.com/replix-394315-file/uploads/comparison.jpg</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://fastro.dev/posts/cms</loc>
     <lastmod>2026-02-15T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/cms" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/cms" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/cms" />
+    <image:image>
+      <image:loc>https://storage.googleapis.com/replix-394315-file/uploads/dashboard.jpg</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://fastro.dev/posts/cms-en</loc>
     <lastmod>2026-02-15T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/cms-en" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/cms-en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/cms-en" />
+    <image:image>
+      <image:loc>https://storage.googleapis.com/replix-394315-file/uploads/dashboard.jpg</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://fastro.dev/posts/stddev</loc>
     <lastmod>2026-02-12T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/stddev" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/stddev" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/stddev" />
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=60</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://fastro.dev/posts/powerkit</loc>
     <lastmod>2026-02-11T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/powerkit" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/powerkit" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/powerkit" />
   </url>
   <url>
     <loc>https://fastro.dev/posts/benchmark</loc>
     <lastmod>2026-02-11T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/benchmark" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/benchmark" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/benchmark" />
+    <image:image>
+      <image:loc>https://upload.wikimedia.org/wikipedia/commons/e/ef/K6-logo.svg</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://fastro.dev/posts/tailwind</loc>
     <lastmod>2026-02-10T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/tailwind" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/tailwind" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/tailwind" />
   </url>
   <url>
     <loc>https://fastro.dev/posts/cookie</loc>
     <lastmod>2026-02-09T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/cookie" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/cookie" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/cookie" />
   </url>
   <url>
     <loc>https://fastro.dev/posts/vibe</loc>
     <lastmod>2026-02-09T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/vibe" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/vibe" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/vibe" />
+    <image:image>
+      <image:loc>https://repository-images.githubusercontent.com/264308713/1b83bd0f-b9d9-466d-9e63-f947c1a67281</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://fastro.dev/posts/render</loc>
     <lastmod>2026-02-07T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/render" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/render" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/render" />
   </url>
   <url>
     <loc>https://fastro.dev/posts/jwt</loc>
     <lastmod>2026-02-04T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/jwt" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/jwt" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/jwt" />
   </url>
   <url>
     <loc>https://fastro.dev/posts/structure</loc>
     <lastmod>2026-02-04T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/structure" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/structure" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/structure" />
   </url>
   <url>
     <loc>https://fastro.dev/posts/kv</loc>
     <lastmod>2026-02-04T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/kv" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/kv" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/kv" />
   </url>
   <url>
     <loc>https://fastro.dev/posts/modules</loc>
     <lastmod>2026-02-04T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/modules" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/modules" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/modules" />
   </url>
   <url>
     <loc>https://fastro.dev/posts/cors</loc>
     <lastmod>2026-02-04T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/cors" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/cors" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/cors" />
   </url>
   <url>
     <loc>https://fastro.dev/posts/bodyparser</loc>
     <lastmod>2026-02-03T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/bodyparser" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/bodyparser" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/bodyparser" />
   </url>
   <url>
     <loc>https://fastro.dev/posts/static</loc>
     <lastmod>2026-02-02T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/static" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/static" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/static" />
   </url>
   <url>
     <loc>https://fastro.dev/posts/maxwell</loc>
     <lastmod>2026-02-01T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/maxwell" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/maxwell" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/maxwell" />
+    <image:image>
+      <image:loc>"https://storage.googleapis.com/replix-394315-file/uploads/maxwell.jpg'</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://fastro.dev/posts/v1.0.0</loc>
     <lastmod>2026-02-01T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/v1.0.0" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/v1.0.0" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/v1.0.0" />
   </url>
 </urlset>

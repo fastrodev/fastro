@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
   <title>Fastro</title>
   <link>https://fastro.dev</link>
   <description>Fastro blog and docs</description>
+  <atom:link href="https://fastro.dev/rss.xml" rel="self" type="application/rss+xml" />
   <lastBuildDate>Mon, 09 Feb 2026 00:00:00 GMT</lastBuildDate>
   <item>
     <title>Understanding Cookie Middleware in Fastro</title>
