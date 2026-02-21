@@ -5,128 +5,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 - Not Found</title>
+    <link rel="stylesheet" href="/css/app.css">
     <style>
         :root {
-            --bg: #ffffff;
-            --fg: #0f172a;
-            --muted: #64748b;
-            --accent: #3b82f6;
-            --border: #e2e8f0;
+            --page-bg: #ffffff;
+            --page-fg: #0f172a;
+            --page-muted: #6b7280;
+            --page-accent: #3b82f6;
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg: #020617;
-                --fg: #f8fafc;
-                --muted: #94a3b8;
-                --accent: #60a5fa;
-                --border: #1e293b;
+                --page-bg: #020617;
+                --page-fg: #f1f5f9;
+                --page-muted: #94a3b8;
+                --page-accent: #60a5fa;
             }
         }
 
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg);
-            color: var(--fg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            -webkit-font-smoothing: antialiased;
+        .artistic-bg {
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(96, 165, 250, 0.03) 0%, transparent 40%);
         }
 
-        .container {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
         }
 
-        .icon-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent);
-            opacity: 0.9;
+        .animate-container-in {
+            animation: containerIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .divider {
-            width: 1px;
-            height: 48px;
-            background-color: var(--border);
-        }
-
-        .content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            margin: 0;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            line-height: 1;
-        }
-
-        p {
-            color: var(--muted);
-            font-size: 0.875rem;
-            margin: 0.25rem 0 0;
-            font-weight: 400;
-        }
-
-        .back-link {
-            margin-top: 1rem;
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.375rem;
-            transition: opacity 0.2s;
-            width: max-content;
-        }
-
-        .back-link:hover {
-            opacity: 0.7;
-        }
-
-        @keyframes fadeIn {
+        @keyframes containerIn {
             from {
                 opacity: 0;
-                transform: scale(0.96);
+                transform: translateY(10px) scale(0.98);
             }
 
             to {
                 opacity: 1;
-                transform: scale(1);
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(-5px);
+            }
+
+            50% {
+                transform: translateY(5px);
             }
         }
     </style>
 </head>
 
-<body>
-    <div class="container">
-        <div class="icon-wrapper">
-            <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<body style="background-color:var(--page-bg); color:var(--page-fg);"
+    class="min-h-screen overflow-hidden antialiased font-sans artistic-bg">
+    <div
+        class="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 p-8 min-h-screen animate-container-in">
+        <div
+            class="flex items-center justify-center text-blue-500 animate-float drop-shadow-[0_0_20px_rgba(59,130,246,0.15)] shrink-0">
+            <svg width="64" height="64" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M60 5 L30 55 H48 L40 95 L70 45 H52 L60 5 Z" fill="currentColor" />
             </svg>
         </div>
 
-        <div class="divider"></div>
+        <div
+            class="hidden sm:block w-px h-16 bg-linear-to-b from-transparent via-gray-200 dark:via-gray-800 to-transparent">
+        </div>
+        <div
+            class="block sm:hidden w-12 h-px bg-linear-to-r from-transparent via-gray-200 dark:via-gray-800 to-transparent">
+        </div>
 
-        <div class="content">
-            <h1>404</h1>
-            <p>Page could not be found.</p>
-            <a href="javascript:history.back()" class="back-link">
-                <span>&larr;</span> Go back
+        <div class="flex flex-col text-center sm:text-left">
+            <h1 class="text-6xl font-black tracking-tighter text-[#0f172a] dark:text-white leading-tight">
+                404
+            </h1>
+            <p class="text-gray-500 dark:text-gray-400 text-base mt-2 max-w-[240px] leading-relaxed">
+                The page you're looking for has vanished into the void.
+            </p>
+            <a href="/" id="back-link"
+                class="mt-6 text-blue-500 font-medium inline-flex items-center gap-2 transition-all duration-300 hover:gap-3 group">
+                <span class="transition-transform duration-300 group-hover:-translate-x-1">&larr;</span> Go back
             </a>
         </div>
     </div>
+    <script>
+        (function () {
+            var a = document.getElementById('back-link');
+            if (!a) return;
+            a.addEventListener('click', function (e) {
+                try {
+                    if (window.history && window.history.length > 1) {
+                        e.preventDefault();
+                        window.history.back();
+                    }
+                } catch (err) {
+                    // on error, allow default navigation to root
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>
