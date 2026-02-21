@@ -1,0 +1,85 @@
+--- /home/dev/project/fw/fastro/posts/eclipse.md
++++ /home/dev/project/fw/fastro/posts/eclipse.md
+@@ -86,8 +86,8 @@
+ 
+ Moon angular diameter (using $L_m$):
+ $$
+- heta_m = 2\arctan\left(\frac{D_m}{2L_m}\right) \approx \mathbf{0.57^\circ\ (34.4')}
++\theta_m = 2\arctan\left(\frac{D_m}{2L_m}\right) \approx \mathbf{0.57^\circ\ (34.4')}
+ $$
+ 
+ Sun angular diameter (using $d_s - R$ as observer distance to Sun center):
+ $$
+- heta_s = 2\arctan\left(\frac{D_s}{2(d_s - R)}\right) \approx \mathbf{0.55^\circ\ (32.8')}
++\theta_s = 2\arctan\left(\frac{D_s}{2(d_s - R)}\right) \approx \mathbf{0.55^\circ\ (32.8')}
+ $$
+@@ -124,4 +124,53 @@
+ 
+ ---
+ 
+-Technical Appendix: Algebraic Derivation of Solar DimensionsThis appendix provides a step-by-step breakdown of how the Solar Diameter ($D_s$) formula was derived from the fundamental light-cone equations.1. The Starting EquationsWe begin with the two primary ratios derived from the kesebangunan segitiga (similar triangles) of the shadow cones:Eq. 1 (Umbra/Convergence): $$\frac{D_s - D_m}{x} = \frac{D_m - W_u}{L_m}$$Eq. 2 (Penumbra/Divergence): $$\frac{D_s + D_m}{x} = \frac{W_{p\_eff} - D_m}{L_m}$$2. Isolating the Diameter RatioTo remove the unknowns $x$ (Sun-Moon distance) and $L_m$ (Moon-Surface distance), we divide Eq. 1 by Eq. 2:$$\frac{(D_s - D_m) / x}{(D_s + D_m) / x} = \frac{(D_m - W_u) / L_m}{(W_{p\_eff} - D_m) / L_m}$$This simplifies to:$$\frac{D_s - D_m}{D_s + D_m} = \frac{D_m - W_u}{W_{p\_eff} - D_m}$$3. Solving for $D_s$Let $A = (D_m - W_u)$ and $B = (W_{p\_eff} - D_m)$. The equation becomes:$$\frac{D_s - D_m}{D_s + D_m} = \frac{A}{B}$$Multiply across:$$B(D_s - D_m) = A(D_s + D_m)$$$$B D_s - B D_m = A D_s + A D_m$$Group the $D_s$ terms:$$B D_s - A D_s = A D_m + B D_m$$$$D_s(B - A) = D_m(A + B)$$$$D_s = D_m \frac{A + B}{B - A}$$4. Final SubstitutionNow, we substitute back the values for $A$ and $B$:$A + B = (D_m - W_u) + (W_{p\_eff} - D_m) = \mathbf{W_{p\_eff} - W_u}$$B - A = (W_{p\_eff} - D_m) - (D_m - W_u) = \mathbf{W_{p\_eff} + W_u - 2D_m}$Resulting in the master formula used in the audit:$$D_s = D_m \cdot \frac{W_{p\_eff} - W_u}{W_{p\_eff} + W_u - 2D_m}$$
++### Technical Appendix: Algebraic Derivation of Solar Dimensions
++
++This appendix provides a step-by-step breakdown of how the Solar Diameter ($D_s$) formula was derived from the fundamental light-cone equations.
++
++#### 1. The Starting Equations
++
++We begin with the two primary ratios derived from the *kesebangunan segitiga* (similar triangles) of the shadow cones:
++
++- **Eq. 1 (Umbra/Convergence):**
++  $$ \frac{D_s - D_m}{x} = \frac{D_m - W_u}{L_m} $$
++- **Eq. 2 (Penumbra/Divergence):**
++  $$ \frac{D_s + D_m}{x} = \frac{W_{p\_eff} - D_m}{L_m} $$
++
++#### 2. Isolating the Diameter Ratio
++
++To remove the unknowns $x$ (Sun-Moon distance) and $L_m$ (Moon-Surface distance), we divide Eq. 1 by Eq. 2:
++
++$$ \frac{(D_s - D_m) / x}{(D_s + D_m) / x} = \frac{(D_m - W_u) / L_m}{(W_{p\_eff} - D_m) / L_m} $$
++
++This simplifies to:
++$$ \frac{D_s - D_m}{D_s + D_m} = \frac{D_m - W_u}{W_{p\_eff} - D_m} $$
++
++#### 3. Solving for $D_s$
++
++Let $A = (D_m - W_u)$ and $B = (W_{p\_eff} - D_m)$. The equation becomes:
++
++$$ \frac{D_s - D_m}{D_s + D_m} = \frac{A}{B} $$
++
++Multiply across:
++$$ B(D_s - D_m) = A(D_s + D_m) $$
++$$ B D_s - B D_m = A D_s + A D_m $$
++
++Group the $D_s$ terms:
++$$ B D_s - A D_s = A D_m + B D_m $$
++$$ D_s(B - A) = D_m(A + B) $$
++$$ D_s = D_m \frac{A + B}{B - A} $$
++
++#### 4. Final Substitution
++
++Now, we substitute back the values for $A$ and $B$:
++- **$A + B$** $= (D_m - W_u) + (W_{p\_eff} - D_m) = \mathbf{W_{p\_eff} - W_u}$
++- **$B - A$** $= (W_{p\_eff} - D_m) - (D_m - W_u) = \mathbf{W_{p\_eff} + W_u - 2D_m}$
++
++Resulting in the master formula used in the audit:
++$$ D_s = D_m \cdot \frac{W_{p\_eff} - W_u}{W_{p\_eff} + W_u - 2D_m} $$
++
+ ---
+ 
+ ### Comparison Summary
+@@ -129,9 +178,10 @@
+ | Variable | Value Used | Source |
+ | --- | --- | --- |
+-| **** | 3,475 km | Observation |
+-| **** | 190 km | Observation |
+-| **** | 7,883.1 km | Calculated (Chord) |
+-| **Final ** | **23,807 km** | Calculated |
++| **$D_m$** | 3,475 km | Observation |
++| **$W_u$** | 190 km | Observation |
++| **$W_{p\_eff}$** | 7,883.1 km | Calculated (Chord) |
++| **Final $D_s$** | **23,807 km** | Calculated |
+ 
+ ---
+-
+-Would you like me to help you draft the final Indonesian version of this blog post, or would you prefer a JavaScript snippet to turn these formulas into an interactive calculator for your readers?
++*Apakah Anda ingin saya membantu menyusun versi Bahasa Indonesia untuk postingan blog ini, atau Anda lebih suka cuplikan JavaScript untuk mengubah rumus-rumus ini menjadi kalkulator interaktif bagi pembaca Anda?*
