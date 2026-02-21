@@ -4,20 +4,27 @@
   <title>Fastro</title>
   <link>https://fastro.dev</link>
   <description>Fastro blog and docs</description>
-  <lastBuildDate>Sun, 15 Feb 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Mon, 09 Feb 2026 00:00:00 GMT</lastBuildDate>
   <item>
-    <title>Building a High-Performance CMS with Fastro, Deno Deploy, and Deno KV</title>
-    <link>https://fastro.dev/posts/cms-en</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/cms-en</guid>
-    <pubDate>Sun, 15 Feb 2026 00:00:00 GMT</pubDate>
-    <description>How we built the Fastro CMS using only Deno, Fastro, and Markdown—powered by modern content management via Deno KV.</description>
+    <title>Understanding Cookie Middleware in Fastro</title>
+    <link>https://fastro.dev/posts/cookie</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/cookie</guid>
+    <pubDate>Mon, 09 Feb 2026 00:00:00 GMT</pubDate>
+    <description>How Fastro&apos;s cookie middleware works, usage patterns, and security best practices.</description>
   </item>
   <item>
-    <title>Fastro v1.0.0: High Performance by Design</title>
-    <link>https://fastro.dev/posts/v1.0.0</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/v1.0.0</guid>
-    <pubDate>Sun, 01 Feb 2026 00:00:00 GMT</pubDate>
-    <description>A deep dive into the architecture and performance features of the new Fastro v1.0.0 release, featuring intelligent LRU caching and lazy parsing.</description>
+    <title>Introducing Fastro Body Parser: Efficient Request Handling with 100% Coverage</title>
+    <link>https://fastro.dev/posts/bodyparser</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/bodyparser</guid>
+    <pubDate>Tue, 03 Feb 2026 00:00:00 GMT</pubDate>
+    <description>A deep dive into the official Fastro Body Parser middleware: streamlining JSON, Form Data, and raw byte processing with clinical precision.</description>
+  </item>
+  <item>
+    <title>Mastering Static Files: Middleware and 100% Test Coverage</title>
+    <link>https://fastro.dev/posts/static</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/static</guid>
+    <pubDate>Mon, 02 Feb 2026 00:00:00 GMT</pubDate>
+    <description>Exploring the new Fastro static middleware: featuring production-grade LRU caching, SPA fallback, and how we achieved 100% unit test coverage.</description>
   </item>
   <item>
     <title>Membangun CMS Performa Tinggi dengan Fastro, Deno Deploy, dan Deno KV</title>
@@ -27,6 +34,34 @@
     <description>Bagaimana kami membangun CMS Fastro hanya menggunakan Deno, Fastro, dan Markdown—dengan manajemen konten modern berbasis Deno KV.</description>
   </item>
   <item>
+    <title>Arsitektur CMS: Mengapa Database Mulai Terasa Seperti Beban Warisan?</title>
+    <link>https://fastro.dev/posts/comparison</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/comparison</guid>
+    <pubDate>Mon, 16 Feb 2026 00:00:00 GMT</pubDate>
+    <description>Bedah arsitektur antara monolithic database dan static binary generation, serta mengapa Git-based CMS menjadi pilihan modern yang paling efisien.</description>
+  </item>
+  <item>
+    <title>JWT Authentication Middleware in Fastro</title>
+    <link>https://fastro.dev/posts/jwt</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/jwt</guid>
+    <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
+    <description>Learn how to secure your Fastro applications using JSON Web Tokens (JWT) with zero external dependencies.</description>
+  </item>
+  <item>
+    <title>The Great Solar Audit: A Geometric Investigation of Distance and Dimensions</title>
+    <link>https://fastro.dev/posts/eclipse</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/eclipse</guid>
+    <pubDate>Wed, 18 Feb 2026 00:00:00 GMT</pubDate>
+    <description>A formal geometric audit and uncertainty analysis of solar distance using 2024 Besselian Elements and Maxwellian foundations.</description>
+  </item>
+  <item>
+    <title>Mengapa Cepat Saja Tidak Cukup? Analisis Benchmark Framework HTTP 2026</title>
+    <link>https://fastro.dev/posts/stddev</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/stddev</guid>
+    <pubDate>Thu, 12 Feb 2026 00:00:00 GMT</pubDate>
+    <description>Analisis mengapa stabilitas (stddev) sama pentingnya dengan throughput (RPS) dalam benchmark framework HTTP 2026.</description>
+  </item>
+  <item>
     <title>Fastro SaaS Ship Kit — Coming Soon!</title>
     <link>https://fastro.dev/posts/powerkit</link>
     <guid isPermaLink="true">https://fastro.dev/posts/powerkit</guid>
@@ -34,11 +69,67 @@
     <description>Premium boilerplate for launching SaaS on Fastro/Deno. Early Bird USD 69 for the first 20 buyers. Coming soon!</description>
   </item>
   <item>
-    <title>Arsitektur CMS: Mengapa Database Mulai Terasa Seperti Beban Warisan?</title>
-    <link>https://fastro.dev/posts/comparison</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/comparison</guid>
-    <pubDate>Mon, 16 Feb 2026 00:00:00 GMT</pubDate>
-    <description>Bedah arsitektur antara monolithic database dan static binary generation, serta mengapa Git-based CMS menjadi pilihan modern yang paling efisien.</description>
+    <title>How Maxwell Discovered the Constant for Light</title>
+    <link>https://fastro.dev/posts/maxwell</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/maxwell</guid>
+    <pubDate>Sun, 01 Feb 2026 00:00:00 GMT</pubDate>
+    <description>A look into how James Clerk Maxwell derived the speed of light from the fundamental constants of electricity and magnetism.</description>
+  </item>
+  <item>
+    <title>Benchmark Analysis: Fastro vs Native Deno</title>
+    <link>https://fastro.dev/posts/benchmark</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/benchmark</guid>
+    <pubDate>Wed, 11 Feb 2026 00:00:00 GMT</pubDate>
+    <description>A detailed analysis of the v1.0.0 performance benchmarks across multiple scenarios, from simple routing to JSON POST and middleware overhead.</description>
+  </item>
+  <item>
+    <title>Membangun Autentikasi Modern: Panduan Step-by-Step Vibe Coding dengan Fastro</title>
+    <link>https://fastro.dev/posts/vibe</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/vibe</guid>
+    <pubDate>Mon, 09 Feb 2026 00:00:00 GMT</pubDate>
+    <description>Panduan logis dan terstruktur dalam membangun sistem login/signup menggunakan JWT, Deno KV, dan 100% unit test coverage.</description>
+  </item>
+  <item>
+    <title>Project Structure: Organizing Your Fastro Application</title>
+    <link>https://fastro.dev/posts/structure</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/structure</guid>
+    <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
+    <description>Learn the recommended project layout for Fastro applications, from simple scripts to scalable multi-module architectures.</description>
+  </item>
+  <item>
+    <title>Fastro v1.0.0: High Performance by Design</title>
+    <link>https://fastro.dev/posts/v1.0.0</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/v1.0.0</guid>
+    <pubDate>Sun, 01 Feb 2026 00:00:00 GMT</pubDate>
+    <description>A deep dive into the architecture and performance features of the new Fastro v1.0.0 release, featuring intelligent LRU caching and lazy parsing.</description>
+  </item>
+  <item>
+    <title>Persistent Storage made Easy: Fastro + Deno KV</title>
+    <link>https://fastro.dev/posts/kv</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/kv</guid>
+    <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
+    <description>Learn how to use the official Deno KV middleware for Fastro to build persistent applications with zero configuration.</description>
+  </item>
+  <item>
+    <title>Understanding Fastro Modules: Manual vs. Automatic Loading</title>
+    <link>https://fastro.dev/posts/modules</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/modules</guid>
+    <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
+    <description>Master the architecture of Fastro by learning how to create, organize, and register modules for scalable applications.</description>
+  </item>
+  <item>
+    <title>Tailwind Middleware for Fastro</title>
+    <link>https://fastro.dev/posts/tailwind</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/tailwind</guid>
+    <pubDate>Tue, 10 Feb 2026 00:00:00 GMT</pubDate>
+    <description>On-the-fly Tailwind/PostCSS middleware for Fastro — usage, config, and deployment tips.</description>
+  </item>
+  <item>
+    <title>Building a High-Performance CMS with Fastro, Deno Deploy, and Deno KV</title>
+    <link>https://fastro.dev/posts/cms-en</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/cms-en</guid>
+    <pubDate>Sun, 15 Feb 2026 00:00:00 GMT</pubDate>
+    <description>How we built the Fastro CMS using only Deno, Fastro, and Markdown—powered by modern content management via Deno KV.</description>
   </item>
   <item>
     <title>Securing Your API with CORS Middleware</title>
@@ -53,90 +144,6 @@
     <guid isPermaLink="true">https://fastro.dev/posts/comparison-en</guid>
     <pubDate>Mon, 16 Feb 2026 00:00:00 GMT</pubDate>
     <description>An architectural breakdown between monolithic databases and static binary generation, and why Git-based CMS has become the most efficient modern choice.</description>
-  </item>
-  <item>
-    <title>Mengapa Cepat Saja Tidak Cukup? Analisis Benchmark Framework HTTP 2026</title>
-    <link>https://fastro.dev/posts/stddev</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/stddev</guid>
-    <pubDate>Thu, 12 Feb 2026 00:00:00 GMT</pubDate>
-    <description>Analisis mengapa stabilitas (stddev) sama pentingnya dengan throughput (RPS) dalam benchmark framework HTTP 2026.</description>
-  </item>
-  <item>
-    <title>JWT Authentication Middleware in Fastro</title>
-    <link>https://fastro.dev/posts/jwt</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/jwt</guid>
-    <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
-    <description>Learn how to secure your Fastro applications using JSON Web Tokens (JWT) with zero external dependencies.</description>
-  </item>
-  <item>
-    <title>Tailwind Middleware for Fastro</title>
-    <link>https://fastro.dev/posts/tailwind</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/tailwind</guid>
-    <pubDate>Tue, 10 Feb 2026 00:00:00 GMT</pubDate>
-    <description>On-the-fly Tailwind/PostCSS middleware for Fastro — usage, config, and deployment tips.</description>
-  </item>
-  <item>
-    <title>Introducing Fastro Body Parser: Efficient Request Handling with 100% Coverage</title>
-    <link>https://fastro.dev/posts/bodyparser</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/bodyparser</guid>
-    <pubDate>Tue, 03 Feb 2026 00:00:00 GMT</pubDate>
-    <description>A deep dive into the official Fastro Body Parser middleware: streamlining JSON, Form Data, and raw byte processing with clinical precision.</description>
-  </item>
-  <item>
-    <title>Benchmark Analysis: Fastro vs Native Deno</title>
-    <link>https://fastro.dev/posts/benchmark</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/benchmark</guid>
-    <pubDate>Wed, 11 Feb 2026 00:00:00 GMT</pubDate>
-    <description>A detailed analysis of the v1.0.0 performance benchmarks across multiple scenarios, from simple routing to JSON POST and middleware overhead.</description>
-  </item>
-  <item>
-    <title>Persistent Storage made Easy: Fastro + Deno KV</title>
-    <link>https://fastro.dev/posts/kv</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/kv</guid>
-    <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
-    <description>Learn how to use the official Deno KV middleware for Fastro to build persistent applications with zero configuration.</description>
-  </item>
-  <item>
-    <title>Membangun Autentikasi Modern: Panduan Step-by-Step Vibe Coding dengan Fastro</title>
-    <link>https://fastro.dev/posts/vibe</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/vibe</guid>
-    <pubDate>Mon, 09 Feb 2026 00:00:00 GMT</pubDate>
-    <description>Panduan logis dan terstruktur dalam membangun sistem login/signup menggunakan JWT, Deno KV, dan 100% unit test coverage.</description>
-  </item>
-  <item>
-    <title>How Maxwell Discovered the Constant for Light</title>
-    <link>https://fastro.dev/posts/maxwell</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/maxwell</guid>
-    <pubDate>Sun, 01 Feb 2026 00:00:00 GMT</pubDate>
-    <description>A look into how James Clerk Maxwell derived the speed of light from the fundamental constants of electricity and magnetism.</description>
-  </item>
-  <item>
-    <title>Mastering Static Files: Middleware and 100% Test Coverage</title>
-    <link>https://fastro.dev/posts/static</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/static</guid>
-    <pubDate>Mon, 02 Feb 2026 00:00:00 GMT</pubDate>
-    <description>Exploring the new Fastro static middleware: featuring production-grade LRU caching, SPA fallback, and how we achieved 100% unit test coverage.</description>
-  </item>
-  <item>
-    <title>Project Structure: Organizing Your Fastro Application</title>
-    <link>https://fastro.dev/posts/structure</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/structure</guid>
-    <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
-    <description>Learn the recommended project layout for Fastro applications, from simple scripts to scalable multi-module architectures.</description>
-  </item>
-  <item>
-    <title>Understanding Cookie Middleware in Fastro</title>
-    <link>https://fastro.dev/posts/cookie</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/cookie</guid>
-    <pubDate>Mon, 09 Feb 2026 00:00:00 GMT</pubDate>
-    <description>How Fastro&apos;s cookie middleware works, usage patterns, and security best practices.</description>
-  </item>
-  <item>
-    <title>Understanding Fastro Modules: Manual vs. Automatic Loading</title>
-    <link>https://fastro.dev/posts/modules</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/modules</guid>
-    <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
-    <description>Master the architecture of Fastro by learning how to create, organize, and register modules for scalable applications.</description>
   </item>
   <item>
     <title>Understanding the Render Middleware (SSR &amp; HMR)</title>
