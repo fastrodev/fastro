@@ -525,11 +525,11 @@ export async function renderMD_Content(
       });
     </script>
     ${
-    path === "DOCS.md"
+    isMD
       ? `
     <button id="scroll-to-top" 
       class="fixed bottom-6 right-6 p-3 rounded-full bg-fg-default text-canvas-default shadow-lg opacity-0 translate-y-10 pointer-events-none transition-all duration-300 z-[110] hover:scale-110 active:scale-95 cursor-pointer"
-      aria-label="Scroll to top">
+      aria-label="Back to top">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
       </svg>
@@ -539,7 +539,8 @@ export async function renderMD_Content(
         const scrollBtn = document.getElementById('scroll-to-top');
         if (scrollBtn) {
           window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
+            const isNearBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 150;
+            if (window.scrollY > 400 || isNearBottom) {
               scrollBtn.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
               scrollBtn.classList.add('opacity-100', 'translate-y-0');
             } else {
