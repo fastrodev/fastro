@@ -20,6 +20,13 @@ type PostMeta = {
   url: string;
 };
 
+function normalizeDate(d?: string) {
+  if (!d) return undefined;
+  const dt = new Date(d);
+  if (Number.isNaN(dt.getTime())) return undefined;
+  return dt.toISOString();
+}
+
 function parseFrontmatter(text: string) {
   const fmMatch = text.match(/^---\s*([\s\S]*?)\s*---/);
   if (!fmMatch) return {} as Record<string, string>;
@@ -45,7 +52,7 @@ async function collectPosts(
       const text = await Deno.readTextFile(path);
       const fm = parseFrontmatter(text);
       const description = fm.description || extractFirstParagraph(text) || "";
-      const date = fm.date || undefined;
+      const date = normalizeDate(fm.date);
       const url = `${baseUrl.replace(/\/$/, "")}/posts/${slug}`;
       posts.push({ slug, title: fm.title || slug, date, description, url });
     }
