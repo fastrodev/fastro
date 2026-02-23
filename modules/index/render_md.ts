@@ -433,35 +433,7 @@ export async function renderMD_Content(
         </div>
       </div>
     </footer>
-    ${
-    isMD
-      ? `
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
-      onload="
-        const mdBody = document.querySelector('.markdown-body') || document.querySelector('.blog-post-content');
-        if (mdBody) {
-          renderMathInElement(mdBody, {
-            delimiters: [
-              {left: '$$', right: '$$', display: true},
-              {left: '$', right: '$', display: false},
-            ],
-            ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            ignoredClasses: ['katex-ignore', 'prism-code', 'language-typescript', 'language-bash', 'language-json', 'language-javascript', 'language-js', 'token'],
-            throwOnError : false
-          });
-          mdBody.querySelectorAll('pre > code.language-math').forEach(el => {
-            const math = el.textContent;
-            const div = document.createElement('div');
-            div.className = 'my-6 overflow-x-auto';
-            katex.render(math, div, { displayMode: true, throwOnError: false });
-            el.parentElement.replaceWith(div);
-          });
-        }
-      "></script>`
-      : ""
-  }
+    
     <script>
       const menuToggle = document.getElementById('menu-toggle');
       const navLinks = document.getElementById('nav-links');

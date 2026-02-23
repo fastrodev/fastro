@@ -5,7 +5,7 @@ import {
   renderMD,
   renderStatic,
 } from "./render.ts";
-import { registerCodeRoutes } from "./code.ts";
+import { registerCodeRoutes, serveFolder } from "./code.ts";
 import { createRouter } from "../../core/router.ts";
 import { kvMiddleware } from "../../middlewares/kv/mod.ts";
 
@@ -111,5 +111,9 @@ r.get(
   (req, ctx) => renderCode("LICENSE", ctx.kv, getCanonical(req)),
   kvMiddleware,
 );
+
+// register folder handlers
+r.get("/core/*", serveFolder("core"));
+r.get("/build/*", serveFolder("build"));
 
 export default r.build();
