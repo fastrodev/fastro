@@ -5,32 +5,26 @@
 [![build](https://github.com/fastrodev/fastro/actions/workflows/build.yml/badge.svg)](https://github.com/fastrodev/fastro/actions/workflows/build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/fastrodev/fastro/badge.svg?branch=main)](https://coveralls.io/github/fastrodev/fastro?branch=main)
 
-Fastro combines **extreme performance** with an **elegant API**. Built for high-throughput services without the boilerplate.
+Fastro is a high-performance, zero-dependency web framework for Deno. It’s built for developers who care about **speed**, **type-safety**, and **clean code**.
 
-- **Blazing Fast**: Reaches near-native Deno speeds ([Benchmarks](BENCHMARK.md)).
+- **Blazing Fast**: Reaches near-native Deno speeds [(Benchmarks)](BENCHMARK.md).
 - **Zero Dependency Core**: Minimalist engine with no external dependencies.
 - **Zero Friction**: Return JSON, strings, or Responses directly.
 - **Built to Scale**: Automatic [module loading](DOCS.md#automatic-module-loading).
 - **Rock Solid**: 100% core test coverage.
 
-## Quick Start
-
-Build a high-performance API in seconds with zero boilerplate.
+### Start in seconds
 
 ```ts
-import Fastro from "https://deno.land/x/fastro/mod.ts";
+import Fastro from "https://fastro.deno.dev/core/mod.ts";
 const app = new Fastro();
-
 app.get("/user/:id", (req, ctx) => {
   return { id: ctx.params.id, status: "active" };
 });
-
 await app.serve({ port: 8000 });
 ```
 
-## Resources
-
-Explore our comprehensive documentation, benchmarks, and community ecosystem.
+### Resources
 
 - [**Docs**](DOCS.md) – Comprehensive guide and API reference.
 - [**Showcase**](SHOWCASE.md) – Real-world examples built with Fastro.
