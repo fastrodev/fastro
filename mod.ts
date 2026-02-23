@@ -30,15 +30,15 @@ export default class Fastro {
   serve = server.serve;
 }
 
-import { autoRegisterModules } from "./core/loader.ts";
-import { createRouter } from "./core/router.ts";
+// import { autoRegisterModules } from "./core/loader.ts";
+// import { createRouter } from "./core/router.ts";
 
 /**
  * Automatically registers modules from a directory.
  */
-export { autoRegisterModules };
+// export { autoRegisterModules };
 
 /**
  * Creates a new router instance for modular routing.
  */
-export { createRouter };
+// export { createRouter };
