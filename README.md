@@ -7,10 +7,10 @@
 
 Fastro is a high-performance, zero-dependency web framework for Deno. It’s built for developers who care about **speed**, **type-safety**, and **clean code**.
 
-- **Blazing Fast**: Reaches near-native Deno speeds [(Benchmarks)](BENCHMARK.md).
+- **Blazing Fast**: Reaches near-native Deno speeds [(Benchmarks)](/BENCHMARK.md).
 - **Zero Dependency Core**: Minimalist engine with no external dependencies.
 - **Zero Friction**: Return JSON, strings, or Responses directly.
-- **Built to Scale**: Automatic [module loading](DOCS.md#automatic-module-loading).
+- **Built to Scale**: Automatic [module loading](/DOCS.md#automatic-module-loading).
 - **Rock Solid**: 100% core test coverage.
 
 ### Start in seconds
