@@ -14,39 +14,18 @@ export function App(props: Props) {
 
   return (
     <Page title={undefined} hideHeader hideFooter fullWidth>
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-          @keyframes blob {
-            0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0px, 0px) scale(1); }
-          }
-          .animate-blob { animation: blob 7s infinite; }
-          .animation-delay-2000 { animation-delay: 2s; }
-          .animation-delay-4000 { animation-delay: 4s; }
-        `,
-        }}
-      />
-      <div className="relative flex-1 flex flex-col items-center justify-center py-12 px-4 overflow-hidden">
-        {/* Artistic Background Blobs */}
-        <div className="absolute top-1/4 -right-20 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl animate-blob">
-        </div>
-        <div className="absolute bottom-1/4 -left-20 w-80 h-80 bg-emerald-500/20 rounded-full blur-3xl animate-blob animation-delay-2000">
-        </div>
-
+      <div className="relative flex-1 flex flex-col items-center justify-center py-12 px-4 overflow-hidden bg-canvas-default text-fg-default">
         <div className="w-full max-w-md relative z-10 transition-all duration-500">
           <div className="text-center mb-10">
-            <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-3">
+            <h1 className="text-4xl font-extrabold tracking-tight text-fg-default mb-3">
               Join Fastro
             </h1>
-            <p className="text-gray-500 dark:text-gray-400">
+            <p className="text-fg-muted">
               Create your account to start managing content.
             </p>
           </div>
 
-          <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200 dark:border-gray-800 shadow-2xl rounded-3xl p-8 sm:p-10">
+          <div className="bg-canvas-default/90 dark:bg-canvas-subtle/10 backdrop-blur-xl border border-border-default dark:border-border-subtle shadow-2xl rounded-2xl p-8 sm:p-10">
             {error && (
               <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 mb-8 flex items-center gap-3">
                 <svg
@@ -60,7 +39,7 @@ export function App(props: Props) {
                     clipRule="evenodd"
                   />
                 </svg>
-                <p className="text-sm text-red-600 dark:text-red-400 font-medium">
+                <p className="text-sm text-red-600 font-medium">
                   {error}
                 </p>
               </div>
@@ -84,15 +63,15 @@ export function App(props: Props) {
                       />
                     </svg>
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  <h2 className="text-2xl font-bold text-fg-default mb-2">
                     Welcome aboard!
                   </h2>
-                  <p className="text-gray-500 dark:text-gray-400 mb-8">
+                  <p className="text-fg-muted mb-8">
                     Your account has been created successfully.
                   </p>
                   <a
                     href="/signin"
-                    className="inline-flex items-center justify-center px-8 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl shadow-lg shadow-indigo-500/20 transition-all active:scale-[0.98]"
+                    className="inline-flex items-center justify-center px-8 py-3 bg-accent-fg hover:opacity-95 text-canvas-default font-bold rounded-2xl shadow-lg shadow-accent-fg/20 transition-all active:scale-[0.98]"
                   >
                     Go to Sign in
                   </a>
@@ -106,25 +85,25 @@ export function App(props: Props) {
                   onSubmit={() => setLoading(true)}
                 >
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 ml-1">
+                    <label className="block text-sm font-semibold text-fg-default mb-2 ml-1">
                       Email or Phone
                     </label>
                     <input
                       name="identifier"
                       required
-                      className="block w-full px-5 py-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white dark:focus:bg-gray-800 transition-all outline-none text-gray-900 dark:text-white"
+                      className="block w-full px-5 py-3 bg-canvas-subtle border border-border-default rounded-2xl focus:outline-none focus:border-accent-fg/30 focus:ring-4 focus:ring-accent-fg/5 transition-all text-fg-default placeholder:text-fg-muted text-sm shadow-sm"
                       placeholder="Enter details"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 ml-1">
+                    <label className="block text-sm font-semibold text-fg-default mb-2 ml-1">
                       Create Password
                     </label>
                     <input
                       name="password"
                       type="password"
                       required
-                      className="block w-full px-5 py-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white dark:focus:bg-gray-800 transition-all outline-none text-gray-900 dark:text-white"
+                      className="block w-full px-5 py-3 bg-canvas-subtle border border-border-default rounded-2xl focus:outline-none focus:border-accent-fg/30 focus:ring-4 focus:ring-accent-fg/5 transition-all text-fg-default placeholder:text-fg-muted text-sm shadow-sm"
                       placeholder="••••••••"
                     />
                   </div>
@@ -132,7 +111,7 @@ export function App(props: Props) {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="group relative w-full flex items-center justify-center px-6 py-4 bg-indigo-600 hover:bg-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white font-bold rounded-2xl shadow-lg shadow-indigo-500/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="group relative w-full flex items-center justify-center px-6 py-4 bg-accent-fg hover:opacity-95 text-canvas-default font-bold rounded-2xl shadow-lg shadow-accent-fg/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? <Spinner className="h-5 w-5" /> : (
                       <>
@@ -154,12 +133,12 @@ export function App(props: Props) {
                     )}
                   </button>
 
-                  <div className="pt-8 text-center border-t border-gray-100 dark:border-gray-800">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <div className="pt-8 text-center border-t border-border-subtle">
+                    <p className="text-sm text-fg-muted">
                       Already have an account?{" "}
                       <a
                         href="/signin"
-                        className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline"
+                        className="text-accent-fg font-bold hover:underline"
                       >
                         Sign in
                       </a>
@@ -173,7 +152,7 @@ export function App(props: Props) {
           <div className="mt-8 text-center">
             <a
               href="/blog"
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition-all active:scale-95"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-fg-muted hover:text-fg-default transition-all active:scale-95"
             >
               <svg
                 className="w-4 h-4"

@@ -642,21 +642,29 @@ a:hover {
 }
 
 .markdown-body table {
-  display: block;
+  display: table;
   width: 100%;
   max-width: 100%;
-  overflow: auto;
   -webkit-overflow-scrolling: touch;
-  /* keep table intrinsic layout so columns can scroll horizontally on small screens */
+  /* allow horizontal scrolling on overflow via the container, keep natural table layout */
   white-space: nowrap;
+  border-collapse: collapse;
+  table-layout: auto;
 }
 
 /* Make table cells have a minimum width so tables become horizontally scrollable on small screens */
 .markdown-body table th,
 .markdown-body table td {
-  min-width: 140px;
+  min-width: 120px;
   /* allow cell contents to wrap if needed (overrides table nowrap) */
   white-space: normal;
+}
+
+/* Make the first column (e.g. row numbers) narrow and fixed so tables look proportional */
+.markdown-body table th:first-child,
+.markdown-body table td:first-child {
+  min-width: 60px;
+  width: 60px;
 }
 
 @media (max-width: 640px) {

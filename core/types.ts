@@ -1,76 +1,139 @@
-import React from "npm:react@^19.2.4";
+/**
+ * Local, minimal React typings to avoid importing the full React definitions
+ * while still being type-compatible for our render helpers.
+ *
+ * These types intentionally mirror the public shapes from @types/react so
+ * callers that expect `ReactElement`, `ReactNode`, etc. will continue to
+ * type-check without requiring the React package at compile time.
+ */
+
+// deno-lint-ignore-file no-explicit-any
+/**
+ * A React element describes a tree node produced by JSX or `React.createElement`.
+ *
+ * @typeParam P - Props object for the element.
+ * @typeParam T - Element type (string for intrinsic elements or a component constructor).
+ */
+export interface ReactElement<
+  P = unknown,
+  T extends string | JSXElementConstructor<any> =
+    | string
+    | JSXElementConstructor<any>,
+> {
+  type: T;
+  props: P;
+  key: string | null;
+}
 
 /**
- * Options for rendering a React component to a string.
+ * A React portal represents a sub-tree that is rendered into a DOM node
+ * outside the main DOM hierarchy (used in React's `ReactNode` union).
+ */
+export interface ReactPortal extends ReactElement {
+  /** The children contained in the portal. */
+  children: ReactNode;
+}
+
+/**
+ * Values that React can render. This is a reduced-compatible version of the
+ * `ReactNode` union from DefinitelyTyped and includes primitives, elements,
+ * portals and iterables of nodes.
+ */
+export type ReactNode =
+  | ReactElement
+  | ReactPortal
+  | string
+  | number
+  | bigint
+  | Iterable<ReactNode>
+  | boolean
+  | null
+  | undefined;
+
+/**
+ * A constructor or function that can produce a `ReactNode` given props.
+ *
+ * Function components return `ReactNode | null`. Class components are
+ * represented here as constructors that accept props and produce an
+ * instance (we keep the instance type `any` to remain flexible).
+ */
+type JSXElementConstructor<P = any> =
+  | ((props: P) => ReactNode | null)
+  | (new (props: P) => any);
+
+/**
+ * Options controlling low-level render-to-string behaviour.
  */
 export type RenderToStringOptions = {
-  /** Prefix for generated IDs */
+  /** Prefix applied to any auto-generated IDs during render. */
   identifierPrefix?: string;
-  /** Signal to abort the rendering process */
+  /** Optional AbortSignal to cancel rendering early. */
   signal?: AbortSignal;
-  /** Provider for nonce strings to be used in script tags */
+  /** Provider used to generate a nonce for inline scripts (if needed). */
   nonceProvider?: () => string;
-  /** Callback for error handling during rendering */
+  /** Optional callback invoked when an internal render error occurs. */
   onError?: (error: unknown) => void;
 };
 
 /**
- * Enhanced options for rendering, including page metadata and component props.
+ * Higher-level render options including page metadata and initial props.
+ * Combines with `RenderToStringOptions` for low-level control.
  */
 export type RenderOptions = {
-  /** The entry point module for the application */
+  /** Module path for the root/app component that is being rendered. */
   module?: string;
-  /** Whether to include the <!DOCTYPE html> declaration */
+  /** Include the `<!DOCTYPE html>` prefix in the output. */
   includeDoctype?: boolean;
-  /** Whether to include the <head> element */
+  /** Whether to render a `<head>` section. */
   includeHead?: boolean;
-  /** Custom HTML content to be inserted into the <head> */
+  /** Arbitrary HTML inserted into the document `<head>`. */
   head?: string;
-  /** Page title */
+  /** Page title to insert into the rendered HTML. */
   title?: string;
-  /** Initial props to be passed to the React component */
+  /** Initial props passed to the top-level component at render time. */
   initialProps?: Record<string, unknown>;
 } & RenderToStringOptions;
 
 /**
- * Function type for rendering a React component.
+ * Synchronous render function that accepts a `ReactElement` and options,
+ * and returns the rendered HTML string.
  */
 export type RenderFunction = (
-  component: React.ReactElement,
+  component: ReactElement,
   options?: RenderOptions,
 ) => string;
-// Keep a single canonical render-to-string function type. We no longer
-// expose a separate `render` that returns a Response — callers should use
-// `renderToString` and wrap the result in a `Response` when needed.
+/**
+ * Canonical render-to-string function signature used throughout the app.
+ * Returns the HTML markup for the provided element.
+ */
 export type RenderToStringFunction = (
-  component: React.ReactElement,
+  component: ReactElement,
   options?: RenderOptions,
 ) => string;
 
 /**
- * Options for setting a cookie.
+ * Options passed to helpers that set cookies on responses.
  */
 export type CookieOptions = {
-  /** Path scope of the cookie */
+  /** Path attribute scope of the cookie. */
   path?: string;
-  /** Domain scope of the cookie */
+  /** Domain attribute scope of the cookie. */
   domain?: string;
-  /** Maximum age of the cookie in seconds */
+  /** Max-Age in seconds. */
   maxAge?: number;
-  /** Expiration date of the cookie */
+  /** Absolute expiration date. */
   expires?: Date;
-  /** Whether the cookie should only be sent over HTTPS */
+  /** Restrict cookie to secure (HTTPS) transport. */
   secure?: boolean;
-  /** Whether the cookie is inaccessible to client-side scripts */
+  /** Mark cookie inaccessible to JavaScript. */
   httpOnly?: boolean;
-  /** SameSite attribute for CSRF protection */
+  /** SameSite policy to mitigate CSRF. */
   sameSite?: "Lax" | "Strict" | "None";
 };
 
 /**
- * The execution context for a request.
- * Contains request parameters, query data, and utility functions like cookies or rendering.
- * You can also attach custom data to this object to pass information between middlewares.
+ * The request context passed to handlers and middlewares. Contains route
+ * parameters, query data, utilities and per-request state.
  */
 export type Context = {
   /** Parsed URL parameters (e.g., /users/:id -> { id: "123" }) */
@@ -96,18 +159,16 @@ export type Context = {
   /** Deno KV instance, if the KV middleware is used */
   kv?: Deno.Kv;
   /** General purpose state object for middlewares */
-  // deno-lint-ignore no-explicit-any
   state?: any;
   /** Dynamic properties for middleware data passing */
-  // deno-lint-ignore no-explicit-any
   [key: string]: any;
 };
 
 /**
- * A function that handles a specific route.
- * Handlers can return a standard `Response`, a raw `string` (which will be
- * converted to a text/plain response), an object (which will be converted
- * to a JSON response), or a Promise of either.
+ * A route handler receives the `Request`, the parsed `Context`, and an
+ * optional `next` function. It may return a `Response`, a string (which
+ * will be wrapped as `text/plain`), a JSON-serializable object, or a
+ * Promise resolving to one of those values.
  */
 export type Handler = (
   req: Request,
@@ -122,14 +183,15 @@ export type Handler = (
   | Promise<Record<string, unknown>>;
 
 /**
- * A function to continue execution to the next item in the middleware chain.
+ * Function used by middlewares/handlers to continue execution to the next
+ * item in the middleware chain. Returns a `Response` (or a Promise of one).
  */
 export type Next = () => Response | Promise<Response>;
 
 /**
- * A function that intercepts a request before it reaches the handler.
- * Middlewares must call `next()` to continue the chain, or return a
- * `Response` to terminate it early.
+ * Middleware intercepts a request before it reaches the handler. It must
+ * either return a `Response` to short-circuit the chain or call `next()`
+ * to pass control onward.
  */
 export type Middleware = (
   req: Request,
@@ -138,23 +200,24 @@ export type Middleware = (
 ) => Response | Promise<Response>;
 
 /**
- * Defines a route's structure and behavior.
+ * Describes a registered route and its behaviour.
  */
 export interface Route {
   /** HTTP method (GET, POST, etc.) */
   method: string;
-  /** URL pattern for matching */
+  /** URL pattern used for matching incoming requests. */
   pattern: URLPattern;
-  /** Route handler function */
+  /** The handler invoked when the pattern matches. */
   handler: Handler;
-  /** Names of URL parameters extracted from the pattern */
+  /** Ordered list of named URL parameters extracted from the pattern. */
   paramNames: string[];
-  /** Route-specific middlewares */
+  /** Per-route middleware stack executed before the handler. */
   middlewares: Middleware[];
 }
 
 /**
- * Interface for a router that can register routes.
+ * Router interface for registering HTTP routes. Each method registers a
+ * handler for the given path and optional per-route middlewares.
  */
 export interface Router {
   get(path: string, handler: Handler, ...middlewares: Middleware[]): unknown;

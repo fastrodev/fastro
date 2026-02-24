@@ -18,7 +18,7 @@ export default function Page(
   return (
     <div
       style={{ fontFamily: "system-ui, sans-serif" }}
-      className="min-h-screen flex flex-col w-full bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-200"
+      className="min-h-screen flex flex-col w-full bg-canvas-default text-fg-default transition-colors duration-200"
     >
       {!hideHeader
         ? (user ? <Header user={user} /> : <Header user={undefined} />)
@@ -79,7 +79,7 @@ export default function Page(
       >
         {title
           ? (
-            <h1 className="text-xl sm:text-2xl font-bold leading-tight mt-0 mb-6 text-gray-900 dark:text-gray-100">
+            <h1 className="text-xl sm:text-2xl font-bold leading-tight mt-0 mb-6 text-fg-default">
               {title}
             </h1>
           )
