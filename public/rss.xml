@@ -42,6 +42,13 @@
     <description>Bedah arsitektur antara monolithic database dan static binary generation, serta mengapa Git-based CMS menjadi pilihan modern yang paling efisien.</description>
   </item>
   <item>
+    <title>Konsep Aplikasi Loyalti Sederhana untuk Pedagang Sembako &amp; Gas</title>
+    <link>https://fastro.dev/posts/loyalti</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/loyalti</guid>
+    <pubDate>Wed, 25 Feb 2026 00:00:00 GMT</pubDate>
+    <description>Desain dan alur kerja sistem loyalti: setiap item (termasuk Gas LPG) punya konfigurasi sendiri untuk hadiah gratis setelah sejumlah pembelian.</description>
+  </item>
+  <item>
     <title>JWT Authentication Middleware in Fastro</title>
     <link>https://fastro.dev/posts/jwt</link>
     <guid isPermaLink="true">https://fastro.dev/posts/jwt</guid>

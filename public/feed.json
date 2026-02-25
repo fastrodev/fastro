@@ -47,6 +47,15 @@
       "image": "https://storage.googleapis.com/replix-394315-file/uploads/comparison.jpg"
     },
     {
+      "id": "https://fastro.dev/posts/loyalti",
+      "url": "https://fastro.dev/posts/loyalti",
+      "title": "Konsep Aplikasi Loyalti Sederhana untuk Pedagang Sembako & Gas",
+      "content_text": "Desain dan alur kerja sistem loyalti: setiap item (termasuk Gas LPG) punya konfigurasi sendiri untuk hadiah gratis setelah sejumlah pembelian.",
+      "date_published": "2026-02-25T00:00:00.000Z",
+      "content_html": "<p>Desain dan alur kerja sistem loyalti: setiap item (termasuk Gas LPG) punya konfigurasi sendiri untuk hadiah gratis setelah sejumlah pembelian.</p>",
+      "image": "https://storage.googleapis.com/replix-394315-file/uploads/loyalti.jpg"
+    },
+    {
       "id": "https://fastro.dev/posts/jwt",
       "url": "https://fastro.dev/posts/jwt",
       "title": "JWT Authentication Middleware in Fastro",
