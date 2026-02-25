@@ -84,8 +84,8 @@ jobs:
           entrypoint: app/main.ts
           import-map: deno.json
 
-      - name: Coveralls
-        uses: coverallsapp/github-action@v2
-        with:
-          path-to-lcov: ./coverage.lcov
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Coveralls
+      #   uses: coverallsapp/github-action@v2
+      #   with:
+      #     path-to-lcov: ./coverage.lcov
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
