@@ -57,12 +57,6 @@ jobs:
       - name: Generate report
         run: deno task cov
 
-      - name: Coveralls
-        uses: coverallsapp/github-action@v2
-        with:
-          path-to-lcov: ./coverage.lcov
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Run Build
         run: |
           GITHUB_CLIENT_ID=${{ vars.GH_CLIENT_ID }} GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} deno task build && deno run -A build/build.ts
@@ -89,3 +83,9 @@ jobs:
           project: fastro
           entrypoint: app/main.ts
           import-map: deno.json
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          path-to-lcov: ./coverage.lcov
+          github-token: ${{ secrets.GITHUB_TOKEN }}
