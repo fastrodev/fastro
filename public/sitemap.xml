@@ -81,6 +81,16 @@
     </image:image>
   </url>
   <url>
+    <loc>https://fastro.dev/posts/v1.0.0</loc>
+    <lastmod>2026-02-25T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/v1.0.0" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/v1.0.0" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/v1.0.0" />
+    <image:image>
+      <image:loc>https://repository-images.githubusercontent.com/264308713/1b83bd0f-b9d9-466d-9e63-f947c1a67281</image:loc>
+    </image:image>
+  </url>
+  <url>
     <loc>https://fastro.dev/posts/stability-benchmark</loc>
     <lastmod>2026-02-21T00:00:00.000Z</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/stability-benchmark" />
@@ -256,12 +266,5 @@
     <image:image>
       <image:loc>"https://storage.googleapis.com/replix-394315-file/uploads/maxwell.jpg'</image:loc>
     </image:image>
-  </url>
-  <url>
-    <loc>https://fastro.dev/posts/v1.0.0</loc>
-    <lastmod>2026-02-01T00:00:00.000Z</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/v1.0.0" />
-    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/v1.0.0" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/v1.0.0" />
   </url>
 </urlset>

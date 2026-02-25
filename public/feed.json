@@ -129,8 +129,9 @@
       "url": "https://fastro.dev/posts/v1.0.0",
       "title": "Fastro v1.0.0: High Performance by Design",
       "content_text": "A deep dive into the architecture and performance features of the new Fastro v1.0.0 release, featuring intelligent LRU caching and lazy parsing.",
-      "date_published": "2026-02-01T00:00:00.000Z",
-      "content_html": "<p>A deep dive into the architecture and performance features of the new Fastro v1.0.0 release, featuring intelligent LRU caching and lazy parsing.</p>"
+      "date_published": "2026-02-25T00:00:00.000Z",
+      "content_html": "<p>A deep dive into the architecture and performance features of the new Fastro v1.0.0 release, featuring intelligent LRU caching and lazy parsing.</p>",
+      "image": "https://repository-images.githubusercontent.com/264308713/1b83bd0f-b9d9-466d-9e63-f947c1a67281"
     },
     {
       "id": "https://fastro.dev/posts/kv",

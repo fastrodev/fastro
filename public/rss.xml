@@ -108,7 +108,7 @@
     <title>Fastro v1.0.0: High Performance by Design</title>
     <link>https://fastro.dev/posts/v1.0.0</link>
     <guid isPermaLink="true">https://fastro.dev/posts/v1.0.0</guid>
-    <pubDate>Sun, 01 Feb 2026 00:00:00 GMT</pubDate>
+    <pubDate>Wed, 25 Feb 2026 00:00:00 GMT</pubDate>
     <description>A deep dive into the architecture and performance features of the new Fastro v1.0.0 release, featuring intelligent LRU caching and lazy parsing.</description>
   </item>
   <item>
