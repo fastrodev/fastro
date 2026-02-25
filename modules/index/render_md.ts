@@ -361,9 +361,7 @@ export async function renderMD_Content(
       </div>
     </header>
     <main class="max-w-[720px] mx-auto p-6 md:py-6 md:px-8 flex-1 w-full box-border text-[var(--color-fg-default)]">
-      <div class="markdown-body ${
-    isBlogPost ? "blog-post-content" : ""
-  }" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">${
+        <div class="markdown-body blog-post-content" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">${
     title
       ? `<h1 class="${
         isBlogPost
@@ -414,7 +412,7 @@ export async function renderMD_Content(
   }${body}</div>
     </main>
     <footer class="mt-auto border-t border-border-subtle">
-      <div class="max-w-[720px] mx-auto px-6 md:px-8 py-8 text-[0.85rem] md:text-sm text-fg-muted">
+      <div class="max-w-180 mx-auto px-6 md:px-8 py-6 text-[0.85rem] md:text-sm text-fg-muted">
         <div class="flex flex-row justify-between items-center opacity-60">
           <span class="whitespace-nowrap">Made by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-fg-default transition-colors">Fastrodev</a></span>  
           <div class="flex items-center gap-4 md:gap-6">
@@ -500,7 +498,7 @@ export async function renderMD_Content(
     isMD
       ? `
     <button id="scroll-to-top" 
-      class="fixed bottom-6 right-6 p-3 rounded-full bg-fg-default text-canvas-default shadow-lg opacity-0 translate-y-10 pointer-events-none transition-all duration-300 z-[110] hover:scale-110 active:scale-95 cursor-pointer"
+      class="fixed bottom-3 right-6 p-3 rounded-full bg-fg-default text-canvas-default shadow-lg opacity-0 translate-y-10 pointer-events-none transition-all duration-300 z-[110] hover:scale-110 active:scale-95 cursor-pointer"
       aria-label="Back to top">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
