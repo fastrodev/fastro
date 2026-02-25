@@ -205,19 +205,19 @@ export function App(
 
   return (
     <Page user={user} title="Dashboard">
-      <div className="mb-6 p-5 sm:p-6 rounded-xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="mb-6 p-5 sm:p-6 rounded-xl bg-canvas-subtle/50 backdrop-blur-md border border-border-default shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+          <p className="text-xs sm:text-sm font-medium text-fg-muted uppercase tracking-wider">
             Welcome back
           </p>
-          <h2 className="mt-2 text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-gray-900 dark:text-white leading-[1.1]">
+          <h2 className="mt-2 text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-fg-default leading-[1.1]">
             <span className="block xs:inline mr-2">Hello,</span>
             <span className="bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent wrap-break-word">
               {name || user}
             </span>
           </h2>
-          <div className="mt-4 pt-4 border-t border-gray-100/50 dark:border-gray-800/50">
-            <p className="text-sm text-gray-600 dark:text-gray-400 flex flex-col xs:flex-row xs:items-center gap-1">
+          <div className="mt-4 pt-4 border-t border-border-subtle/50">
+            <p className="text-sm text-fg-muted flex flex-col xs:flex-row xs:items-center gap-1">
               <span className="shrink-0">Your public profile:</span>
               <a
                 className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium truncate"
@@ -229,54 +229,54 @@ export function App(
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-4 md:gap-8 border-t md:border-t-0 md:border-l border-gray-100 dark:border-gray-800 pt-6 md:pt-0 md:pl-8">
+        <div className="flex flex-wrap gap-4 md:gap-8 border-t md:border-t-0 md:border-l border-border-subtle pt-6 md:pt-0 md:pl-8">
           <div className="flex flex-col">
-            <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">
+            <span className="text-xs font-semibold text-fg-muted uppercase">
               Git Branch
             </span>
             <span className="flex items-center gap-1.5 mt-1">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse">
               </span>
-              <span className="text-sm font-bold text-gray-700 dark:text-gray-200">
+              <span className="text-sm font-bold text-fg-default">
                 {gitStatus.branch || "Loading..."}
               </span>
             </span>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">
+            <span className="text-xs font-semibold text-fg-muted uppercase">
               Storage
             </span>
-            <span className="text-sm font-bold text-gray-700 dark:text-gray-200 mt-1">
+            <span className="text-sm font-bold text-fg-default mt-1">
               {typeof storageCount === "number" ? storageCount : 0} Files
             </span>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">
+            <span className="text-xs font-semibold text-fg-muted uppercase">
               Pages
             </span>
-            <span className="text-sm font-bold text-gray-700 dark:text-gray-200 mt-1">
+            <span className="text-sm font-bold text-fg-default mt-1">
               {typeof pagesCount === "number" ? pagesCount : 0} Total
             </span>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">
+            <span className="text-xs font-semibold text-fg-muted uppercase">
               Posts
             </span>
-            <span className="text-sm font-bold text-gray-700 dark:text-gray-200 mt-1">
+            <span className="text-sm font-bold text-fg-default mt-1">
               {typeof postsCount === "number" ? postsCount : 0} Total
             </span>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 sm:gap-6 mt-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-2">
         <button
           type="button"
           onClick={() => handleMenuClick("editing")}
-          className="p-6 text-left rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group"
+          className="p-6 text-left rounded-xl bg-canvas-subtle/50 backdrop-blur-md border border-border-default shadow-sm hover:shadow-md transition-all group"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+            <div className="p-2 bg-indigo-500/10 rounded-lg text-indigo-500 group-hover:bg-indigo-500 group-hover:text-white transition-colors">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -291,12 +291,12 @@ export function App(
                 />
               </svg>
             </div>
-            <span className="text-sm font-medium text-gray-400">Posts</span>
+            <span className="text-sm font-medium text-fg-muted/60">Posts</span>
           </div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+          <h3 className="text-lg font-bold text-fg-default mb-1">
             Create New Post
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-fg-muted">
             Write and publish a new blog post.
           </p>
         </button>
@@ -304,10 +304,10 @@ export function App(
         <button
           type="button"
           onClick={() => handleMenuClick("manage")}
-          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group text-left"
+          className="p-6 text-left rounded-xl bg-canvas-subtle/50 backdrop-blur-md border border-border-default shadow-sm hover:shadow-md transition-all group"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-purple-50 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+            <div className="p-2 bg-purple-500/10 rounded-lg text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-colors">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -322,12 +322,14 @@ export function App(
                 />
               </svg>
             </div>
-            <span className="text-sm font-medium text-gray-400">Library</span>
+            <span className="text-sm font-medium text-fg-muted/60">
+              Library
+            </span>
           </div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+          <h3 className="text-lg font-bold text-fg-default mb-1">
             Manage Posts
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-fg-muted">
             Edit or delete your existing posts.
           </p>
         </button>
@@ -335,10 +337,10 @@ export function App(
         <button
           type="button"
           onClick={() => handleMenuClick("stats")}
-          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group text-left"
+          className="p-6 text-left rounded-xl bg-canvas-subtle/50 backdrop-blur-md border border-border-default shadow-sm hover:shadow-md transition-all group"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-pink-50 dark:bg-pink-900/30 rounded-lg text-pink-600 dark:text-pink-400 group-hover:bg-pink-600 group-hover:text-white transition-colors">
+            <div className="p-2 bg-pink-500/10 rounded-lg text-pink-500 group-hover:bg-pink-500 group-hover:text-white transition-colors">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -353,12 +355,14 @@ export function App(
                 />
               </svg>
             </div>
-            <span className="text-sm font-medium text-gray-400">Analytics</span>
+            <span className="text-sm font-medium text-fg-muted/60">
+              Analytics
+            </span>
           </div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+          <h3 className="text-lg font-bold text-fg-default mb-1">
             Post Statistics
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-fg-muted">
             Track views and engagement metrics.
           </p>
         </button>
@@ -366,10 +370,10 @@ export function App(
         <button
           type="button"
           onClick={() => handleMenuClick("git")}
-          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group text-left"
+          className="p-6 text-left rounded-xl bg-canvas-subtle/50 backdrop-blur-md border border-border-default shadow-sm hover:shadow-md transition-all group"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+            <div className="p-2 bg-blue-500/10 rounded-lg text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -384,12 +388,12 @@ export function App(
                 />
               </svg>
             </div>
-            <span className="text-sm font-medium text-gray-400">Git</span>
+            <span className="text-sm font-medium text-fg-muted/60">Git</span>
           </div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+          <h3 className="text-lg font-bold text-fg-default mb-1">
             Git Management
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-fg-muted">
             Manage repo and sync your changes.
           </p>
         </button>
@@ -397,10 +401,10 @@ export function App(
         <button
           type="button"
           onClick={() => handleMenuClick("media")}
-          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group text-left"
+          className="p-6 text-left rounded-xl bg-canvas-subtle/50 backdrop-blur-md border border-border-default shadow-sm hover:shadow-md transition-all group"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+            <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -415,12 +419,12 @@ export function App(
                 />
               </svg>
             </div>
-            <span className="text-sm font-medium text-gray-400">Media</span>
+            <span className="text-sm font-medium text-fg-muted/60">Media</span>
           </div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+          <h3 className="text-lg font-bold text-fg-default mb-1">
             Media Assets
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-fg-muted">
             Manage images and your media files.
           </p>
         </button>
@@ -428,10 +432,10 @@ export function App(
         <button
           type="button"
           onClick={() => handleMenuClick("config")}
-          className="p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow group text-left"
+          className="p-6 text-left rounded-xl bg-canvas-subtle/50 backdrop-blur-md border border-border-default shadow-sm hover:shadow-md transition-all group"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-orange-50 dark:bg-orange-900/30 rounded-lg text-orange-600 dark:text-orange-400 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+            <div className="p-2 bg-orange-500/10 rounded-lg text-orange-500 group-hover:bg-orange-500 group-hover:text-white transition-colors">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -452,12 +456,14 @@ export function App(
                 />
               </svg>
             </div>
-            <span className="text-sm font-medium text-gray-400">Settings</span>
+            <span className="text-sm font-medium text-fg-muted/60">
+              Settings
+            </span>
           </div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+          <h3 className="text-lg font-bold text-fg-default mb-1">
             Configurations
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-fg-muted">
             Configure tokens and blog metadata.
           </p>
         </button>

@@ -91,7 +91,7 @@ export default function ManagePosts({ onClose }: { onClose: () => void }) {
         <button
           type="button"
           onClick={onClose}
-          className="px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-all flex items-center gap-2"
+          className="px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-lg bg-canvas-subtle hover:bg-canvas-default text-fg-muted transition-all flex items-center gap-2 border border-border-subtle"
         >
           <svg
             className="w-3.5 h-3.5"
@@ -112,8 +112,8 @@ export default function ManagePosts({ onClose }: { onClose: () => void }) {
 
       {!editing
         ? (
-          <div className="rounded-2xl bg-white/40 dark:bg-gray-900/40 border border-gray-100/10 dark:border-gray-800/50 overflow-hidden shadow-sm flex flex-col">
-            <div className="p-4 border-b border-gray-100/10 dark:border-gray-800/50 flex items-center justify-between bg-gray-50/5 dark:bg-gray-800/20">
+          <div className="rounded-2xl bg-canvas-subtle/40 border border-border-subtle overflow-hidden shadow-sm flex flex-col">
+            <div className="p-4 border-b border-border-subtle flex items-center justify-between bg-canvas-default/30">
               <h3 className="text-sm font-bold flex items-center gap-2">
                 All Files
                 <span className="px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400 text-[10px] font-mono">

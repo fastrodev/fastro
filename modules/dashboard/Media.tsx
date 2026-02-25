@@ -198,7 +198,7 @@ export default function Media({ onClose }: { onClose?: () => void }) {
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <div className="w-1 h-6 bg-indigo-500 rounded-full"></div>
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-400">
+          <p className="text-xs font-bold uppercase tracking-widest text-fg-muted">
             Media Library
           </p>
         </div>
@@ -206,18 +206,18 @@ export default function Media({ onClose }: { onClose?: () => void }) {
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-all flex items-center gap-2"
+            className="px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-lg bg-canvas-subtle border border-border-default hover:bg-canvas-default text-fg-muted transition-all flex items-center gap-2"
           >
             Back
           </button>
         )}
       </div>
 
-      <div className="rounded-2xl bg-white/40 dark:bg-gray-900/40 border border-gray-100/10 dark:border-gray-800/50 overflow-hidden shadow-sm">
-        <div className="p-4 border-b border-gray-100/10 dark:border-gray-800/50 flex items-center justify-between">
-          <h3 className="text-sm font-bold">Manage Assets</h3>
+      <div className="rounded-2xl bg-canvas-subtle/50 backdrop-blur-md border border-border-default overflow-hidden shadow-sm">
+        <div className="p-4 border-b border-border-default flex items-center justify-between">
+          <h3 className="text-sm font-bold text-fg-default">Manage Assets</h3>
           <form onSubmit={handleUpload} className="flex items-center gap-3">
-            <label className="bg-white/5 px-3 py-2 rounded-lg text-sm cursor-pointer">
+            <label className="bg-canvas-subtle hover:bg-canvas-default border border-border-subtle px-3 py-2 rounded-lg text-sm cursor-pointer text-fg-default transition-colors">
               <input
                 name="file"
                 type="file"
@@ -236,7 +236,7 @@ export default function Media({ onClose }: { onClose?: () => void }) {
             <button
               type="submit"
               disabled={uploading}
-              className="px-3 py-2 rounded-lg bg-indigo-600 text-white text-sm"
+              className="px-3 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm transition-colors disabled:opacity-50"
             >
               Upload
             </button>
@@ -246,13 +246,13 @@ export default function Media({ onClose }: { onClose?: () => void }) {
         <div className="p-4">
           {loading
             ? (
-              <div className="p-12 text-center text-gray-500">
+              <div className="p-12 text-center text-fg-muted">
                 Loading assets…
               </div>
             )
             : (selectedFiles.length === 0 && assets.length === 0)
             ? (
-              <div className="p-8 text-center text-gray-500 italic">
+              <div className="p-8 text-center text-fg-muted italic">
                 No assets uploaded
               </div>
             )
@@ -262,10 +262,10 @@ export default function Media({ onClose }: { onClose?: () => void }) {
                 {selectedFiles.map((sf) => (
                   <li
                     key={sf.id}
-                    className="flex items-center gap-4 p-3 rounded-lg bg-white/5 border border-white/5"
+                    className="flex items-center gap-4 p-3 rounded-lg bg-canvas-default/50 border border-border-subtle"
                   >
                     <div className="flex items-center gap-2 min-w-[150px] max-w-[250px]">
-                      <span className="text-[13px] font-bold text-gray-700 dark:text-gray-200 truncate">
+                      <span className="text-[13px] font-bold text-fg-default truncate">
                         {sf.name}
                       </span>
                       <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 shrink-0 font-medium">
@@ -277,7 +277,7 @@ export default function Media({ onClose }: { onClose?: () => void }) {
                       {sf.url
                         ? (
                           <>
-                            <code className="flex-1 text-[11px] bg-black/20 text-gray-500 px-2 py-1 rounded truncate font-mono border border-white/5">
+                            <code className="flex-1 text-[11px] bg-canvas-subtle/50 text-fg-muted px-2 py-1 rounded truncate font-mono border border-border-subtle">
                               {sf.url}
                             </code>
                             <button
@@ -291,7 +291,7 @@ export default function Media({ onClose }: { onClose?: () => void }) {
                         )
                         : (
                           <div className="flex-1 flex items-center justify-center">
-                            <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-gray-800 text-gray-400">
+                            <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-canvas-subtle text-fg-muted border border-border-subtle">
                               {sf.status === "pending" && "Not uploaded"}
                               {sf.status === "uploading" && "Uploading…"}
                               {sf.status === "uploaded" && "Uploaded"}
@@ -301,14 +301,14 @@ export default function Media({ onClose }: { onClose?: () => void }) {
                         )}
                     </div>
 
-                    <div className="flex items-center gap-2 shrink-0 ml-auto border-l border-white/10 pl-4">
+                    <div className="flex items-center gap-2 shrink-0 ml-auto border-l border-border-subtle pl-4">
                       <button
                         type="button"
                         onClick={() =>
                           sf.url
                             ? openViewerUrl(sf.url)
                             : _openViewerFile(sf.file)}
-                        className="text-xs font-semibold text-gray-400 hover:text-indigo-400 px-2 py-1 transition-colors"
+                        className="text-xs font-semibold text-fg-muted hover:text-indigo-400 px-2 py-1 transition-colors"
                       >
                         View
                       </button>
@@ -318,7 +318,7 @@ export default function Media({ onClose }: { onClose?: () => void }) {
                           setSelectedFiles((cur) =>
                             cur.filter((c) => c.id !== sf.id)
                           )}
-                        className="text-xs font-semibold text-gray-400 hover:text-rose-400 px-2 py-1 transition-colors"
+                        className="text-xs font-semibold text-fg-muted hover:text-rose-400 px-2 py-1 transition-colors"
                       >
                         Remove
                       </button>
@@ -334,10 +334,10 @@ export default function Media({ onClose }: { onClose?: () => void }) {
                 ).map((a) => (
                   <li
                     key={a.name}
-                    className="flex items-center gap-4 p-3 rounded-lg bg-white/5 border border-white/5"
+                    className="flex items-center gap-4 p-3 rounded-lg bg-canvas-default/50 border border-border-subtle"
                   >
                     <div className="flex items-center gap-2 min-w-[150px] max-w-[250px]">
-                      <span className="text-[13px] font-bold text-gray-700 dark:text-gray-200 truncate">
+                      <span className="text-[13px] font-bold text-fg-default truncate">
                         {a.name}
                       </span>
                       <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 shrink-0 font-medium">
@@ -346,7 +346,7 @@ export default function Media({ onClose }: { onClose?: () => void }) {
                     </div>
 
                     <div className="flex-1 flex items-center min-w-0 gap-2">
-                      <code className="flex-1 text-[11px] bg-black/20 text-gray-500 px-2 py-1 rounded truncate font-mono border border-white/5">
+                      <code className="flex-1 text-[11px] bg-canvas-subtle/50 text-fg-muted px-2 py-1 rounded truncate font-mono border border-border-subtle">
                         {a.url}
                       </code>
                       <button
@@ -358,18 +358,18 @@ export default function Media({ onClose }: { onClose?: () => void }) {
                       </button>
                     </div>
 
-                    <div className="flex items-center gap-2 shrink-0 ml-auto border-l border-white/10 pl-4">
+                    <div className="flex items-center gap-2 shrink-0 ml-auto border-l border-border-subtle pl-4">
                       <button
                         type="button"
                         onClick={() => a.url && openViewerUrl(a.url)}
-                        className="text-xs font-semibold text-gray-400 hover:text-indigo-400 px-2 py-1 transition-colors"
+                        className="text-xs font-semibold text-fg-muted hover:text-indigo-400 px-2 py-1 transition-colors"
                       >
                         View
                       </button>
                       <button
                         type="button"
                         onClick={() => handleDelete(a.name)}
-                        className="text-xs font-semibold text-gray-400 hover:text-rose-400 px-2 py-1 transition-colors"
+                        className="text-xs font-semibold text-fg-muted hover:text-rose-400 px-2 py-1 transition-colors"
                       >
                         Delete
                       </button>

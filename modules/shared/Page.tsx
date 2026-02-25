@@ -18,6 +18,7 @@ export default function Page(
   return (
     <div
       style={{ fontFamily: "system-ui, sans-serif" }}
+      data-color-mode="auto"
       className="min-h-screen flex flex-col w-full bg-canvas-default text-fg-default transition-colors duration-200"
     >
       {!hideHeader

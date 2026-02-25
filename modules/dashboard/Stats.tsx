@@ -55,7 +55,7 @@ export default function Stats({ onClose }: { onClose?: () => void }) {
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <div className="w-1 h-6 bg-indigo-500 rounded-full"></div>
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-400">
+          <p className="text-xs font-bold uppercase tracking-widest text-fg-muted">
             Post Statistics
           </p>
         </div>
@@ -63,21 +63,21 @@ export default function Stats({ onClose }: { onClose?: () => void }) {
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-all flex items-center gap-2"
+            className="px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-lg bg-canvas-subtle border border-border-default hover:bg-canvas-default text-fg-muted transition-all flex items-center gap-2"
           >
             Back
           </button>
         )}
       </div>
 
-      <div className="rounded-2xl bg-white/40 dark:bg-gray-900/40 border border-gray-100/10 dark:border-gray-800/50 overflow-hidden shadow-sm">
-        <div className="p-4 border-b border-gray-100/10 dark:border-gray-800/50 flex items-center justify-between">
-          <h3 className="text-sm font-bold">Overview</h3>
+      <div className="rounded-2xl bg-canvas-subtle/50 backdrop-blur-md border border-border-default overflow-hidden shadow-sm">
+        <div className="p-4 border-b border-border-default flex items-center justify-between">
+          <h3 className="text-sm font-bold text-fg-default">Overview</h3>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={load}
-              className="p-1.5 rounded-md hover:bg-indigo-500/10 text-gray-500 hover:text-indigo-400 transition-colors"
+              className="p-1.5 rounded-md hover:bg-indigo-500/10 text-fg-muted hover:text-indigo-400 transition-colors"
               title="Refresh"
             >
               <svg
@@ -100,28 +100,28 @@ export default function Stats({ onClose }: { onClose?: () => void }) {
         <div className="p-4">
           {loading
             ? (
-              <div className="p-12 text-center text-gray-500">
+              <div className="p-12 text-center text-fg-muted">
                 Loading stats…
               </div>
             )
             : stats.length === 0
             ? (
-              <div className="p-8 text-center text-gray-500 italic">
+              <div className="p-8 text-center text-fg-muted italic">
                 No posts found
               </div>
             )
             : (
-              <ul className="divide-y divide-gray-100/10">
+              <ul className="divide-y divide-border-subtle">
                 {stats.map((s) => (
                   <li
                     key={s.filename}
                     className="flex items-center justify-between p-3"
                   >
                     <div className="min-w-0">
-                      <div className="text-[13px] font-mono text-gray-700 dark:text-gray-300 truncate">
+                      <div className="text-[13px] font-mono text-fg-default truncate">
                         {s.filename}
                       </div>
-                      <div className="text-[11px] text-gray-500">
+                      <div className="text-[11px] text-fg-muted">
                         {s.words} words • {s.readingMin} min read
                       </div>
                     </div>
@@ -129,7 +129,7 @@ export default function Stats({ onClose }: { onClose?: () => void }) {
                       <div className="text-sm font-bold text-indigo-400">
                         {/* views placeholder */}—
                       </div>
-                      <div className="text-[11px] text-gray-500">views</div>
+                      <div className="text-[11px] text-fg-muted">views</div>
                     </div>
                   </li>
                 ))}

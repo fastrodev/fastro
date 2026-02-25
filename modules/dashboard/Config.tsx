@@ -93,7 +93,7 @@ export default function Config({ onClose }: { onClose?: () => void }) {
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <div className="w-1 h-6 bg-indigo-500 rounded-full"></div>
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-400">
+          <p className="text-xs font-bold uppercase tracking-widest text-fg-muted">
             Header & Pages Configuration
           </p>
         </div>
@@ -101,20 +101,20 @@ export default function Config({ onClose }: { onClose?: () => void }) {
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-all flex items-center gap-2"
+            className="px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-lg bg-canvas-subtle border border-border-default hover:bg-canvas-default text-fg-muted transition-all flex items-center gap-2"
           >
             Back
           </button>
         )}
       </div>
 
-      <div className="rounded-2xl bg-white/40 dark:bg-gray-900/40 border border-gray-100/10 dark:border-gray-800/50 overflow-hidden shadow-sm">
+      <div className="rounded-2xl bg-canvas-subtle/50 backdrop-blur-md border border-border-default overflow-hidden shadow-sm">
         <div className="p-6">
           <div className="mb-6">
-            <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-2">
+            <h3 className="text-sm font-bold text-fg-default mb-2">
               Select Header Items
             </h3>
-            <p className="text-xs text-gray-500 mb-4">
+            <p className="text-xs text-fg-muted mb-4">
               Choose which pages to display in the top navigation bar. (Maximum
               4)
             </p>
@@ -129,7 +129,7 @@ export default function Config({ onClose }: { onClose?: () => void }) {
           <form onSubmit={handleSave} className="space-y-6">
             {loading
               ? (
-                <div className="p-8 text-center text-gray-500">
+                <div className="p-8 text-center text-fg-muted">
                   Scanning pages…
                 </div>
               )
@@ -137,7 +137,7 @@ export default function Config({ onClose }: { onClose?: () => void }) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {data.allPages.length === 0
                     ? (
-                      <div className="col-span-full p-8 text-center text-gray-500 italic border border-dashed border-gray-100/10 rounded-xl">
+                      <div className="col-span-full p-8 text-center text-fg-muted italic border border-dashed border-border-default rounded-xl">
                         No files found in /pages directory.
                       </div>
                     )
@@ -148,7 +148,7 @@ export default function Config({ onClose }: { onClose?: () => void }) {
                           className={`flex items-center justify-between p-4 rounded-xl border transition-all cursor-pointer group ${
                             data.headerPages.includes(page)
                               ? "bg-indigo-500/10 border-indigo-500/30 text-indigo-400"
-                              : "bg-white/5 border-white/5 text-gray-400 hover:border-white/10"
+                              : "bg-canvas-subtle border-border-subtle text-fg-muted hover:border-border-default"
                           }`}
                         >
                           <div className="flex items-center gap-3">
@@ -156,7 +156,7 @@ export default function Config({ onClose }: { onClose?: () => void }) {
                               className={`w-4 h-4 rounded-md border flex items-center justify-center transition-colors ${
                                 data.headerPages.includes(page)
                                   ? "bg-indigo-600 border-indigo-600"
-                                  : "border-gray-600 bg-transparent group-hover:border-gray-400"
+                                  : "border-border-default bg-transparent group-hover:border-fg-muted"
                               }`}
                             >
                               {data.headerPages.includes(page) && (
@@ -191,11 +191,11 @@ export default function Config({ onClose }: { onClose?: () => void }) {
                 </div>
               )}
 
-            <div className="flex gap-3 pt-4 border-t border-gray-100/10 dark:border-gray-800/50">
+            <div className="flex gap-3 pt-4 border-t border-border-default">
               <button
                 type="submit"
                 disabled={saving || loading}
-                className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-30 disabled:grayscale text-white font-bold transition-all shadow-lg shadow-indigo-900/40 active:scale-95 flex items-center gap-2"
+                className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-30 disabled:grayscale text-white font-bold transition-all shadow-lg active:scale-95 flex items-center gap-2"
               >
                 {saving
                   ? (

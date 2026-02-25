@@ -84,8 +84,8 @@ export default function Editor({
   const lineCount = content.split("\n").length || 1;
 
   return (
-    <div className="h-[calc(100vh-12rem)] flex flex-col min-h-0 bg-gray-50 dark:bg-[#101624] rounded-xl border border-gray-200 dark:border-gray-800 shadow-lg overflow-hidden">
-      <div className="flex items-center justify-between px-4 py-2 border-b border-gray-200 dark:border-gray-800 bg-gray-100/70 dark:bg-[#181f2e]/80 gap-2">
+    <div className="h-[calc(100vh-12rem)] flex flex-col min-h-0 bg-canvas-subtle rounded-xl border border-border-default shadow-lg overflow-hidden">
+      <div className="flex items-center justify-between px-4 py-2 border-b border-border-default bg-canvas-default/70 gap-2">
         <div className="flex items-center gap-2">
           {editingFilename
             ? (
