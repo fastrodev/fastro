@@ -31,7 +31,7 @@ To create a basic server, import the default export from `mod.ts` and create a
 new instance.
 
 ```ts
-import Fastro from "./mod.ts";
+import Fastro from "https://deno.land/x/fastro/mod.ts";
 
 const app = new Fastro();
 app.get("/", () => "Hello Fastro!");
@@ -122,7 +122,7 @@ Fastro provides a lightweight cookie middleware that parses incoming `Cookie` he
 ### Usage
 
 ```ts
-import Fastro from "./mod.ts";
+import Fastro from "https://deno.land/x/fastro/mod.ts";
 import { cookieMiddleware } from "./middlewares/cookie/mod.ts";
 
 const app = new Fastro();
@@ -389,7 +389,7 @@ production-grade features like LRU caching and SPA support.
 ### Basic Usage
 
 ```ts
-import Fastro from "./mod.ts";
+import Fastro from "https://deno.land/x/fastro/mod.ts";
 import { staticFiles } from "./middlewares/static/mod.ts";
 
 const app = new Fastro();
@@ -431,7 +431,7 @@ The official `bodyParser` middleware parses incoming request bodies (POST, PUT, 
 ### Usage
 
 ```ts
-import Fastro from "./mod.ts";
+import Fastro from "https://deno.land/x/fastro/mod.ts";
 import { bodyParser } from "./middlewares/bodyparser/mod.ts";
 
 const app = new Fastro();
@@ -487,7 +487,7 @@ Fastro follows a specific priority when loading modules to ensure configuration 
 To enable this feature, simply call `autoRegisterModules` before serving your app:
 
 ```ts
-import Fastro, { autoRegisterModules } from "./mod.ts";
+import Fastro, { autoRegisterModules } from "https://deno.land/x/fastro@v1.0.19/core/mod.ts";
 
 const app = new Fastro();
 
@@ -506,7 +506,7 @@ This allows your module to define its own encapsulated routes.
 
 ```ts
 // modules/auth/mod.ts
-import { createRouter } from "../../mod.ts";
+import { createRouter } from "https://deno.land/x/fastro@v1.0.19/core/mod.ts";
 
 export default createRouter()
   .post("/login", () => "logged in")

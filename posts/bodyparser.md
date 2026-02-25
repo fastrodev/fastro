@@ -39,7 +39,7 @@ We tested everything from standard JSON payloads to edge cases requiring raw byt
 Integrating the body parser into your app is straightforward. Because it's a middleware, you can apply it globally or just to specific route groups:
 
 ```typescript
-import Fastro from "./mod.ts";
+import Fastro from "https://deno.land/x/fastro/mod.ts";
 import { bodyParser } from "./middlewares/bodyparser/mod.ts";
 
 const app = new Fastro();
