@@ -2,6 +2,10 @@
 
 ![Simpul](https://storage.googleapis.com/replix-394315-file/uploads/simpul.jpg)
 
+| Status | Notes |
+|--------|-------|
+| 🔵 Concept | Currently in planning and design. No code implementation yet. |
+
 **Simpul** flips the marketplace script. Instead of buyers searching for products, we empower sellers to actively "hunt" for real-time buyer needs.
 
 ### ⚡ The Concept

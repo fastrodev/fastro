@@ -19,6 +19,7 @@ Explore interactive demos built with Fastro—where speed meets simplicity. Dive
 | **Git-Based CMS** | A modern Headless CMS for git-based content with markdown management, GitHub sync, and analytics. | Free | [CMS](posts/cms) |
 | **Pro Boilerplate** | A production-ready starter kit for building professional web applications with clean architecture and advanced patterns. |  $149 | [Powerkit](posts/powerkit) |
 | **Simpul** | The Universal Demand Node. A marketplace where sellers actively hunt for real-time buyer needs. | Free | [Simpul](/SIMPUL.md) |
+| **Loyalti** | A simple loyalty program for grocery stores. Buy multiple times, get free items. Configurable per product. | Free | [Loyalti](posts/loyalti) |
 
 
 ## Community Projects
