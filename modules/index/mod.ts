@@ -104,8 +104,6 @@ r.get("/:page", async (req, ctx, next) => {
   return next ? next() : new Response("Not Found", { status: 404 });
 }, kvMiddleware);
 
-registerCodeRoutes(r);
-
 r.get(
   "/LICENSE",
   (req, ctx) => renderCode("LICENSE", ctx.kv, getCanonical(req)),
@@ -115,5 +113,7 @@ r.get(
 // register folder handlers
 r.get("/core/*", serveFolder("core"));
 r.get("/build/*", serveFolder("build"));
+
+registerCodeRoutes(r);
 
 export default r.build();
