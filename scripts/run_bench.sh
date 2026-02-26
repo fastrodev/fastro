@@ -1,8 +1,9 @@
 #!/bin/bash
+set -euo pipefail
 
 # Port to use
 PORT=3000
-MD_FILE="pages/BENCHMARK.md"
+MD_FILE="BENCHMARK.md"
 
 # Function to kill process on port
 kill_port() {
@@ -14,6 +15,15 @@ kill_port() {
 
 # Ensure no leaked processes at start
 kill_port
+
+# Ensure output directory exists
+mkdir -p "$(dirname "$MD_FILE")"
+
+# Ensure k6 is available (minimal error if missing)
+if ! command -v k6 >/dev/null 2>&1; then
+    echo "Error: 'k6' not found in PATH. Install k6 (e.g. 'brew install k6' or see https://k6.io/) and re-run." >&2
+    exit 1
+fi
 
  # Clear/Create Markdown File
 echo "# 🏁 Fastro Performance Benchmark" > $MD_FILE
@@ -40,7 +50,7 @@ run_bench() {
     if [ -z "$METHOD" ]; then METHOD="GET"; fi
 
     echo "  ↳ Measuring $SCENARIO..."
-    ENDPOINT=$TARGET METHOD=$METHOD ./k6 run --no-color scripts/k6_bench.js > k6_output.txt 2>&1
+    ENDPOINT=$TARGET METHOD=$METHOD k6 run --no-color scripts/k6_bench.js > k6_output.txt 2>&1
     
     # Extract metrics
     RPS_RAW=$(grep "http_reqs" k6_output.txt | awk '{print $3}' | sed 's/\/s//')
@@ -103,7 +113,7 @@ echo "" >> $MD_FILE
 echo "## Prerequisites" >> $MD_FILE
 echo "To run this benchmark locally, ensure you have:" >> $MD_FILE
 echo "1. [Deno](https://deno.land/) installed." >> $MD_FILE
-echo "2. [k6](https://k6.io/) binary placed in the root directory as \`./k6\`." >> $MD_FILE
+echo "2. [k6](https://k6.io/) installed and available on PATH as \`k6\`." >> $MD_FILE
 echo "3. Port $PORT available." >> $MD_FILE
 echo "4. Execute the script: \`bash scripts/run_bench.sh\`." >> $MD_FILE
 
@@ -111,6 +121,6 @@ echo "" >> $MD_FILE
 echo "## Methodology" >> $MD_FILE
 echo "Benchmark results are collected using \`k6\` with 100 virtual users for 10 seconds per scenario. Results may vary depending on CPU load, memory usage, system configuration, and other environmental factors. For more representative numbers, run the benchmark multiple times on an idle machine." >> $MD_FILE
 echo "" >> $MD_FILE
-echo "For a deeper analysis, see [posts/benchmark](posts/benchmark)." >> $MD_FILE
+echo "For a deeper analysis, see [posts/benchmark](https://fastro.deno.dev/posts/benchmark)." >> $MD_FILE
 echo "" >> $MD_FILE
 echo "✅ Benchmark complete! Results saved to $MD_FILE"
