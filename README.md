@@ -17,17 +17,20 @@ Fastro is a high-performance, zero-dependency web framework for Deno. It’s bui
 
 ```ts
 import Fastro from "https://deno.land/x/fastro/mod.ts";
+
 const app = new Fastro();
+
 app.get("/user/:id", (req, ctx) => {
   return { id: ctx.params.id, status: "active" };
 });
+
 await app.serve({ port: 8000 });
 ```
 
 ### Resources
 
-- [**Docs**](DOCS.md) – Comprehensive guide and API reference.
-- [**Showcase**](SHOWCASE.md) – Real-world examples built with Fastro.
-- [**Middlewares**](MIDDLEWARES.md) – Official plugins and community ecosystem.
-- [**Benchmarks**](BENCHMARK.md) – Performance comparisons and results.
-- [**Contribute**](CONTRIBUTING.md) – Join us in building the future of Deno.
+- [**Docs**](https://fastro.deno.dev/DOCS.md) – Comprehensive guide and API reference.
+- [**Showcase**](https://fastro.deno.dev/SHOWCASE.md) – Real-world examples built with Fastro.
+- [**Middlewares**](https://fastro.deno.dev/MIDDLEWARES.md) – Official plugins and community ecosystem.
+- [**Benchmarks**](https://fastro.deno.dev/BENCHMARK.md) – Performance comparisons and results.
+- [**Contribute**](https://fastro.deno.dev/CONTRIBUTING.md) – Join us in building the future of Deno.
