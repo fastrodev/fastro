@@ -2,7 +2,7 @@ name: build
 on:
   push:
     branches:
-      - main
+      - prod
 jobs:
   generate-manifest:
     runs-on: ubuntu-latest
