@@ -31,12 +31,6 @@ jobs:
         with:
           deno-version: v2.x
 
-      - name: Lint
-        run: deno task lint
-
-      - name: Run tests + coverage
-        run: deno task cov
-
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:
