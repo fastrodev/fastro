@@ -1,6 +1,5 @@
 import App from "./mod.ts";
 import { autoRegisterModules } from "./core/loader.ts";
-import * as manifest from "./manifest.ts";
 
 const app = new App();
 
@@ -30,6 +29,9 @@ app.post("/json", async (req) => {
 
 const dep = Deno.env.get?.("DENO_DEPLOYMENT_ID");
 if (dep) {
+  // Static `import` declarations are not valid inside blocks.
+  // Use a dynamic import so this path remains valid at runtime.
+  const manifest = await import("./manifest.ts");
   await autoRegisterModules(app, {
     manifest: manifest as unknown as Record<string, unknown>,
   });
