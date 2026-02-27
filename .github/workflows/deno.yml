@@ -1,4 +1,4 @@
-name: build
+name: deno
 on:
   push:
     branches:
