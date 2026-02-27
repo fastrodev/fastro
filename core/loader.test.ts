@@ -31,7 +31,7 @@ Deno.test("coverage: force manifest catch via Object.keys throw (fresh import)",
 
     const errStub = stub(console, "error", () => {});
     try {
-      loader.autoRegisterModules({ use: () => {} });
+      await loader.autoRegisterModules({ use: () => {} });
       const called = errStub.calls.some((c: unknown) => {
         const ci = c as { args: unknown[] };
         return String(ci.args[0]).includes("Failed reading manifest");
@@ -166,14 +166,14 @@ Deno.test("autoRegisterModulesFrom registers modules in sorted order", () => {
   assertEquals(used, ["I", "A", "B", "P"]);
 });
 
-Deno.test("autoRegisterModules logs error when manifest read fails (catch)", () => {
+Deno.test("autoRegisterModules logs error when manifest read fails (catch)", async () => {
   const app: App = { use: () => {} };
   const orig = Object.keys;
   try {
     (Object as unknown as { keys: typeof Object.keys }).keys = (() => {
       throw new Error("boom");
     }) as unknown as typeof Object.keys;
-    autoRegisterModules(app);
+    await autoRegisterModules(app);
   } finally {
     (Object as unknown as { keys: typeof Object.keys }).keys = orig;
   }
@@ -284,7 +284,7 @@ Deno.test("autoRegisterModulesFrom registers modules in sorted order", () => {
   assertEquals(used, ["I", "A", "B", "P"]);
 });
 
-Deno.test("autoRegisterModules logs error when manifest read fails (catch)", () => {
+Deno.test("autoRegisterModules logs error when manifest read fails (catch)", async () => {
   const app: App = { use: () => {} };
   const orig = Object.keys;
   try {
@@ -294,7 +294,7 @@ Deno.test("autoRegisterModules logs error when manifest read fails (catch)", () 
       throw new Error("boom");
     }) as unknown as typeof Object.keys;
     // Should not throw; the function catches internally.
-    autoRegisterModules(app);
+    await autoRegisterModules(app);
   } finally {
     // restore
     (Object as unknown as { keys: typeof Object.keys }).keys = orig;
@@ -569,7 +569,7 @@ Deno.test("autoRegisterModulesFrom registers modules in sorted order", () => {
   assertEquals(used, ["I", "A", "B", "P"]);
 });
 
-Deno.test("autoRegisterModules logs error when manifest read fails (catch)", () => {
+Deno.test("autoRegisterModules logs error when manifest read fails (catch)", async () => {
   const app: App = { use: () => {} };
   const orig = Object.keys;
   try {
@@ -579,7 +579,7 @@ Deno.test("autoRegisterModules logs error when manifest read fails (catch)", () 
       throw new Error("boom");
     }) as unknown as typeof Object.keys;
     // Should not throw; the function catches internally.
-    autoRegisterModules(app);
+    await autoRegisterModules(app);
   } finally {
     // restore
     (Object as unknown as { keys: typeof Object.keys }).keys = orig;
@@ -653,7 +653,7 @@ Deno.test("autoRegisterModules handles manifest import error", async () => {
   };
   const errStub = stub(console, "error", () => {});
   try {
-    loader.autoRegisterModules(app as { use: (m: unknown) => void });
+    await loader.autoRegisterModules(app as { use: (m: unknown) => void });
     const called = errStub.calls.some((c: unknown) => {
       const ci = c as { args: unknown[] };
       return String(ci.args[0]).includes("Failed reading manifest");
@@ -884,7 +884,7 @@ Deno.test("autoRegisterModules uses real manifest to register", async () => {
   // stub console.info to avoid noisy output
   const infoStub = stub(console, "info", () => {});
   try {
-    loader.autoRegisterModules(app as { use: (m: unknown) => void });
+    await loader.autoRegisterModules(app as { use: (m: unknown) => void });
     assert(calls.length > 0, "expected some registrations from real manifest");
   } finally {
     infoStub.restore();
@@ -923,7 +923,7 @@ Deno.test("coverage: exercise loader branches", async () => {
 
     const errStub = stub(console, "error", () => {});
     try {
-      mod.autoRegisterModules(app as { use: (m: unknown) => void });
+      await mod.autoRegisterModules(app as { use: (m: unknown) => void });
       const called = errStub.calls.some((c: unknown) => {
         const ci = c as { args: unknown[] };
         return String(ci.args[0]).includes("Failed reading manifest");
@@ -1008,4 +1008,70 @@ Deno.test("registerFromNamespace fresh import candidate branches", async () => {
     true,
   );
   assertEquals(calls.length, 1);
+});
+
+Deno.test("autoRegisterModules supports options.manifest (sync)", async () => {
+  const { autoRegisterModules } = await import(`./loader.ts`);
+  const calls: unknown[] = [];
+  const app = { use: (m: unknown) => calls.push(m) };
+  await autoRegisterModules(app as { use: (m: unknown) => void }, {
+    manifest: { x: { default: () => {} } },
+  });
+  assertEquals(calls.length, 1);
+});
+
+Deno.test("autoRegisterModules supports manifestPath with file:// prefix", async () => {
+  const loader = (await import(`./loader.ts`)) as unknown as {
+    autoRegisterModules: (
+      app: { use: (m: unknown) => void },
+      opts?: unknown,
+    ) => void;
+  };
+  const calls: unknown[] = [];
+  const app = { use: (m: unknown) => calls.push(m) };
+  await loader.autoRegisterModules(app as { use: (m: unknown) => void }, {
+    manifestPath: `file://${Deno.cwd()}/manifest.ts`,
+  });
+  assert(calls.length > 0);
+});
+
+Deno.test("autoRegisterModules supports manifestPath without file:// prefix", async () => {
+  const loader = (await import(`./loader.ts`)) as unknown as {
+    autoRegisterModules: (
+      app: { use: (m: unknown) => void },
+      opts?: unknown,
+    ) => void;
+  };
+  const calls: unknown[] = [];
+  const app = { use: (m: unknown) => calls.push(m) };
+  await loader.autoRegisterModules(app as { use: (m: unknown) => void }, {
+    manifestPath: `${Deno.cwd()}/manifest.ts`,
+  });
+  assert(calls.length > 0);
+});
+
+Deno.test("autoRegisterModules logs error when options.manifest branch throws", async () => {
+  const { autoRegisterModules } = await import(`./loader.ts`);
+  const orig = Object.keys;
+  try {
+    (Object as unknown as { keys: typeof Object.keys }).keys = (() => {
+      throw new Error("boom-manifest");
+    }) as unknown as typeof Object.keys;
+
+    const errStub = stub(console, "error", () => {});
+    try {
+      await autoRegisterModules({ use: () => {} }, {
+        manifest: { a: { default: () => {} } },
+      });
+      const called = errStub.calls.some((c: unknown) => {
+        const ci = c as { args: unknown[] };
+        return String(ci.args[0]).includes("Failed reading manifest");
+      });
+      assert(called, "expected loader to log a failure for options.manifest");
+    } finally {
+      errStub.restore();
+    }
+  } finally {
+    (Object as unknown as { keys: typeof Object.keys }).keys = orig;
+  }
 });

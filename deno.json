@@ -12,7 +12,8 @@
     "start": "deno run -A main.ts",
     "bench": "bash ./scripts/run_bench.sh",
     "test": "deno test -A",
-    "cov": "deno test -A --coverage=coverage && deno coverage --lcov coverage > coverage.lcov || true"
+    "lint": "deno lint",
+    "cov": "deno task lint && deno test -A --coverage=coverage && deno coverage --lcov coverage > coverage.lcov || true"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@^1.0.19",

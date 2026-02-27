@@ -1,5 +1,9 @@
 import type { Middleware } from "./types.ts";
-import * as manifest from "../manifest.ts";
+// NOTE:
+// We avoid statically importing `../manifest.ts` so this module can be reused
+// from other projects. Consumers can either pass an explicit manifest object
+// (useful for sync callers/tests) or let the loader dynamically import
+// `<project-root>/manifest.ts` at runtime (async) using `Deno.cwd()`.
 
 // Lightweight alias for the app shape expected by the loader.
 export type App = { use: (middleware: Middleware) => void };
@@ -46,14 +50,55 @@ export function sortNames(names: string[]) {
  *
  * @param app - The application object exposing a `use(middleware)` method
  */
-export function autoRegisterModules(app: App) {
-  // Reuse the core registration logic via the injectable helper so tests
-  // can provide a synthetic manifest object and exercise all branches.
+export type AutoRegisterOptions = {
+  // If provided, the loader will use this manifest object synchronously.
+  manifest?: Record<string, unknown>;
+  // If provided and `manifest` is not set, this path (absolute or file://)
+  // will be dynamically imported. Defaults to `${Deno.cwd()}/manifest.ts`.
+  manifestPath?: string;
+};
+
+/**
+ * Auto-register modules declared in a project's `manifest.ts` on the provided
+ * app.
+ *
+ * Two modes are supported:
+ * - sync: pass `options.manifest` (a manifest object) and registration runs
+ *   synchronously via `autoRegisterModulesFrom`.
+ * - async: omit `options.manifest` and the loader will attempt to dynamically
+ *   import the project's `manifest.ts` from `Deno.cwd()` (or `options.manifestPath`).
+ *
+ * This function is `async` to support the dynamic-import mode. Callers that
+ * need synchronous registration should pass a manifest object and use the
+ * `autoRegisterModulesFrom` helper directly.
+ */
+export async function autoRegisterModules(
+  app: App,
+  options?: AutoRegisterOptions,
+) {
+  // If a manifest object was provided, reuse the synchronous helper.
+  if (options?.manifest) {
+    try {
+      autoRegisterModulesFrom(options.manifest, app);
+    } catch (err) {
+      console.error(
+        "❌ [Loader] Failed reading manifest:",
+        (err as Error).message,
+      );
+    }
+    return;
+  }
+
+  // Otherwise attempt to dynamically import the manifest from the caller's
+  // working directory. This allows projects that import this library to keep
+  // a local `manifest.ts` at the project root and have it discovered.
   try {
-    autoRegisterModulesFrom(
-      manifest as unknown as Record<string, unknown>,
-      app,
-    );
+    const basePath = options?.manifestPath ?? `${Deno.cwd()}/manifest.ts`;
+    const url = basePath.startsWith("file://")
+      ? basePath
+      : `file://${basePath}`;
+    const mod = await import(url);
+    autoRegisterModulesFrom(mod as unknown as Record<string, unknown>, app);
   } catch (err) {
     console.error(
       "❌ [Loader] Failed reading manifest:",
