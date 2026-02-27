@@ -1,0 +1,63 @@
+name: build
+on:
+  push:
+    branches:
+      - main
+jobs:
+  generate-manifest:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - uses: denoland/setup-deno@v2
+        with:
+          name: build
+          on:
+            push:
+              branches:
+                - main
+
+          jobs:
+            build:
+              runs-on: ubuntu-latest
+
+              permissions:
+                id-token: write
+                contents: write
+                packages: write
+
+              steps:
+                - name: Clone repository
+                  uses: actions/checkout@v4
+
+                - name: Cache Deno deps
+                  uses: actions/cache@v4
+                  with:
+                    path: |
+                      ~/.cache/deno
+                      ~/.local/share/deno
+                    key: ${{ runner.os }}-deno-deps-${{ hashFiles('**/deno.json') }}
+                    restore-keys: |
+                      ${{ runner.os }}-deno-deps-
+
+                - uses: denoland/setup-deno@v2
+                  with:
+                    deno-version: v2.x
+
+                - name: Lint
+                  run: deno task lint
+
+                - name: Run tests + coverage
+                  run: deno task cov
+
+                - name: Deploy to Deno Deploy
+                  uses: denoland/deployctl@v1
+                  with:
+                    project: ynwd-fastro-19
+                    entrypoint: main.ts
+                    import-map: deno.json
