@@ -70,10 +70,7 @@ export function tailwind(pathname = "/styles.css", staticDir = "/static") {
     if (cached) return render(cached);
 
     const result = await processCss(staticDir);
-    if (result) {
-      cache.set(pathname, result.content);
-      return render(result.content);
-    }
-    return next();
+    cache.set(pathname, result.content);
+    return render(result.content);
   };
 }

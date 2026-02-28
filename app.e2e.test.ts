@@ -33,3 +33,17 @@ Deno.test("e2e: app routes", async () => {
     s.close();
   }
 });
+
+Deno.test("e2e: app routes with DENO_DEPLOYMENT_ID via subprocess", async () => {
+  const p = new Deno.Command(Deno.execPath(), {
+    args: ["run", "-A", "--coverage=coverage", "app.ts"],
+    env: { "DENO_DEPLOYMENT_ID": "test-deployment" },
+    stdout: "piped",
+    stderr: "piped",
+  });
+
+  const output = await p.output();
+  const errStr = new TextDecoder().decode(output.stderr);
+
+  assertEquals(output.code, 0, `Process exited with ${output.code}\n${errStr}`);
+});
