@@ -33,6 +33,7 @@ async function processCss(staticDir: string) {
 
   try {
     const path = Deno.cwd() + staticDir + "/css/tailwind.css";
+    console.log(`Processing Tailwind CSS at ${path}`);
     const content = Deno.readTextFileSync(path);
     return await postcss(plugins).process(content, {
       from: "undefined",
