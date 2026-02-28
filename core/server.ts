@@ -537,6 +537,20 @@ export function _getRoutesForTests() {
   return routes;
 }
 
+/**
+ * Internal utility for retrieving number of global middlewares during testing.
+ */
+export function _getMiddlewareCount() {
+  return middlewares.length;
+}
+
+/**
+ * Internal utility for retrieving registered route paths during testing.
+ */
+export function _getRoutePaths() {
+  return [...routePaths];
+}
+
 // Test-only helper: execute internal code paths to increase coverage for branches
 // that are difficult to reach via regular HTTP requests. Only used by tests.
 // Note: test-only helpers were removed to keep production code clean.

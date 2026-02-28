@@ -3,6 +3,7 @@
 // loader will import this manifest to auto-register middleware.
 
 export * as index from "./modules/index/mod.ts";
+export * as user from "./modules/user/mod.ts";
 
 // Uncomment or add exports as modules are created:
 // export * as dashboard from "./modules/dashboard/mod.ts";

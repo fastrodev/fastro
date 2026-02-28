@@ -232,3 +232,28 @@ export interface Router {
     ...middlewares: Middleware[]
   ): unknown;
 }
+
+/**
+ * Server interface describing the runtime server object expected by
+ * `createRouter(server)` and used by the loader when registering
+ * route-scoped handlers.
+ */
+export interface Server {
+  get(path: string, handler: Handler, ...middlewares: Middleware[]): unknown;
+  post(path: string, handler: Handler, ...middlewares: Middleware[]): unknown;
+  put(path: string, handler: Handler, ...middlewares: Middleware[]): unknown;
+  delete(path: string, handler: Handler, ...middlewares: Middleware[]): unknown;
+  patch(path: string, handler: Handler, ...middlewares: Middleware[]): unknown;
+  head(path: string, handler: Handler, ...middlewares: Middleware[]): unknown;
+  options(
+    path: string,
+    handler: Handler,
+    ...middlewares: Middleware[]
+  ): unknown;
+  /** Register a global middleware. */
+  use(middleware: Middleware): void;
+  /** Start the server with the given options. Returns an instance with a `close` method. */
+  serve(
+    options: Deno.ServeTcpOptions & { handler?: undefined; cacheSize?: number },
+  ): { close: () => void };
+}

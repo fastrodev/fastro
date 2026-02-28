@@ -195,7 +195,11 @@ export function startComponentsWatcher(
       _watchTickForTests().catch(() => {});
     };
 
-    if (startInterval) {
+    // In coverage mode we run the immediate check but avoid starting
+    // background intervals which can leave un-awaited async ops during tests.
+    const shouldStartInterval = startInterval &&
+      Deno.env.get("ENV") !== "coverage";
+    if (shouldStartInterval) {
       watcherInterval = setInterval(__fastro_watcher_cb, 500); // Check every 500ms
     }
 
