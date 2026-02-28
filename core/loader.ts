@@ -238,11 +238,24 @@ export function registerFromNamespace(
           }
           try {
             const p = String(args[0] ?? "");
-            (fn as unknown as (...a: unknown[]) => unknown).call(
-              base,
-              `${p}/*`,
-              ...args,
-            );
+            // Avoid registering a wildcard for the root mount (`/`) because
+            // that would match all subpaths (e.g. `/index`) and shadow
+            // explicit module mounts. Preserve behavior for empty-string
+            // mounts which are expected to register `""` and `"/*"`.
+            // Only add a wildcard registration when:
+            // - the mount is not the root (`/`) which would shadow subpaths
+            // - the provided mount does not already contain a wildcard
+            // Preserve behavior for empty-string mounts (they should still
+            // receive `"/*"`).
+            if (p !== "/" && !p.includes("*")) {
+              const normalized = p.replace(/\/+$/g, "");
+              const wildcard = `${normalized}/*`;
+              (fn as unknown as (...a: unknown[]) => unknown).call(
+                base,
+                wildcard,
+                ...args,
+              );
+            }
           } catch {
             // ignore
           }
