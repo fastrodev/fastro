@@ -1,18 +1,6 @@
-import App from "./mod.ts";
-import { autoRegisterModules } from "./core/loader.ts";
+import App from "../mod.ts";
 
 const app = new App();
-
-const dep = Deno.env.get?.("DENO_DEPLOYMENT_ID");
-if (dep) {
-  const manifest = await import("./manifest.ts");
-  await autoRegisterModules(app, {
-    manifest: manifest as unknown as Record<string, unknown>,
-    requireExplicitGlobals: true,
-  });
-} else {
-  await autoRegisterModules(app, { requireExplicitGlobals: true });
-}
 
 app.get("/", () => {
   return new Response("Hello world!");
@@ -38,4 +26,5 @@ app.post("/json", async (req) => {
   return body;
 });
 
-app.serve({ port: parseInt(Deno.args[0]) || 8000 });
+const port = parseInt(Deno.args[0]) || 3000;
+app.serve({ port });

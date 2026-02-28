@@ -1,5 +1,10 @@
 import { assert, assertEquals, assertRejects } from "@std/assert";
-import server, { _getRoutesForTests, _resetForTests } from "./server.ts";
+import server, {
+  _getMiddlewareCount,
+  _getRoutePaths,
+  _getRoutesForTests,
+  _resetForTests,
+} from "./server.ts";
 // test-only helper for internal handler retrieval (typed to satisfy linter)
 // no test-only globals
 import type { Context, Next } from "./types.ts";
@@ -16,6 +21,26 @@ Deno.test("Coverage - ctx.url lazy init", async () => {
   const res = await fetch("http://localhost:3111/ctx");
   assertEquals(await res.text(), "ok");
   s.close();
+});
+
+Deno.test("internal helpers: _getMiddlewareCount and _getRoutePaths", () => {
+  _resetForTests();
+
+  // Initially empty
+  assertEquals(_getMiddlewareCount(), 0);
+  assertEquals(_getRoutePaths().length, 0);
+
+  // Add a global middleware and a couple routes
+  server.use((_req, _ctx, next) => next && next());
+  server.get("/x", () => "x");
+  server.post("/y", () => "y");
+
+  // Ensure helpers reflect added state
+  assertEquals(_getMiddlewareCount(), 1);
+  const paths = _getRoutePaths();
+  // order may vary; ensure both paths present
+  paths.sort();
+  assertEquals(paths, ["/x", "/y"]);
 });
 
 Deno.test("Coverage - ctx.params lazy init", async () => {
