@@ -157,18 +157,51 @@ function registerRoute(
   const pattern = typeof path === "string"
     ? new URLPattern({ pathname: path })
     : path;
-  routes.push({
+  const pStr = typeof path === "string"
+    ? path
+    : (path as URLPattern).pathname ?? "";
+
+  // Insert route into arrays based on specificity so more-specific
+  // routes (static segments) take precedence over wildcard/root routes
+  // registered earlier. This prevents a root wildcard like `//*` from
+  // shadowing later-specific mounts such as `/user`.
+  function specificity(s: string) {
+    if (!s || s === "/") return 0;
+    const parts = s.split("/").filter(Boolean);
+    let score = parts.length * 10;
+    for (const part of parts) {
+      if (part === "*") score -= 5;
+      else if (part.startsWith(":")) score += 0;
+      else score += 5;
+    }
+    return score;
+  }
+
+  const spec = specificity(String(pStr));
+  let insertAt = routes.length;
+  for (let i = 0; i < routes.length; i++) {
+    const existingPath = routePaths[i] || "/";
+    const existingSpec = specificity(existingPath);
+    if (spec > existingSpec) {
+      insertAt = i;
+      break;
+    }
+  }
+
+  const routeObj = {
     method,
     pattern,
     handler,
     paramNames: extractParamNames(path),
     middlewares: routeMiddlewares,
-  });
-  if (typeof path === "string") {
-    routePaths.push(path);
+  };
+
+  if (insertAt === routes.length) {
+    routes.push(routeObj);
+    routePaths.push(typeof pStr === "string" ? pStr : "");
   } else {
-    const p = (path as URLPattern).pathname;
-    routePaths.push(typeof p === "string" ? p : "");
+    routes.splice(insertAt, 0, routeObj);
+    routePaths.splice(insertAt, 0, typeof pStr === "string" ? pStr : "");
   }
 }
 

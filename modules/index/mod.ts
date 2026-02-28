@@ -3,5 +3,5 @@ import type { Server } from "../../core/types.ts";
 
 export default function register(app: Server) {
   const r = createRouter(app);
-  r.get("/index", () => new Response("Hello from modules/index"));
+  r.get("/", () => new Response("Hello from modules/root"));
 }

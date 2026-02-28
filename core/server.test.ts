@@ -2071,3 +2071,92 @@ Deno.test("Coverage - pathname derivation - complete scenario", async () => {
 
   s.close();
 });
+
+Deno.test("server handles custom pattern-like object and URLPattern mounts", async () => {
+  _resetForTests();
+
+  // 1) custom pattern object with exec(url) and no pathname -> triggers rawPattern.exec branch
+  const customPattern = {
+    exec: (_url: string) => ({ pathname: { groups: { foo: "bar" } } }),
+  } as unknown as URLPattern;
+
+  server.get(customPattern, () => "custom-ok");
+
+  // 2) URLPattern instance mount (string-like) -> should register /modules/user
+  server.get(new URLPattern({ pathname: "/modules/user" }), () => "mod-user");
+
+  const paths = _getRoutePaths();
+  // Expect registered mounts include the explicit string and possibly empty string for custom
+  const hasModules = paths.some((p) => p === "/modules/user");
+  assertEquals(hasModules, true);
+
+  // Start server and verify responses
+  const s = server.serve({ port: 3520 });
+  try {
+    const r1 = await fetch("http://localhost:3520/modules/user");
+    assertEquals(await r1.text(), "mod-user");
+
+    // customPattern's exec always matches; call root URL to exercise it
+    const r2 = await fetch("http://localhost:3520/");
+    assertEquals(await r2.text(), "custom-ok");
+  } finally {
+    s.close();
+  }
+});
+
+Deno.test("registerRoute splice branch exercised (multiple cases)", () => {
+  // Case A: register less-specific then more-specific -> more-specific should splice in front
+  _resetForTests();
+  server.get("/", () => "root");
+  server.get("/index", () => "index");
+  let paths = _getRoutePaths();
+  assertEquals(paths[0], "/index");
+  assertEquals(paths.includes("/"), true);
+
+  // Case B: register wildcard then specific
+  _resetForTests();
+  server.get("/*", () => "wild");
+  server.get("/user", () => "user");
+  paths = _getRoutePaths();
+  assertEquals(paths[0], "/user");
+  assertEquals(paths.includes("/*"), true);
+
+  // Case C: deeper path splices before parent
+  _resetForTests();
+  server.get("/a", () => "a");
+  server.get("/a/b/c", () => "deep");
+  paths = _getRoutePaths();
+  assertEquals(paths[0], "/a/b/c");
+  assertEquals(paths[paths.length - 1], "/a");
+});
+
+Deno.test("registerRoute splice into middle when specificity falls between existing routes", () => {
+  _resetForTests();
+
+  // Register a very specific route first
+  server.get("/aaa/bbb/ccc", () => "deep");
+  // Register a low-specificity route later
+  server.get("/x", () => "x");
+
+  // Now insert a route whose specificity should place it between the two
+  server.get("/aaa/bbb", () => "mid");
+
+  const paths = _getRoutePaths();
+  // Expect the deep route to remain first, the new mid route to be second,
+  // and the low-specificity `/x` to be last.
+  assertEquals(paths[0], "/aaa/bbb/ccc");
+  assertEquals(paths[1], "/aaa/bbb");
+  assertEquals(paths[paths.length - 1], "/x");
+});
+
+Deno.test("Coverage - registerRoute splice with non-string pStr branch", () => {
+  _resetForTests();
+  // 1. insert a low specificity route
+  server.get("/*", () => "wild");
+  // 2. insert a high specificity route with a non-string pathname (e.g., number 42)
+  // specificity() will cast it to string "42" and rank it higher than "/*".
+  // Because its type is "number", the `typeof pStr === "string"` ternary on line 204 evaluates to false,
+  // returning `""` for the routePaths splice.
+  // @ts-ignore: testing invalid type coverage
+  server.get({ pathname: 42 }, () => "num");
+});
