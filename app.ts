@@ -1,9 +1,7 @@
 import App from "./mod.ts";
 import { autoRegisterModules } from "./core/loader.ts";
-import { tailwind } from "./middlewares/tailwind/tailwind.ts";
 
 const app = new App();
-app.use(tailwind());
 
 app.get("/user/:id", (_req, ctx) => {
   return new Response(`User ${ctx.params.id}`);
