@@ -1,4 +1,4 @@
-import { Context } from "../../core/types.ts";
+import { Context } from "../../deps.ts";
 import { join } from "@std/path";
 
 export const createPostHandler = async (_req: Request, ctx: Context) => {

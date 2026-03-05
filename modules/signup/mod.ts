@@ -1,11 +1,9 @@
-import { createRouter } from "../../core/router.ts";
+import { bodyParser, createRouter, kvMiddleware } from "../../deps.ts";
+import type { Server } from "../../deps.ts";
 import { signupHandler } from "./handler.tsx";
-import { bodyParser } from "../../middlewares/bodyparser/mod.ts";
-import { kvMiddleware } from "../../middlewares/kv/mod.ts";
 
-const r = createRouter();
-
-r.get("/signup", signupHandler);
-r.post("/signup", signupHandler, bodyParser, kvMiddleware);
-
-export default r.build();
+export default function register(app: Server) {
+  const r = createRouter(app);
+  r.get("/signup", signupHandler);
+  r.post("/signup", signupHandler, bodyParser, kvMiddleware);
+}

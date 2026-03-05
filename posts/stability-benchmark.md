@@ -3,7 +3,7 @@ title: "Why Speed Isn't Everything: 2026 HTTP Framework Benchmark Analysis"
 description: "An analysis of why stability (stddev) is as crucial as throughput (RPS) in 2026 HTTP framework benchmarks."
 date: 2026-02-21
 author: "Fastro Team"
-tags: ["performance", "benchmark"]
+tags: ["performance"]
 image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=60"
 ---
 

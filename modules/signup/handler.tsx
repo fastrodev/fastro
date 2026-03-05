@@ -1,6 +1,5 @@
-import { Handler } from "../../core/types.ts";
+import { createToken, Handler, verifyToken } from "../../deps.ts";
 import App from "./App.tsx";
-import { createToken, verifyToken } from "../../middlewares/jwt/mod.ts";
 import { hashPassword } from "../../utils/password.ts";
 
 const JWT_SECRET = Deno.env.get("JWT_SECRET") || "fastro-secret";
@@ -91,7 +90,8 @@ export const signupHandler: Handler = async (req, ctx) => {
             path: "/",
             maxAge: 60 * 60 * 24,
             sameSite: "Lax",
-            secure: Deno.env.get("ENV") === "production",
+            secure: Deno.env.get("FASTRO_ENV") === "production" ||
+              Deno.env.get("ENV") === "production",
           });
         }
       } catch (e) {
@@ -126,6 +126,7 @@ export const signupHandler: Handler = async (req, ctx) => {
   const html = ctx.renderToString!(<App />, {
     includeDoctype: true,
     title: "Signup",
+    module: "signup",
     head: `<head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">

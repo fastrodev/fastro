@@ -1,6 +1,5 @@
-import { Handler } from "../../core/types.ts";
+import { createToken, Handler, verifyToken } from "../../deps.ts";
 import App from "./App.tsx";
-import { createToken, verifyToken } from "../../middlewares/jwt/mod.ts";
 
 const JWT_SECRET = Deno.env.get("JWT_SECRET") || "fastro-secret";
 
@@ -88,6 +87,7 @@ export const profileHandler: Handler = async (req, ctx) => {
     {
       includeDoctype: true,
       title: "User Profile",
+      module: "profile",
       initialProps: { user, name, bio, msg },
       head: `<head>
           <meta charset="UTF-8">

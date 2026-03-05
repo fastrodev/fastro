@@ -3,7 +3,7 @@ title: "Tailwind Middleware for Fastro"
 description: "On-the-fly Tailwind/PostCSS middleware for Fastro — usage, config, and deployment tips."
 date: 2026-02-10
 author: "Fastro Team"
-tags: ["middleware","tailwind"]
+tags: ["tutorial"]
 ---
 
 This middleware compiles Tailwind/PostCSS on the fly (in development) or serves a prebuilt CSS file in production. It exposes a simple function `tailwind(pathname = "/styles.css", staticDir = "/static")` that returns a middleware compatible with Fastro's middleware pipeline.

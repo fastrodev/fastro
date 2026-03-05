@@ -1,6 +1,5 @@
-import { Handler } from "../../core/types.ts";
+import { Handler, verifyToken } from "../../deps.ts";
 import App from "./App.tsx";
-import { verifyToken } from "../../middlewares/jwt/jwt.ts";
 
 const JWT_SECRET = Deno.env.get("JWT_SECRET") || "fastro-secret";
 

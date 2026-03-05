@@ -3,7 +3,7 @@ title: Fastro SaaS Ship Kit — Coming Soon!
 description: "Premium boilerplate for launching SaaS on Fastro/Deno. Early Bird USD 69 for the first 20 buyers. Coming soon!"
 date: 2026-02-11
 author: "Fastro Team"
-tags: ["app", "saas", "boilerplate"]
+tags: ["idea"]
 ---
 
 ![Boilerplate](https://storage.googleapis.com/replix-394315-file/uploads/boilerplate.jpg)

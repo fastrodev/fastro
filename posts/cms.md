@@ -3,7 +3,7 @@ title: "Membangun CMS Performa Tinggi dengan Fastro, Deno Deploy, dan Deno KV"
 description: "Bagaimana kami membangun CMS Fastro hanya menggunakan Deno, Fastro, dan Markdown—dengan manajemen konten modern berbasis Deno KV."
 date: 2026-02-15
 author: "Fastro Team"
-tags: ["cms", "markdown", "deno-kv"]
+tags: ["idea"]
 image: "https://storage.googleapis.com/replix-394315-file/uploads/dashboard.jpg"
 ---
 

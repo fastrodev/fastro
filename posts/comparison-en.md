@@ -3,7 +3,7 @@ title: "CMS Architecture: Why Databases Are Starting to Feel Like a Legacy Burde
 description: "An architectural breakdown between monolithic databases and static binary generation, and why Git-based CMS has become the most efficient modern choice."
 date: 2026-02-16
 author: "Fastro Team"
-tags: ["architecture", "cms", "deno"]
+tags: ["idea"]
 image: "https://storage.googleapis.com/replix-394315-file/uploads/comparison.jpg"
 ---
 

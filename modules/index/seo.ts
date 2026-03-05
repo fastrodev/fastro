@@ -10,7 +10,7 @@
  *   deno run --allow-read --allow-write modules/index/seo.ts https://your-site.example
  */
 
-import { join } from "https://deno.land/std@0.201.0/path/mod.ts";
+import { join } from "@std/path";
 import { defaultLocale, locales, twitterSite } from "./site_config.ts";
 
 type PostMeta = {

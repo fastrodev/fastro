@@ -1,6 +1,5 @@
-import { Handler } from "../../core/types.ts";
+import { Handler, verifyToken } from "../../deps.ts";
 import App from "./App.tsx";
-import { verifyToken } from "../../middlewares/jwt/mod.ts";
 import { join } from "@std/path";
 
 const JWT_SECRET = Deno.env.get("JWT_SECRET") || "fastro-secret";
@@ -89,6 +88,7 @@ export const dashboardHandler: Handler = async (req, ctx) => {
     {
       includeDoctype: true,
       title: "Dashboard",
+      module: "dashboard",
       initialProps: {
         user,
         name,

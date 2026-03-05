@@ -1,6 +1,5 @@
-import { Handler } from "../../core/types.ts";
+import { createToken, Handler, verifyToken } from "../../deps.ts";
 import App from "./App.tsx";
-import { createToken, verifyToken } from "../../middlewares/jwt/mod.ts";
 import { hashPassword, verifyPassword } from "../../utils/password.ts";
 
 const JWT_SECRET = Deno.env.get("JWT_SECRET") || "fastro-secret";
@@ -120,7 +119,8 @@ export const signinHandler: Handler = async (req, ctx) => {
             path: "/",
             maxAge: 60 * 60 * 24,
             sameSite: "Lax",
-            secure: Deno.env.get("ENV") === "production",
+            secure: Deno.env.get("FASTRO_ENV") === "production" ||
+              Deno.env.get("ENV") === "production",
           });
         }
       } catch (e) {
@@ -158,6 +158,7 @@ export const signinHandler: Handler = async (req, ctx) => {
   const html = ctx.renderToString!(<App error={initialHelpMessage} />, {
     includeDoctype: true,
     title: "Sign In",
+    module: "signin",
     initialProps: { error: initialHelpMessage },
     head: `<head>
           <meta charset="UTF-8">

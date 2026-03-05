@@ -3,7 +3,7 @@ title: "Understanding Fastro Modules: Manual vs. Automatic Loading"
 description: "Master the architecture of Fastro by learning how to create, organize, and register modules for scalable applications."
 date: 2026-02-04
 author: "Fastro Team"
-tags: ["general", "tutorial"]
+tags: ["tutorial"]
 ---
 
 As your application grows, keeping all your routes and logic in a single file becomes unmanageable. Fastro's **Module System** is designed to help you split your application into clean, isolated components that can be loaded manually or automatically.
@@ -16,14 +16,13 @@ Let's create a module that handles user authentication logic. We'll place it in 
 
 **File: `modules/auth/mod.ts`**
 ```ts
-import { createRouter } from "https://deno.land/x/fastro/mod.ts";
+import { createRouter, Server } from "https://deno.land/x/fastro/mod.ts";
 
-const auth = createRouter()
-  .get("/login", () => "Login Page")
-  .post("/login", (req) => "Processing Login...");
-
-// Export as default OR as a named export matching the folder name ('auth')
-export default auth.build();
+export default function register(app: Server) {
+  createRouter(app)
+    .get("/login", () => "Login Page")
+    .post("/login", (req) => "Processing Login...");
+}
 ```
 
 ## 2. Using Modules Manually
@@ -51,7 +50,7 @@ The `autoRegisterModules` utility is the "magic" feature for larger applications
 
 1.  Structure your project with a `modules/` folder.
 2.  Inside each sub-folder, create a `mod.ts` file.
-3.  Export your middleware/router as the **default export** or a **named export** that matches the folder name.
+3.  Export a **registration function** (named `register` or as a **default export**) that receives the `app` instance.
 
 **File: `main.ts`**
 ```ts

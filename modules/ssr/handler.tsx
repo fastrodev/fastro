@@ -1,4 +1,4 @@
-import { Handler } from "../../core/types.ts";
+import { Handler } from "../../deps.ts";
 import { App } from "./App.tsx";
 
 export const ssrHandler: Handler = (_req, ctx) => {

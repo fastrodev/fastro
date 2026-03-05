@@ -1,4 +1,4 @@
-import { Context, Handler } from "../../core/types.ts";
+import { Context, Handler } from "../../deps.ts";
 import { join } from "@std/path";
 
 export const getConfigHandler: Handler = async (

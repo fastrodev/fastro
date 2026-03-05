@@ -1,8 +1,8 @@
-import { createRouter } from "../../core/router.ts";
+import { createRouter } from "../../deps.ts";
+import type { Server } from "../../deps.ts";
 import { ssrHandler } from "./handler.tsx";
 
-const r = createRouter();
-
-r.get("/ssr", ssrHandler);
-
-export default r.build();
+export default function register(app: Server) {
+  const r = createRouter(app);
+  r.get("/ssr", ssrHandler);
+}

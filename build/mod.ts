@@ -31,7 +31,8 @@ async function build(modulePath?: string, spa?: boolean) {
       bundle: true,
       sourcemap: true,
       // Only minify in production to make dev builds readable (non-minified)
-      minify: Deno.env.get("ENV") === "production",
+      minify: Deno.env.get("FASTRO_ENV") === "production" ||
+        Deno.env.get("ENV") === "production",
 
       // Target & Platform
       platform: "browser",

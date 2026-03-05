@@ -1,5 +1,5 @@
 import Fastro from "../mod.ts";
-import { createRenderMiddleware } from "../middlewares/render/mod.ts";
+import { createRenderMiddleware } from "https://raw.githubusercontent.com/fastrodev/fastro/refs/heads/main/middlewares/render/mod.ts";
 
 const app = new Fastro();
 

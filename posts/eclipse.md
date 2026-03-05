@@ -4,7 +4,7 @@ description: "A formal geometric audit and uncertainty analysis of solar distanc
 date: 2026-02-18
 author: "Fastro Science & Gemini"
 image: "https://storage.googleapis.com/replix-394315-file/uploads/eclipse.jpg"
-tags: ["science", "astronomy", "physics", "audit", "uncertainty-analysis"]
+tags: ["science"]
 ---
 
 > Disclaimer: All scripts and repository changes were produced by GPT-5 mini and Gemini (AIs) under instructions from Fastrodev.

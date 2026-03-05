@@ -1,4 +1,5 @@
-import { Router } from "../../core/types.ts";
+import { RAW_URL, Router } from "../../deps.ts";
+
 import { renderCode } from "./render.ts";
 
 /**
@@ -25,10 +26,8 @@ export function registerCodeRoutes(app: Router) {
     "native.ts",
     "main.ts",
     "app/main.ts",
-    "MIDDLEWARES.md",
     "middlewares/tailwind/tailwind.ts",
     "middlewares/tailwind/tailwind.test.ts",
-    "posts/tailwind.md",
   ];
 
   for (const path of files) {
@@ -73,11 +72,14 @@ export function serveFolder(folder: string) {
         return new Response("Not Found", { status: 404 });
       }
 
-      const fileUrl = new URL(`../../${folder}/${rel}`, import.meta.url);
+      const fileUrl = `${RAW_URL}${folder}/${rel}`;
+      const response = await fetch(fileUrl);
+      if (!response.ok) return new Response("Not Found", { status: 404 });
+
       const ext = rel.split(".").pop()?.toLowerCase() || "";
 
       if (textTypes.has(ext)) {
-        const content = await Deno.readTextFile(fileUrl);
+        const content = await response.text();
         return new Response(content, {
           headers: {
             "content-type": mimes[ext] || "text/plain; charset=utf-8",
@@ -85,7 +87,7 @@ export function serveFolder(folder: string) {
         });
       }
 
-      const data = await Deno.readFile(fileUrl);
+      const data = await response.arrayBuffer();
       return new Response(data, {
         headers: { "content-type": mimes[ext] || "application/octet-stream" },
       });

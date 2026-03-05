@@ -114,7 +114,7 @@ export async function renderBlog(
       }" class="text-[0.6rem] md:text-[0.65rem] px-2.5 py-1.5 rounded border ${
         isActive
           ? "bg-fg-default border-fg-default !text-canvas-default"
-          : "bg-canvas-subtle border-border-default/40 !text-fg-default/70 hover:border-fg-muted hover:!text-fg-default hover:bg-canvas-default"
+          : "bg-canvas-subtle border-border-default/40 !text-fg-default/90 hover:border-fg-muted hover:!text-fg-default hover:bg-canvas-default"
       } font-bold uppercase tracking-widest transition-all duration-200 !no-underline">${tag}</a>`;
     }).join("")
   }
@@ -173,7 +173,7 @@ export async function renderBlog(
             <div class="flex flex-wrap items-center gap-4">
               ${
       post.date
-        ? `<span class="text-fg-muted/30 text-[0.6rem] md:text-[0.65rem] uppercase tracking-[0.2em] font-black">
+        ? `<span class="text-fg-muted/60 text-[0.6rem] md:text-[0.65rem] uppercase tracking-[0.2em] font-black">
                   ${post.date}
                 </span>`
         : ""
@@ -185,7 +185,7 @@ export async function renderBlog(
           post.tags.slice(0, 2).map((tag) =>
             `<a href="/blog?search=${
               encodeURIComponent(tag)
-            }" class="text-[0.55rem] md:text-[0.6rem] px-2 py-0.5 rounded-sm bg-canvas-subtle !text-fg-muted/60 font-black uppercase tracking-widest hover:!text-fg-default hover:bg-canvas-default transition-all z-20 relative !no-underline">${tag}</a>`
+            }" class="text-[0.55rem] md:text-[0.6rem] px-2 py-0.5 rounded-sm bg-canvas-subtle border border-border-default/20 !text-fg-muted/90 font-black uppercase tracking-widest hover:!text-fg-default hover:bg-canvas-default transition-all z-20 relative !no-underline">${tag}</a>`
           ).join("")
         }
                 </div>`

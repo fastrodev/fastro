@@ -2,7 +2,7 @@ name: build
 on:
   push:
     branches:
-      - main
+      - prod
 jobs:
   generate-manifest:
     runs-on: ubuntu-latest
@@ -81,11 +81,5 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: fastro
-          entrypoint: app/main.ts
+          entrypoint: main.ts
           import-map: deno.json
-
-      # - name: Coveralls
-      #   uses: coverallsapp/github-action@v2
-      #   with:
-      #     path-to-lcov: ./coverage.lcov
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}

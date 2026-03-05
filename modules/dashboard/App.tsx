@@ -30,21 +30,27 @@ export function App(
   { user, name, isDeploy, pagesCount, postsCount, storageCount }: Props,
 ) {
   const [gitStatus, setGitStatus] = useState({ branch: "", status: "" });
-  const [view, setView] = useState<View>(() => {
+  const [view, setView] = useState<View>("dashboard");
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
     try {
-      if (
-        typeof globalThis !== "undefined" &&
-        typeof (globalThis as unknown as { localStorage?: Storage })
-            .localStorage !== "undefined"
-      ) {
-        return (globalThis.localStorage.getItem("dashboard_view") as View) ||
-          "dashboard";
-      }
-    } catch (_e) {
-      // ignore - safer fallback for SSR environments
+      const stored = localStorage.getItem("dashboard_view") as View;
+      if (stored) setView(stored);
+    } catch (_) {
+      // ignore
     }
-    return "dashboard";
-  });
+    setIsInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isInitialized) return;
+    try {
+      localStorage.setItem("dashboard_view", view);
+    } catch (_) {
+      // ignore
+    }
+  }, [view, isInitialized]);
   const [toast, setToast] = useState<
     { message: string; type: "success" | "error" | "info" } | null
   >(null);
@@ -59,20 +65,6 @@ export function App(
     }
     setView(targetView);
   }
-
-  useEffect(() => {
-    try {
-      if (
-        typeof globalThis !== "undefined" &&
-        typeof (globalThis as unknown as { localStorage?: Storage })
-            .localStorage !== "undefined"
-      ) {
-        globalThis.localStorage.setItem("dashboard_view", view);
-      }
-    } catch (_e) {
-      // ignore - no-op on server or when storage unavailable
-    }
-  }, [view]);
 
   useEffect(() => {
     if (isDeploy) {

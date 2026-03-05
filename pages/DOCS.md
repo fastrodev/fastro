@@ -52,8 +52,7 @@ The `.serve()` method accepts the standard `Deno.serve` options plus an optional
 
 ## Routing
 
-Fastro supports standard HTTP methods: `get()`, `post()`, `put()`, and
-`delete()`.
+Fastro supports standard HTTP methods: `get()`, `post()`, `put()`, `delete()`, `patch()`, `head()`, and `options()`.
 
 ### Basic Routes
 
@@ -84,6 +83,17 @@ app.get("/search", (req, ctx) => {
   return `Searching for ${q} (limit: ${limit})`;
 });
 ```
+
+### Route Specificity
+
+Fastro uses a specificity-based routing system. Routes with more static segments take precedence over wildcard or parameter-based routes, regardless of registration order.
+
+- `/user/login` (highest specificity)
+- `/user/:id` (medium specificity)
+- `/user/*` (lower specificity)
+- `/*` (lowest specificity)
+
+This ensures that a catch-all route like `/*` doesn't shadow more specific endpoints.
 
 ### Advanced Patterns
 
@@ -282,8 +292,14 @@ Options
 
 - `includeDoctype` (boolean): prepend `<!DOCTYPE html>`.
 - `includeHead` (boolean): omit or include the default `<head>`.
+- `head` (string): Arbitrary HTML inserted into the document `<head>`.
+- `title` (string): Page title to insert into the rendered HTML.
 - `module` (string): when provided, a client script `/js/<module>/client.js` is added.
 - `initialProps` (object): serialized to JSON and injected into the page (`<script id="initial" type="application/json">...`).
+- `identifierPrefix` (string): Prefix applied to any auto-generated IDs during render.
+- `signal` (AbortSignal): Optional AbortSignal to cancel rendering early.
+- `nonceProvider` (function): Provider used to generate a nonce for inline scripts (if needed).
+- `onError` (function): Optional callback invoked when an internal render error occurs.
 
 Development (HMR)
 
@@ -367,12 +383,12 @@ app.get("/admin", () => "Sensitive Info", checkAuth);
 ## Modular Routing (Router)
 
 The `createRouter` utility helps you group related routes into a single
-middleware.
+middleware. Unlike global routing, the router requires a server instance.
 
 ```ts
 import { createRouter } from "./mod.ts";
 
-const api = createRouter()
+const api = createRouter(app)
   .get("/v1/ping", () => "pong")
   .get("/v1/user", () => "user data");
 
@@ -487,7 +503,7 @@ Fastro follows a specific priority when loading modules to ensure configuration 
 To enable this feature, simply call `autoRegisterModules` before serving your app:
 
 ```ts
-import Fastro, { autoRegisterModules } from "https://deno.land/x/fastro@v1.0.19/core/mod.ts";
+import Fastro, { autoRegisterModules } from "https://deno.land/x/fastro/mod.ts";
 
 const app = new Fastro();
 
@@ -497,25 +513,45 @@ await autoRegisterModules(app);
 await app.serve();
 ```
 
+#### Advanced Options
+
+The `autoRegisterModules` function accepts an optional `options` object:
+
+| Option | Type | Description |
+| :--- | :--- | :--- |
+| `manifest` | `object` | An explicit manifest object for synchronous registration. |
+| `manifestPath` | `string` | Custom path to `manifest.ts` (default: `Deno.cwd() + "/manifest.ts"`). |
+| `requireExplicitGlobals` | `boolean` | If true, only modules with `global: true` are registered as global middleware. |
+
 ### Module Authoring
 
-Each `mod.ts` must export a middleware. You can use a **default export** or a **named export** that matches the folder name.
+Each `mod.ts` should export a registration function. This function receives a wrapped server instance that allows you to define routes that are automatically prefixed with the module's name (folder name).
+
+#### The `register` function
+
+You can use a **default export** or a **named export** called `register`.
 
 #### Case A: Using Router (Recommended)
-This allows your module to define its own encapsulated routes.
+
+This allows your module to define its own encapsulated routes. By using the `register` function, your routes are automatically scoped to the module's mount point.
 
 ```ts
 // modules/auth/mod.ts
-import { createRouter } from "https://deno.land/x/fastro@v1.0.19/core/mod.ts";
+import { createRouter, Server } from "https://deno.land/x/fastro/mod.ts";
 
-export default createRouter()
-  .post("/login", () => "logged in")
-  .get("/logout", () => "logged out")
-  .build(); // .build() returns a middleware
+export default function register(app: Server) {
+  createRouter(app)
+    .post("/login", () => "logged in")
+    .get("/logout", () => "logged out");
+}
 ```
 
 #### Case B: Custom Middleware
-Useful for folder-specific logic like logging or auth-checking specific to that segment.
+
+If you want the module to act as a global or route-scoped middleware, you can export a middleware function.
+
+- If the function has **3 arguments** (`req`, `ctx`, `next`), it is treated as a middleware.
+- If it has **1 argument** (`app`), it is treated as a registration hook.
 
 ```ts
 // modules/logger/mod.ts
@@ -524,6 +560,17 @@ export const logger = (req, ctx, next) => {
   return next();
 };
 ```
+
+### Module Hooks & Metadata
+
+Modules can export additional metadata to control their behavior:
+
+- **`mountPath`**: A string export that overrides the default slug-based URL prefix.
+- **`global`**: If set to `true`, the module is registered as a global middleware.
+
+### Module Context
+
+Auto-registered modules automatically set `ctx.state.module` to the name of the folder currently handling the request. This is useful for renderers and logging.
 
 ### Why use this?
 
@@ -539,7 +586,14 @@ The `ctx` object is the "brain" of the request lifecycle. Property list:
 - `ctx.params`: Key-value pair of path parameters.
 - `ctx.query`: Key-value pair of query parameters.
 - `ctx.url`: A lazy-loaded `URL` object.
-- `ctx.remoteAddr`: Client IP and port info.
+- `ctx.remoteAddr`: Client address info (`transport`, `hostname`, `port`).
+- `ctx.pwa`: Whether PWA is enabled.
+- `ctx.pwaEnabled`: Alias for `ctx.pwa`.
+- `ctx.pwaConfig`: PWA configuration object.
+- `ctx.kv`: Deno KV instance.
+- `ctx.state`: General purpose state object for middlewares.
+- `ctx.cookies`: Incoming cookies as a key-value record.
+- `ctx.setCookie()`: Helper to set a cookie in the response.
 
 ### Sharing Data (State Management)
 

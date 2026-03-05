@@ -3,7 +3,7 @@ title: "Mengapa Cepat Saja Tidak Cukup? Analisis Benchmark Framework HTTP 2026"
 description: "Analisis mengapa stabilitas (stddev) sama pentingnya dengan throughput (RPS) dalam benchmark framework HTTP 2026."
 date: 2026-02-12
 author: "Fastro Team"
-tags: ["performance", "benchmark"]
+tags: ["performance"]
 image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=60"
 ---
 

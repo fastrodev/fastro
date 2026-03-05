@@ -2,8 +2,6 @@
 
 ![Fastro](https://repository-images.githubusercontent.com/264308713/1b83bd0f-b9d9-466d-9e63-f947c1a67281)
 
-[![build](https://github.com/fastrodev/fastro/actions/workflows/build.yml/badge.svg)](https://github.com/fastrodev/fastro/actions/workflows/build.yml)
-[![Coverage Status](https://coveralls.io/repos/github/fastrodev/fastro/badge.svg?branch=main)](https://coveralls.io/github/fastrodev/fastro?branch=main)
 
 Fastro is a high-performance, zero-dependency web framework for Deno. It’s built for developers who care about **speed**, **type-safety**, and **clean code**.
 

@@ -3,7 +3,7 @@ title: "Understanding the Render Middleware (SSR & HMR)"
 description: "A comprehensive guide to using the Render Middleware for server-side rendering, initial props management, and development HMR support."
 date: 2026-02-07
 author: "Fastro Team"
-tags: ["middleware"]
+tags: ["tutorial"]
 ---
 
 # Introduction to Render Middleware
