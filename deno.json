@@ -10,6 +10,8 @@
   "nodeModulesDir": "auto",
   "tasks": {
     "start": "FASTRO_ENV=development deno run -A build/watch.ts & FASTRO_ENV=development deno run -A --unstable-kv --watch main.ts 3000",
+    "gen-manifest": "deno run -A ./scripts/generate_manifest.ts",
+    "build": "deno run -A build/mod.ts",
     "bench": "bash ./scripts/run_bench.sh",
     "test": "deno test -A",
     "lint": "deno lint",
