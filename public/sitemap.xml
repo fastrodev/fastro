@@ -35,6 +35,12 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/blog?page=4" />
   </url>
   <url>
+    <loc>https://fastro.dev/DOCS</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/DOCS" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/DOCS" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/DOCS" />
+  </url>
+  <url>
     <loc>https://fastro.dev/CONTRIBUTING</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/CONTRIBUTING" />
     <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/CONTRIBUTING" />
@@ -47,10 +53,10 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/BENCHMARK" />
   </url>
   <url>
-    <loc>https://fastro.dev/DOCS</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/DOCS" />
-    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/DOCS" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/DOCS" />
+    <loc>https://fastro.dev/SIMPUL</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/SIMPUL" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/SIMPUL" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/SIMPUL" />
   </url>
   <url>
     <loc>https://fastro.dev/MIDDLEWARES</loc>
@@ -65,10 +71,14 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/SHOWCASE" />
   </url>
   <url>
-    <loc>https://fastro.dev/SIMPUL</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/SIMPUL" />
-    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/SIMPUL" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/SIMPUL" />
+    <loc>https://fastro.dev/posts/v1.0.0</loc>
+    <lastmod>2026-02-25T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/v1.0.0" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/v1.0.0" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/v1.0.0" />
+    <image:image>
+      <image:loc>https://repository-images.githubusercontent.com/264308713/1b83bd0f-b9d9-466d-9e63-f947c1a67281</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://fastro.dev/posts/loyalti</loc>
@@ -121,21 +131,21 @@
     </image:image>
   </url>
   <url>
-    <loc>https://fastro.dev/posts/cms</loc>
-    <lastmod>2026-02-15T00:00:00.000Z</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/cms" />
-    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/cms" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/cms" />
-    <image:image>
-      <image:loc>https://storage.googleapis.com/replix-394315-file/uploads/dashboard.jpg</image:loc>
-    </image:image>
-  </url>
-  <url>
     <loc>https://fastro.dev/posts/cms-en</loc>
     <lastmod>2026-02-15T00:00:00.000Z</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/cms-en" />
     <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/cms-en" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/cms-en" />
+    <image:image>
+      <image:loc>https://storage.googleapis.com/replix-394315-file/uploads/dashboard.jpg</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://fastro.dev/posts/cms</loc>
+    <lastmod>2026-02-15T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/cms" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/cms" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/cms" />
     <image:image>
       <image:loc>https://storage.googleapis.com/replix-394315-file/uploads/dashboard.jpg</image:loc>
     </image:image>
@@ -175,13 +185,6 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/tailwind" />
   </url>
   <url>
-    <loc>https://fastro.dev/posts/cookie</loc>
-    <lastmod>2026-02-09T00:00:00.000Z</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/cookie" />
-    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/cookie" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/cookie" />
-  </url>
-  <url>
     <loc>https://fastro.dev/posts/vibe</loc>
     <lastmod>2026-02-09T00:00:00.000Z</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/vibe" />
@@ -192,11 +195,25 @@
     </image:image>
   </url>
   <url>
+    <loc>https://fastro.dev/posts/cookie</loc>
+    <lastmod>2026-02-09T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/cookie" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/cookie" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/cookie" />
+  </url>
+  <url>
     <loc>https://fastro.dev/posts/render</loc>
     <lastmod>2026-02-07T00:00:00.000Z</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/render" />
     <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/render" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/render" />
+  </url>
+  <url>
+    <loc>https://fastro.dev/posts/cors</loc>
+    <lastmod>2026-02-04T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/cors" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/cors" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/cors" />
   </url>
   <url>
     <loc>https://fastro.dev/posts/jwt</loc>
@@ -206,13 +223,6 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/jwt" />
   </url>
   <url>
-    <loc>https://fastro.dev/posts/structure</loc>
-    <lastmod>2026-02-04T00:00:00.000Z</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/structure" />
-    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/structure" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/structure" />
-  </url>
-  <url>
     <loc>https://fastro.dev/posts/kv</loc>
     <lastmod>2026-02-04T00:00:00.000Z</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/kv" />
@@ -220,18 +230,18 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/kv" />
   </url>
   <url>
+    <loc>https://fastro.dev/posts/structure</loc>
+    <lastmod>2026-02-04T00:00:00.000Z</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/structure" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/structure" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/structure" />
+  </url>
+  <url>
     <loc>https://fastro.dev/posts/modules</loc>
     <lastmod>2026-02-04T00:00:00.000Z</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/modules" />
     <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/modules" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/modules" />
-  </url>
-  <url>
-    <loc>https://fastro.dev/posts/cors</loc>
-    <lastmod>2026-02-04T00:00:00.000Z</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/cors" />
-    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/cors" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/cors" />
   </url>
   <url>
     <loc>https://fastro.dev/posts/bodyparser</loc>
@@ -256,12 +266,5 @@
     <image:image>
       <image:loc>"https://storage.googleapis.com/replix-394315-file/uploads/maxwell.jpg'</image:loc>
     </image:image>
-  </url>
-  <url>
-    <loc>https://fastro.dev/posts/v1.0.0</loc>
-    <lastmod>2026-02-01T00:00:00.000Z</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fastro.dev/posts/v1.0.0" />
-    <xhtml:link rel="alternate" hreflang="id" href="https://fastro.dev/id/posts/v1.0.0" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fastro.dev/posts/v1.0.0" />
   </url>
 </urlset>
