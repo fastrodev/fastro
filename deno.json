@@ -38,6 +38,7 @@
     "@std/testing": "jsr:@std/testing@^1.0.17",
     "react": "npm:react@^19.2.4",
     "react-dom": "npm:react-dom@^19.2.4",
+    "react-dom/server": "npm:react-dom@^19.2.4/server",
     "@std/path": "jsr:@std/path@^1.1.4",
     "tailwindcss": "npm:tailwindcss@^4.2.1",
     "esbuild": "npm:esbuild@^0.25.0"
