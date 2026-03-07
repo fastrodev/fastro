@@ -7,7 +7,7 @@
 
 Fastro is a **blazing-fast**, **type-safe**, and **zero-dependency** web framework meticulously engineered for Deno. It is built for developers who demand peak performance without sacrificing a clean and intuitive developer experience.
 
-🚀 **Engineered for Speed**  
+**Engineered for Speed**  
 Achieve near-native Deno throughput. Powered by our latest **pre-built middleware chains** and **unified cache fast-path**, Fastro eliminates dispatch overhead, ensuring your application remains responsive under extreme load. [(Benchmarks)](/BENCHMARK.md)
 
 **Zero-Friction DX**  
