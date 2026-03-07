@@ -105,11 +105,11 @@
     <description>A deep dive into the official Fastro Body Parser middleware: streamlining JSON, Form Data, and raw byte processing with clinical precision.</description>
   </item>
   <item>
-    <title>Benchmark Analysis: Fastro vs Native Deno</title>
+    <title>Benchmark Analysis: Fastro v1.1.0 Performance Leap</title>
     <link>https://fastro.dev/posts/benchmark</link>
     <guid isPermaLink="true">https://fastro.dev/posts/benchmark</guid>
-    <pubDate>Wed, 11 Feb 2026 00:00:00 GMT</pubDate>
-    <description>A detailed analysis of the v1.0.0 performance benchmarks across multiple scenarios, from simple routing to JSON POST and middleware overhead.</description>
+    <pubDate>Sat, 07 Mar 2026 00:00:00 GMT</pubDate>
+    <description>A detailed analysis of the v1.1.0 performance benchmarks, showcasing the impact of pre-built middleware chains and unified cache fast-paths.</description>
   </item>
   <item>
     <title>Persistent Storage made Easy: Fastro + Deno KV</title>

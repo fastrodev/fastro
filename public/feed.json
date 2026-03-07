@@ -128,10 +128,10 @@
     {
       "id": "https://fastro.dev/posts/benchmark",
       "url": "https://fastro.dev/posts/benchmark",
-      "title": "Benchmark Analysis: Fastro vs Native Deno",
-      "content_text": "A detailed analysis of the v1.0.0 performance benchmarks across multiple scenarios, from simple routing to JSON POST and middleware overhead.",
-      "date_published": "2026-02-11T00:00:00.000Z",
-      "content_html": "<p>A detailed analysis of the v1.0.0 performance benchmarks across multiple scenarios, from simple routing to JSON POST and middleware overhead.</p>",
+      "title": "Benchmark Analysis: Fastro v1.1.0 Performance Leap",
+      "content_text": "A detailed analysis of the v1.1.0 performance benchmarks, showcasing the impact of pre-built middleware chains and unified cache fast-paths.",
+      "date_published": "2026-03-07T00:00:00.000Z",
+      "content_html": "<p>A detailed analysis of the v1.1.0 performance benchmarks, showcasing the impact of pre-built middleware chains and unified cache fast-paths.</p>",
       "image": "https://upload.wikimedia.org/wikipedia/commons/e/ef/K6-logo.svg"
     },
     {
