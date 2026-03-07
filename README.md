@@ -25,7 +25,7 @@ Easily manage complex architectures with [automatic module loading](https://fast
 ### 🛡️ **Rock Solid Reliability**  
 Deploy with absolute confidence. Fastro guarantees industrial-grade stability with **100% branch and line coverage** across the entire project core.
 
-### Start in seconds
+### ⏱️ Start in seconds
 
 ```ts
 import Fastro from "https://deno.land/x/fastro/mod.ts";
@@ -39,7 +39,7 @@ app.get("/user/:id", (req, ctx) => {
 app.serve({ port: 8000 });
 ```
 
-### Convenience tasks (via `deno.json`):
+### 🛠️ Convenience tasks (via `deno.json`):
 
 - Start the app:  
   ```bash 
@@ -59,7 +59,7 @@ app.serve({ port: 8000 });
   ```
 
 
-### Resources
+### 📚 Resources
 
 - Docs: https://fastro.deno.dev/DOCS.md
 - Middlewares: https://fastro.deno.dev/MIDDLEWARES.md
