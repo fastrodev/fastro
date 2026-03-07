@@ -2704,3 +2704,25 @@ Deno.test("Coverage - _toResponseForTests with nested Promise covers DA:10 recur
   );
   assertEquals(await (res as Response).text(), "nested");
 });
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Cover applyMiddlewares len===2 branch via tryRoute first-hit path
+// (route registered with exactly 2 middlewares, first request = non-cached)
+// ──────────────────────────────────────────────────────────────────────────────
+
+Deno.test("Coverage - applyMiddlewares len===2 via tryRoute (first hit)", async () => {
+  _resetForTests();
+  server.get(
+    "/two-mw-tryroute",
+    () => "two-mw-ok",
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3639 });
+  // First request hits tryRoute → applyMiddlewares with len===2
+  const res = await fetch("http://localhost:3639/two-mw-tryroute");
+  assertEquals(await res.text(), "two-mw-ok");
+  s.close();
+});
