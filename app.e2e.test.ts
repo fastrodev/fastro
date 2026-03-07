@@ -29,6 +29,20 @@ Deno.test("e2e: app routes", async () => {
       body: JSON.stringify(payload),
     });
     assertEquals(await r4.json(), payload);
+
+    // Verify all 10 global middlewares mutated ctx correctly
+    const r5 = await fetch("http://localhost:3135/ctx-check");
+    const ctx = await r5.json();
+    assertEquals(ctx.requestId, "req-123");
+    assertEquals(ctx.logged, true);
+    assertEquals(ctx.corsOrigin, "*");
+    assertEquals(ctx.securityHeaders, true);
+    assertEquals(ctx.rateLimit, 100);
+    assertEquals(ctx.sessionId, "sess-abc");
+    assertEquals(ctx.authUser, "admin");
+    assertEquals(ctx.compress, "gzip");
+    assertEquals(ctx.cacheControl, "no-cache");
+    assertEquals(ctx.hasMetrics, true);
   } finally {
     s.close();
   }
