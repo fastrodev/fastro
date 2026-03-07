@@ -25,7 +25,7 @@ Easily manage complex architectures with [automatic module loading](https://fast
 ### 🛡️ **Rock Solid Reliability**  
 Deploy with absolute confidence. Fastro guarantees industrial-grade stability with **100% branch and line coverage** across the entire project core.
 
-### ⏱️ Start in seconds
+### 🚀 Quick Start
 
 ```ts
 import Fastro from "https://deno.land/x/fastro/mod.ts";
