@@ -84,6 +84,15 @@
       "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=60"
     },
     {
+      "id": "https://fastro.dev/posts/v1.1.0",
+      "url": "https://fastro.dev/posts/v1.1.0",
+      "title": "Fastro v1.1.0: Architectural Refinements & 100% Coverage",
+      "content_text": "Discover the architectural optimizations in Fastro v1.1.0, including pre-built middleware chains, a unified cache fast-path, and the achievement of 100% project-wide test coverage.",
+      "date_published": "2026-03-07T00:00:00.000Z",
+      "content_html": "<p>Discover the architectural optimizations in Fastro v1.1.0, including pre-built middleware chains, a unified cache fast-path, and the achievement of 100% project-wide test coverage.</p>",
+      "image": "https://repository-images.githubusercontent.com/264308713/1b83bd0f-b9d9-466d-9e63-f947c1a67281"
+    },
+    {
       "id": "https://fastro.dev/posts/jwt",
       "url": "https://fastro.dev/posts/jwt",
       "title": "JWT Authentication Middleware in Fastro",
