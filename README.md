@@ -1,16 +1,11 @@
-# ⚡ Fastro
-
-### High-performance, minimalist web framework for Deno
+# High-performance, minimalist web framework for Deno
 
 ![Fastro](https://repository-images.githubusercontent.com/264308713/1b83bd0f-b9d9-466d-9e63-f947c1a67281)
-
-[![CI](https://github.com/fastrodev/fastro/actions/workflows/ci.yml/badge.svg)](https://github.com/fastrodev/fastro/actions/workflows/ci.yml)
-[![Coverage Status](https://coveralls.io/repos/github/fastrodev/fastro/badge.svg?branch=main)](https://coveralls.io/github/fastrodev/fastro?branch=main)
 
 Fastro is a **blazing-fast**, **type-safe**, and **zero-dependency** web framework meticulously engineered for Deno. It is built for developers who demand peak performance without sacrificing a clean and intuitive developer experience.
 
 🚀 **Engineered for Speed**  
-Achieve near-native Deno throughput. Powered by our latest **pre-built middleware chains** and **unified cache fast-path**, Fastro eliminates dispatch overhead, ensuring your application remains responsive under extreme load. [(Benchmarks)](/BENCHMARK.md)
+Achieve near-native Deno throughput. Powered by our latest **pre-built middleware chains** and **unified cache fast-path**, Fastro eliminates dispatch overhead, ensuring your application remains responsive under extreme load. [(Benchmarks)](https://github.com/fastrodev/fastro/blob/main/BENCHMARK.md)
 
 💎 **Zero-Friction DX**  
 Write clean, declarative code. Return JSON objects, strings, or native Responses directly from your handlers. No boilerplate, no complex abstractions—just pure productivity.
