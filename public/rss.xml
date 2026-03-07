@@ -70,11 +70,11 @@
     <description>Analisis mengapa stabilitas (stddev) sama pentingnya dengan throughput (RPS) dalam benchmark framework HTTP 2026.</description>
   </item>
   <item>
-    <title>Fastro v1.1.0: Architectural Refinements &amp; 100% Coverage</title>
+    <title>Fastro v1.1.2: Architectural Refinements &amp; 100% Coverage</title>
     <link>https://fastro.dev/posts/v1.1.0</link>
     <guid isPermaLink="true">https://fastro.dev/posts/v1.1.0</guid>
     <pubDate>Sat, 07 Mar 2026 00:00:00 GMT</pubDate>
-    <description>Discover the architectural optimizations in Fastro v1.1.0, including pre-built middleware chains, a unified cache fast-path, and the achievement of 100% project-wide test coverage.</description>
+    <description>Discover the architectural optimizations in Fastro v1.1.2, including pre-compiled middleware chains, FastContext for V8 optimization, and the achievement of 100% project-wide test coverage.</description>
   </item>
   <item>
     <title>JWT Authentication Middleware in Fastro</title>
@@ -105,11 +105,11 @@
     <description>A deep dive into the official Fastro Body Parser middleware: streamlining JSON, Form Data, and raw byte processing with clinical precision.</description>
   </item>
   <item>
-    <title>Benchmark Analysis: Fastro v1.1.0 Performance Leap</title>
+    <title>Benchmark Analysis: Fastro v1.1.2 Performance Leap</title>
     <link>https://fastro.dev/posts/benchmark</link>
     <guid isPermaLink="true">https://fastro.dev/posts/benchmark</guid>
     <pubDate>Sat, 07 Mar 2026 00:00:00 GMT</pubDate>
-    <description>A detailed analysis of the v1.1.0 performance benchmarks, showcasing the impact of pre-built middleware chains and unified cache fast-paths.</description>
+    <description>A detailed analysis of the v1.1.2 performance benchmarks, showcasing the impact of pre-compiled middleware chains, FastContext class, and 100% test coverage.</description>
   </item>
   <item>
     <title>Persistent Storage made Easy: Fastro + Deno KV</title>
