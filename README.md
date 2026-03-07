@@ -5,13 +5,22 @@
 [![CI](https://github.com/fastrodev/fastro/actions/workflows/ci.yml/badge.svg)](https://github.com/fastrodev/fastro/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/fastrodev/fastro/badge.svg?branch=main)](https://coveralls.io/github/fastrodev/fastro?branch=main)
 
-Fastro is a high-performance, zero-dependency web framework for Deno. It’s built for developers who care about **speed**, **type-safety**, and **clean code**.
+Fastro is a **blazing-fast**, **type-safe**, and **zero-dependency** web framework meticulously engineered for Deno. It is built for developers who demand peak performance without sacrificing a clean and intuitive developer experience.
 
-- **Blazing Fast**: Reaches near-native Deno speeds [(Benchmarks)](/BENCHMARK.md).
-- **Zero Dependency Core**: Minimalist engine with no external dependencies.
-- **Zero Friction**: Return JSON, strings, or Responses directly.
-- **Built to Scale**: Automatic [module loading](/DOCS.md#automatic-module-loading).
-- **Rock Solid**: 100% core test coverage.
+🚀 **Engineered for Speed**  
+Achieve near-native Deno throughput. Powered by our latest **pre-built middleware chains** and **unified cache fast-path**, Fastro eliminates dispatch overhead, ensuring your application remains responsive under extreme load. [(Benchmarks)](/BENCHMARK.md)
+
+**Zero-Friction DX**  
+Write clean, declarative code. Return JSON objects, strings, or native Responses directly from your handlers. No boilerplate, no complex abstractions—just pure productivity.
+
+**Zero Dependency Core**  
+A minimalist, rock-solid engine with absolutely no external dependencies. Keep your stack light, secure, and easy to maintain.
+
+**Built to Scale**  
+Easily manage complex architectures with [automatic module loading](https://fastro.deno.dev/DOCS.md#automatic-module-loading) and a modular design that grows with your application.
+
+**Rock Solid Reliability**  
+Deploy with absolute confidence. Fastro guarantees industrial-grade stability with **100% branch and line coverage** across the entire project core.
 
 ### Start in seconds
 
