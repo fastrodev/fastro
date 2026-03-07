@@ -4,6 +4,7 @@ import server, {
   _getRoutePaths,
   _getRoutesForTests,
   _resetForTests,
+  _toResponseForTests,
 } from "./server.ts";
 // test-only helper for internal handler retrieval (typed to satisfy linter)
 // no test-only globals
@@ -2159,4 +2160,547 @@ Deno.test("Coverage - registerRoute splice with non-string pStr branch", () => {
   // returning `""` for the routePaths splice.
   // @ts-ignore: testing invalid type coverage
   server.get({ pathname: 42 }, () => "num");
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Coverage gap: applyMiddlewares generic dispatch loop (3+ middlewares)
+// ──────────────────────────────────────────────────────────────────────────────
+
+Deno.test("Coverage - applyMiddlewares with 3+ middlewares (tryRoute first hit)", async () => {
+  _resetForTests();
+  server.get(
+    "/three-mw",
+    () => "ok",
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3600 });
+  const res = await fetch("http://localhost:3600/three-mw");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+Deno.test("Coverage - applyMiddlewares with 3+ middlewares (cached fast-path)", async () => {
+  _resetForTests();
+  server.get(
+    "/three-mw-cached",
+    () => "ok",
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3601 });
+  // prime cache
+  await (await fetch("http://localhost:3601/three-mw-cached")).text();
+  // second request hits the cached fast-path → applyMiddlewares dispatch loop
+  const res = await fetch("http://localhost:3601/three-mw-cached");
+  assertEquals(await res.text(), "ok");
+  s.close();
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Coverage gap: root fast-path → JSON object response (DA:432)
+// ──────────────────────────────────────────────────────────────────────────────
+
+Deno.test("Coverage - root fast-path returns JSON object", async () => {
+  _resetForTests();
+  // @ts-ignore: testing
+  server.get("/", () => ({ ok: true }) as unknown);
+  const s = server.serve({ port: 3602 });
+  const res = await fetch("http://localhost:3602/");
+  assertEquals(res.status, 200);
+  assertEquals(await res.json(), { ok: true });
+  s.close();
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Coverage gap: cached fast-path (no middleware) → JSON object (DA:473)
+// ──────────────────────────────────────────────────────────────────────────────
+
+Deno.test("Coverage - cached fast-path no-mw returns JSON object", async () => {
+  _resetForTests();
+  // @ts-ignore: testing
+  server.get("/cached-json", () => ({ cached: true }) as unknown);
+  const s = server.serve({ port: 3603 });
+  // prime the cache
+  await (await fetch("http://localhost:3603/cached-json")).json();
+  // second request hits cached path → DA:473 Response.json branch
+  const res = await fetch("http://localhost:3603/cached-json");
+  assertEquals(res.status, 200);
+  assertEquals(await res.json(), { cached: true });
+  s.close();
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Coverage gap: cached single-mw fast-path → handler returns object (DA:483-487)
+// ──────────────────────────────────────────────────────────────────────────────
+
+Deno.test("Coverage - cached single-mw fast-path returns JSON object", async () => {
+  _resetForTests();
+  server.get(
+    "/cached-mw-json",
+    // @ts-ignore: testing
+    () => ({ mw: true }) as unknown,
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3604 });
+  // prime the cache
+  await (await fetch("http://localhost:3604/cached-mw-json")).json();
+  // second request hits cached single-mw path → DA:483-487
+  const res = await fetch("http://localhost:3604/cached-mw-json");
+  assertEquals(res.status, 200);
+  assertEquals(await res.json(), { mw: true });
+  s.close();
+});
+
+Deno.test("Coverage - cached single-mw fast-path handler returns 500", async () => {
+  _resetForTests();
+  server.get(
+    "/cached-mw-500",
+    // @ts-ignore: testing
+    () => 42 as unknown,
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3605 });
+  // prime the cache
+  await (await fetch("http://localhost:3605/cached-mw-500")).text();
+  // second request hits cached single-mw path → DA:486 500 branch
+  const res = await fetch("http://localhost:3605/cached-mw-500");
+  assertEquals(res.status, 500);
+  await res.text();
+  s.close();
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Coverage gap: runFinal cached route-middleware branches (DA:572-590)
+// ──────────────────────────────────────────────────────────────────────────────
+
+Deno.test("Coverage - runFinal cached route-mw handler returns object", async () => {
+  _resetForTests();
+  // global mw forces hasGlobalMiddlewares = true → goes through runFinal
+  server.use((_req, _ctx, next) =>
+    next ? (next() as unknown as Response) : ("fail" as unknown as Response)
+  );
+  server.get(
+    "/runfinal-obj",
+    // @ts-ignore: testing
+    () => ({ rf: true }) as unknown,
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3606 });
+  await (await fetch("http://localhost:3606/runfinal-obj")).json();
+  const res = await fetch("http://localhost:3606/runfinal-obj");
+  assertEquals(res.status, 200);
+  assertEquals(await res.json(), { rf: true });
+  s.close();
+});
+
+Deno.test("Coverage - runFinal cached route-mw handler returns promise", async () => {
+  _resetForTests();
+  server.use((_req, _ctx, next) =>
+    next ? (next() as unknown as Response) : ("fail" as unknown as Response)
+  );
+  server.get(
+    "/runfinal-promise",
+    () => Promise.resolve("promise-ok"),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3607 });
+  await (await fetch("http://localhost:3607/runfinal-promise")).text();
+  const res = await fetch("http://localhost:3607/runfinal-promise");
+  assertEquals(await res.text(), "promise-ok");
+  s.close();
+});
+
+Deno.test("Coverage - runFinal cached route-mw handler returns 500", async () => {
+  _resetForTests();
+  server.use((_req, _ctx, next) =>
+    next ? (next() as unknown as Response) : ("fail" as unknown as Response)
+  );
+  server.get(
+    "/runfinal-500",
+    // @ts-ignore: testing
+    () => 42 as unknown,
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3608 });
+  await (await fetch("http://localhost:3608/runfinal-500")).text();
+  const res = await fetch("http://localhost:3608/runfinal-500");
+  assertEquals(res.status, 500);
+  await res.text();
+  s.close();
+});
+
+Deno.test("Coverage - toResponse Promise branch (via applyMiddlewares loop)", async () => {
+  _resetForTests();
+  // 3 middlewares forces dispatch loop; handler returns Promise → toResponse(Promise) branch
+  server.get(
+    "/toresponse-promise",
+    () => Promise.resolve("promise-val"),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3609 });
+  const res = await fetch("http://localhost:3609/toresponse-promise");
+  assertEquals(await res.text(), "promise-val");
+  s.close();
+});
+
+Deno.test("Coverage - toResponse 500 fallback branch (via applyMiddlewares loop)", async () => {
+  _resetForTests();
+  server.get(
+    "/toresponse-500",
+    // @ts-ignore: testing
+    () => 42 as unknown,
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3610 });
+  const res = await fetch("http://localhost:3610/toresponse-500");
+  assertEquals(res.status, 500);
+  await res.text();
+  s.close();
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// DA:10 – toResponse Promise branch (called directly via tryRoute with applyMiddlewares
+//          where the inline branches are exhausted but toResponse itself is called)
+// DA:12 – toResponse 500 branch
+// These lines are in the `toResponse` function itself. We need to call it via a
+// path where the *inlined* checks don't short-circuit first.
+// The only remaining caller of toResponse() is tryRoute's applyMiddlewares closure
+// (line 144-152 in tryRoute).  applyMiddlewares routes through the dispatch loop
+// (3+ middlewares) which calls the finalHandler closure that has the inline checks.
+// Actually DA:10 and DA:12 are ONLY reachable if `toResponse` is called with a
+// nested Promise (Promise.resolve(Promise.resolve(x))) or with `undefined`/`null`.
+// ──────────────────────────────────────────────────────────────────────────────
+
+Deno.test("Coverage - toResponse recursive Promise (DA:10)", async () => {
+  _resetForTests();
+  // A handler returning a Promise<Promise<string>> triggers the recursive
+  // toResponse path (DA:10): toResponse receives a Promise from `.then(toResponse)`
+  // and needs to recurse.
+  server.get(
+    "/toresponse-recursive",
+    // @ts-ignore: testing
+    () => Promise.resolve(Promise.resolve("recursive")) as unknown,
+  );
+  const s = server.serve({ port: 3611 });
+  const res = await fetch("http://localhost:3611/toresponse-recursive");
+  assertEquals(await res.text(), "recursive");
+  s.close();
+});
+
+Deno.test("Coverage - toResponse 500 fallback (DA:12) via direct call", async () => {
+  _resetForTests();
+  // We need toResponse called with a non-Response, non-string, non-Promise, non-object.
+  // Route handler returns `undefined` which is not caught by the inlined checks.
+  // However, since all hot-paths inline the checks, toResponse is only called via
+  // `.then(toResponse)`. So we return Promise<undefined> to trigger the chain.
+  server.get(
+    "/toresponse-undef",
+    // @ts-ignore: testing
+    () => Promise.resolve(undefined) as unknown,
+  );
+  const s = server.serve({ port: 3612 });
+  const res = await fetch("http://localhost:3612/toresponse-undef");
+  assertEquals(res.status, 500);
+  await res.text();
+  s.close();
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// DA:495 – cached applyMiddlewares (3+ mw) → handler returns Response
+// DA:497 – cached applyMiddlewares (3+ mw) → handler returns Promise
+// DA:498-500 – cached applyMiddlewares (3+ mw) → handler returns object
+// DA:501 – cached applyMiddlewares (3+ mw) → handler returns 500
+// ──────────────────────────────────────────────────────────────────────────────
+
+Deno.test("Coverage - cached 3+mw applyMiddlewares handler returns Response (DA:495)", async () => {
+  _resetForTests();
+  server.get(
+    "/cached-3mw-response",
+    () => new Response("direct"),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3620 });
+  await (await fetch("http://localhost:3620/cached-3mw-response")).text();
+  const res = await fetch("http://localhost:3620/cached-3mw-response");
+  assertEquals(await res.text(), "direct");
+  s.close();
+});
+
+Deno.test("Coverage - cached 3+mw applyMiddlewares handler returns string (DA:496)", async () => {
+  _resetForTests();
+  server.get(
+    "/cached-3mw-string",
+    () => "str-ok",
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3621 });
+  await (await fetch("http://localhost:3621/cached-3mw-string")).text();
+  const res = await fetch("http://localhost:3621/cached-3mw-string");
+  assertEquals(await res.text(), "str-ok");
+  s.close();
+});
+
+Deno.test("Coverage - cached 3+mw applyMiddlewares handler returns Promise (DA:497)", async () => {
+  _resetForTests();
+  server.get(
+    "/cached-3mw-promise",
+    () => Promise.resolve("promise-3mw"),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3622 });
+  await (await fetch("http://localhost:3622/cached-3mw-promise")).text();
+  const res = await fetch("http://localhost:3622/cached-3mw-promise");
+  assertEquals(await res.text(), "promise-3mw");
+  s.close();
+});
+
+Deno.test("Coverage - cached 3+mw applyMiddlewares handler returns object (DA:498-500)", async () => {
+  _resetForTests();
+  server.get(
+    "/cached-3mw-object",
+    // @ts-ignore: testing
+    () => ({ obj: "3mw" }) as unknown,
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3623 });
+  await (await fetch("http://localhost:3623/cached-3mw-object")).json();
+  const res = await fetch("http://localhost:3623/cached-3mw-object");
+  assertEquals(await res.json(), { obj: "3mw" });
+  s.close();
+});
+
+Deno.test("Coverage - cached 3+mw applyMiddlewares handler returns 500 (DA:501)", async () => {
+  _resetForTests();
+  server.get(
+    "/cached-3mw-500",
+    // @ts-ignore: testing
+    () => 42 as unknown,
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3624 });
+  await (await fetch("http://localhost:3624/cached-3mw-500")).text();
+  const res = await fetch("http://localhost:3624/cached-3mw-500");
+  assertEquals(res.status, 500);
+  await res.text();
+  s.close();
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// DA:523-525 – decodeURIComponent catch block in query parser
+// Send a query string with invalid percent-encoding like %zz
+// ──────────────────────────────────────────────────────────────────────────────
+
+Deno.test("Coverage - query parser decodeURIComponent catch (DA:523-525)", async () => {
+  _resetForTests();
+  server.get("/bad-query", (_req, ctx) => ctx.query["key"] ?? "missing");
+  const s = server.serve({ port: 3625 });
+  // %zz is invalid percent-encoding, will throw in decodeURIComponent
+  const res = await fetch("http://localhost:3625/bad-query?%zz=val");
+  // The catch block falls back to raw key; either way we get a response
+  assertEquals(res.status, 200);
+  await res.text();
+  s.close();
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// DA:572-576 – runFinal no-mw: handler returns object or 500
+// Requires: hasGlobalMiddlewares=true, cached route, no route-mw, handler returns object/500
+// ──────────────────────────────────────────────────────────────────────────────
+
+Deno.test("Coverage - runFinal no-mw handler returns object (DA:572-574)", async () => {
+  _resetForTests();
+  server.use((_req, _ctx, next) =>
+    next ? (next() as unknown as Response) : ("fail" as unknown as Response)
+  );
+  // @ts-ignore: testing
+  server.get("/runfinal-nomw-obj", () => ({ nomw: true }) as unknown);
+  const s = server.serve({ port: 3626 });
+  await (await fetch("http://localhost:3626/runfinal-nomw-obj")).json();
+  const res = await fetch("http://localhost:3626/runfinal-nomw-obj");
+  assertEquals(await res.json(), { nomw: true });
+  s.close();
+});
+
+Deno.test("Coverage - runFinal no-mw handler returns 500 (DA:575)", async () => {
+  _resetForTests();
+  server.use((_req, _ctx, next) =>
+    next ? (next() as unknown as Response) : ("fail" as unknown as Response)
+  );
+  // @ts-ignore: testing
+  server.get("/runfinal-nomw-500", () => 42 as unknown);
+  const s = server.serve({ port: 3627 });
+  await (await fetch("http://localhost:3627/runfinal-nomw-500")).text();
+  const res = await fetch("http://localhost:3627/runfinal-nomw-500");
+  assertEquals(res.status, 500);
+  await res.text();
+  s.close();
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// DA:582-588 – runFinal route-mw: handler returns Response, Promise, object, 500
+// Requires: hasGlobalMiddlewares=true, cached route, route has 1 mw
+// ──────────────────────────────────────────────────────────────────────────────
+
+Deno.test("Coverage - runFinal route-mw handler returns Response (DA:582)", async () => {
+  _resetForTests();
+  server.use((_req, _ctx, next) =>
+    next ? (next() as unknown as Response) : ("fail" as unknown as Response)
+  );
+  server.get(
+    "/runfinal-routemw-response",
+    () => new Response("routemw-resp"),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3628 });
+  await (await fetch("http://localhost:3628/runfinal-routemw-response")).text();
+  const res = await fetch("http://localhost:3628/runfinal-routemw-response");
+  assertEquals(await res.text(), "routemw-resp");
+  s.close();
+});
+
+Deno.test("Coverage - runFinal route-mw handler returns string (DA:583)", async () => {
+  _resetForTests();
+  server.use((_req, _ctx, next) =>
+    next ? (next() as unknown as Response) : ("fail" as unknown as Response)
+  );
+  server.get(
+    "/runfinal-routemw-string",
+    () => "routemw-str",
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3629 });
+  await (await fetch("http://localhost:3629/runfinal-routemw-string")).text();
+  const res = await fetch("http://localhost:3629/runfinal-routemw-string");
+  assertEquals(await res.text(), "routemw-str");
+  s.close();
+});
+
+Deno.test("Coverage - runFinal route-mw handler returns Promise (DA:584)", async () => {
+  _resetForTests();
+  server.use((_req, _ctx, next) =>
+    next ? (next() as unknown as Response) : ("fail" as unknown as Response)
+  );
+  server.get(
+    "/runfinal-routemw-promise",
+    () => Promise.resolve("routemw-promise"),
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3630 });
+  await (await fetch("http://localhost:3630/runfinal-routemw-promise")).text();
+  const res = await fetch("http://localhost:3630/runfinal-routemw-promise");
+  assertEquals(await res.text(), "routemw-promise");
+  s.close();
+});
+
+Deno.test("Coverage - runFinal route-mw handler returns object (DA:585-587)", async () => {
+  _resetForTests();
+  server.use((_req, _ctx, next) =>
+    next ? (next() as unknown as Response) : ("fail" as unknown as Response)
+  );
+  server.get(
+    "/runfinal-routemw-object",
+    // @ts-ignore: testing
+    () => ({ routemw: true }) as unknown,
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3631 });
+  await (await fetch("http://localhost:3631/runfinal-routemw-object")).json();
+  const res = await fetch("http://localhost:3631/runfinal-routemw-object");
+  assertEquals(await res.json(), { routemw: true });
+  s.close();
+});
+
+Deno.test("Coverage - runFinal route-mw handler returns 500 (DA:588)", async () => {
+  _resetForTests();
+  server.use((_req, _ctx, next) =>
+    next ? (next() as unknown as Response) : ("fail" as unknown as Response)
+  );
+  server.get(
+    "/runfinal-routemw-500",
+    // @ts-ignore: testing
+    () => 42 as unknown,
+    (_req, _ctx, next) =>
+      next ? (next() as unknown as Response) : ("fail" as unknown as Response),
+  );
+  const s = server.serve({ port: 3632 });
+  await (await fetch("http://localhost:3632/runfinal-routemw-500")).text();
+  const res = await fetch("http://localhost:3632/runfinal-routemw-500");
+  assertEquals(res.status, 500);
+  await res.text();
+  s.close();
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// DA:10 – toResponse Promise branch called directly via _toResponseForTests
+// DA:653-657 – _toResponseForTests function body
+// ──────────────────────────────────────────────────────────────────────────────
+
+Deno.test("Coverage - _toResponseForTests covers DA:10 recursive Promise branch", async () => {
+  // Passing a Promise directly into _toResponseForTests causes toResponse()
+  // to hit the `if (res instanceof Promise)` branch at DA:10, which then
+  // calls `.then(toResponse)` recursively. This also covers the exported
+  // _toResponseForTests function body (DA:653-657).
+  const res = await _toResponseForTests(Promise.resolve("hello-direct"));
+  assertEquals(await (res as Response).text(), "hello-direct");
+});
+
+Deno.test("Coverage - _toResponseForTests with nested Promise covers DA:10 recurse", async () => {
+  // Promise<Promise<string>> → toResponse is called on a Promise, recurses once more.
+  const res = await _toResponseForTests(
+    Promise.resolve(Promise.resolve("nested")),
+  );
+  assertEquals(await (res as Response).text(), "nested");
 });
