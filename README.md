@@ -19,7 +19,7 @@ Write clean, declarative code. Return JSON objects, strings, or native Responses
 ### 🍱 **Zero Dependency Core**  
 A minimalist, rock-solid engine with absolutely no external dependencies. Keep your stack light, secure, and easy to maintain.
 
-### �️ **Built to Scale**  
+### 🏙️ **Built to Scale**  
 Easily manage complex architectures with [automatic module loading](https://fastro.deno.dev/DOCS.md#automatic-module-loading) and a modular design that grows with your application.
 
 ### 🛡️ **Rock Solid Reliability**  
