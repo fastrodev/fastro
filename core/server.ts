@@ -12,12 +12,29 @@ function toResponse(res: unknown): Response | Promise<Response> {
   return new Response("Internal Server Error", { status: 500 });
 }
 
+const renderToStringStub = Object.assign(
+  (_component: unknown, _opts?: unknown) => {
+    console.warn(
+      "renderToString called but createRenderMiddleware is not installed. Install it with app.use(createRenderMiddleware()) to enable rendering.",
+    );
+    return "<!-- renderToString: render middleware not installed -->";
+  },
+  { __is_stub: true },
+) as unknown;
+
 function applyMiddlewares(
   req: Request,
   context: Context,
   finalHandler: () => Response | Promise<Response>,
   list: Middleware[],
 ): Response | Promise<Response> {
+  const len = list.length;
+  if (len === 1) {
+    return list[0](req, context, finalHandler);
+  }
+  if (len === 2) {
+    return list[0](req, context, () => list[1](req, context, finalHandler));
+  }
   let index = 0;
   const dispatch = (): Response | Promise<Response> => {
     if (index >= list.length) return finalHandler();
@@ -113,7 +130,11 @@ function tryRoute(
           const res = route.handler(req, context, next);
           if (res instanceof Response) return res;
           if (typeof res === "string") return new Response(res);
-          return toResponse(res);
+          if (res instanceof Promise) return res.then(toResponse);
+          if (res !== null && typeof res === "object") {
+            return Response.json(res);
+          }
+          return new Response("Internal Server Error", { status: 500 });
         }
 
         return applyMiddlewares(
@@ -123,7 +144,11 @@ function tryRoute(
             const res = route.handler(req, context, next);
             if (res instanceof Response) return res;
             if (typeof res === "string") return new Response(res);
-            return toResponse(res);
+            if (res instanceof Promise) return res.then(toResponse);
+            if (res !== null && typeof res === "object") {
+              return Response.json(res);
+            }
+            return new Response("Internal Server Error", { status: 500 });
           },
           route.middlewares,
         );
@@ -369,6 +394,14 @@ function serve(
   const rootHandler = rootRoute?.handler;
   const rh0 = rootHandler && rootHandler.length === 0;
 
+  // Pre-build per-route combined middleware chains (global mw + route mw) once
+  // at serve() time. This lets the cache fast-path work even when global
+  // middlewares are present, eliminating the double-dispatch overhead that
+  // previously required going through runFinal on every cached request.
+  const prebuiltChains: Middleware[][] = routes.map((r) =>
+    hasGlobalMiddlewares ? [...middlewares, ...r.middlewares] : r.middlewares
+  );
+
   const handler = (
     req: Request,
     info: Deno.ServeHandlerInfo,
@@ -399,139 +432,111 @@ function serve(
             get url() {
               return new URL(urlStr);
             },
-            renderToString: Object.assign(
-              (_component: unknown, _opts?: unknown) => {
-                console.warn(
-                  "renderToString called but createRenderMiddleware is not installed. Install it with app.use(createRenderMiddleware()) to enable rendering.",
-                );
-                return "<!-- renderToString: render middleware not installed -->";
-              },
-              { __is_stub: true },
-            ) as unknown,
+            renderToString: renderToStringStub,
           } as unknown as Context, rootNext);
         if (res instanceof Response) return res;
         if (typeof res === "string") return new Response(res);
-        return toResponse(res);
+        if (res instanceof Promise) return res.then(toResponse);
+        if (res !== null && typeof res === "object") return Response.json(res);
+        return new Response("Internal Server Error", { status: 500 });
       }
     }
 
     const cacheKey = method + ":" + urlStr;
     const cached = matchCache.get(cacheKey);
 
-    if (cached !== undefined && !hasGlobalMiddlewares) {
+    // Unified cache fast-path: works whether or not global middlewares are present.
+    // Pre-built combined chains (global mw + route mw) are applied in one dispatch,
+    // avoiding the extra closure and double-dispatch of the runFinal approach.
+    if (cached !== undefined) {
       if (cached === null) return new Response("Not found", { status: 404 });
 
-      // Move to end (LRU)
-      matchCache.delete(cacheKey);
-      matchCache.set(cacheKey, cached);
-
       const route = routes[cached.routeIndex];
-      if (route.middlewares.length === 0) {
-        const cachedCtx = {
-          params: cached.params,
-          query: cached.query,
-          remoteAddr: info.remoteAddr,
-          get url() {
-            return new URL(urlStr);
-          },
-          renderToString: Object.assign(
-            (_component: unknown, _opts?: unknown) => {
-              console.warn(
-                "renderToString called but createRenderMiddleware is not installed. Install it with app.use(createRenderMiddleware()) to enable rendering.",
-              );
-              return "<!-- renderToString: render middleware not installed -->";
-            },
-            { __is_stub: true },
-          ) as unknown,
-        } as unknown as Context;
-        const res = route.handler(req, cachedCtx, () =>
-          tryRoute(
-            cached.routeIndex + 1,
-            cachedCtx,
-            undefined,
-            req,
-            urlStr,
-            pathname,
-            cacheKey,
-            method,
-            matchCache,
-            MAX_CACHE_SIZE,
-            routeRegex,
-          ));
+      const chain = prebuiltChains[cached.routeIndex];
+      const cachedCtx = {
+        params: cached.params,
+        query: cached.query,
+        remoteAddr: info.remoteAddr,
+        get url() {
+          return new URL(urlStr);
+        },
+        renderToString: renderToStringStub,
+      } as unknown as Context;
+      const nextCached = () =>
+        tryRoute(
+          cached.routeIndex + 1,
+          cachedCtx,
+          undefined,
+          req,
+          urlStr,
+          pathname,
+          cacheKey,
+          method,
+          matchCache,
+          MAX_CACHE_SIZE,
+          routeRegex,
+        );
+
+      const innerHandler = () => {
+        const res = route.handler(req, cachedCtx, nextCached);
         if (res instanceof Response) return res;
         if (typeof res === "string") return new Response(res);
-        return toResponse(res);
-      }
+        if (res instanceof Promise) return res.then(toResponse);
+        if (res !== null && typeof res === "object") return Response.json(res);
+        return new Response("Internal Server Error", { status: 500 });
+      };
+
+      if (chain.length === 0) return innerHandler();
+      if (chain.length === 1) return chain[0](req, cachedCtx, innerHandler);
+      return applyMiddlewares(req, cachedCtx, innerHandler, chain);
     }
 
-    const url = qIdx !== -1 ? new URL(urlStr) : undefined;
+    // Non-cached path: lazy query parsing + full route matching.
+    // tryRoute stores the match in cache; subsequent requests hit the fast-path above.
+    let cachedQuery: Record<string, string> | undefined;
+    const getQuery = (): Record<string, string> => {
+      if (cachedQuery) return cachedQuery;
+      if (qIdx === -1) return emptyQuery;
+      cachedQuery = {};
+      const qs = urlStr.slice(qIdx + 1);
+      let start = 0;
+      while (start < qs.length) {
+        let end = qs.indexOf("&", start);
+        if (end === -1) end = qs.length;
+        const eq = qs.indexOf("=", start);
+        if (eq !== -1 && eq < end) {
+          try {
+            cachedQuery[decodeURIComponent(qs.slice(start, eq))] =
+              decodeURIComponent(qs.slice(eq + 1, end).replace(/\+/g, " "));
+          } catch {
+            cachedQuery[qs.slice(start, eq)] = qs.slice(eq + 1, end);
+          }
+        }
+        start = end + 1;
+      }
+      return cachedQuery;
+    };
+    // Lazy URL: only allocated when ctx.url needs it
+    let url: URL | undefined;
     const ctx: Context = {
       params: emptyParams,
       get query() {
-        if (!url) return emptyQuery;
-        const q: Record<string, string> = {};
-        for (const [k, v] of url.searchParams) q[k] = v;
-        return q;
+        return getQuery();
       },
       remoteAddr: info.remoteAddr,
       get url() {
-        return url || new URL(urlStr);
+        if (!url) url = new URL(urlStr);
+        return url;
       },
       // Default stub: warn when called so developers know to install render middleware.
-      renderToString: Object.assign(
-        (_component: unknown, _opts?: unknown) => {
-          console.warn(
-            "renderToString called but createRenderMiddleware is not installed. Install it with app.use(createRenderMiddleware()) to enable rendering.",
-          );
-          return "<!-- renderToString: render middleware not installed -->";
-        },
-        { __is_stub: true },
-      ) as unknown,
+      renderToString: renderToStringStub,
     } as unknown as Context;
 
-    const runFinal = () => {
-      if (cached !== undefined) {
-        if (cached === null) return new Response("Not found", { status: 404 });
-
-        // Move to end (LRU)
-        matchCache.delete(cacheKey);
-        matchCache.set(cacheKey, cached);
-
-        const route = routes[cached.routeIndex];
-        ctx.params = cached.params;
-        const next = () =>
-          tryRoute(
-            cached.routeIndex + 1,
-            ctx,
-            url,
-            req,
-            urlStr,
-            pathname,
-            cacheKey,
-            method,
-            matchCache,
-            MAX_CACHE_SIZE,
-            routeRegex,
-          );
-        if (route.middlewares.length === 0) {
-          const res = route.handler(req, ctx, next);
-          if (res instanceof Response) return res;
-          if (typeof res === "string") return new Response(res);
-          return toResponse(res);
-        }
-        return applyMiddlewares(
-          req,
-          ctx,
-          () => {
-            const res = route.handler(req, ctx, next);
-            if (res instanceof Response) return res;
-            if (typeof res === "string") return new Response(res);
-            return toResponse(res);
-          },
-          route.middlewares,
-        );
-      }
-      return tryRoute(
+    // On cache miss: apply global middlewares wrapping tryRoute.
+    // Global mw runs first; when it calls next(), route matching happens and the
+    // result is stored in cache for subsequent fast-path hits.
+    const runFinal = () =>
+      tryRoute(
         0,
         ctx,
         url,
@@ -544,7 +549,6 @@ function serve(
         MAX_CACHE_SIZE,
         routeRegex,
       );
-    };
 
     return middlewares.length === 0
       ? runFinal()
@@ -586,7 +590,16 @@ export function _getRoutePaths() {
 
 // Test-only helper: execute internal code paths to increase coverage for branches
 // that are difficult to reach via regular HTTP requests. Only used by tests.
-// Note: test-only helpers were removed to keep production code clean.
+
+/**
+ * Internal utility for testing toResponse directly (covers DA:10 recursive Promise branch).
+ * @internal
+ */
+export function _toResponseForTests(
+  res: unknown,
+): Response | Promise<Response> {
+  return toResponse(res);
+}
 
 const server = {
   get,
