@@ -2,21 +2,27 @@
 
 ![Fastro](https://repository-images.githubusercontent.com/264308713/1b83bd0f-b9d9-466d-9e63-f947c1a67281)
 
+[![Deno](https://img.shields.io/badge/deno-^1.40.0-blue?logo=deno&logoColor=white)](https://deno.land/)
+[![License](https://img.shields.io/github/license/fastrodev/fastro)](https://github.com/fastrodev/fastro/blob/main/LICENSE)
+[![Release](https://img.shields.io/github/v/release/fastrodev/fastro)](https://github.com/fastrodev/fastro/releases)
+[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/fastrodev/fastro/blob/main/BENCHMARK.md)
+[![Performance](https://img.shields.io/badge/performance-108%25_of_native-orange)](https://github.com/fastrodev/fastro/blob/main/BENCHMARK.md)
+
 Fastro is a **blazing-fast**, **type-safe**, and **zero-dependency** web framework meticulously engineered for Deno. It is built for developers who demand peak performance without sacrificing a clean and intuitive developer experience.
 
-🚀 **Engineered for Speed**  
+### ⚡ **Engineered for Speed**  
 Achieve near-native Deno throughput. Powered by our latest **pre-built middleware chains** and **unified cache fast-path**, Fastro eliminates dispatch overhead, ensuring your application remains responsive under extreme load. [(Benchmarks)](https://github.com/fastrodev/fastro/blob/main/BENCHMARK.md)
 
-💎 **Zero-Friction DX**  
+### ✨ **Zero-Friction DX**  
 Write clean, declarative code. Return JSON objects, strings, or native Responses directly from your handlers. No boilerplate, no complex abstractions—just pure productivity.
 
-📦 **Zero Dependency Core**  
+### 🍱 **Zero Dependency Core**  
 A minimalist, rock-solid engine with absolutely no external dependencies. Keep your stack light, secure, and easy to maintain.
 
-🏢 **Built to Scale**  
+### �️ **Built to Scale**  
 Easily manage complex architectures with [automatic module loading](https://fastro.deno.dev/DOCS.md#automatic-module-loading) and a modular design that grows with your application.
 
-🛡️ **Rock Solid Reliability**  
+### 🛡️ **Rock Solid Reliability**  
 Deploy with absolute confidence. Fastro guarantees industrial-grade stability with **100% branch and line coverage** across the entire project core.
 
 ### Start in seconds
