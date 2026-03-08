@@ -161,6 +161,13 @@
     <description>How Fastro&apos;s cookie middleware works, usage patterns, and security best practices.</description>
   </item>
   <item>
+    <title>Trackr: Simplified Employee Attendance Concept</title>
+    <link>https://fastro.dev/posts/trackr</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/trackr</guid>
+    <pubDate>Sun, 08 Mar 2026 00:00:00 GMT</pubDate>
+    <description>A conceptual design for an employee attendance tracking application that records clock-in and clock-out times with ease.</description>
+  </item>
+  <item>
     <title>Understanding Fastro Modules: Manual vs. Automatic Loading</title>
     <link>https://fastro.dev/posts/modules</link>
     <guid isPermaLink="true">https://fastro.dev/posts/modules</guid>
