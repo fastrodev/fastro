@@ -417,7 +417,7 @@ Deno.test("staticFiles - subdirectory with trailing slash", async () => {
     const resp = await middleware(
       new Request("http://localhost/sub/"),
       {} as Context,
-      () => Promise.resolve(new Response("next")),
+      () => Promise.resolve(new Response("next", { status: 404 })),
     );
     assertEquals(await resp.text(), "sub index");
   } finally {
@@ -433,7 +433,7 @@ Deno.test("staticFiles - empty pathname result", async () => {
     const resp = await middleware(
       new Request("http://localhost/static"),
       {} as Context,
-      () => Promise.resolve(new Response("next")),
+      () => Promise.resolve(new Response("next", { status: 404 })),
     );
     assertEquals(await resp.text(), "empty path");
   } finally {
@@ -449,7 +449,7 @@ Deno.test("staticFiles - file without extension", async () => {
     const resp = await middleware(
       new Request("http://localhost/noext"),
       {} as Context,
-      () => Promise.resolve(new Response("next")),
+      () => Promise.resolve(new Response("next", { status: 404 })),
     );
     assertEquals(await resp.text(), "no extension");
   } finally {
@@ -468,21 +468,21 @@ Deno.test("staticFiles - content types mapping and case insensitivity", async ()
     const respJs = await middleware(
       new Request("http://localhost/app.js"),
       {} as Context,
-      () => Promise.resolve(new Response("next")),
+      () => Promise.resolve(new Response("next", { status: 404 })),
     );
     assertEquals(respJs.headers.get("Content-Type"), "application/javascript");
 
     const respCss = await middleware(
       new Request("http://localhost/style.CSS"),
       {} as Context,
-      () => Promise.resolve(new Response("next")),
+      () => Promise.resolve(new Response("next", { status: 404 })),
     );
     assertEquals(respCss.headers.get("Content-Type"), "text/css");
 
     const respPng = await middleware(
       new Request("http://localhost/img.PNG"),
       {} as Context,
-      () => Promise.resolve(new Response("next")),
+      () => Promise.resolve(new Response("next", { status: 404 })),
     );
     assertEquals(respPng.headers.get("Content-Type"), "image/png");
   } finally {
@@ -503,7 +503,7 @@ Deno.test("staticFiles - non-production cache-control header", async () => {
     const resp = await middleware(
       new Request("http://localhost/nocache.txt"),
       {} as Context,
-      () => Promise.resolve(new Response("next")),
+      () => Promise.resolve(new Response("next", { status: 404 })),
     );
     assertEquals(
       resp.headers.get("Cache-Control"),
@@ -555,7 +555,7 @@ Deno.test("staticFiles - many mime types", async () => {
       const resp = await middleware(
         new Request(`http://localhost/${name}`),
         {} as Context,
-        () => Promise.resolve(new Response("next")),
+        () => Promise.resolve(new Response("next", { status: 404 })),
       );
       const dot = name.lastIndexOf(".");
       const ext = dot >= 0 ? name.substring(dot) : "";

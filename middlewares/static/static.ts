@@ -66,8 +66,12 @@ export function staticFiles(
       return next();
     }
 
-    let pathname = url.pathname.slice(normalizedPrefix.length);
+    const resp = await next();
+    if (resp.status !== 404) {
+      return resp;
+    }
 
+    let pathname = url.pathname.slice(normalizedPrefix.length);
     if (pathname === "" || pathname === "/" || pathname.endsWith("/")) {
       pathname = pathname === "" ? `/${indexFile}` : `${pathname}${indexFile}`;
     }
@@ -131,10 +135,6 @@ export function staticFiles(
         },
       });
     } catch {
-      const resp = await next();
-      if (resp.status !== 404 || !fallbackFile) {
-        return resp;
-      }
       if (fallbackFile) {
         const fallbackKey = `__fallback_${fallbackFile}__`;
         if (isProduction) {
@@ -186,15 +186,11 @@ export function staticFiles(
             },
           });
         } catch {
-      const resp = await next();
-      if (resp.status !== 404 || !fallbackFile) {
-        return resp;
-      }
-          // If fallback fails, let it continue to next()
+          // Fallback failed
         }
       }
 
-      return next();
+      return resp; // Return the original 404 from next()
     }
   };
 }
