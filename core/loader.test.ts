@@ -1165,7 +1165,7 @@ Deno.test("autoRegisterModulesFrom logs middleware and route counts when introsp
       String((c as { args: unknown[] }).args[0]).includes("Global middlewares")
     );
     const calledRoutes = info.calls.some((c: unknown) =>
-      String((c as { args: unknown[] }).args[0]).includes("Registered routes")
+      String((c as { args: unknown[] }).args[0]).includes("Registered route(s)")
     );
     assert(
       calledMw && calledRoutes,
@@ -1445,7 +1445,7 @@ Deno.test("autoRegisterModulesFrom logs middleware and route counts when introsp
       String((c as { args: unknown[] }).args[0]).includes("Global middlewares")
     );
     const calledRoutes = info.calls.some((c: unknown) =>
-      String((c as { args: unknown[] }).args[0]).includes("Registered routes")
+      String((c as { args: unknown[] }).args[0]).includes("Registered route(s)")
     );
     assert(
       calledMw && calledRoutes,
@@ -1606,7 +1606,7 @@ Deno.test("autoRegisterModulesFrom logs middleware and route counts when availab
     );
     const foundRoutes = infoStub.calls.some((c: unknown) =>
       String((c as { args: unknown[] }).args[0]).includes(
-        "Registered routes: 2",
+        "Registered route(s): 2",
       )
     );
     assert(foundMw, "expected middleware count log");
