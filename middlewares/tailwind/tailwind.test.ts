@@ -79,6 +79,11 @@ Deno.test("tailwind middleware serves css in development when tailwind.css exist
     } catch (_) {
       // ignore
     }
+    try {
+      await Deno.remove(Deno.cwd() + "/static/css/tailwind.css");
+    } catch (_) {
+      // ignore
+    }
   }
 });
 
@@ -140,6 +145,11 @@ Deno.test("tailwind middleware serves css from cache on second request", async (
     if (originalFastro) Deno.env.set("FASTRO_ENV", originalFastro);
     try {
       await Deno.remove(Deno.cwd() + "/test_static_cache", { recursive: true });
+    } catch (_) {
+      // ignore
+    }
+    try {
+      await Deno.remove(Deno.cwd() + "/static/css/tailwind.css");
     } catch (_) {
       // ignore
     }
