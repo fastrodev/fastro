@@ -26,6 +26,8 @@ export default class Fastro {
   options = server.options;
   /** Registers a global middleware. */
   use = server.use;
+  /** Registers lifecycle hook */
+  hook = server.hook;
   /** Starts the HTTP server. */
   serve = server.serve;
 }

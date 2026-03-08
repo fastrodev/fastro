@@ -1,7 +1,22 @@
 import App from "../mod.ts";
 import { autoRegisterModules } from "../core/loader.ts";
+import type { Context, Next } from "../core/types.ts";
 
 const app = new App();
+
+app.hook("onRequest", (_req: Request, ctx: Context, next: Next) => {
+  ctx.state = ctx.state || {};
+  ctx.state.startTime = performance.now();
+  return next();
+});
+
+app.hook("onResponse", (req: Request, ctx: Context, next: Next) => {
+  const response = next();
+  const duration = performance.now() - (ctx.state?.startTime as number);
+  void req;
+  void duration;
+  return response;
+});
 
 // 10 global middlewares — each mutates ctx to simulate real-world stacks
 app.use((_req, ctx, next) => {
