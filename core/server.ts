@@ -88,7 +88,7 @@ function applyMiddlewares(
 function tryRoute(
   i: number,
   context: Context,
-  _u: URL | undefined,
+  u: URL | undefined,
   req: Request,
   urlStr: string,
   pathname: string,
@@ -158,7 +158,7 @@ function tryRoute(
           tryRoute(
             j + 1,
             context,
-            _u,
+            u,
             req,
             urlStr,
             pathname,
