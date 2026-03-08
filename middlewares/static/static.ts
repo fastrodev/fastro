@@ -142,11 +142,17 @@ export function staticFiles(
       return routeResp;
     }
 
-    // 3. Router returned 404: Try index file for directory
+    // 3. Router returned 404: Try serving file directly (for files without extensions)
+    if (!isDirectory && !hasExtension) {
+      const fileResp = await serveFile(pathname);
+      if (fileResp) return fileResp;
+    }
+
+    // 4. Try index file for directory
     if (isDirectory && indexFile) {
-      const indexFilePath = pathname === "" || pathname === "/"
-        ? `/${indexFile}`
-        : (pathname.endsWith("/") ? `${pathname}${indexFile}` : pathname);
+      const indexFilePath = pathname.endsWith("/")
+        ? `${pathname}${indexFile}`
+        : `${pathname}/${indexFile}`;
       const indexResp = await serveFile(indexFilePath);
       if (indexResp) return indexResp;
     }

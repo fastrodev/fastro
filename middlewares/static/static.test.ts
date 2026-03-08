@@ -565,3 +565,127 @@ Deno.test("staticFiles - many mime types", async () => {
     await Deno.remove(tempDir, { recursive: true });
   }
 });
+
+Deno.test("staticFiles - fallback with unknown extension", async () => {
+  const tempDir = await Deno.makeTempDir();
+  // Create a fallback file with an unknown extension
+  await Deno.writeTextFile(`${tempDir}/fallback.unknown`, "fallback content");
+  try {
+    const middleware = staticFiles("/", tempDir, {
+      fallback: "fallback.unknown",
+    });
+    const req = new Request("http://localhost/missing");
+    const ctx = {} as Context;
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
+
+    const resp = await middleware(req, ctx, next);
+    assertEquals(resp.status, 200);
+    assertEquals(await resp.text(), "fallback content");
+    // Since it's a fallback file, it should default to text/html if extension is unknown
+    assertEquals(resp.headers.get("Content-Type"), "text/html");
+  } finally {
+    await Deno.remove(tempDir, { recursive: true });
+  }
+});
+
+Deno.test("staticFiles - options variety", async () => {
+  const tempDir = await Deno.makeTempDir();
+  await Deno.writeTextFile(`${tempDir}/index.html`, "index");
+  try {
+    // 1. spaFallback: true, no explicit fallback -> should use indexFile
+    const mw1 = staticFiles("/", tempDir, { spaFallback: true });
+    const resp1 = await mw1(
+      new Request("http://localhost/missing"),
+      {} as Context,
+      () => Promise.resolve(new Response("next", { status: 404 })),
+    );
+    assertEquals(await resp1.text(), "index");
+
+    // 2. spaFallback: false, no explicit fallback -> should NOT use indexFile
+    const mw2 = staticFiles("/", tempDir, { spaFallback: false });
+    const resp2 = await mw2(
+      new Request("http://localhost/missing"),
+      {} as Context,
+      () => Promise.resolve(new Response("next", { status: 404 })),
+    );
+    assertEquals(await resp2.text(), "next");
+
+    // 3. custom indexFile and spaFallback: true
+    await Deno.writeTextFile(`${tempDir}/home.html`, "home");
+    const mw3 = staticFiles("/", tempDir, {
+      spaFallback: true,
+      indexFile: "home.html",
+    });
+    const resp3 = await mw3(
+      new Request("http://localhost/missing"),
+      {} as Context,
+      () => Promise.resolve(new Response("next", { status: 404 })),
+    );
+    assertEquals(await resp3.text(), "home");
+  } finally {
+    await Deno.remove(tempDir, { recursive: true });
+  }
+});
+
+Deno.test("staticFiles - file system priority for assets that don't exist", async () => {
+  const tempDir = await Deno.makeTempDir();
+  try {
+    const middleware = staticFiles("/", tempDir);
+    const req = new Request("http://localhost/missing.js");
+    const ctx = {} as Context;
+    const next = () =>
+      Promise.resolve(new Response("router-response", { status: 200 }));
+
+    // asset (hasExtension) not found in FS -> should call next()
+    const resp = await middleware(req, ctx, next);
+    assertEquals(await resp.text(), "router-response");
+  } finally {
+    await Deno.remove(tempDir, { recursive: true });
+  }
+});
+
+Deno.test("staticFiles - directory index logic variants", async () => {
+  const tempDir = await Deno.makeTempDir();
+  await Deno.mkdir(`${tempDir}/subdir`);
+  await Deno.writeTextFile(`${tempDir}/subdir/index.html`, "sub-index");
+
+  try {
+    const middleware = staticFiles("/", tempDir);
+
+    // 1. Pathname ending with /
+    const resp1 = await middleware(
+      new Request("http://localhost/subdir/"),
+      {} as Context,
+      () => Promise.resolve(new Response("404", { status: 404 })),
+    );
+    assertEquals(await resp1.text(), "sub-index");
+
+    // 2. Pathname NOT ending with / but is a directory (router returns 404)
+    const resp2 = await middleware(
+      new Request("http://localhost/subdir"),
+      {} as Context,
+      () => Promise.resolve(new Response("404", { status: 404 })),
+    );
+    assertEquals(await resp2.text(), "404");
+  } finally {
+    await Deno.remove(tempDir, { recursive: true });
+  }
+});
+
+Deno.test("staticFiles - clean URL matched by router", async () => {
+  const tempDir = await Deno.makeTempDir();
+  try {
+    const middleware = staticFiles("/", tempDir);
+    const req = new Request("http://localhost/dashboard");
+    const ctx = {} as Context;
+    const next = () =>
+      Promise.resolve(new Response("dashboard-content", { status: 200 }));
+
+    // Clean URL (no extension) matched by router -> should return router response
+    const resp = await middleware(req, ctx, next);
+    assertEquals(resp.status, 200);
+    assertEquals(await resp.text(), "dashboard-content");
+  } finally {
+    await Deno.remove(tempDir, { recursive: true });
+  }
+});
