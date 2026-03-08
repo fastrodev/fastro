@@ -2,7 +2,7 @@
 
 ![Fastro](https://repository-images.githubusercontent.com/264308713/1b83bd0f-b9d9-466d-9e63-f947c1a67281)
 
-[![Deno](https://img.shields.io/badge/deno-^1.40.0-blue?logo=deno&logoColor=white)](https://deno.land/)
+[![Deno](https://img.shields.io/badge/deno-2.7.4-blue?logo=deno&logoColor=white)](https://deno.land/)
 [![License](https://img.shields.io/github/license/fastrodev/fastro)](https://github.com/fastrodev/fastro/blob/main/LICENSE)
 [![Release](https://img.shields.io/github/v/release/fastrodev/fastro)](https://github.com/fastrodev/fastro/releases)
 [![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/fastrodev/fastro/blob/main/BENCHMARK.md)
