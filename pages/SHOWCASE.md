@@ -20,6 +20,7 @@ Explore interactive demos built with Fastro—where speed meets simplicity. Dive
 | **Pro Boilerplate** | A production-ready starter kit for building professional web applications with clean architecture and advanced patterns. |  $149 | [Powerkit](posts/powerkit) |
 | **Simpul** | The Universal Demand Node. A marketplace where sellers actively hunt for real-time buyer needs. | Free | [Simpul](/SIMPUL.md) |
 | **Loyalti** | A simple loyalty program for grocery stores. Buy multiple times, get free items. Configurable per product. | Free | [Loyalti](posts/loyalti) |
+| **Trackr** | An employee attendance tracking application that records clock-in and clock-out times. | Free | [Trackr](posts/trackr) |
 
 
 ## Community Projects
