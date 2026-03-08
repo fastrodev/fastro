@@ -1,7 +1,7 @@
 import { join } from "@std/path";
 
 const cwd = Deno.cwd();
-const modulesDir = join(cwd, "modules");
+const modulesPath = join(cwd, "modules");
 const outPaths = [
   join(cwd, "manifest.ts"),
 ];
@@ -18,20 +18,26 @@ export async function generateManifest() {
     const namesSet = new Set<string>();
     const IGNORE_RE =
       /^(module\d+|spa_test|watch_test_module|\.git|node_modules)$/;
-    for await (const entry of Deno.readDir(modulesDir)) {
-      if (!entry.isDirectory) continue;
-      const n = entry.name;
-      if (n === "manifest.ts") continue;
-      if (n.startsWith("test_")) continue;
-      if (IGNORE_RE.test(n)) continue;
-      try {
-        const modPath = join(modulesDir, n, "mod.ts");
-        const st = await Deno.stat(modPath);
-        if (!st.isFile) continue;
-      } catch (_e) {
-        continue;
+    try {
+      for await (const entry of Deno.readDir(modulesPath)) {
+        if (!entry.isDirectory) continue;
+        const n = entry.name;
+        if (n === "manifest.ts") continue;
+        if (n.startsWith("test_")) continue;
+        if (IGNORE_RE.test(n)) continue;
+        try {
+          const modPath = join(modulesPath, n, "mod.ts");
+          const st = await Deno.stat(modPath);
+          if (!st.isFile) continue;
+        } catch (_e) {
+          continue;
+        }
+        namesSet.add(n);
       }
-      namesSet.add(n);
+    } catch (e) {
+      if (!(e instanceof Deno.errors.NotFound)) {
+        throw e;
+      }
     }
 
     const names = Array.from(namesSet).sort((a, b) => {

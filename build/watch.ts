@@ -1,13 +1,15 @@
 import { build, createClient, deleteClient, getModulesWithApp } from "./mod.ts";
 import { generateManifest } from "./manifest.ts";
+import { join } from "@std/path";
 
+const cwd = Deno.cwd();
 const paths = [
-  "./modules",
-  "./components",
-  "./app",
-  "./core",
-  "./middlewares",
-  "./public",
+  join(cwd, "modules"),
+  join(cwd, "components"),
+  join(cwd, "app"),
+  join(cwd, "core"),
+  join(cwd, "middlewares"),
+  join(cwd, "public"),
 ];
 const recentlyBuilt = new Map<string, number>();
 const BUILD_COOLDOWN_MS = 200;
@@ -66,9 +68,13 @@ export async function startWatcher() {
           // so we trigger a full rebuild instead of attempting to rebuild the
           // module itself (which would be skipped later).
           try {
-            const statApp = await Deno.stat(`./modules/${modName}/App.tsx`)
+            const statApp = await Deno.stat(
+              join(cwd, "modules", modName, "App.tsx"),
+            )
               .catch(() => null);
-            const statSpa = await Deno.stat(`./modules/${modName}/spa.tsx`)
+            const statSpa = await Deno.stat(
+              join(cwd, "modules", modName, "spa.tsx"),
+            )
               .catch(() => null);
             if (!(statApp && statApp.isFile) && !(statSpa && statSpa.isFile)) {
               pendingComponentsChanged = true;
@@ -136,7 +142,7 @@ export async function rebuild(modulesToRebuild?: string[]) {
     for (const mod of modulesToRebuild) {
       let hasApp = false;
       try {
-        const stat = await Deno.stat(`./modules/${mod}/App.tsx`);
+        const stat = await Deno.stat(join(cwd, "modules", mod, "App.tsx"));
         if (stat && stat.isFile) hasApp = true;
       } catch (_) {
         // ignore
@@ -144,7 +150,7 @@ export async function rebuild(modulesToRebuild?: string[]) {
 
       if (!hasApp) {
         try {
-          const stat = await Deno.stat(`./modules/${mod}/spa.tsx`);
+          const stat = await Deno.stat(join(cwd, "modules", mod, "spa.tsx"));
           if (stat && stat.isFile) hasApp = true;
         } catch (_) {
           // ignore
@@ -177,7 +183,7 @@ export async function rebuild(modulesToRebuild?: string[]) {
     }
     // Signal that build is finished
     try {
-      await Deno.writeTextFile(".build_done", Date.now().toString());
+      await Deno.writeTextFile(join(cwd, ".build_done"), Date.now().toString());
     } catch (_) {
       // ignore
     }
@@ -200,7 +206,7 @@ export async function rebuild(modulesToRebuild?: string[]) {
   }
   // Signal that build is finished
   try {
-    await Deno.writeTextFile(".build_done", Date.now().toString());
+    await Deno.writeTextFile(join(cwd, ".build_done"), Date.now().toString());
   } catch (_) {
     // ignore
   }

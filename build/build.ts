@@ -1,19 +1,21 @@
 import * as esbuild from "esbuild";
 import { denoPlugin } from "@deno/esbuild-plugin";
 import { generateManifest } from "./manifest.ts";
+import { join } from "@std/path";
+
+const cwd = Deno.cwd();
 
 async function build(modulePath?: string, spa?: boolean) {
-  let path = `./.build_tmp/${modulePath}_Client.tsx`;
+  let path = join(cwd, ".build_tmp", `${modulePath}_Client.tsx`);
   if (spa) {
-    path = `./modules/${modulePath}/spa.tsx`;
+    path = join(cwd, "modules", `${modulePath}`, "spa.tsx");
   }
 
   try {
-    const cwd = Deno.cwd();
-    const configPath = `${cwd}/deno.json`;
+    const configPath = join(cwd, "deno.json");
 
     try {
-      await Deno.mkdir("./.build_tmp", { recursive: true });
+      await Deno.mkdir(join(cwd, ".build_tmp"), { recursive: true });
     } catch (_) {
       // ignore
     }
@@ -24,7 +26,7 @@ async function build(modulePath?: string, spa?: boolean) {
         configPath,
       })],
       entryPoints: [path],
-      outfile: `./public/js/${modulePath}/client.js`,
+      outfile: join(cwd, "public", "js", `${modulePath}`, "client.js"),
 
       // Bundling
       format: "esm",
@@ -67,9 +69,9 @@ if (el && el.parentNode) el.parentNode.removeChild(el);
 hydrateRoot(document.getElementById("root")!, <App {...(props as Record<string, unknown>)} />);
 `;
 
-  const filePath = `./.build_tmp/${modulePath}_Client.tsx`;
+  const filePath = join(cwd, ".build_tmp", `${modulePath}_Client.tsx`);
   try {
-    await Deno.mkdir("./.build_tmp", { recursive: true });
+    await Deno.mkdir(join(cwd, ".build_tmp"), { recursive: true });
   } catch (_) {
     // ignore
   }
@@ -77,7 +79,7 @@ hydrateRoot(document.getElementById("root")!, <App {...(props as Record<string, 
 }
 
 async function deleteClient(modulePath: string) {
-  const filePath = `./.build_tmp/${modulePath}_Client.tsx`;
+  const filePath = join(cwd, ".build_tmp", `${modulePath}_Client.tsx`);
   try {
     await Deno.remove(filePath);
   } catch (_error) {
@@ -87,23 +89,29 @@ async function deleteClient(modulePath: string) {
 
 async function getModulesWithApp(): Promise<string[]> {
   const modules: string[] = [];
-  for await (const entry of Deno.readDir("./modules")) {
-    if (entry.isDirectory) {
-      const dirPath = `./modules/${entry.name}`;
-      let hasSpa = false;
-      let hasApp = false;
-      for await (const file of Deno.readDir(dirPath)) {
-        if (file.isFile) {
-          if (file.name === "spa.tsx") {
-            hasSpa = true;
-          } else if (file.name === "App.tsx") {
-            hasApp = true;
+  try {
+    for await (const entry of Deno.readDir(join(cwd, "modules"))) {
+      if (entry.isDirectory) {
+        const dirPath = join(cwd, "modules", entry.name);
+        let hasSpa = false;
+        let hasApp = false;
+        for await (const file of Deno.readDir(dirPath)) {
+          if (file.isFile) {
+            if (file.name === "spa.tsx") {
+              hasSpa = true;
+            } else if (file.name === "App.tsx") {
+              hasApp = true;
+            }
           }
         }
+        if (hasSpa || hasApp) {
+          modules.push(entry.name);
+        }
       }
-      if (hasSpa || hasApp) {
-        modules.push(entry.name);
-      }
+    }
+  } catch (e) {
+    if (!(e instanceof Deno.errors.NotFound)) {
+      throw e;
     }
   }
   return modules;
@@ -120,7 +128,9 @@ export async function performBuild() {
   }
   const modules = await getModulesWithApp();
   for (const mod of modules) {
-    const hasApp = await Deno.stat(`./modules/${mod}/App.tsx`).then(() => true)
+    const hasApp = await Deno.stat(join(cwd, "modules", mod, "App.tsx")).then(
+      () => true
+    )
       .catch(() => false);
     if (hasApp) {
       await createClient(mod);
