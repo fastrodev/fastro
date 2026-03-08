@@ -11,7 +11,7 @@ import { Context, Middleware } from "../../mod.ts";
 export function staticFiles(
   urlPrefix: string,
   dirPath: string,
-  options?: { spaFallback?: boolean; indexFile?: string },
+  options?: { spaFallback?: boolean; indexFile?: string; fallback?: string },
 ): Middleware {
   const contentTypes: Record<string, string> = {
     ".html": "text/html",
@@ -40,6 +40,8 @@ export function staticFiles(
   const isProduction = Deno.env.get("ENV") === "production";
   const spaFallback = options?.spaFallback ?? false;
   const indexFile = options?.indexFile ?? "index.html";
+  const fallbackFile = options?.fallback ||
+    (spaFallback ? indexFile : undefined);
 
   const fileCache = isProduction
     ? new Map<
@@ -129,8 +131,8 @@ export function staticFiles(
         },
       });
     } catch {
-      if (spaFallback) {
-        const fallbackKey = "__spa_fallback__";
+      if (fallbackFile) {
+        const fallbackKey = `__fallback_${fallbackFile}__`;
         if (isProduction) {
           const cached = fileCache!.get(fallbackKey);
           if (cached && cached.expiry > now) {
@@ -139,7 +141,7 @@ export function staticFiles(
             fileCache!.set(fallbackKey, cached);
             return new Response(new Uint8Array(cached.content), {
               headers: {
-                "Content-Type": "text/html",
+                "Content-Type": cached.contentType,
                 "Cache-Control": "public, max-age=3600",
               },
             });
@@ -147,8 +149,13 @@ export function staticFiles(
         }
 
         try {
-          const fallbackPath = `${baseDir}/${indexFile}`;
-          const html = await Deno.readFile(fallbackPath);
+          const fallbackPath = `${baseDir}/${fallbackFile}`;
+          const file = await Deno.readFile(fallbackPath);
+
+          // Get content type for fallback
+          const dot = fallbackFile.lastIndexOf(".");
+          const ext = dot >= 0 ? fallbackFile.substring(dot).toLowerCase() : "";
+          const contentType = contentTypes[ext] || "text/html";
 
           if (isProduction) {
             // LRU eviction if needed
@@ -158,8 +165,8 @@ export function staticFiles(
             }
             fileCache!.delete(fallbackKey);
             fileCache!.set(fallbackKey, {
-              content: html,
-              contentType: "text/html",
+              content: file,
+              contentType,
               expiry: now + FILE_CACHE_TTL,
             });
           }
@@ -168,14 +175,14 @@ export function staticFiles(
             ? "public, max-age=3600"
             : "no-cache, no-store, must-revalidate";
 
-          return new Response(new Uint8Array(html), {
+          return new Response(new Uint8Array(file), {
             headers: {
-              "Content-Type": "text/html",
+              "Content-Type": contentType,
               "Cache-Control": cacheControl,
             },
           });
         } catch {
-          // If even the fallback is missing, continue
+          // If fallback fails, let it continue to next()
         }
       }
 

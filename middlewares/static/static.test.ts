@@ -116,6 +116,24 @@ Deno.test("staticFiles - spaFallback serves index.html on missing files", async 
   }
 });
 
+Deno.test("staticFiles - custom fallback option serves specific file", async () => {
+  const tempDir = await Deno.makeTempDir();
+  await Deno.writeTextFile(`${tempDir}/404.html`, "custom fallback");
+  try {
+    const middleware = staticFiles("/", tempDir, { fallback: "404.html" });
+    const req = new Request("http://localhost/not-existing");
+    const ctx = {} as Context;
+    const next = () => Promise.resolve(new Response("next"));
+
+    const resp = await middleware(req, ctx, next);
+    assertEquals(resp.status, 200);
+    assertEquals(await resp.text(), "custom fallback");
+    assertEquals(resp.headers.get("Content-Type"), "text/html");
+  } finally {
+    await Deno.remove(tempDir, { recursive: true });
+  }
+});
+
 Deno.test("staticFiles - production cache behavior", async () => {
   const tempDir = await Deno.makeTempDir();
   const filePath = `${tempDir}/cache-test.txt`;
