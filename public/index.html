@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,94 +21,12 @@
                 --page-accent: #60a5fa;
             }
         }
-
-        .artistic-bg {
-            background-image:
-                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.03) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(96, 165, 250, 0.03) 0%, transparent 40%);
-        }
-
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .animate-container-in {
-            animation: containerIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @keyframes containerIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px) scale(0.98);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(-5px);
-            }
-
-            50% {
-                transform: translateY(5px);
-            }
-        }
     </style>
 </head>
-
-<body style="background-color:var(--page-bg); color:var(--page-fg);"
-    class="min-h-screen overflow-hidden antialiased font-sans artistic-bg">
-    <div
-        class="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 p-8 min-h-screen animate-container-in">
-        <div
-            class="flex items-center justify-center text-blue-500 animate-float drop-shadow-[0_0_20px_rgba(59,130,246,0.15)] shrink-0">
-            <svg width="64" height="64" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M60 5 L30 55 H48 L40 95 L70 45 H52 L60 5 Z" fill="currentColor" />
-            </svg>
-        </div>
-
-        <div
-            class="hidden sm:block w-px h-16 bg-linear-to-b from-transparent via-gray-200 dark:via-gray-800 to-transparent">
-        </div>
-        <div
-            class="block sm:hidden w-12 h-px bg-linear-to-r from-transparent via-gray-200 dark:via-gray-800 to-transparent">
-        </div>
-
-        <div class="flex flex-col text-center sm:text-left">
-            <h1 class="text-6xl font-black tracking-tighter text-[#0f172a] dark:text-white leading-tight">
-                404
-            </h1>
-            <p class="text-gray-500 dark:text-gray-400 text-base mt-2 max-w-[240px] leading-relaxed">
-                The page you're looking for has vanished into the void.
-            </p>
-            <a href="/" id="back-link"
-                class="mt-6 text-blue-500 font-medium inline-flex items-center gap-2 transition-all duration-300 hover:gap-3 group">
-                <span class="transition-transform duration-300 group-hover:-translate-x-1">&larr;</span> Go back
-            </a>
-        </div>
+<body style="background-color:var(--page-bg); color:var(--page-fg);">
+    <div class="flex items-center justify-center min-h-screen">
+        <h1 class="text-6xl font-black">404</h1>
+        <p class="ml-4">Page not found.</p>
     </div>
-    <script>
-        (function () {
-            var a = document.getElementById('back-link');
-            if (!a) return;
-            a.addEventListener('click', function (e) {
-                try {
-                    if (window.history && window.history.length > 1) {
-                        e.preventDefault();
-                        window.history.back();
-                    }
-                } catch (err) {
-                    // on error, allow default navigation to root
-                }
-            });
-        })();
-    </script>
 </body>
-
 </html>
