@@ -9,17 +9,37 @@
   },
   "nodeModulesDir": "auto",
   "tasks": {
+    "dev": "FASTRO_ENV=development deno run -A build/watch.ts & deno run --watch -A --unstable-kv main.ts 3000",
     "start": "deno run -A main.ts",
     "bench": "bash ./scripts/run_bench.sh",
     "test": "deno test -A",
     "lint": "deno lint",
     "cov": "deno task lint && deno test -A --coverage=coverage && deno coverage --lcov coverage > coverage.lcov || true"
   },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "jsxImportSourceTypes": "@types/react",
+    "lib": [
+      "deno.ns",
+      "deno.unstable",
+      "dom",
+      "dom.iterable",
+      "dom.asynciterable"
+    ]
+  },
   "imports": {
+    "@deno/esbuild-plugin": "jsr:@deno/esbuild-plugin@^1.2.1",
     "@std/assert": "jsr:@std/assert@^1.0.19",
+    "@std/path": "jsr:@std/path@^1.1.4",
     "@std/testing": "jsr:@std/testing@^1.0.17",
+    "@types/react": "npm:@types/react@^19.0.8",
+    "@types/react-dom": "npm:@types/react-dom@^19.0.3",
+    "esbuild": "npm:esbuild@^0.27.3",
     "react": "npm:react@^19.2.4",
     "react-dom": "npm:react-dom@^19.2.4",
+    "react-dom/server": "npm:react-dom@^19.2.4/server",
+    "react/jsx-runtime": "npm:react@^19.2.4/jsx-runtime",
     "tailwindcss": "npm:tailwindcss@^4.2.1"
   }
 }

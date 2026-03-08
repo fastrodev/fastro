@@ -1,0 +1,61 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: scripts/k6_bench.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 100 max VUs, 40s max duration (incl. graceful stop):
+              * default: 100 looping VUs for 10s (gracefulStop: 30s)
+
+
+running (01.0s), 100/100 VUs, 39971 complete and 0 interrupted iterations
+default   [  10% ] 100 VUs  01.0s/10s
+
+running (02.0s), 100/100 VUs, 82244 complete and 0 interrupted iterations
+default   [  20% ] 100 VUs  02.0s/10s
+
+running (03.0s), 100/100 VUs, 125556 complete and 0 interrupted iterations
+default   [  30% ] 100 VUs  03.0s/10s
+
+running (04.0s), 100/100 VUs, 165745 complete and 0 interrupted iterations
+default   [  40% ] 100 VUs  04.0s/10s
+
+running (05.0s), 100/100 VUs, 205778 complete and 0 interrupted iterations
+default   [  50% ] 100 VUs  05.0s/10s
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 226631  40582.745294/s
+    checks_succeeded...: 100.00% 226631 out of 226631
+    checks_failed......: 0.00%   0 out of 226631
+
+    ✓ status is 200
+
+    HTTP
+    http_req_duration..............: avg=2.32ms min=70.65µs  med=2.16ms max=14.1ms  p(90)=3.14ms p(95)=3.72ms
+      { expected_response:true }...: avg=2.32ms min=70.65µs  med=2.16ms max=14.1ms  p(90)=3.14ms p(95)=3.72ms
+    http_req_failed................: 0.00%  0 out of 226631
+    http_reqs......................: 226631 40582.745294/s
+
+    EXECUTION
+    iteration_duration.............: avg=2.44ms min=108.71µs med=2.24ms max=14.16ms p(90)=3.3ms  p(95)=4.07ms
+    iterations.....................: 226631 40582.745294/s
+    vus............................: 100    min=100         max=100
+    vus_max........................: 100    min=100         max=100
+
+    NETWORK
+    data_received..................: 40 MB  7.1 MB/s
+    data_sent......................: 39 MB  6.9 MB/s
+
+
+
+
+running (05.7s), 000/100 VUs, 226621 complete and 4263 interrupted iterations
+default ✗ [  56% ] 100 VUs  05.6s/10s

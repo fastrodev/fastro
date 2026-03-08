@@ -1,7 +1,10 @@
 import App from "../mod.ts";
 import { autoRegisterModules } from "../core/loader.ts";
+import { createRenderMiddleware } from "../middlewares/render/mod.ts";
+import { staticFiles } from "../middlewares/static/mod.ts";
 
 const app = new App();
+app.use(createRenderMiddleware());
 
 // 10 global middlewares — each mutates ctx to simulate real-world stacks
 app.use((_req, ctx, next) => {
@@ -80,6 +83,10 @@ app.post("/json", async (req) => {
   const body = await req.json();
   return body;
 });
+
+app.use(
+  staticFiles("/", "./public", { fallback: "index.html" }),
+);
 
 // Auto-register modules after application routes are defined so that
 // explicitly-declared app routes take precedence over auto-registered
