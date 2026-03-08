@@ -2,11 +2,11 @@
 
 ![Fastro](https://repository-images.githubusercontent.com/264308713/1b83bd0f-b9d9-466d-9e63-f947c1a67281)
 
-[![Deno](https://img.shields.io/badge/deno-^1.40.0-blue?logo=deno&logoColor=white)](https://deno.land/)
+[![Deno](https://img.shields.io/badge/deno-2.7.4-blue?logo=deno&logoColor=white)](https://deno.land/)
 [![License](https://img.shields.io/github/license/fastrodev/fastro)](https://github.com/fastrodev/fastro/blob/main/LICENSE)
 [![Release](https://img.shields.io/github/v/release/fastrodev/fastro)](https://github.com/fastrodev/fastro/releases)
 [![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/fastrodev/fastro/blob/main/BENCHMARK.md)
-[![Performance](https://img.shields.io/badge/performance-108%25_of_native-orange)](https://github.com/fastrodev/fastro/blob/main/BENCHMARK.md)
+[![Performance](https://img.shields.io/badge/performance-95.92%25_of_native-orange)](https://github.com/fastrodev/fastro/blob/main/BENCHMARK.md)
 
 Fastro is a **blazing-fast**, **type-safe**, and **zero-dependency** web framework meticulously engineered for Deno. It is built for developers who demand peak performance without sacrificing a clean and intuitive developer experience.
 
