@@ -50,7 +50,7 @@ Deno.test("e2e: app routes", async () => {
 
 Deno.test("e2e: app routes with DENO_DEPLOYMENT_ID via subprocess", async () => {
   const p = new Deno.Command(Deno.execPath(), {
-    args: ["run", "-A", "--coverage=coverage", "app.ts"],
+    args: ["run", "-A", "--coverage=coverage", "modules/app.ts"],
     env: { "DENO_DEPLOYMENT_ID": "test-deployment" },
     stdout: "piped",
     stderr: "piped",
