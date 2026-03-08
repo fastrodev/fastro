@@ -9,6 +9,7 @@
   },
   "nodeModulesDir": "auto",
   "tasks": {
+    "reload:static": "deno run -A --reload=https://raw.githubusercontent.com/fastrodev/fastro/refs/heads/main/middlewares/static/static.ts main.ts 3000",
     "start": "FASTRO_ENV=development deno run -A build/watch.ts & FASTRO_ENV=development deno run -A --unstable-kv --watch main.ts 3000",
     "gen-manifest": "deno run -A ./scripts/generate_manifest.ts",
     "build": "FASTRO_ENV=production deno run -A scripts/generate_manifest.ts && deno task build:css",

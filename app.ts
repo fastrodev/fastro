@@ -15,7 +15,7 @@ app.use(cookieMiddleware);
 app.use(tailwind("/css/app.css"));
 
 app.use(
-  staticFiles("/", "./public", { indexFile: "" }),
+  staticFiles("/", "./public", { fallback: "index.html" }),
 );
 const dep = Deno.env.get?.("DENO_DEPLOYMENT_ID");
 if (dep) {
@@ -28,4 +28,5 @@ if (dep) {
   await autoRegisterModules(app, { requireExplicitGlobals: true });
 }
 
+app.get("/debug-routes", () => "debug content");
 export default app;
