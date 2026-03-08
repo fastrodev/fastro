@@ -21,7 +21,7 @@ Deno.test("staticFiles - serve index.html for root", async () => {
     const middleware = staticFiles("/", tempDir);
     const req = new Request("http://localhost/");
     const ctx = {} as Context;
-    const next = () => Promise.resolve(new Response("next"));
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
     const resp = await middleware(req, ctx, next);
     assertEquals(resp.status, 200);
@@ -40,7 +40,7 @@ Deno.test("staticFiles - serve specific file", async () => {
     const middleware = staticFiles("/static", tempDir);
     const req = new Request("http://localhost/static/test.txt");
     const ctx = {} as Context;
-    const next = () => Promise.resolve(new Response("next"));
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
     const resp = await middleware(req, ctx, next);
     assertEquals(resp.status, 200);
@@ -59,7 +59,7 @@ Deno.test("staticFiles - serve file in subdirectory", async () => {
     const middleware = staticFiles("/", tempDir);
     const req = new Request("http://localhost/subdir/sub.html");
     const ctx = {} as Context;
-    const next = () => Promise.resolve(new Response("next"));
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
     const resp = await middleware(req, ctx, next);
     assertEquals(resp.status, 200);
@@ -75,7 +75,7 @@ Deno.test("staticFiles - ignore non-GET method", async () => {
     const middleware = staticFiles("/", tempDir);
     const req = new Request("http://localhost/", { method: "POST" });
     const ctx = {} as Context;
-    const next = () => Promise.resolve(new Response("next"));
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
     const resp = await middleware(req, ctx, next);
     assertEquals(await resp.text(), "next");
@@ -90,7 +90,7 @@ Deno.test("staticFiles - ignore non-matching prefix", async () => {
     const middleware = staticFiles("/static", tempDir);
     const req = new Request("http://localhost/other/test.txt");
     const ctx = {} as Context;
-    const next = () => Promise.resolve(new Response("next"));
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
     const resp = await middleware(req, ctx, next);
     assertEquals(await resp.text(), "next");
@@ -106,7 +106,7 @@ Deno.test("staticFiles - spaFallback serves index.html on missing files", async 
     const middleware = staticFiles("/", tempDir, { spaFallback: true });
     const req = new Request("http://localhost/any-route");
     const ctx = {} as Context;
-    const next = () => Promise.resolve(new Response("next"));
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
     const resp = await middleware(req, ctx, next);
     assertEquals(resp.status, 200);
@@ -123,7 +123,7 @@ Deno.test("staticFiles - custom fallback option serves specific file", async () 
     const middleware = staticFiles("/", tempDir, { fallback: "404.html" });
     const req = new Request("http://localhost/not-existing");
     const ctx = {} as Context;
-    const next = () => Promise.resolve(new Response("next"));
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
     const resp = await middleware(req, ctx, next);
     assertEquals(resp.status, 200);
@@ -147,7 +147,7 @@ Deno.test("staticFiles - production cache behavior", async () => {
     const middleware = staticFiles("/", tempDir);
     const req = new Request("http://localhost/cache-test.txt");
     const ctx = {} as Context;
-    const next = () => Promise.resolve(new Response("next"));
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
     // First request: loads from disk and caches
     const resp1 = await middleware(req, ctx, next);
@@ -174,7 +174,7 @@ Deno.test("staticFiles - unknown mime type", async () => {
     const middleware = staticFiles("/", tempDir);
     const req = new Request("http://localhost/data.unknown");
     const ctx = {} as Context;
-    const next = () => Promise.resolve(new Response("next"));
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
     const resp = await middleware(req, ctx, next);
     assertEquals(resp.status, 200);
@@ -191,7 +191,7 @@ Deno.test("staticFiles - custom index file", async () => {
     const middleware = staticFiles("/", tempDir, { indexFile: "main.html" });
     const req = new Request("http://localhost/");
     const ctx = {} as Context;
-    const next = () => Promise.resolve(new Response("next"));
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
     const resp = await middleware(req, ctx, next);
     assertEquals(await resp.text(), "main");
@@ -208,7 +208,7 @@ Deno.test("staticFiles - normalized path and prefix", async () => {
     const middleware = staticFiles("/static/", `./${tempDir}`);
     const req = new Request("http://localhost/static/test.txt");
     const ctx = {} as Context;
-    const next = () => Promise.resolve(new Response("next"));
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
     const resp = await middleware(req, ctx, next);
     assertEquals(await resp.text(), "test");
@@ -229,7 +229,7 @@ Deno.test("staticFiles - spa fallback cache in production", async () => {
     const middleware = staticFiles("/", tempDir, { spaFallback: true });
     const req = new Request("http://localhost/missing");
     const ctx = {} as Context;
-    const next = () => Promise.resolve(new Response("next"));
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
     // First request: loads fallback and caches
     const resp1 = await middleware(req, ctx, next);
@@ -256,7 +256,7 @@ Deno.test("staticFiles - LRU eviction", async () => {
   try {
     const middleware = staticFiles("/", tempDir);
     const ctx = {} as Context;
-    const next = () => Promise.resolve(new Response("next"));
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
     // Create and request 101 files (over the limit of 100)
     for (let i = 0; i < 101; i++) {
@@ -286,7 +286,7 @@ Deno.test("staticFiles - complete failure", async () => {
     const middleware = staticFiles("/", tempDir, { spaFallback: true });
     const req = new Request("http://localhost/not-found");
     const ctx = {} as Context;
-    const next = () => Promise.resolve(new Response("next"));
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
     // index.html for fallback also doesn't exist
     const resp = await middleware(req, ctx, next);
@@ -310,7 +310,7 @@ Deno.test("staticFiles - cache expiry", async () => {
       const middleware = staticFiles("/", tempDir);
       const req = new Request("http://localhost/expire.txt");
       const ctx = {} as Context;
-      const next = () => Promise.resolve(new Response("next"));
+      const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
       // First load (caches it)
       await middleware(req, ctx, next);
@@ -348,7 +348,7 @@ Deno.test("staticFiles - spa fallback cache expiry", async () => {
       const middleware = staticFiles("/", tempDir, { spaFallback: true });
       const req = new Request("http://localhost/missing-page");
       const ctx = {} as Context;
-      const next = () => Promise.resolve(new Response("next"));
+      const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
       // First load (caches fallback)
       await middleware(req, ctx, next);
@@ -380,7 +380,7 @@ Deno.test("staticFiles - spa fallback LRU eviction", async () => {
   try {
     const middleware = staticFiles("/", tempDir, { spaFallback: true });
     const ctx = {} as Context;
-    const next = () => Promise.resolve(new Response("next"));
+    const next = () => Promise.resolve(new Response("next", { status: 404 }));
 
     // Fill cache with 100 dummy files
     for (let i = 0; i < 100; i++) {

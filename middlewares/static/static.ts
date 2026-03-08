@@ -131,6 +131,10 @@ export function staticFiles(
         },
       });
     } catch {
+      const resp = await next();
+      if (resp.status !== 404 || !fallbackFile) {
+        return resp;
+      }
       if (fallbackFile) {
         const fallbackKey = `__fallback_${fallbackFile}__`;
         if (isProduction) {
@@ -182,6 +186,10 @@ export function staticFiles(
             },
           });
         } catch {
+      const resp = await next();
+      if (resp.status !== 404 || !fallbackFile) {
+        return resp;
+      }
           // If fallback fails, let it continue to next()
         }
       }
