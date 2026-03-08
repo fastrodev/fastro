@@ -2726,3 +2726,108 @@ Deno.test("Coverage - applyMiddlewares len===2 via tryRoute (first hit)", async 
   assertEquals(await res.text(), "two-mw-ok");
   s.close();
 });
+
+// ──────────────────────────────────────────────────────────────────────────
+// Hook coverage: onRequest only, onResponse async (Promise + sync result)
+// ──────────────────────────────────────────────────────────────────────────
+
+Deno.test("Coverage - hook onResponse only (no onRequest)", async () => {
+  _resetForTests();
+  server.hook("onResponse", (_req: Request, _ctx: Context, next: Next) => {
+    return next();
+  });
+  server.get("/hook-resp-only", () => new Response("resp-only"));
+  const s = server.serve({ port: 3643 });
+  const res = await fetch("http://localhost:3643/hook-resp-only");
+  assertEquals(await res.text(), "resp-only");
+  s.close();
+});
+
+Deno.test("Coverage - hook onRequest only (no onResponse)", async () => {
+  _resetForTests();
+  let ran = false;
+  server.hook("onRequest", (_req: Request, _ctx: Context, next: Next) => {
+    ran = true;
+    return next();
+  });
+  server.get("/hook-req-only", () => new Response("ok"));
+  const s = server.serve({ port: 3640 });
+  const res = await fetch("http://localhost:3640/hook-req-only");
+  assertEquals(await res.text(), "ok");
+  assert(ran);
+  s.close();
+});
+
+Deno.test("Coverage - hook onResponse async with Promise result", async () => {
+  _resetForTests();
+  server.hook("onRequest", (_req: Request, ctx: Context, next: Next) => {
+    ctx.state = { tag: "req" };
+    return next();
+  });
+  server.hook(
+    "onResponse",
+    async (_req: Request, _ctx: Context, next: Next) => {
+      // async hook — result of next() is a Promise when route handler is async
+      const res = await next() as Response;
+      return new Response((await res.text()) + "+async", {
+        status: res.status,
+      });
+    },
+  );
+  // async route so handleRequest returns a Promise → covers "result instanceof Promise" branch
+  server.get("/hook-async-promise", async () => {
+    await Promise.resolve();
+    return new Response("body");
+  });
+  const s = server.serve({ port: 3641 });
+  const res = await fetch("http://localhost:3641/hook-async-promise");
+  assertEquals(await res.text(), "body+async");
+  s.close();
+});
+
+Deno.test("Coverage - hook onResponse async with sync result", async () => {
+  _resetForTests();
+  server.hook("onRequest", (_req: Request, ctx: Context, next: Next) => {
+    ctx.state = { tag: "req" };
+    return next();
+  });
+  server.hook(
+    "onResponse",
+    async (_req: Request, _ctx: Context, next: Next) => {
+      const res = await next() as Response;
+      return new Response((await res.text()) + "+async-sync", {
+        status: res.status,
+      });
+    },
+  );
+  // sync route so handleRequest returns a Response (not a Promise)
+  server.get("/hook-async-sync", () => new Response("body"));
+  const s = server.serve({ port: 3642 });
+  const res = await fetch("http://localhost:3642/hook-async-sync");
+  assertEquals(await res.text(), "body+async-sync");
+  s.close();
+});
+
+Deno.test("Coverage - hook + cache hit uses sharedCtx (no new FastContext)", async () => {
+  _resetForTests();
+  server.hook(
+    "onRequest",
+    (_req: Request, _ctx: Context, next: Next) => next(),
+  );
+  server.hook(
+    "onResponse",
+    (_req: Request, _ctx: Context, next: Next) => next(),
+  );
+  server.get(
+    "/hook-cache",
+    (_req, ctx) => new Response(`id:${ctx.params.id ?? "none"}`),
+  );
+  const s = server.serve({ port: 3643 });
+  // First request: non-cached path
+  const r0 = await fetch("http://localhost:3643/hook-cache");
+  await r0.body?.cancel();
+  // Second request: cache hit path with sharedCtx populated
+  const res = await fetch("http://localhost:3643/hook-cache");
+  assertEquals(await res.text(), "id:none");
+  s.close();
+});

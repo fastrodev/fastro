@@ -2,22 +2,22 @@
 
 ![k6 logo](https://upload.wikimedia.org/wikipedia/commons/e/ef/K6-logo.svg)
 
-Last update: Sat Mar  7 21:08:55 WIB 2026
+Last update: Mon Mar  9 00:54:21 WIB 2026
 
 This benchmark measures the performance of Fastro against native Deno `Deno.serve` across various scenarios.
 
 | Scenario | Framework | Throughput (req/s) | Avg Latency | P95 Latency | % of Native | Source |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Root** | Native | 67294.34 | 1.4ms | 2.45ms | 100% | [native.ts](native.ts) |
-| | Fastro | 64549.85 | 1.46ms | 2.54ms | 95.92% | [main.ts](main.ts) |
-| **URL Params** | Native | 58381.92 | 1.62ms | 2.78ms | 100% | [native.ts](native.ts) |
-| | Fastro | 61323.13 | 1.54ms | 2.62ms | 105.04% | [main.ts](main.ts) |
-| **Query Params** | Native | 50334.73 | 1.9ms | 2.5ms | 100% | [native.ts](native.ts) |
-| | Fastro | 54541.10 | 1.74ms | 2.51ms | 108.36% | [main.ts](main.ts) |
-| **Middleware** | Native | 60465.19 | 1.56ms | 2.63ms | 100% | [native.ts](native.ts) |
-| | Fastro | 61987.21 | 1.52ms | 2.62ms | 102.52% | [main.ts](main.ts) |
-| **JSON POST** | Native | 39613.52 | 2.4ms | 3.66ms | 100% | [native.ts](native.ts) |
-| | Fastro | 40514.39 | 2.34ms | 3.69ms | 102.27% | [main.ts](main.ts) |
+| **Root** | Native | 70061.06 | 1.35ms | 2.47ms | 100% | [native.ts](native.ts) |
+| | Fastro | 67104.79 | 1.41ms | 2.51ms | 95.78% | [main.ts](main.ts) |
+| **URL Params** | Native | 68501.75 | 1.38ms | 2.35ms | 100% | [native.ts](native.ts) |
+| | Fastro | 63042.71 | 1.5ms | 2.63ms | 92.03% | [main.ts](main.ts) |
+| **Query Params** | Native | 66118.61 | 1.43ms | 2.32ms | 100% | [native.ts](native.ts) |
+| | Fastro | 62095.20 | 1.52ms | 2.64ms | 93.91% | [main.ts](main.ts) |
+| **Middleware** | Native | 63877.86 | 1.48ms | 2.67ms | 100% | [native.ts](native.ts) |
+| | Fastro | 63489.73 | 1.49ms | 2.57ms | 99.39% | [main.ts](main.ts) |
+| **JSON POST** | Native | 42748.01 | 2.22ms | 3.44ms | 100% | [native.ts](native.ts) |
+| | Fastro | 40181.28 | 2.37ms | 3.73ms | 94.00% | [main.ts](main.ts) |
 
 ## Prerequisites
 To run this benchmark locally, ensure you have:
