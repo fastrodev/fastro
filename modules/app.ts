@@ -1,6 +1,6 @@
-import App from "./mod.ts";
-import { autoRegisterModules } from "./core/loader.ts";
-import type { Context, Next } from "./core/types.ts";
+import App from "../mod.ts";
+import { autoRegisterModules } from "../core/loader.ts";
+import type { Context, Next } from "../core/types.ts";
 
 const app = new App();
 
@@ -101,7 +101,7 @@ app.post("/json", async (req) => {
 // module mounts (for example `index` which registers `/*`).
 const dep = Deno.env.get?.("DENO_DEPLOYMENT_ID");
 if (dep) {
-  const manifest = await import("./manifest.ts");
+  const manifest = await import("../manifest.ts");
   await autoRegisterModules(app, {
     manifest: manifest as unknown as Record<string, unknown>,
     requireExplicitGlobals: true,
