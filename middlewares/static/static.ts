@@ -151,15 +151,9 @@ export function staticFiles(
       if (indexResp) return indexResp;
     }
 
-    // 4. Everything failed: Try Fallback
     if (fallbackFile) {
-      console.log(`[Static] Fallback requested: ${fallbackFile}`);
       const fallbackResp = await serveFile(fallbackFile, true);
-      if (fallbackResp) {
-        console.log(`[Static] Fallback success: ${fallbackFile}`);
-        return fallbackResp;
-      }
-      console.log(`[Static] Fallback failed: ${fallbackFile}`);
+      if (fallbackResp) return fallbackResp;
     }
 
     return routeResp; // Final 404
