@@ -66,131 +66,97 @@ export function staticFiles(
       return next();
     }
 
-    const resp = await next();
-    if (resp.status !== 404) {
-      return resp;
-    }
+    const pathname = url.pathname.slice(normalizedPrefix.length);
+    const isDirectory = pathname === "" || pathname === "/" ||
+      pathname.endsWith("/");
+    const hasExtension = pathname.includes(".") && !isDirectory;
 
-    let pathname = url.pathname.slice(normalizedPrefix.length);
-    if (pathname === "" || pathname === "/" || pathname.endsWith("/")) {
-      pathname = pathname === "" ? `/${indexFile}` : `${pathname}${indexFile}`;
-    }
+    // Helper to serve a physical file
+    const serveFile = async (path: string, isFallback = false) => {
+      const cacheKey = isFallback ? `__fallback_${path}__` : path;
+      const now = Date.now();
 
-    const cacheKey = pathname;
-    const now = Date.now();
-
-    // Check cache first (only if production)
-    if (isProduction) {
-      const cached = fileCache!.get(cacheKey);
-      if (cached && cached.expiry > now) {
-        // Move to end (LRU)
-        fileCache!.delete(cacheKey);
-        fileCache!.set(cacheKey, cached);
-        return new Response(new Uint8Array(cached.content), {
-          headers: {
-            "Content-Type": cached.contentType,
-            "Cache-Control": "public, max-age=3600",
-          },
-        });
-      }
-    }
-
-    // Build file path once
-    const relative = pathname.replace(/^\/+/, "");
-    const filePath = `${baseDir}/${relative}`;
-
-    try {
-      const file = await Deno.readFile(filePath);
-
-      // Get content type once
-      const dot = relative.lastIndexOf(".");
-      const ext = dot >= 0 ? relative.substring(dot).toLowerCase() : "";
-      const contentType = contentTypes[ext] || "application/octet-stream";
-
-      // Cache management: LRU eviction if needed (only if production)
       if (isProduction) {
-        if (fileCache!.size >= MAX_FILE_CACHE_SIZE) {
-          const oldestKey = fileCache!.keys().next().value;
-          if (oldestKey) {
-            fileCache!.delete(oldestKey);
-          }
-        }
-        // Cache the file content (Ensure it's at the end)
-        fileCache!.delete(cacheKey);
-        fileCache!.set(cacheKey, {
-          content: file,
-          contentType,
-          expiry: now + FILE_CACHE_TTL,
-        });
-      }
-
-      const cacheControl = isProduction
-        ? "public, max-age=3600"
-        : "no-cache, no-store, must-revalidate";
-
-      return new Response(new Uint8Array(file), {
-        headers: {
-          "Content-Type": contentType,
-          "Cache-Control": cacheControl,
-        },
-      });
-    } catch {
-      if (fallbackFile) {
-        const fallbackKey = `__fallback_${fallbackFile}__`;
-        if (isProduction) {
-          const cached = fileCache!.get(fallbackKey);
-          if (cached && cached.expiry > now) {
-            // Move to end (LRU)
-            fileCache!.delete(fallbackKey);
-            fileCache!.set(fallbackKey, cached);
-            return new Response(new Uint8Array(cached.content), {
-              headers: {
-                "Content-Type": cached.contentType,
-                "Cache-Control": "public, max-age=3600",
-              },
-            });
-          }
-        }
-
-        try {
-          const fallbackPath = `${baseDir}/${fallbackFile}`;
-          const file = await Deno.readFile(fallbackPath);
-
-          // Get content type for fallback
-          const dot = fallbackFile.lastIndexOf(".");
-          const ext = dot >= 0 ? fallbackFile.substring(dot).toLowerCase() : "";
-          const contentType = contentTypes[ext] || "text/html";
-
-          if (isProduction) {
-            // LRU eviction if needed
-            if (fileCache!.size >= MAX_FILE_CACHE_SIZE) {
-              const oldestKey = fileCache!.keys().next().value;
-              if (oldestKey) fileCache!.delete(oldestKey);
-            }
-            fileCache!.delete(fallbackKey);
-            fileCache!.set(fallbackKey, {
-              content: file,
-              contentType,
-              expiry: now + FILE_CACHE_TTL,
-            });
-          }
-
-          const cacheControl = isProduction
-            ? "public, max-age=3600"
-            : "no-cache, no-store, must-revalidate";
-
-          return new Response(new Uint8Array(file), {
+        const cached = fileCache!.get(cacheKey);
+        if (cached && cached.expiry > now) {
+          fileCache!.delete(cacheKey);
+          fileCache!.set(cacheKey, cached);
+          return new Response(new Uint8Array(cached.content), {
             headers: {
-              "Content-Type": contentType,
-              "Cache-Control": cacheControl,
+              "Content-Type": cached.contentType,
+              "Cache-Control": "public, max-age=3600",
             },
           });
-        } catch {
-          // Fallback failed
         }
       }
 
-      return resp; // Return the original 404 from next()
+      const relative = path.replace(/^\/+/, "");
+      const filePath = `${baseDir}/${relative}`;
+
+      try {
+        const file = await Deno.readFile(filePath);
+        const dot = relative.lastIndexOf(".");
+        const ext = dot >= 0 ? relative.substring(dot).toLowerCase() : "";
+        const contentType = contentTypes[ext] ||
+          (isFallback ? "text/html" : "application/octet-stream");
+
+        if (isProduction) {
+          if (fileCache!.size >= MAX_FILE_CACHE_SIZE) {
+            const oldestKey = fileCache!.keys().next().value;
+            if (oldestKey) fileCache!.delete(oldestKey);
+          }
+          fileCache!.delete(cacheKey);
+          fileCache!.set(cacheKey, {
+            content: file,
+            contentType,
+            expiry: now + FILE_CACHE_TTL,
+          });
+        }
+
+        const cacheControl = isProduction
+          ? "public, max-age=3600"
+          : "no-cache, no-store, must-revalidate";
+
+        return new Response(new Uint8Array(file), {
+          headers: {
+            "Content-Type": contentType,
+            "Cache-Control": cacheControl,
+          },
+        });
+      } catch {
+        return null; // File not found
+      }
+    };
+
+    // 1. Asset requests (e.g. /app.js): File System Priority
+    if (hasExtension) {
+      const fileResp = await serveFile(pathname);
+      if (fileResp) return fileResp;
+      // If asset not found physically, let router try
+      return next();
     }
+
+    // 2. Directory or Clean URL (e.g. /, /dashboard): Router Priority
+    const routeResp = await next();
+    if (routeResp.status !== 404) {
+      return routeResp;
+    }
+
+    // 3. Router returned 404: Try index file for directory
+    if (isDirectory && indexFile) {
+      const indexFilePath = pathname === "" || pathname === "/"
+        ? `/${indexFile}`
+        : (pathname.endsWith("/") ? `${pathname}${indexFile}` : pathname);
+      const indexResp = await serveFile(indexFilePath);
+      if (indexResp) return indexResp;
+    }
+
+    // 4. Everything failed: Try Fallback
+    if (fallbackFile) {
+      const fallbackResp = await serveFile(fallbackFile, true);
+      if (fallbackResp) return fallbackResp;
+    }
+
+    return routeResp; // Final 404
   };
 }
