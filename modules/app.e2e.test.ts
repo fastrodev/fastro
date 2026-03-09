@@ -43,6 +43,16 @@ Deno.test("e2e: app routes", async () => {
     assertEquals(ctx.compress, "gzip");
     assertEquals(ctx.cacheControl, "no-cache");
     assertEquals(ctx.hasMetrics, true);
+
+    // Trigger onError hook via a route that throws
+    const r6 = await fetch("http://localhost:3135/e2e-error");
+    assertEquals(r6.status, 500);
+    assertEquals(await r6.text(), "Internal Server Error: e2e-boom");
+
+    // Trigger onError hook with a non-Error thrown value (covers String(ctx.error) branch)
+    const r7 = await fetch("http://localhost:3135/e2e-error-str");
+    assertEquals(r7.status, 500);
+    assertEquals(await r7.text(), "Internal Server Error: string-error");
   } finally {
     s.close();
   }
