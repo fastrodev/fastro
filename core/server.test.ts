@@ -2831,3 +2831,71 @@ Deno.test("Coverage - hook + cache hit uses sharedCtx (no new FastContext)", asy
   assertEquals(await res.text(), "id:none");
   s.close();
 });
+
+Deno.test("Coverage - onError hook: sync handler throws", async () => {
+  _resetForTests();
+  server.hook("onError", (_req: Request, ctx: Context, _next: Next) => {
+    return new Response(`caught:${(ctx.error as Error).message}`, {
+      status: 500,
+    });
+  });
+  server.get("/err-sync", () => {
+    throw new Error("sync-boom");
+  });
+  const s = server.serve({ port: 3644 });
+  const res = await fetch("http://localhost:3644/err-sync");
+  assertEquals(res.status, 500);
+  assertEquals(await res.text(), "caught:sync-boom");
+  s.close();
+});
+
+Deno.test("Coverage - onError hook: async handler rejects", async () => {
+  _resetForTests();
+  server.hook("onError", (_req: Request, ctx: Context, _next: Next) => {
+    return new Response(`caught:${(ctx.error as Error).message}`, {
+      status: 500,
+    });
+  });
+  server.get("/err-async", async () => {
+    await Promise.resolve();
+    throw new Error("async-boom");
+  });
+  const s = server.serve({ port: 3645 });
+  const res = await fetch("http://localhost:3645/err-async");
+  assertEquals(res.status, 500);
+  assertEquals(await res.text(), "caught:async-boom");
+  s.close();
+});
+
+Deno.test("Coverage - onError hook: non-Error thrown value", async () => {
+  _resetForTests();
+  server.hook("onError", (_req: Request, ctx: Context, _next: Next) => {
+    const errMsg = ctx.error instanceof Error
+      ? ctx.error.message
+      : String(ctx.error);
+    return new Response(`caught:${errMsg}`, { status: 500 });
+  });
+  server.get("/err-string", () => {
+    throw new Error("string-boom");
+  });
+  const s = server.serve({ port: 3646 });
+  const res = await fetch("http://localhost:3646/err-string");
+  assertEquals(res.status, 500);
+  assertEquals(await res.text(), "caught:string-boom");
+  s.close();
+});
+
+Deno.test("Coverage - onError hook: next() calls default response", async () => {
+  _resetForTests();
+  server.hook("onError", (_req: Request, _ctx: Context, next: Next) => {
+    return next();
+  });
+  server.get("/err-next", () => {
+    throw new Error("boom");
+  });
+  const s = server.serve({ port: 3647 });
+  const res = await fetch("http://localhost:3647/err-next");
+  assertEquals(res.status, 500);
+  assertEquals(await res.text(), "Internal Server Error");
+  s.close();
+});

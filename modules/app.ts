@@ -18,6 +18,14 @@ app.hook("onResponse", (req: Request, ctx: Context, next: Next) => {
   return response;
 });
 
+app.hook("onError", (req: Request, ctx: Context, _next: Next) => {
+  void req;
+  const err = ctx.error instanceof Error
+    ? ctx.error.message
+    : String(ctx.error);
+  return new Response(`Internal Server Error: ${err}`, { status: 500 });
+});
+
 // 10 global middlewares — each mutates ctx to simulate real-world stacks
 app.use((_req, ctx, next) => {
   ctx.requestId = "req-123";
@@ -94,6 +102,15 @@ app.get("/middleware", (_req, ctx) => {
 app.post("/json", async (req) => {
   const body = await req.json();
   return body;
+});
+
+app.get("/e2e-error", () => {
+  throw new Error("e2e-boom");
+});
+
+app.get("/e2e-error-str", () => {
+  // deno-lint-ignore no-throw-literal
+  throw "string-error";
 });
 
 // Auto-register modules after application routes are defined so that

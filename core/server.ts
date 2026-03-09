@@ -5,6 +5,7 @@ const middlewares: Middleware[] = [];
 let onRequestHook: Middleware | null = null;
 let onResponseHook: Middleware | null = null;
 let onResponseHookIsAsync = false;
+let onErrorHook: Middleware | null = null;
 const routePaths: string[] = [];
 
 function toResponse(res: unknown): Response | Promise<Response> {
@@ -215,12 +216,17 @@ function tryRoute(
  * @param type The type of hook ("onRequest" or "onResponse").
  * @param middleware The hook handler function.
  */
-function hook(type: "onRequest" | "onResponse", middleware: Middleware) {
+function hook(
+  type: "onRequest" | "onResponse" | "onError",
+  middleware: Middleware,
+) {
   if (type === "onRequest") {
     onRequestHook = middleware;
   } else if (type === "onResponse") {
     onResponseHook = middleware;
     onResponseHookIsAsync = middleware.constructor.name === "AsyncFunction";
+  } else if (type === "onError") {
+    onErrorHook = middleware;
   }
 }
 
@@ -445,6 +451,7 @@ function serve(
   const hasGlobalMiddlewares = middlewares.length > 0;
   const hasOnRequestHook = onRequestHook !== null;
   const hasOnResponseHook = onResponseHook !== null;
+  const hasOnErrorHook = onErrorHook !== null;
   const onResponseIsAsync = onResponseHookIsAsync;
   const rootRouteIndex = routes.findIndex((r) =>
     r.pattern.pathname === "/" && r.method === "GET"
@@ -508,7 +515,9 @@ function serve(
     }
   }
 
-  const handler = (
+  // Core request processor — shared by both handler variants.
+  // Built once at serve() time. Zero per-request closure allocation.
+  const processRequest = (
     req: Request,
     info: Deno.ServeHandlerInfo,
   ): Response | Promise<Response> => {
@@ -562,7 +571,9 @@ function serve(
       // Pre-built combined chains (global mw + route mw) are applied in one dispatch,
       // avoiding the extra closure and double-dispatch of the runFinal approach.
       if (cached !== undefined) {
-        if (cached === null) return new Response("Not found", { status: 404 });
+        if (cached === null) {
+          return new Response("Not found", { status: 404 });
+        }
 
         const route = routes[cached.routeIndex];
         const runChain = compiledChains[cached.routeIndex];
@@ -679,14 +690,14 @@ function serve(
 
     // Run onRequest hook as a preamble, then delegate to handleRequest.
     // Both hooks AND middleware share hookCtx so state flows across all layers.
-    const processRequest = (): Response | Promise<Response> => {
+    const runHooks = (): Response | Promise<Response> => {
       if (!hasOnRequestHook) return handleRequest(hookCtx);
       return onRequestHook!(req, hookCtx, () => handleRequest(hookCtx));
     };
 
-    if (!hasOnResponseHook) return processRequest();
+    if (!hasOnResponseHook) return runHooks();
 
-    const result = processRequest();
+    const result = runHooks();
     if (onResponseIsAsync) {
       // Async hook always returns a Promise — no instanceof check needed.
       if (result instanceof Promise) {
@@ -704,6 +715,49 @@ function serve(
     }
     return onResponseHook!(req, hookCtx, () => result) as Response;
   };
+
+  // Build two handler variants at serve() time — selected once, never branched per-request.
+  // When onErrorHook is null: direct call, zero try/catch overhead.
+  // When onErrorHook is set: wraps with try/catch + .catch() for async errors.
+  let handler: (
+    req: Request,
+    info: Deno.ServeHandlerInfo,
+  ) => Response | Promise<Response>;
+
+  if (hasOnErrorHook) {
+    const errHook = onErrorHook!;
+    const errDefault = () =>
+      new Response("Internal Server Error", { status: 500 });
+    handler = (req: Request, info: Deno.ServeHandlerInfo) => {
+      try {
+        const result = processRequest(req, info);
+        if (result instanceof Promise) {
+          return result.catch((error: unknown) => {
+            const ctx = new FastContext(
+              emptyParams,
+              emptyQuery,
+              info.remoteAddr,
+              req.url,
+            ) as unknown as Context;
+            ctx.error = error;
+            return errHook(req, ctx, errDefault);
+          });
+        }
+        return result;
+      } catch (error) {
+        const ctx = new FastContext(
+          emptyParams,
+          emptyQuery,
+          info.remoteAddr,
+          req.url,
+        ) as unknown as Context;
+        ctx.error = error;
+        return errHook(req, ctx, errDefault);
+      }
+    };
+  } else {
+    handler = processRequest;
+  }
   const serverInstance = Deno.serve({ ...options, handler });
   return { ...serverInstance, close: () => serverInstance.shutdown() };
 }
@@ -717,6 +771,7 @@ export function _resetForTests() {
   onRequestHook = null;
   onResponseHook = null;
   onResponseHookIsAsync = false;
+  onErrorHook = null;
   routePaths.length = 0;
 }
 
