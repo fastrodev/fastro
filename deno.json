@@ -7,6 +7,11 @@
       ]
     }
   },
+  "tasks": {
+    "test": "deno test -A",
+    "lint": "deno lint",
+    "cov": "deno test -A --no-check --coverage=coverage src/ && deno coverage --lcov coverage > coverage.lcov && deno coverage --exclude=test coverage/"
+  },
   "compilerOptions": {
     "lib": [
       "deno.ns",

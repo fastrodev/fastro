@@ -1,7 +1,7 @@
 import { denoEsbuildPlugin, esbuild, stdPath } from "./deps.ts";
 const { denoPlugin } = denoEsbuildPlugin;
 const { join } = stdPath;
-import { generateManifest } from "./manifest.ts";
+import { generateManifest } from "./generator.ts";
 
 async function build(modulePath?: string, spa?: boolean) {
   const cwd = Deno.cwd();

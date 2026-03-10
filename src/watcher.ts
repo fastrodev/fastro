@@ -4,7 +4,7 @@ import {
   deleteClient,
   getModulesWithApp,
 } from "./builder.ts";
-import { generateManifest } from "./manifest.ts";
+import { generateManifest } from "./generator.ts";
 import { stdPath } from "./deps.ts";
 const { join } = stdPath;
 
@@ -20,18 +20,45 @@ const paths = [
 const recentlyBuilt = new Map<string, number>();
 const BUILD_COOLDOWN_MS = 200;
 
-async function startWatcher() {
+type WatcherDeps = {
+  watchFs?: typeof Deno.watchFs;
+  stat?: (path: string | URL) => Promise<Deno.FileInfo>;
+  setTimeout?: (
+    handler: TimerHandler,
+    timeout?: number,
+    ...args: unknown[]
+  ) => number;
+  clearTimeout?: (id: number | undefined) => void;
+  generateManifest?: () => Promise<void>;
+  rebuild?: (modulesToRebuild?: string[]) => Promise<void>;
+};
+
+type WatcherOptions = {
+  watcher?: AsyncIterable<Deno.FsEvent>;
+};
+
+export async function startWatcher(
+  options: WatcherOptions = {},
+  deps: WatcherDeps = {},
+) {
+  const stat = deps.stat ?? Deno.stat;
+  const watchFs = deps.watchFs ?? Deno.watchFs;
+  const setTimeoutFn = deps.setTimeout ?? setTimeout;
+  const clearTimeoutFn = deps.clearTimeout ?? clearTimeout;
+  const generateManifestFn = deps.generateManifest ?? generateManifest;
+  const rebuildFn = deps.rebuild ?? rebuild;
+
   const existingPaths = [];
   for (const path of paths) {
     try {
-      await Deno.stat(path);
+      await stat(path);
       existingPaths.push(path);
     } catch (_) {
       // ignore
     }
   }
 
-  const watcher = Deno.watchFs(existingPaths);
+  const watcher = options.watcher ?? watchFs(existingPaths);
   let rebuildTimeout: number | undefined;
   let isRebuilding = false;
 
@@ -50,7 +77,7 @@ async function startWatcher() {
       }
 
       if (rebuildTimeout) {
-        clearTimeout(rebuildTimeout);
+        clearTimeoutFn(rebuildTimeout);
       }
 
       let hasRelevantChange = false;
@@ -74,11 +101,11 @@ async function startWatcher() {
           // so we trigger a full rebuild instead of attempting to rebuild the
           // module itself (which would be skipped later).
           try {
-            const statApp = await Deno.stat(
+            const statApp = await stat(
               join(cwd, "modules", modName, "App.tsx"),
             )
               .catch(() => null);
-            const statSpa = await Deno.stat(
+            const statSpa = await stat(
               join(cwd, "modules", modName, "spa.tsx"),
             )
               .catch(() => null);
@@ -112,22 +139,22 @@ async function startWatcher() {
 
       if (!hasRelevantChange) continue;
 
-      rebuildTimeout = setTimeout(async () => {
+      rebuildTimeout = setTimeoutFn(async () => {
         isRebuilding = true;
         try {
           // Regenerate manifest when there are any changes under modules
           try {
             if (pendingModulesChanged || pendingAffectedModules.size > 0) {
-              await generateManifest();
+              await generateManifestFn();
             }
           } catch (e) {
             console.warn("generateManifest failed:", e);
           }
 
           if (pendingComponentsChanged || pendingAffectedModules.size === 0) {
-            await rebuild();
+            await rebuildFn();
           } else {
-            await rebuild(Array.from(pendingAffectedModules));
+            await rebuildFn(Array.from(pendingAffectedModules));
           }
         } finally {
           isRebuilding = false;
@@ -141,7 +168,7 @@ async function startWatcher() {
   }
 }
 
-async function rebuild(modulesToRebuild?: string[]) {
+export async function rebuild(modulesToRebuild?: string[]) {
   if (modulesToRebuild && modulesToRebuild.length > 0) {
     console.log("Rebuilding specified modules...", modulesToRebuild);
     const validModules: string[] = [];
