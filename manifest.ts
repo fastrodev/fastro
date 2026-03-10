@@ -1,2 +1,3 @@
-export * as index from "./modules/index/mod.ts";
-export * as user from "./modules/user/mod.ts";
+import { generateManifest } from "./src/manifest.ts";
+
+if (import.meta.main) await generateManifest();
