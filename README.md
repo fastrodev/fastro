@@ -20,11 +20,30 @@ Automates the creation of the project's module manifest.
 ### [watcher.ts](src/watcher.ts)
 Provides a development-time file system watcher for hot-rebuilding.
 - **`run()`**: Initializes the watcher and performs an initial build.
-- **`startWatcher()`** (Internal): Monitors changes in `modules/`, `components/`, `app/`, and other core directories.
-- **`rebuild(modulesToRebuild)`** (Internal): Triggers incremental builds or manifest regeneration based on specific file changes.
+- **`startWatcher()`**: Monitors changes in `modules/`, `components/`, `app/`, and other core directories. Supports dependency injection for testing.
+- **`rebuild(modulesToRebuild)`**: Triggers incremental builds or manifest regeneration based on specific file changes.
+
+### [manifest.ts](src/manifest.ts)
+A re-export utility that exposes `generateManifest` from [generator.ts](src/generator.ts), facilitating cleaner imports for the watcher.
 
 ### [deps.ts](src/deps.ts)
 Centralized dependency management, re-exporting core libraries like `esbuild`, `@deno/esbuild-plugin`, and `@std/path`.
+
+---
+
+## Testing and Quality
+
+The project maintains high code quality with automated linting and extensive unit testing.
+
+### Tasks
+- **`deno task test`**: Runs all unit tests in the `src/` directory.
+- **`deno task lint`**: Performs static analysis to ensure code style consistency.
+- **`deno task cov`**: Runs tests and generates a coverage report. The current target is **>90% line coverage** for core logic.
+
+### Test Suites (src/)
+- **[builder_test.ts](src/builder_test.ts)**: Validates esbuild integration and module discovery.
+- **[generator_test.ts](src/generator_test.ts)**: Ensures manifest generation logic and identifier sanitization.
+- **[watcher_test.ts](src/watcher_test.ts)**: Tests rebuild orchestration and file system event handling.
 
 ---
 
