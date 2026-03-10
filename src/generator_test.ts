@@ -27,7 +27,7 @@ async function addMod(name: string, withModTs = true) {
 async function removeMod(name: string) {
   try {
     await Deno.remove(join(modulesPath, name), { recursive: true });
-  } catch (_) { // ignore 
+  } catch (_) { // ignore
   }
 }
 
@@ -107,7 +107,7 @@ Deno.test("generator: NotFound error path (inner catch, line 39)", async () => {
   const backup = join(cwd, "modules_bak_notfound");
   try {
     await Deno.remove(backup, { recursive: true });
-  } catch (_) { // ignore 
+  } catch (_) { // ignore
   }
   await Deno.rename(modulesPath, backup);
   try {
@@ -122,7 +122,7 @@ Deno.test("generator: non-NotFound error triggers re-throw (lines 39-41 + outer 
   const backup = join(cwd, "modules_bak_enotdir");
   try {
     await Deno.remove(backup, { recursive: true });
-  } catch (_) { // ignore 
+  } catch (_) { // ignore
   }
   await Deno.rename(modulesPath, backup);
   await Deno.writeTextFile(modulesPath, "not_a_dir");

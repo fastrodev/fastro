@@ -76,8 +76,7 @@ Deno.test({
 });
 
 Deno.test({
-  name:
-    "watcher: startWatcher triggers full rebuild when modules lack App/spa",
+  name: "watcher: startWatcher triggers full rebuild when modules lack App/spa",
   fn: async () => {
     const events: Deno.FsEvent[] = [
       {
