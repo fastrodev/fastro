@@ -7,7 +7,6 @@ MD_FILE="BENCHMARK.md"
 
 # Function to kill process on port
 kill_port() {
-    echo "  ↳ Cleaning up port $PORT..."
     fuser -k $PORT/tcp > /dev/null 2>&1 || true
     pkill -f "deno run" > /dev/null 2>&1 || true
     sleep 2
@@ -25,7 +24,7 @@ if ! command -v k6 >/dev/null 2>&1; then
     exit 1
 fi
 
- # Clear/Create Markdown File
+# Clear/Create Markdown File
 echo "# 🏁 Fastro Performance Benchmark" > $MD_FILE
 echo "" >> $MD_FILE
 echo "![k6 logo](https://upload.wikimedia.org/wikipedia/commons/e/ef/K6-logo.svg)" >> $MD_FILE
@@ -41,65 +40,59 @@ echo "| :--- | :--- | :--- | :--- | :--- | :--- | :--- |" >> $MD_FILE
 declare -A NATIVE_RPS NATIVE_AVG NATIVE_P95
 declare -A FASTRO_RPS FASTRO_AVG FASTRO_P95 FASTRO_PERCENT
 
-# Helper to run k6 and extract metrics
-run_bench() {
-    SCENARIO=$1
-    NAME=$2
-    TARGET=$3
-    METHOD=$4
-    if [ -z "$METHOD" ]; then METHOD="GET"; fi
-
-    echo "  ↳ Measuring $SCENARIO..."
+# Helper: run k6's warmup + measurement and extract metrics into variables
+# Sets: _RPS_RAW, _RPS, _AVG, _P95
+measure_k6() {
+    local TARGET=$1
+    local METHOD=${2:-GET}
+    # Warmup: let V8 JIT compile hot paths before actual measurement
+    ENDPOINT=$TARGET METHOD=$METHOD k6 run --no-color --vus 50 --duration 5s scripts/k6_bench.js > /dev/null 2>&1 || true
     ENDPOINT=$TARGET METHOD=$METHOD k6 run --no-color scripts/k6_bench.js > k6_output.txt 2>&1
-    
-    # Extract metrics
-    RPS_RAW=$(grep "http_reqs" k6_output.txt | awk '{print $3}' | sed 's/\/s//')
-    RPS=$(printf "%.2f" $RPS_RAW)
-    AVG=$(grep "http_req_duration" k6_output.txt | grep -o "avg=[^ ]*" | cut -d= -f2)
-    P95=$(grep "http_req_duration" k6_output.txt | grep -o "p(95)=[^ ]*" | cut -d= -f2)
-    
-    if [ "$NAME" == "Native" ]; then
-        NATIVE_RPS["$SCENARIO"]=$RPS
-        NATIVE_AVG["$SCENARIO"]=$AVG
-        NATIVE_P95["$SCENARIO"]=$P95
-    else
-        N_RPS=${NATIVE_RPS["$SCENARIO"]}
-        PERCENT=$(awk "BEGIN {printf \"%.2f%%\", ($RPS_RAW / $N_RPS) * 100}")
-        FASTRO_RPS["$SCENARIO"]=$RPS
-        FASTRO_AVG["$SCENARIO"]=$AVG
-        FASTRO_P95["$SCENARIO"]=$P95
-        FASTRO_PERCENT["$SCENARIO"]=$PERCENT
-    fi
+    _RPS_RAW=$(grep "http_reqs" k6_output.txt | awk '{print $3}' | sed 's/\/s//')
+    _RPS=$(printf "%.2f" "$_RPS_RAW")
+    _AVG=$(grep "http_req_duration" k6_output.txt | grep -o "avg=[^ ]*" | cut -d= -f2)
+    _P95=$(grep "http_req_duration" k6_output.txt | grep -o "p(95)=[^ ]*" | cut -d= -f2)
+}
+
+# Benchmark a single scenario: start native, measure, stop; start fastro, measure, stop.
+# This keeps the two measurements close in time so system load is comparable.
+bench_scenario() {
+    local SCENARIO=$1
+    local TARGET=$2
+    local METHOD=${3:-GET}
+
+    echo "  ↳ [$SCENARIO] native..."
+    deno run -A native.ts > /dev/null 2>&1 &
+    sleep 4
+    measure_k6 "$TARGET" "$METHOD"
+    NATIVE_RPS["$SCENARIO"]=$_RPS
+    NATIVE_AVG["$SCENARIO"]=$_AVG
+    NATIVE_P95["$SCENARIO"]=$_P95
+    local N_RPS_RAW=$_RPS_RAW
+    kill_port
+
+    echo "  ↳ [$SCENARIO] fastro..."
+    deno run -A main.ts $PORT > /dev/null 2>&1 &
+    sleep 4
+    measure_k6 "$TARGET" "$METHOD"
+    local PERCENT
+    PERCENT=$(awk "BEGIN {printf \"%.2f%%\", ($_RPS_RAW / $N_RPS_RAW) * 100}")
+    FASTRO_RPS["$SCENARIO"]=$_RPS
+    FASTRO_AVG["$SCENARIO"]=$_AVG
+    FASTRO_P95["$SCENARIO"]=$_P95
+    FASTRO_PERCENT["$SCENARIO"]=$PERCENT
+    kill_port
 }
 
 echo "🚀 Starting Performance Benchmark..."
 echo "------------------------------------"
 
-echo "🔹 Step 1: Benchmarking Native Deno (Baseline)"
-deno run -A native.ts &
-SERVER_PID=$!
-sleep 5 # Wait for server to start
-
 SCENARIOS=("Root" "URL Params" "Query Params" "Middleware" "JSON POST")
-run_bench "Root" "Native" "/" "GET"
-run_bench "URL Params" "Native" "/user/123" "GET"
-run_bench "Query Params" "Native" "/query?name=fastro" "GET"
-run_bench "Middleware" "Native" "/middleware" "GET"
-run_bench "JSON POST" "Native" "/json" "POST"
-kill_port
-
-echo ""
-echo "🔹 Step 2: Benchmarking Fastro (Target)"
-deno run -A main.ts $PORT &
-SERVER_PID=$!
-sleep 5 # Wait for server to start
-
-run_bench "Root" "Fastro" "/" "GET"
-run_bench "URL Params" "Fastro" "/user/123" "GET"
-run_bench "Query Params" "Fastro" "/query?name=fastro" "GET"
-run_bench "Middleware" "Fastro" "/middleware" "GET"
-run_bench "JSON POST" "Fastro" "/json" "POST"
-kill_port
+bench_scenario "Root"         "/"                  "GET"
+bench_scenario "URL Params"   "/user/123"          "GET"
+bench_scenario "Query Params" "/query?name=fastro" "GET"
+bench_scenario "Middleware"   "/middleware"        "GET"
+bench_scenario "JSON POST"    "/json"              "POST"
 
 # Write results to file
 for S in "${SCENARIOS[@]}"; do
@@ -107,7 +100,7 @@ for S in "${SCENARIOS[@]}"; do
     echo "| | Fastro | ${FASTRO_RPS[$S]} | ${FASTRO_AVG[$S]} | ${FASTRO_P95[$S]} | ${FASTRO_PERCENT[$S]} | [main.ts](main.ts) |" >> $MD_FILE
 done
 
-rm k6_output.txt
+rm -f k6_output.txt
 
 echo "" >> $MD_FILE
 echo "## Prerequisites" >> $MD_FILE
@@ -119,7 +112,7 @@ echo "4. Execute the script: \`bash scripts/run_bench.sh\`." >> $MD_FILE
 
 echo "" >> $MD_FILE
 echo "## Methodology" >> $MD_FILE
-echo "Benchmark results are collected using \`k6\` with 100 virtual users for 10 seconds per scenario. Results may vary depending on CPU load, memory usage, system configuration, and other environmental factors. For more representative numbers, run the benchmark multiple times on an idle machine." >> $MD_FILE
+echo "Each scenario starts its own server instance (Native, then Fastro) and measures them back-to-back, so both comparisons happen under similar system load. \`k6\` uses 100 virtual users for 15 seconds per measurement, preceded by a 5-second warmup phase (50 VUs) to allow V8 JIT compilation of hot paths. Results may vary depending on CPU load, memory usage, and other environmental factors. For best results, run on an idle machine." >> $MD_FILE
 echo "" >> $MD_FILE
 echo "For a deeper analysis, see [posts/benchmark](https://fastro.deno.dev/posts/benchmark)." >> $MD_FILE
 echo "" >> $MD_FILE

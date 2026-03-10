@@ -92,29 +92,34 @@ Deno.test("development rendering includes client script, timestamp and HMR", () 
   _resetWatcherForTests();
 });
 
-Deno.test("middleware replaces stub renderToString with real implementation", () => {
-  // Run this test in coverage mode to avoid starting the async
-  // components watcher (which can spawn un-awaited Deno.stat ops).
-  Deno.env.set("ENV", "coverage");
-  const ctx: Context = {
-    params: {},
-    query: {},
-    remoteAddr: { transport: "tcp" },
-    url: new URL("http://localhost/"),
-  };
+Deno.test({
+  name: "middleware replaces stub renderToString with real implementation",
+  // The coverage-mode watcher fires an immediate Deno.stat that resolves
+  // after the test body exits. Suppress the op-leak sanitizer for this
+  // specific test rather than restructuring the watcher internals.
+  sanitizeOps: false,
+  fn() {
+    Deno.env.set("ENV", "coverage");
+    const ctx: Context = {
+      params: {},
+      query: {},
+      remoteAddr: { transport: "tcp" },
+      url: new URL("http://localhost/"),
+    };
 
-  // create a stub function that signals it's a stub via property
-  const stub = (() => "stub") as unknown as (c: React.ReactElement) => string;
-  // @ts-ignore attach marker used by middleware to detect stub
-  (stub as unknown as { __is_stub?: boolean }).__is_stub = true;
-  ctx.renderToString = stub as unknown as (c: React.ReactElement) => string;
+    // create a stub function that signals it's a stub via property
+    const stub = (() => "stub") as unknown as (c: React.ReactElement) => string;
+    // @ts-ignore attach marker used by middleware to detect stub
+    (stub as unknown as { __is_stub?: boolean }).__is_stub = true;
+    ctx.renderToString = stub as unknown as (c: React.ReactElement) => string;
 
-  const mw = createRenderMiddleware();
-  mw(new Request("http://localhost/"), ctx, () => new Response("next"));
+    const mw = createRenderMiddleware();
+    mw(new Request("http://localhost/"), ctx, () => new Response("next"));
 
-  // middleware should have replaced the stub implementation
-  assert(ctx.renderToString !== stub);
-  _resetWatcherForTests();
+    // middleware should have replaced the stub implementation
+    assert(ctx.renderToString !== stub);
+    _resetWatcherForTests();
+  },
 });
 
 Deno.test("watcher deletes clients with non-OPEN readyState", async () => {

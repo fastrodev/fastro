@@ -2,6 +2,10 @@ import { Context, Handler, Middleware, Route } from "./types.ts";
 
 const routes: Route[] = [];
 const middlewares: Middleware[] = [];
+let onRequestHook: Middleware | null = null;
+let onResponseHook: Middleware | null = null;
+let onResponseHookIsAsync = false;
+let onErrorHook: Middleware | null = null;
 const routePaths: string[] = [];
 
 function toResponse(res: unknown): Response | Promise<Response> {
@@ -204,6 +208,26 @@ function tryRoute(
     matchCache.set(cacheKey, null);
   }
   return new Response("Not found", { status: 404 });
+}
+
+/**
+ * Adds a hook to the application lifecycle.
+ *
+ * @param type The type of hook ("onRequest" or "onResponse").
+ * @param middleware The hook handler function.
+ */
+function hook(
+  type: "onRequest" | "onResponse" | "onError",
+  middleware: Middleware,
+) {
+  if (type === "onRequest") {
+    onRequestHook = middleware;
+  } else if (type === "onResponse") {
+    onResponseHook = middleware;
+    onResponseHookIsAsync = middleware.constructor.name === "AsyncFunction";
+  } else if (type === "onError") {
+    onErrorHook = middleware;
+  }
 }
 
 /**
@@ -425,6 +449,10 @@ function serve(
   const emptyQuery = Object.freeze({});
 
   const hasGlobalMiddlewares = middlewares.length > 0;
+  const hasOnRequestHook = onRequestHook !== null;
+  const hasOnResponseHook = onResponseHook !== null;
+  const hasOnErrorHook = onErrorHook !== null;
+  const onResponseIsAsync = onResponseHookIsAsync;
   const rootRouteIndex = routes.findIndex((r) =>
     r.pattern.pathname === "/" && r.method === "GET"
   );
@@ -432,7 +460,8 @@ function serve(
   const rootRouteHasMiddlewares =
     !!(rootRoute && rootRoute.middlewares.length > 0);
   const canUseFastRoot =
-    !!(rootRoute && !hasGlobalMiddlewares && !rootRouteHasMiddlewares);
+    !!(rootRoute && !hasGlobalMiddlewares && !rootRouteHasMiddlewares &&
+      !hasOnRequestHook);
   const rootHandler = rootRoute?.handler;
   const rh0 = rootHandler && rootHandler.length === 0;
 
@@ -441,10 +470,12 @@ function serve(
   // function that executes the entire middleware stack with zero per-request
   // overhead—no array iteration, no index tracking, no dispatch closures.
   // This works efficiently for any chain length from 1 to 50+.
+  // NOTE: onRequestHook is NOT included here — it runs as a separate
+  // lifecycle preamble so it shares a ctx with onResponseHook.
   const compiledChains = routes.map((r) => {
     const combined = hasGlobalMiddlewares
       ? [...middlewares, ...r.middlewares]
-      : r.middlewares;
+      : [...r.middlewares];
     return compileMiddlewareChain(combined);
   });
 
@@ -484,69 +515,153 @@ function serve(
     }
   }
 
-  const handler = (
+  // Core request processor — shared by both handler variants.
+  // Built once at serve() time. Zero per-request closure allocation.
+  const processRequest = (
     req: Request,
     info: Deno.ServeHandlerInfo,
   ): Response | Promise<Response> => {
-    const method = req.method;
-    const urlStr = req.url;
-    const qIdx = urlStr.indexOf("?");
-    const thirdSlash = urlStr.indexOf("/", 8);
-    const pathname = thirdSlash === -1
-      ? "/"
-      : (qIdx === -1
-        ? urlStr.slice(thirdSlash)
-        : urlStr.slice(thirdSlash, qIdx));
-    // compute url parts
+    const handleRequest = (
+      sharedCtx?: Context,
+    ): Response | Promise<Response> => {
+      const method = req.method;
+      const urlStr = req.url;
+      const qIdx = urlStr.indexOf("?");
+      const thirdSlash = urlStr.indexOf("/", 8);
+      const pathname = thirdSlash === -1
+        ? "/"
+        : (qIdx === -1
+          ? urlStr.slice(thirdSlash)
+          : urlStr.slice(thirdSlash, qIdx));
+      // compute url parts
 
-    if (method === "GET" && canUseFastRoot) {
-      if (urlStr.length === thirdSlash + 1) {
-        const res = rh0
-          ? (rootHandler as () =>
-            | Response
-            | Promise<Response>
-            | string
-            | Promise<string>)()
-          : rootHandler!(
-            req,
-            new FastContext(
-              emptyParams,
-              emptyQuery,
-              info.remoteAddr,
-              urlStr,
-            ) as unknown as Context,
-            rootNext,
-          );
-        if (res instanceof Response) return res;
-        if (typeof res === "string") return new Response(res);
-        if (res instanceof Promise) return res.then(toResponse);
-        if (res !== null && typeof res === "object") return Response.json(res);
-        return new Response("Internal Server Error", { status: 500 });
+      if (method === "GET" && canUseFastRoot) {
+        if (urlStr.length === thirdSlash + 1) {
+          const res = rh0
+            ? (rootHandler as () =>
+              | Response
+              | Promise<Response>
+              | string
+              | Promise<string>)()
+            : rootHandler!(
+              req,
+              sharedCtx ??
+                new FastContext(
+                  emptyParams,
+                  emptyQuery,
+                  info.remoteAddr,
+                  urlStr,
+                ) as unknown as Context,
+              rootNext,
+            );
+          if (res instanceof Response) return res;
+          if (typeof res === "string") return new Response(res);
+          if (res instanceof Promise) return res.then(toResponse);
+          if (res !== null && typeof res === "object") {
+            return Response.json(res);
+          }
+          return new Response("Internal Server Error", { status: 500 });
+        }
       }
-    }
 
-    const cacheKey = method + ":" + urlStr;
-    const cached = matchCache.get(cacheKey);
+      const cacheKey = method + ":" + urlStr;
+      const cached = matchCache.get(cacheKey);
 
-    // Unified cache fast-path: works whether or not global middlewares are present.
-    // Pre-built combined chains (global mw + route mw) are applied in one dispatch,
-    // avoiding the extra closure and double-dispatch of the runFinal approach.
-    if (cached !== undefined) {
-      if (cached === null) return new Response("Not found", { status: 404 });
+      // Unified cache fast-path: works whether or not global middlewares are present.
+      // Pre-built combined chains (global mw + route mw) are applied in one dispatch,
+      // avoiding the extra closure and double-dispatch of the runFinal approach.
+      if (cached !== undefined) {
+        if (cached === null) {
+          return new Response("Not found", { status: 404 });
+        }
 
-      const route = routes[cached.routeIndex];
-      const runChain = compiledChains[cached.routeIndex];
-      const cachedCtx = new FastContext(
-        cached.params,
-        cached.query, // Pre-calculated in cache
-        info.remoteAddr,
-        urlStr,
-      ) as unknown as Context;
-      const nextCached = () =>
+        const route = routes[cached.routeIndex];
+        const runChain = compiledChains[cached.routeIndex];
+        if (sharedCtx) {
+          sharedCtx.params = cached.params;
+          sharedCtx.query = cached.query;
+        }
+        const cachedCtx: Context = sharedCtx ??
+          new FastContext(
+            cached.params,
+            cached.query,
+            info.remoteAddr,
+            urlStr,
+          ) as unknown as Context;
+        const nextCached = () =>
+          tryRoute(
+            cached.routeIndex + 1,
+            cachedCtx,
+            undefined,
+            req,
+            urlStr,
+            pathname,
+            cacheKey,
+            method,
+            matchCache,
+            MAX_CACHE_SIZE,
+            routeRegex,
+          );
+
+        const innerHandler = () => {
+          const res = route.handler(req, cachedCtx, nextCached);
+          if (res instanceof Response) return res;
+          if (typeof res === "string") return new Response(res);
+          if (res instanceof Promise) return res.then(toResponse);
+          if (res !== null && typeof res === "object") {
+            return Response.json(res);
+          }
+          return new Response("Internal Server Error", { status: 500 });
+        };
+
+        // Single pre-compiled function call—handles any chain length (0 to 50+)
+        // with zero dispatch overhead.
+        return runChain(req, cachedCtx, innerHandler);
+      }
+
+      // Non-cached path: eager query parsing + full route matching.
+      const query: Record<string, string> = {};
+      if (qIdx !== -1) {
+        const qs = urlStr.slice(qIdx + 1);
+        let start = 0;
+        while (start < qs.length) {
+          let end = qs.indexOf("&", start);
+          if (end === -1) end = qs.length;
+          const eq = qs.indexOf("=", start);
+          if (eq !== -1 && eq < end) {
+            try {
+              query[decodeURIComponent(qs.slice(start, eq))] =
+                decodeURIComponent(
+                  qs.slice(eq + 1, end).replace(/\+/g, " "),
+                );
+            } catch {
+              query[qs.slice(start, eq)] = qs.slice(eq + 1, end);
+            }
+          }
+          start = end + 1;
+        }
+      }
+      // Lazy URL: only allocated when ctx.url needs it
+      if (sharedCtx) {
+        sharedCtx.params = emptyParams;
+        sharedCtx.query = query;
+      }
+      const ctx: Context = sharedCtx ??
+        new FastContext(
+          emptyParams,
+          query,
+          info.remoteAddr,
+          urlStr,
+        ) as unknown as Context;
+
+      // On cache miss: apply global middlewares wrapping tryRoute.
+      // Global mw runs first; when it calls next(), route matching happens and the
+      // result is stored in cache for subsequent fast-path hits.
+      const runFinal = () =>
         tryRoute(
-          cached.routeIndex + 1,
-          cachedCtx,
-          undefined,
+          0,
+          ctx,
+          ctx.url,
           req,
           urlStr,
           pathname,
@@ -557,70 +672,92 @@ function serve(
           routeRegex,
         );
 
-      const innerHandler = () => {
-        const res = route.handler(req, cachedCtx, nextCached);
-        if (res instanceof Response) return res;
-        if (typeof res === "string") return new Response(res);
-        if (res instanceof Promise) return res.then(toResponse);
-        if (res !== null && typeof res === "object") return Response.json(res);
-        return new Response("Internal Server Error", { status: 500 });
-      };
+      // Use the pre-compiled global chain (handles 0 to 50+ middlewares).
+      return compiledGlobalChain(req, ctx, runFinal);
+    };
 
-      // Single pre-compiled function call—handles any chain length (0 to 50+)
-      // with zero dispatch overhead.
-      return runChain(req, cachedCtx, innerHandler);
-    }
+    if (!hasOnRequestHook && !hasOnResponseHook) return handleRequest();
 
-    // Non-cached path: eager query parsing + full route matching.
-    const query: Record<string, string> = {};
-    if (qIdx !== -1) {
-      const qs = urlStr.slice(qIdx + 1);
-      let start = 0;
-      while (start < qs.length) {
-        let end = qs.indexOf("&", start);
-        if (end === -1) end = qs.length;
-        const eq = qs.indexOf("=", start);
-        if (eq !== -1 && eq < end) {
-          try {
-            query[decodeURIComponent(qs.slice(start, eq))] = decodeURIComponent(
-              qs.slice(eq + 1, end).replace(/\+/g, " "),
-            );
-          } catch {
-            query[qs.slice(start, eq)] = qs.slice(eq + 1, end);
-          }
-        }
-        start = end + 1;
-      }
-    }
-    // Lazy URL: only allocated when ctx.url needs it
-    const ctx: Context = new FastContext(
+    // Create one shared hook context per request — persists across both
+    // onRequest and onResponse hooks so ctx.state values (e.g. startTime)
+    // are visible in onResponse.
+    const hookCtx = new FastContext(
       emptyParams,
-      query,
+      emptyQuery,
       info.remoteAddr,
-      urlStr,
+      req.url,
     ) as unknown as Context;
 
-    // On cache miss: apply global middlewares wrapping tryRoute.
-    // Global mw runs first; when it calls next(), route matching happens and the
-    // result is stored in cache for subsequent fast-path hits.
-    const runFinal = () =>
-      tryRoute(
-        0,
-        ctx,
-        ctx.url,
-        req,
-        urlStr,
-        pathname,
-        cacheKey,
-        method,
-        matchCache,
-        MAX_CACHE_SIZE,
-        routeRegex,
-      );
+    // Run onRequest hook as a preamble, then delegate to handleRequest.
+    // Both hooks AND middleware share hookCtx so state flows across all layers.
+    const runHooks = (): Response | Promise<Response> => {
+      if (!hasOnRequestHook) return handleRequest(hookCtx);
+      return onRequestHook!(req, hookCtx, () => handleRequest(hookCtx));
+    };
 
-    // Use the pre-compiled global chain (handles 0 to 50+ middlewares).
-    return compiledGlobalChain(req, ctx, runFinal);
+    if (!hasOnResponseHook) return runHooks();
+
+    const result = runHooks();
+    if (onResponseIsAsync) {
+      // Async hook always returns a Promise — no instanceof check needed.
+      if (result instanceof Promise) {
+        return result.then(
+          (res) => onResponseHook!(req, hookCtx, () => res),
+        ) as Promise<Response>;
+      }
+      return onResponseHook!(req, hookCtx, () => result) as Promise<Response>;
+    }
+    // Sync hook — direct call, zero extra Promise allocation.
+    if (result instanceof Promise) {
+      return result.then(
+        (res) => onResponseHook!(req, hookCtx, () => res) as Response,
+      );
+    }
+    return onResponseHook!(req, hookCtx, () => result) as Response;
   };
+
+  // Build two handler variants at serve() time — selected once, never branched per-request.
+  // When onErrorHook is null: direct call, zero try/catch overhead.
+  // When onErrorHook is set: wraps with try/catch + .catch() for async errors.
+  let handler: (
+    req: Request,
+    info: Deno.ServeHandlerInfo,
+  ) => Response | Promise<Response>;
+
+  if (hasOnErrorHook) {
+    const errHook = onErrorHook!;
+    const errDefault = () =>
+      new Response("Internal Server Error", { status: 500 });
+    handler = (req: Request, info: Deno.ServeHandlerInfo) => {
+      try {
+        const result = processRequest(req, info);
+        if (result instanceof Promise) {
+          return result.catch((error: unknown) => {
+            const ctx = new FastContext(
+              emptyParams,
+              emptyQuery,
+              info.remoteAddr,
+              req.url,
+            ) as unknown as Context;
+            ctx.error = error;
+            return errHook(req, ctx, errDefault);
+          });
+        }
+        return result;
+      } catch (error) {
+        const ctx = new FastContext(
+          emptyParams,
+          emptyQuery,
+          info.remoteAddr,
+          req.url,
+        ) as unknown as Context;
+        ctx.error = error;
+        return errHook(req, ctx, errDefault);
+      }
+    };
+  } else {
+    handler = processRequest;
+  }
   const serverInstance = Deno.serve({ ...options, handler });
   return { ...serverInstance, close: () => serverInstance.shutdown() };
 }
@@ -631,6 +768,10 @@ function serve(
 export function _resetForTests() {
   routes.length = 0;
   middlewares.length = 0;
+  onRequestHook = null;
+  onResponseHook = null;
+  onResponseHookIsAsync = false;
+  onErrorHook = null;
   routePaths.length = 0;
 }
 
@@ -676,6 +817,7 @@ const server = {
   patch,
   head,
   options: options_,
+  hook,
   use,
   serve,
 };

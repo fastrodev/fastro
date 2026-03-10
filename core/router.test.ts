@@ -18,6 +18,7 @@ Deno.test("createRouter forwards GET to server", () => {
     head: () => undefined,
     options: () => undefined,
     use: () => undefined,
+    hook: () => undefined,
     serve: () => ({ close: () => undefined }),
   } as Parameters<typeof createRouter>[0];
 
@@ -39,6 +40,7 @@ Deno.test("builder.build returns noop middleware", async () => {
     head: () => undefined,
     options: () => undefined,
     use: () => undefined,
+    hook: () => undefined,
     serve: () => ({ close: () => undefined }),
   } as Parameters<typeof createRouter>[0];
   const r = createRouter(mock);
@@ -62,6 +64,7 @@ Deno.test("createRouter forwards all methods to server", () => {
     head: () => called.push("head"),
     options: () => called.push("options"),
     use: () => undefined,
+    hook: () => undefined,
     serve: () => ({ close: () => undefined }),
   } as Parameters<typeof createRouter>[0];
 

@@ -250,6 +250,8 @@ export interface Server {
     handler: Handler,
     ...middlewares: Middleware[]
   ): unknown;
+  /** Register a hook. */
+  hook(type: "onRequest" | "onResponse", handler: Middleware): void;
   /** Register a global middleware. */
   use(middleware: Middleware): void;
   /** Start the server with the given options. Returns an instance with a `close` method. */

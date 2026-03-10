@@ -139,12 +139,12 @@ export function autoRegisterModulesFrom(
     const regs = _getRegisteredMounts();
     if (regs.length) {
       console.info(
-        `ℹ️ [Loader] Registered ${regs.length} module(s): ${
-          regs.map((r) => `${r.name}@${r.mount}`).join(", ")
+        `ℹ️  [Loader] Registered ${regs.length} module(s): ${
+          regs.map((r) => `${r.name} @ ${r.mount}`).join(", ")
         }`,
       );
     } else {
-      console.info("ℹ️ [Loader] No modules registered by loader");
+      console.info("ℹ️  [Loader] No modules registered by loader");
     }
 
     // If the app exposes middleware/route introspection, include counts.
@@ -159,10 +159,10 @@ export function autoRegisterModulesFrom(
       : undefined;
 
     if (typeof mwCount === "number") {
-      console.info(`ℹ️ [Loader] Global middlewares: ${mwCount}`);
+      console.info(`ℹ️  [Loader] Global middlewares: ${mwCount}`);
     }
     if (Array.isArray(routePaths)) {
-      console.info(`ℹ️ [Loader] Registered routes: ${routePaths.length}`);
+      console.info(`ℹ️  [Loader] Registered route(s): ${routePaths.length}`);
     }
   } catch {
     // Non-fatal: logging should not break app startup

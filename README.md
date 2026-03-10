@@ -6,15 +6,15 @@
 [![License](https://img.shields.io/github/license/fastrodev/fastro)](https://github.com/fastrodev/fastro/blob/main/LICENSE)
 [![Release](https://img.shields.io/github/v/release/fastrodev/fastro)](https://github.com/fastrodev/fastro/releases)
 [![Coverage Status](https://coveralls.io/repos/github/fastrodev/fastro/badge.svg?branch=main)](https://coveralls.io/github/fastrodev/fastro?branch=main)
-[![Performance](https://img.shields.io/badge/performance-95.92%25_of_native-orange)](https://github.com/fastrodev/fastro/blob/main/BENCHMARK.md)
+[![Performance](https://img.shields.io/badge/performance-up_to_116%25_of_native-brightgreen)](https://github.com/fastrodev/fastro/blob/main/BENCHMARK.md)
 
 Fastro is a **blazing-fast**, **type-safe**, and **zero-dependency** web framework meticulously engineered for Deno. It is built for developers who demand peak performance without sacrificing a clean and intuitive developer experience.
 
 ### 🚀 **Engineered for Speed**  
-Achieve near-native Deno throughput. Powered by our latest **pre-built middleware chains** and **unified cache fast-path**, Fastro eliminates dispatch overhead, ensuring your application remains responsive under extreme load. [(Benchmarks)](/BENCHMARK.md)
+Achieve — and exceed — native Deno throughput. Powered by **pre-built middleware chains**, **unified cache fast-path**, and **serve-time handler selection**, Fastro eliminates per-request dispatch overhead entirely. Lifecycle hooks (`onRequest`, `onResponse`, `onError`) are zero-cost when not registered. [(Benchmarks)](/BENCHMARK.md)
 
 ### 💎 **Zero-Friction DX**  
-Write clean, declarative code. Return JSON objects, strings, or native Responses directly from your handlers. No boilerplate, no complex abstractions—just pure productivity.
+Write clean, declarative code. Return JSON objects, strings, or native Responses directly from your handlers. Full lifecycle hook support (`onRequest`, `onResponse`, `onError`) for cross-cutting concerns. No boilerplate, no complex abstractions—just pure productivity.
 
 ### 📦 **Zero Dependency Core**  
 A minimalist, rock-solid engine with absolutely no external dependencies. Keep your stack light, secure, and easy to maintain.

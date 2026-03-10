@@ -3,7 +3,7 @@ import { check } from "k6";
 
 export const options = {
   vus: 100,
-  duration: "10s",
+  duration: "15s",
 };
 
 const ENDPOINT = __ENV.ENDPOINT || "/";
