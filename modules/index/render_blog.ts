@@ -90,8 +90,6 @@ export async function renderBlog(
 
   let html = `# Fastro Blog
 
-  <p class="text-fg-muted mb-8 text-base opacity-70">Updates and insights from the Fastro team.</p>
-
   <form action="/blog" method="GET" class="relative mb-6 group">
     <input 
       type="text" 

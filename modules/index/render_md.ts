@@ -342,36 +342,36 @@ export async function renderMD_Content(
     </style>
   </head>
   <body data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
-    <header class="border-b border-border-subtle bg-canvas-default/70 sticky top-0 z-[100] backdrop-blur-md">
-      <div class="max-w-[720px] mx-auto flex flex-col md:flex-row md:justify-between md:items-center py-4 px-6 md:px-8">
+    <header class="border-b border-border-subtle bg-canvas-default/70 sticky top-0 z-100 backdrop-blur-md">
+      <div class="max-w-180 mx-auto flex flex-col md:flex-row md:justify-between md:items-center py-4 px-6 md:px-8">
         <div class="flex justify-between items-center w-full md:w-auto">
           <div class="flex items-center gap-x-2">
             <a href="/" class="brand-logo text-2xl text-fg-default no-underline hover:no-underline">FASTRO</a>
             <span class="brand-version text-[0.65rem] px-1.5 py-px rounded bg-fg-default text-canvas-default uppercase tracking-wider select-none">${version}</span>
           </div>
           <button id="menu-toggle" aria-label="Toggle Menu" class="flex flex-col justify-between w-6 h-5 bg-transparent border-none cursor-pointer p-0 md:hidden group">
-            <span class="w-6 h-[2px] bg-fg-default rounded-full transition-all duration-300 origin-center"></span>
-            <span class="w-6 h-[2px] bg-fg-default rounded-full transition-all duration-300"></span>
-            <span class="w-6 h-[2px] bg-fg-default rounded-full transition-all duration-300 origin-center"></span>
+            <span class="w-6 h-0.5 bg-fg-default rounded-full transition-all duration-300 origin-center"></span>
+            <span class="w-6 h-0.5 bg-fg-default rounded-full transition-all duration-300"></span>
+            <span class="w-6 h-0.5 bg-fg-default rounded-full transition-all duration-300 origin-center"></span>
           </button>
         </div>
-        <nav id="nav-links" class="flex flex-col md:flex-row hidden md:flex w-full md:w-auto gap-5 md:gap-7 items-start md:items-center overflow-hidden">
+        <nav id="nav-links" class="flex flex-col md:flex-row md:flex w-full md:w-auto gap-5 md:gap-7 items-start md:items-center overflow-hidden">
           ${finalNav}
         </nav>
       </div>
     </header>
-    <main class="max-w-[720px] mx-auto p-6 md:py-6 md:px-8 flex-1 w-full box-border text-[var(--color-fg-default)]">
+    <main class="max-w-180 mx-auto px-6 pt-3 pb-6 md:pt-3 md:pb-6 md:px-8 flex-1 w-full box-border text-fg-default">
         <div class="markdown-body blog-post-content" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">${
     title
       ? `<h1 class="${
         isBlogPost
-          ? "blog-post-header text-[2.25rem] md:text-[3.25rem] !font-black !leading-[1.1] tracking-tight mb-5 !border-b-0 !pb-0"
+          ? "blog-post-header text-[2.25rem] md:text-[3.25rem] font-black! leading-[1.1]! tracking-tight mb-5 border-b-0! pb-0!"
           : `text-[1.75rem] md:text-[2rem] font-semibold tracking-tight text-fg-default flex items-center ${
             path === "blog" ? "justify-between" : ""
           } gap-3 mb-4`
       }">${title}${
         path === "blog"
-          ? `<a href="/signin" class="text-[0.7rem] md:text-xs font-semibold px-3 py-1.5 rounded-xl border border-border-default hover:border-fg-muted/50 hover:bg-canvas-subtle transition-all !no-underline !text-fg-default/70 hover:!text-fg-default uppercase tracking-wider">DASHBOARD</a>`
+          ? `<a href="/signin" class="text-[0.7rem] md:text-xs font-semibold px-3 py-1.5 rounded-xl border border-border-default hover:border-fg-muted/50 hover:bg-canvas-subtle transition-all no-underline! text-fg-default/70! hover:text-fg-default! uppercase tracking-wider">DASHBOARD</a>`
           : ""
       }</h1>`
       : ""
@@ -401,7 +401,7 @@ export async function renderMD_Content(
             tags.slice(0, 3).map((tag) =>
               `<a href="/blog?search=${
                 encodeURIComponent(tag)
-              }" class="text-[0.65rem] md:text-[0.7rem] px-2.5 py-1 rounded-full bg-canvas-subtle border border-border-subtle !text-fg-muted/70 font-medium uppercase tracking-wider hover:!text-fg-default hover:border-fg-muted transition-colors !no-underline">${tag}</a>`
+              }" class="text-[0.65rem] md:text-[0.7rem] px-2.5 py-1 rounded-full bg-canvas-subtle border border-border-subtle text-fg-muted/70! font-medium uppercase tracking-wider hover:text-fg-default! hover:border-fg-muted transition-colors no-underline!">${tag}</a>`
             ).join("")
           }
               </div>`
@@ -486,7 +486,7 @@ export async function renderMD_Content(
     isMD
       ? `
     <button id="scroll-to-top" 
-      class="fixed bottom-3 right-6 p-3 rounded-full bg-fg-default text-canvas-default shadow-lg opacity-0 translate-y-10 pointer-events-none transition-all duration-300 z-[110] hover:scale-110 active:scale-95 cursor-pointer"
+      class="fixed bottom-3 right-6 p-3 rounded-full bg-fg-default text-canvas-default shadow-lg opacity-0 translate-y-10 pointer-events-none transition-all duration-300 z-110 hover:scale-110 active:scale-95 cursor-pointer"
       aria-label="Back to top">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
