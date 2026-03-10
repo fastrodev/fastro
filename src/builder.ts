@@ -3,9 +3,8 @@ const { denoPlugin } = denoEsbuildPlugin;
 const { join } = stdPath;
 import { generateManifest } from "./manifest.ts";
 
-const cwd = Deno.cwd();
-
 async function build(modulePath?: string, spa?: boolean) {
+  const cwd = Deno.cwd();
   let path = join(cwd, ".build_tmp", `${modulePath}_Client.tsx`);
   if (spa) {
     path = join(cwd, "modules", `${modulePath}`, "spa.tsx");
@@ -59,6 +58,7 @@ async function build(modulePath?: string, spa?: boolean) {
 }
 
 async function createClient(modulePath: string) {
+  const cwd = Deno.cwd();
   const content = `import { hydrateRoot } from "npm:react-dom@^19.2.4/client";
 import { App } from "../modules/${modulePath}/App.tsx";
 const el = document.getElementById("initial");
@@ -79,6 +79,7 @@ hydrateRoot(document.getElementById("root")!, <App {...(props as Record<string, 
 }
 
 async function deleteClient(modulePath: string) {
+  const cwd = Deno.cwd();
   const filePath = join(cwd, ".build_tmp", `${modulePath}_Client.tsx`);
   try {
     await Deno.remove(filePath);
@@ -88,6 +89,7 @@ async function deleteClient(modulePath: string) {
 }
 
 async function getModulesWithApp(): Promise<string[]> {
+  const cwd = Deno.cwd();
   const modules: string[] = [];
   try {
     for await (const entry of Deno.readDir(join(cwd, "modules"))) {
@@ -118,6 +120,7 @@ async function getModulesWithApp(): Promise<string[]> {
 }
 
 async function run() {
+  const cwd = Deno.cwd();
   try {
     await generateManifest();
   } catch (e) {

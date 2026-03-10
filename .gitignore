@@ -1,0 +1,7 @@
+manifest.ts
+node_modules/
+coverage/
+coverage.lcov
+public/
+modules/
+.deno/
