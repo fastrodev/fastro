@@ -53,7 +53,7 @@ jobs:
 
       - name: Run Build
         run: |
-          GITHUB_CLIENT_ID=${{ vars.GH_CLIENT_ID }} GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} deno task build && deno run -A build/build.ts
+          GITHUB_CLIENT_ID=${{ vars.GH_CLIENT_ID }} GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} deno task build
 
       - name: Generate SEO assets
         run: |
