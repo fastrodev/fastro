@@ -370,11 +370,11 @@ export async function renderMD_Content(
     title
       ? `<h1 class="${
         isBlogPost
-          ? "blog-post-header text-[2.25rem] md:text-[3.25rem] font-black! leading-[1.1]! tracking-tight mb-5 border-b-0! pb-0!"
-          : `text-[1.75rem] md:text-[2rem] font-semibold tracking-tight text-fg-default flex items-center ${
+          ? "text-[1.75rem] md:text-[2rem] font-bold tracking-tight mb-4 border-b-0! pb-0!"
+          : `text-[1.75rem] md:text-[2rem] font-bold tracking-tight text-fg-default flex items-center ${
             path === "blog" ? "justify-between" : ""
           } gap-3 mb-4 border-b-0!`
-      }">${title}${
+      }" style="font-family: 'Roboto Slab', serif;">${title}${
         path === "blog"
           ? `<a href="/signin" class="text-[0.7rem] md:text-xs px-3 py-1.5 rounded-xl border border-border-default hover:border-fg-muted/50 hover:bg-canvas-subtle transition-all no-underline! text-fg-default/70! hover:text-fg-default! uppercase tracking-wider" style="font-family: 'Roboto', sans-serif; font-weight: 300;">DASHBOARD</a>`
           : ""

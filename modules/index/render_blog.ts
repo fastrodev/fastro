@@ -168,7 +168,7 @@ export async function renderBlog(
     }
           <div class="flex-1 min-w-0 flex flex-col min-h-full py-0">
             <div class="mb-2 md:mb-5">
-              <a href="${post.link}" class="text-xl md:text-2xl font-bold !text-fg-default tracking-tight line-clamp-2 !no-underline hover:!no-underline leading-[1.25] md:group-hover:text-accent-fg transition-colors duration-300">
+              <a href="${post.link}" class="text-xl md:text-2xl font-bold !text-fg-default tracking-tight line-clamp-2 !no-underline hover:!no-underline leading-[1.25] md:group-hover:text-accent-fg transition-colors duration-300" style="font-family: 'Roboto Slab', serif;">
                 ${post.title}
               </a>
             </div>
