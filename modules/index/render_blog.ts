@@ -35,6 +35,7 @@ export async function renderBlog(
       let date = "";
       let tags: string[] = [];
       let image = "";
+      let description = "";
 
       if (content.startsWith("---")) {
         const endIdx = content.indexOf("---", 3);
@@ -42,6 +43,10 @@ export async function renderBlog(
           const frontmatter = content.slice(3, endIdx);
           const titleMatch = frontmatter.match(/title:\s*["']?(.*?)["']?$/m);
           if (titleMatch) title = titleMatch[1].trim();
+          const descMatch = frontmatter.match(
+            /description:\s*["']?(.*?)["']?$/m,
+          );
+          if (descMatch) description = descMatch[1].trim();
           const dateMatch = frontmatter.match(/date:\s*(.*?)$/m);
           if (dateMatch) date = dateMatch[1].trim();
           const imageMatch = frontmatter.match(/image:\s*["']?(.*?)["']?$/m);
@@ -60,7 +65,7 @@ export async function renderBlog(
       if (
         query &&
         !title.toLowerCase().includes(query) &&
-        !content.toLowerCase().includes(query) &&
+        !description.toLowerCase().includes(query) &&
         !tags.some((t) => t.toLowerCase().includes(query))
       ) {
         continue;
@@ -113,7 +118,7 @@ export async function renderBlog(
         isActive
           ? "bg-fg-default border-fg-default !text-canvas-default"
           : "bg-canvas-subtle border-border-default/40 !text-fg-default/90 hover:border-fg-muted hover:!text-fg-default hover:bg-canvas-default"
-      } font-bold uppercase tracking-widest transition-all duration-200 !no-underline">${tag}</a>`;
+      } uppercase tracking-widest transition-all duration-200 !no-underline" style="font-family: 'Roboto', sans-serif; font-weight: 300;">${tag}</a>`;
     }).join("")
   }
   </div>
@@ -171,7 +176,7 @@ export async function renderBlog(
             <div class="flex flex-wrap items-center gap-4">
               ${
       post.date
-        ? `<span class="text-fg-muted/60 text-[0.6rem] md:text-[0.65rem] uppercase tracking-[0.2em] font-black">
+        ? `<span class="text-fg-default/70 text-[0.6rem] md:text-[0.65rem] uppercase tracking-[0.2em]" style="font-family: 'Roboto', sans-serif; font-weight: 300;">
                   ${post.date}
                 </span>`
         : ""
@@ -183,7 +188,7 @@ export async function renderBlog(
           post.tags.slice(0, 2).map((tag) =>
             `<a href="/blog?search=${
               encodeURIComponent(tag)
-            }" class="text-[0.55rem] md:text-[0.6rem] px-2 py-0.5 rounded-sm bg-canvas-subtle border border-border-default/20 !text-fg-muted/90 font-black uppercase tracking-widest hover:!text-fg-default hover:bg-canvas-default transition-all z-20 relative !no-underline">${tag}</a>`
+            }" class="text-[0.55rem] md:text-[0.6rem] px-2 py-0.5 rounded-sm bg-canvas-subtle border border-border-default !text-fg-default uppercase tracking-widest hover:!text-fg-default hover:bg-canvas-default transition-all z-20 relative !no-underline" style="font-family: 'Roboto', sans-serif; font-weight: 300;">${tag}</a>`
           ).join("")
         }
                 </div>`

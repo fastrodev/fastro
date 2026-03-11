@@ -19,7 +19,7 @@ jobs:
           deno-version: v2.x
 
       - name: Generate modules manifest
-        run: deno task gen-manifest
+        run: deno task manifest
 
       - name: Upload manifest artifact
         uses: actions/upload-artifact@v4

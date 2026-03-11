@@ -9,9 +9,8 @@
   },
   "nodeModulesDir": "auto",
   "tasks": {
-    "reload:static": "deno run -A --reload=https://raw.githubusercontent.com/fastrodev/fastro/refs/heads/main/middlewares/static/static.ts main.ts 3000",
-    "start": "FASTRO_ENV=development deno run -A build/watch.ts & FASTRO_ENV=development deno run -A --unstable-kv --watch main.ts 3000",
-    "gen-manifest": "deno run -A ./scripts/generate_manifest.ts",
+    "start": "FASTRO_ENV=development deno run -A --config deno.json @fastro/automatic/build/watch.ts & deno run --watch -A --unstable-kv main.ts 3000",
+    "manifest": "deno run -A --config deno.json @fastro/automatic/build/manifest.ts",
     "build": "FASTRO_ENV=production deno run -A scripts/generate_manifest.ts && deno task build:css",
     "build:css": "postcss ./static/css/tailwind.css -o ./public/css/app.css --env production",
     "bench": "bash ./scripts/run_bench.sh",
@@ -32,16 +31,18 @@
     ]
   },
   "imports": {
+    "@fastro/automatic/": "https://raw.githubusercontent.com/fastrodev/fastro/refs/heads/automatic/",
     "@deno/loader": "jsr:@deno/loader@^0.3.13",
-    "react/jsx-runtime": "npm:react@^19.2.4/jsx-runtime",
+    "@deno/esbuild-plugin": "jsr:@deno/esbuild-plugin@^1.2.1",
     "@types/react": "npm:@types/react@^19.0.8",
     "@types/react-dom": "npm:@types/react-dom@^19.0.3",
     "@std/assert": "jsr:@std/assert@^1.0.19",
     "@std/testing": "jsr:@std/testing@^1.0.17",
+    "@std/path": "jsr:@std/path@^1.1.4",
+    "react/jsx-runtime": "npm:react@^19.2.4/jsx-runtime",
     "react": "npm:react@^19.2.4",
     "react-dom": "npm:react-dom@^19.2.4",
     "react-dom/server": "npm:react-dom@^19.2.4/server",
-    "@std/path": "jsr:@std/path@^1.1.4",
     "tailwindcss": "npm:tailwindcss@^4.2.1",
     "esbuild": "npm:esbuild@^0.25.0"
   }

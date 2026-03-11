@@ -63,10 +63,23 @@ export default function Header({ user }: Props) {
             className="inline-flex items-center no-underline text-fg-default"
           >
             <span className="inline-flex items-center">
-              <span className="font-bold text-2xl ml-0 tracking-wide text-fg-default">
+              <span
+                className="ml-0 tracking-wide text-fg-default"
+                style={{
+                  fontFamily: "'Roboto', sans-serif",
+                  fontWeight: 300,
+                  fontSize: "1.25rem",
+                }}
+              >
                 FASTRO
               </span>
-              <span className="ml-2 inline-flex items-center bg-canvas-subtle text-fg-default text-xs font-semibold px-2 py-0.5 rounded-full border border-border-subtle">
+              <span
+                className="ml-2 inline-flex items-center bg-canvas-subtle text-fg-default text-xs px-2 py-0.5 rounded-full border border-border-subtle"
+                style={{
+                  fontFamily: "'Roboto', sans-serif",
+                  fontWeight: 300,
+                }}
+              >
                 {version?.version ?? ""}
               </span>
             </span>
@@ -86,25 +99,41 @@ export default function Header({ user }: Props) {
                   style={navTop && open ? { top: navTop } : undefined}
                 >
                   <a
-                    className="text-fg-muted hover:bg-canvas-subtle rounded-md px-3 py-2 text-sm font-medium no-underline"
+                    className="text-fg-muted hover:bg-canvas-subtle rounded-md px-3 py-2 text-sm no-underline"
+                    style={{
+                      fontFamily: "'Roboto', sans-serif",
+                      fontWeight: 100,
+                    }}
                     href="/dashboard"
                   >
                     Dashboard
                   </a>
                   <a
-                    className="text-fg-muted hover:bg-canvas-subtle rounded-md px-3 py-2 text-sm font-medium no-underline"
+                    className="text-fg-muted hover:bg-canvas-subtle rounded-md px-3 py-2 text-sm no-underline"
+                    style={{
+                      fontFamily: "'Roboto', sans-serif",
+                      fontWeight: 100,
+                    }}
                     href="/profile"
                   >
                     Profile
                   </a>
                   <a
-                    className="text-fg-muted hover:bg-canvas-subtle rounded-md px-3 py-2 text-sm font-medium no-underline"
+                    className="text-fg-muted hover:bg-canvas-subtle rounded-md px-3 py-2 text-sm no-underline"
+                    style={{
+                      fontFamily: "'Roboto', sans-serif",
+                      fontWeight: 100,
+                    }}
                     href="/password"
                   >
                     Change Password
                   </a>
                   <a
-                    className="text-fg-muted hover:bg-canvas-subtle rounded-md px-3 py-2 text-sm font-medium no-underline"
+                    className="text-fg-muted hover:bg-canvas-subtle rounded-md px-3 py-2 text-sm no-underline"
+                    style={{
+                      fontFamily: "'Roboto', sans-serif",
+                      fontWeight: 100,
+                    }}
                     href="/signout"
                   >
                     Sign out

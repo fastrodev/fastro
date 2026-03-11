@@ -339,6 +339,11 @@ export async function renderMD_Content(
     <link rel="stylesheet" href="/css/app.css">
     <style>
       ${CSS}
+      .nav-link {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+        text-decoration: none;
+      }
     </style>
   </head>
   <body data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
@@ -346,8 +351,8 @@ export async function renderMD_Content(
       <div class="max-w-180 mx-auto flex flex-col md:flex-row md:justify-between md:items-center py-4 px-6 md:px-8">
         <div class="flex justify-between items-center w-full md:w-auto">
           <div class="flex items-center gap-x-2">
-            <a href="/" class="brand-logo text-2xl text-fg-default no-underline hover:no-underline">FASTRO</a>
-            <span class="brand-version text-[0.65rem] px-1.5 py-px rounded bg-fg-default text-canvas-default uppercase tracking-wider select-none">${version}</span>
+            <a href="/" class="brand-logo text-fg-default no-underline hover:no-underline" style="font-family: 'Roboto', sans-serif; font-weight: 300; font-size: 1.25rem;">FASTRO</a>
+            <span class="brand-version text-[0.65rem] px-1.5 py-px rounded bg-fg-default text-canvas-default uppercase tracking-wider select-none" style="font-family: 'Roboto', sans-serif; font-weight: 300;">${version}</span>
           </div>
           <button id="menu-toggle" aria-label="Toggle Menu" class="flex flex-col justify-between w-6 h-5 bg-transparent border-none cursor-pointer p-0 md:hidden group">
             <span class="w-6 h-0.5 bg-fg-default rounded-full transition-all duration-300 origin-center"></span>
@@ -368,10 +373,10 @@ export async function renderMD_Content(
           ? "blog-post-header text-[2.25rem] md:text-[3.25rem] font-black! leading-[1.1]! tracking-tight mb-5 border-b-0! pb-0!"
           : `text-[1.75rem] md:text-[2rem] font-semibold tracking-tight text-fg-default flex items-center ${
             path === "blog" ? "justify-between" : ""
-          } gap-3 mb-4`
+          } gap-3 mb-4 border-b-0!`
       }">${title}${
         path === "blog"
-          ? `<a href="/signin" class="text-[0.7rem] md:text-xs font-semibold px-3 py-1.5 rounded-xl border border-border-default hover:border-fg-muted/50 hover:bg-canvas-subtle transition-all no-underline! text-fg-default/70! hover:text-fg-default! uppercase tracking-wider">DASHBOARD</a>`
+          ? `<a href="/signin" class="text-[0.7rem] md:text-xs px-3 py-1.5 rounded-xl border border-border-default hover:border-fg-muted/50 hover:bg-canvas-subtle transition-all no-underline! text-fg-default/70! hover:text-fg-default! uppercase tracking-wider" style="font-family: 'Roboto', sans-serif; font-weight: 300;">DASHBOARD</a>`
           : ""
       }</h1>`
       : ""
@@ -390,7 +395,7 @@ export async function renderMD_Content(
       }
             ${
         date
-          ? `<span class="text-fg-muted opacity-50 whitespace-nowrap md:ml-2">${date}</span>`
+          ? `<span class="text-fg-default/80 whitespace-nowrap md:ml-2">${date}</span>`
           : ""
       }
           </div>
@@ -401,7 +406,7 @@ export async function renderMD_Content(
             tags.slice(0, 3).map((tag) =>
               `<a href="/blog?search=${
                 encodeURIComponent(tag)
-              }" class="text-[0.65rem] md:text-[0.7rem] px-2.5 py-1 rounded-full bg-canvas-subtle border border-border-subtle text-fg-muted/70! font-medium uppercase tracking-wider hover:text-fg-default! hover:border-fg-muted transition-colors no-underline!">${tag}</a>`
+              }" class="text-[0.65rem] md:text-[0.7rem] px-2.5 py-1 rounded-full bg-canvas-subtle border border-border-default !text-fg-default uppercase tracking-wider hover:bg-canvas-default transition-colors no-underline!" style="font-family: 'Roboto', sans-serif; font-weight: 300;">${tag}</a>`
             ).join("")
           }
               </div>`

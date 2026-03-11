@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
 @import "tailwindcss";
@@ -961,7 +962,13 @@ a:hover {
 .blog-post-content h1, .blog-post-content h2, .blog-post-content h3 {
   scroll-margin-top: 5rem;
 }
-.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+.markdown-body h1 {
+  padding-bottom: 0.3em;
+  border-bottom: 0;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+.markdown-body h2, .markdown-body h3 {
   padding-bottom: 0.3em;
   border-bottom: 1px solid var(--color-border-subtle);
   margin-top: 1.5rem;
@@ -988,6 +995,10 @@ a:hover {
   .markdown-body hr {
     margin: 2.5rem 0 !important;
   }
+}
+
+.blog-post-content h1 {
+  border-bottom: 0 !important;
 }
 
 /* Custom Scrollbar Styles */
