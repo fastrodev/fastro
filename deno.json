@@ -11,7 +11,7 @@
   "tasks": {
     "start": "FASTRO_ENV=development deno run -A --config deno.json @fastro/automatic/build/watch.ts & deno run --watch -A --unstable-kv main.ts 3000",
     "manifest": "deno run -A --config deno.json @fastro/automatic/build/manifest.ts",
-    "build": "FASTRO_ENV=production deno run -A scripts/generate_manifest.ts && deno task build:css",
+    "build": "FASTRO_ENV=production deno run -A --config deno.json @fastro/automatic/build/manifest.ts && deno task build:css",
     "build:css": "postcss ./static/css/tailwind.css -o ./public/css/app.css --env production",
     "bench": "bash ./scripts/run_bench.sh",
     "test": "deno test -A",
