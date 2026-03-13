@@ -213,11 +213,7 @@ export function startComponentsWatcher(
     if (shouldImmediate) {
       // Run the callback synchronously; tests may mock Deno.stat/_watchTickForTests
       // to avoid background async operations when calling with `startInterval:false`.
-      try {
-        __fastro_watcher_cb();
-      } catch (_) {
-        void 0;
-      }
+      __fastro_watcher_cb();
     }
   } catch (_e) {
     /* ignore initialization errors */
@@ -304,9 +300,8 @@ const createRenderToString = (_context: Context) => {
 
     const isProd = Deno.env.get("ENV") === "production";
     const timestamp = !isProd ? `?t=${Date.now()}` : "";
-    const clientScript = resolvedModule
-      ? `<script src="/js/${resolvedModule}/client.js${timestamp}" defer></script>`
-      : "";
+    const clientScript =
+      `<script src="/js/${resolvedModule}/client.js${timestamp}" defer></script>`;
     const hmrScript = !isProd ? rawHMRscript : "";
 
     // Avoid inserting extraneous newlines between tags and the rendered
