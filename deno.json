@@ -18,8 +18,24 @@
   "imports": {
     "@std/assert": "jsr:@std/assert@^1.0.19",
     "@std/testing": "jsr:@std/testing@^1.0.17",
+    "@types/react": "npm:@types/react@^19.0.8",
+    "@types/react-dom": "npm:@types/react-dom@^19.0.3",
     "react": "npm:react@^19.2.4",
     "react-dom": "npm:react-dom@^19.2.4",
+    "react-dom/server": "npm:react-dom@^19.2.4/server",
+    "react/jsx-runtime": "npm:react@^19.2.4/jsx-runtime",
     "tailwindcss": "npm:tailwindcss@^4.2.1"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "jsxImportSourceTypes": "@types/react",
+    "lib": [
+      "deno.ns",
+      "deno.unstable",
+      "dom",
+      "dom.iterable",
+      "dom.asynciterable"
+    ]
   }
 }

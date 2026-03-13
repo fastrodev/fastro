@@ -286,10 +286,21 @@ const createRenderToString = (_context: Context) => {
 
     // Prefer explicit option, otherwise fall back to the module name stored
     // on the context by the loader (autoRegisterModules) or other middleware.
-    const resolvedModule = moduleFromOpts ?? ((_context && _context.state &&
+    let resolvedModule = moduleFromOpts ?? ((_context && _context.state &&
         typeof _context.state.module === "string")
       ? _context.state.module
       : undefined);
+
+    if (!resolvedModule) {
+      const pathname = _context.url.pathname;
+      if (pathname === "/" || pathname === "" || pathname === "/index") {
+        resolvedModule = "index";
+      } else {
+        // Find the first segment that is not empty
+        const parts = pathname.split("/").filter(Boolean);
+        resolvedModule = parts[0] || "index";
+      }
+    }
 
     const isProd = Deno.env.get("ENV") === "production";
     const timestamp = !isProd ? `?t=${Date.now()}` : "";

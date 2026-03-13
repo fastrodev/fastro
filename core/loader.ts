@@ -288,7 +288,17 @@ export function registerFromNamespace(
     (ns.default as (app: App) => void).length === 1
   ) {
     try {
-      (ns.default as (app: App) => void)(makeRegistrar(app) as unknown as App);
+      const wrappedApp = makeRegistrar(app) as unknown as App;
+      const originalUse = wrappedApp.use;
+      wrappedApp.use = (mw: Middleware) => {
+        const wrappedMw: Middleware = (req, ctx, next) => {
+          if (!ctx.state) ctx.state = {};
+          ctx.state.module = name;
+          return mw(req, ctx, next);
+        };
+        return originalUse.call(wrappedApp, wrappedMw);
+      };
+      (ns.default as (app: App) => void)(wrappedApp);
       // Determine the recorded mount in a clearer, test-friendly way
       let recordedMount: string;
       if (typeof ns.mountPath === "string") {
@@ -319,7 +329,17 @@ export function registerFromNamespace(
   // Support named `register` export: `export function register(app) {}`
   if (typeof ns.register === "function") {
     try {
-      (ns.register as (app: App) => void)(makeRegistrar(app) as unknown as App);
+      const wrappedApp = makeRegistrar(app) as unknown as App;
+      const originalUse = wrappedApp.use;
+      wrappedApp.use = (mw: Middleware) => {
+        const wrappedMw: Middleware = (req, ctx, next) => {
+          if (!ctx.state) ctx.state = {};
+          ctx.state.module = name;
+          return mw(req, ctx, next);
+        };
+        return originalUse.call(wrappedApp, wrappedMw);
+      };
+      (ns.register as (app: App) => void)(wrappedApp);
       {
         let recordedMount: string;
         if (typeof ns.mountPath === "string") {
@@ -351,8 +371,18 @@ export function registerFromNamespace(
       "function"
   ) {
     try {
+      const wrappedApp = makeRegistrar(app) as unknown as App;
+      const originalUse = wrappedApp.use;
+      wrappedApp.use = (mw: Middleware) => {
+        const wrappedMw: Middleware = (req, ctx, next) => {
+          if (!ctx.state) ctx.state = {};
+          ctx.state.module = name;
+          return mw(req, ctx, next);
+        };
+        return originalUse.call(wrappedApp, wrappedMw);
+      };
       (ns.default as { register: (app: App) => void }).register(
-        makeRegistrar(app) as unknown as App,
+        wrappedApp,
       );
       {
         let recordedMount: string;
