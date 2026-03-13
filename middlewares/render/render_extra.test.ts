@@ -22,7 +22,8 @@ Deno.test({
 });
 
 Deno.test({
-  name: "render_extra: DA:185 - writeTextFileSync catch & DA:191 - second statSync throws",
+  name:
+    "render_extra: DA:185 - writeTextFileSync catch & DA:191 - second statSync throws",
   sanitizeOps: false,
   sanitizeResources: false,
   fn: () => {
@@ -30,7 +31,7 @@ Deno.test({
     let statCount = 0;
     const originalStatSync = Deno.statSync;
     const originalWriteTextFileSync = Deno.writeTextFileSync;
-    
+
     Deno.statSync = (p) => {
       if (p === "./.build_done" || p.toString().endsWith(".build_done")) {
         statCount++;
@@ -39,7 +40,7 @@ Deno.test({
       }
       return originalStatSync(p);
     };
-    
+
     Deno.writeTextFileSync = (p, d) => {
       if (p === "./.build_done" || p.toString().endsWith(".build_done")) {
         throw new Error("force fail write");
@@ -68,12 +69,12 @@ Deno.test({
     _resetWatcherForTests();
     let statCount = 0;
     const originalStatSync = Deno.statSync;
-    
+
     Deno.statSync = (p) => {
       if (p === "./.build_done" || p.toString().endsWith(".build_done")) {
         statCount++;
         if (statCount === 2) {
-          return { mtime: { getTime: () => 0 } } as unknown as Deno.FileInfo; 
+          return { mtime: { getTime: () => 0 } } as unknown as Deno.FileInfo;
         }
       }
       return originalStatSync(p);
@@ -139,7 +140,8 @@ Deno.test({
 });
 
 Deno.test({
-  name: "render_extra: DA:222-224 - startComponentsWatcher initialization throws",
+  name:
+    "render_extra: DA:222-224 - startComponentsWatcher initialization throws",
   sanitizeOps: false,
   sanitizeResources: false,
   fn: () => {
@@ -169,13 +171,28 @@ Deno.test({
     _resetWatcherForTests();
     const mw = createRenderMiddleware();
     const req1 = { url: "" } as Request;
-    mw(req1, {} as import("../../core/types.ts").Context, () => new Response() as unknown as Response);
-    
+    mw(
+      req1,
+      {} as import("../../core/types.ts").Context,
+      () => new Response() as unknown as Response,
+    );
+
     const req2 = {} as Request;
-    mw(req2, {} as import("../../core/types.ts").Context, () => new Response() as unknown as Response);
-    
-    const req3 = { url: "invalid cat /home/dev/project/fw/fastro/middlewares/render/render_extra.test.ts" } as Request;
-    mw(req3, {} as import("../../core/types.ts").Context, () => new Response() as unknown as Response);
+    mw(
+      req2,
+      {} as import("../../core/types.ts").Context,
+      () => new Response() as unknown as Response,
+    );
+
+    const req3 = {
+      url:
+        "invalid cat /home/dev/project/fw/fastro/middlewares/render/render_extra.test.ts",
+    } as Request;
+    mw(
+      req3,
+      {} as import("../../core/types.ts").Context,
+      () => new Response() as unknown as Response,
+    );
   },
 });
 
@@ -203,11 +220,19 @@ Deno.test({
     };
 
     const mw = createRenderMiddleware();
-    const req = new Request("http://localhost/hmr", { headers: { upgrade: "websocket", connection: "Upgrade" } });
-    mw(req, {} as import("../../core/types.ts").Context, () => new Response() as unknown as Response);
+    const req = new Request("http://localhost/hmr", {
+      headers: { upgrade: "websocket", connection: "Upgrade" },
+    });
+    mw(
+      req,
+      {} as import("../../core/types.ts").Context,
+      () => new Response() as unknown as Response,
+    );
 
     _setLastMtimeForTests(0);
-    await _watchTickForTestsWithStat(() => Promise.resolve({ mtime: new Date(Date.now() + 1000) } as Deno.FileInfo));
+    await _watchTickForTestsWithStat(() =>
+      Promise.resolve({ mtime: new Date(Date.now() + 1000) } as Deno.FileInfo)
+    );
 
     if (mockSocket && mockSocket.onopen) {
       mockSocket.readyState = WebSocket.OPEN;
@@ -230,6 +255,7 @@ Deno.test({
 
     const originalSetInterval = globalThis.setInterval;
     let heartbeatCb: (() => void) | undefined;
+    // @ts-ignore: mock setInterval
     globalThis.setInterval = (cb: string | ((...args: unknown[]) => void)) => {
       if (typeof cb === "function") heartbeatCb = cb as () => void;
       return 999 as unknown as number;
@@ -254,8 +280,14 @@ Deno.test({
     };
 
     const mw = createRenderMiddleware();
-    const req = new Request("http://localhost/hmr", { headers: { upgrade: "websocket", connection: "Upgrade" } });
-    mw(req, {} as import("../../core/types.ts").Context, () => new Response() as unknown as Response);
+    const req = new Request("http://localhost/hmr", {
+      headers: { upgrade: "websocket", connection: "Upgrade" },
+    });
+    mw(
+      req,
+      {} as import("../../core/types.ts").Context,
+      () => new Response() as unknown as Response,
+    );
 
     if (mockSocket && mockSocket.onopen) {
       mockSocket.onopen();
@@ -263,7 +295,9 @@ Deno.test({
       if (heartbeatCb) {
         heartbeatCb();
 
-        mockSocket.send = () => { throw new Error("Force catch"); };
+        mockSocket.send = () => {
+          throw new Error("Force catch");
+        };
         heartbeatCb();
       }
 
@@ -321,14 +355,19 @@ Deno.test({
 
     const mw = createRenderMiddleware();
     const req = { url: "invalid-url!" } as Request;
-    mw(req, {} as import("../../core/types.ts").Context, () => new Response() as unknown as Response);
+    mw(
+      req,
+      {} as import("../../core/types.ts").Context,
+      () => new Response() as unknown as Response,
+    );
 
     Deno.env.get = originalGet;
   },
 });
 
 Deno.test({
-  name: "render_extra: renderToString branches on includeHead and doctype false",
+  name:
+    "render_extra: renderToString branches on includeHead and doctype false",
   sanitizeOps: false,
   sanitizeResources: false,
   fn: () => {
@@ -336,15 +375,25 @@ Deno.test({
     const el = React.createElement("div", null, "Hello");
     const ctx = {} as import("../../core/types.ts").Context;
     const mw = createRenderMiddleware();
-    mw(new Request("http://localhost/"), ctx, () => new Response() as unknown as Response);
+    mw(
+      new Request("http://localhost/"),
+      ctx,
+      () => new Response() as unknown as Response,
+    );
 
-    const rts = (ctx as unknown as { renderToString: (...args: unknown[]) => string }).renderToString;
+    const rts =
+      (ctx as unknown as { renderToString: (...args: unknown[]) => string })
+        .renderToString;
     if (rts) {
       const html1 = rts(el, { includeHead: false, includeDoctype: true });
-      if (!html1.startsWith("<!DOCTYPE html>")) throw new Error("Missing doctype");
+      if (!html1.startsWith("<!DOCTYPE html>")) {
+        throw new Error("Missing doctype");
+      }
 
       const html2 = rts(el, { includeHead: false, includeDoctype: false });
-      if (html2.startsWith("<!DOCTYPE html>")) throw new Error("Unexpected doctype");
+      if (html2.startsWith("<!DOCTYPE html>")) {
+        throw new Error("Unexpected doctype");
+      }
     }
   },
 });
@@ -360,7 +409,9 @@ Deno.test({
       if (k === "ENV") return "test";
       return originalGet.call(Deno.env, k);
     };
-    await _watchTickForTestsWithStat(() => Promise.reject(new Error("Test catch branch")));
+    await _watchTickForTestsWithStat(() =>
+      Promise.reject(new Error("Test catch branch"))
+    );
     Deno.env.get = originalGet;
   },
 });
@@ -374,13 +425,18 @@ Deno.test({
     _setLastMtimeForTests(0);
     const clients = _getHmrClientsForTests();
     clients.clear();
-    await _watchTickForTestsWithStat(() => Promise.resolve({ mtime: new Date(Date.now() + 1000) } as Deno.FileInfo));
-    await _watchTickForTestsWithStat(() => Promise.resolve({ mtime: new Date(Date.now() + 2000) } as Deno.FileInfo));
+    await _watchTickForTestsWithStat(() =>
+      Promise.resolve({ mtime: new Date(Date.now() + 1000) } as Deno.FileInfo)
+    );
+    await _watchTickForTestsWithStat(() =>
+      Promise.resolve({ mtime: new Date(Date.now() + 2000) } as Deno.FileInfo)
+    );
   },
 });
 
 Deno.test({
-  name: "render_extra: startComponentsWatcher ignores errors if statSync fails on read but fallback works",
+  name:
+    "render_extra: startComponentsWatcher ignores errors if statSync fails on read but fallback works",
   sanitizeOps: false,
   sanitizeResources: false,
   fn: () => {
@@ -403,6 +459,7 @@ Deno.test({
 
     const originalSetInterval = globalThis.setInterval;
     let intervalCb: () => void = () => {};
+    // @ts-ignore: mock setInterval
     globalThis.setInterval = (cb: string | ((...args: unknown[]) => void)) => {
       if (typeof cb === "function") intervalCb = cb as () => void;
       return 123 as unknown as number;
@@ -425,10 +482,18 @@ Deno.test({
   sanitizeResources: false,
   fn: () => {
     _resetWatcherForTests();
-    const ctx = { state: { module: "test-module" } } as unknown as import("../../core/types.ts").Context;
+    const ctx = {
+      state: { module: "test-module" },
+    } as unknown as import("../../core/types.ts").Context;
     const mw = createRenderMiddleware();
-    mw(new Request("http://localhost/"), ctx, () => new Response() as unknown as Response);
-    const rts = (ctx as unknown as { renderToString: (...args: unknown[]) => string }).renderToString;
+    mw(
+      new Request("http://localhost/"),
+      ctx,
+      () => new Response() as unknown as Response,
+    );
+    const rts =
+      (ctx as unknown as { renderToString: (...args: unknown[]) => string })
+        .renderToString;
     if (rts) {
       const el = React.createElement("div", null, "Hello");
       const html = rts(el, { includeHead: true });

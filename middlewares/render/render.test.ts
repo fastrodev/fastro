@@ -391,3 +391,67 @@ Deno.test("/hmr path upgrades websocket and registers client (mocked)", () => {
   }
   _resetWatcherForTests();
 });
+
+Deno.test("renderToString infers module from URL path when no opts.module or state.module", () => {
+  Deno.env.set("ENV", "production");
+  const mw = createRenderMiddleware();
+
+  // Case 1: /login -> module should be "login"
+  const ctx1: Context = {
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp" },
+    url: new URL("http://localhost/login"),
+  };
+  mw(new Request("http://localhost/login"), ctx1, () => new Response("next"));
+  const html1 = ctx1.renderToString!(
+    React.createElement("div", null, "x"),
+    { includeHead: true },
+  );
+  assertStringIncludes(html1, "/js/login/client.js");
+
+  // Case 2: / -> module should fall back to "index"
+  const ctx2: Context = {
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp" },
+    url: new URL("http://localhost/"),
+  };
+  mw(new Request("http://localhost/"), ctx2, () => new Response("next"));
+  const html2 = ctx2.renderToString!(
+    React.createElement("div", null, "x"),
+    { includeHead: true },
+  );
+  assertStringIncludes(html2, "/js/index/client.js");
+
+  // Case 3: /index -> module should be "index"
+  const ctx3: Context = {
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp" },
+    url: new URL("http://localhost/index"),
+  };
+  mw(new Request("http://localhost/index"), ctx3, () => new Response("next"));
+  const html3 = ctx3.renderToString!(
+    React.createElement("div", null, "x"),
+    { includeHead: true },
+  );
+  assertStringIncludes(html3, "/js/index/client.js");
+
+  // Case 4: URL with no meaningful path segments (e.g. slashes only) -> "index"
+  const ctx4: Context = {
+    params: {},
+    query: {},
+    remoteAddr: { transport: "tcp" },
+    url: new URL("http://localhost//"),
+  };
+  mw(new Request("http://localhost//"), ctx4, () => new Response("next"));
+  const html4 = ctx4.renderToString!(
+    React.createElement("div", null, "x"),
+    { includeHead: true },
+  );
+  assertStringIncludes(html4, "/js/index/client.js");
+
+  _resetWatcherForTests();
+  Deno.env.delete("ENV");
+});

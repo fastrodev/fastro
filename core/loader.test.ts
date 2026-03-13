@@ -3208,3 +3208,141 @@ Deno.test(
     assertEquals(foundCand!.mount, "/cand");
   },
 );
+
+// ---------------------------------------------------------------------------
+// Coverage: wrappedApp.use + wrappedMw for all 3 registration paths
+// ---------------------------------------------------------------------------
+
+// Gap: ns.default with length===1 that calls app.use → covers wrappedApp.use
+// and wrappedMw (the inner function that stamps ctx.state.module)
+Deno.test("registerFromNamespace: ns.default register fn calling app.use stamps ctx.state.module", async () => {
+  const capturedMws: Array<(...args: unknown[]) => unknown> = [];
+  const mockApp: App = {
+    use: (mw) => capturedMws.push(mw as (...args: unknown[]) => unknown),
+  };
+
+  const ns = {
+    default: (a: App) => {
+      // This call hits wrappedApp.use
+      a.use((_req, _ctx, next) => next() as Response);
+    },
+  } as Record<string, unknown>;
+
+  const ok = registerFromNamespace("usemod", ns, mockApp);
+  assert(ok, "expected registration to succeed");
+  assert(capturedMws.length >= 1, "expected at least one middleware captured");
+
+  // Invoke the first captured middleware — this hits wrappedMw
+  const mw = capturedMws[0];
+  const ctx = { state: {} } as { state: Record<string, unknown> };
+  const result = await (mw(
+    new Request("http://localhost/"),
+    ctx,
+    () => "DONE",
+  ) as Promise<unknown>);
+  assertEquals(result, "DONE");
+  assertEquals(ctx.state.module, "usemod");
+
+  // Also invoke with ctx that has no .state (covers the if (!ctx.state) branch)
+  const ctxNoState = {} as unknown as { state: Record<string, unknown> };
+  await (mw(
+    new Request("http://localhost/"),
+    ctxNoState,
+    () => "DONE_NS",
+  ) as Promise<unknown>);
+  assertEquals(ctxNoState.state.module, "usemod");
+});
+
+// Gap: ns.register that calls app.use → covers wrappedApp.use + wrappedMw
+Deno.test("registerFromNamespace: named register fn calling app.use stamps ctx.state.module", async () => {
+  const capturedMws: Array<(...args: unknown[]) => unknown> = [];
+  const mockApp: App = {
+    use: (mw) => capturedMws.push(mw as (...args: unknown[]) => unknown),
+  };
+
+  const ns = {
+    register: (a: App) => {
+      a.use((_req, _ctx, next) => next() as Response);
+    },
+  } as Record<string, unknown>;
+
+  const ok = registerFromNamespace("namedregmod", ns, mockApp);
+  assert(ok, "expected registration to succeed");
+  assert(capturedMws.length >= 1, "expected at least one middleware captured");
+
+  const mw = capturedMws[0];
+  const ctx = { state: {} } as { state: Record<string, unknown> };
+  const result = await (mw(
+    new Request("http://localhost/"),
+    ctx,
+    () => "DONE2",
+  ) as Promise<unknown>);
+  assertEquals(result, "DONE2");
+  assertEquals(ctx.state.module, "namedregmod");
+
+  // No .state (covers if (!ctx.state) branch)
+  const ctxNoState = {} as unknown as { state: Record<string, unknown> };
+  await (mw(
+    new Request("http://localhost/"),
+    ctxNoState,
+    () => "DONE2_NS",
+  ) as Promise<unknown>);
+  assertEquals(ctxNoState.state.module, "namedregmod");
+});
+
+// Gap: ns.default.register (object) that calls app.use → covers wrappedApp.use + wrappedMw
+Deno.test("registerFromNamespace: default.register obj calling app.use stamps ctx.state.module", async () => {
+  const capturedMws: Array<(...args: unknown[]) => unknown> = [];
+  const mockApp: App = {
+    use: (mw) => capturedMws.push(mw as (...args: unknown[]) => unknown),
+  };
+
+  const ns = {
+    default: {
+      register: (a: App) => {
+        a.use((_req, _ctx, next) => next() as Response);
+      },
+    },
+  } as Record<string, unknown>;
+
+  const ok = registerFromNamespace("objregmod", ns, mockApp);
+  assert(ok, "expected registration to succeed");
+  assert(capturedMws.length >= 1, "expected at least one middleware captured");
+
+  const mw = capturedMws[0];
+  const ctx = { state: {} } as { state: Record<string, unknown> };
+  const result = await (mw(
+    new Request("http://localhost/"),
+    ctx,
+    () => "DONE3",
+  ) as Promise<unknown>);
+  assertEquals(result, "DONE3");
+  assertEquals(ctx.state.module, "objregmod");
+
+  // No .state (covers if (!ctx.state) branch)
+  const ctxNoState = {} as unknown as { state: Record<string, unknown> };
+  await (mw(
+    new Request("http://localhost/"),
+    ctxNoState,
+    () => "DONE3_NS",
+  ) as Promise<unknown>);
+  assertEquals(ctxNoState.state.module, "objregmod");
+});
+
+// ---------------------------------------------------------------------------
+// Coverage: core/mod.ts Fastro class instance-member initializer
+// ---------------------------------------------------------------------------
+Deno.test("core/mod.ts Fastro class can be instantiated and exposes server methods", async () => {
+  const { default: Fastro } = await import("./mod.ts");
+  const f = new Fastro();
+  // Verify the class members are assigned (covers instance_members_initializer)
+  assert(typeof f.get === "function", "expected get to be a function");
+  assert(typeof f.post === "function", "expected post to be a function");
+  assert(typeof f.put === "function", "expected put to be a function");
+  assert(typeof f.delete === "function", "expected delete to be a function");
+  assert(typeof f.patch === "function", "expected patch to be a function");
+  assert(typeof f.head === "function", "expected head to be a function");
+  assert(typeof f.options === "function", "expected options to be a function");
+  assert(typeof f.use === "function", "expected use to be a function");
+  assert(typeof f.serve === "function", "expected serve to be a function");
+});

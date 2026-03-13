@@ -213,11 +213,7 @@ export function startComponentsWatcher(
     if (shouldImmediate) {
       // Run the callback synchronously; tests may mock Deno.stat/_watchTickForTests
       // to avoid background async operations when calling with `startInterval:false`.
-      try {
-        __fastro_watcher_cb();
-      } catch (_) {
-        void 0;
-      }
+      __fastro_watcher_cb();
     }
   } catch (_e) {
     /* ignore initialization errors */
@@ -286,16 +282,26 @@ const createRenderToString = (_context: Context) => {
 
     // Prefer explicit option, otherwise fall back to the module name stored
     // on the context by the loader (autoRegisterModules) or other middleware.
-    const resolvedModule = moduleFromOpts ?? ((_context && _context.state &&
+    let resolvedModule = moduleFromOpts ?? ((_context && _context.state &&
         typeof _context.state.module === "string")
       ? _context.state.module
       : undefined);
 
+    if (!resolvedModule) {
+      const pathname = _context.url.pathname;
+      if (pathname === "/" || pathname === "" || pathname === "/index") {
+        resolvedModule = "index";
+      } else {
+        // Find the first segment that is not empty
+        const parts = pathname.split("/").filter(Boolean);
+        resolvedModule = parts[0] || "index";
+      }
+    }
+
     const isProd = Deno.env.get("ENV") === "production";
     const timestamp = !isProd ? `?t=${Date.now()}` : "";
-    const clientScript = resolvedModule
-      ? `<script src="/js/${resolvedModule}/client.js${timestamp}" defer></script>`
-      : "";
+    const clientScript =
+      `<script src="/js/${resolvedModule}/client.js${timestamp}" defer></script>`;
     const hmrScript = !isProd ? rawHMRscript : "";
 
     // Avoid inserting extraneous newlines between tags and the rendered
