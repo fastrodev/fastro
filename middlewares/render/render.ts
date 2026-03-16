@@ -308,10 +308,8 @@ const createRenderToString = (_context: Context) => {
     // component HTML. Extra whitespace can create text nodes that cause
     // hydration mismatches in React (server vs client DOM). Keep the
     // `body` content concatenated without leading/trailing newlines.
-    const html = `<html lang="en">
-  ${headContent}
-  <body id="root">${bodyHtml}${initialPropsScript}${clientScript}${hmrScript}</body>
-  </html>`;
+    const html =
+      `<html lang="en">${headContent}<body id="root">${bodyHtml}${initialPropsScript}${clientScript}${hmrScript}</body></html>`;
 
     return includeDoctype ? `<!DOCTYPE html>${html}` : html;
   };
