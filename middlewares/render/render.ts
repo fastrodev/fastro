@@ -67,8 +67,6 @@ const hmrScriptSource = `
 })();
 `;
 
-const rawHMRscript = `<script>${hmrScriptSource}</script>`;
-
 const hmrClients = new Set<WebSocket>();
 let __nextHmrClientId = 1;
 const __hmrClientIds = new WeakMap<WebSocket, number>();
@@ -302,7 +300,19 @@ const createRenderToString = (_context: Context) => {
     const timestamp = !isProd ? `?t=${Date.now()}` : "";
     const clientScript =
       `<script src="/js/${resolvedModule}/client.js${timestamp}" defer></script>`;
-    const hmrScript = !isProd ? rawHMRscript : "";
+
+    // Minify HMR script on-the-fly: remove multi-line comments,
+    // leading/trailing whitespace, and newlines.
+    const hmrScript = !isProd
+      ? `<script>${
+        hmrScriptSource
+          .replace(/\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm, "$1")
+          .split("\n")
+          .map((line) => line.trim())
+          .filter((line) => line.length > 0)
+          .join("")
+      }</script>`
+      : "";
 
     // Avoid inserting extraneous newlines between tags and the rendered
     // component HTML. Extra whitespace can create text nodes that cause
