@@ -619,7 +619,7 @@ async function getLatestPostsHtml(): Promise<string> {
 <img src="${imgUrl}" alt="${post.title}" class="w-full h-full object-cover">
 </div>
 <div class="flex-1 flex flex-col">
-<h4 class="text-[0.95rem] md:text-base font-bold text-fg-default mb-2 line-clamp-3 leading-tight tracking-tight group-hover:text-accent-fg transition-colors" style="font-family: 'Roboto', sans-serif;">${post.title}</h4>
+<h4 class="text-[0.95rem] md:text-base font-bold text-fg-default mb-2 line-clamp-3 leading-tight tracking-tight group-hover:text-accent-fg transition-colors border-b-0!" style="font-family: 'Roboto', sans-serif; border-bottom: none !important;">${post.title}</h4>
 </div>
 </a>\n`;
   }
