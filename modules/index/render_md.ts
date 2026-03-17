@@ -33,6 +33,14 @@ export async function renderMD_Content(
   canonical?: string,
   headExtras?: string,
 ) {
+  let finalContent = content;
+
+  // Insert latest blog posts if requested placeholder exists
+  if (finalContent.includes("{{LATEST_BLOG_POSTS}}")) {
+    const postsHtml = await getLatestPostsHtml();
+    finalContent = finalContent.replace("{{LATEST_BLOG_POSTS}}", postsHtml);
+  }
+
   const version = await getVersion();
   const headerPages = await getHeaderPages(kv);
   const navItems = headerPages.map((p) => {
@@ -52,7 +60,7 @@ export async function renderMD_Content(
 
   const finalNav = navItems + (navItems ? "\n          " : "") + blogLink;
 
-  let markdown = content;
+  let markdown = finalContent;
   let title = "";
   let description = "High-performance, minimalist web framework for Deno.";
   let date = "";
@@ -530,6 +538,73 @@ export async function renderMD_Content(
       "expires": "0",
     },
   });
+}
+
+/**
+ * Retrieves the HTML string for the latest blog posts.
+ * It shows 2 posts on mobile and 3 posts on desktop.
+ */
+async function getLatestPostsHtml(): Promise<string> {
+  const postsDir = new URL("../../posts/", import.meta.url);
+  const posts: {
+    title: string;
+    date: string;
+    link: string;
+  }[] = [];
+
+  try {
+    for await (const entry of Deno.readDir(postsDir)) {
+      if (entry.isFile && entry.name.endsWith(".md")) {
+        const name = entry.name;
+        const postUrl = new URL(`../../posts/${name}`, import.meta.url);
+        const content = await Deno.readTextFile(postUrl);
+        let title = name.replace(".md", "").replace(/-/g, " ");
+        let date = "";
+
+        if (content.startsWith("---")) {
+          const endIdx = content.indexOf("---", 3);
+          if (endIdx !== -1) {
+            const frontmatter = content.slice(3, endIdx);
+            const titleMatch = frontmatter.match(/title:\s*["']?(.*?)["']?$/m);
+            if (titleMatch) title = titleMatch[1].trim();
+            const dateMatch = frontmatter.match(/date:\s*(.*?)$/m);
+            if (dateMatch) date = dateMatch[1].trim();
+          }
+        }
+
+        posts.push({
+          title,
+          date,
+          link: `/posts/${name.replace(".md", "")}`,
+        });
+      }
+    }
+  } catch (err) {
+    return "";
+  }
+
+  posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const topPosts = posts.slice(0, 3);
+
+  let html = `<div class="mt-8 mb-10">\n`;
+  html += `<h3 class="text-xl font-bold mb-4" style="font-family: 'Roboto Slab', serif;">Latest from Blog</h3>\n`;
+  html += `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">\n`;
+
+  for (let i = 0; i < topPosts.length; i++) {
+    const post = topPosts[i];
+    // Hide the 3rd post on screens smaller than large desktop (or medium depends on your breakpoints)
+    // Wait, the user said "2 posts terakhir di blog jika tampilan mobile, 3 posts terakhir jika di tampilan desktop"
+    // So for the 3rd item, display: none on mobile, display: block on desktop. (e.g. hidden md:block)
+    const displayClass = i === 2 ? "hidden md:block" : "block";
+
+    html += `<a href="${post.link}" class="group ${displayClass} p-4 rounded-xl border border-border-default bg-canvas-subtle hover:bg-canvas-default transition-all duration-300 no-underline!">
+<h4 class="text-lg font-bold text-fg-default mb-2 group-hover:text-accent-fg transition-colors line-clamp-2" style="font-family: 'Roboto Slab', serif;">${post.title}</h4>
+<div class="text-sm text-fg-muted">${post.date}</div>
+</a>\n`;
+  }
+
+  html += `</div>\n</div>`;
+  return html;
 }
 
 /**
