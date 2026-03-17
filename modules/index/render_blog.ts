@@ -175,13 +175,6 @@ export async function renderBlog(
             
             <div class="flex flex-wrap items-center gap-4">
               ${
-      post.date
-        ? `<span class="text-fg-default/70 text-[0.6rem] md:text-[0.65rem] uppercase tracking-[0.2em]" style="font-family: 'Roboto', sans-serif; font-weight: 300;">
-                  ${post.date}
-                </span>`
-        : ""
-    }
-              ${
       post.tags && post.tags.length > 0
         ? `<div class="flex items-center gap-1.5">
                   ${
@@ -192,6 +185,13 @@ export async function renderBlog(
           ).join("")
         }
                 </div>`
+        : ""
+    }
+              ${
+      post.date
+        ? `<span class="text-fg-default/70 text-[0.6rem] md:text-[0.65rem] uppercase tracking-[0.2em]" style="font-family: 'Roboto', sans-serif; font-weight: 300;">
+                  ${post.date}
+                </span>`
         : ""
     }
             </div>
