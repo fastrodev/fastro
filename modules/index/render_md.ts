@@ -549,6 +549,7 @@ async function getLatestPostsHtml(): Promise<string> {
   const posts: {
     title: string;
     date: string;
+    image: string;
     link: string;
   }[] = [];
 
@@ -560,6 +561,7 @@ async function getLatestPostsHtml(): Promise<string> {
         const content = await Deno.readTextFile(postUrl);
         let title = name.replace(".md", "").replace(/-/g, " ");
         let date = "";
+        let image = "";
 
         if (content.startsWith("---")) {
           const endIdx = content.indexOf("---", 3);
@@ -569,12 +571,15 @@ async function getLatestPostsHtml(): Promise<string> {
             if (titleMatch) title = titleMatch[1].trim();
             const dateMatch = frontmatter.match(/date:\s*(.*?)$/m);
             if (dateMatch) date = dateMatch[1].trim();
+            const imageMatch = frontmatter.match(/image:\s*["']?(.*?)["']?$/m);
+            if (imageMatch) image = imageMatch[1].trim();
           }
         }
 
         posts.push({
           title,
           date,
+          image,
           link: `/posts/${name.replace(".md", "")}`,
         });
       }
@@ -587,19 +592,32 @@ async function getLatestPostsHtml(): Promise<string> {
   const topPosts = posts.slice(0, 3);
 
   let html = `<div class="mt-8 mb-10">\n`;
-  html += `<h3 class="text-xl font-bold mb-4" style="font-family: 'Roboto Slab', serif;">Latest from Blog</h3>\n`;
-  html += `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">\n`;
+  html +=
+    `<h3 class="text-[1.75rem] md:text-[2rem] font-bold mb-4" style="font-family: 'Roboto Slab', serif;">Latest from Blog</h3>\n`;
+  html +=
+    `<div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">\n`;
+
+  const defaultImages = [
+    "https://storage.googleapis.com/replix-394315-file/uploads/start.jpg",
+    "https://storage.googleapis.com/replix-394315-file/uploads/resources.jpg",
+    "https://storage.googleapis.com/replix-394315-file/uploads/middleware.jpg",
+    "https://storage.googleapis.com/replix-394315-file/uploads/showcase.jpg",
+  ];
 
   for (let i = 0; i < topPosts.length; i++) {
     const post = topPosts[i];
-    // Hide the 3rd post on screens smaller than large desktop (or medium depends on your breakpoints)
-    // Wait, the user said "2 posts terakhir di blog jika tampilan mobile, 3 posts terakhir jika di tampilan desktop"
-    // So for the 3rd item, display: none on mobile, display: block on desktop. (e.g. hidden md:block)
-    const displayClass = i === 2 ? "hidden md:block" : "block";
+    const displayClass = i === 2 ? "hidden md:flex" : "flex";
+    const imgUrl = post.image || defaultImages[i % defaultImages.length];
 
-    html += `<a href="${post.link}" class="group ${displayClass} p-4 rounded-xl border border-border-default bg-canvas-subtle hover:bg-canvas-default transition-all duration-300 no-underline!">
-<h4 class="text-lg font-bold text-fg-default mb-2 group-hover:text-accent-fg transition-colors line-clamp-2" style="font-family: 'Roboto Slab', serif;">${post.title}</h4>
-<div class="text-sm text-fg-muted">${post.date}</div>
+    html +=
+      `<a href="${post.link}" class="group ${displayClass} flex-col no-underline! overflow-hidden">
+<div class="aspect-video w-full overflow-hidden rounded-xl bg-canvas-default mb-3">
+<img src="${imgUrl}" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+</div>
+<div class="flex-1 flex flex-col">
+<h4 class="text-base md:text-lg font-bold text-fg-default mb-2 group-hover:text-accent-fg transition-colors line-clamp-3 leading-tight" style="font-family: 'Roboto Slab', serif;">${post.title}</h4>
+<div class="text-xs text-fg-muted uppercase tracking-wider font-medium opacity-70">${post.date}</div>
+</div>
 </a>\n`;
   }
 
