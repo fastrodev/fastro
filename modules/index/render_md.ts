@@ -166,7 +166,9 @@ export async function renderMD_Content(
     );
 
     // D. Render Markdown
-    htmlBody = path === "blog" ? md : render(md, { allowMath: false, disableHtmlSanitization: true });
+    htmlBody = path === "blog"
+      ? md
+      : render(md, { allowMath: false, disableHtmlSanitization: true });
 
     // E. Restore original math blocks
     htmlBody = htmlBody.replace(
@@ -174,7 +176,10 @@ export async function renderMD_Content(
       (_, id) => mathBlocks[parseInt(id)],
     );
   } else {
-    htmlBody = render(markdown, { allowMath: false, disableHtmlSanitization: true });
+    htmlBody = render(markdown, {
+      allowMath: false,
+      disableHtmlSanitization: true,
+    });
   }
 
   const body = htmlBody;
@@ -609,13 +614,12 @@ async function getLatestPostsHtml(): Promise<string> {
     const imgUrl = post.image || defaultImages[i % defaultImages.length];
 
     html +=
-      `<a href="${post.link}" class="group ${displayClass} flex-col no-underline! overflow-hidden">
+      `<a href="${post.link}" class="group ${displayClass} flex-col no-underline! overflow-hidden border-b-0!">
 <div class="aspect-video w-full overflow-hidden rounded-xl bg-canvas-subtle mb-3">
 <img src="${imgUrl}" alt="${post.title}" class="w-full h-full object-cover">
 </div>
 <div class="flex-1 flex flex-col">
 <h4 class="text-[0.95rem] md:text-base font-bold text-fg-default mb-2 line-clamp-3 leading-tight tracking-tight group-hover:text-accent-fg transition-colors" style="font-family: 'Roboto', sans-serif;">${post.title}</h4>
-<div class="text-[0.65rem] md:text-xs text-fg-muted uppercase tracking-wider font-medium opacity-60">Blog</div>
 </div>
 </a>\n`;
   }

@@ -10,19 +10,8 @@
 
 Fastro is a **blazing-fast** and **type-safe** web framework for Deno that delivers **engineered speed**, **zero-friction DX**, and a **zero-dependency core** with **rock-solid reliability**.
 
-### 🚀 Quick Start
+{{LATEST_BLOG_POSTS}}
 
-```ts
-import Fastro from "https://deno.land/x/fastro/mod.ts";
-
-const app = new Fastro();
-
-app.get("/user/:id", (req, ctx) => {
-  return { id: ctx.params.id, status: "active" };
-});
-
-app.serve({ port: 8000 });
-```
 
 ### 📚 Resources
 
