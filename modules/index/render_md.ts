@@ -387,7 +387,7 @@ export async function renderMD_Content(
           ? "mb-10 opacity-100 font-sans text-sm md:text-[0.9rem] flex flex-wrap items-center gap-y-3 pb-5 md:pb-3 border-b border-border-subtle"
           : "mb-4 pb-4 border-b border-border-subtle flex flex-wrap items-center gap-2"
       }">
-          <div class="flex items-center gap-x-3 gap-y-1 flex-wrap">
+          <div class="flex items-center gap-x-2 gap-y-1 flex-wrap">
             ${
         author
           ? `<span class="font-semibold text-fg-default whitespace-nowrap">${author}</span>`
@@ -395,7 +395,7 @@ export async function renderMD_Content(
       }
             ${
         date
-          ? `<span class="text-fg-default/80 whitespace-nowrap md:ml-2">${date}</span>`
+          ? `<span class="text-fg-default/80 whitespace-nowrap">${date}</span>`
           : ""
       }
           </div>
