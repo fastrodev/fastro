@@ -306,9 +306,15 @@ const createRenderToString = (_context: Context) => {
     const hmrScript = !isProd
       ? `<script>${
         hmrScriptSource
-          .replace(/\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm, "$1")
+          .replace(/\/\*[\s\S]*?\*\//gm, "")
           .split("\n")
-          .map((line) => line.trim())
+          .map((line) => {
+            const commentIndex = line.indexOf("//");
+            if (commentIndex !== -1) {
+              return line.substring(0, commentIndex).trim();
+            }
+            return line.trim();
+          })
           .filter((line) => line.length > 0)
           .join("")
       }</script>`
