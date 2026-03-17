@@ -598,8 +598,9 @@ async function getLatestPostsHtml(): Promise<string> {
 
   let html = `<div class="mt-8 mb-10">\n`;
   html +=
-    `<h3 class="text-[1.75rem] md:text-[2rem] font-bold mb-4" style="font-family: 'Roboto Slab', serif;">Latest from Blog</h3>\n`;
-  html += `<div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-x-6 md:gap-y-10">\n`;
+    `<h3 class="text-[1.75rem] md:text-[2rem] font-bold mb-6" style="font-family: 'Roboto Slab', serif;">Latest from Blog</h3>\n`;
+  html +=
+    `<div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-10 md:gap-x-8 md:gap-y-14">\n`;
 
   const defaultImages = [
     "https://storage.googleapis.com/replix-394315-file/uploads/start.jpg",
