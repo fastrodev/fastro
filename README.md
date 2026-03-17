@@ -24,29 +24,12 @@ app.get("/user/:id", (req, ctx) => {
 app.serve({ port: 8000 });
 ```
 
-### 🛠️ Convenience tasks:
-
-- Start the app:  
-  ```bash 
-  deno task start
-  ```
-- Run the local benchmark script (requires `k6`):  
-  ```bash  
-  deno task bench
-  ```
-- Run the test suite:  
-  ```bash 
-  deno task test
-  ```
-- Produce LCOV coverage:   
-  ```bash 
-  deno task cov
-  ```
-
-
 ### 📚 Resources
 
-- [Docs](https://fastro.deno.dev/DOCS.md)
-- [Middlewares](https://fastro.deno.dev/MIDDLEWARES.md)
-- [Benchmarks](https://fastro.deno.dev/BENCHMARK.md)
-- [Contributing](https://fastro.deno.dev/CONTRIBUTING.md)
+- [Documentation](https://fastro.deno.dev/DOCS.md) — Learn how to build and deploy applications.
+- [Middlewares](https://fastro.deno.dev/MIDDLEWARES.md) — Enhance your apps with built-in or custom middlewares.
+- [Benchmarks](https://fastro.deno.dev/BENCHMARK.md) — Check performance comparisons with other frameworks.
+- [Contributing](https://fastro.deno.dev/CONTRIBUTING.md) — Help us improve Fastro core and ecosystem.
+- [Showcase](https://fastro.dev/SHOWCASE.md) — See amazing projects built by the community.
+- [Blog](https://fastro.dev/blog) — Stay updated with the latest news and tutorials.
+- [Sponsor](https://github.com/sponsors/fastrodev) — Support the development and sustainability of the project.
