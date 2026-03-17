@@ -419,7 +419,7 @@ export async function renderMD_Content(
             tags.slice(0, 3).map((tag) =>
               `<a href="/blog?search=${
                 encodeURIComponent(tag)
-              }" class="text-[0.65rem] md:text-[0.7rem] px-2.5 py-1 rounded-full bg-canvas-subtle border border-border-default !text-fg-default uppercase tracking-wider hover:bg-canvas-default transition-colors no-underline!" style="font-family: 'Roboto', sans-serif; font-weight: 300;">${tag}</a>`
+              }" class="text-[0.65rem] md:text-[0.7rem] px-2.5 py-1 rounded-full bg-canvas-subtle border border-border-default text-fg-default! uppercase tracking-wider hover:bg-canvas-default transition-colors no-underline!" style="font-family: 'Roboto', sans-serif; font-weight: 300;">${tag}</a>`
             ).join("")
           }
               </div>`
@@ -432,7 +432,7 @@ export async function renderMD_Content(
     <footer class="mt-auto border-t border-border-subtle">
       <div class="max-w-180 mx-auto px-6 md:px-8 py-6 text-[0.85rem] md:text-sm text-fg-muted">
         <div class="flex flex-row justify-between items-center opacity-60">
-          <span class="whitespace-nowrap">Made by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-fg-default transition-colors">Fastrodev</a></span>  
+          <span class="whitespace-nowrap">Built and maintained by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-fg-default transition-colors">Fastrodev</a></span>  
           <span class="whitespace-nowrap">Released under MIT License</span>       
         </div>
       </div>
@@ -589,7 +589,7 @@ async function getLatestPostsHtml(): Promise<string> {
         });
       }
     }
-  } catch (err) {
+  } catch (_err) {
     return "";
   }
 
@@ -600,7 +600,7 @@ async function getLatestPostsHtml(): Promise<string> {
   html +=
     `<h3 class="text-[1.75rem] md:text-[2rem] font-bold mb-6" style="font-family: 'Roboto Slab', serif;">Latest from Blog</h3>\n`;
   html +=
-    `<div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-10 md:gap-x-8 md:gap-y-14">\n`;
+    `<div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2 md:gap-x-8 md:gap-y-4">\n`;
 
   const defaultImages = [
     "https://storage.googleapis.com/replix-394315-file/uploads/start.jpg",
