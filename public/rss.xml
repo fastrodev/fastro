@@ -35,11 +35,11 @@
     <description>Bagaimana kami membangun CMS Fastro hanya menggunakan Deno, Fastro, dan Markdown—dengan manajemen konten modern berbasis Deno KV.</description>
   </item>
   <item>
-    <title>Fragmen: The Future of Remote &amp; Async Attendance</title>
+    <title>Fragmen: Reimagining Time-Tracking for Modern Freelancers</title>
     <link>https://fastro.dev/posts/fragmen</link>
     <guid isPermaLink="true">https://fastro.dev/posts/fragmen</guid>
     <pubDate>Sun, 08 Mar 2026 00:00:00 GMT</pubDate>
-    <description>Empowering remote teams with a flexible, multi-session attendance system built for asynchronous productivity.</description>
+    <description>Stop wasting time logging hours in spreadsheets. Fragmen automates your daily sessions into a seamless cumulative report, built for the asynchronous era.</description>
   </item>
   <item>
     <title>Fastro SaaS Ship Kit — Coming Soon!</title>
