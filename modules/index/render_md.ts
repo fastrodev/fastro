@@ -432,8 +432,8 @@ export async function renderMD_Content(
     <footer class="mt-auto border-t border-border-subtle">
       <div class="max-w-180 mx-auto px-6 md:px-8 py-6 text-[0.85rem] md:text-sm text-fg-muted">
         <div class="flex flex-row justify-between items-center opacity-60">
-          <span class="whitespace-nowrap">Built and maintained by <a href="https://github.com/fastrodev" target="_blank" class="font-medium hover:text-fg-default transition-colors">Fastrodev</a></span>  
-          <span class="whitespace-nowrap">Released under MIT License</span>       
+          <span class="whitespace-nowrap">Built with <a href="/" class="font-medium hover:text-fg-default transition-colors">Fastro Framework</a> and maintained by <a href="https://github.com/sponsors/fastrodev" target="_blank" class="font-medium hover:text-fg-default transition-colors">Fastrodev</a></span>  
+          <span class="hidden md:block whitespace-nowrap">Released under MIT License</span>       
         </div>
       </div>
     </footer>
