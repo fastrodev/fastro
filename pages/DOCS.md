@@ -34,9 +34,10 @@ new instance.
 import Fastro from "https://deno.land/x/fastro/mod.ts";
 
 const app = new Fastro();
+
 app.get("/", () => "Hello Fastro!");
 
-await app.serve({ port: 8000 });
+app.serve({ port: 8000 });
 ```
 
 ### Server Configuration
