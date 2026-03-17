@@ -614,7 +614,7 @@ async function getLatestPostsHtml(): Promise<string> {
     const imgUrl = post.image || defaultImages[i % defaultImages.length];
 
     html +=
-      `<a href="${post.link}" class="group ${displayClass} flex-col no-underline! overflow-hidden border-b-0!">
+      `<a href="${post.link}" class="group ${displayClass} flex-col no-underline! overflow-hidden border-none!" style="text-decoration: none; border-bottom: none !important;">
 <div class="aspect-video w-full overflow-hidden rounded-xl bg-canvas-subtle mb-3">
 <img src="${imgUrl}" alt="${post.title}" class="w-full h-full object-cover">
 </div>
