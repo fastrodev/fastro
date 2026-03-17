@@ -594,12 +594,12 @@ async function getLatestPostsHtml(): Promise<string> {
   }
 
   posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  const topPosts = posts.slice(0, 3);
+  const topPosts = posts.slice(0, 6);
 
   let html = `<div class="mt-8 mb-10">\n`;
   html +=
     `<h3 class="text-[1.75rem] md:text-[2rem] font-bold mb-4" style="font-family: 'Roboto Slab', serif;">Latest from Blog</h3>\n`;
-  html += `<div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">\n`;
+  html += `<div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-x-6 md:gap-y-10">\n`;
 
   const defaultImages = [
     "https://storage.googleapis.com/replix-394315-file/uploads/start.jpg",
@@ -610,7 +610,7 @@ async function getLatestPostsHtml(): Promise<string> {
 
   for (let i = 0; i < topPosts.length; i++) {
     const post = topPosts[i];
-    const displayClass = i === 2 ? "hidden md:flex" : "flex";
+    const displayClass = i >= 4 ? "hidden md:flex" : "flex";
     const imgUrl = post.image || defaultImages[i % defaultImages.length];
 
     html +=
