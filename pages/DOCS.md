@@ -8,6 +8,7 @@ applications.
 
 ## Table of Contents
 
+- [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
 - [Routing](#routing)
 - [Responses](#responses)
@@ -24,6 +25,10 @@ applications.
 - [Automatic Module Loading](#automatic-module-loading)
 - [Context (ctx)](#context-ctx)
 - [Performance Features](#performance-features)
+
+## Prerequisites
+
+Before starting, ensure you have **Deno** installed on your system. You can find the installation instructions at [deno.com](https://deno.com/manual/getting_started/installation).
 
 ## Getting Started
 
