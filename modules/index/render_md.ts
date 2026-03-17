@@ -166,7 +166,7 @@ export async function renderMD_Content(
     );
 
     // D. Render Markdown
-    htmlBody = path === "blog" ? md : render(md, { allowMath: false });
+    htmlBody = path === "blog" ? md : render(md, { allowMath: false, disableHtmlSanitization: true });
 
     // E. Restore original math blocks
     htmlBody = htmlBody.replace(
@@ -174,7 +174,7 @@ export async function renderMD_Content(
       (_, id) => mathBlocks[parseInt(id)],
     );
   } else {
-    htmlBody = render(markdown, { allowMath: false });
+    htmlBody = render(markdown, { allowMath: false, disableHtmlSanitization: true });
   }
 
   const body = htmlBody;
