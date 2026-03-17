@@ -41,6 +41,15 @@
       "image": "https://storage.googleapis.com/replix-394315-file/uploads/dashboard.jpg"
     },
     {
+      "id": "https://fastro.dev/posts/fragmen",
+      "url": "https://fastro.dev/posts/fragmen",
+      "title": "Fragmen: Multi-Session Async Attendance Concept",
+      "content_text": "A flexible attendance system built for remote and async work, allowing multiple sessions to meet daily duration goals.",
+      "date_published": "2026-03-08T00:00:00.000Z",
+      "content_html": "<p>A flexible attendance system built for remote and async work, allowing multiple sessions to meet daily duration goals.</p>",
+      "image": "https://storage.googleapis.com/replix-394315-file/uploads/absen1.jpg"
+    },
+    {
       "id": "https://fastro.dev/posts/powerkit",
       "url": "https://fastro.dev/posts/powerkit",
       "title": "Fastro SaaS Ship Kit — Coming Soon!",
@@ -192,15 +201,6 @@
       "content_text": "How Fastro's cookie middleware works, usage patterns, and security best practices.",
       "date_published": "2026-02-09T00:00:00.000Z",
       "content_html": "<p>How Fastro's cookie middleware works, usage patterns, and security best practices.</p>"
-    },
-    {
-      "id": "https://fastro.dev/posts/trackr",
-      "url": "https://fastro.dev/posts/trackr",
-      "title": "Trackr: Simplified Employee Attendance Concept",
-      "content_text": "A conceptual design for an employee attendance tracking application that records clock-in and clock-out times with ease.",
-      "date_published": "2026-03-08T00:00:00.000Z",
-      "content_html": "<p>A conceptual design for an employee attendance tracking application that records clock-in and clock-out times with ease.</p>",
-      "image": "https://storage.googleapis.com/replix-394315-file/uploads/absen1.jpg"
     },
     {
       "id": "https://fastro.dev/posts/modules",

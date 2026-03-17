@@ -35,6 +35,13 @@
     <description>Bagaimana kami membangun CMS Fastro hanya menggunakan Deno, Fastro, dan Markdown—dengan manajemen konten modern berbasis Deno KV.</description>
   </item>
   <item>
+    <title>Fragmen: Multi-Session Async Attendance Concept</title>
+    <link>https://fastro.dev/posts/fragmen</link>
+    <guid isPermaLink="true">https://fastro.dev/posts/fragmen</guid>
+    <pubDate>Sun, 08 Mar 2026 00:00:00 GMT</pubDate>
+    <description>A flexible attendance system built for remote and async work, allowing multiple sessions to meet daily duration goals.</description>
+  </item>
+  <item>
     <title>Fastro SaaS Ship Kit — Coming Soon!</title>
     <link>https://fastro.dev/posts/powerkit</link>
     <guid isPermaLink="true">https://fastro.dev/posts/powerkit</guid>
@@ -159,13 +166,6 @@
     <guid isPermaLink="true">https://fastro.dev/posts/cookie</guid>
     <pubDate>Mon, 09 Feb 2026 00:00:00 GMT</pubDate>
     <description>How Fastro&apos;s cookie middleware works, usage patterns, and security best practices.</description>
-  </item>
-  <item>
-    <title>Trackr: Simplified Employee Attendance Concept</title>
-    <link>https://fastro.dev/posts/trackr</link>
-    <guid isPermaLink="true">https://fastro.dev/posts/trackr</guid>
-    <pubDate>Sun, 08 Mar 2026 00:00:00 GMT</pubDate>
-    <description>A conceptual design for an employee attendance tracking application that records clock-in and clock-out times with ease.</description>
   </item>
   <item>
     <title>Understanding Fastro Modules: Manual vs. Automatic Loading</title>
