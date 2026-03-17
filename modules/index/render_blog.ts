@@ -95,17 +95,17 @@ export async function renderBlog(
 
   let html = `# Fastro Blog
 
-  <form action="/blog" method="GET" class="relative mb-6 group">
+  <form action="/blog" method="GET" class="relative mb-8 group">
+    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-fg-muted/50">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+    </div>
     <input 
       type="text" 
       name="search" 
       value="${search}" 
-      placeholder="Search posts..." 
-      class="w-full px-5 py-3 bg-canvas-subtle border border-border-default/50 rounded-xl focus:outline-none focus:border-accent-fg/30 focus:ring-4 focus:ring-accent-fg/5 transition-all duration-300 text-fg-default placeholder:text-fg-muted/60 text-sm shadow-sm"
+      placeholder="Search or start a new search" 
+      class="w-full pl-11 pr-4 py-3 bg-canvas-subtle/50 border border-border-default/40 rounded-full focus:outline-none focus:border-accent-fg/30 focus:ring-4 focus:ring-accent-fg/5 transition-all duration-300 text-fg-default placeholder:text-fg-muted/40 text-sm shadow-sm"
     >
-    <button type="submit" class="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-fg-muted/60 hover:text-accent-fg transition-colors">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-    </button>
   </form>
 
   <div class="flex flex-wrap gap-2 mb-6 -mt-2">
@@ -114,11 +114,11 @@ export async function renderBlog(
       const isActive = query === tag.toLowerCase();
       return `<a href="${
         isActive ? "/blog" : `/blog?search=${encodeURIComponent(tag)}`
-      }" class="text-[0.6rem] md:text-[0.65rem] px-2.5 py-1.5 rounded border ${
+      }" class="text-[0.7rem] md:text-[0.75rem] px-4 py-1.5 rounded-full border ${
         isActive
-          ? "bg-fg-default border-fg-default !text-canvas-default"
-          : "bg-canvas-subtle border-border-default/40 !text-fg-default/90 hover:border-fg-muted hover:!text-fg-default hover:bg-canvas-default"
-      } uppercase tracking-widest transition-all duration-200 !no-underline" style="font-family: 'Roboto', sans-serif; font-weight: 300;">${tag}</a>`;
+          ? "bg-fg-default border-fg-default !text-canvas-default font-medium"
+          : "bg-canvas-subtle border-border-default !text-fg-muted hover:border-fg-muted hover:!text-fg-default"
+      } uppercase tracking-wider transition-all duration-200 !no-underline" style="font-family: 'Roboto', sans-serif;">${tag}</a>`;
     }).join("")
   }
   </div>
@@ -181,7 +181,7 @@ export async function renderBlog(
           post.tags.slice(0, 2).map((tag) =>
             `<a href="/blog?search=${
               encodeURIComponent(tag)
-            }" class="text-[0.55rem] md:text-[0.6rem] px-2 py-0.5 rounded-sm bg-canvas-subtle border border-border-default !text-fg-default uppercase tracking-widest hover:!text-fg-default hover:bg-canvas-default transition-all z-20 relative !no-underline" style="font-family: 'Roboto', sans-serif; font-weight: 300;">${tag}</a>`
+            }" class="text-[0.6rem] md:text-[0.65rem] px-2.5 py-1 rounded-full bg-canvas-subtle border border-border-default !text-fg-muted/80 hover:border-fg-muted hover:!text-fg-default transition-all z-20 relative !no-underline" style="font-family: 'Roboto', sans-serif;">${tag}</a>`
           ).join("")
         }
                 </div>`
