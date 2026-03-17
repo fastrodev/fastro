@@ -117,9 +117,9 @@ export async function renderBlog(
         isActive ? "/blog" : `/blog?search=${encodeURIComponent(tag)}`
       }" class="text-[0.7rem] md:text-[0.75rem] px-4 py-1.5 rounded-full border ${
         isActive
-          ? "bg-fg-default border-fg-default !text-canvas-default font-medium"
-          : "bg-canvas-subtle border-border-default !text-fg-muted hover:border-fg-muted hover:!text-fg-default"
-      } uppercase tracking-wider transition-all duration-200 !no-underline" style="font-family: 'Roboto', sans-serif;">${tag}</a>`;
+          ? "bg-fg-default border-fg-default text-canvas-default! font-medium"
+          : "bg-canvas-subtle border-border-default text-fg-muted! hover:border-fg-muted hover:text-fg-default!"
+      } uppercase tracking-wider transition-all duration-200 no-underline!" style="font-family: 'Roboto', sans-serif;">${tag}</a>`;
     }).join("")
   }
   </div>
@@ -130,7 +130,7 @@ export async function renderBlog(
     html += `
       <div class="py-12 text-center border border-dashed border-border-default/20 rounded-2xl bg-canvas-subtle/30">
         <p class="text-fg-muted/50 text-base italic">No articles found matching your criteria.</p>
-        <a href="/blog" class="!text-fg-default font-black hover:underline mt-4 inline-block uppercase tracking-[0.25em] text-[0.6rem]">Clear filters</a>
+        <a href="/blog" class="text-fg-default! font-black hover:underline mt-4 inline-block uppercase tracking-[0.25em] text-[0.6rem]">Clear filters</a>
       </div>`;
   }
 
@@ -150,7 +150,7 @@ export async function renderBlog(
       <div onclick="if(!event.target.closest('a')) location.href='${post.link}'" class="relative group block transition-all duration-500 cursor-pointer overflow-hidden">
         ${
       isLatest
-        ? `<div class="mb-6 overflow-hidden rounded-xl h-48 md:h-[320px]">
+        ? `<div class="mb-6 overflow-hidden rounded-xl h-48 md:h-80">
               <img src="${
           post.image || defaultImage
         }" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000">
@@ -169,7 +169,7 @@ export async function renderBlog(
     }
           <div class="flex-1 min-w-0 flex flex-col min-h-full py-0">
             <div class="mb-2 md:mb-5">
-              <a href="${post.link}" class="text-xl md:text-2xl font-bold !text-fg-default tracking-tight line-clamp-2 !no-underline hover:!no-underline leading-[1.25] md:group-hover:text-accent-fg transition-colors duration-300" style="font-family: 'Roboto Slab', serif;">
+              <a href="${post.link}" class="text-xl md:text-2xl font-bold text-fg-default! tracking-tight line-clamp-2 no-underline! hover:no-underline! leading-tight md:group-hover:text-accent-fg transition-colors duration-300" style="font-family: 'Roboto Slab', serif;">
                 ${post.title}
               </a>
             </div>
@@ -182,7 +182,7 @@ export async function renderBlog(
           post.tags.slice(0, 2).map((tag) =>
             `<a href="/blog?search=${
               encodeURIComponent(tag)
-            }" class="text-[0.6rem] md:text-[0.65rem] px-2.5 py-1 rounded-full bg-canvas-subtle border border-border-default !text-fg-muted/80 hover:border-fg-muted hover:!text-fg-default transition-all z-20 relative !no-underline" style="font-family: 'Roboto', sans-serif;">${tag}</a>`
+            }" class="text-[0.6rem] md:text-[0.65rem] px-2.5 py-1 rounded-full bg-canvas-subtle border border-border-default text-fg-muted/80! hover:border-fg-muted hover:text-fg-default! transition-all z-20 relative no-underline!" style="font-family: 'Roboto', sans-serif;">${tag}</a>`
           ).join("")
         }
                 </div>`
@@ -212,7 +212,7 @@ export async function renderBlog(
         currentPage > 1
           ? `<a href="/blog?page=${currentPage - 1}${
             search ? `&search=${encodeURIComponent(search)}` : ""
-          }" class="px-4 py-2 rounded-xl border border-border-subtle hover:border-fg-muted hover:bg-canvas-subtle transition-all font-bold text-[0.7rem] uppercase tracking-widest flex items-center gap-2 group whitespace-nowrap !text-fg-default !no-underline shadow-sm">
+          }" class="px-4 py-2 rounded-xl border border-border-subtle hover:border-fg-muted hover:bg-canvas-subtle transition-all font-bold text-[0.7rem] uppercase tracking-widest flex items-center gap-2 group whitespace-nowrap text-fg-default! no-underline! shadow-sm">
               <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
               <span class="hidden sm:inline">Prev</span>
             </a>`
@@ -225,7 +225,7 @@ export async function renderBlog(
         currentPage < totalPages
           ? `<a href="/blog?page=${currentPage + 1}${
             search ? `&search=${encodeURIComponent(search)}` : ""
-          }" class="px-4 py-2 rounded-xl border border-border-subtle hover:border-fg-muted hover:bg-canvas-subtle transition-all font-bold text-[0.7rem] uppercase tracking-widest flex items-center gap-2 group whitespace-nowrap !text-fg-default !no-underline shadow-sm">
+          }" class="px-4 py-2 rounded-xl border border-border-subtle hover:border-fg-muted hover:bg-canvas-subtle transition-all font-bold text-[0.7rem] uppercase tracking-widest flex items-center gap-2 group whitespace-nowrap text-fg-default! no-underline! shadow-sm">
               <span class="hidden sm:inline">Next</span>
               <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
             </a>`

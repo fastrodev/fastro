@@ -35,7 +35,7 @@ Have you built something with Fastro? Add it here!
 ### How to add your project:
 
 1. Fork the Fastro repository.
-2. Open `SHOWCASE.md`.
+2. Open [`SHOWCASE.md`](https://github.com/fastrodev/fastro/blob/prod/pages/SHOWCASE.md).
 3. Add a new row to the **Community Projects** table. (Note: Put the link on the project name)
 4. Submit a Pull Request!
 

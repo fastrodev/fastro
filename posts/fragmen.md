@@ -3,7 +3,7 @@ title: "Fragmen: Reimagining Time-Tracking for Modern Freelancers"
 description: "Stop wasting time logging hours in spreadsheets. Fragmen automates your daily sessions into a seamless cumulative report, built for the asynchronous era."
 date: 2026-03-08
 author: "Fastro Team"
-tags: ["freelance", "productivity", "async"]
+tags: ["concept"]
 image: https://storage.googleapis.com/replix-394315-file/uploads/absen1.jpg
 ---
 
