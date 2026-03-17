@@ -594,8 +594,7 @@ async function getLatestPostsHtml(): Promise<string> {
   let html = `<div class="mt-8 mb-10">\n`;
   html +=
     `<h3 class="text-[1.75rem] md:text-[2rem] font-bold mb-4" style="font-family: 'Roboto Slab', serif;">Latest from Blog</h3>\n`;
-  html +=
-    `<div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">\n`;
+  html += `<div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">\n`;
 
   const defaultImages = [
     "https://storage.googleapis.com/replix-394315-file/uploads/start.jpg",
@@ -611,12 +610,12 @@ async function getLatestPostsHtml(): Promise<string> {
 
     html +=
       `<a href="${post.link}" class="group ${displayClass} flex-col no-underline! overflow-hidden">
-<div class="aspect-video w-full overflow-hidden rounded-xl bg-canvas-default mb-3">
-<img src="${imgUrl}" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+<div class="aspect-video w-full overflow-hidden rounded-xl bg-canvas-subtle mb-3">
+<img src="${imgUrl}" alt="${post.title}" class="w-full h-full object-cover">
 </div>
 <div class="flex-1 flex flex-col">
-<h4 class="text-base md:text-lg font-bold text-fg-default mb-2 group-hover:text-accent-fg transition-colors line-clamp-3 leading-tight" style="font-family: 'Roboto Slab', serif;">${post.title}</h4>
-<div class="text-xs text-fg-muted uppercase tracking-wider font-medium opacity-70">${post.date}</div>
+<h4 class="text-[0.95rem] md:text-base font-bold text-fg-default mb-2 line-clamp-3 leading-tight tracking-tight group-hover:text-accent-fg transition-colors" style="font-family: 'Roboto', sans-serif;">${post.title}</h4>
+<div class="text-[0.65rem] md:text-xs text-fg-muted uppercase tracking-wider font-medium opacity-60">Blog</div>
 </div>
 </a>\n`;
   }
