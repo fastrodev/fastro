@@ -615,11 +615,11 @@ async function getLatestPostsHtml(): Promise<string> {
 
     html +=
       `<a href="${post.link}" class="group ${displayClass} flex-col no-underline! overflow-hidden border-none!" style="text-decoration: none; border-bottom: none !important;">
-<div class="aspect-video w-full overflow-hidden rounded-xl bg-canvas-subtle mb-3">
+<div class="aspect-video w-full overflow-hidden rounded-xl bg-canvas-subtle mb-1.5">
 <img src="${imgUrl}" alt="${post.title}" class="w-full h-full object-cover">
 </div>
 <div class="flex-1 flex flex-col">
-<h4 class="text-[0.95rem] md:text-base font-bold text-fg-default mb-2 line-clamp-3 leading-tight tracking-tight group-hover:text-accent-fg transition-colors border-b-0!" style="font-family: 'Roboto', sans-serif; border-bottom: none !important;">${post.title}</h4>
+<h4 class="text-[0.95rem] md:text-base font-bold text-fg-default mb-2 line-clamp-3 leading-tight tracking-tight group-hover:text-accent-fg transition-colors border-b-0!" style="font-family: 'Roboto', sans-serif; border-bottom: none !important; margin-top: 0; padding-bottom: 0;">${post.title}</h4>
 </div>
 </a>\n`;
   }
