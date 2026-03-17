@@ -1,6 +1,6 @@
 ---
-title: "Fragmen: Multi-Session Async Attendance Concept"
-description: "A flexible attendance system built for remote and async work, allowing multiple sessions to meet daily duration goals."
+title: "Fragmen: The Future of Remote & Async Attendance"
+description: "Empowering remote teams with a flexible, multi-session attendance system built for asynchronous productivity."
 date: 2026-03-08
 author: "Fastro Team"
 tags: ["concept", "idea", "async"]
