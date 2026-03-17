@@ -27,8 +27,7 @@ applications.
 
 ## Getting Started
 
-To create a basic server, import the default export from `mod.ts` and create a
-new instance.
+To create a basic server, create a file named `main.ts`, import the default export from `mod.ts` and create a new instance.
 
 ```ts
 import Fastro from "https://deno.land/x/fastro/mod.ts";
@@ -38,6 +37,14 @@ const app = new Fastro();
 app.get("/", () => "Hello Fastro!");
 
 app.serve({ port: 8000 });
+```
+
+### Running the Server
+
+Run the application using the Deno CLI:
+
+```bash
+deno run -A main.ts
 ```
 
 ### Server Configuration
