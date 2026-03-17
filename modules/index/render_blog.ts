@@ -104,7 +104,8 @@ export async function renderBlog(
       name="search" 
       value="${search}" 
       placeholder="Search or start a new search" 
-      class="w-full pl-11 pr-4 py-3 bg-canvas-subtle/50 border border-border-default/40 rounded-full focus:outline-none focus:border-accent-fg/30 focus:ring-4 focus:ring-accent-fg/5 transition-all duration-300 text-fg-default placeholder:text-fg-muted/40 text-sm shadow-sm"
+      class="w-full pl-11 pr-4 py-3 bg-canvas-subtle/50 border-2 border-border-default rounded-full focus:outline-none focus:border-fg-muted/40 focus:ring-4 focus:ring-accent-fg/5 transition-all duration-300 text-fg-default placeholder:text-fg-muted/40 text-sm shadow-sm"
+      style="font-family: 'Roboto', sans-serif;"
     >
   </form>
 
