@@ -9,6 +9,11 @@ import {
 } from "./site_config.ts";
 import { renderStatic } from "./render_static.ts";
 
+/**
+ * Global cache for rendered markdown content.
+ */
+const RENDER_CACHE = new Map<string, string>();
+
 // Add support for syntax highlighting
 import "npm:prismjs@1.29.0/components/prism-typescript.js";
 import "npm:prismjs@1.29.0/components/prism-bash.js";
@@ -33,6 +38,19 @@ export async function renderMD_Content(
   canonical?: string,
   headExtras?: string,
 ) {
+  const cacheKey = `${path}:${canonical || ""}`;
+  const cached = RENDER_CACHE.get(cacheKey);
+  if (cached) {
+    return new Response(cached, {
+      headers: {
+        "content-type": "text/html",
+        "cache-control": "no-cache, no-store, must-revalidate",
+        "pragma": "no-cache",
+        "expires": "0",
+      },
+    });
+  }
+
   let finalContent = content;
 
   // Insert latest blog posts if requested placeholder exists
@@ -536,6 +554,8 @@ export async function renderMD_Content(
   }
   </body>
 </html>`;
+
+  RENDER_CACHE.set(cacheKey, html);
 
   return new Response(html, {
     headers: {
