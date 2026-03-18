@@ -613,7 +613,7 @@ async function getLatestPostsHtml(): Promise<string> {
 
   for (let i = 0; i < topPosts.length; i++) {
     const post = topPosts[i];
-    const displayClass = i >= 4 ? "hidden md:flex" : "flex";
+    const displayClass = "flex";
     const imgUrl = post.image || defaultImages[i % defaultImages.length];
 
     html +=
