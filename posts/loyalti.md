@@ -3,7 +3,7 @@ title: "Konsep Aplikasi Loyalti Sederhana untuk Pedagang Sembako & Gas"
 description: "Desain dan alur kerja sistem loyalti: setiap item (termasuk Gas LPG) punya konfigurasi sendiri untuk hadiah gratis setelah sejumlah pembelian."
 date: 2026-02-25
 author: "Tim Fastro"
-tags: ["idea"]
+tags: ["concept"]
 image: https://storage.googleapis.com/replix-394315-file/uploads/loyalti.jpg
 ---
 

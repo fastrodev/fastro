@@ -3,7 +3,7 @@ title: "Arsitektur CMS: Mengapa Database Mulai Terasa Seperti Beban Warisan?"
 description: "Bedah arsitektur antara monolithic database dan static binary generation, serta mengapa Git-based CMS menjadi pilihan modern yang paling efisien."
 date: 2026-02-16
 author: "Fastro Team"
-tags: ["idea"]
+tags: ["concept"]
 image: "https://storage.googleapis.com/replix-394315-file/uploads/comparison.jpg"
 ---
 
