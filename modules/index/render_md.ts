@@ -37,9 +37,11 @@ export async function renderMD_Content(
   kv?: Deno.Kv,
   canonical?: string,
   headExtras?: string,
+  customCacheKey?: string,
 ) {
-  const cacheKey = `${path}:${canonical || ""}`;
-  const cached = RENDER_CACHE.get(cacheKey);
+  const cacheKeySuffix = customCacheKey ||
+    `${path}:${canonical || ""}:${headExtras || ""}`;
+  const cached = RENDER_CACHE.get(cacheKeySuffix);
   if (cached) {
     return new Response(cached, {
       headers: {
@@ -555,7 +557,9 @@ export async function renderMD_Content(
   </body>
 </html>`;
 
-  RENDER_CACHE.set(cacheKey, html);
+  const finalCacheKey = customCacheKey ||
+    `${path}:${canonical || ""}:${headExtras || ""}`;
+  RENDER_CACHE.set(finalCacheKey, html);
 
   return new Response(html, {
     headers: {

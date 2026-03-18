@@ -19,6 +19,8 @@ image: https://storage.googleapis.com/replix-394315-file/uploads/absen1.jpg
 
 The core philosophy is simple: **Capture your flow, ignore the clock.** Instead of worrying about "when" you started, Fragmen focuses on the cumulative value of your sessions throughout the day.
 
+**Fragmen is not a monitoring tool.** We believe in trust, not surveillance. There are no screenshots, no activity tracking, and no "Big Brother" feeling—just a space to log your focused contribution.
+
 # Why Fragmen?
 
 The project was born out of frustration with manual timesheets:
@@ -35,14 +37,17 @@ The proposed system focuses on flexibility and cumulative tracking:
 2.  **Daily Duration Goals** — Instead of "late" or "early," see your progress toward a target goal (e.g., 8 hours).
 3.  **Modern Dashboard** — A clean interface for both freelancers and managers to see total contribution at a glance, regardless of time zones.
 4.  **Async-Ready** — No fixed start or end times. Work when you are most productive.
+5.  **No Surveillance** — Employees are not watched. No activity monitoring or desktop tracking. Fragmen is a tool for workers, built on mutual trust.
 
 # Workflow Example
 
 | User Scenario | Action | Result |
 | :--- | :--- | :--- |
-| **Deep Work** | Checks in at 09:00, Out at 11:30 | Session 1: 2.5 hours. Total: 2.5/8h. |
-| **Afternoon Sprint** | Checks in at 13:00, Out at 17:00 | Session 2: 4 hours. Total: 6.5/8h. |
-| **Final Polish** | Checks in at 20:00, Out at 21:30 | Session 3: 1.5 hours. Total: 8/8h. **Goal Met.** |
+| **Deep Work** | Checks in at 02:00, Out at 04:30 | Session 1: 2.5 hours. Total: 2.5/8h. |
+| **Afternoon Sprint** | Checks in at 08:00, Out at 12:00 | Session 2: 4 hours. Total: 6.5/8h. |
+| **Final Polish** | Checks in at 14:00, Out at 15:30 | Session 3: 1.5 hours. Total: 8/8h. **Goal Met.** |
+
+With a workflow like this, you can hit your daily targets earlier, allowing you to rest and go to sleep earlier without the weight of unfinished tasks looming over your evening.
 
 ---
 

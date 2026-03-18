@@ -251,5 +251,14 @@ export async function renderBlog(
     headExtras += `<link rel=\"next\" href=\"${nextUrl}\">`;
   }
 
-  return renderMD_Content(html, "blog", kv, canonical, headExtras);
+  const customCacheKey = `blog:${currentPage}:${search || "all"}`;
+
+  return renderMD_Content(
+    html,
+    "blog",
+    kv,
+    canonical,
+    headExtras,
+    customCacheKey,
+  );
 }
