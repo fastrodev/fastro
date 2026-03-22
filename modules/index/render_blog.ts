@@ -95,42 +95,41 @@ export async function renderBlog(
 
   let html = `# Fastro Blog
 
-  <form action="/blog" method="GET" class="relative mb-8 group">
-    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-fg-muted/50">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+  <form action="/blog" method="GET" class="relative mb-10 group">
+    <div class="absolute left-5 top-1/2 -translate-y-1/2 text-fg-muted/60 z-10">
+      <svg class="w-5 h-5 transition-colors group-focus-within:text-accent-emphasis" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
     </div>
     <input 
       type="text" 
       name="search" 
       value="${search}" 
-      placeholder="Search or start a new search" 
-      class="w-full pl-11 pr-4 py-3 bg-canvas-subtle/50 border border-border-default rounded-full focus:outline-none focus:border-fg-muted/40 focus:ring-4 focus:ring-accent-fg/5 transition-all duration-300 text-fg-default placeholder:text-fg-muted/40 text-sm shadow-sm"
-      style="font-family: 'Roboto', sans-serif;"
+      placeholder="Search articles..." 
+      class="w-full pl-13 pr-6 py-4 bg-white/5 border border-white/10 rounded-2xl focus:outline-none focus:border-accent-emphasis/50 focus:ring-4 focus:ring-accent-emphasis/10 transition-all duration-300 text-fg-default placeholder:text-fg-muted/50 text-base shadow-lg backdrop-blur-md"
     >
   </form>
 
-  <div class="flex flex-wrap gap-2 mb-6 -mt-2">
+  <div class="flex flex-wrap gap-3 mb-10 -mt-4">
     ${
     Array.from(allTags).sort().map((tag) => {
       const isActive = query === tag.toLowerCase();
       return `<a href="${
         isActive ? "/blog" : `/blog?search=${encodeURIComponent(tag)}`
-      }" class="text-[0.7rem] md:text-[0.75rem] px-4 py-1.5 rounded-full border ${
+      }" class="text-[0.65rem] md:text-[0.7rem] px-5 py-2 rounded-full border-0.5 transition-all duration-300 no-underline! font-semibold uppercase tracking-widest ${
         isActive
-          ? "bg-fg-default border-fg-default text-canvas-default! font-medium"
-          : "bg-canvas-subtle border-border-default text-fg-muted! hover:border-fg-muted hover:text-fg-default!"
-      } uppercase tracking-wider transition-all duration-200 no-underline!" style="font-family: 'Roboto', sans-serif;">${tag}</a>`;
+          ? "bg-accent-emphasis text-white shadow-lg shadow-accent-emphasis/20"
+          : "bg-white/5 border-white/5 text-fg-muted hover:bg-white/10 hover:text-fg-default"
+      }">${tag}</a>`;
     }).join("")
   }
   </div>
 
-  <div class="grid gap-8 md:gap-12">`;
+  <div class="grid grid-cols-1 gap-10">`;
 
   if (paginatedPosts.length === 0) {
     html += `
-      <div class="py-12 text-center border border-dashed border-border-default/20 rounded-2xl bg-canvas-subtle/30">
+      <div class="py-12 text-center border border-dashed border-white/10 rounded-2xl bg-white/5 backdrop-blur-md">
         <p class="text-fg-muted/50 text-base italic">No articles found matching your criteria.</p>
-        <a href="/blog" class="text-fg-default! font-black hover:underline mt-4 inline-block uppercase tracking-[0.25em] text-[0.6rem]">Clear filters</a>
+        <a href="/blog" class="dashboard-link mt-4 inline-block px-4 py-2 rounded-full text-[0.7rem] font-bold uppercase tracking-widest no-underline!">Clear filters</a>
       </div>`;
   }
 
@@ -143,59 +142,43 @@ export async function renderBlog(
 
   for (let i = 0; i < paginatedPosts.length; i++) {
     const post = paginatedPosts[i];
-    const isLatest = currentPage === 1 && i === 0;
     const defaultImage =
       defaultImages[Math.floor(Math.random() * defaultImages.length)];
     html += `
-      <div onclick="if(!event.target.closest('a')) location.href='${post.link}'" class="relative group block transition-all duration-500 cursor-pointer overflow-hidden">
-        ${
-      isLatest
-        ? `<div class="mb-6 overflow-hidden rounded-xl h-48 md:h-80">
-              <img src="${
-          post.image || defaultImage
-        }" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000">
-            </div>`
-        : ""
-    }
-        <div class="flex items-start gap-4 md:gap-8">
-          ${
-      !isLatest
-        ? `<div class="shrink-0 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 overflow-hidden rounded-lg bg-canvas-subtle">
-              <img src="${
-          post.image || defaultImage
-        }" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
-            </div>`
-        : ""
-    }
-          <div class="flex-1 min-w-0 flex flex-col min-h-full py-0">
-            <div class="mb-2 md:mb-5">
-              <a href="${post.link}" class="text-xl md:text-2xl font-bold text-fg-default! tracking-tight line-clamp-2 no-underline! hover:no-underline! leading-tight md:group-hover:text-accent-fg transition-colors duration-300" style="font-family: 'Roboto Slab', serif;">
-                ${post.title}
-              </a>
-            </div>
-            
-            <div class="flex flex-wrap items-center gap-4">
-              ${
+      <div onclick="if(!event.target.closest('a')) location.href='${post.link}'" class="native-card group flex flex-col cursor-pointer overflow-hidden p-4">
+        <div class="mb-5 overflow-hidden rounded-xl h-48 sm:h-56 bg-canvas-inset">
+          <img src="${
+      post.image || defaultImage
+    }" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out">
+        </div>
+        <div class="flex flex-col flex-1 px-1">
+          <div class="mb-4">
+            <a href="${post.link}" class="text-xl md:text-2xl font-bold text-fg-default! tracking-tight line-clamp-2 no-underline! hover:no-underline! leading-tight transition-all duration-300">
+              ${post.title}
+            </a>
+          </div>
+          
+          <div class="mt-auto flex items-center justify-between gap-4">
+            ${
       post.tags && post.tags.length > 0
-        ? `<div class="flex items-center gap-1.5">
+        ? `<div class="flex items-center gap-2">
                   ${
           post.tags.slice(0, 2).map((tag) =>
             `<a href="/blog?search=${
               encodeURIComponent(tag)
-            }" class="text-[0.6rem] md:text-[0.65rem] px-2.5 py-1 rounded-full bg-canvas-subtle border border-border-default text-fg-muted/80! hover:border-fg-muted hover:text-fg-default! transition-all z-20 relative no-underline!" style="font-family: 'Roboto', sans-serif;">${tag}</a>`
+            }" class="text-[0.6rem] md:text-[0.65rem] px-3 py-1 rounded-full bg-white/5 border border-white/5 text-fg-muted hover:bg-white/10 hover:text-fg-default transition-all z-20 relative no-underline! font-medium uppercase tracking-widest">${tag}</a>`
           ).join("")
         }
                 </div>`
-        : ""
+        : "<div></div>"
     }
-              ${
+            ${
       post.date
-        ? `<span class="text-fg-default/70 text-[0.6rem] md:text-[0.65rem] uppercase tracking-[0.2em]" style="font-family: 'Roboto', sans-serif; font-weight: 300;">
+        ? `<span class="text-fg-subtle text-[0.65rem] font-medium uppercase tracking-widest opacity-80">
                   ${post.date}
                 </span>`
         : ""
     }
-            </div>
           </div>
         </div>
       </div>`;

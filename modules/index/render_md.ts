@@ -370,46 +370,320 @@ export async function renderMD_Content(
       : ""
   }
     <link rel="stylesheet" href="/css/app.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+      :root {
+        --color-canvas-default: #000000;
+        --color-canvas-subtle: #0a0a0d;
+        --color-canvas-inset: #050507;
+        --color-fg-default: #f5f5f7;
+        --color-fg-muted: #86868b;
+        --color-fg-subtle: #6e6e73;
+        --color-border-default: #1c1c1e;
+        --color-border-subtle: #161618;
+        --color-accent-fg: #0071e3;
+        --color-accent-emphasis: #007aff;
+        --color-success-fg: #34c759;
+        --color-danger-fg: #ff3b30;
+        --header-height: 64px;
+        --radius-medium: 12px;
+        --radius-large: 18px;
+        --blur-amount: 20px;
+      }
+
       ${CSS}
+      .hidden { 
+        display: none !important; 
+      }
+
+      /* Menu Toggle (Hamburger to X) */
+      #menu-toggle span {
+        display: block;
+        width: 1.5rem;
+        height: 2px;
+        background: var(--color-fg-default);
+        border-radius: 99px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-origin: center;
+      }
+
+      #menu-toggle.open span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+
+      #menu-toggle.open span:nth-child(2) {
+        opacity: 0;
+        transform: translateX(-10px);
+      }
+
+      #menu-toggle.open span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+
+      /* Unified alignment container */
+      .site-container {
+        max-width: 780px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      @media (min-width: 768px) {
+        .site-container {
+          padding-left: 2.5rem;
+          padding-right: 2.5rem;
+        }
+      }
+
+      /* Global resets for native look */
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--color-canvas-default);
+        color: var(--color-fg-default);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+        font-size: 1.15rem;
+        line-height: 1.65;
+        letter-spacing: -0.005em;
+      }
+
+      /* Native scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(120, 120, 130, 0.3);
+        border: 2px solid var(--color-canvas-default);
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(120, 120, 130, 0.5);
+      }
+
+      /* Premium Typography */
+      .brand-logo {
+        letter-spacing: -0.04em !important;
+        font-weight: 800 !important;
+        font-size: 1.45rem !important;
+      }
+
       .nav-link {
-        font-family: 'Roboto', sans-serif;
-        font-weight: 300;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 500;
+        font-size: 1rem;
         text-decoration: none;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        color: var(--color-fg-muted);
+        position: relative;
+      }
+
+      .nav-link:hover {
+        color: var(--color-fg-default);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--color-accent-emphasis);
+        border-radius: 2px;
+        opacity: 0;
+        transform: scaleX(0.7);
+        transition: all 0.2s ease;
+      }
+
+      .nav-link:hover::after {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+
+      .nav-link.current-page::after {
+        opacity: 0.8;
+        transform: scaleX(1);
+      }
+
+      /* Glassmorphism Header */
+      header {
+        background-color: rgba(0, 0, 0, 0.75) !important;
+        backdrop-filter: saturate(180%) blur(var(--blur-amount)) !important;
+        -webkit-backdrop-filter: saturate(180%) blur(var(--blur-amount)) !important;
+        border-bottom: 0.5px solid rgba(255, 255, 255, 0.1) !important;
+      }
+
+      /* Native Cards */
+      .markdown-body pre, 
+      .blog-post-content .rounded-xl,
+      .native-card {
+        background-color: var(--color-canvas-subtle) !important;
+        border: 0.5px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: var(--radius-large) !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+      }
+
+      .native-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.15) !important;
+      }
+
+      /* Markdown custom styling for Dark Native look */
+      .markdown-body {
+        background: transparent !important;
+        color: var(--color-fg-default) !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: none !important;
+      }
+
+      .markdown-body h1, 
+      .markdown-body h2,
+      .markdown-body h3,
+      .markdown-body h4 {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-top: 2rem !important;
+        margin-bottom: 1rem !important;
+        padding-left: 0 !important;
+        border-bottom: none !important;
+        padding-bottom: 0 !important;
+        letter-spacing: -0.02em !important;
+        line-height: 1.25 !important;
+      }
+
+      .markdown-body h1 { font-size: 2.1rem !important; font-weight: 800 !important; margin-bottom: 1.5rem !important; }
+      .markdown-body h2 { font-size: 1.75rem !important; font-weight: 700 !important; margin-top: 2.5rem !important; }
+      .markdown-body h3 { font-size: 1.45rem !important; font-weight: 600 !important; }
+      .markdown-body h4 { font-size: 1.2rem !important; font-weight: 600 !important; margin-top: 0 !important; margin-bottom: 0.5rem !important; }
+
+      @media (min-width: 768px) {
+        .markdown-body h1 { font-size: 3.25rem !important; }
+        .markdown-body h2 { font-size: 2.25rem !important; }
+        .markdown-body h3 { font-size: 1.75rem !important; }
+        .markdown-body h4 { font-size: 1.35rem !important; }
+      }
+      .markdown-body a {
+        color: var(--color-fg-default) !important;
+        text-decoration: underline;
+        text-decoration-color: rgba(255, 255, 255, 0.2);
+        text-underline-offset: 4px;
+        text-decoration-thickness: 1px;
+        transition: all 0.2s ease;
+      }
+
+      .markdown-body a:hover {
+        text-decoration: none;
+        opacity: 0.8;
+      }
+
+      .markdown-body code {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 4px;
+        color: #ff7b72 !important; /* GitHub-style red for keywords */
+      }
+
+      .markdown-body blockquote {
+        border-left: 4px solid var(--color-accent-emphasis) !important;
+        color: var(--color-fg-muted) !important;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 1rem 1.5rem;
+        border-radius: 0 8px 8px 0;
+      }
+
+      /* Smooth imagery */
+      img {
+        border-radius: var(--radius-medium);
+        transition: opacity 0.8s ease-in-out, transform 0.8s ease;
+      }
+
+      img.loaded {
+        opacity: 1;
+      }
+
+      /* CTA Buttons */
+      .cta-button {
+        background: var(--color-accent-emphasis);
+        color: white !important;
+        padding: 10px 24px;
+        border-radius: 24px;
+        font-weight: 600;
+        text-decoration: none !important;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: 0 4px 14px rgba(0, 113, 227, 0.39);
+      }
+
+      .cta-button:hover {
+        transform: translateY(-1px) scale(1.02);
+        box-shadow: 0 6px 20px rgba(0, 113, 227, 0.45);
+        opacity: 0.95;
+      }
+
+      .cta-button:active {
+        transform: translateY(0.5px) scale(0.98);
+      }
+
+      /* Dashboard button secondary style */
+      .dashboard-link {
+        background: rgba(255, 255, 255, 0.08);
+        border: 0.5px solid rgba(255, 255, 255, 0.1);
+        color: var(--color-fg-default) !important;
+        backdrop-filter: blur(8px);
       }
     </style>
   </head>
-  <body data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
-    <header class="border-b border-border-subtle bg-canvas-default/70 sticky top-0 z-100 backdrop-blur-md">
-      <div class="max-w-180 mx-auto flex flex-col md:flex-row md:justify-between md:items-center py-4 px-6 md:px-8">
+  <body data-color-mode="dark" data-light-theme="dark" data-dark-theme="dark" class="flex flex-col min-h-screen">
+    <header class="border-b border-white/5 bg-black/60 sticky top-0 z-100 backdrop-blur-3xl">
+      <div class="site-container py-3 md:py-5 flex flex-col md:flex-row md:justify-between md:items-center">
         <div class="flex justify-between items-center w-full md:w-auto">
-          <div class="flex items-center gap-x-2">
-            <a href="/" class="brand-logo text-fg-default no-underline hover:no-underline" style="font-family: 'Roboto', sans-serif; font-weight: 300; font-size: 1.25rem;">FASTRO</a>
-            <span class="brand-version text-[0.65rem] px-1.5 py-px rounded bg-fg-default text-canvas-default uppercase tracking-wider select-none" style="font-family: 'Roboto', sans-serif; font-weight: 300;">${version}</span>
+          <div class="flex items-center gap-x-4">
+            <a href="/" class="brand-logo text-fg-default no-underline hover:no-underline flex items-center gap-2 font-bold" style="font-size: 1.3rem;">
+              
+              FASTRO
+            </a>
+            <span class="brand-version text-[0.65rem] px-2.5 py-0.5 rounded-full bg-white/10 text-white font-semibold tracking-wide border border-white/10" style="backdrop-filter: blur(10px);">${version}</span>
           </div>
-          <button id="menu-toggle" aria-label="Toggle Menu" class="flex flex-col justify-between w-6 h-5 bg-transparent border-none cursor-pointer p-0 md:hidden group">
-            <span class="w-6 h-0.5 bg-fg-default rounded-full transition-all duration-300 origin-center"></span>
-            <span class="w-6 h-0.5 bg-fg-default rounded-full transition-all duration-300"></span>
-            <span class="w-6 h-0.5 bg-fg-default rounded-full transition-all duration-300 origin-center"></span>
+          <button id="menu-toggle" aria-label="Toggle Menu" class="flex flex-col justify-between w-6 h-4 bg-transparent border-none cursor-pointer p-0 md:hidden relative z-110">
+            <span class="transition-all"></span>
+            <span class="transition-all"></span>
+            <span class="transition-all"></span>
           </button>
         </div>
-        <nav id="nav-links" class="flex flex-col md:flex-row md:flex w-full md:w-auto gap-5 md:gap-7 items-start md:items-center overflow-hidden">
+        <nav id="nav-links" class="flex-col md:flex-row md:flex w-full md:w-auto gap-6 md:gap-10 items-start md:items-center overflow-hidden transition-all duration-300 md:mt-0">
           ${finalNav}
         </nav>
       </div>
     </header>
-    <main class="max-w-180 mx-auto px-6 pt-3 pb-6 md:pt-3 md:pb-6 md:px-8 flex-1 w-full box-border text-fg-default">
-        <div class="markdown-body blog-post-content" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">${
+    <main class="site-container pt-6 md:pt-10 pb-8 flex-1">
+        <div class="markdown-body blog-post-content" data-color-mode="dark" data-light-theme="dark" data-dark-theme="dark">${
     title
       ? `<h1 class="${
         isBlogPost
-          ? "text-[1.75rem] md:text-[2rem] font-bold tracking-tight mb-4 border-b-0! pb-0!"
-          : `text-[1.75rem] md:text-[2rem] font-bold tracking-tight text-fg-default flex items-center ${
+          ? "text-[2.1rem] md:text-[3.25rem] font-extrabold tracking-tight mb-8 leading-[1.15]"
+          : `text-[2.1rem] md:text-[3.25rem] font-extrabold tracking-tight text-fg-default flex items-center ${
             path === "blog" ? "justify-between" : ""
-          } gap-3 mb-4 border-b-0!`
-      }" style="font-family: 'Roboto Slab', serif;">${title}${
+          } gap-4 mb-10 leading-[1.15]`
+      }">${title}${
         path === "blog"
-          ? `<a href="/signin" class="text-[0.7rem] md:text-xs px-3 py-1.5 rounded-xl border border-border-default hover:border-fg-muted/50 hover:bg-canvas-subtle transition-all no-underline! text-fg-default/70! hover:text-fg-default! uppercase tracking-wider" style="font-family: 'Roboto', sans-serif; font-weight: 300;">DASHBOARD</a>`
+          ? `<a href="/signin" class="dashboard-link text-[0.7rem] md:text-xs px-4 py-2 rounded-full border hover:brightness-110 transition-all no-underline! whitespace-nowrap uppercase tracking-widest">DASHBOARD</a>`
           : ""
       }</h1>`
       : ""
@@ -449,13 +723,20 @@ export async function renderMD_Content(
       : ""
   }${body}</div>
     </main>
-    <footer class="mt-auto border-t border-border-subtle">
-      <div class="max-w-180 mx-auto px-6 md:px-8 py-6 text-[0.85rem] md:text-sm text-fg-muted">
-        <div class="flex flex-row justify-between items-center opacity-60">
-          <span class="flex items-center flex-wrap gap-x-2">
-            <span class="whitespace-normal md:whitespace-nowrap">Built with <a href="https://github.com/fastrodev/fastro" class="font-medium hover:text-fg-default transition-colors">Fastro Framework</a> and maintained by <a href="https://github.com/sponsors/fastrodev" target="_blank" class="font-medium hover:text-fg-default transition-colors">Fastrodev</a></span>
-          </span>  
-          <span class="hidden md:block whitespace-nowrap">Released under MIT License</span>       
+    <footer class="border-t border-white/5 bg-black/40 backdrop-blur-3xl">
+      <div class="site-container py-8 text-[0.85rem] text-fg-muted">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 transition-opacity hover:opacity-100">
+          <div class="flex items-center gap-x-2">
+            <span class="whitespace-normal md:whitespace-nowrap">Built with <a href="https://github.com/fastrodev/fastro" class="text-fg-default hover:underline decoration-white/30 underline-offset-4 transition-all font-semibold">Fastro Framework</a></span>
+          </div>
+          <div class="flex items-center gap-4 font-medium text-[0.85rem]">
+            <a href="https://github.com/sponsors/fastrodev" target="_blank" class="text-fg-muted hover:text-fg-default hover:underline decoration-white/30 underline-offset-4 transition-all">Support Development</a>
+            <span class="hidden md:inline text-white/10">|</span>
+            <span class="whitespace-nowrap">MIT License</span>       
+          </div>
+        </div>
+        <div class="mt-8 pt-8 border-t border-white/5 mx-auto text-center text-xs opacity-60">
+          &copy; ${new Date().getFullYear()} Fastro. All rights reserved.
         </div>
       </div>
     </footer>
@@ -483,6 +764,7 @@ export async function renderMD_Content(
           }, 300);
         } else {
           navLinks.classList.remove('hidden');
+          navLinks.style.marginTop = '1.25rem';
           setTimeout(() => {
             navLinks.classList.add('active');
           }, 10);
@@ -526,10 +808,10 @@ export async function renderMD_Content(
     isMD
       ? `
     <button id="scroll-to-top" 
-      class="fixed bottom-3 right-6 p-3 rounded-full bg-fg-default text-canvas-default shadow-lg opacity-0 translate-y-10 pointer-events-none transition-all duration-300 z-110 hover:scale-110 active:scale-95 cursor-pointer"
+      class="fixed bottom-6 right-6 p-3 rounded-full bg-white text-black shadow-2xl opacity-0 translate-y-10 pointer-events-none transition-all duration-300 z-110 hover:scale-110 active:scale-95 cursor-pointer backdrop-blur-xl border border-white/10"
       aria-label="Back to top">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18" />
       </svg>
     </button>
     <script>
@@ -622,11 +904,11 @@ async function getLatestPostsHtml(): Promise<string> {
   posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   const topPosts = posts.slice(0, 6);
 
-  let html = `<div class="mt-8 mb-10">\n`;
+  let html = `<div class="mt-8 mb-16 border-t border-white/5 pt-10">\n`;
   html +=
-    `<h3 class="text-[1.75rem] md:text-[2rem] font-bold mb-6" style="font-family: 'Roboto Slab', serif;">Latest from Blog</h3>\n`;
+    `<div class="text-[1.5rem] md:text-[2.1rem] font-bold mb-8 tracking-tighter text-fg-default">Latest from Blog</div>\n`;
   html +=
-    `<div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2 md:gap-x-8 md:gap-y-4">\n`;
+    `<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">\n`;
 
   const defaultImages = [
     "https://storage.googleapis.com/replix-394315-file/uploads/start.jpg",
@@ -637,16 +919,15 @@ async function getLatestPostsHtml(): Promise<string> {
 
   for (let i = 0; i < topPosts.length; i++) {
     const post = topPosts[i];
-    const displayClass = "flex";
     const imgUrl = post.image || defaultImages[i % defaultImages.length];
 
     html +=
-      `<a href="${post.link}" class="group ${displayClass} flex-col no-underline! overflow-hidden border-none!" style="text-decoration: none; border-bottom: none !important;">
-<div class="aspect-video w-full overflow-hidden rounded-xl bg-canvas-subtle mb-1.5">
-<img src="${imgUrl}" alt="${post.title}" class="w-full h-full object-cover">
+      `<a href="${post.link}" class="native-card group flex flex-col h-full no-underline! overflow-hidden p-3.5" style="text-decoration: none;">
+<div class="aspect-video w-full overflow-hidden rounded-xl bg-canvas-inset mb-4">
+<img src="${imgUrl}" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
 </div>
-<div class="flex-1 flex flex-col">
-<h4 class="text-[0.95rem] md:text-base font-bold text-fg-default mb-2 line-clamp-3 leading-tight tracking-tight group-hover:text-accent-fg transition-colors border-b-0!" style="font-family: 'Roboto', sans-serif; border-bottom: none !important; margin-top: 0; padding-bottom: 0;">${post.title}</h4>
+<div class="flex-1 flex flex-col justify-between px-1.5 pb-1">
+<div class="text-[1.1rem] md:text-[1.15rem] font-bold text-fg-default line-clamp-2 leading-[1.35] tracking-tight">${post.title}</div>
 </div>
 </a>\n`;
   }
